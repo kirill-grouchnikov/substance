@@ -1,0 +1,340 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2007 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+<title>Substance 5.1 release</title>
+</head>
+
+<body>
+
+<h1>Substance 5.1 <font color="darkblue">Panama</font> - new features</h1>
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Rework of Office Blue skin</b></td>
+    <td width="80%" valign="top">
+
+    <p>The <a href="../../docs/skins/toneddown.html#OfficeBlue2007Skin">Office
+    	Blue skin</a> has much greater fidelity to the Office 2007 Blue skin.</p>
+    	
+    <p>Here is a screenshot of Office Blue in release 5.0:</p>
+    
+    <img src="office-blue-old.png" height="196" width="500">
+    
+    <p>And here is the same application under release 5.1:</p>
+    
+    <img src="office-blue-new.png" height="196" width="500">
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Rework of Office Silver skin</b></td>
+    <td width="80%" valign="top">
+
+    <p>The <a href="../../docs/skins/toneddown.html#OfficeSilver2007Skin">Office
+    	Silver skin</a> has much greater fidelity to the Office 2007 Silver skin.</p>
+    	
+    <p>Here is a screenshot of Office Silver in release 5.0:</p>
+    
+    <img src="office-silver-old.png" height="196" width="500">
+    
+    <p>And here is the same application under release 5.1:</p>
+    
+    <img src="office-silver-new.png" height="196" width="500">
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Extended skinning capabilities</b></td>
+    <td width="80%" valign="top">
+
+    <p>The following API has been added to the 
+    	<code><font color="darkblue">SubstanceColorSchemeBundle</font></code> class:</p>
+    		
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Registers&nbsp;the&nbsp;color&nbsp;scheme&nbsp;to&nbsp;be&nbsp;used&nbsp;for&nbsp;the&nbsp;specified&nbsp;visual&nbsp;area&nbsp;of</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;controls&nbsp;under&nbsp;the&nbsp;specified&nbsp;states.&nbsp;For&nbsp;example,&nbsp;if&nbsp;the&nbsp;light&nbsp;orange</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;scheme&nbsp;has&nbsp;to&nbsp;be&nbsp;used&nbsp;for&nbsp;gradient&nbsp;fill&nbsp;of&nbsp;rollover&nbsp;selected&nbsp;and&nbsp;rollover</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;controls,&nbsp;the&nbsp;parameters&nbsp;would&nbsp;be:</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#3f5fbf">scheme</font><font color="#3f5fbf">=light&nbsp;orange&nbsp;scheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#3f5fbf">associationKind</font><font color="#3f5fbf">=</font><font color="#3f3fbf">ColorSchemeAssociationKind.REGULAR</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#3f5fbf">states</font><font color="#3f5fbf">=</font><font color="#3f3fbf">ComponentState.ROLLOVER_SELECTED</font><font color="#3f5fbf">,&nbsp;</font><font color="#3f3fbf">ComponentState.ROLLOVER_UNSELECTED</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">scheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">associationKind</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color&nbsp;scheme&nbsp;association&nbsp;kind&nbsp;that&nbsp;specifies&nbsp;the&nbsp;visual&nbsp;areas</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;controls&nbsp;to&nbsp;be&nbsp;painted&nbsp;with&nbsp;this&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">states</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component&nbsp;states&nbsp;that&nbsp;further&nbsp;restrict&nbsp;the&nbsp;usage&nbsp;of&nbsp;the</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;specified&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerColorScheme</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeAssociationKind&nbsp;associationKind,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState...&nbsp;states</font><font color="#000000">)</font></code>
+    
+    <p>This API provides finer control over associating color schemes with
+    	different visual parts of the UI. It is used extensively in the reworked 
+    	Office Blue and Office Silver skins (see above), with custom color schemes
+    	for tabs, tab borders, marks and separators.</p>
+    	
+    <p>Note that the <code><font color="darkblue">SubstanceColorSchemeBundle.registerBorderColorScheme</font></code>
+    	is deprecated and will be removed in version 6.0. Use the new API, passing the
+    	<code><font color="darkblue">ColorSchemeAssociationKind.BORDER</font></code>
+    as the second parameter</p>
+    
+    <p>In addition, the <code><font color="darkblue">SubstanceColorSchemeBundle.getBorderColorScheme</font></code>
+    	and <code><font color="darkblue">SubstanceColorSchemeBundle.getHighlightColorScheme</font></code>
+    	are deprecated as well in favor of the new
+    	<code><font color="darkblue">SubstanceColorSchemeBundle.getColorScheme</font></code>
+    	that gets <code><font color="darkblue">ColorSchemeAssociationKind</font></code>
+	    as its second parameter. Use the new API, passing the
+    	<code><font color="darkblue">ColorSchemeAssociationKind.BORDER</font></code> or 
+    	<code><font color="darkblue">ColorSchemeAssociationKind.HIGHLIGHT</font></code>.
+    	These two methods will be removed in version 6.0. </p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Improved performance</b></td>
+    <td width="80%" valign="top">
+
+    <p>The overall performance of version 5.1, as measured by the
+    	dynamic scenario suite from the 
+    	<a href="https://lightbeam.dev.java.net">LightBeam project</a>
+    	has been improved by around 3.5%.</p>
+    	
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Better support for disabled icons</b></td>
+    <td width="80%" valign="top">
+
+    <p>The <code><font color="darkblue">AbstractButton.setDisabledIcon</font></code> API 
+    can be used to associate custom icons for disabled buttons. By default, 
+    disabled buttons that do not use this API show grayscale version of the icon.
+    While this is adequate for the core look-and-feels and most Substance skins, 
+    it fails short for colored skins such as 
+    <a href="../../docs/skins/toneddown.html#AutumnSkin">Autumn</a> or 
+    <a href="../../docs/skins/toneddown.html#OfficeBlue2007Skin">Office Blue</a>.
+    </p>
+    	
+		<p>The screenshot below shows how a disabled button looked under Autumn skin
+			in release 5.0 (the <em>copy</em> button on the left):</p>
+		
+		<img src="disabled-icons-autumn-old.png" height="32" width="500">
+		
+		<p>And here is how it looks now:</p>
+		
+		<img src="disabled-icons-autumn-new.png" height="32" width="500">
+
+		<p>Here is how the disabled icon looked like under Office Blue in version 5.0:</p>
+
+		<img src="disabled-icons-officeblue-old.png" height="32" width="500">
+		
+		<p>And here is how it looks now:</p>
+
+		<img src="disabled-icons-officeblue-new.png" height="32" width="500">    	
+    	
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Better support for themed icons</b></td>
+    <td width="80%" valign="top">
+
+    <p>The 
+    	<a href="../../docs/clientprops/UseThemedDefaultIcons.html">USE_DEFAULT_THEMED_ICONS</a>
+    	 client property can be used to specify that icons on buttons 
+    	 and toggle buttons should match the color of the current color 
+    	 scheme when they are in default state. This has been extended to 
+    	 labels, menus, menu items and tabs.
+    </p>
+    
+    <p>The new implementation that better preserves the details of icons 
+    	on disabled buttons also results in crisper and more recognizable 
+    	icon details for the themed mode. Here is how the themed icons 
+    	looked before under Autumn:</p>
+    	
+		<img src="themed-icons-autumn-old.png" height="32" width="500">
+
+		<p>and here is how it looks now:</p>
+		
+		<img src="themed-icons-autumn-new.png" height="32" width="500">
+		
+		<p>Here is how the themed icons looked before under Office Blue (almost unrecognizable, since the color schemes are very washed):</p>
+		
+		<img src="themed-icons-officeblue-old.png" height="32" width="500">
+		
+		<p>and here is how it looks now:</p>
+		
+		<img src="themed-icons-officeblue-new.png" height="32" width="500">
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Visual editor for color schemes</b></td>
+    <td width="80%" valign="top">
+
+    <p>Jitterbug is a visual editor for creating and editing color 
+    	schemes for Substance. It primarily addresses the scenarios 
+    	where you need to translate design mockups or emulate existing 
+    	UI visuals as a Substance skin. This tool has been used to 
+    	create and refine all color schemes currently used in Office Blue
+    and Office Silver skins.</p>
+
+		<p>The following screenshot shows Jitterbug in action:</p>
+    	
+    <img src="jitterbug-thumb.png" height="434" width="496">
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Extended support for very large fonts</b></td>
+    <td width="80%" valign="top">
+
+    <p>Support for very large fonts, mainly oriented towards point
+    	of sale (POS) systems has been extended to additional core
+    	Swing components.</p>
+    	
+		<p>The following screenshot shows a 72 point combobox with the mouse 
+			over the arrow button under Substance 5.0:</p>
+			
+		<img src="dpi-72-combobox-rollover-substance5.0.png" height="113" width="500">
+		
+		<p>And here is the same combobox under Substance 5.1:</p>
+		
+		<img src="dpi-72-combobox-rollover-substance5.1.png" height="113" width="500">
+		
+		<p>The top-right and bottom-right corners of the button are no longer 
+			out of sync, with the top-left and bottom-left corners having a perfect 
+			straight connection.</p>
+	
+		<p>The next screenshot shows a 72 point progress bar under Substance 5.0:</p>
+		
+		<img src="dpi-72-progressbar-substance5.0.png" height="158" width="500">
+		
+		<p>And here is the same progress bar under Substance 5.1:</p>
+		
+		<img src="dpi-72-progressbar-substance5.1.png" height="158" width="500">
+		
+		<p>Here the border outline of the selected part has the correct stroke 
+			width, as well the right alignment with the inner gradient fill.</p>
+			
+		<p>The next screenshot shows a 72 point slider with mouse over the 
+			thumb under Substance 5.0:</p>
+			
+		<img src="dpi-72-slider-substance5.0.png" height="155" width="404">
+		
+		<p>And here is the same slider under Substance 5.1:</p>
+		
+		<img src="dpi-72-slider-substance5.1.png" height="155" width="404">    
+		
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Vietnamese locale</b></td>
+    <td width="80%" valign="top">
+
+    <p>Substance-specific labels (system menu entries, Xoetrope 
+    	color chooser panel, heap status panel, menu search panel, ...)
+    	are now <a href="../../docs/internationalization.html">localized</a>
+    	to Vietnamese as well:</p>
+    	
+    <img src="vietnamese-l10n.png" height="240" width="281">
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Extended tracing of EDT violations</b></td>
+    <td width="80%" valign="top">
+
+    <p>The built-in tracing of Event Dispatch Thread violations
+    	has been extended to:</p>
+    	
+    	<ul>
+    		<li>button models</li>
+    		<li>scroll bars</li>
+    		<li>progress bars</li>
+    	</ul>
+    	
+    </td>
+  </tr>
+
+</body>
+
+</html>

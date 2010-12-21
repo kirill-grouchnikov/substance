@@ -1,0 +1,278 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2007 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+<title>Substance 4.2 release</title>
+</head>
+
+<body>
+
+<h1>Substance 4.2 <font color="darkblue">Memphis</font> - new features</h1>
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for native text rendering</b></td>
+    <td width="80%" valign="top">
+
+    <p>The <a href="https://substance-bramble.dev.java.net/">Bramble</a> plugin
+    provides support for native text rendering for the core Swing components.
+    When this plugin is in the runtime classpath, the texts on the 
+    <a href="http://www.pushing-pixels.org/?p=219">vast
+    majority</a> of core Swing component will be painted with the native
+    OS calls (via <a href="http://www.pushing-pixels.org/?p=203">usage of SWT</a>).</p>
+    
+    <p>The following screenshot shows a sample application running under Windows Vista
+    and JDK 6.0, using the default OS font (Segoe UI, 12 pixels):</p>
+    
+    <img src="bramble-awt-rendering.png" height="245" width="315">
+    
+    <p>Here is the same application running under the Bramble plugin (native
+    text rendering):</p>
+
+    <img src="bramble-swt-rendering.png" height="245" width="315">
+    
+    <p>Here is another screenshot that shows the default and native rendering
+    of text components (note the rendering of digits). The first and second row
+    use the default AWT rendering, while the third and fourth row use the
+    native rendering:</p>
+
+    <img src="bramble-textcomponents.png" height="101" width="384">
+    
+    <p>To use the Bramble plugin, you will need the matching SWT distribution.
+    This can be downloaded from the <a href="http://www.eclipse.org/swt/">SWT main
+    page</a>. Recommended version is 3.3. To use the plugin in the WebStart environment,
+    use the 
+    <a href="http://java.sun.com/javase/6/docs/technotes/guides/javaws/developersguide/syntax.html#resources">resources</a>
+    JNLP tag and sign the SWT jar if necessary.</p>
+    
+    <p>Bramble plugin provide support for all core Swing components with the following exclusions</p>
+    <ul>
+    	<li>Non-plain text components, including text panes and editor panes.</li>
+    	<li>HTML text.</li>
+    	<li>itled borders.</li>
+    </ul>
+    <p>The text on all these components (including HTML) is painted with the 
+    default core AWT text font rasterizer.</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for colorization</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new 
+    <a href="../../docs/clientprops/ColorizationFactor.html">SubstanceLookAndFeel.COLORIZATION_FACTOR</a>
+    client property provides colorization support for all core Swing components. Here 
+    is a screenshot of setting this property to value of 0.5 (50 percent colorization)
+    on a few controls that have custom background and foreground colors:</p>
+    
+    <img src="colorization-buttons-50.png" height="240" width="340">
+    
+    <p>Colorization applied to text components:</p>
+    
+    <img src="colorization-text-components-50.png" height="83" width="363">
+
+		<p>And a scroll pane with yellow background (propagating to the horizontal scroll bar) 
+		and green background on the vertical scroll bar:</p>
+		
+    <img src="colorization-scroll-pane-50.png" height="177" width="329">
+
+	  <p>Colorization applied to menu items:</p>
+
+    <img src="colorization-menus-50.png" height="199" width="342">
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Font policy for KDE desktops</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new default KDE font policy automatically picks up the font style and 
+    size that match the current desktop settings. Here is a screenshot of a test application 
+    running under KDE with default font settings (10 points, 96 DPI setting):</p>
+    
+    <img src="font-policy-kde-96dpi.png" height="245" width="315">
+    
+    <p>and here is the same application, running under 120DPI, using font size 
+    of 10 except for menus which are configured to use italic 8:</p>
+
+    <img src="font-policy-kde-120dpi.png" height="327" width="502">
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New visuals for combobox and spinner buttons</b></td>
+    <td width="80%" valign="top">
+
+    <p>Combo boxes and spinners have more streamlined visuals of arrow buttons,
+    removing visual noise around the button area. Here is a screenshot of a few
+    combo boxes under release 4.1:</p>
+    
+    <img src="combobox-buttons-4.1.png" height="110" width="174">
+
+	  <p>The same combo boxes under release 4.2 (note that the last combo box
+	  uses the <a href="../../docs/clientprops/FlatProperty.html">FLAT_PROPERTY</a>
+	  to provide a flat default appearance):</p>
+
+    <img src="combobox-buttons-4.2.png" height="137" width="178">
+    
+    <p>Here is how the spinner control looked like in release 4.1:</p>
+
+    <img src="spinner-buttons-4.1.png" height="29" width="112">
+
+		<p>And here is how it looks in release 4.2:</p>
+
+    <img src="spinner-buttons-4.2.png" height="27" width="116">
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New visuals for some skins</b></td>
+    <td width="80%" valign="top">
+
+    <p>The <a href="../../docs/skins/saturated.html#OfficeBlue2007Skin">Office Blue 2007</a>
+    now uses a <a href="http://www.pushing-pixels.org/?p=48">translucent</a> theme for
+    disabled controls. Under this theme, the disabled controls are blending better with the
+    background, drawing less attention away from enabled and active controls. Here is a
+    screenshot of Office Blue 2007 skin in release 4.1 (the bottom "Cancel" button and the middle
+    row are disabled):
+    </p>
+    
+    <img src="officeblue2007-disabled-old.png" height="225" width="300">
+
+		<p>The same application under release 4.2 and the new translucent disabled theme:</p>
+
+    <img src="officeblue2007-disabled-new.png" height="225" width="300">
+    
+    <p>The <a href="../../docs/skins/dark.html#RavenGraphiteSkin">Raven Graphite</a>
+    and <a href="../../docs/skins/dark.html#RavenGraphiteGlassSkin">Raven Graphite Glass</a>
+    skins use a translucent theme for disabled controls as well. In addition, the painting
+    of check marks on check boxes and radio buttons (enabled and disabled) has been reworked
+    as well to provide more streamlined and consistent appearance. Here are
+    screenshots of Raven Graphite and Raven Graphite Glass skins in release 4.1 (note the check marks
+    and disabled controls):
+    </p>
+    
+    <img src="ravengraphite1-disabled-old.png" height="225" width="300">
+    <img src="ravengraphiteglass1-disabled-old.png" height="225" width="300">
+
+		<p>The same application under release 4.2 and the new visuals for check marks and 
+		disabled controls:</p>
+
+    <img src="ravengraphite1-disabled-new.png" height="225" width="300">
+    <img src="ravengraphiteglass1-disabled-new.png" height="225" width="300">
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Removing visual noise on tables</b></td>
+    <td width="80%" valign="top">
+
+    <p>Cleaner and more streamlined appearance of tables (including tables wrapped in scroll
+    panes). Here is a screenshot of scroll pane wrapping a table in release 4.1:</p>
+    
+    <img src="visualnoise-table-4.1.png" height="310" width="360">
+    
+    <p><a href="http://www.pushing-pixels.org/?p=195">Non-native font 
+    rendering</a> aside, there are quite a few problems:</p>
+		<ul>
+			<li>Even though the table grid is turned off, there are still white 
+			separator lines clearly visible on striped rows and especially on the 
+			selected row</li>
+			<li>Too many lines on the table header - each cell has its own border</li>
+			<li>Extra border to the right of the scroll bar results in additional 
+			visual noise</li>
+			<li>The selection background doesn’t extend to the perceived table 
+			bounds on both sides</li>
+		</ul>
+		
+		<p>Here is the same table under release 4.2:</p>
+
+    <img src="visualnoise-table-4.2.png" height="310" width="360">
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Auto-dispose of tab overview dialog</b></td>
+    <td width="80%" valign="top">
+
+    <p>The <a href="http://weblogs.java.net/blog/kirillcool/archive/2007/02/spicing_up_your_7.html">tab
+    overview dialog</a> is now automatically disposed when it loses focus. In addition, it
+    is disposed when the window of the originating tabbed pane is closed. This behavior can be
+    controlled by overriding the following new method in the
+    <code><font color="darkblue">org.jvnet.lafwidget.tabbed.TabPreviewPainter</font></code> class
+    (set using the 
+    <a href="https://laf-widget.dev.java.net/docs/clientprops/TabbedPanePreviewPainter.html">LafWidget.TABBED_PANE_PREVIEW_PAINTER</a>
+    client property):</p>
+    
+<p> 
+   <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Returns&nbsp;indication&nbsp;whether&nbsp;the&nbsp;tab&nbsp;overview&nbsp;dialog&nbsp;should&nbsp;be</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;automatically&nbsp;disposed&nbsp;when&nbsp;it&nbsp;loses&nbsp;focus.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">if&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">true</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">,&nbsp;the&nbsp;tab&nbsp;overview&nbsp;dialog&nbsp;will&nbsp;be&nbsp;disposed</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;when&nbsp;it&nbsp;loses&nbsp;focus.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">toDisposeOverviewOnFocusLoss</font><font color="#000000">()</font></code>
+    </p>
+    
+    </td>
+  </tr>
+
+</body>
+
+<code><font color="darkblue"></font></code>
+</html>

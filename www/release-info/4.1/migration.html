@@ -1,0 +1,102 @@
+<html>
+<head>
+<title>Substance version 4.1 migration guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Migration guide for version 4.1 (Lima)</h1>
+
+<p>
+The version 4.1 (code-named Key Largo) introduces minor binary incompatibilities
+with the previous versions. This document describes these incompatibilities
+and outlines the migration process for the client applications.
+</p>
+
+<h2>Background</h2>
+<p>
+During the development of version 4.1, two published Substance painter interfaces
+have been changed to better accomodate the new functionality.
+</p>
+
+<h2>SubstanceTitlePainter</h2>
+
+<p>The <code><font color="darkblue">paintTitleBackground</font></code> of
+<code><font color="darkblue">org.jvnet.substance.title.SubstanceTitlePainter</font></code>
+has been changed to the following signature:</p>
+
+<code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">paintTitleBackground</font><font color="#000000">(</font><font color="#000000">Graphics2D&nbsp;graphics,&nbsp;Component&nbsp;comp,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">width,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">height,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">leftTitleX,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">rightTitleX,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceTheme&nbsp;theme,&nbsp;</font><font color="#7f0055"><b>float&nbsp;</b></font><font color="#000000">borderAlpha</font><font color="#000000">)</font><font color="#000000">;</font></code>
+
+<p>The change is in the last parameter. Prior to version 4.1, it has been a 
+<code><font color="darkblue">boolean</font></code>. The 
+value <code><font color="darkblue">true</font></code> signified that the
+painter should paint the border, and the value 
+<code><font color="darkblue">false</font></code> signified that no
+border should be painted. The last parameter in the new signature
+specifies the alpha channel for border painting.</p>
+
+<p>What does this mean to applications? There are two cases:</p>
+
+<ul>
+<li>If you have provided a custom title painter that either extended an
+existing core Substance title painter, or provided a complete implementation,
+you will need to respect the new alpha channel setting. Instead of the old
+logic to paint the border with full opacity when the boolean parameter was
+<code><font color="darkblue">true</font></code>, set an 
+<code><font color="darkblue">AlphaComposite.SRC_OVER</font></code> with
+the matching alpha value before painting the border. A possible optimization
+would be to not paint the border at all when the last parameter is 
+<code><font color="darkblue">0.0</font></code>.</li>
+<li>If you used a title painter to provide some custom painting logic in
+your application, now you have more flexibility. All the places that 
+passed <code><font color="darkblue">false</font></code> as the last
+parameter, should pass <code><font color="darkblue">0.0</font></code>.
+All the places that passed <code><font color="darkblue">true</font></code>
+as the last parameter, should pass
+<code><font color="darkblue">1.0</font></code>. In addition, you can set a 
+custom alpha channel value to have greater control over the border painting
+of title painters.</li>
+</ul>
+
+<h2>SubstanceBorderPainter</h2>
+
+<p>The <code><font color="darkblue">paintBorder</font></code> of
+<code><font color="darkblue">org.jvnet.substance.border.SubstanceBorderPainter</font></code>
+has been changed to the following signature:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">paintBorder</font><font color="#000000">(</font><font color="#000000">Graphics&nbsp;g,&nbsp;Component&nbsp;c,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">width,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">height,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Shape&nbsp;contour,&nbsp;Shape&nbsp;innerContour,&nbsp;ColorScheme&nbsp;colorScheme1,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorScheme&nbsp;colorScheme2,&nbsp;</font><font color="#7f0055"><b>float&nbsp;</b></font><font color="#000000">cyclePos,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">useCyclePosAsInterpolation</font><font color="#000000">)</font><font color="#000000">;</font></code>
+    
+<p>The change is the new <code><font color="darkblue">innerContour</font></code>
+parameter. One of the <a href="release-info.html">new features</a>
+added in this release are border painters that paint 
+<a href="http://www.pushing-pixels.org/?p=139">lighter inner borders</a>.</p>
+
+<p>What does this mean to applications? There are two cases:</p>
+
+<ul>
+<li>If you have provided a custom border painter that either extended an
+existing core Substance border painter, or provided a complete implementation,
+you can decide to ignore the new parameter (like most of the core
+border painters do) or respect it. In the second case, consider having
+your painter extend the 
+<code><font color="darkblue">org.jvnet.substance.border.InnerDelegateBorderPainter</font></code>.
+See existing core painters for more details.</li>
+<li>If you used a border painter to provide some custom painting logic in
+your application, you can either pass <code><font color="darkblue">null</font></code>
+which is respected by all core border painters or compute the properly inset
+inner contour. In the later case, skins that use inner border painters
+will respect that setting, which will result in better looking and more
+consistent custom painting.</li>
+</ul>
+
+</body>
+</html>
+

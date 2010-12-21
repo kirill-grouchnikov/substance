@@ -1,0 +1,168 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+<title>Substance 6.1 release</title>
+</head>
+
+<body>
+
+<h1>Substance 6.1 <font color="darkblue">Trinidad</font> - new features</h1>
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Platform specific keyboard shortcuts</b></td>
+    <td width="80%" valign="top">
+    
+    <p>Support for platform-specific keyboard input maps. The new 
+    <code>SubstanceLookAndFeel.setInputMapSet</code> API can be used to 
+    install a set of input maps for all the relevant core Swing controls. 
+    The <code>org.pushingpixels.substance.api.inputmaps.SubstanceInputMapUtilities</code>  
+    class exposes two static methods that follow the look-and-feel related APIs in 
+    the core <code>UIManager</code> class:</p>
+    
+    <ul>
+    <li><code>InputMapSet getSystemInputMapSet()</code> to get the system specific input map set</li>
+    <li><code>InputMapSet getCrossPlatformInputMapSet()</code> to get the cross platform input map set</li>
+    </ul>
+
+	<p>By default you will have the system specific input map set installed - 
+	so that you don't need to call the API above if you want to conform to the 
+	platform behavioral guidelines. The cross platform input map set provides 
+	functionality identical to that of Metal. The system specific input map set provides 
+	the following:</p>
+	
+	<ul>
+	<li>Input map set identical to that of Windows look-and-feel on Windows platforms.</li>
+    <li>Input map set identical to that of Gtk look-and-feel on Gnome.</li>
+    <li>Input map set almost identical to that of Aqua look-and-feel on Mac. 
+    While the keystrokes are the same, the difference is in the actions mapped to 
+    the keystrokes. In a small number of cases Aqua UI delegates provide 
+    platform-specific implementation of actions that are not found in the basic 
+    UI delegates. In this case i tried the keystrokes are mapped 
+    to the closest basic action.</li>
+    <li>Cross-platform input map set for other platforms.</li>
+    </ul>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New Mariner skin</b></td>
+    <td width="80%" valign="top">
+    
+    <p>The new 
+    <b><a href="../../docs/skins/toneddown.html#MarinerSkin">Mariner</a></b> 
+    skin is available.
+    To use it in your application, you have the following options:</p>
+
+    <ul>
+	<li><code>SubstanceLookAndFeel.setSkin(new MarinerSkin())</code></li>
+	<li><code>SubstanceLookAndFeel.setSkin("org.pushingpixels.substance.api.skin.MarinerSkin")</code></li>
+	<li><code>-Dswing.defaultlaf=org.pushingpixels.substance.api.skin.SubstanceMarinerLookAndFeel</code></li>
+	<li><code>UIManager.setLookAndFeel(new SubstanceMarinerLookAndFeel())</code></li>
+	<li><code>UIManager.setLookAndFeel("org.pushingpixels.substance.api.skin.SubstanceMarinerLookAndFeel");</code></li>
+    </ul>
+
+		<p>The screenshots below show the Mariner skin in action:</p>
+    
+    <img src="mariner-overview.png" height="342" width="500"><br><br>
+    <img src="mariner1.png" height="245" width="315">
+    <img src="mariner2.png" height="245" width="315">
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New Office Black 2007 skin</b></td>
+    <td width="80%" valign="top">
+    
+    <p>The new 
+    <b><a href="../../docs/skins/toneddown.html#OfficeBlack2007Skin">Office Black 2007</a></b> 
+    skin completes the collection of skins that can be used on the 
+    <a href="https://flamingo.dev.java.net">Flamingo ribbon component</a>.
+    To use it in your ribbon-based application, you have the following options:</p>
+
+    <ul>
+	<li><code>SubstanceLookAndFeel.setSkin(new OfficeBlack2007Skin())</code></li>
+	<li><code>SubstanceLookAndFeel.setSkin("org.pushingpixels.substance. api.skin.OfficeBlack2007Skin")</code></li>
+	<li><code>-Dswing.defaultlaf=org.pushingpixels.substance.api.skin. SubstanceOfficeBlack2007LookAndFeel</code></li>
+	<li><code>UIManager.setLookAndFeel(new SubstanceOfficeBlack2007LookAndFeel())</code></li>
+	<li><code>UIManager.setLookAndFeel("org.pushingpixels.substance.api. skin.SubstanceOfficeBlack2007LookAndFeel");</code></li>
+    </ul>
+
+		<p>Here is a sample ribbon frame under Office Black 2007 skin:</p>
+    <img src="office-black-2007-1.png" height="184" width="498">
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Better integration with Flamingo</b></td>
+    <td width="80%" valign="top">
+
+	<p>While Office Blue 2007, Office Silver 2007 and the new Office Black 2007 skins
+	specifically target the Flamingo ribbon component, the rest of the core Substance
+	skins can be used on the ribbon as well. This release should provide much more
+	polished visuals for the ribbon under all core Substance skins when the matching
+	<a href="https://substance-flamingo.dev.java.net">Substance Flamingo plugin</a>
+	is added to the classpath.</p>
+	
+	<p>Here is the ribbon under 
+    <a href="../../docs/skins/toneddown.html#BusinessBlackSteelSkin">Business Black Steel</a> skin:</p>
+
+	<img src="ribbon-business-black-steel.png" height="194" width="494">
+
+	<p>And the same ribbon under <a href="../../docs/skins/toneddown.html#DustSkin">Dust</a> skin:</p>
+	<img src="ribbon-dust.png" height="184" width="494">
+
+	<p>And the same ribbon under <a href="../../docs/skins/toneddown.html#DustCoffeeSkin">Dust Coffee</a> skin:</p>
+
+	<img src="ribbon-dust-coffee.png" height="193" width="495">
+
+	<p>And the same ribbon under <a href="../../docs/skins/toneddown.html#GeminiSkin">Gemini</a> skin:</p>
+	<img src="ribbon-gemini.png" height="198" width="495">
+
+	<p>And the same ribbon under <a href="../../docs/skins/dark.html#TwilightSkin">Twilight</a> skin:</p>
+
+	<img src="ribbon-twilight.png" height="203" width="494">
+
+	<p>The ribbon also looks much better under other Substance skins such as 
+	<a href="../../docs/skins/toneddown.html#AutumnSkin">Autumn</a>:</p>
+	<img src="ribbon-autumn.png" height="183" width="494">
+
+	<p>and <a href="../../docs/skins/toneddown.html#BusinessSkin">Business</a>:</p>
+	<img src="ribbon-business.png" height="194" width="494">
+    
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+</table>
+
+</body>
+
+</html>

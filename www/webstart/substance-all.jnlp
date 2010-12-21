@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="https://substance.dev.java.net/webstart/"
+ 	href="substance-all.jnlp">
+<information>
+  <title>Substance jars</title>
+  <vendor>https://substance.dev.java.net/</vendor>
+  <offline-allowed/> 
+</information>
+<offline-allowed/>
+<security>
+  <all-permissions/>
+</security>
+<resources>
+  <property name="jnlp.packEnabled" value="true"/>
+  <j2se version="1.6+" />
+  <jar href="substance-tst.jar"/>
+  <jar href="substance.jar"/>
+  <jar href="substance-tools.jar"/>
+</resources>
+<component-desc/>
+</jnlp>

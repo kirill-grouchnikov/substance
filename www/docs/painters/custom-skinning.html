@@ -1,0 +1,148 @@
+<html>
+<head>
+<title>Substance look and feel - custom skinning</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, painters, skinning, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - custom skinning</h1>
+
+<h3>Overview</h3>
+
+<p>As mentioned in the <a href="overview.html">painter overview</a>, most of the
+Substance painting logic is abstracted into a set of painters. This not only allows
+preventing duplicate painting sequence in the Substance UI delegates. This also
+provides a painting layer for the applications that wish to paint custom components
+in a way that is consistent with other Substance visuals.</p>
+
+<p>This applies in two major cases:</p>
+
+<ul>
+<li>Providing consistent painting for a standalone component suite, such
+as <a href="https://swingx.dev.java.net">SwingX</a>.</li>
+<li>Providing consistent painting for custom components and visual areas
+of a specific application.</li>
+</ul>
+
+<p>Instead of trying to match the colors, gradients and animation sequences from
+the current Substance skin (which might change between various releases), applications
+can use the Substance painting APIs. This will result in code which is shorter,
+more maintainable and also produces consistent results.</p>
+
+<h3>Skinning primer</h3>
+
+<p>The following Substance APIs are most suited for painting custom
+components:</p>
+
+<ul>
+<li><a href="fill.html">Fill painters</a></li>
+<li><a href="border.html">Border painters</a></li>
+<li><a href="decoration.html">Decoration painters</a></li> 
+<li><a href="highlight.html">Highlight painters</a></li> 
+<li><a href="overlay.html">Overlay painters</a></li> 
+<li><a href="../watermarks.html">Watermarks</a></li>
+</ul>
+
+<p>Most of the Substance UI delegates use a combination of the above APIs. 
+While the exact combination in the existing UI delegates is subject to
+change in between releases, you can study the core Substance code to see
+the main combination patterns.</p>
+
+<p>The first pattern is <b>watermark overlaying</b>. The 
+<a href="../watermarks.html">watermarks</a> are painted on most Swing containers,
+and on some components as well. In simpler cases (such as 
+<code><font color="darkblue">JPanel</font></code>), the watermark is painted
+on top of the gradient fill. In more complex scenarios, after the watermark
+has been painted, the fill sequence is repeated with lower alpha
+value. Here is an example of such a scenario:</p>
+
+<center><img src="../../images/screenshots/painters/titlepane.png" width=315 height=245></center>
+
+<p>In this scenario, while the regular controls and containers on the content
+pane are painted with the regular watermark, the frame header (title pane and 
+tool bar) has less "intrusive" watermark painting. This is achieved
+by the following sequence:</p>
+
+<ul>
+<li>Using the <a href="decoration.html">decoration painter</a> to paint the decoration
+gradient.</li>
+<li>Using the <a href="../watermarks.html">watermark</a> to paint the current watermark.</li>
+<li>Using the <a href="decoration.html">decoration painter</a> once again, this
+time with the <code><font color="darkblue">AlphaComposite.SRC_OVER</font></code>
+with alpha value of 0.5.</li>
+</ul>
+
+<p>The second pattern is <b>decorating</b>. The <a href="decoration.html">decoration painters</a>
+can be used to provide distinct painting to some containers, this setting them "apart" from
+the rest of the application. As the pattern name implies, this works best on specialized
+containers and visual areas that are situated along the window edges. Here is an example
+of <a href="https://swingx.dev.java.net">SwingX</a> <code><font color="darkblue">JXLoginDialog</font></code>
+component painted by the
+<a href="https://substance-swingx.dev.java.net">Substance SwingX</a> plugin:</p>
+
+<center><img src="../../images/screenshots/painters/jxlogindialog.png" width=408 height=244></center>
+
+<p>In this scenario, the <code><font color="darkblue">JXLoginDialog</font></code> has a 
+"decoration" strip located along the top side of the window. To paint the background of this
+component, the custom UI delegate is using the current 
+<a href="decoration.html">decoration painter</a>, which results in a consistent appearance of
+the top portion of this dialog.</p>
+
+<p>Here is another example of this pattern, this time on the 
+<code><font color="darkblue">JXStatusBar</font></code> component from
+<a href="https://swingx.dev.java.net">SwingX</a> component suite. Assuming that this
+component will be placed along the bottom side of the frame, the
+matching UI delegate in the
+<a href="https://substance-swingx.dev.java.net">Substance SwingX</a> plugin uses the
+current <a href="decoration.html">decoration painter</a> to provide a  
+distinct appearance of status bar which is consistent with the title pane 
+and menu bar:</p>
+
+<center><img src="../../images/screenshots/painters/jxstatusbar.png" width=500 height=350></center>
+
+<p>The third pattern is <b>border tracing</b>. Those components that require consistent
+painting of borders or contours can use the 
+<a href="border.html">border painter</a> with the matching contour. Here is an example
+of border tracing in the <code><font color="darkblue">JRibbon</font></code>
+component from <a href="https://flamingo.dev.java.net">Flamingo</a>
+component suite under the 
+<a href="https://substance-flamingo.dev.java.net">Substance Flamingo</a> plugin:</p>
+
+<center><img src="../../images/screenshots/painters/jribbon.png" width=500 height=160></center>
+
+<p>This UI delegate uses the <a href="border.html">border painter</a> extensively to
+create the required visuals. Note the outer contour of the ribbon that also
+includes the selected tab button, and the inner contours of the ribbon tasks.</p>
+
+<p>Here is another example of this pattern, this time on the
+<code><font color="darkblue">JCommandButton</font></code>
+component from <a href="https://flamingo.dev.java.net">Flamingo</a>
+component suite. The custom UI delegate uses the border painter to
+paint the button border (a simpler contour in this case):</p>
+
+<center><img src="../../images/screenshots/painters/jcommandbutton.png" width=500 height=160></center>
+
+<p>The last pattern is <b>gradient filling</b>. It is used to paint the
+inner fill of custom components (along with the border tracing pattern to 
+paint the component contour). This pattern uses the 
+<a href="fill.html">fill painter</a> with the matching contour. Here is
+an example of the <code><font color="darkblue">JRibbon</font></code>
+component from <a href="https://flamingo.dev.java.net">Flamingo</a>
+component suite:</p>
+
+<center><img src="../../images/screenshots/painters/jtoggletabbutton.png" width=500 height=160></center>
+
+<p>In this example, the first toggle tab button (Write) is painted by the
+current <a href="fill.html">fill painter</a>, providing a consistent
+appearance with the rest of the application controls. Another example is the previous
+screenshot (of the <code><font color="darkblue">JCommandButton</font></code>),
+where the button fill is painted by the current fill painter as well.</p>
+
+</body>
+</html>
+

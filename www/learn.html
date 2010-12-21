@@ -1,0 +1,243 @@
+<html>
+<head>
+<title>Substance documentation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<hr>
+
+<img src="images/walkthrough/all.png" width=250 height=240 border=0 style="margin-left: 40px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; float: right;">
+
+<p style="font-size: x-large;" align="center">Getting started</p>
+		
+<p>If you are new to Swing, start with the general
+	<a href="http://java.sun.com/docs/books/tutorial/uiswing/">Swing tutorial</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>.
+	If you are new to look-and-feels, read the 
+	<a href="docs/getting-started.html">getting started</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> first.
+</p>
+
+<p>To use Substance in your applications, choose one of the following options:</p>    
+
+<ul>
+    	<li>Use one of the skin-based look-and-feel classes
+    		(<a href="docs/skins/toneddown.html">light</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> or
+    		<a href="docs/skins/dark.html">dark</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>).</li>
+    	<li>Extend the <code><font color="darkblue">SubstanceLookAndFeel</font></code>
+    		class and pass a 
+    		<code><font color="darkblue"><a href="docs/skins/overview.html">SubstanceSkin</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></font></code>
+    		instance to the <code>super</code> constructor.</li>
+    	<li>Use the static 
+    		<code><font color="darkblue"><a href="docs/api/SetSkin_Instance.html">setSkin(SubstanceSkin)</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></font></code>
+    		or
+    		<code><font color="darkblue"><a href="docs/api/SetSkin_ClassName.html">setSkin(String)</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></font></code>
+    	APIs to set the specific skin.</li>
+</ul>
+	  	
+<p>In any case, add the latest <code><font color="darkblue">substance.jar</font></code> to your classpath.</p>
+
+<p>If you wish to build Substance from the sources, you will need to take the
+<a href="https://laf-plugin.dev.java.net">laf-plugin</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> and
+<a href="https://laf-widget.dev.java.net">laf-widget</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>
+(binaries or sources). The best way is to 
+<a href="https://substance.dev.java.net/source/browse/substance/">sync to CVS head</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>
+and use the <code><font color="darkblue">build.xml</font></code> script. 
+The <a href="see.html">main test application</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> uses the 
+<a href="https://forms.dev.java.net">FormLayout</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> and components from
+<a href="http://swinglabs.org/index.jsp">SwingLabs</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>.</p>	  	
+
+<p>Have a question? See <a href="docs/faq.html">the FAQ</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>
+and the list of <a href="docs/known-issues.html">known issues</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>, and if you don't
+see an answer there, head over to the 
+<a href="https://substance.dev.java.net/servlets/ProjectForumView">project forums</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> and 
+<a href="https://substance.dev.java.net/servlets/ProjectMailingListList">mailing lists</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>.</p>
+
+<div style="clear: both;"></div>
+
+<hr>
+
+<img src="images/screenshots/skins/nebulabrickwall1.png" width=338 height=245 border=0 style="margin-left: 10px; margin-top: 10px; margin-right: 40px; margin-bottom: 10px; float: left;">
+
+<p style="font-size: x-large;" align="center">Configure and customize</p>
+
+<p>You can use Substance-specific settings and APIs to add custom functionality to
+your components. See detailed examples of using <a href="docs/api/all.html">API calls</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>, 
+<a href="docs/clientprops/all.html">client properties</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>
+and <a href="docs/vmflags.html">VM flags</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> for more information.
+To control the animations, consult the 
+<a href="https://laf-widget.dev.java.net/docs/animations.html">animation overview</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>.</p>
+
+<p>Substance can be customized to fit your visual needs. 
+The overall visuals are controlled by <a href="docs/skins/overview.html">skins</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>,
+with each skin defined by <a href="docs/skins/colorschemebundles.html">color scheme bundles</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>, 
+<a href="docs/painters/overview.html">painters</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> and an optional
+<a href="docs/watermarks.html">watermark</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>. The <a href="docs/painters/custom-skinning.html">skinning
+primer</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> has a few tips on how to use the different Substance painters
+in applications that wish to paint custom components in a way that is consistent with other 
+Substance visuals. The <a href="https://substance-samples.dev.java.net/">Substance samples</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>
+project provides a <a href="https://substance-samples.dev.java.net/docs/cookbook/overview.html">detailed
+walktrough</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> that analyzes a complex UI mockup and uses different Substance APIs
+to implement it.</p>
+<div style="clear: both;"></div>
+
+<hr>
+
+<img src="images/learn/ribbon.png" width=300 height=210 border=0 style="margin-left: 40px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; float: right;">
+
+<p style="font-size: x-large;" align="center">Plugins</p>
+
+<p>While the core Swing components cover the basic UI functionality
+found in most applications, modern UI need modern UI components.
+To address this need, Substance comes with a built-in support
+to allow defining and seamlessly loading plugins that provide
+consistent appearance and interaction for third-party components.</p>
+
+<p>During the initialization, Substance looks in the classpath for
+the <code><font color="darkblue">META-INF/substance-plugin.xml</font></code>
+descriptor files. The <code><font color="darkblue">&lt;component-plugin-class&gt;</font></code>
+element should contain the fully qualified name of a class that implements the 
+<code><a href="https://laf-plugin.dev.java.net/source/browse/laf-plugin/trunk/src/org/pushingpixels/lafplugin/LafComponentPlugin.java?view=markup">LafComponentPlugin</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></code>
+interface. This interface defines the lifecycle of a Substance plugin,
+with the main extension point that allows setting custom entries in the 
+<code><font color="darkblue">UIManager</font></code> tables.</p>
+
+<p>The following three plugins provide customized UI delegates for
+the leading active open-source Swing component suites:</p>
+
+<ul>
+<li><a href="https://substance-swingx.dev.java.net/">Substance plugin</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> for 
+<a href="https://swingx.dev.java.net">SwingX</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> components.</li>
+<li><a href="https://substance-flamingo.dev.java.net/">Substance plugin</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> for 
+<a href="https://flamingo.dev.java.net">Flamingo</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> components.</li>
+<li><a href="https://substance-jide.dev.java.net/">Substance plugin</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> for 
+<a href="https://jide-oss.dev.java.net/">JIDE common</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> components - partial.</li>
+</ul>
+
+<p><a href="https://substance-extras.dev.java.net/">Substance Extras pack</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>
+provides additional watermarks, color schemes and skins and is another example
+of a Substance plugin.</p>
+
+<div style="clear: both;"></div>
+
+<hr>
+
+<img src="images/screenshots/skins/creme2.png" width=338 height=245 border=0 style="margin-left: 10px; margin-top: 10px; margin-right: 40px; margin-bottom: 10px; float: left;">
+
+<p style="font-size: x-large;" align="center">A little bit of history</p>
+
+<p>Substance is a stable library that has seen multiple releases over the last few years.
+While it is highly recommended to use the latest stable release and its accompanying
+documentation, you can read the release notes of 
+<a href="release-info/releases.html">earlier releases</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> to see how
+Substance has evolved.</p>
+
+<table border="0" cellpadding="0" cellspacing="0">
+   <tr>
+     <td>Version 2.0</td>
+     <td>&nbsp;&nbsp;&nbsp;10.2005</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/2.0/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 2.1 - Dakota</td>
+     <td>&nbsp;&nbsp;&nbsp;12.2005</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/2.1/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 2.2 - El Paso</td>
+     <td>&nbsp;&nbsp;&nbsp;02.2006</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/2.2/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 2.3 - Firenze</td>
+     <td>&nbsp;&nbsp;&nbsp;05.2006</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/2.3/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 3.0 - Grenada</td>
+     <td>&nbsp;&nbsp;&nbsp;09.2006</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/3.0/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>
+     + <a href="release-info/3.0/migration.html">migration guide</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 3.1 - Honolulu</td>
+     <td>&nbsp;&nbsp;&nbsp;11.2006</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/3.1/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 3.2 - Iowa</td>
+     <td>&nbsp;&nbsp;&nbsp;02.2007</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/3.2/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 3.3 - Japan</td>
+     <td>&nbsp;&nbsp;&nbsp;04.2007</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/3.3/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 4.0 - Key Largo</td>
+     <td>&nbsp;&nbsp;&nbsp;09.2007</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/4.0/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>
+     + <a href="release-info/4.0/migration.html">migration guide</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 4.1 - Lima</td>
+     <td>&nbsp;&nbsp;&nbsp;11.2007</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/4.1/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>
+     + <a href="release-info/4.1/migration.html">migration guide</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 4.2 - Memphis</td>
+     <td>&nbsp;&nbsp;&nbsp;02.2008</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/4.2/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 4.3 - Nairobi</td>
+     <td>&nbsp;&nbsp;&nbsp;04.2008</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/4.3/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 5.0</td>
+     <td>&nbsp;&nbsp;&nbsp;09.2008</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/5.0/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>
+   </tr>
+   <tr>
+     <td>Version 5.1 - Panama</td>
+     <td>&nbsp;&nbsp;&nbsp;02.2009</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/5.1/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/>
+     + <a href="release-info/5.1/migration.html">migration guide</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 5.2 - Quebec</td>
+     <td>&nbsp;&nbsp;&nbsp;05.2009</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/5.2/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 5.3 - Reykjavik</td>
+     <td>&nbsp;&nbsp;&nbsp;09.2009</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/5.3/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 6.0 - Sonoma</td>
+     <td>&nbsp;&nbsp;&nbsp;04.2010</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/6.0/release-info.html">release notes</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/></td>
+   </tr>
+   <tr>
+     <td>Version 6.1 - Trinidad</td>
+     <td>&nbsp;&nbsp;&nbsp;RC</td>
+     <td>&nbsp;&nbsp;&nbsp;<a href="release-info/6.1/release-info.html">release candidate</a><img style="vertical-align:top" src="images/link.jpg" border="0" width="16" height="16"/> 
+     available. Final release scheduled for August 09, 2010</td>
+   </tr>
+</table>
+
+<div style="clear: both;"></div>
+
+<hr>
+
+</body>
+</html>
+

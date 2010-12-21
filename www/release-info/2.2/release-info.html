@@ -1,0 +1,350 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Substance 2.2 release</title>
+</head>
+
+<body>
+
+<h1>Substance 2.2 <font color="darkblue">El Paso</font> - new features</h1>
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Localization and internationalization</b></td>
+    <td width="80%" valign="top">All <b>Substance</b>-specific labels (system
+    menu entries, Xoetrope color chooser panel, heap status panel, menu search panel, ...)
+    are internationalized. See <a href="../../docs/internationalization.html">this document</a>
+    for the list of available translations.
+    <br><br>
+    <table border=0>
+    <tr>
+    <td>
+    <img src="localization-system-menu.png" width="297" height="188"><br><br>
+    <img src="localization-menu-search.png" width="234" height="47"><br><br>
+    <img src="localization-menu-search2.png" width="205" height="50"><br><br>
+    <img src="localization-heap-panel.png" width="177" height="40"><br><br>
+    </td>
+    <td>
+    <img src="localization-color-chooser.png" width="269" height="463">
+    </td>
+    </tr>
+    </table>
+    </td>
+  </tr>
+  
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Vertical (rotated) tabs in tabbed panes</b></td>
+    <td width="80%" valign="top">Tabs in tabbed panes under <b>LEFT</b> and
+    <b>RIGHT</b> placement can be layed out vertically (rotated). In addition,
+    the icon can be drawn either rotated (with the tab) or unrotated. See <a 
+    href="http://weblogs.java.net/blog/kirillcool/archive/2005/12/spicing_up_your_1.html">this blog entry</a>
+    for the description on how to use this feature.    
+    <br><br><img src="tabs-vertical.png" width="273" height="317">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Strength checking on passwords</b></td>
+    <td width="80%" valign="top">Password fields can provide visual feedback
+    on the strength of the currently set contents (password). See <a
+    href="http://weblogs.java.net/blog/kirillcool/archive/2005/12/visual_feedback.html">this blog entry</a>
+    for the description on how to use this feature. See <a href="password-strength.avi">22-second</a> AVI 
+    movie (412 KB) illustrating the technique.
+    <br><br>
+    <img src="password-strength-weak.png" width="250" height="48"><br><br>
+    <img src="password-strength-medium.png" width="250" height="59"><br><br>
+    <img src="password-strength-strong.png" width="250" height="51">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Specular gradient painter for buttons</b></td>
+    <td width="80%" valign="top">Added optional specular gradient painter for buttons. Can be set using:
+    <ul>
+    <li><font color="darkblue">-Dsubstancelaf.gradientPainter=org.jvnet.substance.painter.SpecularGradientPainter</font>
+    - for all application buttons.
+    <li><font color="darkblue">SubstanceLookAndFeel.setCurrentGradientPainter("org.jvnet.substance.painter.SpecularGradientPainter")</font>
+    - for all application buttons.
+    <li><font color="darkblue">SubstanceLookAndFeel.setCurrentGradientPainter(new SpecularGradientPainter())</font>
+    - for all application buttons.
+    <li>Using client property <font color="darkblue">SubstanceLookAndFeel.GRADIENT_PAINTER_PROPERTY</font>
+    on a specific button. Value should be <font color="darkblue">"org.jvnet.substance.painter.SpecularGradientPainter"</font>
+    string.
+    </ul>
+    <img src="specular-highlight.png" width="206" height="139">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Focus ring kinds</b></td>
+    <td width="80%" valign="top">Added option to specify the focus ring kind. The focus ring kind is
+    specified in the <font color="darkblue">org.jvnet.substance.utils.SubstanceConstants.FocusKind</font> 
+    enum and can be specified on any component.  At runtime, the value is taken from:
+    <ul>
+     <li>The component itself.
+     <li>The closest parent of the component.
+     <li>The <b>UIManager</b> table.
+    </ul>
+    The default value is <b>FocusKind.ALL_INNER</b>:<br><br>
+    <img src="focus-all-inner.png" width="91" height="53">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Watermark bleeding</b></td>
+    <td width="80%" valign="top">Added option to specify that the watermark should "bleed"
+    through opaque trees, lists and tables. When this option is turned on, the watermark
+    is drawn with 40% translucency on text fields. This option can be turned on by specifying:
+    <ul>
+    <li><font color="darkblue">-Dsubstancelaf.watermark.tobleed</font> - no value needed.
+    <li><font color="darkblue">UIManager.put(SubstanceLookAndFeel.WATERMARK_TO_BLEED,
+       Boolean.TRUE);</font>
+    </ul>
+    Note that this option will have no effect on cell renderers that fill their
+    background programmatically (as shown in the below image on the selected
+    tree entry):<br><br>
+    <img src="watermark-bleed.png" width="239" height="180">
+    <br><br><img src="watermark-bleed-text.png" width="385" height="211">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Watermark ignore</b></td>
+    <td width="80%" valign="top">Added option to specify that the watermark should not be drawn
+    on a specific component or at all. This option can be turned on by specifying:
+    <ul>
+    <li><font color="darkblue">component.putClientProperty(SubstanceLookAndFeel.WATERMARK_IGNORE,
+       Boolean.TRUE);</font>
+    <li><font color="darkblue">UIManager.put(SubstanceLookAndFeel.WATERMARK_IGNORE,
+       Boolean.TRUE);</font>
+    </ul>
+    <img src="watermark-bleed-ignore.png" width="537" height="195">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Specifying base and extra font size</b></td>
+    <td width="80%" valign="top">Added API for setting base and extra font size for
+    all the controls. The following two functions are provided in the 
+    <b>SubstanceLookAndFeel</b>:
+    <ul>
+     <li><font color="darkblue">public static void setBasicFontSize(int value);</font>
+     <li><font color="darkblue">public static void setFontSizeExtra(int value);</font>
+    </ul>
+    The default base font size is OS-specific (13 points for Mac, 11 points for other OSes).
+    The default font family is OS-specific (<b>Lucida Grande</b> for Mac, <b>Tahoma</b>
+    for other OSes where available, except under Korean, Chinese and Thai locale, and 
+    <b>dialog</b> otherwise).<br><br>
+    <img src="font-size-minus1.png" width="207" height="109">
+    <img src="font-size-default.png" width="207" height="112">
+    <img src="font-size-plus1.png" width="207" height="113">
+  </tr>
+  
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Toolbar buttons</b></td>
+    <td width="80%" valign="top">Buttons in toolbar are flat. Only on rollover (fade in / fade out)
+    the background is seen.<br><br>
+    <img src="toolbar-buttons.png" width="123" height="84"><br><br>
+    Before:<br>
+    <img src="toolbar-buttons-before.png" width="435" height="39"><br><br>
+    After:<br>
+    <img src="toolbar-buttons-after.png" width="435" height="39">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for Matisse baseline alignment</b></td>
+    <td width="80%" valign="top">The <a href="https://substance-netbeans.dev.java.net">Substance
+    Netbeans</a> module provides support for baseline alignment in Matisse UI designer.<br><br>
+    <img src="netbeans-baseline.png" width="372" height="47">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Gradient background on menu icons</b></td>
+    <td width="80%" valign="top">The "icon gutter" on menus (regular and popup)
+    has theme-based gradient background. In addition, the menu separator is not
+    drawn in the icon gutter area.<br><br>
+    <img src="menu-icon-gutter.png" width="255" height="261">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Marking non-editable text components</b></td>
+    <td width="80%" valign="top">Non-editable text components display an overlayed lock icon:
+    <br><br>
+    <img src="lock-textfield.png" width="180" height="50">
+    <img src="lock-textpane.png" width="251" height="55">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Auto-completion on editable comboboxes</b></td>
+    <td width="80%" valign="top">Merged refactored version of 
+    <a href="http://www.orbital-computer.de/JComboBox">auto-completion support</a>
+    in editable comboboxes by <b>Thomas Bierhance</b>.<br><br>
+    <img src="combobox-auto-completion.png" width="102" height="114">
+    <br><br>
+    Editable comboboxes marked with <font color="darkblue">SubstanceLookAndFeel.COMBO_BOX_USE_MODEL_ONLY</font>
+    property allow completion-only (no other values allowed). In this case, a lock icon
+    is overlayed on the combobox:
+    <br><br>
+    <img src="lock-combobox.png" width="271" height="55">
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Translucency-based animation for title pane buttons</b></td>
+    <td width="80%" valign="top">The title pane buttons (minimize, restore / maximize, close)
+    of frames, dialogs, internal frames and desktop icons have translucency-based animation
+    on rollover. See <a href="title-buttons.avi">34-second</a> AVI 
+    movie (798 KB) illustrating the technique.
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Rollover color wheel effects</b></td>
+    <td width="80%" valign="top">Xoetrope's color wheel in the color chooser
+    has been augmented with rollover effects. In the screenshot you can see
+    the selected area and the rollover area (under the mouse pointer):<br><br>
+    <img src="colorchooser-xoetrope-rollover.png" width="269" height="463">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Configurable size of tab close button</b></td>
+    <td width="80%" valign="top">The size of close button on tabs in <b>JTabbedPane</b>
+    can be configured. Application should set 
+    <font color="darkblue">SubstanceLookAndFeel.TABBED_PANE_CLOSE_BUTTONS_SIZE</font> 
+    client property on either the tabbed pane's <b>Component</b> (if it's <b>JComponent</b>), 
+    <b>JTabbedPane</b> (for all tabs of that pane) or the <b>UIManager</b>
+    (for all tabbed panes). The value should be an instance of <b>Integer</b>. In the
+    screenshot the first tab has close button size set to 9, the second tab is default 11. 
+    <br><br>
+    <img src="tabs-close-button-size.png" width="171" height="26">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Animating close buttons of modified tabs</b></td>
+    <td width="80%" valign="top">Instead of animating the entire modified tab in <b>JTabbedPane</b>, 
+    only its close button can be animated. Application should set 
+    <font color="darkblue">SubstanceLookAndFeel.TABBED_PANE_CLOSE_BUTTONS_MODIFIED_ANIMATION</font> 
+    client property on either the tabbed pane's <b>Component</b> (if it's <b>JComponent</b>), 
+    <b>JTabbedPane</b> (for all tabs of that pane) or the <b>UIManager</b>
+    (for all tabbed panes). The value should be an instance of <b>Boolean</b>. In the
+    screenshot the first tab has animated close button, the second tab is completely animated by
+    default.
+    <br><br>
+    <img src="tab-close-modified-animation.png" width="173" height="26">
+    </td>
+  </tr>
+
+</table>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+Does the following look familiar (under default Ocean theme in Metal LAF)?<br>
+<img src="../../menus/metal-menu.png" width=415 height=275><br><br>
+The menu doesn't look good, with jagged items all over the place. The common solution in 
+this scenario is to use a transparent icon on those menu items that don't have one. There 
+are a few problems with this approach:
+<ul>
+<li>What happens if you add another menu item with slightly wider icon? You will have to 
+adjust all other icons accordingly.
+<li>What happens with <b>JCheckBoxMenuItem</b>s and <b>JRadioButtonMenuItem</b>s? Once you 
+have those, it's almost impossible to get it done correctly, especially if they have icons 
+themselves.
+<li>There is no <b>JMenu</b> constructor that gets an icon. You'll have to call <b>setIcon()</b>.
+<li>The last, but most certainly the most annoying - why should <b>you</b> even bother to do this?
+</ul>
+
+The answer to the last question lies in the <b>BasicMenuItemUI</b> class that does the 
+actual layout and rendering - <b>it's looking at one menu item at a time</b>. It's not 
+even aware that the specific menu item is a part of visual group, so it happily hacks 
+(and quite ugly) at the corresponding menu item, and the result is far from perfect:<br>
+<img src="../../menus/windows-menu.png" width=370 height=240><br>
+(the above is Windows LAF from JDK).<br><br>
+To the rescue come custom look-and-feels. <a href="https://looks.dev.java.net">JGoodies 
+Looks</a> comes equiped with custom menu item renderer. It keeps track of the maximum 
+text offset on the menu item parent (<b>JPopupMenu</b> in our case), and once the rendering 
+should be done, the offset is taken from the parent (client property). The result is much 
+more satisfying (see <a href="https://looks.dev.java.net/issues/show_bug.cgi?id=61">this issue</a> 
+and Karsten's comment below regarding the layout <b>JCheckBoxMenuItem</b>s and 
+<b>JRadioButtonMenuItem</b>s with icons - the check marks are drawn underneath the icons):<br>
+<img src="../../menus/jgoodies-menu.png" width=390 height=280><br><br>
+<a href="../../..">Substance</a> LAF takes a different approach, 
+inheriting from <b>BasicMenuItemUI</b> and overriding the function that computes the 
+text offset. It does the same as JGoodies, but for every menu item, it goes over all 
+entries in the parent component (<b>JPopupMenu</b>) and computes the maximal text offset. 
+This approach is more time consuming but also more dynamic. The result is:<br>
+<img src="../../../release-info/2.1/menu-after.png" width=370 after=250><br><br>
+
+This also works on "real" application, such as NetBeans:<br>
+<b>Before</b><br>
+<img src="../../../release-info/2.1/netbeans-menu-before.png" width=300 after=190><br>
+<b>After</b><br>
+<img src="../../../release-info/2.1/netbeans-menu-after.png" width=300 after=190><br><br>

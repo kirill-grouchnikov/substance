@@ -1,0 +1,234 @@
+<html>
+<head>
+<title>Substance look and feel - component states</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - component states</h1>
+
+<p>What is a component state? Let's take a look at buttons - the most basic building 
+blocks on any UI toolkit. Buttons usually have icons and texts so that the users 
+know what will happen when they click them. In addition, modern UI toolkits provide 
+rich texturing capabilities that allow skinning different parts of the button visuals - 
+such as background, border and focus ring. These visuals usually depend on the current 
+state of the button.</p>
+
+<p>If a button does not respond to UI events (such as mouse click, for instance), it 
+is said to be disabled - and usually has a lighter or partially translucent appearance 
+to match its disabled state. A toggle button can be in a selected state, conveying that 
+certain application parameter is toggled on. A selected button is usually painted with 
+different hue to facilitate quick scanning of the application state. There are more button 
+states - rollover when the mouse is moved over it, pressed when the user pressed but has 
+not yet released the mouse and default button which is invoked when the user presses the 
+Enter key. The following screenshot shows how the same button can look like in 
+different states:</p>
+
+<img src="../../images/screenshots/control-states-extended.png" width=250 height=233>
+
+<p>Different controls have different states. For example, a progress bar can be 
+determinate or indeterminate - depending on whether the application code can reliably 
+assess the overall length of the work to be performed. A text component can be editable 
+or uneditable. Input controls can be marked as required - to prevent the user from leaving 
+the screen until he makes a selection on that control.</p>
+
+<p>Component states in Substance are managed by the 
+<code><font color="darkblue">org.pushingpixels.substance.api.ComponentState</font></code>  
+class. Instances of this class correspond to states of Swing core and custom controls. 
+This class provides a number of predefined static instances to cover most action-based 
+controls such as buttons, check boxes and menu items. In addition, application code 
+can define custom component states that create fine grained mapping between arbitrary 
+states of controls and specific color scheme bundles in custom skins.</p>
+
+<p>Each component state is defined by two arrays of component state facets (available in 
+<code><font color="darkblue">ComponentStateFacet</font></code>  class). The first array specifies the 
+facets that are on, and the second array specifies the facets that are off. For example, 
+when a selected toggle button is pressed, it transitions to 
+<code><font color="darkblue">PRESSED_SELECTED</font></code>  state. This state 
+has <code><font color="darkblue">ComponentStateFacet.ENABLE</font></code> , 
+<code><font color="darkblue">ComponentStateFacet.SELECTION</font></code>  and 
+<code><font color="darkblue">ComponentStateFacet.PRESS</font></code>  as its on facets. 
+If a selected toggle button is disabled, it has 
+<code><font color="darkblue">ComponentStateFacet.SELECTION</font></code>  in 
+its on facets and <code><font color="darkblue">ComponentStateFacet.ENABLE</font></code>  in its 
+off facets.</p>
+
+<p>The <code><font color="darkblue">ComponentStateFacet</font></code>  class defines 
+a number of core facets. The <code><font color="darkblue">ComponentStateFacet.ENABLE </font></code> 
+facet is universal - it is relevant for all Swing controls. Other facets apply to a 
+wider range of controls. For example, 
+<code><font color="darkblue">ComponentStateFacet.ROLLOVER</font></code>  facet applies 
+to all controls that can show rollover effects - including buttons, menu items, 
+comboboxes, sliders, scrollbars and many more. Some facets apply to a very narrow 
+range of controls. For example, 
+<code><font color="darkblue">ComponentStateFacet.EDITABLE</font></code>  is only relevant 
+for editable controls, such as text components, editable comboboxes or spinners.</p>
+
+<p>The static instances of <code><font color="darkblue">ComponentState</font></code>  defined in 
+this class do not aim to cover all possible combinations of on and off facets. 
+In addition to making this class to unwieldy, it is not possible to do since 
+application code can define its own facets. Instead, Substance provides three ways to 
+fine-tune the mapping between the component states and the color schemes used to paint 
+the components.</p>
+
+<ol>
+
+<li>When the skin is queried for the color scheme that matches the specific 
+component state - let's say 
+<code><font color="darkblue">ComponentState.PRESSED_SELECTED</font></code>  - the skinning 
+layer first looks for the exact state (as passed to 
+<code><font color="darkblue">SubstanceColorSchemeBundle.registerColorScheme(SubstanceColorScheme, ColorSchemeAssociationKind, ComponentState)</font></code>  
+or similar APIs). If the exact match is found, it is used. If there is no exact match, 
+the skinning layer will look at all color schemes registered for the specific color 
+scheme association kind in the matching color scheme bundle. The decision is made 
+based on how "close" the registered component state is to the component state of the 
+currently painted component. For example, 
+<code><font color="darkblue">ComponentState.PRESSED_SELECTED</font></code>  is a better 
+match for <code><font color="darkblue">ComponentState.PRESSED_UNSELECTED</font></code>  than 
+<code><font color="darkblue">ComponentState.ROLLOVER_SELECTED</font></code>  - since the 
+<code><font color="darkblue">ComponentStateFacet.PRESS</font></code>  has more weight 
+than the <code><font color="darkblue">ComponentStateFacet.ROLLOVER</font></code>  in the 
+decision process. The skinning layer will choose the "closest" registered component 
+state that is sufficiently close. For example, 
+<code><font color="darkblue">ComponentState.DISABLED_SELECTED</font></code>  will never 
+be chosen for <code><font color="darkblue">ComponentState.SELECTED</font></code> , even 
+if there are no other registered component states. This way the application 
+code can register a few color schemes in the specific bundle, and have all 
+other states "fall back" to the smaller subset of states.</li>
+
+<li>Facets such as <code><font color="darkblue">ComponentStateFacet.DETERMINATE</font></code>  or 
+<code><font color="darkblue">ComponentStateFacet.EDITABLE</font></code>  are relevant 
+only for a small subset of controls. In order to simplify the API signature of 
+<code><font color="darkblue">ComponentState</font></code> , these facets are not 
+part of any of the predefined static states in this class. Instead, they are 
+used internally in the matching UI delegates (such as for progress bar or text 
+components) to find the best match among all the registered states of the current 
+skin. The specific skin can define its own 
+<code><font color="darkblue">ComponentState</font></code>  instances that use these facets. 
+For example, <a href="toneddown.html#NebulaSkin">Nebula</a> defines a number of 
+component states that use the 
+<code><font color="darkblue">ComponentStateFacet.DETERMINATE</font></code>  
+facet, and maps the matching color schemes. At runtime, the procedure described 
+in the previous item will match the state of the specific progress bar to the 
+states defined in this skin, and use the matching color schemes.</li>
+
+<li>Custom application components may have facets that do not directly map to the 
+core facets defined in the <code><font color="darkblue">ComponentStateFacet</font></code>  
+class. In this case, the application code can create its own facet instances, 
+and its own component states that use those facets in the on and off lists. 
+Part of the custom code will be in the UI delegates that compute the current 
+state of the custom component using the new facets. Other part of the custom 
+code will be in the skin definition that maps the component states defined with 
+the new facets to the specific color schemes.</li>
+
+</ol>
+
+<p>Note that you do not have to create explicit dependency between custom component 
+states used in the skin definition and custom component states used in the painting 
+routines (in the UI delegates). In fact, the custom component states defined in the 
+Substance UI delegate for progress bar are not accessible to the application code. 
+The recommended way to separate the skin definition from the model lookups in the 
+painting is:
+
+<ul>
+
+<li>The skin definition defines a sufficiently broad set of custom component 
+states that use the new facets. Note that you do not have to create a custom 
+state for every possible permutation of new facets (along with the relevant core 
+facets). A well defined set of component states will provide a good fallback state 
+for every relevant permutation of facets, keeping the skin definition small and manageable.</li>
+
+<li>The UI delegate that queries the component model will use accurate component 
+states that account for all the relevant on and off facets - including the core facets 
+defined in the <code><font color="darkblue">ComponentStateFacet</font></code>  class. 
+When this (perhaps elaborate) state is passed to 
+<code><font color="darkblue">SubstanceColorSchemeBundle.getColorScheme(ColorSchemeAssociationKind, ComponentState)</font></code> 
+API, the the procedure described above will match the this state to one of the "base" 
+states defined in your skin, and use the matching color scheme.</li>
+
+</ul>
+
+<p>Note that the matching algorithm only looks at the facets in the on and off lists, 
+and ignores the component state name. This allows you to create a broad component 
+state in your skin, and a number of narrow component states during the painting - 
+and have the Substance skinning layer find the best match.</p>
+
+<p>When the matching algorithm cannot find a sufficiently close match, the skinning 
+layer will fall back on one of the three base color schemes passed to the 
+<code><font color="darkblue">SubstanceColorSchemeBundle.SubstanceColorSchemeBundle(SubstanceColorScheme, SubstanceColorScheme, SubstanceColorScheme)</font></code>  
+constructor. States with <code><font color="darkblue">ComponentStateFacet.ENABLE</font></code>  
+in their off list will fall back to the disabled color scheme. The 
+<code><font color="darkblue">ComponentState.ENABLED</font></code>  will fall back 
+to the enabled color scheme. The rest of the states will fall back to the active 
+color scheme. To change the fallback behavior pass a non-null fallback color scheme 
+to the 
+<code><font color="darkblue">ComponentState.ComponentState(String, ComponentState, ComponentStateFacet[], ComponentStateFacet[])</font></code>  
+constructor as the second parameter.</p>
+
+<p>Let's see two examples. As mentioned above, the <a href="toneddown.html#NebulaSkin">Nebula</a> skin defines custom color schemes 
+for progress bars using the <code><font color="darkblue">ComponentStateFacet.DETERMINATE</font></code>:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState&nbsp;determinateState&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ComponentState</font><font color="#000000">(</font><font color="#2a00ff">&#34;determinate&#34;</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ComponentStateFacet</font><font color="#000000">[]&nbsp;{&nbsp;</font><font color="#000000">ComponentStateFacet.ENABLE,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentStateFacet.DETERMINATE&nbsp;</font><font color="#000000">}</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>null</b></font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState&nbsp;indeterminateState&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ComponentState</font><font color="#000000">(</font><font color="#2a00ff">&#34;indeterminate&#34;</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ComponentStateFacet</font><font color="#000000">[]&nbsp;{&nbsp;</font><font color="#000000">ComponentStateFacet.ENABLE&nbsp;</font><font color="#000000">}</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ComponentStateFacet</font><font color="#000000">[]&nbsp;{&nbsp;</font><font color="#000000">ComponentStateFacet.DETERMINATE&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;determinateScheme&nbsp;=&nbsp;schemes</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.get</font><font color="#000000">(</font><font color="#2a00ff">&#34;Nebula&nbsp;Determinate&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;determinateBorderScheme&nbsp;=&nbsp;schemes</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.get</font><font color="#000000">(</font><font color="#2a00ff">&#34;Nebula&nbsp;Determinate&nbsp;Border&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerColorScheme</font><font color="#000000">(</font><font color="#000000">determinateScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">determinateState,&nbsp;indeterminateState</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerColorScheme</font><font color="#000000">(</font><font color="#000000">determinateBorderScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeAssociationKind.BORDER,&nbsp;determinateState,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">indeterminateState</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState&nbsp;determinateDisabledState&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ComponentState</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;determinate&nbsp;disabled&#34;</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ComponentStateFacet</font><font color="#000000">[]&nbsp;{&nbsp;</font><font color="#000000">ComponentStateFacet.DETERMINATE&nbsp;</font><font color="#000000">}</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ComponentStateFacet</font><font color="#000000">[]&nbsp;{&nbsp;</font><font color="#000000">ComponentStateFacet.ENABLE&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState&nbsp;indeterminateDisabledState&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ComponentState</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;indeterminate&nbsp;disabled&#34;</font><font color="#000000">,&nbsp;null,&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ComponentStateFacet</font><font color="#000000">[]&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentStateFacet.ENABLE,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentStateFacet.DETERMINATE&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;determinateDisabledScheme&nbsp;=&nbsp;schemes</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.get</font><font color="#000000">(</font><font color="#2a00ff">&#34;Nebula&nbsp;Determinate&nbsp;Disabled&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;determinateDisabledBorderScheme&nbsp;=&nbsp;schemes</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.get</font><font color="#000000">(</font><font color="#2a00ff">&#34;Nebula&nbsp;Determinate&nbsp;Disabled&nbsp;Border&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerColorScheme</font><font color="#000000">(</font><font color="#000000">determinateDisabledScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">determinateDisabledState,&nbsp;indeterminateDisabledState</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerColorScheme</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">determinateDisabledBorderScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeAssociationKind.BORDER,&nbsp;determinateDisabledState,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">indeterminateDisabledState</font><font color="#000000">)</font><font color="#000000">;</font></code>
+ 
+<p>And the resulting visuals - note that the progress bars use brown color scheme, 
+while all the other controls use gray colors:</p>
+
+<img src="../../images/screenshots/component-states-custom.png" width=475 height=469>
+
+<p>The second example is from the <a href="toneddown.html#MagellanSkin">Magellan</a> skin that registers a specific 
+color scheme to be used for painting uneditable text components:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState&nbsp;uneditable&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ComponentState</font><font color="#000000">(</font><font color="#2a00ff">&#34;uneditable&#34;</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ComponentStateFacet</font><font color="#000000">[]&nbsp;{&nbsp;</font><font color="#000000">ComponentStateFacet.ENABLE&nbsp;</font><font color="#000000">}</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ComponentStateFacet</font><font color="#000000">[]&nbsp;{&nbsp;</font><font color="#000000">ComponentStateFacet.EDITABLE&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;uneditableControls&nbsp;=&nbsp;colorSchemes</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.get</font><font color="#000000">(</font><font color="#2a00ff">&#34;Magellan&nbsp;Uneditable&nbsp;Controls&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultColorSchemeBundle.registerColorScheme</font><font color="#000000">(</font><font color="#000000">uneditableControls,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeAssociationKind.FILL,&nbsp;uneditable</font><font color="#000000">)</font><font color="#000000">;</font></code>
+
+<p>Note that if your custom components use the <code><font color="darkblue">DETERMINATE</font></code>  or 
+<code><font color="darkblue">EDITABLE</font></code>  facets in the computation of their states, they 
+will get the matching visuals from the corresponding core Substance skins.</p>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+The latest addition to one of the <a href="https://substance.dev.java.net">Substance</a> 
+plugins (<a href="https://substance-watermark-pack.dev.java.net/">watermark pack</a>) 
+provides a playground to experiment with fractal-based artwork. Much like the 
+<a href="../2006.04/noise-watermarks.html">noise-based 
+watermarks</a>, you can play with the API to create your own (and sometimes stunningly 
+beautiful) watermarks.<br><br>
+
+The code is loosely based on the ideas from the <a href="http://flam3.com/">flam3</a> 
+site (see <a href="http://flam3.com/flame.pdf">this PDF</a> for some math). Feel free 
+to explore some of the 
+<a href="https://substance-watermark-pack.dev.java.net/source/browse/substance-watermark-pack/src/org/jvnet/substance/watermarkpack/flamefractal/">code 
+right here</a>. Here are some examples of the fractal flame watermarks along with the 
+source code (the parameters are highly random chosen to create some interesting images. 
+The first parameter is the degree of symmetry).<br><br>
+
+The first image is that of <b>kaleidoscope</b> and is obtained by the following code 
+(note the degree of symmetry is 4):
+<pre>
+public class Kaleidoscope extends IteratedFunctionSystem {
+   public Kaleidoscope() {
+      super(4, new Functions.SphericalFunction(0.365654, 0.18286, 0.23786324,
+            0.234234, -0.4123234, 0.312123),
+            new Functions.ExFunction(0.234234, 0.987234, 0.23786324,
+                  0.5345456, -0.98456465, 0.312123),
+            new Functions.SphericalFunction(0.88745, -0.8934734, -0.546312,
+                  0.7896, -0.445899, 0.132468));
+   }
+}
+</pre>
+<img src="https://substance-watermark-pack.dev.java.net/images/samples/kaleidoscope.png"  width=600 height=620>
+<br><br>
+
+The second one is <b>vortex</b> and is obtained by the following code (no symmetry added):
+<pre>
+public class Vortex extends IteratedFunctionSystem {
+   public Vortex() {
+      super(1, new Functions.HorseShoeFunction(-0.654897, 0.16886, -0.32645,
+            0.0598, 0.952376, -0.231534),
+            new Functions.HorseShoeFunction(0.31378, 0.451321, -0.234235,
+                  -0.321534, -0.12436, -0.761234));
+   }
+}
+</pre>
+<img src="https://substance-watermark-pack.dev.java.net/images/samples/vortex.png"  width=600 height=620>
+<br><br>
+
+The third one is <b>singularity</b> and is obtained by the following code (degree of symmetry 2):
+<pre>
+package org.jvnet.substance.watermarkpack.flamefractal;
+public class Singularity extends IteratedFunctionSystem {
+   public Singularity() {
+      super(2, new Functions.SphericalFunction(0.365654, 0.987234, 0.23786324,
+            0.234234, -0.4123234, 0.312123),
+            new Functions.SphericalFunction(0.67656, 0.8934734, -0.546312,
+                  -0.7896, -0.65487, 0.132468));
+   }
+}
+</pre>
+<img src="https://substance-watermark-pack.dev.java.net/images/samples/singularity.png"  width=600 height=620>
+<br><br>
+
+The last one is <b>scriptures</b> (my favourite - just trace all the repetitive nested 
+marks) and is obtained by the following code (no symmetry added):
+<pre>
+public class Scriptures extends IteratedFunctionSystem {
+   public Scriptures() {
+      super(1, new Functions.HorseShoeFunction(-0.654897, 0.16886, -0.32645,
+            0.0598, 0.452376, -0.231534),
+            new Functions.HorseShoeFunction(0.31378, 0.451321, -0.234235,
+                  -0.321534, -0.12436, -0.761234));
+   }
+}
+</pre>
+<img src="https://substance-watermark-pack.dev.java.net/images/samples/scriptures.png"  width=600 height=620>
+<br><br>

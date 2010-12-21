@@ -1,0 +1,577 @@
+<html>
+<head>
+<title>Substance look and feel - skins</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - skins</h1>
+
+<h3>Introduction</h3>
+
+<p>A <strong>skin</strong> is a set of visual settings that gives your application
+a polished and consistent look. The core Substance library bundles a number
+of predefined skins that can be broadly categorized as <strong>light</strong>
+and <strong>dark</strong>.</p>
+	
+<p><a href="toneddown.html">Light skins</a> use predominantly light colors
+for painting the UI controls and containers. <a href="toneddown.html#BusinessSkin">Business
+skin</a> is an example of a light skin:</p>
+	
+<p>
+<img alt="Business" src="../../images/screenshots/skins/business1.png" width=338 height=245>
+<img alt="Business" src="../../images/screenshots/skins/business2.png" width=338 height=245>
+</p>
+
+<p><a href="dark.html">Dark skins</a> use predominantly dark colors
+for painting the UI controls and containers. <a href="dark.html#GraphiteGlassSkin">Graphite Glass skin</a> is an example of a dark skin:</p>
+	
+<p>
+<img alt="Raven Graphite Glass" src="../../images/screenshots/skins/graphiteglass1.png" width=338 height=245>
+<img alt="Raven Graphite Glass" src="../../images/screenshots/skins/graphiteglass2.png" width=338 height=245>
+</p>
+
+<p>The core Substance skins are in the <code><font color="darkblue">org.pushingpixels.substance.api.skin</font></code>
+package, and the 
+<code><font color="darkblue">org.pushingpixels.substance.api.SubstanceSkin</font></code>
+class contains all the APIs officially supported by Substance skins. It is possible to use different Substance
+skins on different windows in the same application. Consult the documentation on the 
+<a href="../clientprops/SkinProperty.html"><code>SubstanceLookAndFeel.SKIN_PROPERTY</code></a> client
+property.</p>
+
+<h3>Skin definition</h3>
+
+<p>The skin definition consists of the following:</p>
+<ul>
+  <li>Decoration areas and color scheme bundles:</li>
+  <ul>
+		<li>List of supported decoration areas.</li>
+		<li><a href="colorschemebundles.html">Color scheme bundles</a>
+		 for the supported decoration areas.</li>
+		<li>Optional background <a href="colorschemes.html">color schemes</a>
+			for the supported decoration areas.</li>
+	</ul>
+	<li>Watermarking:</li>
+	<ul>
+		<li>Optional <a href="../watermarks.html">watermark</a>.</li>
+		<li>Optional watermark <a href="colorschemes.html">color scheme</a>.</li>
+	</ul>
+	<li>Painters:</li>
+	<ul>
+		<li><a href="../painters/fill.html">Fill painter</a>.</li>
+		<li><a href="../painters/border.html">Border painter</a>.</li>
+		<li><a href="../painters/highlight.html">Highlight painter</a>.</li>
+		<li><a href="../painters/decoration.html">Decoration painter</a>.</li>
+	</ul>
+	<li>Miscellaneous:</li>
+	<ul>
+		<li>Button shaper.</li>
+		<li>Optional <a href="../painters/overlay.html">overlay painters</a>
+		for some decoration areas.</li>
+		<li>Optional values for start and end values of selected tab fade.</li>
+	</ul>
+</ul>
+
+<p>In order to define a valid skin, you need to specify all its mandatory
+	parameters. A valid skin must have a color scheme bundle for 
+	<code><font color="darkblue">DecorationAreaType.NONE</font></code>, 
+	button shaper, fill painter, decoration painter,
+	highlight painter and border painter. All other parts are optional.
+</p>
+
+<h2>Decoration areas</h2>
+
+<p>The documentation on <a href="../painters/decoration.html">decoration 
+	painters</a> explains the notion of a decoration area type. While a valid skin
+	must define a color scheme bundle for 
+	<code><font color="darkblue">DecorationAreaType.NONE</font></code>, all other
+	decoration area types are optional. Different skins have different sets of 
+	decoration areas that are painted. For example, the core Moderate skin decorates
+	only <code><font color="darkblue">DecorationAreaType.PRIMARY_TITLE_PANE</font></code> and
+	<code><font color="darkblue">DecorationAreaType.SECONDARY_TITLE_PANE</font></code>,
+	while the core BusinessBlueSteel decorates additional 
+	<code><font color="darkblue">DecorationAreaType.HEADER</font></code>,
+	<code><font color="darkblue">DecorationAreaType.TOOLBAR</font></code>,
+	<code><font color="darkblue">DecorationAreaType.FOOTER</font></code> and 
+<code><font color="darkblue">DecorationAreaType.GENERAL</font></code>:</p>
+	
+	<img src="../../images/screenshots/skins/moderate1.png" width=338 height=245>
+	<img src="../../images/screenshots/skins/businessbluesteel1.png" width=338 height=245>
+
+<p>In order to register a custom color scheme bundle and an optional background
+color scheme on the specific decoration area type(s), use the following APIs:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Registers&nbsp;the&nbsp;specified&nbsp;color&nbsp;scheme&nbsp;bundle&nbsp;to&nbsp;be&nbsp;used&nbsp;on&nbsp;controls&nbsp;in</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;decoration&nbsp;areas.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">bundle</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;color&nbsp;scheme&nbsp;bundle&nbsp;to&nbsp;use&nbsp;on&nbsp;controls&nbsp;in&nbsp;decoration&nbsp;areas.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">areaTypes</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enumerates&nbsp;the&nbsp;area&nbsp;types&nbsp;that&nbsp;are&nbsp;affected&nbsp;by&nbsp;the&nbsp;parameters.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerDecorationAreaSchemeBundle</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorSchemeBundle&nbsp;bundle,&nbsp;DecorationAreaType...&nbsp;areaTypes</font><font color="#000000">)</font><br/><br/>
+    
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Registers&nbsp;the&nbsp;specified&nbsp;color&nbsp;scheme&nbsp;bundle&nbsp;and&nbsp;background&nbsp;color&nbsp;scheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;to&nbsp;be&nbsp;used&nbsp;on&nbsp;controls&nbsp;in&nbsp;decoration&nbsp;areas.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">bundle</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;color&nbsp;scheme&nbsp;bundle&nbsp;to&nbsp;use&nbsp;on&nbsp;controls&nbsp;in&nbsp;decoration&nbsp;areas.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">backgroundColorScheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;color&nbsp;scheme&nbsp;to&nbsp;use&nbsp;for&nbsp;background&nbsp;of&nbsp;controls&nbsp;in&nbsp;decoration</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;areas.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">areaTypes</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enumerates&nbsp;the&nbsp;area&nbsp;types&nbsp;that&nbsp;are&nbsp;affected&nbsp;by&nbsp;the&nbsp;parameters.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerDecorationAreaSchemeBundle</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorSchemeBundle&nbsp;bundle,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;backgroundColorScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType...&nbsp;areaTypes</font><font color="#000000">)</font></code>
+
+<p>Decoration areas registered with these APIs will have their background painted by
+	the skin's <a href="../painters/decoration.html">decoration painter</a> based on the 
+	default color scheme of the registered color scheme bundle. You can also use the 
+	following API to use a custom	default color scheme on the specified 
+	decoration area types (in this case the controls in those decoration areas
+	will use the default color scheme bundle):</p>
+	
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Registers&nbsp;the&nbsp;specified&nbsp;background&nbsp;color&nbsp;scheme&nbsp;to&nbsp;be&nbsp;used&nbsp;on&nbsp;controls&nbsp;in</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;decoration&nbsp;areas.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">backgroundColorScheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;color&nbsp;scheme&nbsp;to&nbsp;use&nbsp;for&nbsp;background&nbsp;of&nbsp;controls&nbsp;in&nbsp;decoration</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;areas.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">areaTypes</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enumerates&nbsp;the&nbsp;area&nbsp;types&nbsp;that&nbsp;are&nbsp;affected&nbsp;by&nbsp;the&nbsp;parameters.&nbsp;Each</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decoration&nbsp;area&nbsp;type&nbsp;will&nbsp;be&nbsp;painted&nbsp;by&nbsp;</font><font color="#3f3fbf">{@link</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f3fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SubstanceDecorationPainter#paintDecorationArea(Graphics2D,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f3fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component,&nbsp;DecorationAreaType,&nbsp;int,&nbsp;int,&nbsp;SubstanceSkin)}</font><font color="#3f5fbf">.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerAsDecorationArea</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;backgroundColorScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType...&nbsp;areaTypes</font><font color="#000000">)</font></code>
+    
+<p>Here is an example of specifying the default color scheme bundle for
+the core Business Blue Steel skin:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;activeScheme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SteelBlueColorScheme</font><font color="#000000">()</font><font color="#000000">.tint</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#990000">0.15</font><font color="#000000">)</font><font color="#000000">.named</font><font color="#000000">(</font><font color="#2a00ff">&#34;Business&nbsp;Blue&nbsp;Steel&nbsp;Active&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;enabledScheme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">MetallicColorScheme</font><font color="#000000">()</font><font color="#000000">.tint</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#990000">0.05</font><font color="#000000">)</font><font color="#000000">.named</font><font color="#000000">(</font><font color="#2a00ff">&#34;Business&nbsp;Blue&nbsp;Steel&nbsp;Enabled&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;disabledScheme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">LightGrayColorScheme</font><font color="#000000">()</font><font color="#000000">.tint</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#990000">0.05</font><font color="#000000">)</font><font color="#000000">.named</font><font color="#000000">(</font><font color="#2a00ff">&#34;Business&nbsp;Blue&nbsp;Steel&nbsp;Disabled&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorSchemeBundle&nbsp;defaultSchemeBundle&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceColorSchemeBundle</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">activeScheme,&nbsp;enabledScheme,&nbsp;disabledScheme</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceSkin.ColorSchemes&nbsp;kitchenSinkSchemes&nbsp;=&nbsp;SubstanceSkin</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.getColorSchemes</font><font color="#000000">(</font><font color="#2a00ff">&#34;org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;highlightColorScheme&nbsp;=&nbsp;kitchenSinkSchemes</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.get</font><font color="#000000">(</font><font color="#2a00ff">&#34;Business&nbsp;Blue&nbsp;Steel&nbsp;Highlight&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerHighlightColorScheme</font><font color="#000000">(</font><font color="#000000">highlightColorScheme</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.registerDecorationAreaSchemeBundle</font><font color="#000000">(</font><font color="#000000">defaultSchemeBundle,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.NONE</font><font color="#000000">)</font><font color="#000000">;</font></code>
+        
+<p>and a custom color scheme bundle for the header-type decoration areas:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;activeHeaderScheme&nbsp;=&nbsp;activeScheme.saturate</font><font color="#000000">(</font><font color="#990000">0.2</font><font color="#000000">)</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.named</font><font color="#000000">(</font><font color="#2a00ff">&#34;Business&nbsp;Blue&nbsp;Steel&nbsp;Active&nbsp;Header&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;enabledHeaderScheme&nbsp;=&nbsp;activeScheme.saturate</font><font color="#000000">(</font><font color="#000000">-</font><font color="#990000">0.2</font><font color="#000000">)</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.named</font><font color="#000000">(</font><font color="#2a00ff">&#34;Business&nbsp;Blue&nbsp;Steel&nbsp;Enabled&nbsp;Header&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorSchemeBundle&nbsp;headerSchemeBundle&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceColorSchemeBundle</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">activeHeaderScheme,&nbsp;enabledHeaderScheme,&nbsp;enabledHeaderScheme</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">headerSchemeBundle.registerColorScheme</font><font color="#000000">(</font><font color="#000000">enabledHeaderScheme,&nbsp;</font><font color="#990000">0.5f</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState.DISABLED_UNSELECTED,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState.DISABLED_SELECTED</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.registerDecorationAreaSchemeBundle</font><font color="#000000">(</font><font color="#000000">headerSchemeBundle,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.PRIMARY_TITLE_PANE,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.SECONDARY_TITLE_PANE,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.HEADER,&nbsp;DecorationAreaType.TOOLBAR</font><font color="#000000">)</font><font color="#000000">;</font></code>
+
+<p>And here is an example of specifying a number of decoration area types
+	to have their background painted by the decoration painter and the specific
+	color scheme, without registering a custom color scheme bundle for those
+areas:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.registerAsDecorationArea</font><font color="#000000">(</font><font color="#000000">defaultScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.PRIMARY_TITLE_PANE,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.SECONDARY_TITLE_PANE,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.HEADER,&nbsp;DecorationAreaType.FOOTER,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.GENERAL</font><font color="#000000">)</font><font color="#000000">;</font></code>
+            
+<p>To add polishing touches to the specific decoration areas, use 
+<a href="../painters/overlay.html">overlay painters</a> with the following API:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Adds&nbsp;the&nbsp;specified&nbsp;overlay&nbsp;painter&nbsp;to&nbsp;the&nbsp;end&nbsp;of&nbsp;the&nbsp;list&nbsp;of&nbsp;overlay</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;painters&nbsp;associated&nbsp;with&nbsp;the&nbsp;specified&nbsp;decoration&nbsp;area&nbsp;types.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">overlayPainter</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Overlay&nbsp;painter&nbsp;to&nbsp;add&nbsp;to&nbsp;the&nbsp;end&nbsp;of&nbsp;the&nbsp;list&nbsp;of&nbsp;overlay</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;painters&nbsp;associated&nbsp;with&nbsp;the&nbsp;specified&nbsp;decoration&nbsp;area&nbsp;types.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">areaTypes</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Decoration&nbsp;area&nbsp;types.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">addOverlayPainter</font><font color="#000000">(</font><font color="#000000">SubstanceOverlayPainter&nbsp;overlayPainter,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType...&nbsp;areaTypes</font><font color="#000000">)</font></code>
+ 
+<p>Here is how the core Nebula skin is configured to paint drop shadows on the
+toolbars and separators on title panes and headers:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;add&nbsp;an&nbsp;overlay&nbsp;painter&nbsp;to&nbsp;paint&nbsp;a&nbsp;drop&nbsp;shadow&nbsp;along&nbsp;the&nbsp;top</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;edge&nbsp;of&nbsp;toolbars</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#000000">TopShadowOverlayPainter.getInstance</font><font color="#000000">()</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.TOOLBAR</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;add&nbsp;an&nbsp;overlay&nbsp;painter&nbsp;to&nbsp;paint&nbsp;separator&nbsp;lines&nbsp;along&nbsp;the&nbsp;bottom</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;edges&nbsp;of&nbsp;title&nbsp;panes&nbsp;and&nbsp;menu&nbsp;bars</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.bottomLineOverlayPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">BottomLineOverlayPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Color&nbsp;query</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Color&nbsp;dark&nbsp;=&nbsp;scheme.getDarkColor</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;new&nbsp;</b></font><font color="#000000">Color</font><font color="#000000">(</font><font color="#000000">dark.getRed</font><font color="#000000">()</font><font color="#000000">,&nbsp;dark.getGreen</font><font color="#000000">()</font><font color="#000000">,&nbsp;dark</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.getBlue</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">160</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#7f0055"><b>this</b></font><font color="#000000">.bottomLineOverlayPainter,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.PRIMARY_TITLE_PANE,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.SECONDARY_TITLE_PANE,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.HEADER</font><font color="#000000">)</font><font color="#000000">;</font></code>
+ 
+<p>and here is how it looks like:</p>
+
+	<img src="../../images/screenshots/skins/nebula1.png" width=338 height=245>
+
+<h2>Miscellaneous settings</h2>
+
+<p>You can use the following APIs to configure the start and end values for
+the selected tab fade:</p>
+	
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Sets&nbsp;the&nbsp;start&nbsp;of&nbsp;fade&nbsp;effect&nbsp;on&nbsp;the&nbsp;selected&nbsp;tabs&nbsp;in&nbsp;</font><font color="#3f3fbf">{@link&nbsp;JTabbedPane}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;s.&nbsp;The&nbsp;value&nbsp;should&nbsp;be&nbsp;in&nbsp;0.0-1.0&nbsp;range.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">selectedTabFadeStart</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;start&nbsp;of&nbsp;fade&nbsp;effect&nbsp;on&nbsp;the&nbsp;selected&nbsp;tabs&nbsp;in&nbsp;</font><font color="#3f3fbf">{@link&nbsp;JTabbedPane}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s.&nbsp;Should&nbsp;be&nbsp;in&nbsp;0.0-1.0&nbsp;range.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">setSelectedTabFadeStart</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">selectedTabFadeStart</font><font color="#000000">)</font><br/><br/>
+
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Sets&nbsp;the&nbsp;end&nbsp;of&nbsp;fade&nbsp;effect&nbsp;on&nbsp;the&nbsp;selected&nbsp;tabs&nbsp;in&nbsp;</font><font color="#3f3fbf">{@link&nbsp;JTabbedPane}</font><font color="#3f5fbf">s.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;The&nbsp;value&nbsp;should&nbsp;be&nbsp;in&nbsp;0.0-1.0&nbsp;range.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">selectedTabFadeEnd</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;end&nbsp;of&nbsp;fade&nbsp;effect&nbsp;on&nbsp;the&nbsp;selected&nbsp;tabs&nbsp;in&nbsp;</font><font color="#3f3fbf">{@link&nbsp;JTabbedPane}</font><font color="#3f5fbf">s.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Should&nbsp;be&nbsp;in&nbsp;0.0-1.0&nbsp;range.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">setSelectedTabFadeEnd</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">selectedTabFadeEnd</font><font color="#000000">)</font></code>
+        
+<p>By default, the fade start is at 0.1 and the fade end is at 0.3 - here is how it looks
+like on the core Sahara skin:</p>
+    
+	<img src="../../images/screenshots/skins/sahara1.png" width=338 height=245>
+	
+<p>Here is how these APIs are used in the core Creme skin to specify a slightly
+	larger selected tab fade:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.setSelectedTabFadeStart</font><font color="#000000">(</font><font color="#990000">0.2</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.setSelectedTabFadeEnd</font><font color="#000000">(</font><font color="#990000">0.4</font><font color="#000000">)</font><font color="#000000">;</font></code>
+
+<p>and this is how it looks like:</p>
+    	
+	<img src="../../images/screenshots/skins/creme1.png" width=338 height=245>
+	
+<p>All the other settings (watermark, painters, watermark color scheme) are set
+in the skin constructor. Here is sample code from the core Office Silver 2007 skin:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.buttonShaper&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ClassicButtonShaper</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.watermark&nbsp;=&nbsp;</font><font color="#7f0055"><b>null</b></font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.fillPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">FractionBasedFillPainter</font><font color="#000000">(</font><font color="#2a00ff">&#34;Office&nbsp;Silver&nbsp;2007&#34;</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#7f0055"><b>float</b></font><font color="#000000">[]&nbsp;{&nbsp;</font><font color="#990000">0.0f</font><font color="#000000">,&nbsp;</font><font color="#990000">0.49999f</font><font color="#000000">,&nbsp;</font><font color="#990000">0.5f</font><font color="#000000">,&nbsp;</font><font color="#990000">1.0f&nbsp;</font><font color="#000000">}</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">[]&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.ULTRALIGHT,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.LIGHT,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.ULTRADARK,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.EXTRALIGHT&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">FractionBasedBorderPainter&nbsp;outerBorderPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">FractionBasedBorderPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;Office&nbsp;Silver&nbsp;2007&nbsp;Outer&#34;</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#7f0055"><b>float</b></font><font color="#000000">[]&nbsp;{&nbsp;</font><font color="#990000">0.0f</font><font color="#000000">,&nbsp;</font><font color="#990000">0.5f</font><font color="#000000">,&nbsp;</font><font color="#990000">1.0f&nbsp;</font><font color="#000000">}</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">[]&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.LIGHT,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.ULTRADARK,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.MID&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceBorderPainter&nbsp;innerBorderPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">DelegateFractionBasedBorderPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;Office&nbsp;Silver&nbsp;2007&nbsp;Inner&#34;</font><font color="#000000">,&nbsp;outerBorderPainter,&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#7f0055"><b>int</b></font><font color="#000000">[]&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#990000">0xFFFFFFFF</font><font color="#000000">,&nbsp;</font><font color="#990000">0xFFFFFFFF</font><font color="#000000">,&nbsp;</font><font color="#990000">0xFFFFFFFF&nbsp;</font><font color="#000000">}</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeTransform</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorScheme&nbsp;transform</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">scheme.tint</font><font color="#000000">(</font><font color="#990000">0.8f</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.borderPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">CompositeBorderPainter</font><font color="#000000">(</font><font color="#2a00ff">&#34;Office&nbsp;Silver&nbsp;2007&#34;</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">outerBorderPainter,&nbsp;innerBorderPainter</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.decorationPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">FractionBasedDecorationPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;Office&nbsp;Blue&nbsp;2007&#34;</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#7f0055"><b>float</b></font><font color="#000000">[]&nbsp;{&nbsp;</font><font color="#990000">0.0f</font><font color="#000000">,&nbsp;</font><font color="#990000">0.2499999f</font><font color="#000000">,&nbsp;</font><font color="#990000">0.25f</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#990000">0.3f</font><font color="#000000">,&nbsp;</font><font color="#990000">0.7f</font><font color="#000000">,&nbsp;</font><font color="#990000">1.0f&nbsp;</font><font color="#000000">}</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">[]&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.ULTRALIGHT,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.EXTRALIGHT,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.DARK,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.MID,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.LIGHT,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.ULTRALIGHT&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.highlightPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ClassicHighlightPainter</font><font color="#000000">()</font><font color="#000000">;</font></code>
+    
+<h3>Management APIs</h3>    	
+
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">Map&lt;String,&nbsp;SkinInfo&gt;&nbsp;getAllSkins</font><font color="#000000">()</font></code>    
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="../api/GetAllSkins.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Returns all available skins.
+</p>
+    
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">setSkin</font><font color="#000000">(</font><font color="#000000">String&nbsp;skinClassName</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="../api/SetSkin_ClassName.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Sets the specified skin.
+</p>
+    
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">setSkin</font><font color="#000000">(</font><font color="#000000">SubstanceSkin&nbsp;skin</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="../api/SetSkin_Instance.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Sets the specified skin.
+</p>
+    
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">SubstanceSkin&nbsp;getCurrentSkin</font><font color="#000000">(</font><font color="#000000">Component&nbsp;c</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="../api/GetCurrentSkin.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Returns the current skin for the specified component.
+</p>
+    
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerSkinChangeListener</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SkinChangeListener&nbsp;skinChangeListener</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="../api/RegisterSkinChangeListener.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Registers a new listener on skin change.
+</p>
+    
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">unregisterSkinChangeListener</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SkinChangeListener&nbsp;skinChangeListener</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="../api/UnregisterSkinChangeListener.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Unregisters a listener on skin change.
+</p>
+
+<p><code><font color="darkblue">SubstanceLookAndFeel.SKIN_PROPERTY</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="../clientprops/SkinProperty.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Property name for specifying skin to be used on the specific root pane.
+</p>
+
+
+<p>As with <a href="colorschemebundles.html">color scheme bundles</a>, it is possible to
+create a derived skin. The same warning applies - a skin is a delicate
+collection of different color scheme bundles, painters and additional
+settings carefully chosen to work together in providing visually appealing appearance 
+and consistent animation sequences. In some cases, creating a derived skin will result in
+poor visuals.</p>
+
+<p>You can use the following API to create a derived skin:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;a&nbsp;new&nbsp;skin&nbsp;that&nbsp;has&nbsp;the&nbsp;same&nbsp;settings&nbsp;as&nbsp;this&nbsp;skin&nbsp;with&nbsp;the</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;addition&nbsp;of&nbsp;applying&nbsp;the&nbsp;specified&nbsp;color&nbsp;scheme&nbsp;transformation&nbsp;on&nbsp;all&nbsp;the</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;relevant&nbsp;color&nbsp;schemes</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">transform</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color&nbsp;scheme&nbsp;transformation.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">name</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;new&nbsp;skin.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">The&nbsp;new&nbsp;skin.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#646464">@SubstanceApi</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceSkin&nbsp;transform</font><font color="#000000">(</font><font color="#000000">ColorSchemeTransform&nbsp;transform,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>final&nbsp;</b></font><font color="#000000">String&nbsp;name</font><font color="#000000">)</font></code>
+    
+        
+<p>Where the color scheme transformation is defined by the following interface:</p>
+
+    <code>
+<font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*&nbsp;Defines&nbsp;transformation&nbsp;on&nbsp;a&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@author&nbsp;</font><font color="#3f5fbf">Kirill&nbsp;Grouchnikov</font><br />
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#7f0055"><b>public&nbsp;interface&nbsp;</b></font><font color="#000000">ColorSchemeTransform&nbsp;</font><font color="#000000">{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Transforms&nbsp;the&nbsp;specified&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">scheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;original&nbsp;color&nbsp;scheme&nbsp;to&nbsp;transform.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">The&nbsp;transformed&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorScheme&nbsp;transform</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#000000">}</font></code>
+
+<h3>Providing custom skins</h3>
+
+<p>Substance provides an option for specifying custom skin. This option
+uses the Substance plugin mechanism to discover additional
+skins at runtime. As with all Substance plugins, you must pack an 
+additional XML configuration file in one of your runtime jarfiles. The name 
+of this file must be 
+<code><font color="darkblue">META-INF/substance-plugin.xml</font></code> 
+and it must comply with the following syntax:</p>
+
+<code><pre>
+&lt;laf-plugin&gt;
+   <b>additional optional tags</b>
+   &lt;skin-plugin-class&gt;<b>...</b>&lt;/skin-plugin-class&gt;
+   <b>additional optional tags</b>
+&lt;/laf-plugin&gt;
+</pre></code>
+
+<p>
+The contents of <code><font color="darkblue">skin-plugin-class</font></code> 
+tag must be the fully-qualified class name of a class that implements the
+<code><font color="darkblue">SubstanceSkinPlugin</font></code> interface. 
+This interface specifies the following methods:
+</p>
+
+<p>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Returns&nbsp;information&nbsp;on&nbsp;all&nbsp;available&nbsp;skins&nbsp;in&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">plugin.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Information&nbsp;on&nbsp;all&nbsp;available&nbsp;skins&nbsp;in&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">plugin.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Set&lt;SkinInfo&gt;&nbsp;getSkins</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Returns&nbsp;the&nbsp;class&nbsp;name&nbsp;of&nbsp;the&nbsp;default&nbsp;skin.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">The&nbsp;class&nbsp;name&nbsp;of&nbsp;the&nbsp;default&nbsp;skin.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">String&nbsp;getDefaultSkinClassName</font><font color="#000000">()</font><font color="#000000">;</font></code>
+</p>    
+
+<p>The <code><font color="darkblue">SkinInfo</font></code> class 
+contains information on single (base or custom) skin. </p>
+
+<p>Note that using this option you may override the skins supplied
+with Substance base package (by specifying the same display name). This
+behaviour, however, is not guaranteed to be consistent across various VMs
+and class loaders, since the skin plugins are processed in random order.</p>
+
+<h3>Sample code to work with Substance skins</h3>
+
+<p>The following class implements a custom combobox that lists all available
+Substance skins and allows changing the current Substance skin based on the
+user selection.</p>
+
+    <code>
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">SubstanceSkinComboSelector&nbsp;</font><font color="#7f0055"><b>extends&nbsp;</b></font><font color="#000000">JComboBox&nbsp;</font><font color="#000000">{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceSkinComboSelector</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;populate&nbsp;the&nbsp;combobox</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>super</b></font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ArrayList&lt;SkinInfo&gt;</font><font color="#000000">(</font><font color="#000000">SubstanceLookAndFeel.getAllSkins</font><font color="#000000">()</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.values</font><font color="#000000">())</font><font color="#000000">.toArray</font><font color="#000000">())</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;set&nbsp;the&nbsp;current&nbsp;skin&nbsp;as&nbsp;the&nbsp;selected&nbsp;item</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceSkin&nbsp;currentSkin&nbsp;=&nbsp;SubstanceLookAndFeel.getCurrentSkin</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>for&nbsp;</b></font><font color="#000000">(</font><font color="#000000">SkinInfo&nbsp;skinInfo&nbsp;:&nbsp;SubstanceLookAndFeel.getAllSkins</font><font color="#000000">()</font><font color="#000000">.values</font><font color="#000000">())&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">skinInfo.getDisplayName</font><font color="#000000">()</font><font color="#000000">.compareTo</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">currentSkin.getDisplayName</font><font color="#000000">())&nbsp;</font><font color="#000000">==&nbsp;</font><font color="#990000">0</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.setSelectedItem</font><font color="#000000">(</font><font color="#000000">skinInfo</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>break</b></font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;set&nbsp;custom&nbsp;renderer&nbsp;to&nbsp;show&nbsp;the&nbsp;skin&nbsp;display&nbsp;name</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.setRenderer</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceDefaultComboBoxRenderer</font><font color="#000000">(</font><font color="#7f0055"><b>this</b></font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Component&nbsp;getListCellRendererComponent</font><font color="#000000">(</font><font color="#000000">JList&nbsp;list,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Object&nbsp;value,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">index,&nbsp;</font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">isSelected,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">cellHasFocus</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;super</b></font><font color="#000000">.getListCellRendererComponent</font><font color="#000000">(</font><font color="#000000">list,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">((</font><font color="#000000">SkinInfo</font><font color="#000000">)&nbsp;</font><font color="#000000">value</font><font color="#000000">)</font><font color="#000000">.getDisplayName</font><font color="#000000">()</font><font color="#000000">,&nbsp;index,&nbsp;isSelected,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">cellHasFocus</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;add&nbsp;an&nbsp;action&nbsp;listener&nbsp;to&nbsp;change&nbsp;skin&nbsp;based&nbsp;on&nbsp;user&nbsp;selection</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addActionListener</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ActionListener</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">actionPerformed</font><font color="#000000">(</font><font color="#000000">ActionEvent&nbsp;e</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SwingUtilities.invokeLater</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">Runnable</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">run</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceLookAndFeel</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.setSkin</font><font color="#000000">(((</font><font color="#000000">SkinInfo</font><font color="#000000">)&nbsp;</font><font color="#000000">SubstanceSkinComboSelector.</font><font color="#7f0055"><b>this</b></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.getSelectedItem</font><font color="#000000">())</font><font color="#000000">.getClassName</font><font color="#000000">())</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#000000">}</font></code>
+
+<ul>
+<li>First, it uses the <a href="../api/GetAllSkins.html"><code>getAllSkins()</code></a> API to populate the
+combobox with the list of all available Substance skins.</li>
+<li>Then, it uses the <a href="../api/GetCurrentSkin.html"><code>getCurrentSkin()</code></a> API to
+select the combobox entry that matches the current Substance skin.</li>
+<li>Since the model entries behind the combobox are <code><font color="darkblue">SkinInfo</font></code>
+objects, we extend the default Substance combobox cell renderer to use the display name of the skin.</li>
+<li>Finally, we register an action listener on the combobox which gets triggerred on any selection change.
+The action listener uses the <a href="../api/SetSkin_ClassName.html"><code>setSkin(String className)</code></a>
+API to set the selected skin as the new global Substance skin. Note that there is no need to 
+explicitly invoke <code><font color="darkblue">SwingUtilities.updateComponentTree</font></code>
+on all your windows after calling this Substance API.</li>
+</ul>
+
+<p>The same approach can be used to create a menu selection of available Substance skins.</p>
+
+</body>
+</html>
+

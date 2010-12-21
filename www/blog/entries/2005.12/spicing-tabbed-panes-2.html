@@ -1,0 +1,178 @@
+<a href="../2005.10/spicing-tabbed-panes-1.html">This entry</a> 
+describes the capabilities that release 2.1 of <a href="../../..">Substance 
+look-and-feel</a> provides for your tabbed panes. They are:
+<ul>
+<li>Animation effect for tabs with modified (and unsaved) content
+<li>Close buttons on tabs with listeners
+</ul>
+
+Following the feedback from the users (thanks Raj), the latest daily drop of version 2.2 
+(code-named <b>El Paso</b>) provides even more functionality available to your Swing application 
+once you start using <b>Substance LAF</b>.<br><br>
+
+The first request was to enhance the listener mechanism on close buttons of tabbed panes. 
+As mentioned in the above blog, you can register any number of listeners that will be called 
+when close button of some tab in some tabbed pane is clicked. The <b>CloseTabListener</b> 
+interface defines the following two methods:
+
+<pre style="border: 1px solid darkgray; padding: 4px; color: darkblue;">
+/**
+ * Called when a tab is about to be closed.
+ */
+public void tabClosing(JTabbedPane tabbedPane, Component tabComponent);
+
+/**
+ * Called when a tab is closed.
+ */
+public void tabClosed(JTabbedPane tabbedPane, Component tabComponent);
+</pre>
+
+There were two separate requests regarding this mechanism:
+<ol>
+<li>Allow the application listener to veto the tab closing
+<li>Allow registering listeners per tabbed pane (and not globally)
+</ol>
+
+Now, if you want to provide additional logic and veto the tab closing, you need to implement 
+the <b>VetoableTabCloseListener</b> that extends the <b>TabCloseListener</b> and adds the 
+following function:
+<pre style="border: 1px solid darkgray; padding: 4px; color: darkblue;">
+/**
+ * Called when a tab is about to be closed. Can veto the tab closing.
+ *
+ * @return <code>true</code> if the corresponding tab shouldn't be closed,
+ *         <code>false</code> otherwise.
+ */
+public boolean vetoTabClosing(JTabbedPane tabbedPane,
+	Component tabComponent);
+</pre>
+
+All vetoable listeners that are either registered for the specific tabbed pane, or are 
+registered globally (for all tabbed panes) are called when the close icon is clicked. 
+If at least one of them returns <b>false</b>, the tab will not be closed. Otherwise, 
+the <b>tabClosing</b> and <b>tabClose</b> functions will be called. A simple example 
+is to show the confirmation dialog as:
+
+<pre style="border: 1px solid darkgray; padding: 4px; color: darkblue;">
+public void tabClosed(JTabbedPane tabbedPane,
+            Component tabComponent) {
+  System.out.println("Closed tab - specific");
+}
+
+public void tabClosing(JTabbedPane tabbedPane,
+            Component tabComponent) {
+  System.out.println("Closing tab - specific");
+}
+
+public boolean vetoTabClosing(JTabbedPane tabbedPane,
+            Component tabComponent) {
+  int userCloseAnswer = JOptionPane.showConfirmDialog(
+      Check.this,
+      "Are you sure you want to close this tab?",
+      "Confirm dialog", JOptionPane.YES_NO_OPTION);
+  return (userCloseAnswer == JOptionPane.NO_OPTION);
+}
+</pre>
+The following dialog will be shown to the user when the tab close button is clicked:<br><br>
+<img src="../../close-tab-dialog.png" width=268 height=118>
+<br><br>
+
+Note that this extension doesn't break the existing API which is still fully supported 
+and provides the exact same functionality as before.<br><br>
+
+The second request was to provide an option for drawing vertical rotated tabs when the 
+current placement for the tabbed pane is either <b>LEFT</b> or <b>RIGHT</b>. The solutions 
+described elsewhere 
+(by <a href="http://jroller.com/comments/santhosh/Weblog/adobe_like_tabbedpane_in_swing">Santosh</a> 
+and <a href="http://www.macdevcenter.com/pub/a/mac/2002/03/22/vertical_text.html">Lee Ann</a>) 
+involve a composite icon that simulates the tab and effectively hides the text from the 
+tabbed pane UI delegate (by putting it in the icon and rotating the entire icon). The 
+above solutions work, but involve using third-party classes and changing your code to use 
+these classes. In addition, since <b>Substance</b> provides the close buttons on tabs, they 
+are not easily applicable.<br><br>
+
+<b>Substance</b> provides unintrusive solution for rotated vertical tabs. There are two 
+properties that you can set:
+<ul>
+<li><b>SubstanceLookAndFeel.TABBED_PANE_VERTICAL_ORIENTATION</b> is set on a tabbed pane 
+or on UIManager (or both) and instructs the UI delegate to use vertical (rotated) layout 
+for the LEFT and RIGHT-placed tabbed panes.
+<li><b>SubstanceLookAndFeel.TABBED_PANE_VERTICAL_ORIENTATION_ROTATE_ICONS</b> is set a 
+tab, a tabbed pane or on UIManager (or any combination) and instructs the UI delegate 
+to leave the icon unrotated.
+</ul>
+Note that if you don't wish to create the explicit dependency in your code on the 
+<b>SubstanceLookAndFeel</b> class, you can use the string values for the above properties. 
+Here are a few screenshots to illustrate the outcome, followed by code samples:
+<ul>
+<li>
+<b>TOP</b>-placed tabbed pane with five tabs. Each tab has text, icon and a close 
+button (visible when the tab is either selected or under mouse):
+<br><br>
+<img src="../../../release-info/2.2/tabs-horizontal.png" width=406 height=26>
+<li>
+<b>LEFT</b>-placed tabbed pane under standard layout. Note that the tabs are not 
+rotated and take too much horizontal space:
+<br><br>
+<img src="../../../release-info/2.2/tabs-vertical-old.png" width=143 height=153>
+<li>
+Four parts of the image, from left to right:
+<ul>
+<li><b>LEFT</b>-placed tabbed pane with vertical layout. The first tab has unrotated 
+icon, the third tab has unrotated icon which is also disabled, all other tabs have rotated icons.
+<li><b>LEFT</b>-placed tabbed pane with vertical <b>and</b> scroll layout. The icons are same as above.
+<li><b>RIGHT</b>-placed tabbed pane with vertical <b>and</b> scroll layout. The icons are same as above.
+<li><b>RIGHT</b>-placed tabbed pane with vertical layout. The icons are same as above.
+</ul>
+<br><br>
+<img src="../../../release-info/2.2/tabs-vertical.png" width=273 height=317>
+</ul>
+
+Here is how the tabs in the last examples were created:
+<pre style="border: 1px solid darkgray; padding: 4px; color: darkblue;">
+JTabbedPane jtp = new JTabbedPane();
+TabNumberedPanel tnp1 = new TabNumberedPanel(jtp, 1);
+tnp1.putClientProperty(
+  <b>SubstanceLookAndFeel.TABBED_PANE_VERTICAL_ORIENTATION_ROTATE_ICONS,
+  Boolean.TRUE</b>);
+jtp.addTab("tab1", SubstanceImageCreator.getThemeIcon(null), tnp1);
+jtp.addTab("tab2", SubstanceImageCreator.getThemeIcon(null),
+    new TabNumberedPanel(jtp, 2));
+TabNumberedPanel tnp3 = new TabNumberedPanel(jtp, 3);
+tnp3.putClientProperty(
+  <b>SubstanceLookAndFeel.TABBED_PANE_VERTICAL_ORIENTATION_ROTATE_ICONS,
+  Boolean.TRUE</b>);
+jtp.addTab("tab3", SubstanceImageCreator.getThemeIcon(null), tnp3);
+jtp.addTab("tab4", SubstanceImageCreator.getHexaMarker(4,
+    SubstanceLookAndFeel.getTheme()), new TabNumberedPanel(jtp,
+    4));
+jtp.addTab("tab5", SubstanceImageCreator.getHexaMarker(5,
+    SubstanceLookAndFeel.getTheme()), new TabNumberedPanel(jtp,
+    5));
+jtp.setEnabledAt(2, false);
+jtp.setEnabledAt(3, false);
+jtp.putClientProperty(
+  <b>SubstanceLookAndFeel.TABBED_PANE_VERTICAL_ORIENTATION, true</b>);
+</pre>
+
+Note that you get the desired behaviour by setting a few client properties, which 
+have no effect under other look-and-feels.<br><br>
+
+The only limitation of this technique is for tabs that support arbitrary components 
+(added in Mustang, described in 
+<a href="http://weblogs.java.net/blog/alexfromsun/archive/2005/11/tabcomponents_i_1.html">this 
+blog entry</a> by Alexander Potochkin). Such tabs will not be rotated correctly, since 
+these components are not painted using the UI delegates at all. I have discussed this 
+with Alexander and he pointed out additional problem - the need to translate mouse 
+coordinates to allow the tab component to correctly handle the events. The bottom line 
+(at least for Mustang) is - do not use this feature if your application is using the 
+new <b>JTabbedPane</b> functions (which automatically implies that it's running under Mustang).
+
+<br><br>
+One last thing - if you like <b>Substance</b>, help internationalize it! (small print - 
+eternal glory is not guaranteed :) Starting from version 2.2 (code-named <b>El Paso</b>) 
+the additional UI elements (system menu items, heap status panel, menu search panel) 
+are internationalized. You are welcome to view 
+<a href="../../../docs/internationalization.html">the list of 
+available translations</a> and send me additional translations to <b>kirillcool [at] 
+yahoo.com</b>. Thanks in advance

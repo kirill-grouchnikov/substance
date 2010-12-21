@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="https://substance.dev.java.net/webstart/"
+ href="jitterbug.jnlp">
+<information>
+  <title>Jitterbug color scheme editor for Substance look-and-feel</title>
+  <vendor>Kirill Grouchnikov</vendor>
+  <description>Jitterbug color scheme editor for Substance look-and-feel</description> 
+  <description kind="short">Jitterbug color scheme editor</description> 
+  <offline-allowed/> 
+</information>
+<offline-allowed/>
+<security>
+  <all-permissions/>
+</security>
+<resources>
+  <property name="jnlp.packEnabled" value="true"/>
+  <j2se version="1.6+" />
+  <jar href="substance-tools.jar"/>
+  <jar href="substance.jar"/>
+  <extension name="common-forms" href="https://pushingpixels.dev.java.net/webstart/common-forms.jnlp"/>
+  <extension name="trident-core" href="https://kenai.com/svn/trident~source/www/webstart/trident-core.jnlp"/>
+</resources>
+<application-desc main-class="tools.jitterbug.JitterbugEditor" />
+</jnlp>

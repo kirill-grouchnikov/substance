@@ -1,0 +1,306 @@
+
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2007 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+<title>Substance 3.2 release</title>
+</head>
+
+<body>
+
+<h1>Substance 3.2 <font color="darkblue">Iowa</font> - new features</h1>
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New dark skins</b></td>
+    <td width="80%" valign="top">
+    <p>Two new skins added to the <code><font color="darkblue">org.jvnet.substance.skin</font></code>
+    package.</p>
+    
+    <p><code><b>Challenger Deep</b></code> available in the 
+    <code><font color="darkblue">org.jvnet.substance.skin.ChallengerDeepSkin</font></code>. 
+    In addition, the 
+    <code><font color="darkblue">org.jvnet.substance.skin.SubstanceChallengerDeepLookAndFeel</font></code>
+    can be used with one of the following options:</p>
+    <ul>
+    <li><code>-Dswing.defaultlaf=org.jvnet.substance.skin.SubstanceChallengerDeepLookAndFeel</code></li>
+    <li><code>UIManager.setLookAndFeel(new SubstanceChallengerDeepLookAndFeel())</code></li>
+    <li><code>UIManager.setLookAndFeel("org.jvnet.substance.skin.SubstanceChallengerDeepLookAndFeel");</li>
+    </ul>
+    <p>
+    <img alt="Challenger Deep" src="skin-challenger-deep-1.png" width=300 height=200>
+    <img alt="Challenger Deep" src="skin-challenger-deep-2.png" width=300 height=200>
+    </p>
+
+    <p><code><b>Emerald Dusk</b></code> available in the 
+    <code><font color="darkblue">org.jvnet.substance.skin.EmeraldDuskSkin</font></code>. 
+    In addition, the 
+    <code><font color="darkblue">org.jvnet.substance.skin.SubstanceEmeraldDuskLookAndFeel</font></code>
+    can be used with one of the following options:</p>
+    <ul>
+    <li><code>-Dswing.defaultlaf=org.jvnet.substance.skin.SubstanceEmeraldDuskLookAndFeel</code></li>
+    <li><code>UIManager.setLookAndFeel(new SubstanceEmeraldDuskLookAndFeel())</code></li>
+    <li><code>UIManager.setLookAndFeel("org.jvnet.substance.skin.SubstanceEmeraldDuskLookAndFeel");</li>
+    </ul>
+    <p>
+    <img alt="Emerald Dusk" src="skin-emerald-dusk-1.png" width=300 height=200>
+    <img alt="Emerald Dusk" src="skin-emerald-dusk-2.png" width=300 height=200>
+    </p>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New SubstanceDefaultLookAndFeel</b></td>
+    <td width="80%" valign="top">
+    <p>The <code><font color="darkblue">org.jvnet.substance.SubstanceDefaultLookAndFeel</font></code>
+    allows applications to restore the default settings of Substance (taken from VM parameters
+    or configuration file). This allows switching between custom <a href="../../docs/skins.html">skins</a>
+    and the default settings.
+    </td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Overlay effects on scroll bars</b></td>
+    <td width="80%" valign="top">
+    <p>The new <code><font color="darkblue">SubstanceLookAndFeel.OVERLAY_PROPERTY</font></code> client
+    property (currently supported only on scroll panes) specifies that a component should have overlay
+    functionality. In case of scroll pane marked with this property set to 
+    <code><font color="darkblue">Boolean.TRUE</font></code>, the contents of the viewport are painted 
+    "beneath" the scroll bar area (scroll tumb, scroll track and scroll buttons). This property works 
+    together with the <code><font color="darkblue">BACKGROUND_COMPOSITE</font></code> property
+    that specifies the <code><font color="darkblue">Composite</font></code> for active and inactive state
+    of the control.</p>
+    
+    <p>The screenshots below show enabled, non-flat, active and overlayed scroll bars with 40% inactive 
+    and 70% active opacity on scroll bars. The first screenshot shows the mouse on the viewport 
+    (scrollbar is non-active):</p>
+
+    <p>	
+    <img src="scroll-overlay40-70-inactive.png" height="200" width="400">
+    </p>
+
+    <p>The second screenshot shows the mouse on the track. The track and the thumb are painted in 
+    active opacity (compare with the vertical track and thumb):</p>
+
+    <p>
+    <img src="scroll-overlay40-70-active-track.png" height="200" width="400">
+    </p>
+
+    <p>The third screenshot shows the mouse on the left scroll button. The button, the track and 
+    the thumb are painted in active opacity (compare with the right button):</p>
+
+    <p>
+    <img src="scroll-overlay40-70-active-decrease.png" height="200" width="400">
+    </p>
+
+    <p>The fourth screenshot shows the mouse on the right scroll button. The button, the track 
+    and the thumb are painted in active opacity (compare with the left button):</p>
+
+    <p>
+    <img src="scroll-overlay40-70-active-increase.png" height="200" width="400">
+    </p>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Grip handles on scroll bars</b></td>
+    <td width="80%" valign="top">
+    <p>The new <code><font color="darkblue">SubstanceLookAndFeel.SCROLLBAR_GRIP_PAINTER</font></code> client
+    property specifies custom grip handles painted on scroll bars of scroll panes. The value should be
+    an instance of <code><font color="darkblue">org.jvnet.substance.scroll.ScrollThumbGripPainter</font></code>
+    interface. The <code><font color="darkblue">org.jvnet.substance.scroll.CoreScrollThumbGripPainters</font></code>
+    is the factory class for available core implementations. The screenshot below uses the 
+    <code><font color="darkblue">DragBumpsScrollThumbGripPainter</font></code> grip painter.</p>
+
+    <p>
+    <img src="scroll-grip-handle.png" width="307" height="276">
+    </p>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Aligned menu opacity on rollovers / selection with tree/table/list</b></td>
+    <td width="80%" valign="top">
+    <p>The opacity of background fill of selected menu items is aligned with the default
+    opacity of background fill of selected items in trees, tables and lists.</p>
+    
+    <p>
+    <img src="menu-selected-background.png" width="256" height="239">
+    </p>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Slider respecting current shaper</b></td>
+    <td width="80%" valign="top">
+    <p>Slider track respects the current global button shaper. Under classic
+    shaper (<code><font color="darkblue">org.jvnet.substance.button.ClassicButtonShaper</font></code>),
+    the slider track is almost rectangular. The screenshot below shows the slider track under
+    standard (above) and classic (below) shapers:</p>
+    
+    <p>
+    <img src="slider-track-shaper.png" width="192" height="49">
+    </p>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Rollover effects on table editors</b></td>
+    <td width="80%" valign="top">
+    <p>Rollover effects on table renderers (introduced in <a href="../3.1/release-info.html">version 
+    3.1</a>) have been extended to table editors as well.</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New version of Xoetrope color wheel panel</b></td>
+    <td width="80%" valign="top">
+    <p>New version of <a href="http://www.xoetrope.com/zone/index.php?zone=XUI">Xoetrope</a>
+    color wheel with system color popup menu has been integrated. Mouse click on the colored area
+    (with the hex value of the currently selected color) popus up a menu with all available
+    system colors. The screenshot below illustrates the mouse-sensitive area (blue rectangle
+    with <code><font color="darkblue">1E37C7</font></code>) and part of the popup-menu with 
+    system colors.</p>
+    
+    <p>
+    <img src="xoetrope-color-wheel-system-colors.png" width="271" height="465">
+    </p>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Menu gutter fill kind</b></td>
+    <td width="80%" valign="top">
+    <p>The <code><font color="darkblue">SubstanceLookAndFeel.MENU_GUTTER_FILL_KIND</font></code>
+    client property specified the menu gutter fill kind. Menu gutter is the part of the menu 
+    where checkmarks and icons are painted. The value should be one of 
+    <code><font color="darkblue">org.jvnet.substance.utils.SubstanceConstants.MenuGutterFillKind</font></code>
+    enum. This property can be set globally on the <code><font color="darkblue">UIManager</font></code>. 
+    The default value is <code><font color="darkblue">MenuGutterFillKind.HARD</font></code>.</p>
+    
+    <p>The screenshot below illustrates the same menu under five different fill kinds. From 
+    left to right, these are: 
+    <code><font color="darkblue">MenuGutterFillKind.HARD</font></code>,
+    <code><font color="darkblue">MenuGutterFillKind.SOFT</font></code>,
+    <code><font color="darkblue">MenuGutterFillKind.SOFT_FILL</font></code>,
+    <code><font color="darkblue">MenuGutterFillKind.HARD_FILL</font></code> and
+    <code><font color="darkblue">MenuGutterFillKind.NONE</font></code>.</p>
+    
+    <p>
+    <img src="menu-gutter-fill-kind.png" width="346" height="245">
+    </p>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for removing the pin button from internal frame title pane</b></td>
+    <td width="80%" valign="top">
+    <p>The <code><font color="darkblue">SubstanceLookAndFeel.CAN_BE_PINNED</font></code>
+    property can be set on internal frame or any of its ancestors (automatically tracked only
+    for the former). The value should be either <code><font color="darkblue">Boolean.TRUE</font></code> 
+    or <code><font color="darkblue">Boolean.FALSE</font></code>. If the former, the title pane
+    of the corresponding internal frame will not show the pin button (present by default
+    from <a href="../3.1/release-info.html">version 3.1</a>).</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for image watermark from input stream</b></td>
+    <td width="80%" valign="top">
+    <p>The <code><font color="darkblue">SubstanceImageWatermark</font></code> has an additional
+    constructor that reads the image from <code><font color="darkblue">InputStream</font></code>.
+    This allows creating image watermarks based on a bundled image (in the same jar), for instance.
+    Note that in this case, the <code><font color="darkblue">getOrigImageLocation()</font></code>
+    will return <code><font color="darkblue">null</font></code>.</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+</table>
+</body>
+
+<code><font color="darkblue"></font></code>
+</html>

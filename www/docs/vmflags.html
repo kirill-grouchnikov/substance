@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>Substance look and feel - available VM flags</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2007 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - available VM flags</h1>
+
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="left"><code><b><font color="darkblue">substancelaf.heapStatusTraceFile</font></b></code><br>since version 5.0
+    </td>
+    <td width="80%" valign="top">
+If specified, the title panes of frames will have menu item that enables heap status panel. If this flag
+is specified, the initial state of the heap status panel is invisible. The visibility
+status can be toggled via a menu entry in the main menu. If no value is specified,
+the heap panel is enabled. If value is specified, it is taken to be the name of the logfile
+for tracking the heap panel status. Each entry in the logfile has timestamp, used heap space
+in KB and total heap space in KB. For example,
+<pre style="border: 1px solid darkgray; padding: 4px; color: darkblue;">-Dsubstancelaf.heapStatusTraceFile=C:\temp\heap-status.log</pre>
+<img src="../images/vmflags/heapStatusPanel.png" width="260" height="60">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="left"><code><b><font color="darkblue">substancelaf.traceFile</font></b></code><br>since version 2.0
+    </td>
+    <td width="80%" valign="top">
+Specifies that <b>Substance</b>
+should run in trace mode, providing the location of the trace logfile. Every few seconds, <b>Substance</b>
+will record allocation of large images and cache sizes to this file in order to pinpoint
+the memory problems. For example,
+<pre style="border: 1px solid darkgray; padding: 4px; color: darkblue;">-Dsubstancelaf.traceFile=C:\temp\substance.log</pre>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+</table>
+
+</body>
+</html>
+

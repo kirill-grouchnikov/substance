@@ -1,0 +1,80 @@
+<html>
+<head>
+<title>Substance look and feel - highlight painters</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, painters, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - highlight painters</h1>
+
+<h3>Overview</h3>
+
+<p>The base class for Substance <b>highlight painters</b> is
+<code><font color="darkblue">org.pushingpixels.substance.api.painter.highlight.SubstanceHighlightPainter</font></code>.
+Highlight painter is used to paint the highlights of renderer-based
+UI components (such as trees, tables, lists), as well as highlights
+of menu items. It can also be used to paint visuals of third-party
+components (see <a href="highlight.html">skinning primer</a> for 
+more information). This allows providing a consistent and pluggable
+appearance to those components. In addition, it provides an external API
+for applications that wish to skin custom components in a visually 
+consistent manner.</p>
+
+<h3>Painting API</h3>
+<p>The only painting method in 
+<code><font color="darkblue">org.pushingpixels.substance.api.painter.highlight.SubstanceHighlightPainter</font></code> is</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Paints&nbsp;the&nbsp;highlight.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">graphics</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Graphics&nbsp;context.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">comp</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">width</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Width.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">height</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Height.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">colorScheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;color&nbsp;scheme&nbsp;for&nbsp;painting&nbsp;the&nbsp;highlight.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">paintHighlight</font><font color="#000000">(</font><font color="#000000">Graphics2D&nbsp;graphics,&nbsp;Component&nbsp;comp,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">width,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">height,&nbsp;SubstanceColorScheme&nbsp;colorScheme</font><font color="#000000">)</font><font color="#000000">;</font></code>
+ 
+
+</body></html>
+<p>The <code><font color="darkblue">width</font></code> and 
+<code><font color="darkblue">height</font></code> 
+parameters specify the rectangle to highlight (the highlight
+painters are only used on rectangular areas), while the 
+<code><font color="darkblue">colorScheme</font></code> specifies the Substance
+color scheme to be used to compute the highlight colors. 
+Specific implementations are encouraged to
+maintain an internal cache of computed images, at least for 
+small sizes.</p>
+
+
+<h3>Management API</h3>
+
+<p>If you wish to use the highlight painter of the current skin to provide additional
+custom painting in your application, call:</p>
+<ul>
+<li>
+	<code><font color="darkblue">SubstanceLookAndFeel.<a href="../api/GetCurrentSkin.html">getCurrentSkin()</a></font></code>
+	to retrieve the current skin.</li>
+<li><code><font color="darkblue">SubstanceSkin.getHighlightPainter()</font></code>
+to retrieve the highlight painter of the current skin.</li>
+<li><code><font color="darkblue">SubstanceHighlightPainter.paintHighlight()</font></code>
+to paint the highlight background on the specific graphics context.</li>
+</ul>
+</p>
+
+</body>
+</html>
+

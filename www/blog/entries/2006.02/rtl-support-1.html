@@ -1,0 +1,109 @@
+When i have written the <a href="../2005.10/aligning-menu-items.html">previous 
+entry</a> on aligning menu items in Swing applications, i was blissfully ignorant and thought that 
+the life was good. Thankfully, one of the users of Substance has opened 
+<a href="../../../issues/show_bug.cgi?id=125">this defect</a> with 
+the following summary - "Menu texts are invisible in RTL orientation".<br><br>
+
+Why, say you. What's that RTL has to do with my application? Turns out that there are 
+four locales that define the right-to-left orientation (who should know better than me...), 
+Arabic (ar), Hebrew (iw), Persian (fa) and Urdu (ur). Under these locales, the users 
+expect their applications to be layed-out correspondingly. Swing core look-and-feels 
+provide quite a good support for this:<br><br>
+
+These two screenshots of Metal in Tiger and Metal in Mustang (you can see that Mustang 
+properly aligns the texts, but fails quite miserably at aligning the accelerators):<br><br>
+
+<img src="../../menus/metal-menu-rtl-5.0.png" width=257 height=267"> 
+<img src="../../menus/metal-menu-rtl-6.0.png" width=253 height=268"> <br><br>
+
+The same problem with the accelerator alignment on RTL menus under Mustang is with the 
+Windows LAF:<br><br>
+<img src="../../menus/windows-menu-rtl-6.0.png" width=238 height=245"> 
+<br><br>
+
+And what happens with the third-party LAFs you ask? Well, it depends. Here's a short 
+chart of nine third-party open-source and commercial LAFs sorted by the degree of current 
+RTL support in the menus (both under Tiger and Mustang):<br><br>
+
+<ul>
+<li>The first place - JGoodies' Looks. The only problem is with the accelerator alignment 
+(both on Tiger and on Mustang). The first place doesn't come easy though - JGoodies 
+provides its own layout and painting mechanism and as such, it uses the SwingUtilities2 
+class which is unsupported. Hence, this ungodly creature in the codebase of 2.0beta:
+
+<pre>
+    private static final String SWING_UTILITIES2_NAME =
+        LookUtils.IS_JAVA_6_OR_LATER
+             ? "sun.swing.SwingUtilities2"
+             : "com.sun.java.swing.SwingUtilities2";
+</pre>
+
+The screenshots for Tiger and Mustang (note the accelerator alignment problem which 
+is better in Mustang but still slightly off - this has been fixed for Beta2 coming 
+in the next few days):<br><br>
+
+<img src="../../menus/jgoodies-menu-rtl-5.0.png" width=253 height=267"> 
+<img src="../../menus/jgoodies-menu-rtl-6.0.png" width=245 height=267"> 
+
+<li>The second place - Substance (would have been sixth and the last place yesterday). 
+Both under Tiger and Mustang properly aligned texts, but the accelerators are off. 
+The main hindrance to getting this to work (not only in Substance but also in all other 
+Metal-extending LAFs below) is that the UI delegates for menu items do not provide 
+hooks for painting the accelerators. The only available way is JGoodies way - do it 
+yourself (and be bound to use SwingUtilities2). The screenshots for Tiger and Mustang 
+(note the accelerator alignment problem present in both):<br><br>
+
+<img src="../../menus/substance-menu-rtl-5.0.png" width=253 height=245"> 
+<img src="../../menus/substance-menu-rtl-6.0.png" width=253 height=245"> 
+
+<li>Third place - Pagosoft, Squareness and Napkin. In addition to the accelerator 
+alignment as above, the texts aren't aligned under Tiger (core fix in Mustang). The 
+screenshots of Pagosoft for Tiger and Mustang (note the text alignment under Tiger):<br><br>
+
+<img src="../../menus/pagosoft-menu-rtl-5.0.png" width=256 height=267"> 
+<img src="../../menus/pagosoft-menu-rtl-6.0.png" width=256 height=267"> 
+<br><br>
+
+The screenshots of Squareness for Tiger and Mustang (note the text alignment under Tiger):<br><br>
+
+<img src="../../menus/squareness-menu-rtl-5.0.png" width=225 height=243"> 
+<img src="../../menus/squareness-menu-rtl-6.0.png" width=230 height=242"> 
+<br><br>
+The screenshots of Napkin for Tiger and Mustang (including Tiger workaround for 
+<a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6313541">this bug</a> fixed in Mustang):<br><br>
+
+<img src="../../menus/napkin-menu-rtl-5.0.png" width=295 height=304"> 
+<img src="../../menus/napkin-menu-rtl-6.0.png" width=295 height=304"> 
+<br><br>
+
+
+<li>Fourth place - Synthetica (commercial) and Trendy (commercial). In addition 
+to the accelerator alignment and text alignment under Tiger, the arrow points to 
+the right and not to the left. 
+The screenshots of Synthetica for Tiger and Mustang (note the arrow direction):<br><br>
+
+<img src="../../menus/synthetica-menu-rtl-5.0.png" width=246 height=266"> 
+<img src="../../menus/synthetica-menu-rtl-6.0.png" width=234 height=266"> 
+<br><br>
+
+The screenshots of Trendy for Tiger and Mustang (note the arrow direction):<br><br>
+
+<img src="../../menus/trendy-menu-rtl-5.0.png" width=264 height=266"> 
+<img src="../../menus/trendy-menu-rtl-6.0.png" width=266 height=266"> 
+
+<li>Fifth place - Liquid and Tiny. The RTL menus are completely messed up both 
+under Tiger and Mustang. Screenshots of Liquid and Tiny under Mustang:<br><br>
+
+<img src="../../menus/liquid-menu-rtl-6.0.png" width=287 height=255"> 
+<img src="../../menus/tiny-menu-rtl-6.0.png" width=261 height=243"> 
+
+<li>Sixth place - Office (and Substance yesterday). No support at all for RTL menus - 
+the menus are layed out left-to-right. Screenshot under Mustang:<br><br>
+<img src="../../menus/office-menu-rtl-6.0.png" width=272 height=288"> 
+</ul>
+
+The above support for RTL menus in Substance is available in the release candidate 
+of version 2.2. In addition, the version 2.3 will provide full support for RTL features 
+(including additional UI elements that Substance adds). Great thanks to the reporter 
+that made me finally think of this and let's hope that the accelerator alignment 
+issue will be addressed in the final release of Mustang.

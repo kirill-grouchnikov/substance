@@ -1,0 +1,536 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Substance 2.3 release</title>
+</head>
+
+<body>
+
+<h1>Substance 2.3 <font color="darkblue">Firenze</font> - new features</h1>
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for RTL orientation</b></td>
+    <td width="80%" valign="top">Full support for right-to-left (RTL)
+    orientation for both core Swing components and Substance-specific
+    UI controls. Shown below are screenshots for RTL combobox, progress
+    bar, tabbed pane, internal frame title pane and menu search panel
+    (last two on the same screenshot in SUNSET theme).
+    <br><br>
+    <table border=0>
+    <tr>
+    <td>
+    <img src="rtl-combo.png" width="107" height="126"><br><br>
+    </td>
+    <td>
+    <img src="rtl-progress-bar.png" width="161" height="28"><br><br>
+    <img src="rtl-tabs.png" width="204" height="25"><br><br>
+    <img src="rtl-title-pane.png" width="273" height="49"><br><br>
+    </td>
+    </tr>
+    </table>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Better support for dark themes</b></td>
+    <td width="80%" valign="top">Better support for dark themes has been provided.
+    The first screenshot below is from the previous version 2.2, the second
+    screenshot below is from the new version 2.3 (both screenshots use EBONY theme).
+    <br><br>
+    <img src="themes-dark-before.png" width="219" height="139">
+    <img src="themes-dark.png" width="219" height="139">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Inverted themes</b></td>
+    <td width="80%" valign="top">Added support for inverted themes. In order to enable inverted
+    themes, use one of
+    <ul>
+    <li><font color="darkblue">UIManager.put(SubstanceLookAndFeel.ENABLE_INVERTED_THEMES,
+    Boolean.TRUE)</font>
+    <li><font color="darkblue">-Dsubstancelaf.enableInvertedThemes</font> VM flag
+    </ul>
+    When inverted themes are enabled, the <font color="darkblue">SubstanceLookAndFeel.getAllThemes()</font>
+    function returns inverted themes for all bright and cold themes. The matching theme kind is
+    <font color="darkblue">ThemeKind.INVERTED</font>. All the colors of the original
+    theme are inverted, effectively making the non-active colors dark. A screenshot of
+    inverted AQUA theme with EXCEED watermark from <a href="https://substance-watermark-pack.dev.java.net">watermark
+    pack</a>:
+    <br><br><img src="themes-inverted-aqua.png" width="219" height="139">
+    <br><br>A screenshot of inverted LIME GREEN theme with CROSSHATCH watermark:
+    <br><br><img src="themes-inverted-lime-green.png" width="219" height="139">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Mixed themes</b></td>
+    <td width="80%" valign="top">A mixed theme uses two base themes (main and secondary) in order
+    to create blended graphics. The matching theme kind is <font color="darkblue">ThemeKind.MIXED</font>.
+    The class <font color="darkblue">org.jvnet.substance.theme.SubstanceMixBiTheme</font> provides
+    a constructor that takes two <font color="darkblue">SubstanceTheme</font> instances.
+    In order to enable a mixed theme globally in your application, use the following:
+    <ul>
+    <li><font color="darkblue">SubstanceLookAndFeel.addMixedTheme(SubstanceMixBiTheme)</font> - enables a single mixed
+    theme.
+    <li><font color="darkblue">SubstanceLookAndFeel.addMixedTheme(SubstanceTheme, SubstanceTheme)</font> - enables
+    a single mixed theme.
+    <li><font color="darkblue">SubstanceLookAndFeel.addMixedThemeBy(SubstanceTheme)</font> - enables a collection
+    of mixed themes where the main theme is the specified parameter and the secondary theme
+    is a theme of the same theme kind.
+    </ul>
+    Once a theme is enabled globally,  the <font color="darkblue">SubstanceLookAndFeel.getAllThemes()</font>
+    function returns this theme. In addition, you can set a mixed theme locally on some button using
+    the <font color="darkblue">SubstanceLookAndFeel.BUTTON_THEME_PROPERTY</font> property. Here are few
+    examples of mixed themes:
+    <br><br>
+    Six "pill" buttons using local mixed themes. The themes are : AQUA + LIGHT AQUA, AQUA + BOTTLE
+    GREEN, BARBY PINK + RASPBERRY, BOTTLE GREEN + LIME GREEN, BROWN + SUN GLARE,
+    SUNSET + ORANGE:
+    <br><br> <img src="themes-mixed-buttons.png" width="459" height="27">
+
+    <br><br>BROWN + SUN GLARE global theme set. The controls (tabbed pabe, scroll bars) are using
+    the global theme:
+    <br><br> <img src="themes-mixed-controls.png" width="395" height="208">
+
+    <br><br>SKY HIGH + TURQUOISE LAKE (both from <a href="https://substance-theme-pack.dev.java.net">theme
+    pack</a>) theme selected from <a href="https://substance-netbeans.dev.java.net">NetBeans module</a>.
+    In addition, CLASSIC button shaper and SPECULAR gradient painter are used:
+    <br><br> <img src="themes-mixed-controls-netbeans.png" width="344" height="254">
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Tinted, toned and shaded themes</b></td>
+    <td width="80%" valign="top">All Substance themes can be <b>tinted</b> (shifted towards white),
+    <b>toned</b> (shifted towards gray) and <b>shaded</b> (shifted towards black).
+    <ul>
+    <li>In order to tone a theme, use
+       <font color="darkblue">org.jvnet.substance.theme.SubstanceTintTheme</font>.
+    <li>In order to tint a theme, use
+       <font color="darkblue">org.jvnet.substance.theme.SubstanceToneTheme</font>.
+    <li>In order to shade a theme, use
+       <font color="darkblue">org.jvnet.substance.theme.SubstanceShadeTheme</font>.
+    </ul>
+    The following screenshots illustrate the original (AQUA) theme, 40% toned, 40% tinted
+    and 40% shaded versions of the original (AQUA) theme:
+    <br><br>
+    <img src="aqua-theme-original.png" width="300" height="200">
+    <img src="aqua-theme-tinted.png" width="300" height="200">
+    <img src="aqua-theme-toned.png" width="300" height="200">
+    <img src="aqua-theme-shaded.png" width="300" height="200">
+    </td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Icons for watermark menu items in the system menu</b></td>
+    <td width="80%" valign="top">Menu items for changing the current watermark
+    in the system menu have preview icons:
+    <br><br> <img src="menu-watermark-icons.png" width="178" height="346">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Image watermark kind</b></td>
+    <td width="80%" valign="top">The <font color="darkblue">SubstanceConstants.ImageWatermarkKind</font>
+    enum defines the following kinds of image watermark:
+    <ul>
+    <li><font color="darkblue">SCREEN_CENTER_SCALE</font> - the default behaviour. The image is centered
+    in the screen and scaled down if necessary.
+    <li><font color="darkblue">SCREEN_TILE</font> - the image is tiled starting from the screen top-left corner
+    and not scaled.
+    <li><font color="darkblue">APP_ANCHOR</font> - the image is anchored to the top-left corner of the
+    application frame and not scaled.
+    <li><font color="darkblue">APP_CENTER</font> - the image is anchored to the center of the
+    application frame and not scaled.
+    <li><font color="darkblue">APP_TILE</font> - the image is tiled starting from the top-left corner of the
+    application frame and not scaled.
+    </ul>
+    In order to set the image watermark kind use
+    <ul>
+    <li><font color="darkblue">SubstanceLookAndFeel.setImageWatermarkKind(ImageWatermarkKind)</font>
+    <li><font color="darkblue">-Dsubstancelaf.watermark.image.kind</font> VM property. The value
+    should match the name of one of the <font color="darkblue">SubstanceConstants.ImageWatermarkKind</font>
+    enum values.
+    </ul>
+    An example of <font color="darkblue">APP_TILE</font> image watermark kind:
+    <br><br><img src="image-watermark-tile.png" width="305" height="166">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Image watermark opacity</b></td>
+    <td width="80%" valign="top">Added option to specify the opacity of the image watermark.
+    The default value is 0.2 and can be changed by
+    <ul>
+    <li><font color="darkblue">SubstanceLookAndFeel.setImageWatermarkOpacity(float)</font>.
+    The value should be a float in 0.0-1.0 range.
+    <li><font color="darkblue">-Dsubstancelaf.watermark.image.opacity</font> VM property. The value
+    should be a float in 0.0-1.0 range.
+    </ul>
+    An example of default opacity (0.2) and custom opacity (0.6):
+    <br><br>
+    <img src="image-watermark-tile.png" width="305" height="166">
+    <img src="image-watermark-opacity.png" width="305" height="166">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Regular watermarks are theme-based</b></td>
+    <td width="80%" valign="top">Non-image watermarks use theme-based colors.
+    An example of KATAKANA watermark under FAUVE MAUVE and SPRING LEAF
+    themes (from <a href="https://substance-theme-pack.dev.java.net">theme pack</a>):
+    <br><br>
+    <img src="watermark-color-fauve-mauve.png" width="327" height="155">
+    <img src="watermark-color-spring-leaf.png" width="327" height="155">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Noise-based watermarks</b></td>
+    <td width="80%" valign="top">Seven new noise-based watermarks (shown under EBONY theme):
+    <br><br><font color="darkblue">Copperplate Engraving</font><br>
+    <img src="watermark-noise-copperplate-engraving.png" width="300" height="200">
+    <br><br><font color="darkblue">Fabric</font><br>
+    <img src="watermark-noise-fabric.png" width="300" height="200">
+    <br><br><font color="darkblue">Magnetic Field</font><br>
+    <img src="watermark-noise-magnetic-field.png" width="300" height="200">
+    <br><br><font color="darkblue">Marble Vein</font><br>
+    <img src="watermark-noise-marble-vein.png" width="300" height="200">
+    <br><br><font color="darkblue">Maze</font><br>
+    <img src="watermark-noise-maze.png" width="300" height="200">
+    <br><br><font color="darkblue">Plankton</font><br>
+    <img src="watermark-noise-plankton.png" width="300" height="200">
+    <br><br><font color="darkblue">Wood</font><br>
+    <img src="watermark-noise-wood.png" width="300" height="200">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Additional focus ring kinds</b></td>
+    <td width="80%" valign="top">Added two new focus kinds in
+    <font color="darkblue">SubstanceConstants.FocusKind</font> enum -
+    <font color="darkblue">UNDERLINE</font> and <font color="darkblue">STRONG_UNDERLINE</font>. The
+    screenshot is under CROSSHATCH watermark:
+    <br><br>
+    <img src="focus-underline.png" width="132" height="52">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Configuring toolbar flatness</b></td>
+    <td width="80%" valign="top">New client property <font color="darkblue">SubstanceLookAndFeel.TOOLBAR_BUTTON_FLAT</font>
+    defines the appearance of non-rollover non-selected buttons in toolbars. The default appearance
+    is flat (no background, no border) and can be changed by setting the above property to
+    <font color="darkblue">Boolean.FALSE</font> on the button itself, on the toolbar or globally
+    on UIManager. The top toolbar in the screenshot has default behaviour (all buttons are flat),
+    the bottom toolbar is marked with the above property and all its buttons are not flat (under LATCH
+    watermark):
+    <br><br>
+    <img src="toolbar-flatness.png" width="392" height="54">
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Tab overview dialog</b></td>
+    <td width="80%" valign="top">The <font color="darkblue">org.jvnet.substance.tabbed.TabPreviewPainter</font>
+    class provides an option to have a tab overview button. The
+    <font color="darkblue">org.jvnet.substance.tabbed.DefaultTabPreviewPainter</font> provides a default
+    implementation of this abstract class. In order to set the tab preview painter, use client property
+    <font color="darkblue">SubstanceLookAndFeel.TABBED_PANE_PREVIEW_PAINTER</font> on either tabbed pane
+    or globally on UIManager. Value should be an instance of the above class. Once this property is
+    set, the tabbed pane will show an overview button (situated according to the tab placement). Shown below
+    is the tab with tab overview button on TOP and BOTTOM placement:
+    <br><br>
+    <img src="tab-overview-button-top.png" width="188" height="56">
+    <img src="tab-overview-button-bottom.png" width="188" height="56">
+    <br><br>
+    When the tab overview button is clicked, the tab overview dialog is shown and
+    a separate thread starts populating this dialog with preview thumbnails of all
+    the tab components:
+    <br><br>
+    <img src="tab-overview-dialog.png" width="392" height="437">
+    <br><br>
+    Clicking on a tab thumbnail closes the tab overview dialog and selects the
+    matching tab component. Basic rollover effects and tooltip messages are provided
+    on the tab overview widgets.
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Tab preview window</b></td>
+    <td width="80%" valign="top">The <font color="darkblue">org.jvnet.substance.tabbed.TabPreviewPainter</font>
+    class provides an option to have a tab preview window that will be shown when the mouse
+    hovers over a tab. The
+    <font color="darkblue">org.jvnet.substance.tabbed.DefaultTabPreviewPainter</font> provides a default
+    implementation of this abstract class. In order to set the tab preview painter, use client property
+    <font color="darkblue">SubstanceLookAndFeel.TABBED_PANE_PREVIEW_PAINTER</font> on either tabbed pane
+    or globally on UIManager. Value should be an instance of the above class. Once this property is
+    set, the tabbed pane will show preview window of the tab under mouse (aligned according to the tab placement):
+    <br><br>
+    <img src="tab-preview-window.png" width="442" height="177">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>One-click multiple tab close</b></td>
+    <td width="80%" valign="top">The <font color="darkblue">org.jvnet.substance.tabbed.TabCloseCallback</font>
+    interface provides an option to install a one-click tab close functionality on JTabbedPanes. An instance of
+    this interface can be set on either the tab component, the tabbed pane or globally on UIManager using
+    the <font color="darkblue">SubstanceLookAndFeel.TABBED_PANE_CLOSE_CALLBACK</font> client property. The
+    implementation should return tooltips for relevant actions and the
+    <font color="darkblue">SubstanceConstants.TabCloseKind</font> value for mouse click on tab area and on
+    close button area. The values of this enum are:
+    <ul>
+    <li><font color="darkblue">NONE</font> - take no action
+    <li><font color="darkblue">THIS</font> - close tab under click
+    <li><font color="darkblue">ALL</font> - close all tabs
+    <li><font color="darkblue">ALL_BUT_THIS</font> - close all tabs but tab under click
+    </ul>
+    If a <font color="darkblue">VetoableMultipleTabCloseListener</font> is registered on
+    the tabbed pane / globally, it may veto the above result. It is application's responsibility
+    to provide consistent implementation of these two interfaces. A sample screenshot of
+    NetBeans-like implementation of one-click tab closing:
+    <br><br>
+    <img src="tabbed-close-tooltip.png" width="348" height="81">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Text alignment on tabs</b></td>
+    <td width="80%" valign="top"><font color="darkblue">SubstanceConstants.TabTextAlignmentKind</font>
+    enum specifies available text alignment kinds for tabbed panes with <font color="darkblue">LEFT</font>
+    and <font color="darkblue">RIGHT</font> placement. The following kinds are available:
+    <ul>
+    <li><font color="darkblue">DEFAULT</font> - default alignment (centered).
+    <li><font color="darkblue">ALWAYS_LEFT</font> - text is always aligned to left.
+    <li><font color="darkblue">ALWAYS_RIGHT</font> - text is always aligned to right.
+    <li><font color="darkblue">FOLLOW_PLACEMENT</font> - on <font color="darkblue">LEFT</font>
+    placement text is aligned to left, on <font color="darkblue">RIGHT</font> placement text is
+    aligned to right.
+    <li><font color="darkblue">FOLLOW_ORIENTATION</font> - recommended alignment. For
+    LTR orientation text is aligned to left, for RTL orientation text is aligned to right.
+    </ul>
+    In order to set the text alignment, use client property
+    <font color="darkblue">SubstanceLookAndFeel.TABBED_PANE_TEXT_ALIGNMENT_KIND</font> on either tabbed pane
+    or globally on UIManager. Value should be an element of the above enum. Screenshots of <font color="darkblue">DEFAULT</font>,
+    <font color="darkblue">ALWAYS_LEFT</font> and <font color="darkblue">ALWAYS_RIGHT</font> alignment:
+    <br><br>
+    <img src="tabbed-text-default.png" width="100" height="100">
+    <img src="tabbed-text-left.png" width="100" height="100">
+    <img src="tabbed-text-right.png" width="100" height="100">
+    <br><br>
+    Screenshot of <font color="darkblue">FOLLOW_ORIENTATION</font> in RTL-oriented application with
+    <font color="darkblue">RIGHT</font> placement:
+    <br><br>
+    <img src="tabbed-text-orientation.png" width="100" height="100">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Color picker in color chooser</b></td>
+    <td width="80%" valign="top">Integrated <a href="http://www.randelshofer.ch/quaqua/download.html">Quaqua 3.6.2</a>
+    color chooser with color picker functionality:
+    <br><br>
+    <img src="colorchooser-picker.png" width="152" height="115">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Constant themes for option pane icons</b></td>
+    <td width="80%" valign="top">The <font color="darkblue">SubstanceLookAndFeel.setToUseThemesOnDialogs(boolean)</font>
+    allows specifying that the option pane icons should use constant themes. The themes are:
+    <ul>
+    <li><font color="darkblue">BOTTLE GREEN</font> for <font color="darkblue">JOptionPane.INFORMATION_MESSAGE</font>
+    <li><font color="darkblue">LIGHT AQUA</font> for <font color="darkblue">JOptionPane.QUESTION_MESSAGE</font>
+    <li><font color="darkblue">SUNSET</font> for <font color="darkblue">JOptionPane.WARNING_MESSAGE</font>
+    <li><font color="darkblue">SUNFIRE RED</font> (not public) for <font color="darkblue">JOptionPane.ERROR_MESSAGE</font>
+    </ul>
+    Screenshots of different option panes under SQUARE MOSAIC watermark and GOOSEBERRY JUNGLE
+    theme from <a href="https://substance-theme-pack.dev.java.net">theme pack</a> (note that the icon theme does not
+    match the dialog theme):
+    <br><br>
+    <img src="option-pane-info.png" width=268 height=118>
+    <img src="option-pane-question.png" width=268 height=118>
+    <img src="option-pane-error.png" width=268 height=118>
+    <img src="option-pane-warning.png" width=268 height=118>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Improved painting of title panes</b></td>
+    <td width="80%" valign="top">Improved visual appearance (drop shadows) for
+    title panes - both frame / dialog title and icon echo overlay.
+    The first screenshot below is from the previous version 2.2, the second
+    screenshot below is from the new version 2.3.
+    <br><br>
+    <img src="title-pane-before.png" width="264" height="26">
+    <img src="title-pane.png" width="264" height="26">
+    </td>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Flyout orientation of combobox popup window</b></td>
+    <td width="80%" valign="top">Configurable flyout orientation of
+    combobox popup window is controlled by setting the
+    <font color="darkblue">SubstanceLookAndFeel.COMBO_BOX_POPUP_FLYOUT_ORIENTATION</font>
+    client property on either the combobox or globally on UIManager. Valid value is one
+    of the following integers:
+    <ul>
+    <li><font color="darkblue">SwingConstants.SOUTH</font> - default value. Popup is shown
+    under the combobox.
+    <li><font color="darkblue">SwingConstants.NORTH</font> - popup is shown above the combobox.
+    <li><font color="darkblue">SwingConstants.EAST</font> - popup is shown to the right of the combobox
+    aligned to the combobox top.
+    <li><font color="darkblue">SwingConstants.WEST</font> - popup is shown to the left of the combobox
+    aligned to the combobox top.
+    <li><font color="darkblue">SwingConstants.CENTER</font> - popup is shown over the combobox
+    and vertically centered.
+    </ul>
+    The combobox arrow orientation is set accordingly:
+    <br><br>
+    <img src="combo-box-flyout.png" width="250" height="165">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b></b></td>
+    <td width="80%" valign="top">
+    </td>
+  </tr>
+
+</table>
+</body>
+
+</html>

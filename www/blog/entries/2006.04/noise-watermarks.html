@@ -1,0 +1,340 @@
+Inexpensive noise generation pioneered by <a href="http://mrl.nyu.edu/~perlin/">Ken Perlin</a> 
+has earned him an <a href="http://mrl.nyu.edu/~perlin/doc/oscar.html">Oscar award</a> in 1997. 
+See <a href="http://freespace.virgin.net/hugo.elias/models/m_perlin.htm">this page</a> for a 
+background of Perlin noise generator and transformations that can be applied to the resulting 
+images in order to imitate various textures such as wood or marble.<br><br>
+
+In its original form, the 2D Perlin noise looks like this:
+<br><br>
+<img src="../../../release-info/2.3/watermark-noise-generic-noise.png" width=300 heigth=200>
+<br><br>
+Not much to see here, but this is only the beginning. Following an idea similar to that of 
+SwingX painters (hopefully this will not 
+<a href="http://jroller.com/page/gfx?entry=advanced_swingx_painters_demo">aggravate 
+commercial Swing vendors</a> - read the comments on this entry in Romain's blog), we can apply 
+a chain of filters on this base noise to create some interesting textures. First, we start with 
+the base interface for the noide filter:
+<br><br>
+    <code>
+<font color="#7f0055"><b>public&nbsp;interface&nbsp;</b></font><font color="#000000">NoiseFilter&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Applies&nbsp;filter&nbsp;on&nbsp;the&nbsp;noise&nbsp;at&nbsp;the&nbsp;specified&nbsp;location.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">x</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;coordinate.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">y</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Y&nbsp;coordinate.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">z</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Z&nbsp;coordinate.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">origValue</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;original&nbsp;noise&nbsp;value.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">New&nbsp;noise&nbsp;value.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">apply</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">x,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">y,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">z,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">origValue</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Kind&nbsp;of&nbsp;trigonometric&nbsp;function.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@author&nbsp;</font><font color="#3f5fbf">Kirill&nbsp;Grouchnikov</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;enum&nbsp;</b></font><font color="#000000">TrigKind&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SINE,&nbsp;COSINE</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#000000">}</font></code>
+    
+<br><br>
+Simple implementation would be that of a <b>sharpening</b> filter:
+<br><br>
+    <code>
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">SharpenFilter&nbsp;</font><font color="#7f0055"><b>implements&nbsp;</b></font><font color="#000000">NoiseFilter&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f7f5f">/*</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;(non-Javadoc)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;@see&nbsp;org.jvnet.substance.painter.noise.NoiseFilter#apply(double,&nbsp;double,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double,&nbsp;double)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">apply</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">x,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">y,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">z,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">origValue</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">Math.sqrt</font><font color="#000000">(</font><font color="#000000">origValue</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#000000">}</font></code>
+    <br><br>
+Another implementation focuses on the medium values and subdues values around 0 and 1 
+(effectively doubling the number of original noise features):
+<br><br>
+    <code>
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">MedianBeakFilter&nbsp;</font><font color="#7f0055"><b>implements&nbsp;</b></font><font color="#000000">NoiseFilter&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f7f5f">/*</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;(non-Javadoc)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;@see&nbsp;org.jvnet.substance.painter.noise.NoiseFilter#apply(double,&nbsp;double,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double,&nbsp;double)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">apply</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">x,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">y,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">z,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">origValue</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">Math.sqrt</font><font color="#000000">(</font><font color="#000000">Math.abs</font><font color="#000000">(</font><font color="#990000">2&nbsp;</font><font color="#000000">*&nbsp;origValue&nbsp;-&nbsp;</font><font color="#990000">1</font><font color="#000000">))</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#000000">}</font></code>
+    <br><br>
+
+Now we introduce a compound noise filter which is really a chain of simple or compound 
+filters applied one after another:
+<br><br>
+    <code>
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">CompoundNoiseFilter&nbsp;</font><font color="#7f0055"><b>implements&nbsp;</b></font><font color="#000000">NoiseFilter&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Filter&nbsp;chain.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>protected&nbsp;</b></font><font color="#000000">LinkedList&lt;NoiseFilter&gt;&nbsp;chain;</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;a&nbsp;new&nbsp;compound&nbsp;filter.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">chain</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Filter&nbsp;chain.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">CompoundNoiseFilter</font><font color="#000000">(</font><font color="#000000">NoiseFilter...&nbsp;chain</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.chain&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">LinkedList&lt;NoiseFilter&gt;</font><font color="#000000">()</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>for&nbsp;</b></font><font color="#000000">(</font><font color="#000000">NoiseFilter&nbsp;link&nbsp;:&nbsp;chain</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.chain.add</font><font color="#000000">(</font><font color="#000000">link</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f7f5f">/*</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;(non-Javadoc)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;@see&nbsp;org.jvnet.substance.painter.noise.NoiseFilter#apply(double,&nbsp;double,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double,&nbsp;double)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">apply</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">x,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">y,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">z,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">origValue</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">val&nbsp;=&nbsp;origValue;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>for&nbsp;</b></font><font color="#000000">(</font><font color="#000000">NoiseFilter&nbsp;link&nbsp;:&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.chain</font><font color="#000000">)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">val&nbsp;=&nbsp;link.apply</font><font color="#000000">(</font><font color="#000000">x,&nbsp;y,&nbsp;z,&nbsp;val</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">val;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#000000">}</font></code>
+    <br><br>
+
+Now we are ready to create two simple noise images based on the above filters:
+<br><br>
+<img src="../../../release-info/2.3/watermark-noise-maze.png" width=300 heigth=200>
+<br><br>
+
+is created by applying the median filter and sharpening the result (which brings out 
+maze-like structure of values that were close to 0.5 in the original noise map):<br><br>
+
+    <code>
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">SubstanceMazeWatermark&nbsp;</font><font color="#7f0055"><b>extends&nbsp;</b></font><font color="#000000">SubstanceNoiseWatermark&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceMazeWatermark</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>super</b></font><font color="#000000">(</font><font color="#000000">SubstanceMazeWatermark.getName</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">0.1</font><font color="#000000">,&nbsp;</font><font color="#990000">0.1</font><font color="#000000">,&nbsp;false,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">CompoundNoiseFilter</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">MedianBeakFilter</font><font color="#000000">()</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SharpenFilter</font><font color="#000000">())</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>false</b></font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">String&nbsp;getName</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#2a00ff">&#34;Maze&#34;</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#000000">}</font></code>
+    <br><br>
+
+<br><br>
+<img src="../../../release-info/2.3/watermark-noise-plankton.png" width=300 heigth=200>
+<br><br>
+
+is created by applying the median filter twice (which quadruples the number of noise 
+features and sharpens them as well):
+<br><br>
+    <code>
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">SubstancePlanktonWatermark&nbsp;</font><font color="#7f0055"><b>extends&nbsp;</b></font><font color="#000000">SubstanceNoiseWatermark&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstancePlanktonWatermark</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>super</b></font><font color="#000000">(</font><font color="#000000">SubstancePlanktonWatermark.getName</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">0.1</font><font color="#000000">,&nbsp;</font><font color="#990000">0.1</font><font color="#000000">,&nbsp;false,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">CompoundNoiseFilter</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">MedianBeakFilter</font><font color="#000000">()</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">MedianBeakFilter</font><font color="#000000">())</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>false</b></font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">String&nbsp;getName</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#2a00ff">&#34;Plankton&#34;</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#000000">}</font></code>
+    <br><br>
+
+Now we can introduce another noise filter - this filter creates a wood-like texture:<br><br>
+
+    <code>
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">WoodFilter&nbsp;</font><font color="#7f0055"><b>implements&nbsp;</b></font><font color="#000000">NoiseFilter&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Stretch&nbsp;factor.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>protected&nbsp;</b></font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">factor;</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;new&nbsp;wood&nbsp;filter&nbsp;with&nbsp;default&nbsp;stretch&nbsp;factor.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">WoodFilter</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">(</font><font color="#990000">20.0</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Create&nbsp;new&nbsp;wood&nbsp;filter.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">factor</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stretch&nbsp;factor.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">WoodFilter</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">factor</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.factor&nbsp;=&nbsp;factor;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f7f5f">/*</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;(non-Javadoc)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;@see&nbsp;org.jvnet.substance.painter.noise.NoiseFilter#apply(double,&nbsp;double,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double,&nbsp;double)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">apply</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">x,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">y,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">z,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">origValue</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;this</b></font><font color="#000000">.factor&nbsp;*&nbsp;origValue&nbsp;-&nbsp;</font><font color="#000000">(</font><font color="#7f0055"><b>int</b></font><font color="#000000">)&nbsp;(</font><font color="#7f0055"><b>this</b></font><font color="#000000">.factor&nbsp;*&nbsp;origValue</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#000000">}</font></code>
+    
+<br><br>
+<img src="../../../release-info/2.3/watermark-noise-wood.png" width=300 heigth=200>
+<br><br>
+
+is created by simply applying the above filter:<br><br>
+    <code>
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">SubstanceWoodWatermark&nbsp;</font><font color="#7f0055"><b>extends&nbsp;</b></font><font color="#000000">SubstanceNoiseWatermark&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceWoodWatermark</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>super</b></font><font color="#000000">(</font><font color="#000000">SubstanceWoodWatermark.getName</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">0.01</font><font color="#000000">,&nbsp;</font><font color="#990000">0.01</font><font color="#000000">,&nbsp;false,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">WoodFilter</font><font color="#000000">(</font><font color="#990000">30.0</font><font color="#000000">)</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>true</b></font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">String&nbsp;getName</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#2a00ff">&#34;Wood&#34;</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#000000">}</font></code>
+    <br><br>
+
+
+<br><br>
+<img src="../../../release-info/2.3/watermark-noise-magnetic-field.png" width=300 heigth=200>
+<br><br>
+
+is created by applying a wood filter followed by median filter:<br><br>
+    <code>
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">SubstanceMagneticFieldWatermark&nbsp;</font><font color="#7f0055"><b>extends&nbsp;</b></font><font color="#000000">SubstanceNoiseWatermark&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceMagneticFieldWatermark</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>super</b></font><font color="#000000">(</font><font color="#000000">SubstanceMagneticFieldWatermark.getName</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">0.01</font><font color="#000000">,&nbsp;</font><font color="#990000">0.01</font><font color="#000000">,&nbsp;false,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">CompoundNoiseFilter</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">WoodFilter</font><font color="#000000">(</font><font color="#990000">15.0</font><font color="#000000">)</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">MedianBeakFilter</font><font color="#000000">())</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>true</b></font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">String&nbsp;getName</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#2a00ff">&#34;Magnetic&nbsp;Field&#34;</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#000000">}</font></code>
+    <br><br>
+
+Another simple noise filter uses trigonometric functions to produce marble-like structure:<br><br>
+
+    <code>
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">MarbleFilter&nbsp;</font><font color="#7f0055"><b>extends&nbsp;</b></font><font color="#000000">BaseNoiseFilter&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;a&nbsp;new&nbsp;marble&nbsp;filter.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">xFactor</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stretch&nbsp;factor&nbsp;for&nbsp;X&nbsp;axis.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">yFactor</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stretch&nbsp;factor&nbsp;for&nbsp;Y&nbsp;axis.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">zFactor</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stretch&nbsp;factor&nbsp;for&nbsp;Z&nbsp;axis.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">trigKind</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Trigonometry&nbsp;function.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">MarbleFilter</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">xFactor,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">yFactor,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">zFactor,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">TrigKind&nbsp;trigKind</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>super</b></font><font color="#000000">(</font><font color="#000000">xFactor,&nbsp;yFactor,&nbsp;zFactor,&nbsp;</font><font color="#990000">1.0</font><font color="#000000">,&nbsp;trigKind</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f7f5f">/*</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;(non-Javadoc)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;@see&nbsp;org.jvnet.substance.painter.noise.NoiseFilter#apply(double,&nbsp;double,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double,&nbsp;double)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">apply</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">x,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">y,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">z,&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">origValue</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">trans&nbsp;=&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.xFactor&nbsp;*&nbsp;x&nbsp;+&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.yFactor&nbsp;*&nbsp;y&nbsp;+&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.zFactor&nbsp;*&nbsp;z</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">+&nbsp;origValue;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">trig&nbsp;=&nbsp;</font><font color="#000000">(</font><font color="#7f0055"><b>this</b></font><font color="#000000">.trigKind&nbsp;==&nbsp;TrigKind.COSINE</font><font color="#000000">)&nbsp;</font><font color="#000000">?&nbsp;Math.cos</font><font color="#000000">(</font><font color="#000000">trans</font><font color="#000000">)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">:&nbsp;Math.sin</font><font color="#000000">(</font><font color="#000000">trans</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#990000">0.5&nbsp;</font><font color="#000000">+&nbsp;</font><font color="#990000">0.5&nbsp;</font><font color="#000000">*&nbsp;trig;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font></code>
+    <br><br>
+
+<br><br>
+<img src="../../../release-info/2.3/watermark-noise-marble-vein.png" width=300 heigth=200>
+<br><br>
+
+is created by applying the above filter followed by a median filter:<br><br>
+    <code>
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">SubstanceMarbleVeinWatermark&nbsp;</font><font color="#7f0055"><b>extends&nbsp;</b></font><font color="#000000">SubstanceNoiseWatermark&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceMarbleVeinWatermark</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>super</b></font><font color="#000000">(</font><font color="#000000">SubstanceMarbleVeinWatermark.getName</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">0.1</font><font color="#000000">,&nbsp;</font><font color="#990000">0.1</font><font color="#000000">,&nbsp;false,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">CompoundNoiseFilter</font><font color="#000000">(</font><font color="#000000">MarbleFilter.getXFilter</font><font color="#000000">(</font><font color="#990000">0.1</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">TrigKind.COSINE</font><font color="#000000">)</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">MedianBeakFilter</font><font color="#000000">())</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>false</b></font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">String&nbsp;getName</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#2a00ff">&#34;Marble&nbsp;Vein&#34;</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#000000">}</font></code>
+    <br><br>
+
+The last filter produces a fabric-like texture. It is in itself a chain of filters, 
+each one producing an oriented fabric texture. Applying two differently oriented textures 
+produces the following mix:
+
+<br><br>
+<img src="../../../release-info/2.3/watermark-noise-fabric.png" width=300 heigth=200>
+<br><br>
+
+which is created by<br><br>
+    <code>
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">SubstanceFabricWatermark&nbsp;</font><font color="#7f0055"><b>extends&nbsp;</b></font><font color="#000000">SubstanceNoiseWatermark&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceFabricWatermark</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>super</b></font><font color="#000000">(</font><font color="#000000">SubstanceFabricWatermark.getName</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">0.1</font><font color="#000000">,&nbsp;</font><font color="#990000">0.1</font><font color="#000000">,&nbsp;false,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">FabricFilter</font><font color="#000000">(</font><font color="#000000">FabricFilterLink.getXLink</font><font color="#000000">(</font><font color="#990000">1.0</font><font color="#000000">,&nbsp;</font><font color="#990000">10.0</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">TrigKind.SINE</font><font color="#000000">)</font><font color="#000000">,&nbsp;FabricFilterLink.getYLink</font><font color="#000000">(</font><font color="#990000">1.0</font><font color="#000000">,&nbsp;</font><font color="#990000">10.0</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">TrigKind.COSINE</font><font color="#000000">))</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>false</b></font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">String&nbsp;getName</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#2a00ff">&#34;Fabric&#34;</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#000000">}</font></code>
+    <br><br>
+
+The last transformation (and my favourite one) imitates copperplate engraving
+
+<br><br>
+<img src="../../../release-info/2.3/watermark-noise-copperplate-engraving.png" width=300 heigth=200>
+<br><br>
+
+ and is created by a chain of wood, fabric and median filters:
+<br><br>
+    <code>
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">SubstanceCopperplateEngravingWatermark&nbsp;</font><font color="#7f0055"><b>extends</b></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceNoiseWatermark&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceCopperplateEngravingWatermark</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>super</b></font><font color="#000000">(</font><font color="#000000">SubstanceCopperplateEngravingWatermark.getName</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">0.01</font><font color="#000000">,&nbsp;</font><font color="#990000">0.01</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">false,&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">CompoundNoiseFilter</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">WoodFilter</font><font color="#000000">(</font><font color="#990000">15.0</font><font color="#000000">)</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">FabricFilter</font><font color="#000000">(</font><font color="#000000">FabricFilterLink.getXLink</font><font color="#000000">(</font><font color="#990000">1.0</font><font color="#000000">,&nbsp;</font><font color="#990000">10.0</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">TrigKind.SINE</font><font color="#000000">)</font><font color="#000000">,&nbsp;FabricFilterLink.getYLink</font><font color="#000000">(</font><font color="#990000">1.0</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#990000">10.0</font><font color="#000000">,&nbsp;TrigKind.COSINE</font><font color="#000000">))</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">MedianBeakFilter</font><font color="#000000">())</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>true</b></font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">String&nbsp;getName</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#2a00ff">&#34;Copperplate&nbsp;Engraving&#34;</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#000000">}</font></code>
+    <br><br>
+
+In your application you can either use the above noise-based watermarks or create your 
+own base and compound filters in just a few lines of code.

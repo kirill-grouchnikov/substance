@@ -1,0 +1,444 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2007 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+<title>Substance 5.0 release</title>
+</head>
+
+<body>
+
+<h1>Substance 5.0 - new features</h1>
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Performance improvements</b></td>
+    <td width="80%" valign="top">
+
+    <p>The main emphasis of version 5.0 is on addressing the performance issues
+    	and bringing Substance in line with other core and third-party look-and-feels.
+    	The <a href="https://lightbeam.dev.java.net">LightBeam</a> testbed is used to
+    run the performance tests on different static and dynamic scenarios.</p>
+    
+    <p>For static scenarios (continuous repaint of the same content to
+    	an offscreen image) Substance 5.0 is on average 3.5 times faster than 
+    	Substance 4.3. For dynamic scenarios (interacting with the content and 
+    	measuring the	both the interaction time and the repaint time), Substance 5.0
+    is on average 2.7 times fatser than Substance 4.3.</p>
+    
+    <p>The full numbers are available for:</p>
+    
+    <ul>
+    	<li><a href="http://www.pushing-pixels.org/?p=319">Reports</a> on static
+    		and dynamic scenarios of Substance 5.0 against other core and third-party 
+    	look-and-feels.</li>
+    	<li><a href="http://www.pushing-pixels.org/?p=348">Reports</a> on static
+    	and dynamic scenarios of various Substance 5.0 skins.</li>
+	  </ul>    	
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Runtime requirements</b></td>
+    <td width="80%" valign="top">
+
+    <p>JRE 6.0 is the new minimum runtime requirement for the
+    	Substance library.</p>
+    	
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Per-window skins</b></td>
+    <td width="80%" valign="top">
+
+    <p>When the new 
+    <code><font color="darkblue"><a href="../../docs/clientprops/SkinProperty.html">SKIN_PROPERTY</a></font></code>
+     client property is installed on a specific
+    	root pane, all controls and areas in that window will use the 
+    	specified skin.</p>
+    	
+    	<p>The screenshot below shows one application with twelve top-level frames.
+    	Each frame has this client property set to a different skin.</p>
+    	
+    <img src="multiple-skins-mosaic-thumb.png" height="299" width="499">
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Enhanced theming layer</b></td>
+    <td width="80%" valign="top">
+
+    <p>Reworked notion of themes. Split the functionality of themes, 
+    	complex themes and skins into 
+    	<a href="../../docs/skins/colorschemes.html">color schemes</a>, 
+    	<a href="../../docs/skins/colorschemebundles.html.html">color scheme bundles</a>, 
+    	<a href="../../docs/skins/overview.html">skins</a>. 
+    	Tweaked most of the core skins to take advantage of the new more 
+    	flexible and straighforward APIs.</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Removed pluggable text rasterizers</b></td>
+    <td width="80%" valign="top">
+
+    <p>Removed support for pluggable text rasterizers 
+    	(<a href="https://substance-bramble.dev.java.net/">Bramble plugin</a> 
+    	based <a href="http://www.pushing-pixels.org/?p=219">on SWT</a>). 
+		  Applications running on Windows Vista are highly encouraged to use
+    	JDK 6u10 and its native text rasterizer that addresses poor
+    	rendering of the default Segoe UI font.</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Removed the default Aqua look</b></td>
+    <td width="80%" valign="top">
+
+    <p>The <code><font color="darkblue">org.jvnet.substance.SubstanceLookAndFeel</font></code>
+    	is now abstract and doesn't have any public constructors. Applications that used
+    	this class (either instantiating the class itself or with 
+    	<code><font color="darkblue">-Dswing.defaultlaf</font></code> VM flag)
+    can:</p>
+    
+    <ul>
+    	<li>Use one of the skin-based look-and-feel instances
+    		(<a href="../../docs/skins/toneddown.html">toned down</a>,
+    		<a href="../../docs/skins/toneddown.html">dark</a> or
+    	<a href="../../docs/skins/toneddown.html">saturated</a>).</li>
+    	<li>Extend the <code><font color="darkblue">SubstanceLookAndFeel</font></code>
+    		class and pass a 
+    		<code><font color="darkblue"><a href="../../docs/skins/overview.html">SubstanceSkin</a></font></code>
+    		instance to the <code>super</code> constructor.</li>
+    	<li>Use the static 
+    		<code><font color="darkblue"><a href="../../docs/api/SetSkin_Instance.html">setSkin(SubstanceSkin)</a></font></code>
+    		or
+    		<code><font color="darkblue"><a href="../../docs/api/SetSkin_ClassName.html">setSkin(String)</a></font></code>
+    	APIs to set the specific skin.</li>
+    </ul>
+
+	  <p>Applications that wish to obtain the old default Aqua look-and-feel
+	  	can use the 
+	  	<code><font color="darkblue">org.jvnet.substance.SubstanceLegacyDefaultLookAndFeel</font></code>
+	  class. This is for legacy support only and will be removed in future releases.</p>
+    		
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>VM flags</b></td>
+    <td width="80%" valign="top">
+
+    <p>The only two <a href="../../docs/vmflags.html">supported VM flags</a> are:</p>
+    <ul>
+    	<li><code><font color="darkblue">-Dsubstancelaf.heapStatusTraceFile</font></code>.
+    		Controls the presence of heap status panels on decorated title panes
+    	and optional logfile name for tracking the heap status.</li>
+    	<li><code><font color="darkblue">-Dsubstancelaf.traceFile</font></code>.
+    		Controls the tracing mode that records allocation of large
+    		images and image cache sizes to pinpoint memory problems.</li>
+    </ul>
+    
+    <p>The following VM flags have been removed in release 5.0:</p>
+    
+    <ul>
+    	<li><code><font color="darkblue">substancelaf.configFile</font></code></li>
+    	<li><code><font color="darkblue">substancelaf.borderPainter</font></code>, 
+    		<code><font color="darkblue">substancelaf.gradientPainter</font></code>, 
+    		<code><font color="darkblue">substancelaf.theme</font></code>, 
+    		<code><font color="darkblue">substancelaf.buttonShaper</font></code>, 
+    		<code><font color="darkblue">substancelaf.titlePainter</font></code>, 
+    		<code><font color="darkblue">substancelaf.watermark</font></code>.
+    		Use the <a href="../../docs/skins/overview.html">SubstanceSkin</a>
+    		APIs to create a custom skin.</li>
+    	<li><code><font color="darkblue">substancelaf.debugUiMode</font></code> - 
+    		use the tools plugin (see below).</li>
+    	<li><code><font color="darkblue">substancelaf.enableInvertedThemes</font></code>, 
+    		<code><font color="darkblue">substancelaf.enableNegatedThemes</font></code></li>
+    	<li><code><font color="darkblue">substancelaf.noExtraElements</font></code></li>
+    	<li><code><font color="darkblue">substancelaf.watermark.image.kind</font></code>, 
+    		<code><font color="darkblue">substancelaf.watermark.image.opacity</font></code>, 
+    		<code><font color="darkblue">substancelaf.watermark.image</font></code>. 
+    		Use the <code><font color="darkblue">SubstanceImageWatermark</font></code> APIs.</li>
+    	<li><code><font color="darkblue">substancelaf.watermark.tobleed</font></code></li>
+    	<li><code><font color="darkblue">substancelaf.useDecorations</font></code>.
+    		Use <code><font color="darkblue">JFrame.setDefaultLookAndFeelDecorated(true)</font></code></code> and
+    		<code><font color="darkblue">JDialog.setDefaultLookAndFeelDecorated(true)</font></code></code> APIs.</li>
+	  </ul>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Client properties</b></td>
+    <td width="80%" valign="top">
+
+    <p>The following client properties specified in 
+    	<code><font color="darkblue">org.jvnet.substance.SubstanceLookAndFeel</font></code> 
+    	have been modified / renamed:</p>
+    
+    <ul>
+      <li><code><font color="darkblue"><a href="../../docs/clientprops/ColorizationFactor.html">COLORIZATION_FACTOR</a></font></code> - 
+  	    the colorization is on by default with value of 50%. To remove colorization, 
+        set the client property value to 0.0.</li>
+      <li><code><font color="darkblue">NO_EXTRA_ELEMENTS</font></code> has been replaced by
+      	<code><font color="darkblue"><a href="../../docs/clientprops/ShowExtraWidgets.html">SHOW_EXTRA_WIDGETS</a></font></code>.
+        The new default mode does not add any extra UI elements (menu search, lock icons etc).</li>
+      <li><code><font color="darkblue">WATERMARK_IGNORE</font></code> and
+      	<code><font color="darkblue">WATERMARK_TO_BLEED</font></code> have been replaced by
+      	<code><font color="darkblue"><a href="../../docs/clientprops/WatermarkVisible.html">WATERMARK_VISIBLE</a></font></code>.
+        Trees, tables, lists and text components don't show watermark unless the new
+        client property is explicitly set to Boolean.TRUE .</li>
+     </ul>
+
+    <p>The following client properties specified in
+    	<code><font color="darkblue">org.jvnet.substance.SubstanceLookAndFeel</font></code> 
+	    have been removed:</p>
+	   
+	   <ul>
+	   	<li><code><font color="darkblue">BACKGROUND_COMPOSITE</font></code>, 
+	   		<code><font color="darkblue">OVERLAY_PROPERTY</font></code>.</li>
+	   	<li><code><font color="darkblue">BORDER_PAINTER_PROPERTY</font></code>, 
+	   		<code><font color="darkblue">GRADIENT_PAINTER_PROPERTY</font></code>, 
+	   		<code><font color="darkblue">THEME_PROPERTY</font></code>, 
+	   		<code><font color="darkblue">TITLE_PAINTER_PROPERTY</font></code>.
+	   		Use the <a href="../../docs/skins/overview.html">SubstanceSkin</a>
+    		APIs to create a custom skin and
+	   		<code><font color="darkblue"><a href="../../docs/clientprops/ColorizationFactor.html">COLORIZATION_FACTOR</a></font></code>
+	   		for colorizing components.</li>
+	   	<li><code><font color="darkblue">ENABLE_INVERTED_THEMES</font></code>, 
+	   		<code><font color="darkblue">ENABLE_NEGATED_THEMES</font></code>.</li>
+	   	<li><code><font color="darkblue">GRIP_PAINTER</font></code>.</li>
+	   	<li><code><font color="darkblue">PAINT_ACTIVE_PROPERTY</font></code>.</li>
+	   	<li><code><font color="darkblue">TABBED_PANE_VERTICAL_ORIENTATION</font></code>, 
+	   		<code><font color="darkblue">TABBED_PANE_VERTICAL_ORIENTATION_ROTATE_ICONS</font></code>. 
+	   		Left / right tabs are always rotated.</li>
+	   	<li><code><font color="darkblue">WATERMARK_IMAGE_KIND</font></code>, 
+	   		<code><font color="darkblue">WATERMARK_IMAGE_OPACITY</font></code>, 
+	   		<code><font color="darkblue">WATERMARK_IMAGE_PROPERTY</font></code>. 
+	   		Use the <code><font color="darkblue">SubstanceImageWatermark</font></code> APIs.</li>
+	   </ul>
+    	
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>APIs</b></td>
+    <td width="80%" valign="top">
+
+		<p>The following APIs have been added to the 
+			<code><font color="darkblue">org.jvnet.substance.SubstanceLookAndFeel</font></code> 
+		class:</p>
+
+		<ul>
+			<li><code><font color="darkblue"><a href="../../docs/api/GetCurrentSkin.html">getCurrentSkin(Component)</a></font></code>
+				to retrieve the current skin of the specified component and the relevant 
+				<code><font color="darkblue"><a href="../../docs/skins/overview.html">SubstanceSkin</a></font></code>
+				APIs to query the settings of that skin.</li>
+			<li><code><font color="darkblue"><a href="../../docs/api/SetWidgetVisible.html">setWidgetVisible(JRootPane, 
+				boolean, SubstanceWidgetType...)</a></font></code> to control the 
+				visibility of widgets. Currently supports menu search and title pane heap status panel 
+			widgets.</li>
+		</ul>
+		
+		<p>The following APIs have been removed from the 
+			<code><font color="darkblue">org.jvnet.substance.SubstanceLookAndFeel</font></code> 
+		class:</p>
+
+		<ul>
+			<li><code><font color="darkblue">addMixedTheme</font></code>, 
+				<code><font color="darkblue">addMixedThemeBy</font></code>, 
+				<code><font color="darkblue">hasMixedThemes</font></code>, 
+				<code><font color="darkblue">removeMixedTheme</font></code>, 
+				<code><font color="darkblue">removeMixedThemeBy</font></code> along with 
+				<code><font color="darkblue">SubstanceMixTheme</font></code> and 
+				<code><font color="darkblue">SubstanceMixBiTheme</font></code>.</li>
+			<li><code><font color="darkblue">getActiveColorScheme</font></code>, 
+				<code><font color="darkblue">getDefaultColorScheme</font></code>, 
+				<code><font color="darkblue">getDisabledColorScheme</font></code>.</li>
+    	<li><code><font color="darkblue">getBackgroundComposite</font></code>, 
+    		<code><font color="darkblue">setBackgroundComposite</font></code>.</li>
+    	<li><code><font color="darkblue">getCurrent*</font></code>, 
+    		<code><font color="darkblue">getCurrent*Name</font></code>, 
+    		<code><font color="darkblue">setCurrent*</font></code>, 
+    		<code><font color="darkblue">register*ChangeListener</font></code>, 
+    		<code><font color="darkblue">unregister*ChangeListener</font></code>, 
+    		<code><font color="darkblue">getAll*s</font></code> 
+    		for border painters, button shapers, gradient painters, themes and 
+    		watermarks. To get the current settings, use 
+    		<code><font color="darkblue"><a href="../../docs/api/GetCurrentSkin.html">getCurrentSkin(Component)</a></font></code> 
+    		and 
+    		<code><font color="darkblue"><a href="../../docs/skins/overview.html">SubstanceSkin</a></font></code> 
+    		APIs. To change the current settings, create a custom skin and use 
+    		<code><font color="darkblue"><a href="../../docs/api/SetSkin_Instance.html">setSkin(SubstanceSkin)</a></font></code>
+    		or
+    		<code><font color="darkblue"><a href="../../docs/api/SetSkin_ClassName.html">setSkin(String)</a></font></code> 
+    		APIs.</li>
+    	<li><code><font color="darkblue">getImageWatermarkKind</font></code>, 
+    		<code><font color="darkblue">getImageWatermarkOpacity</font></code>, 
+    		<code><font color="darkblue">setImageWatermarkKind</font></code>, 
+    		<code><font color="darkblue">setImageWatermarkOpacity</font></code> - use 
+    		<code><font color="darkblue"><a href="../../docs/api/GetCurrentSkin.html">getCurrentSkin(Component)</a></font></code>, 
+    		<code><font color="darkblue"><a href="../../docs/skins/overview.html">SubstanceSkin</a>.getWatermark()</font></code> and 
+    		<code><font color="darkblue">SubstanceImageWatermark</font></code> 
+    		APIs.</li>
+    	<li><code><font color="darkblue">hideMenuSearchPanels</font></code>, 
+    		<code><font color="darkblue">showMenuSearchPanels</font></code> - use 
+    		<code><font color="darkblue"><a href="../../docs/api/SetWidgetVisible.html">setWidgetVisible(SubstanceWidgetType.MENU_SEARCH)</a></font></code>.</li>
+    	<li><code><font color="darkblue">permanentlyHideHeapStatusPanel</font></code>, 
+    		<code><font color="darkblue">permanentlyShowHeapStatusPanel</font></code> - use 
+    		<code><font color="darkblue"><a href="../../docs/api/SetWidgetVisible.html">setWidgetVisible(SubstanceWidgetType.TITLE_PANE_HEAP_STATUS)</a></font></code>.</li>
+    	<li><code><font color="darkblue">toBleedWatermark</font></code>.</li>
+    	<li><code><font color="darkblue">toEnableInvertedThemes</font></code>, 
+    		<code><font color="darkblue">toEnableNegatedThemes</font></code>.</li>
+    	<li><code><font color="darkblue">ignoreAnimationsOnClass</font></code>, 
+    		<code><font color="darkblue">toIgnoreAnimation</font></code> - use 
+    		<a href="https://laf-widget.dev.java.net/docs/animations.html">FadeConfigurationManager</a>
+    		APIs.</li>
+    	<li><code><font color="darkblue">toShowExtraElements</font></code>.</li>
+    </ul>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Combobox auto completion</b></td>
+    <td width="80%" valign="top">
+
+    <p>The combobox auto completion previously available from the
+    	<a href="https://laf-widget.dev.java.net">laf-widget project</a>
+    	has been discontinued. Use SwingX, GlazedLists or JIDE functionality - 
+    	see the <a href="http://today.java.net/pub/a/today/2007/07/19/adding-auto-completion-to-swing-comboboxes.html">overview
+    article</a> comparing the different approaches.</p>
+    	
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New tools plugin</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new <code><font color="darkblue">substance-tools.jar</font></code>
+    	plugin is part of the officially available binaries. When this jar
+    	is added to the application classpath, the following additional
+    UI functionality is available:</p>
+    
+    <ul>
+    	<li>Title panes of decorated windows have a right-click
+    		context menu that allows simulating 
+    		<a href="http://weblogs.java.net/blog/kirillcool/archive/2006/09/how_colorblind.html">color-blind mode</a>,
+    		changing animation rate and focus kind, dumping the component
+    		hierarchy, toggling component orientation between	LTR and RTL, using 
+    		<a href="../../docs/clientprops/UseThemedDefaultIcons.html">themed icons</a>, 
+    		installing <a href="http://weblogs.java.net/blog/kirillcool/archive/2007/03/spring_effects_1.html">ghost 
+    		debug mode</a> and showing image cache statistics.</li>
+    	<li>Scroll bars have a right-click context menu that allows
+    	changing the <a href="../../docs/clientprops/ScrollPaneButtonsPolicy.html">button 
+    		policy kind</a>.</li>
+    </ul>
+    	
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New extras plugin</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new <a href="https://substance-extras.dev.java.net">Extras plugin</a>
+    	consolidated the existing theme pack, button shaper pack and watermark pack
+    under one roof. <a href="https://substance-extras.dev.java.net/learn.html">It provides</a>:</p>
+    
+    <ul>
+    	<li>Additional twenty one color schemes.</li>
+    	<li>Additional twelve watermarks.</li>
+    	<li>Additional five skins.</li>
+    	<li>Additional eight button shapers.</li>
+    	<li>Support for mixed color schemes and mixed gradient painters.</li>
+    </ul>
+    	
+    </td>
+  </tr>
+
+</table>
+</body>
+
+</html>

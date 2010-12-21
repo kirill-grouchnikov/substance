@@ -1,0 +1,309 @@
+This is the fourth part of the series that describes the additional capabilities that you can get 
+on your tabbed panes once you start using the <a href="https://substance.dev.java.net">Substance</a> 
+look-and-feel. 
+<ul>
+<li>The <a href="../2005.10/spicing-tabbed-panes-1.html">first 
+part</a> described close buttons and animation on modified tabs
+<li>The <a href="../2005.12/spicing-tabbed-panes-2.html">second 
+part</a> described vetoable close buttons and vertical tabs. 
+<li>The <a href="../2006.03/spicing-tabbed-panes-3.html">third 
+part</a> described single-click close of multiple tabs and ustom alignment of tab texts on left and 
+right placement.
+</ul>
+This entry describes new features available in the next version of 
+<a href="../../../">Substance look-and-feel</a> (code-named Firenze, currently 
+available in core code freeze - release candidate planned April 30).
+<br><br>
+
+The first feature is <b>hover preview popup</b> of tabs and is borrowed from 
+<a href="http://opera.com/">Opera 9.0 beta</a> browser. Move the mouse over a tab, wait for 2 
+seconds (configurable) and you will be shown a small preview popup window with the contents of 
+the tab:<br><br>
+<img src="../../../release-info/2.3/tab-preview-window.png" width=442 height=177>
+<br><br>
+Later part of this entry describes how to customize the popup delay, popup dimension, popup 
+existence itself (disable this feature on app-specific basis for some tabs) and preview painting 
+(to provide app-specific preview painting logic).
+<br><br>
+
+The second feature is <b>tab overview dialog</b> and borrows from ideas from both IE7 and 
+various Firefox extensions. First, the overview of existing functionality in the above browsers:
+<ul>
+<li><a href="http://blogs.msdn.com/ie/archive/2006/02/10/529938.aspx">QuickTabs</a> in IE7 
+(currently in Beta2). When more there are at least two open tabs, a button is displayed in the 
+left portion of the tab strip. When you click on it, the contents of the current tab are overlayed 
+with a tab overview, showing a thumbnail for each open tab.
+<li><a href="http://users.blueprintit.co.uk/~dave/web/firefox/TabSidebar/index.html">Tab 
+Sidebar</a> Firefox extension. Opens a side bar (much like Office Taskbar) with single column 
+thumbnail view of all open tabs.
+<li><a href="http://aluminum.sourmilk.net/reveal/">Reveal</a> Firefox extension. When F2 or 
+Alt-` is clicked, a horizontally scrollable two-row preview is shown. This preview allows tab 
+rearranging as well as many other operations.
+<li><a href="http://viamatic.com/index.php/firefox">foxPose</a> Firefox extension. Adds a 
+button in the bottom left corner of the window. When the button is clicked, a new tab with 
+thumbnails is added to the browser.
+<li><a href="http://piro.sakura.ne.jp/xul/_tabcatalog.html">Tab Catalog</a> Firefox extension. 
+Adds a button in the right portion of the menu bar. When mouse hovers over this button, an 
+overview window is shown.
+<li><a href="http://extensions.hesslow.se/">Ctrl Tab</a> Firefox extension. When Ctrl-Tab is 
+pressed, a three-window view allows switching between open tabs (like Alt-Tab in Windows Vista).
+</ul>
+
+The current drop of Substance 2.3 allows adding the overview functionality to your tabbed panes. 
+When enabled, the overview button is shown alongside your tabs (depending on the tab placement 
+and orientation):<br><br>
+<img src="../../../release-info/2.3/tab-overview-button-top.png" width=188 height=56>
+<br><br>
+When this button is clicked, an overview dialog is shown. This dialog contains thumbnails 
+for all tabs. Clicking on a thumbnail close the overview dialog and selects the corresponding 
+tab:
+<br><br>
+<img src="../../../release-info/2.3/tab-overview-dialog.png" width=392 height=437>
+<br><br>
+The overview thumbnails are generated in a separate thread and faded-in as soon as they 
+are available. This keeps your application responsive and user experience pleasant (hopefully). 
+Below I describe how to customize the dialog dimension and location, overview existence 
+itself (disable this feature on app-specific basis for some tabbed panes) and preview 
+painting (to provide app-specific preview painting logic).<br><br>
+
+In order to enable the above functionality, all you need to do is to put the following 
+client property on your tabbed pane(s) or globally on the UIManager:<br><br>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">jtp.putClientProperty</font><font color="#000000">(</font><font color="#000000">SubstanceLookAndFeel.TABBED_PANE_PREVIEW_PAINTER,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">DefaultTabPreviewPainter</font><font color="#000000">())</font><font color="#000000">;</font></code>
+    
+<br><br>
+The <b>DefaultTabPreviewPainter</b> is the default implementation of the tab preview and 
+overview logic. Depending on your need, you can easily provide you own specific logic for 
+all or some of the functionality. Here is a list of all customizable features:
+<br><br>
+    <code>
+<font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*&nbsp;Base&nbsp;class&nbsp;for&nbsp;tab&nbsp;preview&nbsp;painters.</font><br/>
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@author&nbsp;</font><font color="#3f5fbf">Kirill&nbsp;Grouchnikov</font><br/>
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#7f0055"><b>public&nbsp;abstract&nbsp;class&nbsp;</b></font><font color="#000000">TabPreviewPainter&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Draws&nbsp;a&nbsp;tab&nbsp;preview&nbsp;on&nbsp;the&nbsp;specified&nbsp;graphics.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">tabPane</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tabbed&nbsp;pane.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">tabIndex</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tabIndex&nbsp;Tab&nbsp;index&nbsp;for&nbsp;the&nbsp;preview&nbsp;paint.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">g</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Graphics&nbsp;context.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">x</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;coordinate&nbsp;of&nbsp;the&nbsp;preview&nbsp;area.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">y</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Y&nbsp;coordinate&nbsp;of&nbsp;the&nbsp;preview&nbsp;area.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">w</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Width&nbsp;of&nbsp;the&nbsp;preview&nbsp;area.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">h</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Height&nbsp;of&nbsp;the&nbsp;preview&nbsp;area.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">previewTab</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabPane,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex,&nbsp;Graphics&nbsp;g,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">x,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">y,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">w,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">h</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Checks&nbsp;whether&nbsp;the&nbsp;specified&nbsp;tab&nbsp;component&nbsp;is&nbsp;previewable.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">tabPane</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tabbed&nbsp;pane.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">tabIndex</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tab&nbsp;index&nbsp;for&nbsp;the&nbsp;preview&nbsp;paint.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">true</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">if&nbsp;the&nbsp;specified&nbsp;tab&nbsp;component&nbsp;is</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;previewable,&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">false</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">otherwise.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">hasPreview</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabPane,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;false</b></font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Returns&nbsp;the&nbsp;screen&nbsp;bounds&nbsp;of&nbsp;the&nbsp;tab&nbsp;preview&nbsp;dialog&nbsp;window.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">tabPane</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tabbed&nbsp;pane.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Screen&nbsp;bounds&nbsp;of&nbsp;the&nbsp;preview&nbsp;dialog&nbsp;window&nbsp;of&nbsp;the&nbsp;specified</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tabbed&nbsp;pane.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Rectangle&nbsp;getPreviewDialogScreenBounds</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabPane</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Rectangle&nbsp;tabPaneBounds&nbsp;=&nbsp;tabPane.getBounds</font><font color="#000000">()</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Point&nbsp;tabPaneScreenLoc&nbsp;=&nbsp;tabPane.getLocationOnScreen</font><font color="#000000">()</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;new&nbsp;</b></font><font color="#000000">Rectangle</font><font color="#000000">(</font><font color="#000000">tabPaneScreenLoc.x,&nbsp;tabPaneScreenLoc.y,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">tabPaneBounds.width,&nbsp;tabPaneBounds.height</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Returns&nbsp;the&nbsp;owner&nbsp;of&nbsp;the&nbsp;overview&nbsp;dialog&nbsp;of&nbsp;the&nbsp;specified&nbsp;tabbed&nbsp;pane.&nbsp;If</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;this&nbsp;function&nbsp;retuns&nbsp;a&nbsp;non-</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">null</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">value,&nbsp;the&nbsp;overview</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;dialog&nbsp;will&nbsp;be&nbsp;modal&nbsp;for&nbsp;the&nbsp;corresponding&nbsp;frame.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">tabPane</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tabbed&nbsp;pane.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">If&nbsp;not&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">null</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">,&nbsp;the&nbsp;overview&nbsp;dialog&nbsp;for&nbsp;the</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;specified&nbsp;tabbed&nbsp;pane&nbsp;will&nbsp;be&nbsp;modal&nbsp;for&nbsp;the&nbsp;corresponding&nbsp;frame.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">JFrame&nbsp;getModalOwner</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabPane</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;null</b></font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Checks&nbsp;whether&nbsp;the&nbsp;specified&nbsp;tabbed&nbsp;pane&nbsp;has&nbsp;an&nbsp;overview&nbsp;dialog.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">tabPane</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tabbed&nbsp;pane.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">true</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">if&nbsp;the&nbsp;specified&nbsp;tabbed&nbsp;pane&nbsp;has&nbsp;an&nbsp;overview</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dialog,&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">false</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">otherwise.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">hasOverviewDialog</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabPane</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;false</b></font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Checks&nbsp;whether&nbsp;the&nbsp;specified&nbsp;tabbed&nbsp;pane&nbsp;has&nbsp;a&nbsp;preview&nbsp;window&nbsp;for&nbsp;the</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;specified&nbsp;tab.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">tabPane</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tabbed&nbsp;pane.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">tabIndex</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tab&nbsp;index.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">true</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">if&nbsp;the&nbsp;specified&nbsp;tabbed&nbsp;pane&nbsp;has&nbsp;a&nbsp;preview</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;window&nbsp;for&nbsp;the&nbsp;specified&nbsp;tab,&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">false</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">otherwise.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">hasPreviewWindow</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabPane,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;false</b></font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Returns&nbsp;the&nbsp;dimension&nbsp;for&nbsp;the&nbsp;tab&nbsp;preview&nbsp;window.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">tabPane</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tabbed&nbsp;pane.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">tabIndex</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tab&nbsp;index.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Dimension&nbsp;of&nbsp;the&nbsp;tab&nbsp;preview&nbsp;window&nbsp;for&nbsp;the&nbsp;specified&nbsp;tab&nbsp;in&nbsp;the</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;specified&nbsp;tabbed&nbsp;pane.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Dimension&nbsp;getPreviewWindowDimension</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabPane,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;new&nbsp;</b></font><font color="#000000">Dimension</font><font color="#000000">(</font><font color="#990000">300</font><font color="#000000">,&nbsp;</font><font color="#990000">200</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Returns&nbsp;extra&nbsp;delay&nbsp;(in&nbsp;milliseconds)&nbsp;for&nbsp;showing&nbsp;the&nbsp;tab&nbsp;preview&nbsp;window.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;The&nbsp;base&nbsp;delay&nbsp;is&nbsp;2000&nbsp;milliseconds&nbsp;(2&nbsp;seconds).&nbsp;This&nbsp;function&nbsp;must</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;return&nbsp;a&nbsp;non-negative&nbsp;value.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">tabPane</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tabbed&nbsp;pane.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">tabIndex</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tab&nbsp;index.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Non-negative&nbsp;extra&nbsp;delay&nbsp;(in&nbsp;milliseconds)&nbsp;for&nbsp;showing&nbsp;the&nbsp;tab</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preview&nbsp;window.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">getPreviewWindowExtraDelay</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabPane,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#990000">0</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#000000">}</font></code>
+    
+<br><br>The default logic provides implementations of the following four functions (note 
+the implementation of <b>previewTab</b> that simply scales down the current state of the tab - 
+thanks to Romain for contributing the efficient thumbnail computation code):<br><br>
+    <code>
+<font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*&nbsp;Default&nbsp;implementation&nbsp;of&nbsp;the&nbsp;tab&nbsp;preview&nbsp;painter.&nbsp;The&nbsp;tab&nbsp;preview&nbsp;is&nbsp;a</font><br/>
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*&nbsp;scaled-down&nbsp;(as&nbsp;necessary)&nbsp;thumbnail&nbsp;of&nbsp;the&nbsp;relevant&nbsp;tab.</font><br/>
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@author&nbsp;</font><font color="#3f5fbf">Kirill&nbsp;Grouchnikov</font><br/>
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">DefaultTabPreviewPainter&nbsp;</font><font color="#7f0055"><b>extends&nbsp;</b></font><font color="#000000">TabPreviewPainter&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f7f5f">/*</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;(non-Javadoc)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;@see&nbsp;org.jvnet.substance.tabbed.TabPreviewPainter#hasPreview(javax.swing.JTabbedPane,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">@Override</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">hasPreview</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabPane,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">(</font><font color="#000000">tabPane.getComponentAt</font><font color="#000000">(</font><font color="#000000">tabIndex</font><font color="#000000">)&nbsp;</font><font color="#000000">!=&nbsp;</font><font color="#7f0055"><b>null</b></font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f7f5f">/*</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;(non-Javadoc)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;@see&nbsp;org.jvnet.substance.tabbed.TabPreviewPainter#previewTab(javax.swing.JTabbedPane,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int,&nbsp;java.awt.Graphics,&nbsp;int,&nbsp;int,&nbsp;int,&nbsp;int)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">@Override</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">previewTab</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabPane,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex,&nbsp;Graphics&nbsp;g,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">x,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">y,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">w,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">h</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Component&nbsp;tabComponent&nbsp;=&nbsp;tabPane.getComponentAt</font><font color="#000000">(</font><font color="#000000">tabIndex</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">tabComponent&nbsp;==&nbsp;</font><font color="#7f0055"><b>null</b></font><font color="#000000">)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return</b></font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;if&nbsp;(!tabComponent.isShowing())</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;return;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">compWidth&nbsp;=&nbsp;tabComponent.getWidth</font><font color="#000000">()</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">compHeight&nbsp;=&nbsp;tabComponent.getHeight</font><font color="#000000">()</font><font color="#000000">;</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">((</font><font color="#000000">compWidth&nbsp;&gt;&nbsp;</font><font color="#990000">0</font><font color="#000000">)&nbsp;</font><font color="#000000">&amp;&amp;&nbsp;</font><font color="#000000">(</font><font color="#000000">compHeight&nbsp;&gt;&nbsp;</font><font color="#990000">0</font><font color="#000000">))&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;draw&nbsp;tab&nbsp;component</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">BufferedImage&nbsp;tempCanvas&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">BufferedImage</font><font color="#000000">(</font><font color="#000000">compWidth,&nbsp;compHeight,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">BufferedImage.TYPE_INT_ARGB</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Graphics&nbsp;tempCanvasGraphics&nbsp;=&nbsp;tempCanvas.getGraphics</font><font color="#000000">()</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">tabComponent.paint</font><font color="#000000">(</font><font color="#000000">tempCanvasGraphics</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;check&nbsp;if&nbsp;need&nbsp;to&nbsp;scale&nbsp;down</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">coef&nbsp;=&nbsp;Math.min</font><font color="#000000">((</font><font color="#7f0055"><b>double</b></font><font color="#000000">)&nbsp;</font><font color="#000000">w&nbsp;/&nbsp;</font><font color="#000000">(</font><font color="#7f0055"><b>double</b></font><font color="#000000">)&nbsp;</font><font color="#000000">compWidth,&nbsp;</font><font color="#000000">(</font><font color="#7f0055"><b>double</b></font><font color="#000000">)&nbsp;</font><font color="#000000">h</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">/&nbsp;</font><font color="#000000">(</font><font color="#7f0055"><b>double</b></font><font color="#000000">)&nbsp;</font><font color="#000000">compHeight</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">coef&nbsp;&lt;&nbsp;</font><font color="#990000">1.0</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">sdWidth&nbsp;=&nbsp;</font><font color="#000000">(</font><font color="#7f0055"><b>int</b></font><font color="#000000">)&nbsp;(</font><font color="#000000">coef&nbsp;*&nbsp;compWidth</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">sdHeight&nbsp;=&nbsp;</font><font color="#000000">(</font><font color="#7f0055"><b>int</b></font><font color="#000000">)&nbsp;(</font><font color="#000000">coef&nbsp;*&nbsp;compHeight</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">dx&nbsp;=&nbsp;</font><font color="#000000">(</font><font color="#000000">w&nbsp;-&nbsp;sdWidth</font><font color="#000000">)&nbsp;</font><font color="#000000">/&nbsp;</font><font color="#990000">2</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">dy&nbsp;=&nbsp;</font><font color="#000000">(</font><font color="#000000">h&nbsp;-&nbsp;sdHeight</font><font color="#000000">)&nbsp;</font><font color="#000000">/&nbsp;</font><font color="#990000">2</font><font color="#000000">;</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">g.drawImage</font><font color="#000000">(</font><font color="#000000">SubstanceCoreUtilities.createThumbnail</font><font color="#000000">(</font><font color="#000000">tempCanvas,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">sdWidth</font><font color="#000000">)</font><font color="#000000">,&nbsp;dx,&nbsp;dy,&nbsp;</font><font color="#7f0055"><b>null</b></font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}&nbsp;</font><font color="#7f0055"><b>else&nbsp;</b></font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;System.out.println(&#34;Putting&nbsp;&#34;&nbsp;+&nbsp;frame.hashCode()&nbsp;+&nbsp;&#34;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;-&gt;&nbsp;&#34;&nbsp;+&nbsp;snapshot.hashCode());</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">g.drawImage</font><font color="#000000">(</font><font color="#000000">tempCanvas,&nbsp;</font><font color="#990000">0</font><font color="#000000">,&nbsp;</font><font color="#990000">0</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>null</b></font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f7f5f">/*</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;(non-Javadoc)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;@see&nbsp;org.jvnet.substance.tabbed.TabPreviewPainter#hasPreviewWindow(javax.swing.JTabbedPane,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">@Override</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">hasPreviewWindow</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabPane,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;true</b></font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f7f5f">/*</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;(non-Javadoc)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*&nbsp;@see&nbsp;org.jvnet.substance.tabbed.TabPreviewPainter#hasOverviewDialog(javax.swing.JTabbedPane)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">@Override</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">hasOverviewDialog</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabPane</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;true</b></font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#000000">}</font></code>
+<br><br>
+
+The features describe above were the last to be added before the core feature freeze for the 
+next version of Substance LAF (RC on April 30, release on May 14). You are welcome to download 
+the jars and play with the test application or run the 
+<a href="../../../webstart/test.jnlp">WebStart</a> demo application. 
+Note that the first time you run the tab overview dialog it will be a bit slow due to the 
+multi-colored buttons in the second tab. After that, the subsequent operations will be much 
+faster (due to image caching in Substance).<br><br>
+
+In addition, i would like to thank the community for using and testing Substance, reporting 
+the bugs, suggesting new features and providing bug fixes and helping in internationaliztion efforts.    

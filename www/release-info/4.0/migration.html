@@ -1,0 +1,298 @@
+<html>
+<head>
+<title>Substance version 4.0 migration guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Migration guide for version 4.0 (Key Largo)</h1>
+
+<p>
+The version 4.0 (code-named Key Largo) introduces binary incompatibilities
+with the previous versions. This document describes these incompatibilities
+and outlines the migration process for the client applications.
+</p>
+
+<h2>Background</h2>
+<p>
+During the development of version 4.0, some of the classes of the 
+dependent <a href="https://laf-widget.dev.java.net">laf-widget</a> project
+and Substance itself were moved to new packages to provide better naming. In
+addition, some API methods that were deprecated in version 3.3 have been 
+removed. In the following sections we provide the complete
+migration guide for applications that use the moved APIs and the classes
+that changed packages.
+</p>
+
+<h2>Classes that were moved</h2>
+
+<p>
+The following classes were moved:
+</p>
+
+<table border="1" cellpadding="2" cellspacing="0" width="100%">
+  <tr bgcolor="lavender">
+    <td><b>Class</td>
+    <td><b>From package</b></td>
+    <td><b>To package</b></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>FontPolicy</b></td>
+    <td>contrib.com.jgoodies.looks</td>
+    <td>org.jvnet.substance.fonts</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>FontSet</b></td>
+    <td>contrib.com.jgoodies.looks</td>
+    <td>org.jvnet.substance.fonts</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>FadeConfigurationManager</b></td>
+    <td>org.jvnet.lafwidget.utils</td>
+    <td>org.jvnet.lafwidget.animation</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>FadeIgnoreManager</b></td>
+    <td>org.jvnet.lafwidget.utils</td>
+    <td>org.jvnet.lafwidget.animation</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>FadeKind</b></td>
+    <td>org.jvnet.lafwidget.utils (inner class of FadeTracker)</td>
+    <td>org.jvnet.lafwidget.animation</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>FadeStateListener</b></td>
+    <td>org.jvnet.lafwidget.utils</td>
+    <td>org.jvnet.lafwidget.animation</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>FadeStep</b></td>
+    <td>org.jvnet.lafwidget.utils</td>
+    <td>org.jvnet.lafwidget.animation</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>FadeTracker</b></td>
+    <td>org.jvnet.lafwidget.utils</td>
+    <td>org.jvnet.lafwidget.animation</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>FadeTrackerCallback</b></td>
+    <td>org.jvnet.lafwidget.utils (inner class of FadeTracker)</td>
+    <td>org.jvnet.lafwidget.animation</td>
+  </tr>
+</table>
+
+<p>
+The API of these classes has not been changed. In order to migrate application
+using these classes you will need to reorganize the import sections of the
+relevant application classes and recompile your application.
+</p>
+
+<h2>Classes that were renamed</h2>
+
+<p>
+The following classes were renamed:
+</p>
+
+<table border="1" cellpadding="2" cellspacing="0" width="100%">
+  <tr bgcolor="lavender">
+    <td><b>Class</td>
+    <td><b>From package</b></td>
+    <td><b>To package / class</b></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>ScrollThumbGripPainter</b></td>
+    <td>org.jvnet.substance.scroll</td>
+    <td>org.jvnet.substance.grip.GripPainter</td>
+  </tr>
+</table>
+
+<p>
+The API of these classes has been renamed. In order to migrate application
+using these classes you will need to reorganize the import sections of the
+relevant application classes and refactor your application to call the renamed
+APIs.
+</p>
+
+<h2>Removed API methods</h2>
+
+<p>
+The following methods have been removed. Consult the table to see
+the methods to use instead:
+</p>
+
+<table border="1" cellpadding="2" cellspacing="0" width="100%">
+  <tr bgcolor="lavender">
+    <td><b>Removed method</td>
+    <td><b>From class</b></td>
+    <td><b>Instead use</b></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>getBasicFontSize()</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/api/GetFontPolicy.html">getFontPolicy()</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>getFontFamilyName()</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/api/GetFontPolicy.html">getFontPolicy()</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>isBasicFontBold()</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/api/GetFontPolicy.html">getFontPolicy()</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>setBasicFontSize()</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/api/SetFontPolicy.html">setFontPolicy(FontPolicy)</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>setFontSizeExtra()</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/api/SetFontPolicy.html">setFontPolicy(FontPolicy)</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>getColorScheme()</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/api/GetActiveColorScheme.html">getActiveColorScheme()</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>getMetallicColorScheme()</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/api/GetDefaultColorScheme.html">getDefaultColorScheme()</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>getGrayColorScheme()</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/api/GetDisabledColorScheme.html">getDisabledColorScheme()</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>enumerateThemes()</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/api/GetAllThemes.html">getAllThemes()</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>enumerateWatermarks()</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/api/GetAllWatermarks.html">getAllWatermarks()</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>getTabCloseListeners()</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/api/GetAllTabCloseListeners_Global.html">getAllTabCloseListeners()</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>getTabCloseListeners(JTabbedPane)</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/api/GetAllTabCloseListeners_Specific.html">getAllTabCloseListeners(JTabbedPane)</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>enumerateWatermarks()</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/api/GetAllWatermarks.html">getAllWatermarks()</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>setCellRendererBackgroundTheme()</b></td>
+    <td>org.jvnet.substance.theme.SubstanceComplexTheme</td>
+    <td>registerComponentHighlightStateTheme(SubstanceTheme)</td>
+  </tr>
+</table>
+
+<p>
+In order to migrate application using these APIs follow the examples in the linked
+documentation and the sources of the Substance test applications.
+</p>
+
+<h2>Removed client properties</h2>
+
+<p>
+The following client properties have been removed. Consult the table to see
+the properties to use instead:
+</p>
+
+<table border="1" cellpadding="2" cellspacing="0" width="100%">
+  <tr bgcolor="lavender">
+    <td><b>Removed property</td>
+    <td><b>From class</b></td>
+    <td><b>Instead use</b></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>BUTTON_THEME_PROPERTY</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/clientprops/ThemeProperty.html">THEME_PROPERTY</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>BUTTON_PAINT_ACTIVE_PROPERTY</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/clientprops/PaintActiveProperty.html">PAINT_ACTIVE_PROPERTY</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>TOOLBAR_BUTTON_FLAT</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/clientprops/FlatProperty.html">FLAT_PROPERTY</a></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>TABBED_PANE_TAB_ANIMATION_KIND</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td>Functionality removed</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>TABBED_PANE_CLOSE_BUTTONS_SIZE</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td>Functionality removed</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>CAN_BE_PINNED</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td>Functionality removed</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>PERMANENTLY_PINNED</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td>Functionality removed</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>SCROLLBAR_GRIP_PAINTER</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td><a href="../../docs/clientprops/GripPainter.html">GRIP_PAINTER</a></td>
+  </tr>
+</table>
+
+</body>
+</html>
+

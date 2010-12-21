@@ -1,0 +1,258 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2007 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+<title>Substance 5.2 release</title>
+</head>
+
+<body>
+
+<h1>Substance 5.2 <font color="darkblue">Quebec</font> - new features</h1>
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New Dust skin</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new 
+    <b><a href="../../docs/skins/toneddown.html#DustSkin">Dust</a></b> 
+    skin is based on <a href="https://wiki.ubuntu.com/Artwork/Incoming/DustTheme">the artwork</a> 
+    done by <strong>Rico Sta Cruz</strong> and <strong>Kido Mariano</strong> for Ubuntu. 
+    To use it in your application, you have the following three options:</p>
+
+    <ul>
+    <li>-Dswing.defaultlaf=org.jvnet.substance.skin.SubstanceDustLookAndFeel</li>
+    <li>UIManager.setLookAndFeel(new SubstanceDustLookAndFeel())</li>
+    <li>UIManager.setLookAndFeel("org.jvnet.substance.skin.SubstanceDustLookAndFeel");</li>
+    </ul>
+
+		<p>The screenshots below show a frame under the Dust skin:</p>
+    
+    <img src="dust-statusbar.png" height="350" width="500"><br><br>
+    <img src="dust-small.png" height="245" width="315">
+    	
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New Dust Coffee skin</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new 
+    <b><a href="../../docs/skins/toneddown.html#DustCoffeeSkin">Dust Coffee</a></b> 
+    skin is based on the <strong>Dust</strong> and <strong>Creme Coffee</strong>
+    skins. To use it in your application, you have the following three options:</p>
+
+    <ul>
+    <li>-Dswing.defaultlaf=org.jvnet.substance.skin.SubstanceDustCoffeeLookAndFeel</li>
+    <li>UIManager.setLookAndFeel(new SubstanceDustCoffeeLookAndFeel())</li>
+    <li>UIManager.setLookAndFeel("org.jvnet.substance.skin.SubstanceDustCoffeeLookAndFeel");</li>
+    </ul>
+
+		<p>The screenshots below show a frame under the Dust Coffee skin:</p>
+    
+    <img src="dust-coffee-statusbar.png" height="350" width="500"><br><br>
+    <img src="dust-coffee-small.png" height="245" width="315">
+    	
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New Twilight skin</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new 
+    <b><a href="../../docs/skins/dark.html#TwilightSkin">Twilight</a></b> 
+    skin is inspired by the color schemes of the 
+    <a href="https://bespin.mozilla.com/">Bespin web code editor</a> spearheaded by 
+    <strong>Ben</strong>(<a href="http://twitter.com/bgalbs/">@bgalbs</a>) and 
+    <strong>Dion</strong>(<a href="http://twitter.com/dalmaer">@dalmaer</a>). 
+    To use it in your application, you have the following three options:</p>
+
+    <ul>
+    <li>-Dswing.defaultlaf=org.jvnet.substance.skin.SubstanceTwilightLookAndFeel</li>
+    <li>UIManager.setLookAndFeel(new SubstanceTwilightLookAndFeel())</li>
+    <li>UIManager.setLookAndFeel("org.jvnet.substance.skin.SubstanceTwilightLookAndFeel");</li>
+    </ul>
+
+		<p>The screenshots below show a frame under the Twilight skin:</p>
+    
+    <img src="twilight-statusbar.png" height="350" width="500"><br><br>
+    <img src="twilight-small.png" height="245" width="315">
+    	
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>More control over border painting</b></td>
+    <td width="80%" valign="top">
+
+    <p>Two new classes are available in the <code><font color="darkblue">org.jvnet.substance.painter.border</font></code>
+    package:</p>
+    
+    <ul>
+    <li><code><font color="darkblue">DelegateBorderPainter</font></code> allows wrapping an existing
+    border painter, using a transformed color scheme and color masking on top, mid and bottom
+    points of the border painter gradient.</li>
+    <li><code><font color="darkblue">CompositeBorderPainter</font></code> allows creating border painters
+    that paint outer and inner contours of the relevant borders.</li>
+    </ul>
+    
+    <p>Some of the core Substance skins are now using these two classes for modern
+    translucent inner border paintings. Here is sample code from the 
+    <strong>Raven Graphite</strong> skin:</p>
+    
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.borderPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">CompositeBorderPainter</font><font color="#000000">(</font><font color="#2a00ff">&#34;Raven&nbsp;Graphite&#34;</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ClassicBorderPainter</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">DelegateBorderPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;Raven&nbsp;Graphite&nbsp;Inner&#34;</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ClassicBorderPainter</font><font color="#000000">()</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#990000">0xFFFFFFFF</font><font color="#000000">,&nbsp;</font><font color="#990000">0x60FFFFFF</font><font color="#000000">,&nbsp;</font><font color="#990000">0x00FFFFFF</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeTransform</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorScheme&nbsp;transform</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">scheme.tint</font><font color="#000000">(</font><font color="#990000">0.4f</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}))</font><font color="#000000">;</font></code>
+    
+		<p>And this is how it looks like at runtime (see lighter inner border painting on
+		buttons, tabs, comboboxes and checkmarks that fades out from top to bottom):</p>
+		    	
+    <img src="ravengraphite1-new.png" height="245" width="315">
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Visual refresh of Raven Graphite skins</b></td>
+    <td width="80%" valign="top">
+
+    <p>The visuals of <strong>Raven Graphite</strong> and <strong>Raven Graphite Glass</strong>
+    skins have been reworked, focusing on:</p>
+    
+    <ul>
+		<li>Light highlight color schemes for lists, tables, trees and menus</li>
+		<li>Lighter and partially translucent inner border painting on the buttons, tabs, checkmarks and more</li>
+		<li>Removing the inner border painting from scroll bars</li>
+		</ul>
+		
+		<p>The first screenshot below shows Raven Graphite skin in release 5.1, while the second screenshot shows the
+		same application under Raven Graphite skin in release 5.2:</p>
+		
+		<img src="ravengraphite1-old.png" height="245" width="315">
+		<img src="ravengraphite1-new.png" height="245" width="315">
+		
+		<p>The first screenshot below shows Raven Graphite skin in release 5.1, while the second screenshot shows the
+		same application under Raven Graphite skin in release 5.2:</p>
+		
+		<img src="ravengraphite2-old.png" height="245" width="315">
+		<img src="ravengraphite2-new.png" height="245" width="315">
+		
+		<p>The first screenshot below shows Raven Graphite Glass skin in release 5.1, while the second screenshot shows the
+		same application under Raven Graphite Glass skin in release 5.2:</p>
+		
+		<img src="ravengraphiteglass1-old.png" height="245" width="315">
+		<img src="ravengraphiteglass1-new.png" height="245" width="315">
+		
+		<p>The first screenshot below shows Raven Graphite Glass skin in release 5.1, while the second screenshot shows the
+		same application under Raven Graphite Glass skin in release 5.2:</p>
+		
+		<img src="ravengraphiteglass2-old.png" height="245" width="315">
+		<img src="ravengraphiteglass2-new.png" height="245" width="315">
+		
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Improved decoration area support</b></td>
+    <td width="80%" valign="top">
+
+    <p>Better support for renderer-based components, such as lists, tables and 
+    trees when these are placed in custom Substance decoration areas.</p>
+    
+    <p>The screenshots below show test applications with four different decoration areas, 
+    each having one enabled and one disabled list / table / tree. The first screenshot
+    shows lists in different decoration areas:</p>
+    
+    <img src="decoration-lists-5.2.png" height="400" width="500">
+    
+    <p>The second screenshot shows tables in different decoration areas:</p>
+    
+    <img src="decoration-tables-5.2.png" height="400" width="500">
+    
+    <p>The last screenshot shows trees in different decoration areas:</p>
+    
+    <img src="decoration-trees-5.2.png" height="400" width="500">
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Inner borders under very large fonts</b></td>
+    <td width="80%" valign="top">
+
+    <p>Under very large fonts, inner borders did not align correctly with outer
+    borders, resulting in visible visual gaps. This has been addressed.</p>
+    
+    <p>The first screenshot shows a large checkmark icon under release 5.2 (on left) 
+    and release 5.1 (on right):</p>
+
+    <img src="inner-controur-radius-checkmarks.png" height="84" width="156">
+
+		<p>The second screenshot shows a combobox under release 5.2 (on top) and release 
+		5.1 (on bottom):</p>
+    	
+    <img src="inner-controur-radius-combos.png" height="279" width="435">
+    
+    </td>
+  </tr>
+</body>
+
+</html>

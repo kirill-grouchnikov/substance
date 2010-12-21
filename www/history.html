@@ -1,0 +1,116 @@
+<html>
+<head>
+<title>Substance look and feel history</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Release and change history</h1>
+
+<b>Version 2.1 (Dakota) - in progress</b>
+<ul>
+<li>Incorporating JGoodies Looks' drop shadows for popup windows.
+<li>Support for plugin architecture.
+<li>Moved Quaqua color chooser to built-in plugin.
+<li>Moved Ribbon components to external plugin project.
+<li>Added themes / watermarks selection to title pane menu.
+<li>Added heap status panel to title pane.
+<li>Client property on button to set custom theme.
+<li>Client property on button to ignore minimum dimensions.
+<li>Aligning menu items in the same menu.
+<li>Improved memory footprint of scrollbar image cache.
+</ul>
+
+<b>Version 2.0 - released 04.10.2005</b>
+<ul>
+<li>Incorporating Quaqua color chooser.
+<li>Using Tahoma fonts for all controls (most are 11 plain, some 11 bold
+and some 12 plain).
+<li>Making all of UI delegates non-final (for extension).
+<li>Focus-tracking border for password fields (as was for other text UIs).
+<li>Setting default dialog background in sync with background of
+other controls.
+<li>Added ten new themes, LIGHT_AQUA, SUN_GLARE, SUNSET, STEEL_BLUE,
+SEPIA, TERRACOTTA, OLIVE, BOTTLE_GREEN, RASPBERRY and BARBY_PINK.
+<li>Enhanced DesktopIcon with restore, maximize and close icons
+(instead of only restore button as in Metal).
+<li>Added three dark themes, CHARCOAL, EBONY and DARK_VIOLET.
+<li>Added DesktopPane UI delegate.
+<li>Made title panes background consistent with other UIs
+(such as selected combobox/list element or selected table column header).
+<li>Using theme-based foreground colors for components.
+<li>Using own icons for various Option Pane dialogs. The icons are theme based.
+<li>Added watermark mechanism along with six watermarks, 
+STRIPES, KATAKANA, BUBBLES, CROSSHATCH, BINARY and MOSAIC.
+<li>Added FormattedTextField and EditorPane UI delegates.
+<li>Added support for user-defined themes.
+<li>Added search functionality in menu bars.
+<li>Added basic Office 12 inspired ribbon functionality.
+<li>Added Table UI delegate.
+<li>Stripe-themed default renderers for List, Table and Combo box.
+<li>Theme editor application.
+<li>Bug fix - returning default (AQUA) theme when the current theme was overriden
+to be non-Substance theme.
+<li>Bug fix - panel background is respected in striped background painting.
+<li>Bug fix - panels didn't pick default properties.
+<li>Bug fix - theme runtime changes were not picked up.
+<li>Bug fix - no theme-based color specified for separators.
+<li>Bug fix - no theme-based color specified for selected table cells.
+<li>Bug fix - correct painting of blurred shine spot for large buttons.
+<li>Bug fix - correct painting of vertical (height larger than width) buttons.
+<li>Bug fix - minimize button of JInternalFrame was painted in rollover
+state after restoring the frame.
+<li>Bug fix - NPE in setDefaultTheme() when running with -Dswing.defaultlaf 
+VM setting.
+<li>Bug fix - no theme-based color specified for menu accelerators.
+<li>Bug fix - no theme-based color specified for tree lines.
+<li>Bug fix - no theme-based color specified for selected file in FileChooser.
+<li>Bug fix - different fonts for dialog / frame title pane (in decorated mode)
+and internal frame title pane.
+<li>Bug fix - sensitivity for large buttons (and all rounded buttons) should
+take into account that the button is not rectangular (for rollover and click behaviour).
+<li>Bug fix - drawing radio buttons and check boxes as non-opaque (to pick 
+watermarks).
+<li>Bug fix - border on toggle buttons should not be null. This caused 
+NullPointerExceptions in NetBeans.
+<li>Bug fix - borders for tables and scroll panes should override Metal settings.
+This caused ClassCastExceptions in NetBeans.
+<li>Bug fix - focused table cell background.
+<li>Bug fix - programmatically changing combo box to disabled no longer hides its arrow button.
+<li>Performance fix - improved memory usage of borders and progress bars.
+</ul>
+<br>
+
+<b>Version 1.1 - released 15.07.2005</b>
+<ul>
+<li>Support for themes. Out of the box themes - Aqua, Orange, Brown, Purple and Lime Green.
+<li>Less intrusive UI - coloring only active elements.
+<li>Unified codebase for transition effects on all types of
+buttons (regular, toggle, check boxes, radio buttons, combobox arrows,
+scrollbar arrows, spinner arrows), scrollbar thumbs, slider thumbs 
+and buttons of tabbed panes.
+<li>Continuity in transition effects on scrollbar arrows up until
+the track borders.
+<li>Drag bumps are created using diagonal mesh.
+<li>Colored border for focused text components only (JTextArea, JTextField and JTextPane).
+<li>Longhorn-inspired translucent gradient stripe across determinate progress bar.
+<li>Bug fix for disabled spinners.
+<li>Bug fix for invisible components in CardLayout.
+<li>Bug fix for drawing toggle buttons with text.
+<li>Bug fix for setting text color on disabled selected toggle buttons with text.
+<li>Bug fix for tabbed panes with SCROLL_TAB_LAYOUT when the arrow buttons are shown.
+<li>Bug fix for pressed default pulsating button - should not pulsate while pressed or armed.
+<li>Removed cube transition from title panes of JFrame, JDialog and JInternalFrame.
+</ul>
+<br>
+
+<b>Version 1.0 - released 30.05.2005</b>
+<ul>
+<li>Initial release</li>
+</ul>
+
+
+</body>
+</html>
+

@@ -1,0 +1,640 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Substance 3.1 release</title>
+</head>
+
+<body>
+
+<h1>Substance 3.1 <font color="darkblue">Honolulu</font> - new features</h1>
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for skins</b></td>
+    <td width="80%" valign="top">
+    <p>A skin is a collection of theme, watermark, painters and other settings. 
+    In order to set a skin, you can either call the <code>SubstanceSkin.set</code> method or invoke
+the following API available on the <font color="darkblue">org.jvnet.substance.SubstanceLookAndFeel</font>
+class:</p>
+
+<p>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Sets&nbsp;the&nbsp;specified&nbsp;skin.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">skin</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Skin&nbsp;to&nbsp;set.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">true</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">if&nbsp;the&nbsp;specified&nbsp;skin&nbsp;has&nbsp;been&nbsp;set</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;successfully,&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">false</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">otherwise.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@since&nbsp;</font><font color="#3f5fbf">version&nbsp;3.1</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">setSkin</font><font color="#000000">(</font><font color="#000000">SubstanceSkin&nbsp;skin</font><font color="#000000">)&nbsp;{</font><br/><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Sets&nbsp;the&nbsp;specified&nbsp;skin.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">skinClassName</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Skin&nbsp;to&nbsp;set.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">true</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">if&nbsp;the&nbsp;specified&nbsp;skin&nbsp;has&nbsp;been&nbsp;set</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;successfully,&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">false</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">otherwise.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@since&nbsp;</font><font color="#3f5fbf">version&nbsp;3.1</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">setSkin</font><font color="#000000">(</font><font color="#000000">String&nbsp;skinClassName</font><font color="#000000">)&nbsp;{</font></code>
+    
+</p>
+
+<p>Four toned-down core skins are available:</p>
+
+<p><code><b>Business</b></code> available in the 
+<code><font color="darkblue">org.jvnet.substance.skin.BusinessSkin</font></code>. 
+In addition, the 
+<code><font color="darkblue">org.jvnet.substance.skin.SubstanceBusinessLookAndFeel</font></code>
+can be used with one of the following options:</p>
+<ul>
+<li><code>-Dswing.defaultlaf=org.jvnet.substance.skin.SubstanceBusinessLookAndFeel</code></li>
+<li><code>UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel())</code></li>
+<li><code>UIManager.setLookAndFeel("org.jvnet.substance.skin.SubstanceBusinessLookAndFeel");</li>
+</ul>
+<p>
+<img alt="Business" src="skin-business.png" width=300 height=200>
+<img alt="Business" src="skin-business2.png" width=300 height=200>
+</p>
+
+<p><code><b>Creme</b></code> available in the 
+<code><font color="darkblue">org.jvnet.substance.skin.CremeSkin</font></code>. 
+In addition, the 
+<code><font color="darkblue">org.jvnet.substance.skin.SubstanceCremeLookAndFeel</font></code>
+can be used with one of the following options:</p>
+<ul>
+<li><code>-Dswing.defaultlaf=org.jvnet.substance.skin.SubstanceCremeLookAndFeel</code></li>
+<li><code>UIManager.setLookAndFeel(new SubstanceCremeLookAndFeel())</code></li>
+<li><code>UIManager.setLookAndFeel("org.jvnet.substance.skin.SubstanceCremeLookAndFeel");</li>
+</ul>
+<p>
+<img alt="Creme" src="skin-creme.png" width=300 height=200>
+<img alt="Creme" src="skin-creme2.png" width=300 height=200>
+</p>
+
+<p>
+<code><b>Sahara</b></code> available in the 
+<code><font color="darkblue">org.jvnet.substance.skin.SaharaSkin</font></code>. 
+In addition, the 
+<code><font color="darkblue">org.jvnet.substance.skin.SubstanceSaharaLookAndFeel</font></code>
+can be used with one of the following options:</p>
+<ul>
+<li><code>-Dswing.defaultlaf=org.jvnet.substance.skin.SubstanceSaharaLookAndFeel</code></li>
+<li><code>UIManager.setLookAndFeel(new SubstanceSaharaLookAndFeel())</code></li>
+<li><code>UIManager.setLookAndFeel("org.jvnet.substance.skin.SubstanceSaharaLookAndFeel");</li>
+</ul>
+<p>
+<img alt="Sahara" src="skin-sahara.png" width=300 height=200>
+<img alt="Sahara" src="skin-sahara2.png" width=300 height=200>
+</p>
+
+<p>
+<code><b>Moderate</b></code> available in the 
+<code><font color="darkblue">org.jvnet.substance.skin.ModerateSkin</font></code>. 
+In addition, the 
+<code><font color="darkblue">org.jvnet.substance.skin.SubstanceModerateLookAndFeel</font></code>
+can be used with one of the following options:</p>
+<ul>
+<li><code>-Dswing.defaultlaf=org.jvnet.substance.skin.SubstanceModerateLookAndFeel</code></li>
+<li><code>UIManager.setLookAndFeel(new SubstanceModerateLookAndFeel())</code></li>
+<li><code>UIManager.setLookAndFeel("org.jvnet.substance.skin.SubstanceModerateLookAndFeel");</li>
+</ul>
+<p>
+<img alt="Moderate" src="skin-moderate.png" width=300 height=200>
+<img alt="Moderate" src="skin-moderate2.png" width=300 height=200>
+</p>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for color-blind mode</b></td>
+    <td width="80%" valign="top">
+    <p>The <code><font color="darkblue">org.jvnet.substance.theme.SubstanceTritanopiaTheme</font></code>
+    provides support for previewing your application in tritanopia
+    color blindness mode. Use the <code><font color="darkblue">SubstanceTheme.tritanopia</font></code>
+    API to apply this mode to any Substance theme. Here is an example of
+    application under Mango theme (regular viewing) and under the same Mango
+    theme in tritanopia simulation mode:</p>
+<img alt="Moderate" src="theme-colorblind-original.png" width=300 height=200>
+<img alt="Moderate" src="theme-colorblind-tritanopia.png" width=300 height=200>
+
+    <p>The <code><font color="darkblue">org.jvnet.substance.theme.SubstanceProtanopiaTheme</font></code>
+    provides support for previewing your application in protanopia
+    color blindness mode. Use the <code><font color="darkblue">SubstanceTheme.protanopia</font></code>
+    API to apply this mode to any Substance theme. Here is an example of
+    application under Mango theme (regular viewing) and under the same Mango
+    theme in protanopia simulation mode:</p>
+<img alt="Moderate" src="theme-colorblind-original.png" width=300 height=200>
+<img alt="Moderate" src="theme-colorblind-protanopia.png" width=300 height=200>
+
+    <p>The <code><font color="darkblue">org.jvnet.substance.theme.SubstanceDeuteranopiaTheme</font></code>
+    provides support for previewing your application in deuteranopia
+    color blindness mode. Use the <code><font color="darkblue">SubstanceTheme.deuteranopia</font></code>
+    API to apply this mode to any Substance theme. Here is an example of
+    application under Mango theme (regular viewing) and under the same Mango
+    theme in deuteranopia simulation mode:</p>
+<img alt="Moderate" src="theme-colorblind-original.png" width=300 height=200>
+<img alt="Moderate" src="theme-colorblind-deuteranopia.png" width=300 height=200>
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Animations on lists, tables and trees</b></td>
+    <td width="80%" valign="top">
+    <p>Lists, tables and trees provide out-of-the-box animation effects on rollover
+    and selection. The maximum selection opacity is 70%, the maximum rollover opacity
+    is 40% - for all controls.</p>
+<p>
+<img src="tree-table-animations.png" width=300 height=200>
+</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for multi-mixed themes</b></td>
+    <td width="80%" valign="top">
+    <p>The <code><font color="darkblue">org.jvnet.substance.theme.SubstanceMixTheme</font></code>
+    deprecates the <code><font color="darkblue">org.jvnet.substance.theme.SubstanceMixBiTheme</font></code>
+    (which is still supported) to provide multi-mixed themes. Examples of regular buttons
+    under multi-mixed themes:</p>
+    <img src="multimix-overview.png" width=450 height=25>
+    <p>Larger screenshot of <font color="darkblue">Bottle Green - Lime Green - Bottle Green</font>:</p>
+    <img src="multimix-greens.png" width=139 height=31>
+    <p>Larger screenshot of <font color="darkblue">Brown - Sunglare - Orange</font>:</p>
+    <img src="multimix-browns.png" width=139 height=31>
+    <p>Larger screenshot of <font color="darkblue">Barby Pink - Purple - Raspberry</font>:</p>
+    <img src="multimix-purples.png" width=139 height=31>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Scrollbar buttons location</b></td>
+    <td width="80%" valign="top">
+    <p>The <code><font color="darkblue">SubstanceLookAndFeel.SCROLL_PANE_BUTTONS_POLICY</font></code>
+    client property specifies the location for scrollbar buttons. The value should
+    be one of the <code><font color="darkblue">SubstanceConstants.ScrollPaneButtonPolicyKind</font></code>
+    enum. Available values:
+    </p>
+    <ul>
+    <li><code><font color="darkblue">NONE</font></code> - no buttons are shown.</li>
+    <li><code><font color="darkblue">OPPOSITE</font></code> - the default policy. The decrease button
+    is on one side of the scroll bar, the increase button is on another side of the scroll bar.</li>
+    <li><code><font color="darkblue">ADJACENT</font></code> - the decrease button is right next to the
+    increase button of the scroll bar.</li>
+    <li><code><font color="darkblue">MULTIPLE</font></code> - the combination of two. There are two decrease
+    buttons, one on each side of the scroll bar (one of them is right next to the increase button).</li>
+    <li><code><font color="darkblue">MULTIPLE_BOTH</font></code> - Two pairs of decrease / increase
+    buttons on each side of the scroll bar.</li>
+    </ul>
+    <p>The following screenshot shows horizontal scrollbar under different policies and
+    orientations. The first scrollbar is under the default <code><font color="darkblue">OPPOSITE</font></code>
+    policy. The second scrollbar is under the <code><font color="darkblue">ADJACENT</font></code> policy
+    in LTR application. The third scrollbar is under the <code><font color="darkblue">MULTIPLE</font></code> policy
+    in LTR application. The fourth scrollbar is under the <code><font color="darkblue">ADJACENT</font></code> policy
+    in RTL application. The fifth scrollbar is under the <code><font color="darkblue">MULTIPLE</font></code> policy
+    in RTL application. The sixth scrollbar is under the <code><font color="darkblue">NONE</font></code> policy.
+    The seventh scrollbar is under the <code><font color="darkblue">MULTIPLE_BOTH</font></code> policy.
+    </p>
+    <img src="scrollbars-horizontal.png" width=467 height=139>
+    
+    <p>The following screenshot shows vertical scrollbar under different policies. 
+    The first scrollbar is under the default <code><font color="darkblue">OPPOSITE</font></code>
+    policy. The second scrollbar is under the <code><font color="darkblue">ADJACENT</font></code> policy.
+    The third scrollbar is under the <code><font color="darkblue">MULTIPLE</font></code> policy.
+    The fourth scrollbar is under the <code><font color="darkblue">NONE</font></code> policy.
+    The fifth scrollbar is under the <code><font color="darkblue">MULTIPLE_BOTH</font></code> policy.
+    </p>
+    <img src="scrollbars-vertical.png" width=102 height=212>
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for flat scrollbar buttons</b></td>
+    <td width="80%" valign="top">
+    <p>Setting the <code><font color="darkblue">SubstanceLookAndFeel.BUTTON_PAINT_NEVER_PROPERTY</font></code>
+    to <code><font color="darkblue">Boolean.TRUE</font></code> on a 
+    <code><font color="darkblue">JScrollPane</font></code> will result in 
+    the scroll buttons being permanently flat (only displaying the arrow - no 
+    background).</p>
+    <p>Setting the <code><font color="darkblue">SubstanceLookAndFeel.FLAT_PROPERTY</font></code>
+    to <code><font color="darkblue">Boolean.TRUE</font></code> on a 
+    <code><font color="darkblue">JScrollPane</font></code> will result in 
+    the scroll buttons being flat (displaying background only on rollover / press).</p>
+    <p>The screenshot shows a scrollbar in regular mode (scroll button shows the
+    background) and in flat mode (scroll button doesn't show the background):</p>
+    <img src="scrollbar-flat.png" width=102 height=38>
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Improved micro-design of text components</b></td>
+    <td width="80%" valign="top">
+    <p>The text components, comboboxes and spinners are consistent and have
+    the same default height, insets and layout for internal buttons. Screenshot
+    of these components under Substance 3.0 shows that combo is 6 pixels higher
+    than all other components and the spinner buttons are drawn over the borders:</p>
+    <img src="substance-old-5.png" width=450 height=120>
+    
+    <p>Screenshot of the same application under Substance 3.1 shows the components
+    having the same height, consistent insets and the spinner buttons under the
+    same layout as the combobox button:</p>
+    <img src="substance-5.png" width=450 height=120>
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Icons on context edit menus on text components</b></td>
+    <td width="80%" valign="top">
+    <p>Using <a href="http://tango.freedesktop.org/Tango_Desktop_Project">Tango icons</a>
+    on context edit menus on text components (in 
+    <a href="https://laf-widget.dev.java.net">laf-widget</a> project):</p>
+    <img src="text-component-edit-context-menu-icons.png" width=148 height=131>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Negated themes</b></td>
+    <td width="80%" valign="top">
+    <p>Added support for negated themes. In order to enable negated
+    themes, use one of</p>
+    <ul>
+    <li><code><font color="darkblue">UIManager.put(SubstanceLookAndFeel.ENABLE_NEGATED_THEMES,
+    Boolean.TRUE)</font></code>
+    <li><code><font color="darkblue">-Dsubstancelaf.enableNegatedThemes</font></code> VM flag
+    </ul>
+    <p>When negated themes are enabled, the <code><font color="darkblue">SubstanceLookAndFeel.getAllThemes()</font></code>
+    function returns negated themes for all bright and cold themes. The matching theme kind is
+    <code><font color="darkblue">ThemeKind.NEGATED</font></code>. All the colors of the original
+    theme are negated, effectively making the non-active colors dark. Note that unlike the 
+    <a href="../../docs/themes/inverted.html">inverted themes</a>, the negated themes
+    are the <b>exact</b> negation of the original theme.</p>
+    
+    <p>On the left is the screenshot of negated <font color="darkblue">Aqua</font> theme, and on the right is the screenshot of 
+    inverted <font color="darkblue">Aqua</font> theme</p>
+    <img src="theme-negated-aqua.png" width="300" height="200">
+    <img src="theme-inverted-aqua.png" width="300" height="200">
+
+    <p>On the left is the screenshot of negated <font color="darkblue">Sunset</font> theme, and on the right is the screenshot of 
+    inverted <font color="darkblue">Sunset</font> theme</p>
+    <img src="theme-negated-sunset.png" width="300" height="200">
+    <img src="theme-inverted-sunset.png" width="300" height="200">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Native icons in filechooser dialog</b></td>
+    <td width="80%" valign="top">
+    <p>The filechooser dialog uses native icons:</p>
+    <img src="filechooser-native-icons.png" width="508" height="356">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New dark themes</b></td>
+    <td width="80%" valign="top">
+    <p>Two new core dark themes have been added, <font color="darkblue">Jade Forest</font>
+    and <font color="darkblue">Ultramarine</font>:</p>
+    <img src="theme-jade-forest.png" width="300" height="200">
+    <img src="theme-ultramarine.png" width="300" height="200">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for hue-shifted themes</b></td>
+    <td width="80%" valign="top">
+    <p>The <code><font color="darkblue">org.jvnet.substance.theme.SubstanceHueShiftTheme</font></code>
+    provides support hue-shifted themes. Use <code><font color="darkblue">SubstanceTheme.hueShift</font></code>
+    API. The original theme maintains the same
+    saturation and brightness but has a different (shifted) hue. Here is a screenshot
+    of the original theme (complex <font color="darkblue">Green Magic</font>):</p>
+    <img src="theme-hueshift-original.png" width=300 height=200>
+    
+    <p>The same theme shifted by 10% (factor of 0.1):</p>
+    <img src="theme-hueshift-original.png" width=300 height=200>
+    <img src="theme-hueshift-10perc.png" width=300 height=200>
+    
+    <p>The same theme shifted by 50% (factor of 0.5):</p>
+    <img src="theme-hueshift-original.png" width=300 height=200>
+    <img src="theme-hueshift-50perc.png" width=300 height=200>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Option for separate watermark theme on complex themes</b></td>
+    <td width="80%" valign="top">
+    <p>The <code><font color="darkblue">SubstanceComplexTheme</font></code> has a new option
+    to specify the watermark theme. When no watermark theme is specified, the 
+    default theme of the complex theme is used to paint the watermark. Screenshot
+    of a complex theme that has <font color="darkblue">Ebony</font> as a default theme,
+    which is also used for the wateramrk theme (no separate watermark theme 
+    specified):</p>
+    <img src="theme-complex-default-watermark.png" width=300 height=200>
+    <p>The same complex theme, but with a watermark theme (<font color="darkblue">Inverted
+    Barby Pink</font>):</p>
+    <img src="theme-complex-specific-watermark.png" width=300 height=200>
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Selective theme saturation</b></td>
+    <td width="80%" valign="top">
+    The <code><font color="darkblue">SubstanceTheme.saturate</font></code> has a new version
+    that gets a <code><font color="darkblue">boolean</font></code> parameter that specifies if the entire theme
+    should be saturated. If this parameter is <code><font color="darkblue">false</font></code>, only the components
+    in active visual state will be saturated / desaturated. This API is better suited for
+    <a href="../../docs/themes/simple.html">simple</a> themes.</p>
+    
+    <p>Screenshot of the original theme (<font color="darkblue">Complex Mango</font>):</p>
+    <img src="theme-saturated-original.png" width=300 height=200>
+    
+    <p>The saturated version of the same theme using the old API - note that all 
+    components (and the watermark) are saturated:</p>
+    <img src="theme-saturated-original.png" width=300 height=200>
+    <img src="theme-saturated-all.png" width=300 height=200>
+    
+    <p>The saturated version of the same theme using the new API - note that aonly
+    active components are saturated:</p>
+    <img src="theme-saturated-original.png" width=300 height=200>
+    <img src="theme-saturated-active-only.png" width=300 height=200>
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New gradient painters</b></td>
+    <td width="80%" valign="top">
+    <p>Three new gradient painters were added (two are based on the 
+    <a href="http://weblogs.java.net/blog/campbell/archive/2006/07/java_2d_tricker.html">soft-clipping</a>
+    technique). Screenshot of a button under new <font color="darkblue">Gradient
+    Wave</font> (note that the bottom part of the button is slightly hue-shifted):</p>
+    <img src="gradient-gradient-wave.png" width=139 height=32>
+    
+    <p>Screenshot of the same button under new <font color="darkblue">Specular
+    Wave</font> (note that the bottom part of the button is slightly hue-shifted):</p>
+    <img src="gradient-specular-wave.png" width=139 height=32>
+    
+    <p>Screenshot of the same button under new <font color="darkblue">Subdued</font>:</p>
+    <img src="gradient-subdued.png" width=139 height=32>
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Additional animation effects</b></td>
+    <td width="80%" valign="top">
+    <p>Fade animation effects have been added on:</p>
+    <ul>
+    <li>Menus and menu items</li>
+    <li>Text components (text field, formatted text field, editor pane, 
+    password field, text area)</li>
+    <li>Button text on complex themes that have active and default of opposite
+    darkness</li>
+    <li>Progress bar</li>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for open sides on buttons</b></td>
+    <td width="80%" valign="top">
+    <p>The new <code><font color="darkblue">SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY</font></code>
+    client property can be set on a button to specify open side(s). An open side will
+    not have the border and have extended gradient painting. Internally, this property
+    is used to paint scrollbar and spinner buttons that blend seamlessly with other
+    visual parts of the relevant control.</p>
+    
+    <p>The value of the property can be one of the following (where 
+    <code><font color="darkblue">Side</font></code> enum is defined in the
+    <code><font color="darkblue">org.jvnet.substance.utils.SubstanceConstants</font></code> class):</p>
+    <ul>
+    <li><code><font color="darkblue">Set&lt;Side&gt;</font></code> - allows defining multiple open sides.</li>
+    <li><code><font color="darkblue">String</font></code> - should correspond to one of the values of
+    the <code><font color="darkblue">Side</font></code> enum.</li>
+    <li><code><font color="darkblue">String[]</font></code> - each value should correspond to one of 
+    the values of the <code><font color="darkblue">Side</font></code> enum. Allows defining multiple
+    open sides.</li>
+    <li><code><font color="darkblue">Side</font></code>.</li>
+    <li><code><font color="darkblue">Side[]</font></code> - allows defining multiple
+    open sides.</li>
+    </ul>
+
+    <p>The screenshot below shows buttons with different open (and straight) sides as
+    compared to the same buttons with no open sides:</p>
+    <img src="button-open-sides.png" width=303 height=51>
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Extended customization of tabbed panes</b></td>
+    <td width="80%" valign="top">
+    <p>The <code><font color="darkblue">SubstanceLookAndFeel.PAINT_ACTIVE_PROPERTY</font></code>
+    client property can be set on either the specific tab component or on the 
+    tabbed pane. In the first case, the tab will be painted in active theme
+    as long as it's enabled. In the second case, all enabled tabs will be painted
+    in active theme. Example of a tabbed pane with the second, fifth and seventh 
+    tabs marked with this property:</p>
+    <img src="tabs-paint-active.png" width=523 height=25>
+    
+    <p>The <code><font color="darkblue">SubstanceLookAndFeel.THEME_PROPERTY</font></code>
+    client property can be set on either the specific tab component or on the 
+    tabbed pane. In the first case, the tab will be painted using the specified
+    theme. In the second case, all enabled tabs will be painted
+    using the specified theme. Setting a complex theme can make the selected and
+    rolled over tabs appear in one color, the enabled tabs in another color and
+    disabled tabs in yet another color.</p>
+    
+    <p>Example of the same tabbed pane with a complex theme set (the complex theme
+    uses <font color="darkblue">Bottle Green</font> for active controls,
+    <font color="darkblue">Lime Green</font> for default controls and
+    <font color="darkblue">Purple</font> for disabled controls):</p>
+    <img src="tabs-custom-theme.png" width=523 height=25>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for "pinning" internal frames</b></td>
+    <td width="80%" valign="top">
+    <p>The title pane of internal frames has additional button that allows
+    "pinning" the internal frame (moving and resizing are disabled). In
+    addition, the <code><font color="darkblue">SubstanceLookAndFeel.PERMANENTLY_PINNED</font></code>
+    property can be set on a <code><font color="darkblue">JInternalFrame</font></code> to 
+    indicate that the internal frame is permanently pinned (until this property
+    is reset) - value should
+    be <code><font color="darkblue">Boolean.TRUE</font></code> in this case.</p>
+    
+    <p>The following screenshot shows an internal frame in six different states:</p>
+    <ol>
+    <li>Unpinned - the default.</li>
+    <li>Pinned - user clicked on the pin button and it is selected.</li>
+    <li>Permanently pinned - using the property above. The pin
+    button can't be clicked.</li>
+    <li>Unpinned with additional custom buttons (using 
+    <code><font color="darkblue">SubstanceLookAndFeel.setRootPaneCustomTitleButtons</font></code> API).</li>
+    <li>Pinned with additional custom buttons (using 
+    <code><font color="darkblue">SubstanceLookAndFeel.setRootPaneCustomTitleButtons</font></code> API).</li>
+    <li>Permanently pinned with additional custom buttons (using 
+    <code><font color="darkblue">SubstanceLookAndFeel.setRootPaneCustomTitleButtons</font></code> API).</li>
+    </ol>
+    
+    <img src="internal-frames-pin.png" width=153 height=202>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for custom background composites</b></td>
+    <td width="80%" valign="top">
+    <p>The <code><font color="darkblue">SubstanceLookAndFeel.BACKGROUND_COMPOSITE</font></code> client property
+    can be set on a <code><font color="darkblue">JScrollPane</font></code>, 
+    <code><font color="darkblue">JTabbedPane</font></code> and 
+    <code><font color="darkblue">JToolBar</font></code>. 
+    The value should be an instance of 
+    <code><font color="darkblue">org.jvnet.substance.painter.ControlBackgroundComposite</font></code>
+    interface. At runtime it defines the background composite of scrollbar buttons
+    and tabs. A useful core implementation is in the 
+    <code><font color="darkblue">org.jvnet.substance.painter.AlphaControlBackgroundComposite</font></code> that 
+    provides a simple alpha-based translucency. Here is a screenshot of the same
+    scrollbar under default (none) composite background, a 75% translucent, 50% translucent
+    and 25% translucent composite backgrounds:</p>
+    
+    <img src="scrollbar-background-composite.png" width=116 height=83>
+    
+    <p>If this property is set on a <code><font color="darkblue">JToolBar</font></code> <b>and</b> the toolbar has
+    the <code><font color="darkblue">SubstanceLookAndFeel.TOOLBAR_BUTTON_FLAT</font></code> client property set to 
+    <code><font color="darkblue">Boolean.FALSE</font></code>, the toolbar buttons can have arbitrary translucency.</p>
+    </td>
+  </tr>
+
+</table>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+The release 3.0 of <a href="https://substance.dev.java.net">Substance</a> 
+look-and-feel (scheduled to be available on September 4th) features an easy 
+way to skin your apps (which is made even easier in the next version) - using 
+<b>complex themes</b>. Complex theme is based on four other (not necessarily 
+simple) themes:
+<ul>
+<li>Active theme - for controls in active visual state
+<li>Default theme - for controls in default visual state
+<li>Disabled theme - for controls in disabled visual state
+<li>Active title pane theme - for title panes of active windows
+</ul>
+To create a complex theme, use the following constructor:
+</p>
+
+<p>
+<code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;a&nbsp;new&nbsp;complex&nbsp;theme.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">displayName</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Theme&nbsp;display&nbsp;name.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">themeKind</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Theme&nbsp;kind.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">activeTheme</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Active&nbsp;theme.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">defaultTheme</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default&nbsp;theme.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">disabledTheme</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Disabled&nbsp;theme.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">activeTitlePaneTheme</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Active&nbsp;title&nbsp;pane&nbsp;theme.</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceComplexTheme</font><font color="#000000">(</font><font color="#000000">String&nbsp;displayName,&nbsp;ThemeKind&nbsp;themeKind,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceTheme&nbsp;activeTheme,&nbsp;SubstanceTheme&nbsp;defaultTheme,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceTheme&nbsp;disabledTheme,&nbsp;SubstanceTheme&nbsp;activeTitlePaneTheme</font><font color="#000000">)</font></code>
+
+<p>Example of a complex theme:</p>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceTheme&nbsp;activeTheme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceMixTheme</font><font color="#000000">(</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstancePurpleTheme</font><font color="#000000">()</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceBarbyPinkTheme</font><font color="#000000">())</font><font color="#000000">.saturate</font><font color="#000000">(</font><font color="#990000">0.5</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceTheme&nbsp;defaultTheme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceMixTheme</font><font color="#000000">(</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceAquaTheme</font><font color="#000000">()</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceBottleGreenTheme</font><font color="#000000">())</font><font color="#000000">.saturate</font><font color="#000000">(</font><font color="#990000">0.3</font><font color="#000000">)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.tint</font><font color="#000000">(</font><font color="#990000">0.2</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceTheme&nbsp;disabledTheme&nbsp;=&nbsp;defaultTheme.saturate</font><font color="#000000">(</font><font color="#000000">-</font><font color="#990000">0.3</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceTheme&nbsp;activeTitleTheme&nbsp;=&nbsp;activeTheme.saturate</font><font color="#000000">(</font><font color="#000000">-</font><font color="#990000">0.1</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.theme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceComplexTheme</font><font color="#000000">(</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;Finding&nbsp;Nemo&#34;</font><font color="#000000">,&nbsp;ThemeKind.BRIGHT,&nbsp;activeTheme,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultTheme,&nbsp;disabledTheme,&nbsp;activeTitleTheme</font><font color="#000000">)</font><font color="#000000">;</font></code>
+    
+<p>Note that the basic themes of the complex themes are not necessarily
+simple. This creates the following visual theme (featured in the <a href="https://matrix-rain.dev.java.net/">matrix rain</a> screensaver which now has proper <a href="https://matrix-rain.dev.java.net/webstart/matrix.jnlp">WebStart</a> version):</p>
+<img src="../../../images/screenshots/themes/skins/findingnemo1.png" width=300 height=200>
+
+<p>Another example of a complex theme:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorScheme&nbsp;shiftRed&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ShiftColorScheme</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SunsetColorScheme</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Color&nbsp;getForegroundColor</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">Color.white;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><font color="#000000">,&nbsp;Color.red,&nbsp;</font><font color="#990000">0.3</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceTheme&nbsp;activeTheme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceTheme</font><font color="#000000">(</font><font color="#000000">shiftRed,&nbsp;</font><font color="#2a00ff">&#34;Red&nbsp;sunset&#34;</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ThemeKind.DARK</font><font color="#000000">)</font><font color="#000000">.saturate</font><font color="#000000">(</font><font color="#990000">0.4</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceTheme&nbsp;defaultTheme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceCharcoalTheme</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceTheme&nbsp;disabledTheme&nbsp;=&nbsp;defaultTheme.tone</font><font color="#000000">(</font><font color="#990000">0.2</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceTheme&nbsp;activeTitleTheme&nbsp;=&nbsp;defaultTheme.saturate</font><font color="#000000">(</font><font color="#990000">0.2</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceTheme&nbsp;watermarkTheme&nbsp;=&nbsp;defaultTheme.saturate</font><font color="#000000">(</font><font color="#990000">0.4</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.theme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceComplexTheme</font><font color="#000000">(</font><font color="#000000">NAME,&nbsp;ThemeKind.DARK,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">activeTheme,&nbsp;defaultTheme,&nbsp;disabledTheme,&nbsp;activeTitleTheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">watermarkTheme</font><font color="#000000">)</font><font color="#000000">;</font></code>
+        
+<p>which creates the following theme:</p>
+<img src="../../../images/screenshots/themes/skins/magma1.png" width=300 height=200>
+
+<p>Here are few more examples of complex themes:</p>
+<img src="../../../images/screenshots/themes/skins/fieldofwheat1.png" width=300 height=200>
+<img src="../../../images/screenshots/themes/skins/greenmagic1.png" width=300 height=200>
+<img src="../../../images/screenshots/themes/skins/mango1.png" width=300 height=200>
+<img src="../../../images/screenshots/themes/skins/officeblue2007_1.png" width=300 height=200>

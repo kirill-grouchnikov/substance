@@ -1,0 +1,229 @@
+<html>
+<head>
+<title>Substance look and feel - documentation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance API</h1>
+
+<p>
+<img src="../../images/go-home.png" width=16 height=16 border=0> <a href="../clientprops/all.html">View</a> all client properties.
+</p>
+    
+<hr>
+  
+<p>
+<b>Working with <a href="../skins/overview.html">skins</a></b>
+</p>
+    
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">Map&lt;String,&nbsp;SkinInfo&gt;&nbsp;getAllSkins</font><font color="#000000">()</font></code>    
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="GetAllSkins.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Returns all available skins.
+</p>
+    
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">setSkin</font><font color="#000000">(</font><font color="#000000">String&nbsp;skinClassName</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="SetSkin_ClassName.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Sets the specified skin.
+</p>
+    
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">setSkin</font><font color="#000000">(</font><font color="#000000">SubstanceSkin&nbsp;skin</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="SetSkin_Instance.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Sets the specified skin.
+</p>
+    
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">SubstanceSkin&nbsp;getCurrentSkin</font><font color="#000000">(</font><font color="#000000">Component&nbsp;c</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="GetCurrentSkin.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Returns the current skin for the specified component.
+</p>
+    
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerSkinChangeListener</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SkinChangeListener&nbsp;skinChangeListener</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="RegisterSkinChangeListener.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Registers a new listener on skin change.
+</p>
+    
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">unregisterSkinChangeListener</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SkinChangeListener&nbsp;skinChangeListener</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="UnregisterSkinChangeListener.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Unregisters a listener on skin change.
+</p>
+  
+<hr>
+  
+<p>
+<b>Working with fonts</b>
+</p>
+
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">FontPolicy&nbsp;getFontPolicy</font><font color="#000000">()</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="GetFontPolicy.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Looks up and retrieves the <code>FontPolicy</code> used by the Substance
+family. 
+</p>
+
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">setFontPolicy</font><font color="#000000">(</font><font color="#000000">FontPolicy&nbsp;fontPolicy</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="SetFontPolicy.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Sets the <code>FontPolicy</code> to be used with Substance family. 
+</p>
+
+  
+<hr>
+  
+<p>
+<b>Working with tab closing</b>
+</p>
+    
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">Set&lt;BaseTabCloseListener&gt;&nbsp;getAllTabCloseListeners</font><font color="#000000">()</font></code>    
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="GetAllTabCloseListeners_Global.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Returns the set of all listeners registered on tab-close events on all
+tabbed panes.
+</p>
+  
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">Set&lt;BaseTabCloseListener&gt;&nbsp;getAllTabCloseListeners</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">JTabbedPane&nbsp;tabbedPane</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="GetAllTabCloseListeners_Specific.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Returns all listeners registered on tab closing of the specified tabbed
+pane.
+</p>
+  
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerTabCloseChangeListener</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">BaseTabCloseListener&nbsp;tabCloseListener</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="RegisterTabCloseChangeListener_General.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Registers the specified listener on tab-close events on all
+tabbed panes.
+</p>
+  
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerTabCloseChangeListener</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabbedPane,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">BaseTabCloseListener&nbsp;tabCloseListener</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="RegisterTabCloseChangeListener_Specific.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Registers the specified listener on tab-close events on the specified
+tabbed pane.
+</p>
+  
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">unregisterTabCloseChangeListener</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">BaseTabCloseListener&nbsp;tabCloseListener</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="UnregisterTabCloseChangeListener_General.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Unregisters the specified listener on tab-close events on all
+tabbed panes.
+</p>
+  
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">unregisterTabCloseChangeListener</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabbedPane,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">BaseTabCloseListener&nbsp;tabCloseListener</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="UnregisterTabCloseChangeListener_Specific.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Unregisters the specified listener on tab-close events on the
+specified tabbed pane.
+</p>
+  
+  
+<hr>
+  
+<p>
+<b>Additional APIs</b>
+</p>
+    
+<p>
+    <code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">setWidgetVisible</font><font color="#000000">(</font><font color="#000000">JRootPane&nbsp;rootPane,&nbsp;</font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">visible,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceWidgetType...&nbsp;substanceWidgets</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="SetWidgetVisible.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Sets the visibility of the specified widget kind(s).
+</p>
+  
+<p>
+<code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">setToUseConstantThemesOnDialogs</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">toUseConstantThemesOnDialogs</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="SetUseConstantThemesOnDialogs.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Sets the new setting for the icons of the <code>JOptionPane</code>s
+created with predefined message types.
+</p>
+  
+<p>
+    <code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">DecorationAreaType&nbsp;getDecorationType</font><font color="#000000">(</font><font color="#000000">Component&nbsp;comp</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="GetDecorationType.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Returns the decoration area type of the specified component
+</p>
+  
+<p>
+    <code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">setDecorationType</font><font color="#000000">(</font><font color="#000000">JComponent&nbsp;comp,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType&nbsp;type</font><font color="#000000">)</font></code>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="SetDecorationType.html"><img src="../../images/go-next.png" width=16 height=16 border=0></a>
+Sets the decoration type of the specified component and all its children.
+</p>
+  
+<hr>
+
+</body>
+</html>
+

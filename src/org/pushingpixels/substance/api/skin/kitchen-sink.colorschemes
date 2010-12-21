@@ -1,0 +1,55 @@
+Coffee Active {
+    kind=Light
+    colorUltraLight=#F4E5C0
+    colorExtraLight=#F0DEB3
+    colorLight=#EBD7A6
+    colorMid=#C7A67B
+    colorDark=#AA8363
+    colorUltraDark=#946F4A
+    colorForeground=#32220F
+}
+
+LightGray General Watermark {
+    kind=Light
+    colorUltraLight=#E9EEF7
+    colorExtraLight=#E5E8ED
+    colorLight=#DADCDF
+    colorMid=#CACDD1
+    colorDark=#BCC4CC
+    colorUltraDark=#BAC1CA
+    colorForeground=#4C535C
+}
+
+Business Blue Steel Highlight {
+    kind=Light
+    colorUltraLight=#FDEAB9
+    colorExtraLight=#F9E3A1
+    colorLight=#F9E07D
+    colorMid=#F3C96D
+    colorDark=#AC6C4D
+    colorUltraDark=#8F5D4D
+    colorForeground=#1A1A1A
+}
+
+Business Highlight {
+    kind=Light
+    colorUltraLight=#FDEAB9
+    colorExtraLight=#F9E3A1
+    colorLight=#F9E07D
+    colorMid=#F3C96D
+    colorDark=#AC6C4D
+    colorUltraDark=#8F5D4D
+    colorForeground=#1A1A1A
+}
+
+Moderate Highlight {
+    kind=Light
+    colorUltraLight=#FDE5A7
+    colorExtraLight=#F8DC89
+    colorLight=#F7D85D
+    colorMid=#F0BB48
+    colorDark=#974720
+    colorUltraDark=#733520
+    colorForeground=#000000
+}
+

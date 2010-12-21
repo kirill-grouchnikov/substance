@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>Substance look and feel - plugins</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - plugins</h1>
+
+<p>While the core library provides consistent visuals and animation effects
+for core Swing components, it also provides an extensible plugin architecture to
+extend the library functionality to third-party components - such as 
+<a href="https://flamingo.dev.java.net">Flamingo</a>
+and <a href="https://swingx.dev.java.net">SwingX</a> component suites.</p>
+
+<h3>Creating a plugin</h3>
+<b>Substance</b> plugin is a <b>jar</b> file that contains at least the following
+two files:
+<ul>
+<li><code><font color="darkblue">META-INF/substance-plugin.xml</font></code>
+<li>A class that implements <code><font color="darkblue">org.pushingpixels.lafplugin.LafComponentPlugin</font></code>
+interface
+</ul>
+
+<p>The structure of <code><font color="darkblue">META-INF/substance-plugin.xml</font></code>
+descriptor is:</p>
+<pre>
+  &lt;substance-plugin&gt;
+    &lt;plugin-class&gt;<b>Class name</b>&lt;/plugin-class&gt;
+  &lt;/substance-plugin&gt;
+</pre>
+<p>The class name is a fully qualified name of a non-abstract class with a default zero-argument
+constructor that implements the <code><font color="darkblue">org.pushingpixels.lafplugin.LafComponentPlugin</font></code>
+interface.</p>
+
+<p>The <code><font color="darkblue">org.pushingpixels.lafplugin.LafComponentPlugin</font></code> interface 
+specifies the following methods which must be implemented by the plugin:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Initializes&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">plugin.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">initialize</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Unitializes&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">plugin.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">uninitialize</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Retrieves&nbsp;a&nbsp;collection&nbsp;of&nbsp;custom&nbsp;settings&nbsp;based&nbsp;on&nbsp;the&nbsp;specified&nbsp;theme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;The&nbsp;entries&nbsp;in&nbsp;the&nbsp;array&nbsp;should&nbsp;be&nbsp;pairwise,&nbsp;odd&nbsp;being&nbsp;symbolic&nbsp;name&nbsp;of&nbsp;a</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;setting,&nbsp;and&nbsp;even&nbsp;being&nbsp;the&nbsp;setting&nbsp;value.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">themeInfo</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Theme&nbsp;information&nbsp;object.&nbsp;Can&nbsp;be&nbsp;</font><font color="#3f3fbf">{@link&nbsp;MetalTheme}</font><font color="#3f5fbf">,&nbsp;for</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;instance&nbsp;or&nbsp;any&nbsp;other&nbsp;LAF-specific&nbsp;object.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Collection&nbsp;of&nbsp;custom&nbsp;settings&nbsp;based&nbsp;on&nbsp;the&nbsp;specified&nbsp;theme.&nbsp;The</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;entries&nbsp;in&nbsp;the&nbsp;array&nbsp;should&nbsp;be&nbsp;pairwise,&nbsp;odd&nbsp;being&nbsp;symbolic&nbsp;name</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;a&nbsp;setting,&nbsp;and&nbsp;even&nbsp;being&nbsp;the&nbsp;setting&nbsp;value.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Object</font><font color="#000000">[]&nbsp;</font><font color="#000000">getDefaults</font><font color="#000000">(</font><font color="#000000">Object&nbsp;themeInfo</font><font color="#000000">)</font><font color="#000000">;</font></code>
+
+<h3>Reference plugins</h3>
+
+<p>There are two reference implementations of Substance plugins:</p>
+
+<ul>
+<li>Plugin for the <a href="https://flamingo.dev.java.net">Flamingo component suite</a>
+available in the <a href="https://substance-flamingo.dev.java.net">Substance Flamingo plugin</a>
+under BSD license.</li>    
+<li>Plugin for the <a href="https://swingx.dev.java.net">SwingX component suite</a>
+available in the <a href="https://substance-swingx.dev.java.net">Substance SwingX plugin</a>
+under LGPL license.</li>  
+</ul>  
+
+<h3>Using third-party plugins</h3>
+In order to use a third-party plugin, just put it in the classpath (along with the
+<b>substance.jar</b>) and it will be picked up automatically.
+
+</body>
+</html>
+

@@ -1,0 +1,135 @@
+<html>
+<head>
+<title>Substance look and feel - decoration painters</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, painters, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - decoration painters</h1>
+
+<p>
+Menu bars, tool bars, status bars - these are common examples of special
+containers found in application windows. These containers create functional
+grouping of application controls and bring order to complex screens.
+Substance skinning layer provides a flexible and powerful set
+of APIs to define the visual appearance of these control groups - called
+<strong>decoration areas</strong>. At the same time, Substance decoration 
+painters enforce visual consistency 
+and connections across the components in related areas and states. 
+In addition, Substance provides a set of published APIs
+for applications that wish to skin custom components
+and preserve visual consistency with the Swing controls painted
+by the core Substance UI delegates.</p>
+
+<h3>Decoration areas</h3>
+
+<p>The <code><font color="darkblue">org.pushingpixels.substance.api.DecorationAreaType</font></code>
+class contains the available core decoration area types. As a picture
+is worth a thousand words, the following screenshots illustrate the 
+different decoration area types.</p>
+
+<p>The following screenshot is the main Substance test application under the
+<a href="../skins/toneddown.html#BusinessBlackSteelSkin">Business Black Steel</a>
+skin (click to see full size version):</p>
+
+<a href="../../images/screenshots/painters/decoration/full.png"><img 
+src="../../images/screenshots/painters/decoration/thumb.png" width=500 height=342 border=0></a>
+
+<p>The next screenshot shows the <code>title</code> decoration area,
+which in this example includes the title pane of the main window:</p>
+
+<img src="../../images/screenshots/painters/decoration/areas-title.png" width=500 height=342 border=0>
+
+<p>The next screenshot shows the <code>header</code> decoration area,
+which in this example includes the menu bar of the main window:</p>
+
+<img src="../../images/screenshots/painters/decoration/areas-header.png" width=500 height=342 border=0>
+
+<p>The next screenshot shows the <code>toolbar</code> decoration area,
+which in this example includes the tool bar of the main window:</p>
+
+<img src="../../images/screenshots/painters/decoration/areas-toolbar.png" width=500 height=342 border=0>
+
+<p>The next screenshot shows the <code>footer</code> decoration area,
+which in this example includes the status bar component from the 
+<a href="https://swingx.dev.java.net">SwingX</a> suite:</p>
+
+<img src="../../images/screenshots/painters/decoration/areas-footer.png" width=500 height=342 border=0>
+
+<p>The next screenshot shows the <code>general</code> decoration area,
+which in this example includes the task pane container 
+component from the <a href="https://swingx.dev.java.net">SwingX</a> suite:</p>
+
+<img src="../../images/screenshots/painters/decoration/areas-general.png" width=500 height=342 border=0>
+
+<p>Let's go back to the original screenshot:</p>
+
+<img src="../../images/screenshots/painters/decoration/thumb.png" width=500 height=342 border=0>
+
+<p>It illustrates that the specific skin assigns different color schemes to
+different decoration areas. The controls in those areas get the background and
+foreground colors based on their assigned color scheme (without any custom
+application code), thus creating
+visual distinction between different application areas.</p>
+
+
+<h3>Application-facing APIs</h3>
+
+<p>To use the matching decoration painter in custom painting routines of
+your application, call the following published Substance APIs:</p>
+<ul>
+<li>
+	<code><font color="darkblue">SubstanceLookAndFeel.<a href="../api/GetCurrentSkin.html">getCurrentSkin()</a></font></code>
+	to retrieve the component skin.</li>
+<li><code><font color="darkblue">SubstanceSkin.getDecorationPainter()</font></code>
+to retrieve the decoration painter of the component skin.</li>
+<li><code><font color="darkblue">SubstanceLookAndFeel.<a href="../api/GetDecorationType.html">getDecorationType()</a></font></code>
+to retrieve the decoration area type of the component.</li>
+<li><code><font color="darkblue">SubstanceDecorationPainter.paintDecorationArea()</font></code>
+(see below) to paint the decoration background on the specific graphics context.</li>
+</ul>
+</p>
+
+<p>The base class for Substance <b>decoration painters</b> is
+<code><font color="darkblue">org.pushingpixels.substance.api.painter.decoration.SubstanceDecorationPainter</font></code>. 
+The only painting method in this class is:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Paints&nbsp;the&nbsp;decoration&nbsp;area.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">graphics</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Graphics&nbsp;context.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">comp</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">decorationAreaType</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Decoration&nbsp;area&nbsp;type.&nbsp;Must&nbsp;not&nbsp;be&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">null</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">width</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Width.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">height</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Height.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">skin</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Skin&nbsp;for&nbsp;painting&nbsp;the&nbsp;decoration&nbsp;area.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">paintDecorationArea</font><font color="#000000">(</font><font color="#000000">Graphics2D&nbsp;graphics,&nbsp;Component&nbsp;comp,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType&nbsp;decorationAreaType,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">width,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">height,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceSkin&nbsp;skin</font><font color="#000000">)</font><font color="#000000">;</font></code>
+        
+
+<p>The <code><font color="darkblue">width</font></code> and 
+<code><font color="darkblue">height</font></code> 
+parameters specify the rectangle to paint (the decoration
+painters can only paint rectangular areas), the 
+<code><font color="darkblue">skin</font></code> specifies the Substance
+skin to be used to compute the gradient colors, while
+<code><font color="darkblue">decorationAreaType</font></code>
+indicates the decoration area type.</p>
+
+</body>
+</html>
+

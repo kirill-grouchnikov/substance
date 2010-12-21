@@ -1,0 +1,146 @@
+This is the third part of the series that describes the additional capabilities that you can 
+get on your tabbed panes once you start using the <a href="https://substance.dev.java.net">Substance</a> 
+look-and-feel. The <a href="../2005.10/spicing-tabbed-panes-1.html">first 
+part</a> described close buttons and animation on modified tabs, while the 
+<a href="../2005.12/spicing-tabbed-panes-2.html">second 
+part</a> described vetoable close buttons and vertical tabs. This entry describes new features 
+available in the next version of Substance (code-named Firenze, currently available in development status).<br><br>
+
+The first addition is single-click close of multiple tabs. This functionality borrows from 
+both NetBeans (Alt+Click on close button closes all tabs but this, Shift+Click on close 
+button closes all tabs) and Firefox (middle click closes tab). The logic that decides what 
+tabs to close is written by the application and set on the corresponding tabbed pane. 
+Substance tracks down mouse events on the relevant tabs, calls the application callback 
+and closes the tabs specified by the application. Here is the example code to clarify this 
+capability.
+<br><br>
+
+Application needs to implement the <b>TabCloseCallback</b> interface which contains the 
+following four functions:
+<br><br>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">TabCloseKind&nbsp;onAreaClick</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabbedPane,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">MouseEvent&nbsp;mouseEvent</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">TabCloseKind&nbsp;onCloseButtonClick</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabbedPane,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex,&nbsp;MouseEvent&nbsp;mouseEvent</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">String&nbsp;getAreaTooltip</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabbedPane,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">String&nbsp;getCloseButtonTooltip</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabbedPane,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex</font><font color="#000000">)</font><font color="#000000">;</font></code>
+<br><br>
+    
+The first two functions are called when the user clicks on either the tab itself or on its close button (if specified). <b>TabCloseKind</b> is an enum with the following values:
+<br><br>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;enum&nbsp;</b></font><font color="#000000">TabCloseKind&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">NONE,&nbsp;THIS,&nbsp;ALL,&nbsp;ALL_BUT_THIS</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font></code>
+   <br><br>
+
+The last two functions are used to provide tooltips to instruct the user about the 
+application-specific behaviour of single-click tab close. Sample implementation of this 
+interface is:
+<br><br>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">TabCloseCallback&nbsp;closeCallbackMain&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">TabCloseCallback</font><font color="#000000">()&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">TabCloseKind&nbsp;onAreaClick</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabbedPane,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex,&nbsp;MouseEvent&nbsp;mouseEvent</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">mouseEvent.getButton</font><font color="#000000">()&nbsp;</font><font color="#000000">!=&nbsp;MouseEvent.BUTTON2</font><font color="#000000">)</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">TabCloseKind.NONE;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">mouseEvent.isShiftDown</font><font color="#000000">())&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">TabCloseKind.ALL;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">TabCloseKind.THIS;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">TabCloseKind&nbsp;onCloseButtonClick</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabbedPane,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex,&nbsp;MouseEvent&nbsp;mouseEvent</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">mouseEvent.isAltDown</font><font color="#000000">())&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">TabCloseKind.ALL_BUT_THIS;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">mouseEvent.isShiftDown</font><font color="#000000">())&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">TabCloseKind.ALL;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">TabCloseKind.THIS;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">String&nbsp;getAreaTooltip</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabbedPane,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;null</b></font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff"></font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">String&nbsp;getCloseButtonTooltip</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabbedPane,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">tabIndex</font><font color="#000000">)&nbsp;{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">StringBuffer&nbsp;result&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">StringBuffer</font><font color="#000000">()</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">result.append</font><font color="#000000">(</font><font color="#2a00ff">&#34;&lt;html&gt;&lt;body&gt;&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">result.append</font><font color="#000000">(</font><font color="#2a00ff">&#34;Mouse&nbsp;click&nbsp;closes&nbsp;&lt;b&gt;&#34;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">+&nbsp;tabbedPane.getTitleAt</font><font color="#000000">(</font><font color="#000000">tabIndex</font><font color="#000000">)&nbsp;</font><font color="#000000">+&nbsp;</font><font color="#2a00ff">&#34;&lt;/b&gt;&nbsp;tab&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">result</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.append</font><font color="#000000">(</font><font color="#2a00ff">&#34;&lt;br&gt;&lt;b&gt;Alt&lt;/b&gt;-Mouse&nbsp;click&nbsp;closes&nbsp;all&nbsp;tabs&nbsp;but&nbsp;&lt;b&gt;&#34;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">+&nbsp;tabbedPane.getTitleAt</font><font color="#000000">(</font><font color="#000000">tabIndex</font><font color="#000000">)&nbsp;</font><font color="#000000">+&nbsp;</font><font color="#2a00ff">&#34;&lt;/b&gt;&nbsp;tab&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">result.append</font><font color="#000000">(</font><font color="#2a00ff">&#34;&lt;br&gt;&lt;b&gt;Shift&lt;/b&gt;-Mouse&nbsp;click&nbsp;closes&nbsp;all&nbsp;tabs&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">result.append</font><font color="#000000">(</font><font color="#2a00ff">&#34;&lt;/body&gt;&lt;/html&gt;&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">result.toString</font><font color="#000000">()</font><font color="#000000">;</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><font color="#000000">;</font><br/>
+</code>
+    <br><br>
+Here, simple click on close button closes the relevant tab, alt-click on close button 
+close all tabs but the clicked one and shift-click on close button closes all tabs. In 
+addition, we have the matching tooltip message when the mouse hovers over the close button:
+<br><br>
+<img src="../../../release-info/2.3/tabbed-close-tooltip.png" width=348 height=81>
+<br><br>
+Furthermore, middle click on the tab close that tab and shift-middle-click closes all 
+tabs. The last line associates our tab-close callback with one of our tabbed panes. In 
+order to match the multiple-tabs close, the option to veto the tab close has been 
+augmented with <b>VetoableMultipleTabCloseListener</b> interface - see the test application 
+for the sample usage.<br><br>
+
+The second major enhancement to the tabbed panes was requested by one of the users. This 
+enhancement allows to specify custom alignment of tab texts on left and right placement. 
+The default Swing behaviour is center-alignment, which can lead to unfriendly "fir-like" 
+zigzags on tabs with varying text lengths:
+<br><br>
+<img src="../../../release-info/2.3/tabbed-text-default.png" width=100 height=100>
+<br><br>
+In order to overcome this behaviour and allow applications to show left or right 
+aligned texts, Substance provides the following enum:
+<br><br>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;enum&nbsp;</b></font><font color="#000000">TabTextAlignmentKind&nbsp;</font><font color="#000000">{</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DEFAULT,&nbsp;ALWAYS_LEFT,&nbsp;ALWAYS_RIGHT,&nbsp;FOLLOW_PLACEMENT,&nbsp;FOLLOW_ORIENTATION</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font></code>
+    <br><br>
+
+The values are:
+    <ul>
+    <li><font color="darkblue">DEFAULT</font> - default alignment (centered).
+    </li><li><font color="darkblue">ALWAYS_LEFT</font> - text is always aligned to left.
+    </li><li><font color="darkblue">ALWAYS_RIGHT</font> - text is always aligned to right.
+    </li><li><font color="darkblue">FOLLOW_PLACEMENT</font> - on <font color="darkblue">LEFT</font>
+
+    placement text is aligned to left, on <font color="darkblue">RIGHT</font> placement text is
+    aligned to right.
+    </li><li><font color="darkblue">FOLLOW_ORIENTATION</font> - recommended alignment. For
+    LTR orientation text is aligned to left, for RTL orientation text is aligned to right.
+    </li></ul>
+    In order to set the text alignment, use client property 
+    <font color="darkblue">SubstanceLookAndFeel.TABBED_PANE_TEXT_ALIGNMENT_KIND</font> on either tabbed pane
+    or globally on UIManager. Value should be an element of the above enum. Screenshots 
+    of <font color="darkblue">DEFAULT</font>, 
+    <font color="darkblue">ALWAYS_LEFT</font> and <font color="darkblue">ALWAYS_RIGHT</font> alignment:
+    <br><br>
+
+    <img src="../../../release-info/2.3/tabbed-text-default.png" height="100" width="100">
+    <img src="../../../release-info/2.3/tabbed-text-left.png" height="100" width="100">
+    <img src="../../../release-info/2.3/tabbed-text-right.png" height="100" width="100">
+    <br><br>
+    Screenshot of <font color="darkblue">FOLLOW_ORIENTATION</font> in RTL-oriented application with 
+    <font color="darkblue">RIGHT</font> placement:
+    <br><br>
+
+    <img src="../../../release-info/2.3/tabbed-text-orientation.png" height="100" width="100">
+<br><br>
+
+Stay tuned for the next part of this series - much more to come.

@@ -1,0 +1,124 @@
+<html>
+<head>
+<title>Substance version 5.1 migration guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Migration guide for version 5.1 (Panama)</h1>
+
+<p>
+The version 5.1 (code-named Panama) introduces minor binary incompatibilities
+with the previous versions. This document describes these incompatibilities
+and outlines the migration process for the client applications.
+</p>
+
+<h2>Background</h2>
+<p>
+During the development of version 5.1, two published Substance interfaces
+have been changed to better accomodate the new functionality.
+</p>
+
+<h2>SubstanceButtonShaper</h2>
+
+<p>The <code><font color="darkblue">getButtonOutline</font></code> APIs of
+<code><font color="darkblue">org.jvnet.substance.shaper.SubstanceButtonShaper</font></code>
+now return <code><font color="darkblue">Shape</font></code> instead
+of <code><font color="darkblue">GeneralPath</font></code>.</p>
+
+<p>What does this mean to applications? There are two cases:</p>
+
+<ul>
+
+<li>If you have provided a custom button shaper that either extended an
+existing core Substance button shaper or provided a complete implementation,
+you will need to change the return type. The implementation itself does not
+need to change because <code><font color="darkblue">GeneralPath</font></code>
+is a subclass of <code><font color="darkblue">Shape</font></code>.
+The added flexibility is that now you can return other subclasses of 
+the <code><font color="darkblue">Shape</font></code> class, such as 
+<code><font color="darkblue">Ellipse2D</font></code>, for example.</li>
+	
+<li>If you call <code><font color="darkblue">SubstanceSkin.getButtonShaper</font></code>
+	to obtain the current button shaper and use it to compute the outline of
+	your custom visuals, you can no longer assume that the result is a 
+	<code><font color="darkblue">GeneralPath</font></code>. 
+	Both <code><font color="darkblue">SubstanceGradientPainter</font></code>
+	and <code><font color="darkblue">SubstanceBorderPainter</font></code> APIs
+	accept <code><font color="darkblue">Shape</font></code> parameters, and these
+	calls should not be affected. Only application code that used 
+non-<code><font color="darkblue">Shape</font></code> APIs will need to be changed.</li>
+</ul>
+
+<h2>SubstanceHighlightPainter</h2>
+
+<p>The <code><font color="darkblue">paintHighlight</font></code> of
+<code><font color="darkblue">org.jvnet.substance.painter.highlight.SubstanceHighlightPainter</font></code>
+has been changed to the following signature:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Paints&nbsp;the&nbsp;highlight.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">graphics</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Graphics&nbsp;context.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">comp</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">width</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Width.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">height</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Height.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">borderAlpha</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Border&nbsp;alpha&nbsp;factor.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">openSides</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;sides&nbsp;specified&nbsp;in&nbsp;this&nbsp;set&nbsp;will&nbsp;not&nbsp;be&nbsp;painted.&nbsp;Can&nbsp;be</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">null</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">or&nbsp;empty.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">colorScheme1</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;first&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">colorScheme2</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;second&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">borderColorScheme1</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;first&nbsp;border&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">borderColorScheme2</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;second&nbsp;border&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">cyclePos</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cycle&nbsp;position.&nbsp;Is&nbsp;used&nbsp;for&nbsp;rollover&nbsp;and&nbsp;selection&nbsp;animations.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Must&nbsp;be&nbsp;in&nbsp;0..1&nbsp;range.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">paintHighlight</font><font color="#000000">(</font><font color="#000000">Graphics2D&nbsp;graphics,&nbsp;Component&nbsp;comp,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">width,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">height,&nbsp;</font><font color="#7f0055"><b>float&nbsp;</b></font><font color="#000000">borderAlpha,&nbsp;Set&lt;Side&gt;&nbsp;openSides,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;colorScheme1,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;colorScheme2,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;borderColorScheme1,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;borderColorScheme2,&nbsp;</font><font color="#7f0055"><b>float&nbsp;</b></font><font color="#000000">cyclePos</font><font color="#000000">)</font></code>
+        
+<p>The changes are the new <code><font color="darkblue">borderColorScheme1</font></code>
+and <code><font color="darkblue">borderColorScheme2</font></code>
+parameters.</p>
+
+<p>What does this mean to applications? There are two cases:</p>
+
+<ul>
+	
+<li>If you have provided a custom highlight painter that either extended an
+existing core Substance highlight painter, or provided a complete implementation,
+you are highly advised to use the new parameters to paint the border
+part of the highlight region (respecting the 
+<code><font color="darkblue">openSides</font></code> and
+<code><font color="darkblue">borderAlpha</font></code>).
+See existing core painters for more details.</li>
+
+<li>If you used a highlight painter to provide some custom painting logic in
+your application, you can retrieve the relevant border color schemes by 
+using the new <code><font color="darkblue">SubstanceSkin.getColorScheme</font></code>
+API, passing the <code><font color="darkblue">ColorSchemeAssociationKind.BORDER</font></code>
+as the second parameter. This is highly advised to keep the custom application
+visuals consistent with the visuals of core and third-party components
+painted by Substance.</li>
+
+</ul>
+
+</body>
+</html>
+

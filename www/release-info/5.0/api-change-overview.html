@@ -1,0 +1,109 @@
+<html>
+<head>
+<title>Substance 5 API change overview</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance 5 API change overview</h1>
+
+<h3>Removed client properties</h3>
+
+<ul>
+<li>BACKGROUND_COMPOSITE, OVERLAY_PROPERTY. 
+<li>BORDER_PAINTER_PROPERTY, GRADIENT_PAINTER_PROPERTY, THEME_PROPERTY, TITLE_PAINTER_PROPERTY.
+Use custom skin + COLORIZATION_FACTOR for colorizing components
+<li>ENABLE_INVERTED_THEMES, ENABLE_NEGATED_THEMES
+<li>GRIP_PAINTER
+<li>PAINT_ACTIVE_PROPERTY
+<li>TABBED_PANE_VERTICAL_ORIENTATION, TABBED_PANE_VERTICAL_ORIENTATION_ROTATE_ICONS -
+left / right tabs are always rotated
+<li>WATERMARK_IMAGE_KIND, WATERMARK_IMAGE_OPACITY, WATERMARK_IMAGE_PROPERTY - 
+use APIs on SubstanceImageWatermark
+</ul>
+
+<h3>Modified client properties</h3>
+
+<ul>
+<li>COLORIZATION_FACTOR - the colorization is on by default with
+value of 50%. To remove colorization, set the client property value to 0.0
+<li>NO_EXTRA_ELEMENTS - use SHOW_EXTRA_WIDGETS. The widgets are not
+added by default (menu search panel, system menu entries, lock icon).
+<li>WATERMARK_IGNORE, WATERMARK_TO_BLEED - use WATERMARK_VISIBLE.
+Trees, tables, lists and text components don't show watermark unless
+WATERMARK_VISIBLE is explicitly set to Boolean.TRUE
+</ul>
+
+<h3>New client properties</h3>
+<ul>
+<li>SKIN_PROPERTY - on the root pane to install a per-window
+skin.
+<li>WATERMARK_VISIBLE - combines WATERMARK_IGNORE and WATERMARK_TO_BLEED
+<li>SHOW_EXTRA_WIDGETS - replaces NO_EXTRA_ELEMENTS
+</ul>
+
+<h3>Removed VM flags</h3>
+
+<ul>
+<li>CONFIG_FILE
+<li>BORDER_PAINTER_PROPERTY, GRADIENT_PAINTER_PROPERTY, THEME_PROPERTY,
+BUTTON_SHAPER_PROPERTY, TITLE_PAINTER_PROPERTY, WATERMARK_PROPERTY
+<li>DEBUG_UI_MODE - use the substance-tools plugin
+<li>ENABLE_INVERTED_THEMES, ENABLE_NEGATED_THEMES
+<li>NO_EXTRA_ELEMENTS
+<li>WATERMARK_IMAGE_KIND, WATERMARK_IMAGE_OPACITY, WATERMARK_IMAGE_PROPERTY
+</ul>
+
+
+<h3>Modified VM flags</h3>
+
+<ul>
+<li>HEAP_STATUS_PANEL - use setWidgetVisible(SubstanceWidgetType.TITLE_PANE_HEAP_STATUS)
+and HEAP_STATUS_TRACE_FILE
+</ul>
+
+<h3>New VM flags</h3>
+
+<ul>
+<li>HEAP_STATUS_TRACE_FILE - replaces HEAP_STATUS_PANEL
+</ul>
+
+<h3>Removed APIs</h3>
+
+<ul>
+<li>addMixedTheme, addMixedThemeBy, hasMixedThemes, removeMixedTheme, 
+removeMixedThemeBy along with SubstanceMixTheme and
+SubstanceMixBiTheme
+<li>getActiveColorScheme, getDefaultColorScheme, getDisabledColorScheme
+<li>getBackgroundComposite, setBackgroundComposite
+<li>getCurrent*, getCurrent*Name, setCurrent*, register*ChangeListener, 
+unregister*ChangeListener, getAll*s for border painters, button shapers,
+gradient painters, themes and watermarks. To get the current settings,
+use getCurrentSkin and SubstanceSkin APIs. To change the current settings,
+create a custom skin and use setSkin.
+<li>getImageWatermarkKind, getImageWatermarkOpacity, setImageWatermarkKind,
+setImageWatermarkOpacity - use getSkin, SubstanceSkin.getWatermark and 
+SubstanceImageWatermark APIs
+<li>hideMenuSearchPanels, showMenuSearchPanels - use 
+setWidgetVisible(SubstanceWidgetType.MENU_SEARCH)
+<li>permanentlyHideHeapStatusPanel, permanentlyShowHeapStatusPanel
+- use setWidgetVisible(SubstanceWidgetType.TITLE_PANE_HEAP_STATUS)
+<li>toBleedWatermark
+<li>toEnableInvertedThemes, toEnableNegatedThemes
+<li>ignoreAnimationsOnClass, toIgnoreAnimation - use FadeConfigurationManager
+APIs
+<li>toShowExtraElements
+</ul>
+
+<h3>New APIs</h3>
+
+<ul>
+<li>getCurrentSkin and the relevant SubstanceSkin APIs
+<li>setWidgetVisible - currently for menu search and title pane
+heap status panel
+</ul>
+
+</body>
+</html>
+

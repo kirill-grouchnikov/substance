@@ -1,0 +1,159 @@
+What would you say if you opened the <b>Options</b> dialog in your application and 
+it looked like this (click to see larger version):<br><br>
+<a href="https://substance-button-shaper-pack.dev.java.net/images/netbeans-rhino.png"><img src="https://substance-button-shaper-pack.dev.java.net/images/netbeans-rhino-small.png" width=364 height=410></a><br><br>
+
+I've <a href="http://weblogs.java.net/blog/kirillcool/archive/2005/09/adding_watermar_1.html">blogged</a> 
+about adding watermark image before, but pay attention to the buttons. They are shaped 
+like little rhinos. Don't like rhinos (or Beyonce)? No biggie, just change a few VM flags 
+and here you go (click for larger view):<br><br>
+<a href="https://substance-button-shaper-pack.dev.java.net/images/netbeans-cars.png"><img src="https://substance-button-shaper-pack.dev.java.net/images/netbeans-cars-small.png" width=364 height=388></a><br><br>
+
+And now to the reason why would you want to do such a thing. It didn't appear to me 
+until after i have started to think about pluggable <b>button shapers</b> that i 
+realized a whole market that Java is missing - non-male non-geek non-blind-Dvorak-typing 
+one. What about applications that are mainly targetting female / child audience. Wouldn't 
+it be nice to make an application that has dolphin-shaped buttons when the application 
+is a marine encyclopedia?<br><br>
+
+Swing already has support for different button shapes - you need to implement your 
+own <b>ButtonUI</b> delegate and override a couple of functions (notably the one 
+that paints the background, the one that paints the border and the one that tests 
+the mouse hit). So, the <a href="https://substance-button-shaper-pack.dev.java.net/">button 
+shaper plugin</a> for <b>Substance</b> look-and-feel provides exactly that - a 
+collection of button shapers. The currently available shapers are:<br><br>
+<img src="https://substance-button-shaper-pack.dev.java.net/images/all-shapes.png" width=600 height=520><br><br>
+The implementation is quite simple - each button shaper has an associated contour 
+(implemented by <b>GeneralPath</b>). When a button needs to be drawn, the contour 
+is stretched to accomodate the text. Note that the contour maintains the original 
+proportion (unless the application explicitly sets the dimension, like in NetBeans 
+first screenshot). In addition, each button has a shine spot that follows the outline 
+of the button itself (more on this later):<br><br>
+<img src="https://substance-button-shaper-pack.dev.java.net/images/shine-final.png" width=200 height=120><br><br>
+
+The button contour is created, edited and saved in the shape editor 
+(<a href="https://substance-button-shaper-pack.dev.java.net/webstart/shapeEditor.jnlp">click  
+here</a> to launch Web Start version). Working with editor (on new shape) involves the 
+following steps:
+<ul>
+<li>Create an optional image (to simplify the process of creating the contour):<br>
+<a href="https://substance-button-shaper-pack.dev.java.net/images/dolphin.png"><img src="https://substance-button-shaper-pack.dev.java.net/images/dolphin-small.png" width=391 height=235></a>
+<li>Load the image in the editor:<br>
+<a href="https://substance-button-shaper-pack.dev.java.net/images/load-image.png"><img src="https://substance-button-shaper-pack.dev.java.net/images/load-image-small.png" width=360 height=240></a>
+<li>Edit major points (each segment will be represented with <b>quadTo</b> of 
+<b>GeneralPath</b>:<br>
+<a href="https://substance-button-shaper-pack.dev.java.net/images/add-major-points.png"><img src="https://substance-button-shaper-pack.dev.java.net/images/add-major-points-small.png" width=360 height=240></a>
+<li>You can unselect <b>Show image</b> check box to view major points only:<br>
+<a href="https://substance-button-shaper-pack.dev.java.net/images/add-major-points-no-image.png"><img src="https://substance-button-shaper-pack.dev.java.net/images/add-major-points-no-image-small.png" width=360 height=240></a>
+<li>Edit minor points (each segment will be represented with <b>quadTo</b> of <b>GeneralPath</b>:<br>
+<a href="https://substance-button-shaper-pack.dev.java.net/images/edit-minor-points.png"><img src="https://substance-button-shaper-pack.dev.java.net/images/edit-minor-points-small.png" width=360 height=240></a>
+<li>You can unselect <b>Show image</b> check box to view minor points only:<br>
+<a href="https://substance-button-shaper-pack.dev.java.net/images/edit-minor-points-no-image.png"><img src="https://substance-button-shaper-pack.dev.java.net/images/edit-minor-points-no-image-small.png" width=360 height=240></a>
+<li>Click <b>Save contour</b> and choose the location to save to
+</ul>
+The contour is saved as binary file (all the coordinates + the ratio of the original 
+image) and loaded at runtime.<br><br>
+
+The most challenging part of creating arbitrarily-shaped buttons was creating a (fake) 
+3D shine-spot on the top half of the image. Here is how it can be accomplished using 
+a few tricks of Java2D:<br><br>
+
+The easy part is the main background and the contour itself. Just use <b>Graphics2D.setClip()</b> 
+and <b>Graphics2D.draw(Shape)</b> (<b>GeneralPath</b> is a <b>Shape</b>):<br><br>
+<img src="https://substance-button-shaper-pack.dev.java.net/images/shine-before.png" width=200 height=120><br><br>
+
+Now, we create a temporary image and draw the top half of the contour unto it in thick 
+black stroke. Note that the image has margins on all sides so the the contour will fit 
+in (this will be needed in the next step):
+<pre style="border: 1px solid black; padding: 1em; color: darkblue;">    
+   int shineHeight = (int) (height / 1.8);
+   int kernelSize = (int) Math.min(12, Math.pow(Math
+         .min(width, height), 0.8) / 4);
+   if (kernelSize == 0)
+      kernelSize = 1;
+   BufferedImage ghostContour = getBlankImage(width + 2 * kernelSize,
+         height + 2 * kernelSize);
+   Graphics2D ghostGraphics = (Graphics2D) ghostContour.getGraphics()
+         .create();
+   ghostGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+         RenderingHints.VALUE_ANTIALIAS_ON);
+
+   ghostGraphics.setStroke(new BasicStroke(2 * kernelSize));
+   ghostGraphics.setColor(Color.black);
+   ghostGraphics.translate(kernelSize, kernelSize);
+   ghostGraphics.draw(contour);
+</pre>
+
+The result is:<br><br>
+<img src="https://substance-button-shaper-pack.dev.java.net/images/shine-contour.png" width=200 height=120><br><br>
+
+Now, we convolve the contour image with a simple filter, creating a blurred version 
+(this is way we needed the extra margins in the previous step, otherwise the blurred 
+contour becomes too transparent):
+
+<pre style="border: 1px solid black; padding: 1em; color: darkblue;">    
+   int kernelMatrixSize = (2 * kernelSize + 1) * (2 * kernelSize + 1);
+   float[] kernelData = new float[kernelMatrixSize];
+   for (int i = 0; i < kernelMatrixSize; i++)
+      kernelData[i] = 1.0f / kernelMatrixSize;
+   Kernel kernel = new Kernel(2 * kernelSize, 2 * kernelSize,
+         kernelData);
+   ConvolveOp convolve = new ConvolveOp(kernel);
+   BufferedImage blurredGhostContour = getBlankImage(width + 2
+         * kernelSize, height + 2 * kernelSize);
+   convolve.filter(ghostContour, blurredGhostContour);
+   Graphics2D blurredGraphics = (Graphics2D) blurredGhostContour
+         .getGraphics();
+</pre>
+
+The result is:<br><br>
+<img src="https://substance-button-shaper-pack.dev.java.net/images/shine-ghost-contour.png" width=200 height=120><br><br>
+
+Now, we use the <b>AlphaComposite.DstOut</b> to fill the reverse of the blurred
+contour. The fill is opaque on top and translucent on bottom:
+<pre style="border: 1px solid black; padding: 1em; color: darkblue;">    
+   BufferedImage reverseGhostContour = getBlankImage(width + 2
+         * kernelSize, height + 2 * kernelSize);
+   Graphics2D reverseGraphics = (Graphics2D) reverseGhostContour
+         .getGraphics();
+   Color bottomShineColorTransp = new Color(bottomShineColor.getRed(),
+         bottomShineColor.getGreen(), bottomShineColor.getBlue(), 32);
+   GradientPaint gradientShine = new GradientPaint(0, kernelSize,
+         topShineColor, 0, kernelSize + shineHeight,
+         bottomShineColorTransp);
+   reverseGraphics.setPaint(gradientShine);
+   reverseGraphics.fillRect(0, kernelSize, width + 2 * kernelSize,
+         kernelSize + shineHeight);
+   reverseGraphics.setComposite(AlphaComposite.DstOut);
+   reverseGraphics.drawImage(blurredGhostContour, 0, 0, null);
+
+   graphics.drawImage(reverseGhostContour, 0, 0, width - 1,
+         shineHeight, kernelSize, kernelSize,
+         kernelSize + width - 1, kernelSize + shineHeight, null);
+</pre>
+
+The result is:<br><br>
+<img src="https://substance-button-shaper-pack.dev.java.net/images/shine-reverse-contour.png" width=200 height=120><br><br>
+
+This is almost what we wanted. However, the shine spot is a little bit too blurry, 
+making the button look fuzzy. We need to draw the blurred contour once again in the 
+main gradient of the button background, using <b>AlphaComposite.DstIn</b>:
+
+<pre style="border: 1px solid black; padding: 1em; color: darkblue;">    
+   BufferedImage overGhostContour = getBlankImage(width + 2
+         * kernelSize, height + 2 * kernelSize);
+   Graphics2D overGraphics = (Graphics2D) overGhostContour
+         .getGraphics();
+   overGraphics.setPaint(new GradientPaint(0, kernelSize,
+         topFillColor, 0, kernelSize + height / 2, midFillColor));
+   overGraphics.fillRect(kernelSize, kernelSize, kernelSize + width,
+         kernelSize + shineHeight);
+   overGraphics.setComposite(AlphaComposite.DstIn);
+   overGraphics.drawImage(blurredGhostContour, 0, 0, null);
+
+   graphics.drawImage(overGhostContour, 0, 0, width - 1, shineHeight,
+         kernelSize, kernelSize, kernelSize + width - 1, kernelSize
+         + shineHeight, null);
+</pre>
+
+The result is:<br><br>
+<img src="https://substance-button-shaper-pack.dev.java.net/images/shine-final.png" width=200 height=120><br><br>

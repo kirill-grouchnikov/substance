@@ -1,0 +1,312 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2007 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+<title>Substance 4.3 release</title>
+</head>
+
+<body>
+
+<h1>Substance 4.3 <font color="darkblue">Nairobi</font> - new features</h1>
+
+<hr>
+
+<p>The following issues have been fixed since the official 4.3 release. 
+	If you're experiencing one of these issues, take the latest update release
+of the 4.3 family.</p>
+
+<ul>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=341">Issue 341</a> - 
+	NullPointerException on changing table's font.</li>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=343">Issue 343</a> - 
+	NullPointerException on installing the scroll pane corner filler on JXTable.</li>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=345">Issue 345</a> - 
+	NullPointerException on reopening a closed internal frame.</li>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=347">Issue 347</a> - 
+	NullPointerException on menu items placed in menu bars.</li>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=350">Issue 350</a> - 
+	NullPointerException on changing table's font.</li>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=351">Issue 351</a> - 
+	EDT violation in querying menu selection during animation sequence.</li>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=352">Issue 352</a> - 
+	Visual artifacts on tables under RTL mode.</li>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=358">Issue 358</a> - 
+	NullPointerException on disabling a split pane.</li>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=362">Issue 362</a> - 
+	Duplicate title pane buttons on internal frames in reparented desktop panes.</li>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=363">Issue 363</a> - 
+	Visual artifacts with press ghosting animations.</li>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=365">Issue 365</a> - 
+	Writing debug messages to console.</li>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=366">Issue 366</a> - 
+	NullPointerException after setting horizontal scroll bar of a scroll pane to null.</li>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=373">Issue 373</a> - 
+	Close title pane button on internal frames disappears on skin switch.</li>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=394">Issue 394</a> - 
+	NullPointerException on changing combobox's font.</li>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=395">Issue 395</a> - 
+	NullPointerException on skin switch in the same EDT event as the main frame creation.</li>
+	<li><a href="https://substance.dev.java.net/issues/show_bug.cgi?id=396">Issue 396</a> - 
+	IllegalComponentStateException on operating scroll pane selector with right mouse button.</li>
+</ul>
+
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Decoration painters</b></td>
+    <td width="80%" valign="top">
+
+    <p>The old title / header painters have been refactored to the new
+    	<b>decoration</b> painters. The 
+    	<a href="../../docs/painters/decoration.html">documentation</a> provides
+    	more information about the decoration painters.</p>
+    	
+    <p>The new <a href="../../docs/api/SetDecorationType.html">SubstanceLookAndFeel.setDecorationType</a>
+    	API can be used in the application code to mark specific visual area to be
+    	decoration areas. This functionality is also used internally in Substance
+    	to mark core and third-party components (such as toolbars, menu bars,
+    	<a href="https://swingx.dev.java.net">SwingX</a>'s task pane container 
+    	and status bar, <a href="https://flamingo.dev.java.net">Flamingo</a>'s 
+    	ribbon and breadcrumb bar).
+    </p>
+    
+    <p>Here is a screenshot of the ribbon component under release 4.2 of Substance:</p>
+    
+    <img src="decoration-ribbon-old-business-blue-steel.png" height="285" width="500">
+    
+    <p>And here is the same component under release 4.3. Note how the tab area blends into
+    	the decorated title pane, and how the ribbon tasks are skinned in a different theme,
+    making the entire ribbon component appear as a separate part of the bigger UI:</p>
+    
+    <img src="decoration-ribbon-new-business-blue-steel.png" height="285" width="500">
+    
+    <code><font color="darkblue"></font></code>
+    
+    <a href="../../docs/clientprops/.html"></a>
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Menu layout</b></td>
+    <td width="80%" valign="top">
+
+    <p>Much better layout of menus and menu items, providing full support for:</p>
+    
+    <ul>
+    	<li>Aligning icons, checkmark icons, texts, accelerator texts and arrow icons</li>
+    	<li>Right-to-left orientation</li>
+    	<li>High resolution monitors</li>
+    </ul>
+    
+    <p>Here is a screenshot of a sample menu under the default font policy
+    and left-to-right orientation. Note how all the icons and texts are properly
+  spaced and aligned:</p>
+    
+    <img src="menu-layout-ltr.png" height="285" width="286">
+    
+    <p>The same menu, this time with right-to-left orientation. Note how all 
+    	the icons and texts are properly spaced, aligned and oriented:</p>
+    
+    <img src="menu-layout-rtl.png" height="261" width="265">
+    
+    <p>The same menu with custom font policy (using bigger fonts). Note how
+    	all the icons and text are properly scaled, spaced and aligned, and how the
+    gaps between adjacent menu visuals (icons, texts) are scaled:</p>
+    
+    <img src="menu-layout-ltr-hidpi.png" height="422" width="409">
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Highlight painters</b></td>
+    <td width="80%" valign="top">
+
+    <p>The existing functionality of highlighting items / cells in 
+    	menus, tables, trees and lists has been refactored to the new
+    	<b>highlight</b> painters. The 
+    	<a href="../../docs/painters/highlight.html">documentation</a> provides
+    	more information about the highlight painters.</p>
+    	
+    <p>The screenshot below shows a sample table with four selected
+    		rows under Business Black Steel skin in Substance 4.2. Note that 
+    		there are no border lines on the selected rows:</p>
+    
+    <img src="table-selection-substance4.2.png" height="307" width="360">
+
+		<p>And here is the same table under Business Black Steel skin in 
+			Substance 4.3. Note the single-pixel separator lines	on the selected rows:</p>
+    
+    <img src="table-selection-substance4.3.png" height="307" width="360">
+    
+    <p>The screenshot below shows a sample table with a cluster of
+    	selected cells under Business skin. Note the single-pixel separator lines around the
+    selected cells:</p>
+    
+    <img src="table-highlight-cells.png" height="267" width="566">
+    
+    <p>The screenshot below shows the same table with a cluster of
+    	selected rows under Office 2007 Silver skin. Note the single-pixel 
+    	separator lines around the selected cells and the correct painting
+    	of highlights and separator lines on rollover selected second row:</p>
+    
+    <img src="table-highlight-rows.png" height="267" width="566">
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Auto-scroll on scroll panes</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new 
+    	<a href="https://laf-widget.dev.java.net/docs/clientprops/AutoScroll.html">LafWidget.AUTO_SCROLL</a> 
+    	client property can be installed on a specific scroll pane or globally 
+    	on the <code><font color="darkblue">UIManager</font></code>. Once it is set to 
+    	<code><font color="darkblue">Boolean.TRUE</font></code>, the corresponding 
+    	scroll pane(s) will have the auto-scroll mode installed on them. There are 
+    two operation modes:</p>
+    
+    <ul>
+    	<li>Press the middle mouse button and release it. The scroll pane is 
+    		transferred into the auto-scroll mode. It can be dismissed by 
+    	clicking the mouse or scrolling the mouse wheel.</li>
+    	<li>Press the middle mouse button and start dragging. The auto-scroll 
+    	is dismissed by releasing the middle mouse button.</li>
+    </ul>
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Visuals for disabled selected buttons</b></td>
+    <td width="80%" valign="top">
+
+    <p>Buttons in disabled selected state now use a custom theme that blends
+    	the colors of themes for disabled and selected states. A skin can override
+    	this setting to use its own theme computation.</p>
+    	
+    	<p>The screenshot below shows buttons in different states. The last row
+    		shows disabled selected buttons. Note how the colors of disabled and selected
+    		states are blended together to provide consistent and identifiable appearance
+    	of these buttons:</p>
+    
+    <img src="disabled-selected-buttons.png" height="117" width="509">
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Usability of tab close buttons</b></td>
+    <td width="80%" valign="top">
+
+    <p>The tab close buttons (enabled by the 
+    <a href="https://substance.dev.java.net/docs/clientprops/TabbedPaneCloseButtonsProperty.html">SubstanceLookAndFeel.TABBED_PANE_CLOSE_BUTTONS_PROPERTY</a>
+    client property) have improved usability.</p>
+    
+    <ul>
+    	<li>The tab close callback is called on mouse release and not
+    	on mouse press.</li>
+    	<li>When the mouse is pressed over a tab close button, this tab
+    	is not automatically selected.</li>
+    	<li>The tab close callback checks that the mouse release happened
+    	on the close button of the same tab as mouse press.</li>
+    </ul>
+    
+    </td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>First support for very large fonts</b></td>
+    <td width="80%" valign="top">
+
+    <p>Previous release have introduced support for high-resolution monitors 
+    (high DPI) by scaling all visuals and metrics based on the control font size.
+    This release has started work on supporting very large fonts which is oriented
+    towards point of sale (POS) systems.</p>
+    
+    <p>Here is a screenshot of an editable combobox using 72 pixel font under 
+    Substance 4.2. Note the clipped text, the gray margin around the
+    text field editor and cap / join of the arrow icon:</p>
+    
+    <img src="dpi-72-combobox-substance4.2.png" height="140" width="392">
+    
+    <p>And here is the same editable combobox under Substance 4.3:</p>
+    
+    <img src="dpi-72-combobox-substance4.3.png" height="140" width="457">
+    
+    <p>Here is a screenshot of an icon button using 72 pixel font under
+    Substance 4.2. Note the icon text gap, focus ring touching the text
+    and the corners radius:</p>
+    
+    <img src="dpi-72-button-substance4.2.png" height="140" width="381">
+    
+    <p>And here is the same button under Substance 4.3:</p>
+    
+    <img src="dpi-72-button-substance4.3.png" height="140" width="381">
+    
+    <p>Here is a screenshot of a radio button using 72 pixel font under
+    Substance 4.2. Note the checkmark text gap, focus ring weight,
+    focus ring corner radius and the outer edge of the checkmark:</p>
+    
+    <img src="dpi-72-radio-substance4.2.png" height="127" width="334">
+    
+    <p>And here is the same radio button under Substance 4.3:</p>
+    
+    <img src="dpi-72-radio-substance4.3.png" height="122" width="352">
+    
+    </td>
+  </tr>
+
+</body>
+
+</html>

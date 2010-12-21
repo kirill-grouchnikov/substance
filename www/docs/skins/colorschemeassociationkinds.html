@@ -1,0 +1,209 @@
+<html>
+<head>
+<title>Substance look and feel - color scheme association kinds</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - color scheme association kinds</h1>
+
+<p>Color scheme association kinds in Substance are best illustrated by a simple
+example:</p>
+
+<img src="../../images/screenshots/color-scheme-association-kinds.png" width=93 height=92>
+
+<p>This is a screenshot of a <code><font color="darkblue">JCheckBox</font></code> 
+icon under 72 point font. This checkmark icon
+has three different visual areas: inner fill, border and the "V" mark. Each one of these
+areas is painted with a different <a href="colorschemes.html">color scheme</a>,
+and this is allowed by using the relevant <strong>color scheme association kinds</strong>.</p>
+	
+<p>The <code><font color="darkblue">org.pushingpixels.substance.api.ColorSchemeAssociationKind</font></code>
+is the base class for core and custom color scheme association kinds. Where is this class used?</p>
+
+<ul>
+<li>The first usage is in the skin definition. The main <a href="overview.html"><code>SubstanceSkin</code></a>
+APIs allow associating different color schemes with different visual areas of Swing controls.</li>
+<li>The specific UI delegates query the component skin for the color schemes that match the relevant
+visual areas.</li>
+</ul>
+
+<p>Let's go back to the 
+<code><font color="darkblue">JCheckBox</font></code> icon example above. How 
+do we use the color scheme association
+kinds to specify three different color schemes for painting this checkmark icon?</p>
+
+<p>As detailed in the <a href="overview.html">skin documentation</a>, each skin has a number
+of <a href="colorschemebundles.html">color scheme bundles</a>. This means that two checkboxes
+with the same model state (selected in out case) can have different visuals, depending on the
+<a href="../painters/decoration.html">decoration areas</a> they reside in. In the definition of the 
+specific color scheme bundle, you can specify different <a href="colorschemes.html">color 
+schemes</a> for different component states. This means that a selected checkbox can use colors 
+different from those of a rollover selected checkbox.</p>
+
+<p>In our case, we want to specify different color schemes for different visual areas of 
+<strong>selected</strong> checkboxes in the default decoration area. The relevant method in
+the <code><font color="darkblue">org.pushingpixels.substance.api.SubstanceColorSchemeBundle</font></code> is:</p>
+	
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Registers&nbsp;the&nbsp;color&nbsp;scheme&nbsp;to&nbsp;be&nbsp;used&nbsp;for&nbsp;the&nbsp;specified&nbsp;visual&nbsp;area&nbsp;of</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;controls&nbsp;under&nbsp;the&nbsp;specified&nbsp;states.&nbsp;For&nbsp;example,&nbsp;if&nbsp;the&nbsp;light&nbsp;orange</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;scheme&nbsp;has&nbsp;to&nbsp;be&nbsp;used&nbsp;for&nbsp;gradient&nbsp;fill&nbsp;of&nbsp;rollover&nbsp;selected&nbsp;and&nbsp;rollover</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;controls,&nbsp;the&nbsp;parameters&nbsp;would&nbsp;be:</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;ul&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;li&gt;&lt;code&gt;</font><font color="#3f5fbf">scheme</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">=light&nbsp;orange&nbsp;scheme</font><font color="#7f7f9f">&lt;/li&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;li&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">associationKind</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">=</font><font color="#3f3fbf">{@link&nbsp;ColorSchemeAssociationKind#FILL}</font><font color="#7f7f9f">&lt;/li&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;li&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">states</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">=</font><font color="#3f3fbf">{@link&nbsp;ComponentState#ROLLOVER_SELECTED}</font><font color="#3f5fbf">,&nbsp;</font><font color="#3f3fbf">{@link&nbsp;ComponentState#ROLLOVER_UNSELECTED}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;/li&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;/ul&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">scheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">associationKind</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color&nbsp;scheme&nbsp;association&nbsp;kind&nbsp;that&nbsp;specifies&nbsp;the&nbsp;visual&nbsp;areas</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;controls&nbsp;to&nbsp;be&nbsp;painted&nbsp;with&nbsp;this&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">states</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component&nbsp;states&nbsp;that&nbsp;further&nbsp;restrict&nbsp;the&nbsp;usage&nbsp;of&nbsp;the</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;specified&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@since&nbsp;</font><font color="#3f5fbf">version&nbsp;5.1</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerColorScheme</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeAssociationKind&nbsp;associationKind,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState...&nbsp;states</font></code>
+    	
+	
+<ul>
+	<li>The inner fill is specified by the <code><font color="darkblue">ColorSchemeAssociationKind.FILL</font></code></li>
+	<li>The border is specified by the <code><font color="darkblue">ColorSchemeAssociationKind.BORDER</font></code></li>
+	<li>The mark is specified by the <code><font color="darkblue">ColorSchemeAssociationKind.MARK</font></code></li>
+</ul>		
+
+<p>Going back once again to the original image:</p>
+
+<img src="../../images/screenshots/color-scheme-association-kinds.png" width=93 height=92>
+
+<p>Here is the outline of the relevant configuration code:</p>
+
+<code>
+SubstanceColorScheme activeScheme = ...;<br/>
+SubstanceColorScheme defaultScheme = ...;<br/>
+SubstanceColorScheme disabledScheme = ...;<br/>
+<br/>
+SubstanceColorSchemeBundle defaultBundle = new SubstanceColorSchemeBundle(<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;activeScheme, defaultScheme, disabledScheme);<br/>
+<br/>
+SubstanceColorScheme selectedBorderScheme = ...;<br/>
+defaultBundle.registerColorScheme(selectedBorderScheme,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;ColorSchemeAssociationKind.BORDER, ComponentState.SELECTED);<br/>
+<br/>
+SubstanceColorScheme selectedMarkScheme = ...;<br/>
+defaultBundle.registerColorScheme(selectedMarkScheme,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;ColorSchemeAssociationKind.MARK, ComponentState.SELECTED);<br/>
+</code>
+
+<p>Note that there is no explicit usage of the <code><font color="darkblue">ColorSchemeAssociationKind.FILL</font></code>
+value. This illustrates the <strong>fallback</strong> mechanism. In this particular case, the 
+second parameter to the <code><font color="darkblue">SubstanceColorSchemeBundle</font></code>
+constructor is used as the fallback color scheme for inner fills under all component states.
+The fallback mechanism also extends to the other color scheme association kinds.</p>
+
+<p>Here is the constructor signature of the <code><font color="darkblue">ColorSchemeAssociationKind</font></code>:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;a&nbsp;new&nbsp;association&nbsp;kind.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">name</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Association&nbsp;kind&nbsp;name.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">fallback</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fallback&nbsp;association&nbsp;kind.&nbsp;This&nbsp;is&nbsp;used&nbsp;when&nbsp;no&nbsp;color&nbsp;scheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is&nbsp;associated&nbsp;with&nbsp;this&nbsp;kind.&nbsp;For&nbsp;example,&nbsp;</font><font color="#3f3fbf">{@link&nbsp;#TAB_BORDER}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;specifies&nbsp;that&nbsp;its&nbsp;fallback&nbsp;is&nbsp;</font><font color="#3f3fbf">{@link&nbsp;#BORDER}</font><font color="#3f5fbf">.&nbsp;When&nbsp;the</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f3fbf">{@link&nbsp;JTabbedPane}&nbsp;</font><font color="#3f5fbf">UI&nbsp;delegate&nbsp;is&nbsp;painting&nbsp;the&nbsp;tabs,&nbsp;it&nbsp;will</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;to&nbsp;use&nbsp;the&nbsp;color&nbsp;scheme&nbsp;associated&nbsp;with</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f3fbf">{@link&nbsp;#TAB_BORDER}</font><font color="#3f5fbf">.&nbsp;If&nbsp;none&nbsp;was&nbsp;registered,&nbsp;it&nbsp;will&nbsp;fall&nbsp;back</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;use&nbsp;the&nbsp;color&nbsp;scheme&nbsp;associated&nbsp;with&nbsp;</font><font color="#3f3fbf">{@link&nbsp;#BORDER}</font><font color="#3f5fbf">,&nbsp;and</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;that&nbsp;is&nbsp;not&nbsp;registered&nbsp;as&nbsp;well,&nbsp;will&nbsp;use&nbsp;the&nbsp;color&nbsp;scheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;associated&nbsp;with&nbsp;</font><font color="#3f3fbf">{@link&nbsp;#FILL}</font><font color="#3f5fbf">.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">ColorSchemeAssociationKind</font><font color="#000000">(</font><font color="#000000">String&nbsp;name,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeAssociationKind&nbsp;fallback</font><font color="#000000">)</font></code>
+
+<p>The second parameter specifies what should happen when the color scheme
+bundle definition does not have an explicitly registered color scheme for 
+the specific color scheme association kind under the specific component state.</p>    
+
+<p>For example, the <code><font color="darkblue">ColorSchemeAssociationKind.MARK</font></code>
+has the <code><font color="darkblue">ColorSchemeAssociationKind.BORDER</font></code> as its fallback.
+This means that if you want to use the same color scheme for painting both borders and marks, you need
+to only call the <code><font color="darkblue">SubstanceColorSchemeBundle.registerColorScheme</font></code>
+API with the <code><font color="darkblue">ColorSchemeAssociationKind.BORDER</font></code> value.</p>
+
+<p>The registered associations are used by the Substance UI delegates during the component painting.
+Specifically for the checkbox, the UI delegate queries the three relevant association kinds 
+(<code><font color="darkblue">ColorSchemeAssociationKind.FILL</font></code>,
+<code><font color="darkblue">ColorSchemeAssociationKind.BORDER</font></code> and
+<code><font color="darkblue">ColorSchemeAssociationKind.MARK</font></code>) and uses the
+relevant painters (<a href="../painters/fill.html">fill</a> and 
+<a href="../painters/border.html">border</a>) to paint the matching visual areas.</p>
+	
+<p>Applications that want to provide <a href="../painters/custom-skinning.html">custom skinning</a> of their UIs
+can use the following two supported APIs in order to get the relevant color schemes.</p>
+
+<p>First, use the following API in 
+<code><font color="darkblue">org.pushingpixels.substance.SubstanceLookAndFeel</font></code> class
+to obtain the skin that should be used for painting your component:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Returns&nbsp;the&nbsp;current&nbsp;skin&nbsp;for&nbsp;the&nbsp;specified&nbsp;component.&nbsp;If&nbsp;the&nbsp;current</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;look-and-feel&nbsp;is&nbsp;not&nbsp;Substance,&nbsp;this&nbsp;method&nbsp;returns&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">null</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">c</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component.&nbsp;May&nbsp;be&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">null</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">-&nbsp;in&nbsp;this&nbsp;case&nbsp;the&nbsp;global</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current&nbsp;Substance&nbsp;skin&nbsp;will&nbsp;be&nbsp;returned.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Current&nbsp;skin&nbsp;for&nbsp;the&nbsp;specified&nbsp;component.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@see&nbsp;</font><font color="#3f5fbf">#SKIN_PROPERTY</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@see&nbsp;</font><font color="#3f5fbf">#getCurrentSkin()</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#646464">@SubstanceApi</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">SubstanceSkin&nbsp;getCurrentSkin</font><font color="#000000">(</font><font color="#000000">Component&nbsp;c</font><font color="#000000">)</font></code>
+    
+<p>Then, use the following API in the obtained
+<code><font color="darkblue">org.pushingpixels.substance.api.SubstanceSkin</font></code> class
+to get the color scheme for the relevant visual area:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Returns&nbsp;the&nbsp;color&nbsp;scheme&nbsp;to&nbsp;be&nbsp;used&nbsp;for&nbsp;painting&nbsp;the&nbsp;specified&nbsp;visual</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;area&nbsp;of&nbsp;the&nbsp;component&nbsp;under&nbsp;the&nbsp;specified&nbsp;component&nbsp;state.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">comp</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">associationKind</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color&nbsp;scheme&nbsp;association&nbsp;kind.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">componentState</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component&nbsp;state.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Color&nbsp;scheme&nbsp;to&nbsp;be&nbsp;used&nbsp;for&nbsp;painting&nbsp;the&nbsp;specified&nbsp;visual&nbsp;area&nbsp;of</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;component&nbsp;under&nbsp;the&nbsp;specified&nbsp;component&nbsp;state.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@since&nbsp;</font><font color="#3f5fbf">version&nbsp;5.1</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorScheme&nbsp;getColorScheme</font><font color="#000000">(</font><font color="#000000">Component&nbsp;comp,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeAssociationKind&nbsp;associationKind,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState&nbsp;componentState</font><font color="#000000">)</font></code>
+    
+<p>Note that the second method should always return non-<code><font color="darkblue">null</font></code>
+value, using the fallback mechanism discussed above to return the matching color scheme.</p>
+	
+</body>
+</html>
+

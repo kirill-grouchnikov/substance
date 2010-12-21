@@ -1,0 +1,445 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Substance 2.1 release</title>
+</head>
+
+<body>
+
+<h1>Substance 2.1 <font color="darkblue">Dakota</font> - new features</h1>
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Drop shadows on popup windows</b></td>
+    <td width="80%" valign="top"><a href="https://looks.dev.java.net">JGoodies Looks'</a>
+    package for drop shadows support on popup windows (menus, tooltips etc) has been 
+    added:
+    <br><br><img src="drop-shadow-menu.png" width="132" height="233">
+    <img src="drop-shadow-tooltip.png" width="211" height="68">
+    </td>
+  </tr>
+  
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Heap status panel</b></td>
+    <td width="80%" valign="top">Heap status panel when application is run under
+    decorated mode has been added. The panel can be shown / hidden from the top-level
+    frame menu. Clicking on the panel runs the garbage collector. This panel is
+    shown only when <font color="darkblue">substancelaf.heapStatusPanel</font>
+    VM flag (no value needed) is specified.
+    <br><br><img src="heap-status-menu.png" width="183" height="185">
+    <img src="heap-status.png" width="216" height="44">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Specifying theme for a button</b></td>
+    <td width="80%" valign="top">Added client properties for the buttons:
+    <ul>
+    <li><font color="darkblue">SubstanceLookAndFeel.BUTTON_THEME_PROPERTY</font> specifies
+    hard-coded theme for the associated button. Value is <b>display name</b> of the theme.
+    <li><font color="darkblue">SubstanceLookAndFeel.BUTTON_PAINT_ACTIVE_PROPERTY</font> specifies
+    that the associated button should always be painted colored when
+    it's enabled. Value must be <b>Boolean.TRUE</b>.
+    </ul>
+    <img src="button-theme.png" width="439" height="53">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Specifying sizing policy for the buttons</b></td>
+    <td width="80%" valign="top">Added client property for the buttons. 
+    <font color="darkblue">SubstanceLookAndFeel.BUTTON_NO_MIN_SIZE_PROPERTY</font> specifies
+    that the associated button should be as small as possible (no minimum width or height).
+    Value must be <b>Boolean.TRUE</b>.
+    <br><br><img src="button-minsize.png" width="174" height="23">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Rectangular shaper for buttons</b></td>
+    <td width="80%" valign="top">Added optional rectangular shaper for buttons. Can be set using:
+    <ul>
+    <li><font color="darkblue">-Dsubstancelaf.buttonShaper=org.jvnet.substance.button.ClassicButtonShaper</font>
+    - for all application buttons.
+    <li><font color="darkblue">SubstanceLookAndFeel.setCurrentButtonShaper("org.jvnet.substance.button.ClassicButtonShaper")</font>
+    - for all application buttons.
+    <li><font color="darkblue">SubstanceLookAndFeel.setCurrentButtonShaper(new ClassicButtonShaper())</font>
+    - for all application buttons.
+    <li>Using client property <font color="darkblue">SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY</font>
+    on a specific button. Value should be <font color="darkblue">"org.jvnet.substance.button.ClassicButtonShaper"</font>
+    string.
+    </ul>
+    <img src="button-classic-shaper.png" width="193" height="25">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Wave gradient painter for buttons</b></td>
+    <td width="80%" valign="top">Added optional wave gradient painter for buttons. Can be set using:
+    <ul>
+    <li><font color="darkblue">-Dsubstancelaf.gradientPainter=org.jvnet.substance.painter.WaveGradientPainter</font>
+    - for all application buttons.
+    <li><font color="darkblue">SubstanceLookAndFeel.setCurrentGradientPainter("org.jvnet.substance.painter.WaveGradientPainter")</font>
+    - for all application buttons.
+    <li><font color="darkblue">SubstanceLookAndFeel.setCurrentGradientPainter(new WaveGradientPainter())</font>
+    - for all application buttons.
+    <li>Using client property <font color="darkblue">SubstanceLookAndFeel.GRADIENT_PAINTER_PROPERTY</font>
+    on a specific button. Value should be <font color="darkblue">"org.jvnet.substance.painter.WaveGradientPainter"</font>
+    string.
+    </ul>
+    <img src="button-wave-painter.png" width="260" height="27">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Additional entries in system menu</b></td>
+    <td width="80%" valign="top">Additional entries in the system menu allow
+    changing Substance theme, watermark, button shaper and gradient painter
+    without the need to code this functionality in the application itself.
+    These entries are shown when neither <font color="darkblue">substancelaf.noExtraElements</font>
+    VM flag is specified, nor <font color="darkblue">SubstanceLookAndFeel.NO_EXTRA_ELEMENTS</font>
+    client property is put in the <b>UIManager</b> with value <b>Boolean.TRUE</b>.<br><br>
+    Example of theme system menu entry:<br><br>
+    <img src="system-menu-themes.png" width="424" height="250"><br><br>
+    Example of watermark system menu entry:<br><br>
+    <img src="system-menu-watermarks.png" width="306" height="276"><br><br>
+    Example of button shaper system menu entry:<br><br>
+    <img src="system-menu-button-shapers.png" width="298" height="316"><br><br>
+    Example of gradient painter system menu entry:<br><br>
+    <img src="system-menu-gradient-painters.png" width="283" height="190"><br><br>
+    </td>
+  </tr>
+  
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Aligning menu items</b></td>
+    <td width="80%" valign="top">Menu items in the same <b>JMenu</b> or <b>JPopupMenu</b>
+    are aligned so that the texts start at the same X offset. This functionality takes
+    into account menu item icons, menu item marks (for <b>JRadioButtonMenuItem</b>
+    and <b>JCheckBoxMenuItem</b>) and nested menu icons. <br><br>
+    Before:
+    <br><br><img src="menu-before.png" width="370" height="250">
+    <br><br>After:
+    <br><br><img src="menu-after.png" width="370" height="250">
+    </td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Visual indication of not-saved frames</b></td>
+    <td width="80%" valign="top">Support for <a href="http://developer.apple.com/qa/qa2001/qa1146.html">Mac-like</a>
+    indication on frames that have unsaved content. Application should set 
+    <font color="darkblue">SubstanceLookAndFeel.WINDOW_MODIFIED</font> client property
+    on either the <b>JRootPane</b> of the corresponding frame / dialog / internal frame
+    or on the <b>JInternalFrame</b>. The value that corresponds to unsaved state
+    is <b>Boolean.TRUE</b>. See <a href="windows-contents.avi">31-second</a> AVI 
+    movie (530 KB) illustrating the technique.
+    <br><br>Pulsating loop on <b>JInternalFrame</b> - red theme:
+    <p><img src="window-contents-red.png" width="286" height="33"></p>
+    Pulsating loop on <b>JInternalFrame</b> - yellow theme:
+    <p><img src="window-contents-yellow.png" width="286" height="33"></p>    
+    Pulsating loop on <b>JInternalFrame</b> - tooltip on close button in unsaved state:
+    <p><img src="window-contents-tooltip.png" width="406" height="53"></p>    
+    Pulsating loop on <b>JDesktopIcon</b>:
+    <p><img src="window-contents-desktop-icon.png" width="152" height="31"></p>    
+    Pulsating loop on <b>JFrame</b>:
+    <p><img src="window-contents-main-frame.png" width="408" height="26"></p>    
+    </td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Visual indication of not-saved tabs</b></td>
+    <td width="80%" valign="top">Support for <a href="http://developer.apple.com/qa/qa2001/qa1146.html">Mac-like</a>
+    indication on tabs in <b>JTabbedPane</b> that have unsaved content. Application should set 
+    <font color="darkblue">SubstanceLookAndFeel.WINDOW_MODIFIED</font> client property
+    on the tabbed pane's <b>Component</b> (if it's <b>JComponent</b>). The value that 
+    corresponds to unsaved state is <b>Boolean.TRUE</b>. 
+    See <a href="tab-changed-pulsation.avi">67-second</a> AVI movie (1.2 MB) illustrating the technique.
+    <br><br>Pulsating loop on <b>JTabbedPane</b> - red theme (animation start):
+    <p><img src="tab-contents-red.png" width="260" height="27"></p>
+    Pulsating loop on <b>JTabbedPane</b> - orange theme (midway through animation):
+    <p><img src="tab-contents-orange.png" width="260" height="27"></p>    
+    Pulsating loop on <b>JTabbedPane</b> - yellow theme (animation flex point):
+    <p><img src="tab-contents-yellow.png" width="260" height="27"></p>    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Close button and rollover effects on tabs</b></td>
+    <td width="80%" valign="top">Support for <a href="http://www.netbeans.org">NetBeans-like</a>
+    close button on tabs in <b>JTabbedPane</b>. Application should set 
+    <font color="darkblue">SubstanceLookAndFeel.TABBED_PANE_CLOSE_BUTTONS_PROPERTY</font> 
+    client property on either the tabbed pane's <b>Component</b> (if it's <b>JComponent</b>), 
+    <b>JTabbedPane</b> (for all tabs of that pane) or the <b>UIManager</b>
+    (for all tabbed panes). The value that corresponds to tab with close button
+    is <b>Boolean.TRUE</b>. In addition, there's rollover effect on enabled tabs (like
+    on any other control such as buttons or scroll bars).
+    See <a href="tab-close-buttons.avi">45-second</a> AVI movie (810 KB) illustrating the technique.
+    <br><br>
+    Close button on active tab in <b>JTabbedPane</b> - mouse not over close button (includes mouse pointer):
+    <p><img src="tab-close-selected.png" width="260" height="50"></p>
+    Close button on active tab in <b>JTabbedPane</b> - mouse over close button (includes mouse pointer):
+    <p><img src="tab-close-selected-active.png" width="260" height="50"></p>    
+    Close button on inactive enabled tab in <b>JTabbedPane</b> - mouse not over tab (includes mouse pointer):
+    <p><img src="tab-close-unselected.png" width="260" height="50"></p>    
+    Close button on inactive enabled tab in <b>JTabbedPane</b> - mouse over tab but
+    not over close button (includes mouse pointer):
+    <p><img src="tab-close-unselected-rollover.png" width="260" height="50"></p>    
+    Close button on inactive enabled tab in <b>JTabbedPane</b> - mouse over tab and
+    over close button (includes mouse pointer):
+    <p><img src="tab-close-unselected-active.png" width="260" height="50"></p>    
+    </td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Option for specifying base font size as VM flag</b></td>
+    <td width="80%" valign="top">The <font color="darkblue">substancelaf.fontSizeExtra</font>
+    VM flag specifies the base font size for all UI controls. The value is integer followed by optional
+    plus <b>+</b> or minus <b>-</b> sign. The integer value plus 11 is the base font size
+    for all UI controls. If plus sign follows the integer value, the base font will be bold.
+    If this flag is not specified, the base font size is 11. For example, 
+    <font color="darkblue">-Dsubstancelaf.fontSizeExtra=3+</font> results in 
+    <br><br><img src="base-font-size.png" width="240" height="91">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Ghost mark on unselected radio buttons</b></td>
+    <td width="80%" valign="top">Unselected radio buttons show "ghost" mark
+    to indicate that they "are" radio buttons:
+    <br><br><img src="radio-ghost.png" width="230" height="20">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Focus ownership indication</b></td>
+    <td width="80%" valign="top">Buttons, checkboxes and radio buttons that own
+    focus are shown with dash contour:
+    <br><br>
+    <img src="focus-button.png" width="149" height="26">
+    <img src="focus-checkbox.png" width="135" height="26">
+    <img src="focus-radiobutton.png" width="119" height="26">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Additional color chooser panel</b></td>
+    <td width="80%" valign="top"><a href="http://www.xoetrope.com/zone/index.php?zone=XUI">Xoetrope XUI</a>
+    has contributed their color wheel chooser panel:
+    <br><br><img src="colorchooser-xoetrope-colorwheel.png" width="269" height="463">
+    </td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Translucent watermarks on menus</b></td>
+    <td width="80%" valign="top">The watermark painting on menus is translucent, allowing
+    the menu to "stand out" better:
+    <br><br><img src="watermark-translucent.png" width="354" height="257">
+    </td>
+  </tr>
+
+
+
+
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Additional themes</b></td>
+    <td width="80%" valign="top">Twenty one additional themes have been provided
+    in the <a href="https://substance-theme-pack.dev.java.net/">Theme pack</a>
+    plugin. Among others:
+    <p>
+    <b>Bloody Moon</b> in <font color="darkblue">org.jvnet.substance.themepack.theme.ExtraBloodyMoonTheme</font>
+    <p><img src="https://substance-theme-pack.dev.java.net/images/bloody-moon.png" width="400" height="215"></p>
+    <b>Brown Velvet</b> in <font color="darkblue">org.jvnet.substance.themepack.theme.ExtraBrownVelvetTheme</font>
+    <p><img src="https://substance-theme-pack.dev.java.net/images/brown-velvet.png" width="400" height="215"></p>
+    <b>Earth Fresco</b> in <font color="darkblue">org.jvnet.substance.themepack.theme.ExtraEarthFrescoTheme</font>
+    <p><img src="https://substance-theme-pack.dev.java.net/images/earth-fresco.png" width="400" height="215"></p>
+    <b>Green Pearl</b> in <font color="darkblue">org.jvnet.substance.themepack.theme.ExtraGreenPearlTheme</font>
+    <p><img src="https://substance-theme-pack.dev.java.net/images/green-pearl.png" width="400" height="215"></p>
+    <b>Mahogany</b> in <font color="darkblue">org.jvnet.substance.themepack.theme.ExtraMahoganyTheme</font>
+    <p><img src="https://substance-theme-pack.dev.java.net/images/mahogany.png" width="400" height="215"></p>
+    <b>Orchid Alloy</b> in <font color="darkblue">org.jvnet.substance.themepack.theme.ExtraOrchidAlloyTheme</font>
+    <p><img src="https://substance-theme-pack.dev.java.net/images/orchid-alloy.png" width="400" height="215"></p>
+    <b>Turquoise Lake</b> in <font color="darkblue">org.jvnet.substance.themepack.theme.ExtraTurquoiseLakeTheme</font>
+    <p><img src="https://substance-theme-pack.dev.java.net/images/turquoise-lake.png" width="400" height="215"></p>
+    <b>Yellow Marine</b> in <font color="darkblue">org.jvnet.substance.themepack.theme.ExtraYellowMarineTheme</font>
+    <p><img src="https://substance-theme-pack.dev.java.net/images/yellow-marine.png" width="400" height="215"></p>
+    </td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Additional watermark</b></td>
+    <td width="80%" valign="top">Additional <b>Brushed metal</b> watermark has been added
+    in <font color="darkblue">org.jvnet.substance.watermarkpack.ExtraBrushedMetalWatermark</font>.
+    This watermark is in the <a href="https://substance-watermark-pack.dev.java.net/">Watermark pack</a>
+    plugin.
+    <p><img src="https://substance-watermark-pack.dev.java.net/images/watermark-brushed-metal.png" width="333" height="231"></p>
+    </td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for NetBeans components</b></td>
+    <td width="80%" valign="top">Custom UI delegates for NetBeans components (tabbed
+    container and sliding button) have been added under <a href="https://substance-netbeans.dev.java.net/">NetBeans</a>.
+    Example of custom tabbed container:
+    <p><img src="https://substance-netbeans.dev.java.net/images/tabbed-container.png" width="746" height="239">
+    <br><br>
+    Example of custom sliding button:
+    <p><img src="https://substance-netbeans.dev.java.net/images/sliding-button.png" width="456" height="195">
+    </td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Additional button shapers</b></td>
+    <td width="80%" valign="top">Eight additional button shapers have been provided
+    in the <a href="https://substance-button-shaper-pack.dev.java.net/">Button shaper pack</a>
+    plugin. They are:
+    <p><b>Butterfly</b> in <font color="darkblue">org.jvnet.substance.shaperpack.button.ButterflyButtonShaper</font>
+    <p><img src="https://substance-button-shaper-pack.dev.java.net/images/shape-butterfly.png" width="108" height="80">
+    <p><b>Dolphin</b> in <font color="darkblue">org.jvnet.substance.shaperpack.button.DolphinButtonShaper</font>
+    <p><img src="https://substance-button-shaper-pack.dev.java.net/images/shape-dolphin.png" width="126" height="76">
+    <p><b>Fish</b> in <font color="darkblue">org.jvnet.substance.shaperpack.button.FishButtonShaper</font>
+    <p><img src="https://substance-button-shaper-pack.dev.java.net/images/shape-fish.png" width="120" height="67">
+    <p><b>Foot</b> in <font color="darkblue">org.jvnet.substance.shaperpack.button.FootButtonShaper</font>
+    <p><img src="https://substance-button-shaper-pack.dev.java.net/images/shape-foot.png" width="70" height="37">
+    <p><b>Ice Cream</b> in <font color="darkblue">org.jvnet.substance.shaperpack.button.IceCreamButtonShaper</font>
+    <p><img src="https://substance-button-shaper-pack.dev.java.net/images/shape-icecream.png" width="84" height="48">
+    <p><b>Race Car</b> in <font color="darkblue">org.jvnet.substance.shaperpack.button.RaceCarButtonShaper</font>
+    <p><img src="https://substance-button-shaper-pack.dev.java.net/images/shape-racecar.png" width="100" height="46">
+    <p><b>Rhino</b> in <font color="darkblue">org.jvnet.substance.shaperpack.button.RhinoButtonShaper</font>
+    <p><img src="https://substance-button-shaper-pack.dev.java.net/images/shape-rhino.png" width="95" height="64">
+    <p><b>Stegosaurus</b> in <font color="darkblue">org.jvnet.substance.shaperpack.button.StegosaurusButtonShaper</font>
+    <p><img src="https://substance-button-shaper-pack.dev.java.net/images/shape-stegosaurus.png" width="111" height="64">
+    </td>
+  </tr>
+
+</table>
+</body>
+
+</html>

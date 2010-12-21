@@ -1,0 +1,324 @@
+<html>
+<head>
+<title>Substance look and feel - internationalization</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2007 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - internationalization</h1>
+<p>
+Starting from version 2.2, <b>Substance</b> provides internationalized
+versions of labels on custom UI components it adds (system menu entries,
+heap status panel, menu search panel, close buttons on modified frames etc.)
+Translations for the following languages are available:</p>
+
+<table cellspacing=0 cellpadding=0 border=0>
+<tr>
+<td><img src="../images/flags/flag_united_states.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>English (default)</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Kirill Grouchnikov</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_saudi_arabia.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Arabic</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>QamarAlZaman Habeek</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_bulgaria.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Bulgarian</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Zar Petkov</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_china.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Chinese (simplified) </td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Pprun</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_hong_kong.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Chinese (Hong Kong)</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Magnus de Pourbaix</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_taiwan.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Chinese (Taiwan)</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Magnus de Pourbaix</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_czech_republic.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Czech</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Milan Misak</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_denmark.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Danish</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Carsten O. Madsen</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_netherlands.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Dutch</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Ilana Paktor</b> and <b>Joachim van den Berg</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_united_kingdom.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>English (Great Britain)</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Robert Gibson</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_israel.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Hebrew</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Kirill Grouchnikov</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_germany.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>German</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Andreas Golchert</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_finland.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Finnish</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Magnus de Pourbaix</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_france.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>French</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Alois Cochard</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_canada.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>French (Canada)</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Magnus de Pourbaix</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_greece.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Greek</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Magnus de Pourbaix</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_hungary.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Hungarian</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Magnus de Pourbaix</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_italy.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Italian</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Sandro Martini</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_japan.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Japanese</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Magnus de Pourbaix</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_norway.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Norwegian</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Nils-Morten Nilssen</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_poland.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Polish</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Maciej Zwirski</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_portugal.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Portuguese</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Magnus de Pourbaix</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_brazil.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Portuguese (Brazil)</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Claudio de Oliveira Miranda</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_romania.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Romanian</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Sergiu Nicolae Nacu</b> and <b>Ran Locar</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_russia.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Russian</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Kirill Grouchnikov</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_spain.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Spanish</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>David Alvarez Leon</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_argentina.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Spanish (Argentina)</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Ivan Ridao Freitas</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_mexico.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Spanish (Mexico)</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Magnus de Pourbaix</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_sweden.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Swedish</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Magnus de Pourbaix</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_thailand.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Thai</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Magnus de Pourbaix</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_turkey.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Turkish</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Magnus de Pourbaix</b></td>
+</tr>
+<tr>
+<td><img src="../images/flags/flag_vietnam.png" width=16 height=16></td>
+<td>&nbsp;&nbsp;</td>
+<td>Vietnamese</td>
+<td>&nbsp;&nbsp;</td>
+<td><b>Thang Nguyen Cao</b></td>
+</tr>
+</table>
+
+<h3>Additional languages</h3>
+You are more than welcome to send the translations of the labels below
+to <b>kirillcool [at] yahoo.com</b>. Please note:
+<ul>
+<li>Specify language (<a href="http://en.wikipedia.org/wiki/List_of_ISO_639_codes">ISO 639</a>) 
+and, if relevant, country (
+<a href="http://www.iso.org/iso/en/prods-services/iso3166ma/02iso-3166-code-lists/list-en1.html">ISO 3166</a>). 
+If you don't know the ISO codes, just write the names in English
+<li>Provide translations for all the labels.
+<li>For any non-ASCII character (letters with cedillas, circumflexes etc,
+non-latin letters) please provide the Unicode code. You can find the relevant
+charts <a href="http://www.unicode.org/charts/">at Unicode site</a>. Each four-letter
+code must be preceded by <b>\u</b>.
+<li>You can use <font color="darkblue">$JAVA_HOME/bin/native2ascii</font>
+utility to transform native chars to unicode (thanks Claudio).
+</ul>
+
+The label names and the matching default English label captions:
+<pre>
+<font color="darkblue">SystemMenu.close</font>=<font color="darkgreen">Close</font>
+
+<font color="darkblue">SystemMenu.iconify</font>=<font color="darkgreen">Iconify</font>
+
+<font color="darkblue">SystemMenu.restore</font>=<font color="darkgreen">Restore</font>
+
+<font color="darkblue">SystemMenu.maximize</font>=<font color="darkgreen">Maximize</font>
+
+<font color="darkblue">SystemMenu.skins</font>=<font color="darkgreen">Substance skins</font>
+
+<font color="darkblue">SystemMenu.showHeapStatus</font>=<font color="darkgreen">Show heap status</font>
+
+<font color="darkblue">TabbedPane.overviewButtonTooltip</font>=<font color="darkgreen">Show tab overview</font>
+
+<font color="darkblue">TabbedPane.overviewDialogTitle</font>=<font color="darkgreen">Tab overview</font>
+
+<font color="darkblue">TabbedPane.overviewDialogTitleRefresh</font>=<font color="darkgreen">Tab overview [refresh every {0} sec]</font>
+
+<font color="darkblue">TabbedPane.overviewWidgetTooltip</font>=<font color="darkgreen">Click to close overview and select tab</font>
+
+<font color="darkblue">Tooltip.contentsNotSaved</font>=<font color="darkgreen">contents not saved</font>
+
+<font color="darkblue">Tooltip.heapStatusPanel</font>=<font color="darkgreen">Heap status. Click to run garbage collector</font>
+
+<font color="darkblue">Tooltip.menuSearchButton</font>=<font color="darkgreen">Select to view menu search panel</font>
+
+<font color="darkblue">Tooltip.menuSearchField</font>=<font color="darkgreen">Enter search string and press 'Enter' button to search</font>
+
+<font color="darkblue">Tooltip.menuSearchTooltip</font>=<font color="darkgreen">Click to locate menu</font>
+
+<font color="darkblue">Xoetrope.hue</font>=<font color="darkgreen">Hue</font>
+
+<font color="darkblue">Xoetrope.brightness</font>=<font color="darkgreen">Brightness</font>
+
+<font color="darkblue">Xoetrope.saturation</font>=<font color="darkgreen">Saturation</font>
+
+<font color="darkblue">Xoetrope.warm</font>=<font color="darkgreen">WARM</font>
+
+<font color="darkblue">Xoetrope.cold</font>=<font color="darkgreen">COLD</font>
+
+<font color="darkblue">Xoetrope.decimalRGB</font>=<font color="darkgreen">Decimal RGB</font>
+
+<font color="darkblue">Xoetrope.webSafeColors</font>=<font color="darkgreen">Use web safe colors</font>
+
+<font color="darkblue">EditMenu.copy</font>=<font color="darkgreen">Copy</font>
+
+<font color="darkblue">EditMenu.cut</font>=<font color="darkgreen">Cut</font>
+
+<font color="darkblue">EditMenu.paste</font>=<font color="darkgreen">Paste</font>
+
+<font color="darkblue">EditMenu.delete</font>=<font color="darkgreen">Delete</font>
+
+<font color="darkblue">EditMenu.selectAll</font>=<font color="darkgreen">Select all</font>
+
+</pre>
+
+</body>
+</html>
+

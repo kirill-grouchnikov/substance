@@ -1,0 +1,245 @@
+<html>
+<head>
+<title>Substance look and feel - color schemes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - color schemes</h1>
+
+<p>A <b>color scheme</b> is a set of information that allows 
+painting a control in a specific visual state. In general, a color scheme
+defines a collection of colors that are used by the various 
+Substance <a href="../painters/overview.html">painters</a>
+to paint different control areas (such as background fill, border etc)
+under a specific visual state.</p>
+
+<p>The <code><font color="darkblue">org.pushingpixels.substance.api.SubstanceColorScheme</font></code>
+contains all the APIs officially supported by Substance color schemes. The APIs can
+be roughly divided in three categories:</p>
+
+<ul>
+<li>Base colors. These are defined in the 
+<code><font color="darkblue">org.pushingpixels.substance.api.SchemeBaseColors</font></code></li>
+<li>Derived colors. These are defined in the 
+<code><font color="darkblue">org.pushingpixels.substance.api.SchemeDerivedColors</font></code></li>
+<li>Creating derived color schemes.</li>
+</ul>
+
+<p>The Substance core library provides the following twenty one color schemes:
+<ul>
+<li>Light color schemes: 
+<font color="darkblue">Aqua</font>, <font color="darkblue">Barby Pink</font>,
+<font color="darkblue">Bottle Green</font>, <font color="darkblue">Brown</font>, 
+<font color="darkblue">Creme</font>, <font color="darkblue">Light Aqua</font>,
+<font color="darkblue">Lime Green</font>, <font color="darkblue">Olive</font>, 
+<font color="darkblue">Orange</font>, <font color="darkblue">Purple</font>, 
+<font color="darkblue">Raspberry</font>,<font color="darkblue">Sepia</font>,
+<font color="darkblue">Steel Blue</font>, <font color="darkblue">Terracotta</font>
+<font color="darkblue">Sun Glare</font> and <font color="darkblue">Sunset</font></li>
+
+<li>Dark themes : <font color="darkblue">Ebony</font>,  <font color="darkblue">Dark Violet</font>,
+<font color="darkblue">Charcoal</font>, <font color="darkblue">Jade Forest</font> and
+<font color="darkblue">Ultramarine</font>.</li>
+</ul>
+
+<img alt="Aqua" src="../../images/screenshots/colorschemes/aqua.png" width=338 height=245>
+<img alt="Barby Pink" src="../../images/screenshots/colorschemes/barby-pink.png" width=338 height=245>
+<img alt="Bottle Green" src="../../images/screenshots/colorschemes/bottle-green.png" width=338 height=245>
+<img alt="Brown" src="../../images/screenshots/colorschemes/brown.png" width=338 height=245>
+<img alt="Creme" src="../../images/screenshots/colorschemes/creme.png" width=338 height=245>
+<img alt="Light Aqua" src="../../images/screenshots/colorschemes/light-aqua.png" width=338 height=245>
+<img alt="Lime Green" src="../../images/screenshots/colorschemes/lime-green.png" width=338 height=245>
+<img alt="Olive" src="../../images/screenshots/colorschemes/olive.png" width=338 height=245>
+<img alt="Orange" src="../../images/screenshots/colorschemes/orange.png" width=338 height=245>
+<img alt="Purple" src="../../images/screenshots/colorschemes/purple.png" width=338 height=245>
+<img alt="Raspberry" src="../../images/screenshots/colorschemes/raspberry.png" width=338 height=245>
+<img alt="Sepia" src="../../images/screenshots/colorschemes/sepia.png" width=338 height=245>
+<img alt="Steel Blue" src="../../images/screenshots/colorschemes/steel-blue.png" width=338 height=245>
+<img alt="Sunglare" src="../../images/screenshots/colorschemes/sun-glare.png" width=338 height=245>
+<img alt="Sunset" src="../../images/screenshots/colorschemes/sunset.png" width=338 height=245>
+<img alt="Terracotta" src="../../images/screenshots/colorschemes/terracotta.png" width=338 height=245>
+<p/>
+<img alt="Charcoal" src="../../images/screenshots/colorschemes/charcoal.png" width=338 height=245>
+<img alt="Dark Violet" src="../../images/screenshots/colorschemes/dark-violet.png" width=338 height=245>
+<img alt="Ebony" src="../../images/screenshots/colorschemes/ebony.png" width=338 height=245>
+<img alt="Jade Forest" src="../../images/screenshots/colorschemes/jade-forest.png" width=338 height=245>
+<img alt="Ultramarine" src="../../images/screenshots/colorschemes/ultramarine.png" width=338 height=245>
+
+<h3>Derived color schemes</h3>
+
+<p>The <code><font color="darkblue">org.pushingpixels.substance.api.SubstanceColorScheme</font></code>
+contains a number of APIs to create derived color schemes. Note that a color scheme is a delicate
+balance between the foreground color and the background colors, providing visually appealing
+selection of colors that are designed to work together on various painters. In some cases, creating
+a derived color scheme with one the these APIs (especially negated and inverted color schemes)
+will not result in visually pleasing appearance.</p>
+
+<p>The following API allows shifting both the background and the foreground colors:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;a&nbsp;shift&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">backgroundShiftColor</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shift&nbsp;color&nbsp;for&nbsp;background&nbsp;colors.&nbsp;Should&nbsp;have&nbsp;full&nbsp;opacity.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">backgroundShiftFactor</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value&nbsp;in&nbsp;0.0...1.0&nbsp;range.&nbsp;Larger&nbsp;values&nbsp;shift&nbsp;more&nbsp;towards&nbsp;the</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;specified&nbsp;color.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">foregroundShiftColor</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shift&nbsp;color&nbsp;for&nbsp;foreground&nbsp;colors.&nbsp;Should&nbsp;have&nbsp;full&nbsp;opacity.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">foregroundShiftFactor</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value&nbsp;in&nbsp;0.0...1.0&nbsp;range.&nbsp;Larger&nbsp;values&nbsp;shift&nbsp;more&nbsp;towards&nbsp;the</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;specified&nbsp;color.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Shift&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorScheme&nbsp;shift</font><font color="#000000">(</font><font color="#000000">Color&nbsp;backgroundShiftColor,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">backgroundShiftFactor,&nbsp;Color&nbsp;foregroundShiftColor,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">foregroundShiftFactor</font><font color="#000000">)</font></code>
+    
+<p>Here is the <font color="darkblue">Purple</font> color scheme shifted 80% towards light green in
+background colors and 70% towards dark red in foreground color (see the foreground color
+of the selected tab and the default button):</p>
+
+<img alt="Shifted Purple" src="../../images/screenshots/colorschemes/derived-shifted.png" width=338 height=245>
+
+<p>The following API allows shifting only the background colors:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;a&nbsp;shift&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">backgroundShiftColor</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shift&nbsp;color&nbsp;for&nbsp;background&nbsp;colors.&nbsp;Should&nbsp;have&nbsp;full&nbsp;opacity.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">backgroundShiftFactor</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value&nbsp;in&nbsp;0.0...1.0&nbsp;range.&nbsp;Larger&nbsp;values&nbsp;shift&nbsp;more&nbsp;towards&nbsp;the</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;specified&nbsp;color.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Shift&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">scheme&nbsp;that&nbsp;does&nbsp;not&nbsp;change</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;the&nbsp;foreground&nbsp;color.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorScheme&nbsp;shiftBackground</font><font color="#000000">(</font><font color="#000000">Color&nbsp;backgroundShiftColor,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">backgroundShiftFactor</font><font color="#000000">)</font></code>
+        
+<p>Here is the <font color="darkblue">Purple</font> color scheme shifted 80% towards light red in
+background colors:</p>
+
+<img alt="Shifted Purple" src="../../images/screenshots/colorschemes/derived-shiftedbackground.png" width=338 height=245>
+
+<p>The following API allows tinting the colors (shifting towards white):</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;a&nbsp;tinted&nbsp;(shifted&nbsp;towards&nbsp;white)&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">tintFactor</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value&nbsp;in&nbsp;0.0...1.0&nbsp;range.&nbsp;Larger&nbsp;values&nbsp;shift&nbsp;more&nbsp;towards&nbsp;white</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Tinted&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorScheme&nbsp;tint</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">tintFactor</font><font color="#000000">)</font></code>
+    
+<p>The following API allows toning the colors (shifting towards gray):</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;a&nbsp;toned&nbsp;(shifted&nbsp;towards&nbsp;gray)&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">color</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">toneFactor</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value&nbsp;in&nbsp;0.0...1.0&nbsp;range.&nbsp;Larger&nbsp;values&nbsp;shift&nbsp;more&nbsp;towards&nbsp;gray</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Toned&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorScheme&nbsp;tone</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">toneFactor</font><font color="#000000">)</font></code>
+        
+
+<p>The following API allows shading the colors (shifting towards black):</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;a&nbsp;shaded&nbsp;(shifted&nbsp;towards&nbsp;black)&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">shadeFactor</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value&nbsp;in&nbsp;0.0...1.0&nbsp;range.&nbsp;Larger&nbsp;values&nbsp;shift&nbsp;more&nbsp;towards&nbsp;black</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Shaded&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorScheme&nbsp;shade</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">shadeFactor</font><font color="#000000">)</font></code>
+        
+<p>Here is the <font color="darkblue">Purple</font> color scheme tinted 40%, toned by 40% and shaded by 40%:</p>
+
+<img alt="Tinted Purple" src="../../images/screenshots/colorschemes/derived-tinted.png" width=338 height=245>
+<img alt="Toned Purple" src="../../images/screenshots/colorschemes/derived-toned.png" width=338 height=245>
+<img alt="Shaded Purple" src="../../images/screenshots/colorschemes/derived-shaded.png" width=338 height=245>
+
+<p>The following API allows saturating or desaturating the colors:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;a&nbsp;saturated&nbsp;or&nbsp;desaturated&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;The&nbsp;value&nbsp;and&nbsp;brightness&nbsp;stay&nbsp;the&nbsp;same.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">saturateFactor</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value&nbsp;in&nbsp;-1.0...1.0&nbsp;range.&nbsp;Positive&nbsp;values&nbsp;create&nbsp;more&nbsp;saturated</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;colors.&nbsp;Negative&nbsp;values&nbsp;create&nbsp;more&nbsp;desaturated&nbsp;colors.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Saturated&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorScheme&nbsp;saturate</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">saturateFactor</font><font color="#000000">)</font></code>
+    
+<p>Here is the <font color="darkblue">Purple</font> color scheme saturated by 40% and desaturated by 40%:</p>
+
+<img alt="Saturate Purple" src="../../images/screenshots/colorschemes/derived-saturate.png" width=338 height=245>
+<img alt="Desaturate Purple" src="../../images/screenshots/colorschemes/derived-desaturate.png" width=338 height=245>
+
+<p>The following API allows inverting the colors:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;an&nbsp;inverted&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Inverted&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorScheme&nbsp;invert</font><font color="#000000">()</font></code>
+    
+<p>The following API allows negating the colors:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;a&nbsp;negated&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Negated&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorScheme&nbsp;negate</font><font color="#000000">()</font></code>
+
+<p>Here is the <font color="darkblue">Purple</font> color scheme inverted and negated:</p>
+
+<img alt="Invert Purple" src="../../images/screenshots/colorschemes/derived-invert.png" width=338 height=245>
+<img alt="Negate Purple" src="../../images/screenshots/colorschemes/derived-negate.png" width=338 height=245>
+
+<p>The following API allows shifting the hue of the colors:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;a&nbsp;hue-shifted&nbsp;(in&nbsp;HSB&nbsp;space)&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">color</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">hueShiftFactor</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Value&nbsp;in&nbsp;-1.0...1.0&nbsp;range.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Hue-shifted&nbsp;version&nbsp;of&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorScheme&nbsp;hueShift</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">hueShiftFactor</font><font color="#000000">)</font></code>
+    
+<p>Here is the <font color="darkblue">Purple</font> color scheme hue-shifted by 40%:</p>
+
+<img alt="Hue Shift Purple" src="../../images/screenshots/colorschemes/derived-hueshift.png" width=338 height=245>
+
+</body>
+</html>
+

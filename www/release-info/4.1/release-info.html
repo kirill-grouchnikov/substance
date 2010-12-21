@@ -1,0 +1,347 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2007 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+<title>Substance 4.1 release</title>
+</head>
+
+<body>
+
+<h1>Substance 4.1 <font color="darkblue">Lima</font> - new features</h1>
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Full HiDPI support</b></td>
+    <td width="80%" valign="top">
+
+    <p>This release provides complete support for high DPI environments.
+    In addition to scaling the fonts and some insets, which was done in previous
+    releases, this release provides automatic scaling for all relevant
+    visual elements. Below are a few examples of high DPI support.</p>
+    
+    <p>The linear elements such as borders and focus rings, including
+    insets, dash length, dash gap and stroke width:</p>
+    
+    <img src="hidpi-borders-144.png" height="339" width="436">
+
+		<p>Slider visuals, including thumb size, thumb border stroke width, 
+		tick length and tick stroke width:</p>
+
+    <img src="hidpi-sliders.png" height="240" width="424">
+    
+    <p>Table visuals, including renderer insets, grid stroke width,
+    header border stroke width and header insets:</p>
+    
+    <img src="hidpi-table.png" height="208" width="327">
+    
+    <p>Vertical size and text alignment of text components, comboboxes
+    and spinners:</p>
+    
+    <img src="hidpi-alignment-12-16.png" height="195" width="500">
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Font policy for Gnome desktops</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new default Gnome font policy automatically picks up the
+    font family, style and size that match the current desktop
+    settings.</p>
+    
+    <p>Here is a screenshot of a test application running under Ubuntu
+    with default font settings (<b>Sans</b> family, 10 points, 96 DPI 
+    setting):</p>
+    
+    <img src="font-policy-gnome-96dpi.png" height="245" width="350">
+
+    <p>Here is a screenshot of a test application running under Ubuntu
+    with custom font settings (<b>Sans</b> family, 10 points, 144 DPI 
+    setting):</p>
+    
+    <img src="font-policy-gnome-144dpi.png" height="357" width="516">
+
+    <p>Here is a screenshot of a test application running under Ubuntu
+    with custom font settings (<b>TSCu_Times</b> family, 9 points, 144 DPI 
+    setting):</p>
+    
+    <img src="font-policy-gnome-fontfamily-144dpi.png" height="309" width="428">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Scaling font policy</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new APIs in 
+    <code><font color="darkblue">org.jvnet.substance.fonts.SubstanceFontUtilities</font></code>
+    allow emulating scaled resolution settings without changing the actual
+    DPI / resolution of the monitor.</p>
+    
+    <p>The following API returns a scaled version of the default platform-specific
+    font policy. It can be used to pass to the <a href="..\..\docs\api\SetFontPolicy.html">setFontPolicy()</a>
+	  API.</p>
+    
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Returns&nbsp;scaled&nbsp;platform-specific&nbsp;font&nbsp;policy.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">scaleFactor</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scale&nbsp;factor.&nbsp;Should&nbsp;be&nbsp;positive.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Scaled&nbsp;platform-specific&nbsp;font&nbsp;policy.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">FontPolicy&nbsp;getScaledFontPolicy</font><font color="#000000">(</font><font color="#7f0055"><b>float&nbsp;</b></font><font color="#000000">scaleFactor</font><font color="#000000">)</font></code>
+
+	   <p>The following API returns the default platform-specific
+    font policy. It can be used to pass to the <a href="..\..\docs\api\SetFontPolicy.html">setFontPolicy()</a>
+	  API.</p>
+       
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Returns&nbsp;the&nbsp;default&nbsp;platform-specific&nbsp;font&nbsp;policy.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">Default&nbsp;platform-specific&nbsp;font&nbsp;policy.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#000000">FontPolicy&nbsp;getDefaultFontPolicy</font><font color="#000000">()</font></code>
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New Creme Coffee skin</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new 
+    <b><a href="../../docs/skins/toneddown.html#CremeCoffeeSkin">Creme Coffee</a></b> 
+    skin is based on the existing 
+    <a href="../../docs/skins/toneddown.html#CremeSkin">Creme</a> skin and 
+    the Ubuntu’ish brown active theme. To use it in your application, you have the 
+    following three options:</p>
+
+    <ul>
+    <li>-Dswing.defaultlaf=org.jvnet.substance.skin.SubstanceCremeCoffeeLookAndFeel</li>
+    <li>UIManager.setLookAndFeel(new SubstanceCremeCoffeeLookAndFeel())</li>
+    <li>UIManager.setLookAndFeel("org.jvnet.substance.skin.SubstanceCremeCoffeeLookAndFeel");</li>
+    </ul>
+
+		<p>The screenshots below show a frame under the Creme Coffee skin:</p>
+    
+    <img src="skin-cremecoffee1.png" height="225" width="300">
+    <img src="skin-cremecoffee2.png" height="225" width="300">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Inner border painters</b></td>
+    <td width="80%" valign="top">
+
+    <p>New core border painters provide visuals of lighter inner borders.
+    You can use the following core border painters in your custom skins:
+    </p>
+    <ul>
+    <li><code><font color="darkblue">org.jvnet.substance.border.ClassicInnerBorderPainter</font></code>
+    <li><code><font color="darkblue">org.jvnet.substance.border.FlatInnerBorderPainter</font></code>
+    <li><code><font color="darkblue">org.jvnet.substance.border.GlassInnerBorderPainter</font></code>
+    </ul>
+    
+    <p>In addition, you can extend the 
+    <code><font color="darkblue">org.jvnet.substance.border.InnerDelegateBorderPainter</font></code>
+    to simplify writing a custom inner border painter. Note that due to introduction of this feature,
+    the existing custom border painters should be changed as described in the 
+    <a href="migration.html">migration guide</a>.</p>
+    
+    <p>Some of the existing core skins have been changed to use the new border painters. Here
+    are some examples. The following two screenshots show the 
+    <a href="../../docs/skins/toneddown.html#AutumnSkin">Autumn</a> skin in the previous 
+    release (on the left) and in the current release (on the right). Note that the "current"
+    screenshot also shows the new tabbed pane content border (see the next entry).</p>
+
+    <img src="border-old-autumn1.png" height="225" width="300">
+    <img src="border-new-autumn1.png" height="225" width="300">
+    
+    <p>The following two screenshots show the 
+    <a href="../../docs/skins/toneddown.html#CremeSkin">Creme</a> skin in the previous 
+    release (on the left) and in the current release (on the right). Note that the "current"
+    screenshot also shows the new tabbed pane content border (see the next entry).</p>
+
+    <img src="border-old-creme2.png" height="225" width="300">
+    <img src="border-new-creme2.png" height="225" width="300">
+    
+    <p>The following two screenshots show the 
+    <a href="../../docs/skins/dark.html#RavenGraphiteGlassSkin">Raven Graphite Glass</a> skin in the previous 
+    release (on the left) and in the current release (on the right). Note that the "current"
+    screenshot also shows the new tabbed pane content border (see the next entry).</p>
+
+    <img src="border-old-ravengraphiteglass1.png" height="225" width="300">
+    <img src="border-new-ravengraphiteglass1.png" height="225" width="300">
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Tabbed pane content borders</b></td>
+    <td width="80%" valign="top">
+
+    <p>The default appearance of tabbed pane content border has been changed
+    in favor of a more modern approach (found in Firefox 2.0, Internet Explorer
+    7.0, Nimbus, Aqua and Quaqua).</p>
+    
+    <p>The following two screenshots show the 
+    <a href="../../docs/skins/toneddown.html#AutumnSkin">Autumn</a> skin in the previous 
+    release (on the left) and in the current release (on the right). Note that the "current"
+    screenshot also shows the new inner border border (see the previous entry).</p>
+    
+    <img src="tabpane-contentborder-autumn-old.png" height="225" width="300">
+    <img src="tabpane-contentborder-autumn-new.png" height="225" width="300">
+
+    <p>The following two screenshots show the 
+    <a href="../../docs/skins/toneddown.html#BusinessBlackSteelSkin">Business
+    Black Steel</a> skin in the previous 
+    release (on the left) and in the current release (on the right).</p>
+    
+    <img src="tabpane-contentborder-businessblacksteel-old.png" height="225" width="300">
+    <img src="tabpane-contentborder-businessblacksteel-new.png" height="225" width="300">
+
+    <p>The following two screenshots show the 
+    <a href="../../docs/skins/toneddown.html#CremeSkin">Creme</a> skin in the previous 
+    release (on the left) and in the current release (on the right). Note that the "current"
+    screenshot also shows the new inner border border (see the previous entry).</p>
+    
+    <img src="tabpane-contentborder-creme-old.png" height="225" width="300">
+    <img src="tabpane-contentborder-creme-new.png" height="225" width="300">
+    
+     <p>In addition to the new default visual appearance, you can use the new 
+     <code><font color="darkblue"><a href="../../docs/clientprops/TabbedPaneContentBorderKind.html">TABBED_PANE_CONTENT_BORDER_KIND</a></font></code> 
+     client property is for. The default value is 
+     <code><font color="darkblue">TabContentPaneBorderKind.DOUBLE_FULL</font></code> which 
+     is what the next screenshot (and the screenshots above) show:</p>
+     
+     <img src="tabpane-contentborder-doublefull.png" height="230" width="357">
+     
+     <p>In order to use the old painting, use the 
+     <code><font color="darkblue">TabContentPaneBorderKind.SINGLE_FULL</font></code> value:</p>
+
+     <img src="tabpane-contentborder-singlefull.png" height="230" width="357">
+     
+     <p>If you have nested tabbed panes, you can use either 
+     <code><font color="darkblue">TabContentPaneBorderKind.DOUBLE_PLACEMENT</font></code> value:</p>
+     
+     <img src="tabpane-contentborder-doubleplacement.png" height="230" width="357">
+     
+     <p>or the <code><font color="darkblue">TabContentPaneBorderKind.SINGLE_PLACEMENT</font></code> 
+     value:</p>
+
+     <img src="tabpane-contentborder-singleplacement.png" height="230" width="357">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Transition-aware animating icons</b></td>
+    <td width="80%" valign="top">
+
+    <p>Control icons (icons created internally by Substance, such as title pane
+    button icons, arrow icons for combo boxes, scroll bars, spinners etc) are
+    animated when the relevant control transitions between different states.</p>
+    
+    <p>Here is a small video under the 
+    <a href="../../docs/skins/toneddown.html#BusinessBlackSteelSkin">Business Black Steel</a>
+    skin that shows how the foreground color of title pane button icons transitions
+    between white and black colors according to the button states (default
+    and rollover in this example):</p>
+    
+<center>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://active.macromedia.com/flash5/cabs/swflash.cab#version=5,0,0,0" height="129" width="202">
+<param name="movie" value="title-pane-buttons-blacksteel.swf">
+<param name="play" value="true">
+<param name="loop" value="false">
+<param name="quality" value="low">
+<embed src="title-pane-buttons-blacksteel.swf" quality="low" loop="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" height="129" width="202">
+</object>
+</center>
+
+    <p>Here is a small video under the 
+    <a href="../../docs/skins/dark.html#MagmaSkin">Magma</a>
+    skin that shows how the foreground color of combo box arrow icons transitions
+    between white and dark red colors according to the button states (default
+    and rollover in this example):</p>
+    
+    <center>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://active.macromedia.com/flash5/cabs/swflash.cab#version=5,0,0,0" height="185" width="339">
+<param name="movie" value="combobox-buttons-magma.swf"></param>
+<param name="play" value="true"></param>
+<param name="loop" value="false"></param>
+<param name="quality" value="low"></param> 
+<embed src="combobox-buttons-magma.swf" quality="low" loop="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" height="185" width="339"></embed> </object>
+</center>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New version of Xoetrope color wheel</b></td>
+    <td width="80%" valign="top">
+
+    <p>The latest version of <a href="http://www.xoetrope.com/zone/index.php?zone=XUI">Xoetrope</a>
+    color wheel provides an option to adjust the color wheel brightness and saturation
+    by Ctrl-mouse scrolling the matching sliders on the color chooser panel.</p>
+    </td>
+  </tr>
+</table>
+</body>
+
+<code><font color="darkblue"></font></code>
+</html>

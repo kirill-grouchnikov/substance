@@ -1,0 +1,100 @@
+<html>
+<head>
+<title>Substance look and feel - fill painters</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, painters, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - fill painters</h1>
+
+<h3>Overview</h3>
+
+<p>The base class for Substance <b>fill painters</b> is
+<code><font color="darkblue">org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter</font></code>.
+Fill painters are used to paint the inner fill of most UI components,
+such as buttons, check boxes, radio buttons, progress bars, tabs,
+scroll bars and others. This allows providing a consistent and pluggable
+appearance to those components. In addition, it provides an external API
+for applications that wish to skin custom components in a visually 
+consistent manner.</p>
+
+<h3>Painting API</h3>
+<p>The only painting method in 
+<code><font color="darkblue">org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter</font></code> is</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Fills&nbsp;the&nbsp;contour&nbsp;that&nbsp;matches&nbsp;the&nbsp;specified&nbsp;parameters.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">g</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Graphics&nbsp;context.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">comp</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component&nbsp;to&nbsp;paint.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">width</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Width&nbsp;of&nbsp;a&nbsp;UI&nbsp;component.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">height</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Height&nbsp;of&nbsp;a&nbsp;UI&nbsp;component.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">contour</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contour&nbsp;of&nbsp;a&nbsp;UI&nbsp;component.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">isFocused</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indication&nbsp;whether&nbsp;component&nbsp;owns&nbsp;the&nbsp;focus.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">fillScheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;fill&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">hasShine</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indication&nbsp;whether&nbsp;the&nbsp;returned&nbsp;image&nbsp;should&nbsp;have&nbsp;a&nbsp;3D&nbsp;shine</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spot&nbsp;in&nbsp;its&nbsp;top&nbsp;half.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">paintContourBackground</font><font color="#000000">(</font><font color="#000000">Graphics&nbsp;g,&nbsp;Component&nbsp;comp,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">width,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">height,&nbsp;Shape&nbsp;contour,&nbsp;</font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">isFocused,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;fillScheme,&nbsp;</font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">hasShine</font><font color="#000000">)</font><font color="#000000">;</font></code>
+    
+<p>The <code><font color="darkblue">contour</font></code> parameter specifies
+the actual shape to fill and the 
+<code><font color="darkblue">fillScheme</font></code> specifies the Substance
+color scheme to be used to compute the colors. The internal implementation of
+a specific fill painter may decide to ignore the
+<code><font color="darkblue">ifFocused</font></code>
+and <code><font color="darkblue">hasShine</font></code> if these are not
+relevant. In addition, specific implementation may maintain an internal
+cache of computed images if the computation is CPU-heavy.</p>
+
+<p>Important thing to note - a fill painter <b>should not</b> paint the 
+focus ring or the border; these are painted by separate painters. As noted
+above, the <code><font color="darkblue">isFocused</font></code> can be ignored
+by the specific painter implementation.</p>
+
+<p>Applications that wish to provide a custom (branding) fill painter
+may utilize the existing <code><font color="darkblue">StandardFillPainter</font></code>
+base class. The subclass can override any one of the six base methods that compute 
+fill colors at four fill and two shine vertical locations (see 
+<code><font color="darkblue">get*FillColor</font></code>
+and <code><font color="darkblue">get*ShineColor</font></code> methods). 
+Most core Substance fill painters extend this class. Note that
+if your fill painter does not paint the shine spot, return 
+<code><font color="darkblue">null</font></code>
+from the <code><font color="darkblue">get*ShineColor</font></code>
+methods.</p>
+
+<h3>Management API</h3>
+
+<p>If you wish to use the fil painter of the current skin to provide additional
+custom painting in your application, call:</p>
+<ul>
+<li>
+	<code><font color="darkblue">SubstanceLookAndFeel.<a href="../api/GetCurrentSkin.html">getCurrentSkin()</a></font></code>
+	to retrieve the current skin.</li>
+<li><code><font color="darkblue">SubstanceSkin.getFillPainter()</font></code>
+to retrieve the fill painter of the current skin.</li>
+<li><code><font color="darkblue">SubstanceFillPainter.paintContourBackground()</font></code>
+to paint the background on the specific graphics context.</li>
+</ul>
+</p>
+
+</body>
+</html>
+

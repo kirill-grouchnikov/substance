@@ -1,0 +1,416 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2007 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+<title>Substance 4.0 release</title>
+</head>
+
+<body>
+
+<h1>Substance 4.0 <font color="darkblue">Key Largo</font> - new features</h1>
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New skins</b></td>
+    <td width="80%" valign="top">
+
+    <p>Six new skins have been added.</p>
+    
+    <p>The first is <b>Nebula</b> which uses the colors of 
+    <a href="https://nimbus.dev.java.net/spec/index.html">Nimbus</a> and the title painter inspired by 
+    the <a href="http://javasoft.de/jsf/public/products/synthetica/orangemetallic/screenshots">Orange 
+    Metallic</a> theme of Synthetica:</p>
+
+    <img src="skin-nebula1.png" height="225" width="300">
+    <img src="skin-nebula2.png" height="225" width="300">
+    
+    <p>The second is <strong>Nebula Brick Wall</strong> which uses the colors of 
+    <a href="https://nimbus.dev.java.net/spec/index.html">Nimbus</a> and an orange title painter 
+    inspired by the <a href="http://javasoft.de/jsf/public/products/synthetica/orangemetallic/screenshots">Orange 
+    Metallic</a> theme of Synthetica:</p>
+
+    <img src="skin-nebulabrickwall1.png" height="225" width="300">
+    <img src="skin-nebulabrickwall2.png" height="225" width="300">
+    
+    <p>The third is <strong>Autumn</strong> which was added as an experimental
+    skin in a previous release and has been largely reworked. You can see more
+    informantion and screenshots of Autumn skin <a href="http://www.pushing-pixels.org/?p=48">here</a>.</p>
+    
+    <img src="skin-autumn1.png" height="225" width="300">
+    <img src="skin-autumn2.png" height="225" width="300">
+    
+    <p>The fourth is <strong>Magma</strong> which was added as an experimental
+    skin in a previous release and has been largely reworked. You can see more
+    informantion and screenshots of Magma skin <a href="http://www.pushing-pixels.org/?p=55">here</a>.</p>
+    
+    <img src="skin-magma1.png" height="225" width="300">
+    <img src="skin-magma2.png" height="225" width="300">
+    
+    <p>The fifth one is the experimental <strong>Mist Silver</strong> which uses gray colors and header 
+    painter inspired by Safari:</p>
+
+    <img src="skin-mistsilver1.png" height="225" width="300">
+    <img src="skin-mistsilver2.png" height="225" width="300">
+    
+    <p>The sixth one is the experimental <strong>Mist Aqua</strong> which uses aqua colors and header 
+    painter inspired by Safari:</p>
+
+    <img src="skin-mistaqua1.png" height="225" width="300">
+    <img src="skin-mistaqua2.png" height="225" width="300">
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>State-aware theme transitions</b></td>
+    <td width="80%" valign="top">
+    
+    <p>You can use the new APIs provided on the 
+    <code><font color="darkblue">org.jvnet.substance.theme.SubstanceComplexTheme</font></code>
+    to specify state-specific theme and alpha channel. The APIs are:</p>
+    
+    <p>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Registers&nbsp;a&nbsp;theme&nbsp;for&nbsp;the&nbsp;specific&nbsp;component&nbsp;state.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">stateTheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Theme&nbsp;for&nbsp;the&nbsp;specified&nbsp;component&nbsp;state.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">useForHighlights</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">true</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">,&nbsp;the&nbsp;specified&nbsp;theme&nbsp;will&nbsp;be&nbsp;used&nbsp;as</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;highlight&nbsp;theme&nbsp;as&nbsp;well&nbsp;(for&nbsp;the&nbsp;same&nbsp;component&nbsp;state).</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">states</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component&nbsp;states.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerComponentStateTheme</font><font color="#000000">(</font><font color="#000000">SubstanceTheme&nbsp;stateTheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">useForHighlights,&nbsp;ComponentState...&nbsp;states</font><font color="#000000">)&nbsp;</font><br/><br/>
+    
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Registers&nbsp;a&nbsp;theme&nbsp;for&nbsp;the&nbsp;specific&nbsp;component&nbsp;state.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">stateTheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Theme&nbsp;for&nbsp;the&nbsp;specified&nbsp;component&nbsp;state.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">alpha</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alpha&nbsp;channel&nbsp;for&nbsp;the&nbsp;theme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">useForHighlights</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">true</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">,&nbsp;the&nbsp;specified&nbsp;theme&nbsp;will&nbsp;be&nbsp;used&nbsp;as</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;highlight&nbsp;theme&nbsp;as&nbsp;well&nbsp;(for&nbsp;the&nbsp;same&nbsp;component&nbsp;state).</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">states</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component&nbsp;states.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerComponentStateTheme</font><font color="#000000">(</font><font color="#000000">SubstanceTheme&nbsp;stateTheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>float&nbsp;</b></font><font color="#000000">alpha,&nbsp;</font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">useForHighlights,&nbsp;ComponentState...&nbsp;states</font><font color="#000000">)&nbsp;</font><br/><br/>
+    
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Registers&nbsp;a&nbsp;highlight&nbsp;theme&nbsp;for&nbsp;the&nbsp;specific&nbsp;component&nbsp;state&nbsp;if&nbsp;the</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;component&nbsp;state&nbsp;is&nbsp;not&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">null</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">,&nbsp;or&nbsp;a&nbsp;global&nbsp;highlight&nbsp;theme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;otherwise.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">stateHighlightTheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Highlight&nbsp;theme&nbsp;for&nbsp;the&nbsp;specified&nbsp;component&nbsp;state.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">states</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component&nbsp;states.&nbsp;If&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">null</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">,&nbsp;the&nbsp;specified&nbsp;theme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;be&nbsp;applied&nbsp;for&nbsp;all&nbsp;states&nbsp;left&nbsp;unspecified.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerComponentHighlightStateTheme</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceTheme&nbsp;stateHighlightTheme,&nbsp;ComponentState...&nbsp;states</font><font color="#000000">)&nbsp;</font><br/><br/>
+    
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Registers&nbsp;a&nbsp;highlight&nbsp;theme&nbsp;for&nbsp;the&nbsp;specific&nbsp;component&nbsp;state&nbsp;if&nbsp;the</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;component&nbsp;state&nbsp;is&nbsp;not&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">null</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">,&nbsp;or&nbsp;a&nbsp;global&nbsp;highlight&nbsp;theme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;otherwise.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">stateHighlightTheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Highlight&nbsp;theme&nbsp;for&nbsp;the&nbsp;specified&nbsp;component&nbsp;state.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">alpha</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alpha&nbsp;channel&nbsp;for&nbsp;the&nbsp;highlight&nbsp;theme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">states</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component&nbsp;states.&nbsp;If&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">null</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">,&nbsp;the&nbsp;specified&nbsp;theme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;be&nbsp;applied&nbsp;for&nbsp;all&nbsp;states&nbsp;left&nbsp;unspecified.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerComponentHighlightStateTheme</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceTheme&nbsp;stateHighlightTheme,&nbsp;</font><font color="#7f0055"><b>float&nbsp;</b></font><font color="#000000">alpha,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState...&nbsp;states</font><font color="#000000">)&nbsp;</font></code>
+    </p>
+    
+    <p>The <strong>Office Silver 2007</strong> uses these APIs in order to provide visual
+    differentiation of various component states. In the movie clip below,
+    the right column shows the model state at each moment, and you can follow the color 
+    transitions from selected (light orange) to selected rollover (dark orange) to 
+    pressed selected (reddish orange) and back to rollover unselected (orangish yellow). 
+    Note that on the checkboxes and radio buttons, the transitions also involve animating 
+    the color of the checkmark:</p>
+
+<center>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://active.macromedia.com/flash5/cabs/swflash.cab#version=5,0,0,0" height="170" width="400">
+<param name="movie" value="theme-transitions-officesilver.swf">
+<param name="play" value="true">
+<param name="loop" value="false">
+<param name="quality" value="low">
+<embed src="theme-transitions-officesilver.swf" quality="low" loop="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" height="170" width="400">
+</object>
+</center>
+
+    <p>The animations are done not only on the background gradient fills, but also on the
+    foreground (text). You can have black text on light background in a regular state, 
+    and light text on dark background in an active state. The new <strong>Nebula</strong>,
+    <strong>Nebula Brick Wall</strong> and <strong>Magma</strong> provide examples of
+    foreground color animations. The following movie clip shows it on the button press:</p>
+
+<center>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://active.macromedia.com/flash5/cabs/swflash.cab#version=5,0,0,0" height="170" width="400">
+<param name="movie" value="theme-transitions-nebula.swf">
+<param name="play" value="true">
+<param name="loop" value="false">
+<param name="quality" value="low">
+<embed src="theme-transitions-nebula.swf" quality="low" loop="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" height="170" width="400">
+
+</object>
+</center>
+
+    <p>The transitions apply not only to the "traditional" button controls such as push buttons, 
+    toggle buttons, check boxes and radio buttons, but to much wider range of controls - tabs, 
+    sliders, scroll bars, menus, menu elements etc. In addition, the same settings apply 
+    for rollover and selection effects on lists, tables and trees.</p>
+    
+    <p>The last movie clip shows the state-aware transition animations under the new 
+    <strong>Magma</strong> skin on a custom <code><font color="darkblue">JXMonthView</font></code> component from
+    <a href="https://swingx.dev.java.net">SwingX</a> project. The rollover and selection 
+    animations are done on both the background and the foreground colors. 
+    Note that the animations are done on the individual days as well as on the month 
+    view header (which uses drop-shadow painting of the month / year strings):</p>
+
+<center><object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://active.macromedia.com/flash5/cabs/swflash.cab#version=5,0,0,0" height="223" width="264">
+<param name="movie" value="https://substance-swingx.dev.java.net/movies/month-view-animations-magma.swf">
+<param name="play" value="true">
+<param name="loop" value="false">
+<param name="quality" value="low"> 
+<embed src="https://substance-swingx.dev.java.net/movies/month-view-animations-magma.swf" quality="low" loop="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" height="223" width="264">
+</object></center>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Smart tree scroll</b></td>
+    <td width="80%" valign="top">
+    <p>The new <code><font color="darkblue">SubstanceLookAndFeel.TREE_SMART_SCROLL_ANIMATION_KIND</font></code>
+    fade kind provides an option to install "smart scroll" on 
+    <code><font color="darkblue">JTree</font></code>s. It is disabled by default and
+    can be enabled by the relevant 
+    <code><font color="darkblue">FadeConfigurationManager</font></code> APIs.</p>
+    
+    <p>Once you scroll the tree to an (almost) blank view, it automatically scrolls 
+    horizontally (as needed to the left or to the right) to bring you in sync with 
+    the visible (informational) part of the tree. This might be a valuable feature
+    for narrow viewports and trees with many levels, since you're only operating 
+    the vertical scroll bar and never get "lost" in blank areas. For more information
+    and a movie clip read
+    <a href="http://weblogs.java.net/blog/kirillcool/archive/2007/04/borrowing_from_1.html">this 
+    blog entry</a>.</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Glowing icons (buttons, option pane)</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new <code><font color="darkblue">FadeKind.ICON_GLOW</font></code>
+    fade kind provides an option to make the icons of certain controls "glow"
+    (the current implementation is playing with the overall brightness level
+    instead of the 
+    <a href="http://www.curious-creature.org/2007/02/20/fast-image-processing-with-jogl/">full-featured
+    bloom</a> that works reasonably well on large images, but doesn't scale down to
+    small icons). By default, this effect is enabled on option pane icons.
+    To enable it on buttons, use the relevant 
+    <code><font color="darkblue">FadeConfigurationManager</font></code> APIs.</p>
+    
+    <p>The video clip below shows the glowing effect on the option pane icon
+    (note changes in the icon brightness level):</p>
+    
+<center>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://active.macromedia.com/flash5/cabs/swflash.cab#version=5,0,0,0" WIDTH="270" HEIGHT="136">
+<param name="movie" value="glowing-icon.swf">
+<param name="play" value="true">
+<param name="loop" value="false">
+<param name="quality" value="low">
+<embed src="glowing-icon.swf" quality="low" loop="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" height="136" width="270">
+</object>
+</center>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for JXPanel translucency</b></td>
+    <td width="80%" valign="top">
+    <p>The <a href="https://swingx.dev.java.net/source/browse/swingx/src/java/org/jdesktop/swingx/JXPanel.java?rev=1.25&view=log">JXPanel</a>.setAlpha(float)
+    is fully supported by all UI delegates. To test, use the rightmost slider in the
+    main test application.</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>SwingX UI delegates</b></td>
+    <td width="80%" valign="top">
+    <p>The <a href="https://substance-swingx.dev.java.net">Substance-SwingX</a> plugin
+    provides support for the following <a href="https://swingx.dev.java.net">SwingX</a>
+    components:</p>
+    
+    <ul>
+	<li><a href="http://www.pushing-pixels.org/?p=10">JXTaskPaneContainer and JXTaskPane</a></li>
+	<li><a href="http://www.pushing-pixels.org/?p=12">JXStatusBar</a></li>
+	<li><a href="http://www.pushing-pixels.org/?p=13">JXTitledPanel</a></li>
+	<li><a href="http://www.pushing-pixels.org/?p=15">JXTipOfTheDay</a></li>
+	<li><a href="http://www.pushing-pixels.org/?p=16">JXLoginPanel</a></li>
+	<li><a href="http://www.pushing-pixels.org/?p=17">JXMonthView</a></li>
+	<li><a href="http://www.pushing-pixels.org/?p=18">JXHeader</a></li>    
+	<li><a href="http://www.pushing-pixels.org/?p=19">JXErrorPane</a></li>    
+	<li>JXDatePicker</li>
+	<li>JXHyperlink</li>
+    </ul>
+
+    <p>A screenshot of a <code><font color="darkblue">JXErrorPane</font></code> 
+    under the new <strong>Nebula</strong> skin (using Vista-compatible
+    font family, font size and hinting):</p>
+    
+    <img src="swingx-errorpane-nebula.png" width=458 height=206>
+
+    <p>A screenshot of a <code><font color="darkblue">JXMonthView</font></code> 
+    under the <strong>Raven</strong> skin (using Vista-compatible
+    font family, font size and hinting):</p>
+    
+    <img src="swingx-monthview-raven.png" width=350 height=250>
+
+    <p>A screenshot of a <code><font color="darkblue">JXStatusBar</font></code> 
+    under the new <strong>Autumn</strong> skin (using XP-compatible
+    font family and font size):</p>
+    
+    <img src="swingx-statusbar-autumn.png" width=500 height=350>
+
+    <p>A screenshot of a <code><font color="darkblue">JXTitledPanel</font></code> 
+    under the <strong>Business Black Steel</strong> skin (using XP-compatible
+    font family and font size):</p>
+    
+    <img src="swingx-titledpanel-businessblacksteel.png" width=500 height=350>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Border painters</b></td>
+    <td width="80%" valign="top">
+    <p>The painting of components has been separated into the background itself
+    (painted by the gradient painter) and the border (painted by the border painter).
+    The new <a href="../../docs/clientprops/BorderPainterProperty.html">BORDER_PAINTER_PROPERTY</a>
+    client property allows setting a specific border painter on the component basis.
+    The value should either be an instance of 
+    <code><font color="darkblue">org.jvnet.substance.border.SubstanceBorderPainter</font></code> or 
+    the fully-qualified class name of a class that implements that interface.</p>
+    
+    <p>In addition, you can use new APIs on the 
+    <code><font color="darkblue">SubstanceLookAndFeel</font></code> class to set a global
+    border painter, query for all available border painters and other related functionality.
+    Read documentation on 
+    <a href="../../docs/api/GetAllBorderPainters.html">getAllBorderPainters()</a>,
+    <a href="../../docs/api/SetCurrentBorderPainter_ClassName.html">setCurrentBorderPainter(
+      String borderPainterClassName)</a>,
+    <a href="../../docs/api/SetCurrentBorderPainter_Instance.html">setCurrentBorderPainter(
+      SubstanceBorderPainter currentBorderPainter)</a>,
+    <a href="../../docs/api/GetCurrentBorderPainter.html">getCurrentBorderPainter()</a>,
+    <a href="../../docs/api/GetCurrentBorderPainterName.html">getCurrentBorderPainterName()</a>,
+    <a href="../../docs/api/RegisterBorderPainterChangeListener.html">registerBorderPainterChangeListener()</a> and
+    <a href="../../docs/api/UnregisterBorderPainterChangeListener.html">unregisterBorderPainterChangeListener()</a>
+    </p>
+
+    <p>Here is a screenshot to illustrate the difference between available core
+    border painters (note how <b>Standard</b> painter uses darker colors
+    on top portion and lighter colors on bottom portion:</p>
+    
+    <img src="border-painters.png" width=242 height=85>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New title painters - Brushed Metal, Marble Noise</b></td>
+    <td width="80%" valign="top">
+    <p>Two new title painters have been added to the 
+    <code><font color="darkblue">org.jvnet.substance.title</font></code> package.
+    The first is the <b>Brushed Metal</b> implemented in the 
+    <code><font color="darkblue">BrushedMetalHeaderPainter</font></code> class. The 
+    following screenshots show the <b>Office Silver 2007</b> skin in the previous
+    release (the first image) and in the new release (the second image). The new release
+    uses the <b>Brushed Metal</b> title painter.</p>
+
+    <img src="skin-officesilver2007_1-old.png" width=300 height=225>
+    <img src="skin-officesilver2007_1-new.png" width=300 height=225>
+    
+    <p>The second is <b>Marble Noise</b> implemented in the 
+    <code><font color="darkblue">MarbleNoiseHeaderPainter</font></code> class.
+    The following screenshots show that the new <b>Nebula</b>
+    and <b>Nebula Brick Wall</b> skins use this title painter:</p>
+    
+    <img src="skin-nebula1.png" width=300 height=225>
+    <img src="skin-nebulabrickwall1.png" width=300 height=225>
+    
+    </td>
+  </tr>
+</table>
+</body>
+
+<code><font color="darkblue"></font></code>
+</html>

@@ -1,0 +1,379 @@
+
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2007 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+<title>Substance 3.3 release</title>
+</head>
+
+<body>
+
+<h1>Substance 3.3 <font color="darkblue">Japan</font> - new features</h1>
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for high DPI</b></td>
+    <td width="80%" valign="top">
+    <p>The entire UI is <a href="http://weblogs.java.net/blog/kirillcool/archive/2007/03/java_on_the_des.html">scaled</a>
+    on high-DPI settings. Here is the complete list 
+    of UI elements that is scaled with the DPI:</p>
+
+	<ul>
+	<li>Check marks of check boxes and radio buttons (regular and as menu items), 
+	dimension and stroke width</li>
+	<li>Arrow icons of combo boxes, scroll bars, split pane dividers, submenus, 
+	tabbed panes (dimension and stroke width)</li>
+	<li>Title pane icons (for decorated mode) of frames, dialogs, internal frames 
+	and desktop icons + proper centering of the title pane buttons in Y direction</li>
+	<li>Scroll bar width</li>
+	<li>Slider icon and slider track size</li>
+	<li>Tab close buttons (dimension and stroke width)</li>
+	<li>Spinner button width</li>
+	<li>Password field mark size (diameter and gap)</li>
+	<li>Progress bar width / height</li>
+	<li>Double arrow icon stroke size</li>
+	<li>Minimum width and height of buttons with text</li>
+	<li>Insets of combo boxes, text field and spinners</li>
+	<li>Stroke width of focus ring</li>
+    
+    <p>Here is a screenshot of an internal frame under 96 DPI (normal settings):</p>
+
+    <img src="dpi-support-96.png" height="208" width="299"> 
+
+    <p>Here is the same internal frame under 120 DPI (125% normal size). 
+    Note how all the UI elements (fonts, scroll icons, title pane icons, 
+    button size, check marks and radio buttons, combobox insets) scale:</p>
+
+    <img src="dpi-support-120.png" height="247" width="362"> 
+
+    <p>Here is the same internal frame under 144 DPI (150% normal size):</p>
+
+    <img src="dpi-support-144.png" height="290" width="426">
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New skins</b></td>
+    <td width="80%" valign="top">
+    <p>Four new skins have been 
+    <a href="http://weblogs.java.net/blog/kirillcool/archive/2007/02/new_skins_for_s.html">added</a>.</p>
+    
+    <p>The first is <b>Business Blue Steel</b> which follows the design 
+    of <a href="http://javasoft.de/jsf/public/products/synthetica/blueice/screenshots">Blue 
+    Ice</a> Synthetica theme:</p>
+
+    <img src="skin-business-blue-steel-00.png" height="225" width="300">
+
+    <img src="skin-business-blue-steel-01.png" height="225" width="300">
+
+   <p>The second is <b>Business Black Steel</b> which follows the design 
+   of <a href="http://javasoft.de/jsf/public/products/synthetica/blackmoon/screenshots">Black 
+   Moon</a> Synthetica theme:</p>
+
+   <img src="https://substance.dev.java.net/release-info/3.3/skin-business-black-steel-00.png" height="225" width="300">
+
+   <img src="https://substance.dev.java.net/release-info/3.3/skin-business-black-steel-01.png" height="225" width="300">
+
+   <p>The last two are based on the latest products from Microsoft and Apple camp.
+   Microsoft's <a href="http://www.microsoft.com/products/expression/en/expression-blend/default.mspx">Expression 
+   Blend</a> (free Beta download) and Apple's <a href="http://www.apple.com/aperture/">Aperture</a> 
+   (free trial download) both sport the same dark-grayish UI that doesn't draw the attention away from 
+   the main work canvas (see sample 
+   <a href="http://www.softpedia.com/screenshots//Microsoft-Expression-Blend_1.png">Blend 
+   screenshot</a> and sample <a href="http://images.apple.com/aperture/images/compareadusthud20060925.jpg">Aperture 
+   screenshot</a>).</p>
+
+   <p>The first is <b>Raven Graphite</b>:</p>
+
+   <img src="skin-raven-graphite-00.png" height="225" width="300">
+
+   <img src="skin-raven-graphite-01.png" height="225" width="300">
+
+   <p>and the second is <b>Raven Graphite Glass</b> (note that the button gradients and the header 
+   gradient are "glassier" and the foreground color is whiter):</p>
+
+   <img src="skin-raven-graphite-glass-00.png" height="225" width="300">
+
+   <img src="skin-raven-graphite-glass-01.png" height="225" width="300">
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Arc header painter</b></td>
+    <td width="80%" valign="top">
+    <p>The <code><font color="darkblue">org.jvnet.substance.title.SubstanceHeaderPainter</font></code>
+    interface defines a title painter that can be used to paint the title pane, menu bar and (optionally)
+    tool bars. The core <code><font color="darkblue">org.jvnet.substance.title.ArcHeaderPainter</font></code>
+    implementation is used in the Graphite and Business skins to provide consistent painting of the
+    top portion of application frames. In the screenshots below, note that the 
+    <a href="../../docs/skins/toneddown.html#BusinessBlackSteelSkin">Business Black Steel</a> skin
+    (on the left) uses an instance of 
+    <code><font color="darkblue">org.jvnet.substance.title.ArcHeaderPainter</font></code> 
+    that does not paint the toolbars (in this case, the toolbars have a drop shadow on top of 
+    the toolbars):
+    </p>
+    
+    
+    <p>
+    <img src="header-painter-businessblacksteel.png" height="225" width="300">
+
+    <img src="header-painter-businessbluesteel.png" height="225" width="300">
+    </p>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Streamlined slider painting</b></td>
+    <td width="80%" valign="top">
+    <p>The sliders have <a href="http://weblogs.java.net/blog/kirillcool/archive/2007/02/bringing_life_y_1.html">more</a>
+    elegant appearance, taking much less screen space. Here's a screenshot of how sliders look 
+    like under the <a href="../3.2/release-info.html">previous release:</a></p>
+
+    <img src="sliders-3.2.png" height="198" width="405">
+
+    <p>Here's a screenshot of how sliders look like under this release. Note that the overall look 
+    is much more compact and elegant, including the track weight, thumb fill, tick spacing,
+    tick color weight and label spacing. In addition, the thumb icon on sliders with no ticks
+    and no labels is round:</p>
+
+    <img src="sliders-3.3.png" height="237" width="408"></p>
+    
+    <p>
+    </p>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Animation on slider thumb proximity</b></td>
+    <td width="80%" valign="top">
+    <p>Slider thumbs animate on mouse pointer proximity. Here are the new sliders under 
+    the <a href="../../docs/skins/toneddown.html#BusinessBlackSteelSkin">Business Black Steel</a> skin:</p>
+
+<center>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://active.macromedia.com/flash5/cabs/swflash.cab#version=5,0,0,0" height="139" width="199">
+<param name="movie" value="slider-black-steel.swf">
+<param name="play" value="true">
+<param name="loop" value="false">
+<param name="quality" value="low">
+<embed src="slider-black-steel.swf" quality="low" loop="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" height="139" width="199">
+
+</object>
+</center>
+
+   <p>Here are the new sliders under the 
+   <a href="../../docs/skins/dark.html#RavenGraphiteSkin">Raven Graphite</a> skin:</p>
+
+<center>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://active.macromedia.com/flash5/cabs/swflash.cab#version=5,0,0,0" height="139" width="199">
+<param name="movie" value="slider-raven-graphite.swf">
+<param name="play" value="true">
+<param name="loop" value="false">
+<param name="quality" value="low">
+<embed src="slider-raven-graphite.swf" quality="low" loop="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" height="139" width="199">
+
+</object>
+
+</center>
+
+    <p>Note how the slider thumb grows when the mouse is directly over it or in 
+    its vicinity and shrinks back. In addition, the focus ring properly fades in on 
+    focus acquiring and fades out on focus lost.
+    </p>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Flat title painter</b></td>
+    <td width="80%" valign="top">
+    <p>The new <code><font color="darkblue">org.jvnet.substance.title.FlatTitlePainter</font></code>
+    provides an implementation of an unobtrusive title painter. Combined with a new 
+    <code><font color="darkblue">None</font></code> watermark, it can be used to "blend"
+    the decorated title pane with the rest of the UI. The screenshots below show the same
+    application under <code><font color="darkblue">Classic</font></code> and
+    <code><font color="darkblue">Flat</font></code> title painters:</p>
+    
+    <p>
+    <img src="title-painter-classic.png" height="225" width="300">
+
+    <img src="title-painter-flat.png" height="225" width="300">
+    </p>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Themed button icons</b></td>
+    <td width="80%" valign="top">
+    <p>New client property 
+    <a href="../../docs/clientprops/UseThemedDefaultIcons.html">SubstanceLookAndFeel.USE_THEMED_DEFAULT_ICONS</a> 
+    can be used to specify that the button icons of inactive (non-selected, non-pressed, 
+    non-rollover, non-armed) buttons should be painted in theme colors. This setting plays well
+    with the new Graphite themes, especially when you have a lot of icon buttons on your toolbars 
+    and still don't want to distract the user from what he's doing.</p>
+
+    <p>A screenshot of an application not using this property:</p>
+
+    <img src="skin-raven-graphite-00.png" height="225" width="300">
+
+    <p>The same application with this setting turned on:</p>
+
+    <img src="themed-default-icons-on-00.png" height="225" width="300">
+
+    <p>The same application when the mouse is over the "Paste" toolbar button 
+    (third from the left):</p>
+
+    <img src="themed-default-icons-on-01.png" height="225" width="300">
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New watermark</b></td>
+    <td width="80%" valign="top">
+    <p>The new <code><font color="darkblue">org.jvnet.substance.watermark.SubstanceNoneWatermark</font></code>
+    provides a watermark implementation that paints nothing, completely respecting the original
+    background colors. Note that this is unlike the
+    <code><font color="darkblue">org.jvnet.substance.watermark.SubstanceNullWatermark</font></code>
+    that paints a translucent themed background fill on top of the original background colors,
+    which might look inconsistent with custom painting, especially on dark themes. The followings screenshots
+    show the same application under the new <code><font color="darkblue">None</font></code> 
+    watermark on the left and under the old <code><font color="darkblue">Null</font></code>
+    watermark on the right. Note the differences in the background color and in the header colors:
+    </p>
+    
+    <p>
+    <img src="watermark-none.png" height="225" width="300">
+    <img src="watermark-null.png" height="225" width="300">
+    </p>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Focus looping animation</b></td>
+    <td width="80%" valign="top">
+    <p>Substance respects the new <code><font color="darkblue">FadeKind.FOCUS_LOOP</font></code>
+    and animates the relevant <a href="../../docs/clientprops/FocusKind.html">focus kinds</a>,
+    namely the default <code><font color="darkblue">ALL_INNER</font></code>,
+    <code><font color="darkblue">TEXT</font></code> and 
+    <code><font color="darkblue">UNDERLINE</font></code>. The painting of the animated focus ring
+    respects the animation speed and the current DPI settings. Here is a clip of looping focus
+    painting:</p>
+    
+<center>
+<OBJECT CLASSID="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" WIDTH="190" HEIGHT="156" CODEBASE="http://active.macromedia.com/flash5/cabs/swflash.cab#version=5,0,0,0">
+<PARAM NAME=movie VALUE="focus-loop-animation.swf">
+<PARAM NAME=play VALUE=true>
+<PARAM NAME=loop VALUE=false>
+<PARAM NAME=quality VALUE=low>
+<EMBED SRC="focus-loop-animation.swf" WIDTH=190 HEIGHT=156 quality=low loop=false TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
+</EMBED>
+</OBJECT>
+</center>
+
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Tree decorations animation</b></td>
+    <td width="80%" valign="top">
+    <p>The new <code><font color="darkblue">SubstanceLookAndFeel.TREE_DECORATIONS_ANIMATION_KIND</font></code>
+    allows providing <a href="http://weblogs.java.net/blog/kirillcool/archive/2007/02/borrowing_from.html">Vista-like</a>
+    animations of the tree decorations. Disabled by default, it can be enabled by the 
+    <code><font color="darkblue">FadeConfigurationManager.allowFades()</font></code>
+    API. Tree decorations being animated include collapse / expand icons and vertical horizontal lines.
+    Here is a clip of animated tree decorations:</p>
+    
+<center>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://active.macromedia.com/flash5/cabs/swflash.cab#version=5,0,0,0" height="212" width="305">
+<param name="movie" value="tree-decorations-animations.swf">
+<param name="play" value="true">
+<param name="loop" value="false">
+<param name="quality" value="low">
+<embed src="tree-decorations-animations.swf" quality="low" loop="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" height="212" width="305">
+</object>
+</center>
+
+    </td>
+  </tr>
+  
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+</table>
+</body>
+
+<code><font color="darkblue"></font></code>
+</html>

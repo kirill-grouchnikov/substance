@@ -1,0 +1,244 @@
+<html>
+<head>
+<title>Substance look and feel - watermarks</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - watermarks</h1>
+
+<h3>Overview</h3>
+
+<p>Substance <a href="skins/overview.html">skin</a> can have an optional watermark. 
+The watermark of the current skin is painted over the background of most of the 
+containers (such as panels, tool bars etc). While most action components (such 
+as buttons or combo boxes) do not show the watermark overlay, a specific skin can 
+define a custom alpha value for certain component states (mostly disabled). In 
+this case, the watermark  painting from the parent will be partially displayed on the 
+child component.</p>
+
+<p>There is no need to mark your containers as non-opaque to get the watermark painting.
+The core library comes with four watermarks. Additional watermarks are bundled with
+the <a href="https://substance-extras.dev.java.net">extras pack</a>.</p>
+	
+<p>Due to performance considerations, it is recommended not to use any watermark
+at all. This results in about 20-30% improvement for both static and dynamic scenarios.</p>
+	
+<h3>Watermark</h3>
+A watermark must implement <font color="darkblue">org.pushingpixels.substance.api.watermark.SubstanceWatermark</font>
+interface. This interface defines the following methods:
+<p>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Draws&nbsp;the&nbsp;watermark&nbsp;on&nbsp;the&nbsp;specified&nbsp;graphics&nbsp;context&nbsp;in&nbsp;the&nbsp;specified</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;region.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">graphics</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Graphics&nbsp;context.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">c</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component&nbsp;that&nbsp;is&nbsp;painted.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">x</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Left&nbsp;X&nbsp;of&nbsp;the&nbsp;region.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">y</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Top&nbsp;Y&nbsp;of&nbsp;the&nbsp;region.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">width</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Region&nbsp;width.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">height</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Region&nbsp;height.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">drawWatermarkImage</font><font color="#000000">(</font><font color="#000000">Graphics&nbsp;graphics,&nbsp;Component&nbsp;c,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">x,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">y,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">width,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">height</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Updates&nbsp;the&nbsp;current&nbsp;watermark&nbsp;image.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">skin</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Skin&nbsp;for&nbsp;the&nbsp;watermark.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">true</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">if&nbsp;the&nbsp;watermark&nbsp;has&nbsp;been&nbsp;updated&nbsp;successfully,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">false</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">otherwise.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">updateWatermarkImage</font><font color="#000000">(</font><font color="#000000">SubstanceSkin&nbsp;skin</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Draws&nbsp;the&nbsp;preview&nbsp;of&nbsp;the&nbsp;watermark&nbsp;image.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">g</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Graphic&nbsp;context.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">x</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;</font><font color="#7f7f9f">&lt;i&gt;</font><font color="#3f5fbf">x</font><font color="#7f7f9f">&lt;/i&gt;&nbsp;</font><font color="#3f5fbf">coordinate&nbsp;of&nbsp;the&nbsp;watermark&nbsp;to&nbsp;be&nbsp;drawn.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">y</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;</font><font color="#7f7f9f">&lt;i&gt;</font><font color="#3f5fbf">y</font><font color="#7f7f9f">&lt;/i&gt;&nbsp;</font><font color="#3f5fbf">coordinate&nbsp;of&nbsp;the&nbsp;watermark&nbsp;to&nbsp;be&nbsp;drawn.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">width</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;width&nbsp;of&nbsp;the&nbsp;watermark&nbsp;to&nbsp;be&nbsp;drawn.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">height</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;height&nbsp;of&nbsp;the&nbsp;watermark&nbsp;to&nbsp;be&nbsp;drawn.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">previewWatermark</font><font color="#000000">(</font><font color="#000000">Graphics&nbsp;g,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">x,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">y,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">width,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">height</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Disposes&nbsp;the&nbsp;memory&nbsp;associated&nbsp;with&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">this</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">watermark.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">dispose</font><font color="#000000">()</font><font color="#000000">;</font></code>
+    </p>
+
+<p>These methods are used at runtime to paint watermarks on the corresponding
+components.<p>
+	
+<p><b>Substance</b> provides four core watermarks. The 
+<code><font color="darkblue">Null</font></code> watermark in 
+<code><font color="darkblue">org.pushingpixels.substance.api.watermark.SubstanceNullWatermark</font></code>
+draws a translucent fill:</p>
+<img alt="Null" src="../images/screenshots/watermarks/null.png" width=315 height=245>
+	
+<p>The <code><font color="darkblue">Stripes</font></code> watermark in 
+<code><font color="darkblue">org.pushingpixels.substance.api.watermark.SubstanceStripeWatermark</font></code>
+overlays
+	a pattern of one-pixel stripes:</p>
+<img alt="Stripes" src="../images/screenshots/watermarks/stripes.png" width=315 height=245>
+	
+<p>The <code><font color="darkblue">Crosshatch</font></code> watermark in 
+<code><font color="darkblue">org.pushingpixels.substance.api.watermark.SubstanceCrosshatchWatermark</font></code>
+overlays
+	a pattern of diagonal hatches:</p>
+<img alt="Crosshatch" src="../images/screenshots/watermarks/crosshatch.png" width=315 height=245>
+	
+<p>The noise-based <code><font color="darkblue">Plankton</font></code> watermark in 
+<code><font color="darkblue">org.pushingpixels.substance.api.watermark.SubstancePlanktonWatermark</font></code>
+overlays
+	a random pattern of quasi aquatic life:</p>
+<img alt="Plankton" src="../images/screenshots/watermarks/noise-plankton.png" width=315 height=245>
+	
+
+<h3>Image-based watermarks</h3>
+<p>The
+<code><font color="darkblue">org.pushingpixels.substance.api.watermark.SubstanceImageWatermark</font></code>
+class provides an option to use an image-based watermark. To construct an image watermark, use
+one of the following constructors:</p>
+
+<p>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;an&nbsp;instance&nbsp;with&nbsp;specified&nbsp;image.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">imageLocation</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Image&nbsp;location.&nbsp;Can&nbsp;point&nbsp;to&nbsp;a&nbsp;local&nbsp;file&nbsp;or&nbsp;HTTP&nbsp;URL&nbsp;(needs</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;start&nbsp;with&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">http</font><font color="#7f7f9f">&lt;/code&gt;&nbsp;</font><font color="#3f5fbf">in&nbsp;the&nbsp;later&nbsp;case).</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#646464">@SubstanceApi</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceImageWatermark</font><font color="#000000">(</font><font color="#000000">String&nbsp;imageLocation</font><font color="#000000">)</font><br/><br/>
+    
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;an&nbsp;instance&nbsp;from&nbsp;the&nbsp;specified&nbsp;input&nbsp;stream.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">inputStream</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Input&nbsp;stream.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#646464">@SubstanceApi</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceImageWatermark</font><font color="#000000">(</font><font color="#000000">InputStream&nbsp;inputStream</font><font color="#000000">)</font></code>
+</p>    
+
+<p>Here are examples of image-based watermarks:</p>
+<img alt="Image Beyonce" src="../images/screenshots/watermarks/image-beyonce.png" width=238 height=261 border=1>
+<img alt="Image Terry" src="../images/screenshots/watermarks/image-terry.png" width=238 height=261 border=1>
+<img alt="Image Angelina" src="../images/screenshots/watermarks/image-angelina.png" width=238 height=261 border=1>
+<img alt="Image Dominic" src="../images/screenshots/watermarks/image-dominic.png" width=238 height=261 border=1>
+
+<p>By default, the image is centered in the screen and scaled down if necessary.
+To change the default behavior, use the following API in the 
+<code><font color="darkblue">SubstanceImageWatermark</font></code> class:</p>
+
+<p>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Sets&nbsp;image&nbsp;watermark&nbsp;kind.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">kind</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Image&nbsp;watermark&nbsp;kind.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#646464">@SubstanceApi</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">setKind</font><font color="#000000">(</font><font color="#000000">ImageWatermarkKind&nbsp;kind</font><font color="#000000">)</font></code>
+  </p> 
+
+<p>Where <code><font color="darkblue">SubstanceConstants.ImageWatermarkKind</font></code>
+enum defines the following kinds of image watermark:</p>
+    <ul>
+    <li><font color="darkblue">SCREEN_CENTER_SCALE</font> - the default behaviour. The image is centered
+    in the screen and scaled down if necessary.
+    </li><li><font color="darkblue">SCREEN_TILE</font> - the image is tiled starting from the screen top-left corner
+    and not scaled.
+    </li><li><font color="darkblue">APP_ANCHOR</font> - the image is anchored to the top-left corner of the
+    application frame and not scaled.
+    </li><li><font color="darkblue">APP_CENTER</font> - the image is anchored to the center of the
+    application frame and not scaled.
+    </li><li><font color="darkblue">APP_TILE</font> - the image is tiled starting from the top-left corner of the
+    application frame and not scaled.
+    </li></ul>
+</p>
+
+<p>Here is an example of <font color="darkblue">APP_TILE</font> image watermark kind:</p>
+<img src="../release-info/2.3/image-watermark-tile.png" height="166" width="305">
+
+<p>The default opacity of the image watermark is 0.2 and can be changed by using the
+following API in the 
+<code><font color="darkblue">SubstanceImageWatermark</font></code> class:</p>
+	
+	<p>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Sets&nbsp;image&nbsp;watermark&nbsp;opacity.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">opacity</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Image&nbsp;watermark&nbsp;opacity.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@throws&nbsp;</font><font color="#3f5fbf">IllegalArgumentException</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;the&nbsp;argument&nbsp;is&nbsp;not&nbsp;in&nbsp;0.0-1.0&nbsp;range.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#646464">@SubstanceApi</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">setOpacity</font><font color="#000000">(</font><font color="#7f0055"><b>float&nbsp;</b></font><font color="#000000">opacity</font><font color="#000000">)</font></code>
+  </p>
+	
+<p>Here are examples of default opacity (0.2) and custom opacity (0.6):</p>
+<img src="../release-info/2.3/image-watermark-tile.png" height="166" width="305">
+<img src="../release-info/2.3/image-watermark-opacity.png" height="166" width="305">
+
+<h3>Using watermarks</h3>
+
+<p>The available core watermarks are located in 
+<code><font color="darkblue">org.pushingpixels.substance.api.watermark</font></code> 
+package. You can also use additional watermark from the 
+<a href="https://substance-extras.dev.java.net">extras pack</a>.</p>
+	
+<p>The recommended way to specify a watermark is to set the 
+	<code><font color="darkblue">watermark</font></code> field
+	in the constructor of your custom skin. The public 
+	<code><font color="darkblue">withWatermark</font></code> may also be used
+to create a clone of an existing skin and change its watermark.</p>
+		
+<h3>Miscellaneous</h3>
+
+<p>If you wish to use the watermark of the current skin to provide additional
+custom painting in your application, call:</p>
+<ul>
+<li>
+	<code><font color="darkblue">SubstanceLookAndFeel.<a href="api/GetCurrentSkin.html">getCurrentSkin()</a></font></code>
+	to retrieve the current skin.</li>
+<li><code><font color="darkblue">SubstanceSkin.getWatermark()</font></code>
+to retrieve the watermark of the current skin.</li>
+<li><code><font color="darkblue">SubstanceWatermark.drawWatermarkImage()</font></code>
+to paint the watermark on the specific graphics context.</li>
+</ul>
+</p>
+
+<p>Note that some Swing core components do not show the watermark by default.
+	Currently, the watermark is not shown on trees, tables, lists and text components.
+	To enable the watermark painting on these components, read the documentation
+	on the <a href="clientprops/WatermarkVisible.html">WATERMARK_VISIBLE</a>
+client property.</p>
+
+</body>
+</html>
+

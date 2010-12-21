@@ -1,0 +1,91 @@
+A few weeks ago i posted <a href="http://www.javalobby.org/java/forums/t70623.html">a 
+question</a> on JavaLobby about the additional "feel" features that i have been adding 
+to Substance and what people think about the extra "weight" of the download and the lock-in 
+for applications that would like to use these features. When i say lock-in, i mean that these 
+features were only available under Substance, which is good for me on one hand, but bad for 
+the community in general. Thankfully, one of the responses (by James) proposed splitting the 
+Substance code base and making the widgets available to all LAFs. And so the 
+<a href="https://laf-widget.dev.java.net">laf-widget</a> project was born.
+<br><br>
+
+This project contains a collection of "behavioural traits" or "widgets" for
+third-party Swing look-and-feels. The list of currently provided widgets:
+<ul>
+<li>Auto-completion (model-based / free-text) on editable combo boxes.
+</li><li>Hover preview of minimized internal frames on desktop icons.
+</li><li>Menu search panel on menu bars.
+</li><li>Hover preview of tab in tabbed panes.
+</li><li>Overview dialog on tabbed panes.
+</li><li>Password strength checker on password fields.
+</li><li>Lock border on non-editable text components and model-based editable combo boxes.
+</li><li>Select all text in text component on focus gain.
+</li><li>Enhanced drag-and-drop support for trees.
+</li></ul>
+
+View the <a href="https://laf-widget.dev.java.net/docs/how-to-change-existing-laf.html">detailed 
+documentation</a>
+on how to enable the above widgets in a specific LAF. Once the steps
+described in that document have been completed (by either the LAF developer
+or by the LAF user), Swing application running under the
+"widgetized" LAF will feature the widgets described above. Here is a sample
+application under core <b>Metal</b> and <b>Windows</b> LAFs:
+
+<br><br>
+<img src="https://laf-widget.dev.java.net/images/core-metal.png" height="250" width="350">
+<img src="https://laf-widget.dev.java.net/images/core-windows.png" height="250" width="350">
+<br><br>
+
+Here is the same application under
+<a href="https://substance.dev.java.net">Substance</a> LAF (note the menu search panel
+in the menu bar, the tab overview button, the strength markers on password fields and
+the lock icons on disabled text field and editable model-only combobox):
+<br><br>
+<img src="https://laf-widget.dev.java.net/images/substance.png" height="250" width="350">
+<br><br>
+
+The same application under <a href="https://looks.dev.java.net/">JGoodies Looks</a>
+Plastic XP, <a href="https://liquidlnf.dev.java.net/">Liquid</a>,
+
+<a href="https://pgslookandfeel.dev.java.net/">Pagosoft</a>,
+<a href="http://squareness.sourceforge.net/">Squareness</a>,
+<a href="http://www.infonode.net/index.html?ilf">InfoNode</a> and
+<a href="http://napkinlaf.sourceforge.net/">Napkin</a> features the same widgets for
+the menu bar, combobox, password fields and text fields. Note that the tab overview widget requires
+custom LAF support from the relevant LAFs.
+<br><br>
+<img src="https://laf-widget.dev.java.net/images/looks-plasticxp.png" height="250" width="350">
+<img src="https://laf-widget.dev.java.net/images/liquid.png" height="250" width="350">
+<img src="https://laf-widget.dev.java.net/images/pagosoft.png" height="250" width="350">
+<img src="https://laf-widget.dev.java.net/images/squareness.png" height="250" width="350">
+<img src="https://laf-widget.dev.java.net/images/infonode.png" height="250" width="350">
+<img src="https://laf-widget.dev.java.net/images/napkin.png" height="250" width="350">
+
+<br><br>
+
+<h3>Additional resources</h3>
+<ul>
+<li><a href="https://laf-widget.dev.java.net/docs/how-to-change-existing-laf.html">How to 
+change existing look-and-feel?</a>
+</li><li><a href="https://laf-widget.dev.java.net/docs/how-to-write-your-own-widget.html">How 
+to write your own widget?</a>
+</li><li><a href="https://laf-widget.dev.java.net/docs/how-it-works.html">How it works?</a>
+</li><li><a href="https://laf-widget.dev.java.net/docs/fade-animations.html">Extra - fade 
+animations API</a>
+</li></ul>
+Additional thanks go:
+<ul>
+<li>
+To <a href="http://www.orbital-computer.de/JComboBox">Thomas
+Bierhance</a> for letting use the auto-completion on editable
+comboboxes (refactored to fit the listener model and later moved to this
+project). This work has been previously released to
+<a href="http://creativecommons.org/licenses/publicdomain/">public
+domain</a>.
+
+</li><li>To <b>inostock</b> for providing additional fixes for combobox auto-completion.
+</li><li>To <a href="http://www.antonioshome.net/blog/pivot/entry.php?id=14#body">Antonio
+Vieiro</a> for letting use the enhanced tree drag-and-drop (refactored to fit the project
+concept). This work was originally released under LGPL and contributed under BSD.
+</li><li>To <a href="http://jroller.com/page/gfx">Romain Guy</a> for contributing
+image-processing functions (compatible images and thumbnails).
+</ul>

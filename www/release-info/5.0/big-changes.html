@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>Substance 5 change overview</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h3>The changes</h3>
+
+<ul>
+<li>Addressing performance. The first drop of 5.0
+is 20% faster than release 4.3.
+<li>Requires JDK 6.0. 6u10 is the only VM that is being
+used for tests.
+<li>SubstanceLookAndFeel class is now abstract and does not
+have any public constructors. Use a core skin-based LAF, extend to 
+set a custom skin or use static setSkin method.
+<li>Removed support for pluggable text rasterizers 
+(substance-bramble plugin based on SWT). 6u10 addresses poor
+Segoe UI rendering on Vista.
+<li>Reworked notion of themes. Split the functionality of SubstanceTheme,
+SubstanceComplexTheme and SubstanceSkin into SubstanceColorScheme,
+SubstanceColorSchemeBundle and SubstanceSkin. Tweaked most of the
+core skins to take advantage of the new more flexible and straighforward
+APIs.
+<li>Removed most of the VM flags. The only two flags are for tracing memory
+allocation and heap status. Use skin / image watermark / configuration
+APIs.
+<li>Reconciled APIs that were added to address specific 
+user requests and did not result in a consistent API. This
+should make making a custom skin / tweaking default
+Substance behavior easier and more straightforward.
+<li>New client property to provide per-window skinning.
+Use different skins for different top-level windows.
+<li>Removed the client properties and APIs for setting themes and
+painters on per-component level. Use colorization client property and
+per-window skins for custom tweaking.
+<li>The new default mode does not add any extra UI elements
+(menu search, lock icons etc).
+<li>Removed performance-adverse functionality of custom overlay
+and composites. Was unintentionally broken since release 4.2 and
+intentionally unfixed in both 4.2 and 4.3. A single complaint shows
+that this functionality is of miniscule use.
+<li>Removed combobox auto-completion. Use SwingX, GlazedLists or JIDE.
+<li>Moved UI debug mode (additional context menu on title panes and
+scroll bars) to a substance-tools plugin
+<li>Consolidated existing theme pack, button shaper pack
+and watermark pack into substance-extras plugin
+<li>New SubstanceApi annotation marks public APIs (classes, constructors,
+methods)
+<li>Internal restructuring of the packages to make the codebase
+more organized. 
+</ul>
+
+<h3>Java SE 6 specific functionality</h3>
+
+<ul>
+<li>Multi-stop linear gradients
+<li>Support for sort arrow icons on table headers
+<li>Linux-specific bug fix on dragging window by title pane
+</ul>
+
+</body>
+</html>
+

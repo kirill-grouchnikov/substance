@@ -1,0 +1,58 @@
+This is the fifth part of the series that describes the additional capabilities that you can get 
+on your tabbed panes. 
+<ul>
+<li>The <a href="../2005.10/spicing-tabbed-panes-1.html">first 
+part</a> described close buttons and animation on modified tabs
+</li>
+<li>The <a href="../2005.12/spicing-tabbed-panes-2.html">second 
+part</a> described vetoable close buttons and vertical tabs. 
+</li>
+<li>The <a href="../2006.03/spicing-tabbed-panes-3.html">third 
+part</a> described single-click close of multiple tabs and custom alignment of tab texts on left 
+and right placement.
+</li>
+<li>The <a href="../2006.04/spicing-tabbed-panes-4.html">fourth 
+part</a> described hover preview popup and tab overview dialog.
+</ul>
+This entry describes the new feature available in the next version of 
+<a href="../../../">Substance look-and-feel</a> (code-named Grenada) 
+and any other third-party LAF using <a href="https://laf-widget.dev.java.net">laf-widget</a> 
+layer.
+<br><br>
+
+First, you're welcome to read 
+<a href="../2006.05/laf-widget-proposal.html">this 
+blog entry</a> that introduces the notion of <b>widget</b> into the world of look-and-feels. 
+While <a href="https://substance.dev.java.net">Substance</a> LAF is currently the only LAF 
+supporting the "feel" widgets, the approach has been successfuly tested on six other 
+third-party LAFs (Squareness, Pagosoft, Looks, Liquid, Infonode and Napkin. While the previous 
+four parts described Substance-specific features, the introduction of <b>laf-widget</b> now 
+allows additional third-party LAFs to provide tab overview dialog and tab hover preview.
+<br><br>
+
+The new addition to <b>laf-widget</b> layer provides the functionality of 
+<a href="http://extensions.hesslow.se/">Ctrl Tab</a> Firefox plugin. Once you install that 
+plugin, pressing <b>Ctrl+Tab</b> opens three windows, one in the middle that shows a large 
+thumbnail of a tab (starts from the current tab), and two side windows displaying small 
+thumbnails of previous and next tabs. Each press on <b>Tab</b> key (while <b>Ctrl</b> is 
+pressed) moves the thumbnails forward (cycling). Once <b>Ctrl</b> is released, the currently 
+shown tab (in the middle thumbnail window) is selected.<br><br>
+
+For those of you who don't know, Swing already provides keyboard accelerators for switching 
+the tabs. These are <b>Ctrl+Page Up</b> for moving forward and <b>Ctrl+Page Down</b> for moving 
+backward. Two major disadvantages are:
+<ul>
+<li>The selection actually changes (which may trigger some application event handlers - may be 
+undesirable if the user just wants to see the tab preview).
+<li>It only works in the current tab run.
+</ul>
+
+The newly added (quite small ~10K) widget in <b>laf-widget</b> project (and subsequently in the 
+new version of Substance) provides the <b>Ctrl+Right Arrow</b> and <b>Ctrl+Left Arrow</b> keyboard 
+shortcuts that provide thumbnail paging of all tabs in the currently focused tabbed pane 
+(<b>Ctrl+Tab</b> can not be taken since <b>Tab</b> event is already consumed by Swing for the 
+focus transfer). Here is a screenshot to illustrate (click to see the full size):<br><br>
+
+<a href="../../../release-info/3.0/lafwidget-tab-pager-big.png">
+<img src="../../../release-info/3.0/lafwidget-tab-pager.png" width=307 height=230>
+</a>

@@ -1,0 +1,517 @@
+<html>
+<head>
+<title>Substance look and feel - FAQ</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - FAQ</h1>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 1</b></td>
+  <td width="90%" valign="top"><p>Can i use some / all of the code in Substance?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>Substance is released under BSD license. You are free to modify any part of the code
+as long as you mention the original license in the source code / the runnable distribution.</p></td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 2</b></td>
+  <td width="90%" valign="top"><p>Can i create my own look-and-feel on top of Substance?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>There are two supported ways of extending Substance.
+  To create a custom look for branding your application, start by reading the
+  <a href="skins/overview.html">skinning documentation</a> and the code of the
+  core skins in the <code><font color="darkblue">org.pushingpixels.substance.api.skin</font></code>
+  package. To add custom behavior to the specific control(s), start by reading
+  the <a href="https://laf-widget.dev.java.net/docs/how-to-write-your-own-widget.html">widget
+  documentation</a> and the code in the <a href="https://laf-widget.dev.java.net">Laf-Widget</a>
+  project.</p>
+  
+  <p>While you can extend the UI delegates in the 
+  <code><font color="darkblue">org.pushingpixels.substance.internal.ui</font></code>
+  package, it is not recommended. In fact, anything in this package is subject to change at
+  any point in time - and frequently does so between releases.</p></td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 3</b></td>
+  <td width="90%" valign="top"><p>What is the policy for backwards binary and visual compatibility?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>I will do my best not to break the APIs exposed
+  in the <code><font color="darkblue">org.pushingpixels.substance.api</font></code>
+  package (read the <a href="skins/overview.html">skinning documentation</a> and 
+  <a href="api.html">API documentation</a> for more information).</p>
+  
+  <p>Classes in the 
+  <code><font color="darkblue">org.pushingpixels.substance.internal.ui</font></code>
+  package are not for application use and can change at any point in time.</p>
+  
+  <p>There are no guarantees about visual compatibility between major or minor 
+  releases. Core painters and skins undergo routine reexamination to address visual
+  flaws, add polish and remove unnecessary visual noise. If your application
+  requires absolute visual backwards compatibility, it is recommended to create 
+  a custom skin that does not extend any of the existing core Substance skins.</p></td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 4</b></td>
+  <td width="90%" valign="top"><p>Is it possible to backport Substance to 1.4 or 5.0?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>The current capabilities of tools such as
+  <a href="http://retrotranslator.sourceforge.net/">Retrotranslator</a> and
+  <a href="http://retroweaver.sourceforge.net/">Retroweaver</a> do not support
+  the new Java 5.0 and 6.0 classes and functions that Substance is using. 
+  In addition, a lot of UI-related bugs were fixed in JDK 6.0.</p></td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 5</b></td>
+  <td width="90%" valign="top"><p>I like some of the features, but the jar size is too big. How can i get
+  a smaller runnable?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>In short - if you like the features, you pay the price. In long - you
+  have a number of options:</p>
+  <ul>
+  <li>Use lite version (available from release 2.2). It's about 510KB less.
+  <li>Use special tools such as <a href="https://stripper.dev.java.net/">Stripper</a>. Has been successfully
+  tested - the jar size is cut by 25% (about 140KB less for full version, about 100KB
+  less for lite version). Note that if you use this option,
+  the stack traces of Substance defects will not contain line numbers. This may make it very
+  difficult to reproduce and fix the defect.
+  <li>Set compiler.debug property to "off". The result is the same as in the above option.
+  <li>Use code obfuscators. Almost all classes and all non-private methods will need to have their
+  names preserved.
+  <li>Remove UI delegates for components that you don't use.
+  <li>Fork the codebase and follow the moving target.
+  </ul>
+  <p>Substance provides not only a highly configurable "look" part. It also adds significant amount
+  of features to the core Swing components. If you need this functionality, you can either use
+  third-party components, write the functionality yourself or take Substance. In any case these
+  features have to reside somewhere in the classpath. Having them in Substance enables you
+  to use well-tested additional "feel" part of the core Swing components.</p>
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 6</b></td>
+  <td width="90%" valign="top"><p>Why are you breaking my application by enforcing
+  the creation and modification of components on the Event Dispatch Thread (EDT)?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>This has been introduced in version 5.0, and 
+  is being extended in every subsequent release. The answer to this question can
+  be found on the "Pushing Pixels" blog in 
+  <a href="http://www.pushing-pixels.org/?p=368">entry from July 2008</a> and in 
+  <a href="http://www.pushing-pixels.org/?p=1643">entry from February 2010</a>.
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 7</b></td>
+  <td width="90%" valign="top"><p>Scrolling and moving windows leaves the watermark in inconsistent state.
+  Is it a bug?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>No, it's by design. Swing does not repaint the component on every event
+  while scrolling or moving the windows / frames / dialogs. Try it and watch the CPU go berserk. As by default the
+  Substance watermarks are screen-bound, you may (and will) experience the watermark inconsistency. Here are
+  some things you can do:</p>
+  <ul>
+  <li>Define your scrolled component to be non-opaque. It will be repainted on every scroll, including the
+  watermark. Doesn't really help with CPU if you have a lot of child components.</li>
+  <li>Add scroll / move listener and repaint the component there. It is recommended to call repaint
+  every 100+ milliseconds to keep the application responsive. You will still experience "jagged" behaviour
+  on fast scrolls / drags.</li>
+  <li>Use <a href="clientprops/WatermarkVisible.html"><code><font color="darkblue">WATERMARK_VISIBLE</font></code></a> client
+  property on the specific component, setting it to <code><font color="darkblue">Boolean.FALSE</font></code></li>
+  <li>Use null watermark (see <a href="watermarks.html">watermarks</a>) for your application.</li>
+  <li>Use <code><font color="darkblue">SubstanceImageWatermark.setImageWatermarkKind(ImageWatermarkKind)</font></code> 
+  and specify one of <code><font color="darkblue">APP_ANCHOR</font></code>, 
+  <code><font color="darkblue">APP_CENTER</font></code> or <code><font color="darkblue">APP_TILE</font></code> 
+  values for the image watermark kind. This is relevant only for image-based watermarks.</li>
+  </ul>
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 8</b></td>
+  <td width="90%" valign="top"><p>I use an image-based <a href="watermarks.html">watermark</a>
+  in my application / applet and don't see it. Is it a bug?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>By default, <b>all</b> Substance watermarks are screen-bound
+  (also true under multiple screens). This is in order to enable smooth and seamless operation
+  of applications that use multiple frames / dialogs. In addition, this allows to blend
+  Substance-based applications on desktops with matching backgrounds. Specifically for image-based
+  watermarks this may present a visual problem if the specified (local or remote) image is smaller
+  than the screen (one or both dimensions). In this case the image is not enlarged and is centered
+  in the middle of the screen. Unless your application is situated properly, the visual result
+  is "no watermark". In order to amend the situation you will need to provide a larger image.
+  Two notes:</p>
+  <ul>
+  <li>If one or both dimensions of the watermark image are larger than the corresponding
+  dimension(s) of the screen(s), the image will be scaled down.
+  <li>In order to ensure seamless operation of applications that use multiple frames /
+  dialogs under window move / drag see the answer to question 6 above.
+  </ul>
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 8</b></td>
+  <td width="90%" valign="top"><p>I don't like Substance.</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>That's not really a question. If you don't like it,
+  you can either help improve it by suggesting additional features in the forums and
+  mailing lists, or use any other core or third-party look-and-feel.
+  <a href="http://www.javootoo.com">Here is</a> an excellent list of all currently
+  available third-patry LAFs.</p>
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 10</b></td>
+  <td width="90%" valign="top"><p>I requested the Project Owner / Developer / Content Developer 
+  role in this project. Why did you reject my request?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>Look-and-feel in general and Substance in particular
+  require fairly advanced knowledge of Swing. This is not a playground / sandbox
+  for experimenting with Swing - Substance aims to be a production-quality alternative
+  to core and other third-party LAFs. As you wouldn't want a total stranger to be a part
+  of your production team, you need first to establish yourself a worthy addition
+  to this (or any other) project. You can start by requesting the Observer role,
+  suggest new features, learn Substance codebase and propose ways to implement new
+  features. After you show your skill and the will to stick with this project, you
+  can expect a serious thought invested in answering the request for the Developer
+  role. In addition, there is no need for Content Developer role in this project since
+  I'm quite capable of maintaining a static HTML site by myself. The Project Owner role
+  is granted only after certified analysis by three independent doctors that shows that
+  the requester is in a lucid state of mind.</p>
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 11</b></td>
+  <td width="90%" valign="top"><p>Are there any known issues in Substance?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>See the <a href="known-issues.html">known issues</a>
+  documentation. If you find an issue not mentioned in the above document, you
+  can report it in either issue tracker, mailing lists, forums or direct mail to {kirillcool
+  [@at@] yahoo [.dot.] com}.</p>
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 12</b></td>
+  <td width="90%" valign="top"><p>How can i use Substance on Mac and still have
+  the standard Mac application menu bar?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>The global Mac application menu bar is 
+  available only under menu UI delegates from the native Aqua
+  look-and-feel. There are two options to have this functionality in
+  your application.</p>
+  <ul>
+  <li>Use AWT menus. Thanks to <b>Werner Randelshofer</b> for this option.</li>
+  <li>Use Aqua UI delegates for the menus and menu related classes. The 
+  recommended way to do this:
+  	<ol>
+  		<li>Call 
+  			<code><font color="darkblue">UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())</font></code>.</li>
+  		<li>Query and store the 
+  		<code><font color="darkblue">UIManager</font></code> entries for the following keys: MenuBarUI,
+  			MenuUI, MenuItemUI, CheckBoxMenuItemUI, RadioButtonMenuItemUI, PopupMenuUI.</li>
+  		<li>Set Substance as the look-and-feel.</li>
+  		<li>Before creating your first window, restore the 
+  		<code><font color="darkblue">UIManager</font></code> entries
+  			for the keys specified in the second step.</li>
+  	</ol>
+  It is not recommended to rely on the current class names for the Aqua UI
+  delegates, since the package that hosts these classes is different for
+  different versions of Apple VM. This is mentioned in the 
+  <a href="http://developer.apple.com/releasenotes/Java/JavaLeopardRN/ResolvedIssues/chapter_3_section_5.html#//apple_ref/doc/uid/TP40006634-CH3-DontLinkElementID_13">release
+  notes</a> for Apple VM 1.6.0 on Mac OS X 10.5 Leopard (radar #4907470). Thanks to
+  <b>Sergiy Michka</b> and <b>Mike Swingler</b> for this option.
+  </li>
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 13</b></td>
+  <td width="90%" valign="top"><p>I use animated GIFs as icons on internal frames and the CPU
+  usage goes berserk (100% maxed out). Some parts of the application do not get repainted at all.
+  What do i do?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>When an animated GIF is set as an internal frame icon, the <b>entire</b>
+  desktop pane is repainted on the GIF frame sequencing - not only the icon, not only the frame title pane 
+  and even not only that internal 
+  frame. Since Substance is much more CPU-intensive than Metal / Windows (it is partially addressed 
+  with the image caching), this results in severe CPU bottlenecks and refresh glitches on some controls.
+  The call to <code><font color="darkblue">repaint()</font></code> doesn't necessarily cause an immediate 
+  repaint (this is what the 
+  <code><font color="darkblue">paintImmediately()</font></code> API is for). 
+  When the CPU is heavily loaded, most of the repaints will 
+  be skipped (coalesced). In extreme cases, the CPU is so heavily loaded that the repaint manager 
+  never gets to repaint some controls (such as combobox popup in a floating toolbar).</p>
+  <p>The best advice is to not use animated GIFs as icons. Thanks to <b>Martin Clifford</b> for pointing out
+  this issue.</p>
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 14</b></td>
+  <td width="90%" valign="top"><p>What's going on with my cell renderers?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>By design, Substance provides default renderers
+  for trees, tables and lists that provide the following functionality:</p>
+  
+  <ol>
+  <li>Respect the background color of the component.</li>
+  <li>Provide alternating striped painting of background (table / list only).</li>
+  <li>Provide theme-consistent rollover and selection highlighting.</li>
+  </ol>
+  
+  <p>This functionality is only available on default Substance renderers
+  in the <code><font color="darkblue">org.pushingpixels.substance.api.renderers</font></code>.
+  If you use custom renderers that extend core Swing classes, you will not have 
+  it.</p>
+  
+  <p>If you want to change the default animation settings on your lists,
+  tables and trees (for example, to disable core Substance animations on
+  custom application renderers) please consult the 
+  <a href="https://laf-widget.dev.java.net/docs/animations.html">animation primer</a>.</p>
+  
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 15</b></td>
+  <td width="90%" valign="top"><p>Is there support for custom tab components
+  in Java 6?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>Substance does not support
+  custom tab components specified by the 
+  <a href="http://java.sun.com/javase/6/docs/api/javax/swing/JTabbedPane.html#setTabComponentAt(int,%20java.awt.Component)">JTabbedPane.setTabComponentAt</a>
+  API.</p>
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 16</b></td>
+  <td width="90%" valign="top"><p>Can i use Substance only for some parts of my UI?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>No. Substance in particular, and Java look and feels
+  in general are not designed to be installed in the "mix and match" fashion.</p>
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 17</b></td>
+  <td width="90%" valign="top"><p>How do i make Substance to paint the title panes?</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>In case you wish to use cross-platform frame and 
+  	dialog decorations, use the following <b>before</b> you instantiate your first 
+  top-level window:
+<font color="darkblue">JFrame.setDefaultLookAndFeelDecorated(true);</font>
+and <font color="darkblue">JDialog.setDefaultLookAndFeelDecorated(true);</font>.
+This, however, causes flicker on resize due to a
+<a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=5079688">known Swing bug</a>.
+For Windows, there is a workaround, using
+<font color="darkblue">System.setProperty("sun.awt.noerasebackground", "true");</font>.
+You can set this property along with the above two lines.</p>
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Question 18</b></td>
+  <td width="90%" valign="top"><p>I'm using setOpaque() method and i see
+  visual artifacts in my UI</p></td>
+</tr>
+
+<tr>
+  <td width="10%" valign="top" align="left"><b>Answer</b></td>
+  <td width="90%" valign="top"><p>Do not change the opacity of controls
+  painted by Substance in the application code. Doing so will lead to
+  unpredictable visual results at runtime.</p>
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+
+
+</table>
+
+
+
+
+</body>
+</html>
+

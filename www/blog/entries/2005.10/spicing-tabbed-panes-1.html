@@ -1,0 +1,79 @@
+My <a href="http://weblogs.java.net/blog/kirillcool/archive/2005/10/providing_visua.html">previous 
+entry</a> showed the way to provide visual indication of frames with changed content. 
+Based on the suggestions from the comments, this behaviour has been also added to <b>JTabbedPane</b>. <br><br>
+
+Application should set 
+    <font color="darkblue">SubstanceLookAndFeel.WINDOW_MODIFIED</font> client property
+    on the tabbed pane's <b>Component</b> (if it's <b>JComponent</b>). The value that 
+    corresponds to unsaved state is <b>Boolean.TRUE</b>. 
+    See <a href="../../../release-info/2.1/tab-changed-pulsation.avi">67-second</a> AVI movie (1.2 MB) illustrating the technique.
+    <br><br>Pulsating loop on <b>JTabbedPane</b> - red theme (animation start):
+    <p><img src="../../../release-info/2.1/tab-contents-red.png" height="27" width="260"></p>
+
+    Pulsating loop on <b>JTabbedPane</b> - orange theme (midway through animation):
+    <p><img src="../../../release-info/2.1/tab-contents-orange.png" height="27" width="260"></p>    
+    Pulsating loop on <b>JTabbedPane</b> - yellow theme (animation flex point):
+    <p><img src="../../../release-info/2.1/tab-contents-yellow.png" height="27" width="260"></p>    
+
+In addition, the tabs can now have close buttons (like in NetBeans or SWT). Application should set 
+    <font color="darkblue">SubstanceLookAndFeel.TABBED_PANE_CLOSE_BUTTONS_PROPERTY</font> 
+    client property on either the tabbed pane's <b>Component</b> (if it's <b>JComponent</b>), 
+    <b>JTabbedPane</b> (for all tabs of that pane) or the <b>UIManager</b>
+
+    (for all tabbed panes). The value that corresponds to tab with close button
+    is <b>Boolean.TRUE</b>. In addition, there's rollover effect on enabled tabs (like
+    on any other control such as buttons or scroll bars).
+    See <a href="../../../release-info/2.1/tab-close-buttons.avi">45-second</a> AVI movie (810 KB) illustrating the technique.
+    <br><br>
+    Close button on active tab in <b>JTabbedPane</b> - mouse not over close button (includes mouse pointer):
+    <p><img src="../../../release-info/2.1/tab-close-selected.png" height="50" width="260"></p>
+    Close button on active tab in <b>JTabbedPane</b> - mouse over close button (includes mouse pointer):
+    <p><img src="../../../release-info/2.1/tab-close-selected-active.png" height="50" width="260"></p>    
+    Close button on inactive enabled tab in <b>JTabbedPane</b> - mouse not over tab (includes mouse pointer):
+    <p><img src="../../../release-info/2.1/tab-close-unselected.png" height="50" width="260"></p>    
+    Close button on inactive enabled tab in <b>JTabbedPane</b> - mouse over tab but
+    not over close button (includes mouse pointer):
+    <p><img src="../../../release-info/2.1/tab-close-unselected-rollover.png" height="50" width="260"></p>    
+    Close button on inactive enabled tab in <b>JTabbedPane</b> - mouse over tab and
+    over close button (includes mouse pointer):
+    <p><img src="../../../release-info/2.1/tab-close-unselected-active.png" height="50" width="260"></p>  
+
+This property 
+can be set in three ways:
+<ul>
+<li>On <b>JTabbedPane</b> tab component itself (if it's <b>JComponent</b>). If the 
+property is specified here and it's either <b>Boolean.TRUE</b> or <b>Boolean.FALSE</b>,
+its value is taken.
+
+</li><li>On <b>JTabbedPane</b> itself. If the property is specified here and it's either 
+<b>Boolean.TRUE</b> or <b>Boolean.FALSE</b>, its value is taken and is relevant for all
+tabs in this <b>JTabbedPane</b> that weren't found in the previous step.
+</li><li>As global setting in <b>UIManager</b>. If the property is specified here and it's either 
+<b>Boolean.TRUE</b> or <b>Boolean.FALSE</b>, its value is taken and is relevant for all
+tabs in all <b>JTabbedPane</b>s that weren't found in the previous two steps.
+
+</li></ul>
+Note that the default behaviour (if you do not specify this property anywhere) is
+<b>not to use close buttons</b> at all - in order to not interfere with Java 6.0 tabbed
+components. For example:
+<pre style="border: 1px solid darkgray; padding: 4px; color: darkblue;">  JTabbedPane pane = new JTabbedPane();
+  JPanel component = new JPanel();
+  <b>component.putClientProperty(SubstanceLookAndFeel.TABBED_PANE_CLOSE_BUTTONS_PROPERTY,
+	Boolean.TRUE);</b>
+  pane.addTab(component);
+  JPanel component2 = new JPanel();
+  <font color="darkgreen">// Will not have close button unless the tabbed pane itself specifies 
+  // <b>Boolean.TRUE</b> as value for its client property or <b>UIManager.put</b> is 
+  // called on this property with <b>Boolean.TRUE</b></font>
+
+  pane.addTab(component2);
+</pre>
+
+Once again - the behaviour is not disruptive. If you don't specify this property 
+anywhere, you will not have close buttons on your tabs. This will allow Java 6.0 
+applications that set custom tab header components to continue working correctly.<br><br>
+
+As always, you can run a <a href="../../../webstart/test.jnlp">Web 
+Start demo</a> or download the latest Substance 2.1 development drop 
+<a href="../../../servlets/ProjectDocumentList?folderID=4191&expandFolder=4191&folderID=0">from 
+here</a>.

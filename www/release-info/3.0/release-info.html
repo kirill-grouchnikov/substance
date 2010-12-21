@@ -1,0 +1,568 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Substance 3.0 release</title>
+</head>
+
+<body>
+
+<h1>Substance 3.0 <font color="darkblue">Grenada</font> - new features</h1>
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Blended themes</b></td>
+    <td width="80%" valign="top">New <b>blended theme</b> implemented
+    in <font color="darkblue">org.jvnet.substance.theme.SubstanceBlendBiTheme</font>
+    is created based on two original themes (should be simple ones) and a
+    likeness coefficient. The colors of the blended theme will be the
+    interpolation of colors of the original themes (based on the likeness
+    coefficient).<br><br>
+    This example shows a <b>mixed theme</b> created from two blended themes,
+    the first one a blend of <b>Bottle Green</b> and <b>Lime Green</b> and
+    the second one a blend of <b>Purple</b> and <b>Aqua</b>:<br><br>
+    <code>
+<font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceMixBiTheme</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceBlendBiTheme</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceBottleGreenTheme</font><font color="#000000">()</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceLimeGreenTheme</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">0.6</font><font color="#000000">)</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceBlendBiTheme</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstancePurpleTheme</font><font color="#000000">()</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceAquaTheme</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">0.4</font>))</code>
+<br><br>
+And the result is:<br>    
+    <img src="blended-theme.png" width="300" height="200"><br><br>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Saturated / desaturated themes</b></td>
+    <td width="80%" valign="top">New <b>saturated theme</b> implemented
+    in <font color="darkblue">org.jvnet.substance.theme.SubstanceSaturatedTheme</font>
+    is created based on a original theme and a saturation factor. The valid
+    range for the saturation factor is <font color="darkblue">-1.0...1.0</font>.
+    The positive values produce saturated colors (the higher the value, the more
+    saturated the colors will be), while the negative values produce desaturated
+    colors (the lower the value, the more desaturated the colors will be).<br><br>
+    <b>Important note</b> - do not create instances of saturated themes directly
+    using the constructor. Use the 
+    <code>
+<font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceTheme&nbsp;saturate</font><font color="#000000">(</font><font color="#7f0055"><b>double&nbsp;</b></font><font color="#000000">saturateFactor</font><font color="#000000">)</font></code>
+    method available in <font color="darkblue">org.jvnet.substance.theme.SubstanceTheme</font>
+    to create properly saturated themes (this is true especially for non-simple themes).
+    Here are examples of a regular (<b>Aqua</b> theme), the desaturated version
+    (by 50 percent) and the saturated version (by 50 percent). Note that all theme
+    paintings (including disabled controls) are saturated:<br><br>
+    <img src="original-theme-aqua.png" width="300" height="200"><br><br>
+    <img src="desaturated-theme-aqua.png" width="300" height="200">
+    <img src="saturated-theme-aqua.png" width="300" height="200">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Complex themes</b> <br>(user requested)</td>
+    <td width="80%" valign="top">The 
+    <font color="darkblue">org.jvnet.substance.theme.SubstanceComplexTheme</font>
+    allows complete control over active, default and disabled color schemes
+    for application / single control.
+    <br><br>
+    <img src="complex-theme-office-2007.png" width="300" height="200"><br><br>
+    The frame above was created under the following theme:
+    <br><br>
+    <code>
+<font color="#ffffff"></font><font color="#000000">ColorScheme&nbsp;shiftBlue&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ShiftColorScheme</font><font color="#000000">(</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">AquaColorScheme</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">Color</font><font color="#000000">(</font><font color="#990000">100</font><font color="#000000">,&nbsp;</font><font color="#990000">150</font><font color="#000000">,&nbsp;</font><font color="#990000">255</font><font color="#000000">)</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#990000">0.3</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff"></font><font color="#000000">SubstanceTheme&nbsp;activeTheme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceSaturatedTheme</font><font color="#000000">(</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceOrangeTheme</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">0.4</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff"></font><font color="#000000">SubstanceTheme&nbsp;defaultTheme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceSaturatedTheme</font><font color="#000000">(</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceTheme</font><font color="#000000">(</font><font color="#000000">shiftBlue,&nbsp;</font><font color="#2a00ff">&#34;Aqua&nbsp;Blue&#34;</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ThemeKind.BRIGHT</font><font color="#000000">)</font><font color="#000000">,&nbsp;-</font><font color="#990000">0.3</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff"></font><font color="#000000">SubstanceTheme&nbsp;disabledTheme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceTintTheme</font><font color="#000000">(</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceBlendBiTheme</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceAquaTheme</font><font color="#000000">()</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceSteelBlueTheme</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">0.8</font><font color="#000000">)</font><font color="#000000">,&nbsp;</font><font color="#990000">0.6</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff"></font><font color="#000000">SubstanceTheme&nbsp;activeTitleTheme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceSaturatedTheme</font><font color="#000000">(</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultTheme,&nbsp;</font><font color="#990000">0.2</font><font color="#000000">)</font><font color="#000000">;</font><br/>
+<font color="#ffffff"></font><font color="#000000">setTheme</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceComplexTheme</font><font color="#000000">(</font><font color="#2a00ff">&#34;Office&nbsp;2007&#34;</font><font color="#000000">,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ThemeKind.BRIGHT,&nbsp;activeTheme,&nbsp;defaultTheme,</font><br/>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">disabledTheme,&nbsp;activeTitleTheme</font><font color="#000000">))</font><font color="#000000">;</font></code>
+    <br><br>
+Additional sample complex themes implemented in  
+<font color="darkblue">org.jvnet.substance.theme.ComplexThemeFactory</font>:
+<img alt="Field of Wheat" src="complex-theme-field-of-wheat.png" width=300 height=200>
+<img alt="Green Magic" src="complex-theme-green-magic.png" width=300 height=200>
+<img alt="Streetlights" src="complex-theme-streetlights.png" width=300 height=200>
+<img alt="Magma" src="complex-theme-magma.png" width=300 height=200>
+<img alt="Mango" src="complex-theme-mango.png" width=300 height=200>
+<img alt="Finding Nemo" src="complex-theme-finding-nemo.png" width=300 height=200>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Prototype display value for combo popup</b> <br>(user requested)</td>
+    <td width="80%" valign="top">New client property 
+    <font color="darkblue">SubstanceLookAndFeel.COMBO_POPUP_PROTOTYPE</font>
+    defines the prototype display value for combo popup (useful for
+    narrow popups with values that span wide). The value should either be an 
+    Object (in which case it's taken to be a model entry) or 
+    an implementation of <font color="darkblue">org.jvnet.substance.combo.ComboPopupPrototypeCallback</font>.
+    Implementation of this interface that returns the widest entry is available in
+    <font color="darkblue">org.jvnet.substance.combo.WidestComboPopupPrototype</font>.<br><br>
+    Example of a combo with Object prototype display value for popup:<br><br>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">JComboBox&nbsp;comboProto1&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">JComboBox</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">Object</font><font color="#000000">[]&nbsp;{&nbsp;</font><font color="#2a00ff">&#34;aa&#34;</font><font color="#000000">,&nbsp;</font><font color="#2a00ff">&#34;aaaaa&#34;</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;aaaaaaaaaa&#34;</font><font color="#000000">,&nbsp;</font><font color="#2a00ff">&#34;this&nbsp;one&nbsp;is&nbsp;the&nbsp;one&#34;</font><font color="#000000">,&nbsp;</font><font color="#2a00ff">&#34;abcdefghijklmnopqrstuvwxyz&#34;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">comboProto1.setPrototypeDisplayValue</font><font color="#000000">(</font><font color="#2a00ff">&#34;aaaaa&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">comboProto1.putClientProperty</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceLookAndFeel.COMBO_POPUP_PROTOTYPE,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;this&nbsp;one&nbsp;is&nbsp;the&nbsp;one&#34;</font><font color="#000000">)</font><font color="#000000">;</font></code>
+<br><br>And the result is (note that the last element is "cut off"):<br>
+<img src="combo-popup-element.png" width=105 height=114>
+
+<br><br>
+    Example of a combo with Object prototype display value for popup:<br><br>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">JComboBox&nbsp;comboProto1&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">JComboBox</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">Object</font><font color="#000000">[]&nbsp;{&nbsp;</font><font color="#2a00ff">&#34;aa&#34;</font><font color="#000000">,&nbsp;</font><font color="#2a00ff">&#34;aaaaa&#34;</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;aaaaaaaaaa&#34;</font><font color="#000000">,&nbsp;</font><font color="#2a00ff">&#34;this&nbsp;one&nbsp;is&nbsp;the&nbsp;one&#34;</font><font color="#000000">,&nbsp;</font><font color="#2a00ff">&#34;abcdefghijklmnopqrstuvwxyz&#34;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">comboProto1.setPrototypeDisplayValue</font><font color="#000000">(</font><font color="#2a00ff">&#34;aaaaa&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">comboProto1.putClientProperty</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceLookAndFeel.COMBO_POPUP_PROTOTYPE,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;this&nbsp;one&nbsp;is&nbsp;the&nbsp;one&#34;</font><font color="#000000">)</font><font color="#000000">;</font></code>
+<br><br>And the result is (note that the last element is "cut off"):<br>
+<img src="combo-popup-element.png" width=105 height=114>
+
+<br><br>
+    Example of a combo with widest-entry prototype display value for popup:<br><br>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">JComboBox&nbsp;comboProto2&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">JComboBox</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">Object</font><font color="#000000">[]&nbsp;{&nbsp;</font><font color="#2a00ff">&#34;aa&#34;</font><font color="#000000">,&nbsp;</font><font color="#2a00ff">&#34;aaaaa&#34;</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;aaaaaaaaaa&#34;</font><font color="#000000">,&nbsp;</font><font color="#2a00ff">&#34;another&nbsp;one&nbsp;(not&nbsp;it)&#34;</font><font color="#000000">,&nbsp;</font><font color="#2a00ff">&#34;abcdefghijklmnopqrstuvwxyz&#34;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">comboProto2.setPrototypeDisplayValue</font><font color="#000000">(</font><font color="#2a00ff">&#34;aaaaa&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">comboProto2.putClientProperty</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceLookAndFeel.COMBO_POPUP_PROTOTYPE,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">WidestComboPopupPrototype</font><font color="#000000">())</font><font color="#000000">;</font></code>
+<br><br>And the result is (note that the last element is "cut off"):<br>
+<img src="combo-popup-widest.png" width=152 height=114>
+
+<br><br>
+    Example of a combo with custom computation of prototype display value for popup:<br><br>
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">JComboBox&nbsp;comboProto3&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">JComboBox</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">Object</font><font color="#000000">[]&nbsp;{&nbsp;</font><font color="#2a00ff">&#34;aa&#34;</font><font color="#000000">,&nbsp;</font><font color="#2a00ff">&#34;aaaaa&#34;</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;this&nbsp;is&nbsp;not&#34;</font><font color="#000000">,&nbsp;</font><font color="#2a00ff">&#34;this&nbsp;one&nbsp;is&nbsp;not&nbsp;it&#34;</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;this&nbsp;one&nbsp;is&nbsp;it&nbsp;that&nbsp;is&nbsp;for&nbsp;the&nbsp;popup&#34;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">comboProto3.setPrototypeDisplayValue</font><font color="#000000">(</font><font color="#2a00ff">&#34;aaaaa&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">comboProto3.putClientProperty</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceLookAndFeel.COMBO_POPUP_PROTOTYPE,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ComboPopupPrototypeCallback</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Object&nbsp;getPopupPrototypeDisplayValue</font><font color="#000000">(</font><font color="#000000">JComboBox&nbsp;jc</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">jc.getModel</font><font color="#000000">()</font><font color="#000000">.getElementAt</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">jc.getModel</font><font color="#000000">()</font><font color="#000000">.getSize</font><font color="#000000">()&nbsp;</font><font color="#000000">-&nbsp;</font><font color="#990000">1</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font></code>
+<br><br>And the result is (last element is selected as prototype):<br>
+<img src="combo-popup-custom.png" width=170 height=114>
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Expanding per-component theme support</b> <br>(user requested)</td>
+    <td width="80%" valign="top">The support for <font color="darkblue">SubstanceLookAndFeel.THEME_PROPERTY</font>
+    has been expanded to additional controls. Here are screenshots that show custom theme
+    (<b>Bottle Green</b> being used on a specific tabbed pane and on a specific
+    scroll pane (scroll bars and scroll buttons):<br><br>
+<img src="custom-theme-tabbed-pane.png" width=205 height=188>
+<img src="custom-theme-scrollbar.png" width=138 height=188>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Animated tab icons</b> <br>(user requested)</td>
+    <td width="80%" valign="top">New client property 
+    <font color="darkblue">SubstanceLookAndFeel.TABBED_PANE_TAB_ANIMATION_KIND</font>
+    defines the icon animation kind for a tab in tabbed pane. The value should be 
+    one of the <font color="darkblue">org.jvnet.substance.utils.SubstanceConstants.TabAnimationKind</font>
+    enum (currently supported values are <font color="darkblue">LOADING</font>,
+    <font color="darkblue">ERROR</font> and <font color="darkblue">WARNING</font>).
+    In order to start the animation or change the animation kind to a different value, 
+    put the client property to relevant value
+    on the specific tab component. In order to stop the animation, set the client
+    property to <b>null</b>. Note that while the animation starts immediately, the change and
+    stop are performed only at the end of the current animation cycle.<br><br>
+    Example of a tab with the original icon and the same tab under three different
+    animation kinds:<br><br>
+<img src="animated-tab-icons.png" width=326 height=20>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Additional title painter</b> <br>(user requested)</p></td>
+    <td valign="top" width="80%">Added alternative title painter. Can be set using:
+    <ul>
+    <li><font color="darkblue">-Dsubstancelaf.titlePainter=org.jvnet.substance.title.RandomCubesTitlePainter</font>
+    </li><li><font color="darkblue">SubstanceLookAndFeel.setCurrentTitlePainter("org.jvnet.substance.title.RandomCubesTitlePainter")</font>
+    </li><li><font color="darkblue">SubstanceLookAndFeel.setCurrentTitlePainter(new RandomCubesTitlePainter())</font>
+    </li></ul>
+    The screenshot below shows the defauly (Glass 3D) title painter and the alternative
+    (Random Cubes) title painter:<br><br>
+    <img src="title-painters.png" width="300" height="58">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Tab paging</b></td>
+    <td width="80%" valign="top">
+    <b>Ctrl+Right Arrow</b> and <b>Ctrl+Left Arrow</b> keyboard shortcuts provide thumbnail 
+    paging of all tabs in the currently focused tabbed pane (unless consumed by any child
+    component). Pressing <b>Ctrl+Right/Left Arrow</b> opens three windows, one in the middle 
+    that shows a large thumbnail of a tab (starts from the current tab), and two side windows 
+    displaying small thumbnails of previous and next tabs. Each press on arrow key (while Ctrl is pressed) 
+    moves the thumbnails forward / backward (cycling). Once <b>Ctrl</b> is released, the currently shown tab 
+    (in the middle thumbnail window) is selected.<br><br>
+    <img src="lafwidget-tab-pager.png" width="307" height="230">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>"Select all on focus" on text components</b> <br>(user requested)</td>
+    <td width="80%" valign="top">New client property 
+    <font color="darkblue">LafWidget.TEXT_SELECT_ON_FOCUS</font> specifies that the
+    relevant text field(s) should select all text on focus gain. This property can be
+    set either on a specific text field or globally on <font color="darkblue">UIManager</font>
+    and should be either <font color="darkblue">Boolean.TRUE</font> or
+    <font color="darkblue">Boolean.FALSE</font>. Example of a text field before and
+    after focus gain:<br><br>
+    <img src="lafwidget-text-selectall-on-focus.png" width="169" height="46">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Edit context menu on text components</b></td>
+    <td width="80%" valign="top">New client property 
+    <font color="darkblue">LafWidget.TEXT_EDIT_CONTEXT_MENU</font> specifies that the
+    relevant text field(s) should show edit context menu (with Cut / Copy / Paste /
+    Select All / Delete menu items enabled in correspondance with the text field enabled status,
+    text field selection and clipboard contents). This property can be
+    set either on a specific text field or globally on <font color="darkblue">UIManager</font>
+    and should be either <font color="darkblue">Boolean.TRUE</font> or
+    <font color="darkblue">Boolean.FALSE</font>. Example of a text field before and
+    after selecting some text:<br><br>
+    <img src="lafwidget-text-edit-context-menu.png" width="345" height="123">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Drag-and-drop support on trees</b></td>
+    <td width="80%" valign="top">New client property 
+    <font color="darkblue">LafWidget.TREE_AUTO_DND_SUPPORT</font> specifies that the
+    relevant tree(s) should provide DnD support. This property can be
+    set either on a specific text field or globally on <font color="darkblue">UIManager</font>
+    and should be either <font color="darkblue">Boolean.TRUE</font> or
+    <font color="darkblue">Boolean.FALSE</font>. Examples of a tree with DnD support 
+    when drop is enabled (<b>gson21</b> is being dragged) and a tree with DnD support
+    when drop is not enabled (<b>gson11</b> is being dragged under one of its children):<br><br>
+    <img src="lafwidget-tree-dnd1.png" width="133" height="166">
+    <img src="lafwidget-tree-dnd2.png" width="133" height="166">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Tab overview dialog supports periodic refreshing</b> <br>(user requested)</td>
+    <td width="80%" valign="top">The following two new methods have been added to 
+    the <font color="darkblue">org.jvnet.lafwidget.tabbed.TabPreviewPainter</font>
+    class:
+    <br><br>
+    <code>
+<font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">toUpdatePeriodically</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabPane</font><font color="#000000">)</font><br>
+<font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">getUpdateCycle</font><font color="#000000">(</font><font color="#000000">JTabbedPane&nbsp;tabPane</font><font color="#000000">)</font></code>
+<br><br>
+The default implementation of the first method return <b>false</b> (no periodic update).
+Custom implementation that wishes to periodically update the tab overview dialog should
+return <b>true</b> in the overriding implementation of the first method and the number
+of milliseconds between updates in the overriding implementation of the second method.
+Screenshots below show tab overview of a tabbed pane with 3 seconds period. The second
+screenshot shows the overview after some tabs have been added. The third screenshot
+shows the overview after some tabs have been deleted.<br><br>
+    <img src="lafwidget-tab-refresh1.png" width="306" height="188">
+    <img src="lafwidget-tab-refresh2.png" width="306" height="188">
+    <img src="lafwidget-tab-refresh3.png" width="306" height="188">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Fractal-based watermarks</b></td>
+    <td width="80%" valign="top">
+    <a href="http://weblogs.java.net/blog/kirillcool/archive/2006/06/liven_up_your_a_1.html">Fractal-based
+    watermarks</a> were added to the <a href="https://substance-watermark-pack.dev.java.net/">watermark pack</a>.
+    Four new watermarks are <font color="darkblue">Kaleidoscope</font>,
+    <font color="darkblue">Scriptures</font>, <font color="darkblue">Singularity</font>
+    and <font color="darkblue">Vortex</font> (shown here under <font color="darkblue">Dark 
+    Violet</font> theme):<br><br>
+    <img src="watermark-kaleidoscope.png" width="300" height="200">
+    <img src="watermark-scriptures.png" width="300" height="200">
+    <img src="watermark-singularity.png" width="300" height="200">
+    <img src="watermark-vortex.png" width="300" height="200">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Custom buttons on decorated title panes</b> <br>(user requested)</td>
+    <td width="80%" valign="top">The following two methods in 
+    <font color="darkblue">org.jvnet.substance.SubstanceLookAndFeel</font>
+    allow adding and clearing custom buttons on decorated title panes of 
+    frames, dialogs and internal frames:
+    <br><br>
+    <code>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">setRootPaneCustomTitleButtons</font><font color="#000000">(</font><font color="#000000">JRootPane&nbsp;rootPane,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">List&lt;TitleButtonInfo&gt;&nbsp;infoList</font><font color="#000000">)</font><br>
+<font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">removeRootPaneCustomTitleButtons</font><font color="#000000">(</font><font color="#000000">JRootPane&nbsp;rootPane</font><font color="#000000">)</font></code>
+<br><br>
+Sample usage of this API that creates custom buttons that open an option
+dialog when clicked and have theme-consistent icons is:<br><br>
+    <code>
+<font color="#ffffff"></font><font color="#000000">TitleButtonInfo&nbsp;tbInfo1&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">TitleButtonInfo</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><font color="#000000">tbInfo1.setActionListener</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ActionListener</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">actionPerformed</font><font color="#000000">(</font><font color="#000000">ActionEvent&nbsp;e</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">JOptionPane.showMessageDialog</font><font color="#000000">(</font><font color="#000000">Check.this,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;Custom&nbsp;button&nbsp;1&nbsp;activated&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff"></font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><font color="#000000">tbInfo1.setTooltipText</font><font color="#000000">(</font><font color="#2a00ff">&#34;Tooltip&nbsp;for&nbsp;custom&nbsp;button&nbsp;1&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><font color="#000000">tbInfo1.setButtonCallback</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">TitleButtonCallback</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Icon&nbsp;getTitleButtonIcon</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceTheme&nbsp;currSubstanceTheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">iconMaxWidth,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">iconMaxHeight</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;new&nbsp;</b></font><font color="#000000">ImageIcon</font><font color="#000000">(</font><font color="#000000">SubstanceImageCreator</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.overlayEcho</font><font color="#000000">(</font><font color="#000000">SubstanceImageCreator</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.getArrow</font><font color="#000000">(</font><font color="#990000">9</font><font color="#000000">,&nbsp;</font><font color="#990000">5</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SwingConstants.WEST,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">currSubstanceTheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.getColorScheme</font><font color="#000000">())</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#990000">1</font><font color="#000000">,&nbsp;</font><font color="#990000">1</font><font color="#000000">))</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff"></font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff"></font><font color="#000000">TitleButtonInfo&nbsp;tbInfo2&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">TitleButtonInfo</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><font color="#000000">...</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff"></font><font color="#000000">java.util.List&lt;TitleButtonInfo&gt;&nbsp;tbInfoList&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">LinkedList&lt;TitleButtonInfo&gt;</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><font color="#000000">tbInfoList.add</font><font color="#000000">(</font><font color="#000000">tbInfo1</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><font color="#000000">tbInfoList.add</font><font color="#000000">(</font><font color="#000000">tbInfo2</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><font color="#000000">SubstanceLookAndFeel.setRootPaneCustomTitleButtons</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.getRootPane</font><font color="#000000">()</font><font color="#000000">,&nbsp;tbInfoList</font><font color="#000000">)</font><font color="#000000">;</font></code>
+<br><br>
+The title pane before calling the code above:<br>
+    <img src="title-buttons-default.png" width="129" height="67">
+<br><br>
+The title pane after calling the code above:<br>
+    <img src="title-buttons-custom.png" width="131" height="67">
+<br><br>
+The tooltip on the first custom button:<br>
+    <img src="title-buttons-tooltip.png" width="170" height="67">
+<br><br>
+The first custom button clicked:<br>
+    <img src="title-buttons-activated.png" width="270" height="120">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Fade animations on lists</b></td>
+    <td width="80%" valign="top">Lists provide fade animations on
+    selections (both user-input and via API) and rollovers. The top part of the 
+    screenshot below shows a list when <b>element 6</b> is selected. The middle part
+    shows the fade animation when the <b>element 7</b> is selected instead (note the
+    fade-out on <b>element 6</b> and fade-in on <b>element 7</b>. The bottom
+    part shows the animation completed and <b>element 7</b> selected.<br><br>
+    <img src="list-animations.png" width="252" height="223">
+    <br><br>
+    Note that as with other controls, setting the 
+    <font color="darkblue">org.jvnet.lafwidget.LafWidget.ANIMATION_KIND</font>
+    client property on the list with one of the values of 
+    <font color="darkblue">org.jvnet.lafwidget.utils.AnimationKind</font> enum
+    will change the fade animation speed.
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Improved rendering of drag bumps on toolbars</b></td>
+    <td width="80%" valign="top">The rendering of drag bumps on toolbars has been
+    improved to provide seamless "embedding" of drag bumps into the toolbar.
+    The first screenshot shows the toolbar drag bumps under 2.3, while the 
+    second screenshot shows the toolbar drag bumps under 3.0.<br><br>
+    <img src="dragbumps-2.3.png" width="147" height="31">
+    <img src="dragbumps-3.0.png" width="147" height="31">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Added drag bumps on split pane dividers</b></td>
+    <td width="80%" valign="top">Drag bumps have been added to the split pane dividers:<br><br>
+    <img src="split-divider.png" width="387" height="35">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Improved painting of sliders</b></td>
+    <td width="80%" valign="top">The slider icons have been made smaller to produce more
+    compact control. The screenshot below shows sliders under versions 2.3 (top-left horizontal
+    and mid-right vertical) and 3.0 (bottom-left horizontal and right vertical):<br><br>
+    <img src="sliders.png" width="352" height="201">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Configurable corner radius of toolbar buttons</b> <br>(user requested)</td>
+    <td width="80%" valign="top">New client property 
+    <font color="darkblue">SubstanceLookAndFeel.CORNER_RADIUS</font>
+    defines the corner radius of toolbar buttons. The value should be an instance of 
+    Float and can be set on a single button, a single toolbar or globally on UIManager.
+    A screenshot below shows three buttons on the same toolbar, the first with the
+    default 2.0 corner radius, the second with custom 5.0 corner radius and the third
+    with custom 0.0 corner radius:
+    <br><br>
+    <img src="toolbar-buttons-corner-radius.png" width="118" height="28">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Improved painting of inverted themes</b></td>
+    <td width="80%" valign="top">The painting of inverted themes has been improved
+    to create more contrast and improve title color. The first image
+    below is pre-3.0 implementation, the second image is 3.0 implementation.
+    <br><br>
+    <img src="theme-inverted-aqua-old.png" width="300" height="200">
+    <img src="theme-inverted-aqua-new.png" width="300" height="200">
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+
+</table>
+</body>
+
+</html>

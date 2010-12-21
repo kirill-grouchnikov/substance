@@ -1,0 +1,47 @@
+For me it all started with one of the first versions of ACDSee that provided watermark 
+drawings on its toolbar. But lately, I have seen a couple of screenshots of JEdit, and a 
+thought hit me:<br>
+<img src="http://jedit.org/jedit-snap-25.thumbnail.png"><img src="http://jedit.org/jedit-snap-14.thumbnail.png"><br><br>
+
+Why only for the class editor? Why not for the whole application? And why not make it 
+available for any Java application? So, the beta of the upcoming 
+<a href="../../..">Substance</a> look-and-feel release 2.0 provides 
+the <b>watermarking</b> support (the only one besides <a href="http://www.desnoix.com/guillaume/slaf/">SLAF</a> 
+as far as i know).<br><br>
+
+First of all, you are welcome to try it out for yourself with 
+<a href="../../../webstart/test.jnlp">WebStart</a> test application 
+(or by downloading the <a href="../../../files/documents/3294/13612/substance.jar">runnable 
+jar</a>). And here is how the out-of-the-box watermarks look like (click on each screenshot 
+to see large screenshot):<br>
+<a href="../../netbeans-stripes.png"><img src="../../netbeans-stripes-small.png" width="307" height="230"></a>
+<a href="../../netbeans-katakana.png"><img src="../../netbeans-katakana-small.png" width="307" height="230"></a>
+<a href="../../netbeans-bubbles.png"><img src="../../netbeans-bubbles-small.png" width="307" height="230"></a>
+<br><br>
+Notice how the watermarks (the first one is simple stripes, the second one is Matrix-inspired 
+Katakana glyphs and the last one is foam bubbles) are stamped on almost everything (including 
+toolbar and menus) without getting in the way. For the Eclipse warheads, here is an IntelliJ 
+IDEA screenshot:<br>
+<a href="../../intellij-bubbles.png"> <img src="../../intellij-bubbles-small.png" width="307" height="230"></a>
+<br><br>
+
+But it doesn't end here. Using a custom watermark (which is quite easy to implement), you 
+can turn your favourite Swing-based IDE to a unique opportunity to see your favourite 
+actress all day long :)
+<br><br>
+<a href="../../intellij-minnie-driver.png"><img src="../../intellij-minnie-driver-small.png" width="307" height="230"></a>
+<a href="../../netbeans-minnie-driver.png"><img src="../../netbeans-minnie-driver-small.png" width="307" height="230"></a>
+<br><br>
+Don't let your wife catch you, but once she does, simply point out that you are working. 
+For all the open-source slashdot hippies, you can even go a step further, but don't let Linus 
+catch you:<br>
+<a href="../../intellij-bill-gates.png"><img src="../../intellij-bill-gates-small.png" width="307" height="230"></a><br><br>
+
+In addition, the watermark image may come not only from local filesystem, but from the Web 
+as well (added as requested in the comments). The image below is NetBeans in <b>Sunset</b> 
+theme with watermark of Beyonce image (that matches the theme colors). The command to run 
+NetBeans is <font color="darkgreen">H:\netbeans-4.2dev\bin\netbeans.exe -cp:p h:\jprojects\substance\drop\substance.jar 
+-laf org.jvnet.substance.SubstanceLookAndFeel -J-Dsubstancelaf.theme=org.jvnet.substance.theme.SubstanceSunsetTheme 
+-J-Dsubstancelaf.watermark=org.jvnet.substance.watermark.SubstanceImageWatermark 
+-J-Dsubstancelaf.watermark.image=http://69.93.50.122/desktopgirls/photos/Beyonce_Knowles_810200245513PM959.jpg</font><br><br>
+<a href="../../netbeans-beyonce.png"><img src="../../netbeans-beyonce-small.png" width="307" height="230"></a>

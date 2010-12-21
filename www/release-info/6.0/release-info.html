@@ -1,0 +1,219 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+<title>Substance 6.0 release</title>
+</head>
+
+<body>
+
+<h1>Substance 6.0 <font color="darkblue">Sonoma</font> - new features</h1>
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Multi-state transitions</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new animation and painter layers support multi-state transitions on all 
+    controls that have animations. The old implementation assumed that animating a 
+    control always involves two states - previous and current. This assumption is not 
+    correct.</p> 
+    
+    <p>Suppose your buttons are painted with light blue color. When the mouse 
+    is over a button, the button is painted with light yellow color, and when the 
+    button is pressed, it is painted with saturated orange:</p>
+    
+    <img src="multi-state.png" width="260" height="110">
+    
+    <p>Suppose it takes 500ms to complete a single animation. The user moves the mouse 
+    over a button, and Substance starts animating the color from light blue to light 
+    yellow. Halfway through the animation (250ms), the user presses the button. Now, 
+    there are three states participating in the animation: default with light blue, 
+    rollover with light yellow and pressed with saturated orange. All the states contribute 
+    to the overall appearance of the button as long as the combined animation is in progress. 
+    </p>   	
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New look for text-based input components</b></td>
+    <td width="80%" valign="top">
+
+    <p>Text-based input components have a new, more modern and softer look.
+    The first screenshot below shows a few text fields under <strong>Gemini</strong> 
+    skin in release 5.3, and the second screenshot shows the same text fields in 
+    release 6.0:</p>
+    
+    <img src="textfields-gemini-old.png" width="325" height="136">
+    <img src="textfields-gemini-new.png" width="325" height="143">
+    
+    <p>These two screenshots show the visuals of editable comboboxes under 
+    <strong>Gemini</strong> skin in Substance 5.3 and 6.0:</p>
+    
+    <img src="comboboxes-gemini-old.png" width="293" height="113">
+    <img src="comboboxes-gemini-new.png" width="284" height="108">
+    
+    <p>These two screenshots show the visuals of spinners under 
+    <strong>Gemini</strong> skin in Substance 5.3 and 6.0:</p>
+    
+    <img src="spinners-gemini-old.png" width="187" height="84">
+    <img src="spinners-gemini-new.png" width="197" height="84">
+    
+    <p>The visuals of the date picker control from <a href="https://swingx.dev.java.net">SwingX</a>
+    under the <a href="https://substance-swingx.dev.java.net">Substance SwingX plugin</a>
+    match the new look (note how date pickers pick the colors of the matching decoration
+    areas supported by <strong>Gemini</strong>)</p>
+
+    <img src="date-pickers-gemini.png" width="478" height="328">
+    	
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Custom component states</b></td>
+    <td width="80%" valign="top">
+
+    <p>A typical application button does not change its icon and text. However, the 
+    button appearance changes to reflect its state - a disabled button usually has a faded
+    or translucent appearance, so that the user can quickly see that it is not 
+    clickable. When the user moves the mouse over a button, the button is usually
+    painted with a different color to indicate that it is "ready" to be clicked - 
+    indication of a rollover state.</p>
+    
+    <p>Substance 6.0 has significantly extended the functionality of 
+    <a href="https://substance.dev.java.net/docs/skins/componentstates.html">component states</a>
+    and now allows interested applications to fine tune its appearance under either existing
+    core skins or under custom skins.</p>
+    
+    <p>Here is an example of core <strong>Nebula</strong> skin using a core
+    component state facet to change the color schemes used to paint the progress bars:</p>
+    
+    <img src="nebula-progressbars.png" width="475" height="469">
+    
+    <p>Read the documentation of
+    <a href="https://substance.dev.java.net/docs/skins/componentstates.html">component states</a>
+    for more information and code samples.</p>
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Support for drop location</b></td>
+    <td width="80%" valign="top">
+
+    <p>The default renderers for lists, tables and trees provide visual indication of 
+    the drop location.</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Package structure</b></td>
+    <td width="80%" valign="top">
+
+    <p>The main package has been renamed from <code>org.jvnet.substance</code>
+    to <code>org.pushingpixels.substance</code>. Application code should only use
+    APIs available in the <code>org.pushingpixels.substance.api</code>
+    package. Using classes and methods defined in the <code>org.pushingpixels.substance.internal</code>
+    package is not supported and can break at any point in time, including in minor releases,
+    bug fixes and ongoing development branch.</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Using Trident for animations</b></td>
+    <td width="80%" valign="top">
+
+    <p>Animations in Substance 6.0 are powered by the 
+    <a href="http://kenai.com/projects/trident/pages/Home">Trident animation library</a>.
+    You will need to add the matching Trident jar to your classpath. Substance 6.0
+    is using version 1.2 of Trident which can be downloaded from the 
+    <a href="http://kenai.com/projects/trident/downloads">main Trident download</a>
+    area or from the 
+    <a href="https://substance.dev.java.net/servlets/ProjectDocumentList?folderID=11795">Substance 
+    6.0 download area</a>.</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>APIs</b></td>
+    <td width="80%" valign="top">
+
+    <p>In addition to deprecated APIs that have been removed in version 6.0
+    (see the <a href="../5.3/release-info.html">release notes for version 5.3</a>),
+    application code that uses the following Substance APIs will need to be 
+    revisited:</p>
+    
+    <ul>
+    <li>All <a href="../../docs/painters/overview.html">painter APIs</a> now
+    operate on a single <a href="../../docs/skins/colorschemes.html">color
+    scheme</a>. Application code that passed two different color schemes
+    will now need to call the matching APIs twice, and use the relevant
+    composites on the graphics context.</li>
+    <li>Configuring the animation settings is now done with the
+    <code>org.pushingpixels.lafwidget.animation.AnimationConfigurationManager</code>
+    APIs. In addition, application that want to control the resolution
+    of the animation pulses should consult the 
+    <a href="http://kenai.com/projects/trident/pages/CustomPulseSource">Trident documentation</a>
+    on this topic.</li>
+    </ul>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+</table>
+
+</body>
+
+</html>

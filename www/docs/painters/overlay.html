@@ -1,0 +1,299 @@
+<html>
+<head>
+<title>Substance look and feel - overlay painters</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, painters, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - overlay painters</h1>
+
+<p>
+The <a href="decoration.html">decoration painters</a> are used to 
+paint the entire background area of the relevant containers - such as menu bars,
+tool bars, panels etc. <strong>Overlay painters</strong>, on the 
+other hand, add the final polish
+that usually affects relatively small areas at the edges of the relevant 
+decoration areas. Substance also provides a set of published APIs
+for applications that wish to add visually consistent overlays to
+custom application containers.</p>
+
+<h3>Overlays</h3>
+
+<p>The overlays are best illustrated with screenshots. The following
+screenshot is a skeleton window under the 
+<a href="../skins/toneddown.html#NebulaBrickWallSkin">Nebula Brick Wall</a> skin:</p>
+
+<img src="../../images/screenshots/painters/overlay/nebulabrickwall-skeleton.png" width=500 height=350>
+
+<p>This skin defines custom visual appearance for the title pane, the menu bar
+and the status bar - the background of these areas is painted by the matching
+<a href="decoration.html">decoration painter</a> - in this case, the
+<code><font color="darkblue">org.pushingpixels.substance.api.painter.decoration.MarbleNoiseDecorationPainter</font></code>.
+To add the final polishing touch and create a unique visual footprint for this skin,
+we use a number of overlay painters:</p>
+
+<img src="../../images/screenshots/painters/overlay/nebulabrickwall-overlays.png" width=500 height=350>
+
+<p>The <code>Nebula Brick Wall</code> skin defines two separate overlay painters, each
+one associated with the relevant decoration areas:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;add&nbsp;an&nbsp;overlay&nbsp;painter&nbsp;to&nbsp;paint&nbsp;a&nbsp;drop&nbsp;shadow&nbsp;along&nbsp;the&nbsp;top</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;edge&nbsp;of&nbsp;toolbars</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#000000">TopShadowOverlayPainter.getInstance</font><font color="#000000">()</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.TOOLBAR</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;add&nbsp;an&nbsp;overlay&nbsp;painter&nbsp;to&nbsp;paint&nbsp;separator&nbsp;lines&nbsp;along&nbsp;the&nbsp;bottom</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;edges&nbsp;of&nbsp;title&nbsp;panes&nbsp;and&nbsp;menu&nbsp;bars</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.bottomLineOverlayPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">BottomLineOverlayPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Color&nbsp;query</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Color&nbsp;dark&nbsp;=&nbsp;scheme.getDarkColor</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;new&nbsp;</b></font><font color="#000000">Color</font><font color="#000000">(</font><font color="#000000">dark.getRed</font><font color="#000000">()</font><font color="#000000">,&nbsp;dark.getGreen</font><font color="#000000">()</font><font color="#000000">,&nbsp;dark</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.getBlue</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">160</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#7f0055"><b>this</b></font><font color="#000000">.bottomLineOverlayPainter,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.PRIMARY_TITLE_PANE,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.SECONDARY_TITLE_PANE,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.HEADER</font><font color="#000000">)</font><font color="#000000">;</font></code>
+    
+<ul>
+<li>The instance of <code><font color="darkblue">org.pushingpixels.substance.api.painter.overlay.TopShadowOverlayPainter</font></code>
+is associated with the <code>toolbar</code> decoration area - adding the drop shadow along the top edge
+of all application toolbars (see the bottom half of the zoomed area in the screenshot above).</li>
+<li>An instance of <code><font color="darkblue">org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter</font></code>
+is associated with <code>titlepane</code> and <code>header</code> decoration areas - adding a thin
+separator line along the bottom edge of the title pane and the menubar (see the top half of the zoomed
+area in the screenshot above). Note that the application needs to specify what color is used
+to paint the separator line - using the 
+<code><font color="darkblue">org.pushingpixels.substance.api.ColorSchemeSingleColorQuery</font></code>
+- more on this interface later.</li>
+</ul>
+
+<p>Here is the same skeleton window under the 
+<a href="../skins/toneddown.html#GeminiSkin">Gemini</a> skin:</p>
+
+<img src="../../images/screenshots/painters/overlay/gemini-skeleton.png" width=500 height=350>
+
+<p>This skin defines custom visual appearance for the title pane, the menu bar, the toolbars
+and the status bar - the background of these areas is painted by the matching
+<a href="decoration.html">decoration painter</a> - in this case, the
+<code><font color="darkblue">org.pushingpixels.substance.api.painter.decoration.MatteDecorationPainter</font></code>.
+To add the final polishing touch and create a unique visual footprint for this skin,
+we use a number of overlay painters:</p>
+
+<img src="../../images/screenshots/painters/overlay/gemini-overlays.png" width=500 height=425>
+
+<p>The <code>Gemini</code> skin defines three separate overlay painters, each
+one associated with the relevant decoration areas:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;add&nbsp;an&nbsp;overlay&nbsp;painter&nbsp;to&nbsp;paint&nbsp;a&nbsp;bezel&nbsp;line&nbsp;along&nbsp;the&nbsp;top</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;edge&nbsp;of&nbsp;footer</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.footerTopBezelOverlayPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">TopBezelOverlayPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.DARK,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.ULTRALIGHT</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#7f0055"><b>this</b></font><font color="#000000">.footerTopBezelOverlayPainter,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.FOOTER</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;add&nbsp;two&nbsp;overlay&nbsp;painters&nbsp;to&nbsp;create&nbsp;a&nbsp;bezel&nbsp;line&nbsp;between</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;menu&nbsp;bar&nbsp;and&nbsp;toolbars</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.menuOverlayPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">BottomLineOverlayPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Color&nbsp;query</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">scheme.getUltraDarkColor</font><font color="#000000">()</font><font color="#000000">.darker</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.toolbarOverlayPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">TopLineOverlayPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Color&nbsp;query</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Color&nbsp;fg&nbsp;=&nbsp;scheme.getForegroundColor</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;new&nbsp;</b></font><font color="#000000">Color</font><font color="#000000">(</font><font color="#000000">fg.getRed</font><font color="#000000">()</font><font color="#000000">,&nbsp;fg.getGreen</font><font color="#000000">()</font><font color="#000000">,&nbsp;fg</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.getBlue</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">32</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#7f0055"><b>this</b></font><font color="#000000">.menuOverlayPainter,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.HEADER</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#7f0055"><b>this</b></font><font color="#000000">.toolbarOverlayPainter,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.TOOLBAR</font><font color="#000000">)</font><font color="#000000">;</font></code>
+
+<p>This skin shows two different ways to add double-line bezel separators - the first between
+the menu bar and tool bar, and the second between the main application area and the footer:</p>
+
+<ul>
+<li>The double separator along the top edge of the footer (status bar) is painted by
+an instance of
+<code><font color="darkblue">org.pushingpixels.substance.api.painter.overlay.TopBezelOverlayPainter</font></code>
+which is associated with the <code>footer</code> decoration area - see the bottom zoomed
+area in the screenshot above.</li>
+<li>The double separator between the menu bar and the tool bar is painted by two different
+overlay painters - see the top zoomed area in the screenshot above:
+  <ul>
+  <li>An instance of 
+  <code><font color="darkblue">org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter</font></code>
+	associated with <code>header</code> decoration area - paints the top (darker) separator line
+	along the bottom edge of the menu bar.</li>
+  <li>An instance of 
+  <code><font color="darkblue">org.pushingpixels.substance.api.painter.overlay.TopLineOverlayPainter</font></code>
+	associated with <code>toolbar</code> decoration area - paints the bottom (lighter) separator line
+	along the top edge of the tool bar.</li>
+	</ul>
+</li>
+</ul>
+
+<p>The last example comes from the 
+<a href="../skins/dark.html#TwilightSkin">Twilight</a> skin:</p>
+
+<img src="../../images/screenshots/painters/overlay/twilight-skeleton.png" width=500 height=350>
+
+<p>This skin defines custom visual appearance for the title pane, the menu bar, the toolbars
+and the status bar - the background of these areas is painted by the matching
+<a href="decoration.html">decoration painter</a> - in this case, the
+<code><font color="darkblue">org.pushingpixels.substance.api.painter.decoration.MatteDecorationPainter</font></code>.
+To add the final polishing touch and create a unique visual footprint for this skin,
+we use a number of overlay painters:</p>
+
+<img src="../../images/screenshots/painters/overlay/twilight-overlays.png" width=500 height=425>
+
+<p>The <code>Gemini</code> skin defines four separate overlay painters, each
+one associated with the relevant decoration areas:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;Add&nbsp;overlay&nbsp;painters&nbsp;to&nbsp;paint&nbsp;drop&nbsp;shadows&nbsp;along&nbsp;the&nbsp;bottom</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;edges&nbsp;of&nbsp;toolbars&nbsp;and&nbsp;footers</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#000000">BottomShadowOverlayPainter.getInstance</font><font color="#000000">()</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.TOOLBAR</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#000000">BottomShadowOverlayPainter.getInstance</font><font color="#000000">()</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.FOOTER</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;add&nbsp;an&nbsp;overlay&nbsp;painter&nbsp;to&nbsp;paint&nbsp;a&nbsp;dark&nbsp;line&nbsp;along&nbsp;the&nbsp;bottom</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;edge&nbsp;of&nbsp;toolbars</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.toolbarBottomLineOverlayPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">BottomLineOverlayPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Color&nbsp;query</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">scheme.getUltraDarkColor</font><font color="#000000">()</font><font color="#000000">.darker</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#7f0055"><b>this</b></font><font color="#000000">.toolbarBottomLineOverlayPainter,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.TOOLBAR</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;add&nbsp;an&nbsp;overlay&nbsp;painter&nbsp;to&nbsp;paint&nbsp;a&nbsp;dark&nbsp;line&nbsp;along&nbsp;the&nbsp;bottom</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;edge&nbsp;of&nbsp;toolbars</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.toolbarTopLineOverlayPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">TopLineOverlayPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Color&nbsp;query</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Color&nbsp;fg&nbsp;=&nbsp;scheme.getForegroundColor</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;new&nbsp;</b></font><font color="#000000">Color</font><font color="#000000">(</font><font color="#000000">fg.getRed</font><font color="#000000">()</font><font color="#000000">,&nbsp;fg.getGreen</font><font color="#000000">()</font><font color="#000000">,&nbsp;fg</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.getBlue</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">32</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#7f0055"><b>this</b></font><font color="#000000">.toolbarTopLineOverlayPainter,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.TOOLBAR</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;add&nbsp;an&nbsp;overlay&nbsp;painter&nbsp;to&nbsp;paint&nbsp;a&nbsp;bezel&nbsp;line&nbsp;along&nbsp;the&nbsp;top</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;edge&nbsp;of&nbsp;footer</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.footerTopBezelOverlayPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">TopBezelOverlayPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Color&nbsp;query</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">scheme.getUltraDarkColor</font><font color="#000000">()</font><font color="#000000">.darker</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Color&nbsp;query</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Color&nbsp;fg&nbsp;=&nbsp;scheme.getForegroundColor</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;new&nbsp;</b></font><font color="#000000">Color</font><font color="#000000">(</font><font color="#000000">fg.getRed</font><font color="#000000">()</font><font color="#000000">,&nbsp;fg.getGreen</font><font color="#000000">()</font><font color="#000000">,&nbsp;fg</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.getBlue</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">32</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#7f0055"><b>this</b></font><font color="#000000">.footerTopBezelOverlayPainter,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.FOOTER</font><font color="#000000">)</font><font color="#000000">;</font></code>
+    
+<p>The overlay painters used in the <code>Twilight</code> skin are:</p>
+
+<ul>
+<li>An instance of 
+  <code><font color="darkblue">org.pushingpixels.substance.api.painter.overlay.TopLineOverlayPainter</font></code>
+	associated with <code>toolbar</code> decoration area - paints the lighter top separator line
+	along the top edge of the tool bar - see the top zoomed area in the screenshot above.</li>
+<li>An instance of 
+  <code><font color="darkblue">org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter</font></code>
+	associated with <code>toolbar</code> decoration area - paints the darker bottom separator line
+	along the bottom edge of the tool bar - see the top zoomed area in the screenshot above.</li>
+<li>An instance of 
+  <code><font color="darkblue">org.pushingpixels.substance.api.painter.overlay.TopBezelOverlayPainter</font></code>
+	associated with <code>footer</code> decoration area - paints the double bezel separator lines
+	along the top edge of the status bar - see the bottom zoomed area in the screenshot above.</li>
+<li>The instance of 
+  <code><font color="darkblue">org.pushingpixels.substance.api.painter.overlay.BottomShadowOverlayPainter</font></code>
+	associated with <code>toolbar</code> and <code>footer</code> decoration areas - paints the 
+	drop shadow along the bottom edge of these areas - see the top zoomed area in the screenshot above.</li>
+</ul>
+
+<h3>Application-facing APIs</h3>
+
+<p>To use the matching overlay painters in custom painting routines of
+your application, call the following published Substance APIs:</p>
+<ul>
+<li>
+	<code><font color="darkblue">SubstanceLookAndFeel.<a href="../api/GetCurrentSkin.html">getCurrentSkin()</a></font></code>
+	to retrieve the component skin.</li>
+<li><code><font color="darkblue">SubstanceLookAndFeel.<a href="../api/GetDecorationType.html">getDecorationType()</a></font></code>
+to retrieve the decoration area type of the component.</li>
+<li><code><font color="darkblue">SubstanceSkin.getOverlayPainters()</font></code>
+to retrieve the overlay painters registered for the specific decoration area type.</li>
+<li>Loop over the overlay painters and use the 
+<code><font color="darkblue">SubstanceOverlayPainter.paintOverlay()</font></code>
+(see below) to paint the overlays on the specific graphics context.</li>
+</ul>
+</p>
+
+<p>The base class for Substance <b>overlay painters</b> is
+<code><font color="darkblue">org.pushingpixels.substance.api.painter.overlay.SubstanceOverlayPainter</font></code>. 
+The only painting method in this class is:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Paints&nbsp;the&nbsp;overlay.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">graphics</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Graphics&nbsp;context.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">comp</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">decorationAreaType</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Decoration&nbsp;area&nbsp;type.&nbsp;Must&nbsp;not&nbsp;be&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">null</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">width</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Width.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">height</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Height.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">skin</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Skin&nbsp;for&nbsp;painting&nbsp;the&nbsp;overlay.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">paintOverlay</font><font color="#000000">(</font><font color="#000000">Graphics2D&nbsp;graphics,&nbsp;Component&nbsp;comp,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType&nbsp;decorationAreaType,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">width,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">height,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceSkin&nbsp;skin</font><font color="#000000">)</font><font color="#000000">;</font></code>
+            
+
+<p>The <code><font color="darkblue">width</font></code> and 
+<code><font color="darkblue">height</font></code> 
+parameters specify the rectangle for the overlays (the overlay
+painters can only paint on rectangular areas), the 
+<code><font color="darkblue">skin</font></code> specifies the Substance
+skin to be used to compute the gradient colors, while
+<code><font color="darkblue">decorationAreaType</font></code>
+indicates the decoration area type.</p>
+
+</body>
+</html>
+

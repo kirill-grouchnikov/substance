@@ -1,0 +1,155 @@
+<html>
+<head>
+<title>Substance version 3.0 migration guide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Migration guide for version 3.0 (Grenada)</h1>
+
+The version 3.0 (code-named Grenada) introduces binary incompatibilities
+with the previous versions. This document describes these incompatibilities
+and outlines the migration process for the client applications.
+
+<h2>Background</h2>
+During the first phase of version 3.0, the codebase of <b>Substance</b> has
+been refactored and split to two different projects. The "look" part of Substance
+remains under the same project, while most of the "feel" part (behavioural
+traits or widgets) has been moved under the
+<a href="https://laf-widget.dev.java.net">laf-widget</a> project. The main
+goals were:
+<ul>
+<li>To allow other third-party look-and-feels to reuse existing code from
+Substance (such as combobox auto-completion, tabbed pane overview and many more).
+<li>To allow third parties to develop additional widgets for all supporting
+look-and-feels without dependencies on core LAF modules.
+<li>To make the code more modular.
+<li>To make the lite version lighter (leaving only the "look" part in it).
+</ul>
+During this process, some of the internal implementation classes of Substance
+have been moved to the new project. In addition, some parts of the client-facing
+API have been moved as well. In the following sections we provide the complete
+migration guide for applications that use these moved APIs.
+
+<h2>Classes that were moved</h2>
+The following classes were moved:
+<table border="1" cellpadding="2" cellspacing="0" width="100%">
+  <tr bgcolor="lavender">
+    <td><b>Class</td>
+    <td><b>From package</b></td>
+    <td><b>To package</b></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>TabPreviewPainter</b></td>
+    <td>org.jvnet.substance.tabbed</td>
+    <td>org.jvnet.lafwidget.tabbed</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>DefaultTabPreviewPainter</b></td>
+    <td>org.jvnet.substance.tabbed</td>
+    <td>org.jvnet.lafwidget.tabbed</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>PasswordStrengthChecker</b></td>
+    <td>org.jvnet.substance.utils</td>
+    <td>org.jvnet.lafwidget.text</td>
+  </tr>
+</table>
+
+The API of these classes has not been changed. In order to migrate application
+using these classes you will need to reorganize the import sections of the
+relevant application classes and recompile your application.
+
+<h2>Enums replaced by class instances</h2>
+The following enums were replaced by class instances:
+<table border="1" cellpadding="2" cellspacing="0" width="100%">
+  <tr bgcolor="lavender">
+    <td><b>Enum</td>
+    <td><b>From class</b></td>
+    <td><b>To class</b></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>AnimationKind</b></td>
+    <td>org.jvnet.substance.utils.SubstanceConstants</td>
+    <td>org.jvnet.lafwidget.utils.LafConstants</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>PasswordStrength</b></td>
+    <td>org.jvnet.substance.utils.PasswordStrengthChecker</td>
+    <td>org.jvnet.lafwidget.utils.LafConstants</td>
+  </tr>
+</table>
+
+In order to migrate application using these enums you will need to
+reorganize the import sections of the relevant application classes and
+recompile your application.
+
+
+<h2>Client property keys that were moved and changed</h2>
+The following client property keys were moved (and value changed):
+
+<table border="1" cellpadding="2" cellspacing="0" width="100%">
+  <tr bgcolor="lavender">
+    <td><b>Client property</td>
+    <td><b>From class</b></td>
+    <td><b>To class</b></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>ANIMATION_KIND</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td>org.jvnet.lafwidget.LafWidget</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>COMBO_BOX_USE_MODEL_ONLY</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td>org.jvnet.lafwidget.LafWidget</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>PASSWORD_STRENGTH_CHECKER</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td>org.jvnet.lafwidget.LafWidget</td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td bgcolor="lightcyan"><b>TABBED_PANE_PREVIEW_PAINTER</b></td>
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td>org.jvnet.lafwidget.LafWidget</td>
+  </tr>
+</table>
+In order to migrate application using these client properties you will need to
+reorganize the import sections of the relevant application classes and
+recompile your application.
+
+<h2>Client property keys that were renamed</h2>
+The following client property keys were renamed (and value changed):
+
+<table border="1" cellpadding="2" cellspacing="0" width="100%">
+  <tr bgcolor="lavender">
+    <td><b>In class</td>
+    <td><b>Old name</b></td>
+    <td><b>New name</b></td>
+  </tr>
+
+  <tr bgcolor="lightyellow">
+    <td>org.jvnet.substance.SubstanceLookAndFeel</td>
+    <td bgcolor="lightcyan">BUTTON_PAINT_ACTIVE_PROPERTY</td>
+    <td>PAINT_ACTIVE_PROPERTY</td>
+  </tr>
+</table>
+In order to migrate application using these client properties you will need to
+change the usage of old properties to new properties and
+recompile your application.
+
+
+</body>
+</html>
+

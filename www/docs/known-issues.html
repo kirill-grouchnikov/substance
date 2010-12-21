@@ -1,0 +1,78 @@
+<html>
+<head>
+<title>Substance look and feel - known issues</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2007 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - known issues</h1>
+
+This document describes known issues in Substance. Fixing these issues would
+involve copying very substantial amount of code from either Metal or Basic
+LAF delegates and would entail the following problems:
+<ul>
+<li>Copyright infringement
+<li>Code bloating
+<li>Forking and inheriting unfixed bugs
+</ul>
+
+These issues have been reported to bugparade and are yet to be officially confirmed.
+Each issue has the corresponding internal review ID. Note that a number of other existing
+Swing bugs have been either fixed or circumvented in Substance.
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="30%" valign="top" align="left"><b>Scroller buttons in wrapped RTL tabbed panes</b>
+  (internal review number <b>673417</b> reported on 19.03.2006)</td>
+  <td width="90%" valign="top">Due to bug in core Swing delegates, the scroller buttons on
+  wrapped tabbed panels in right-to-left applications are not visible:
+  <br><br>
+  <img src="../images/known-issues/rtl-wrapped-tabpane-scrollers.png" width=375 height=26>
+
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+<tr>
+  <td width="30%" valign="top" align="left"><b>Tab overview button in wrapped tabbed pane</b>
+  (internal review number <b>683888</b> reported on 12.04.2006)</td>
+  <td width="90%" valign="top">Due to bug in core Swing delegates, the tab overview button
+  in wrapped tabbed panes will be shown on top of the scrolled tabs (the bug itself is
+  in UI delegate not respecting the tab area insets setting):
+  <br><br>
+  <img src="../images/known-issues/wrapped-tabpane-insets.png" width=407 height=27>
+
+  </td>
+</tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+</table>
+
+
+
+
+</body>
+</html>
+

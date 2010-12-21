@@ -1,0 +1,153 @@
+<html>
+<head>
+<title>Substance test applications</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2008 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+
+<link rel="stylesheet" href="nivoslider1.1/nivo-slider.css" type="text/css" media="screen" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+<script src="nivoslider1.1/jquery.nivo.slider.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+$(window).load(function() {
+	$('#slider').nivoSlider({
+		effect:'sliceDown',
+		slices:10,
+		animSpeed:500,
+		pauseTime:3000,
+		directionNav:true, //Next & Prev
+		directionNavHide:true, //Only show on hover
+		controlNav:true, //1,2,3...
+		beforeChange: function(){},
+		afterChange: function(){}
+	});
+});
+</script>
+
+<style type="text/css"><!--
+.nivo-controlNav {
+	position:absolute;
+	left:40%;
+	bottom:-25px;
+}
+.nivo-controlNav a {
+	display:block;
+	width:10px;
+	height:10px;
+	background:url(nivoslider1.1/bullets.png) no-repeat;
+	text-indent:-9999px;
+	border:0;
+	margin-right:3px;
+	float:left;
+}
+.nivo-controlNav a.active {
+	background-position:-10px 0;
+}
+
+.nivo-directionNav a {
+	display:block;
+	width:32px;
+	height:34px;
+	background:url(nivoslider1.1/arrows.png) no-repeat;
+	text-indent:-9999px;
+	border:0;
+}
+a.nivo-nextNav {
+	background-position:-32px 0;
+	right:10px;
+}
+a.nivo-prevNav {
+	left:10px;
+}
+
+#slider {
+	position:relative;
+	margin:30px 30px 60px 30px;
+	-moz-box-shadow:0px 0px 10px #333;
+	-webkit-box-shadow:0px 0px 10px #333;
+	box-shadow:0px 0px 10px #333;
+}
+
+#slider img {
+	position:absolute;
+	top:-500px;
+	left:0px;
+}
+--></style>
+
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<center>
+<div id="slider">
+	<img src="images/screenshots/skins/businessblacksteel1.png" alt="" />
+	<img src="images/screenshots/skins/creme1.png" alt="" />
+	<img src="images/screenshots/skins/graphite1.png" alt="" />
+	<img src="images/screenshots/skins/magellan1.png" alt="" />
+	<img src="images/screenshots/skins/gemini1.png" alt="" />
+	<img src="images/screenshots/skins/autumn1.png" alt="" />
+	<img src="images/screenshots/skins/dustcoffee1.png" alt="" />
+	<img src="images/screenshots/skins/nebulabrickwall1.png" alt="" />
+</div>
+</center>
+
+<center><h1>Substance test application</h1></center>
+
+<p>Click on the button below to launch a signed WebStart application that
+shows the available Substance features.</p>
+
+<center><a href="webstart/test.jnlp"><img src="images/webstart.png" border=0 width=88 height=23></a></center>
+
+<p>The test application is structured in the following way:</p>
+
+<ul>
+	<li>The left hand side shows control panels. There are two global
+		control panels that are always present. The first control panel
+		allows experimenting with global settings, and the second control
+	panel allows opening various dialogs.</li>
+	<li>The center tabbed pane shows different types of Swing core controls.</li>
+	<li>Some tabs in this tabbed pane have associated control panels. If
+	the selected tab has a control panel, it is added to the left hand side.</li>
+</ul>
+
+<p>You can switch Substance skins via the "Skin" or "Look & feel" menu items.
+	In addition, you can test the support for high-resolution monitors via
+"Sizes" tab or the font size slider in the application status bar.</p>
+
+<p>The left side of the application status bar shows the build stamp and the
+version of Substance.</p>
+	
+<p>The test application requires a number of jar files. These are bundled
+	in the WebStart application, and can be downloaded separately from the
+"Documents & Files" section of the project site.</p>
+<ul>
+<li><code><font color="darkblue">substance-tst.jar</font></code> - contains
+	the test application and its resources. The main class is
+	<code><font color="darkblue">test.Check</font></code> and most of the 
+	tabs are implemented in the <code><font color="darkblue">test.check</font></code>
+package.</li>
+<li><code><font color="darkblue">substance.jar</font></code> - the Substance
+look-and-feel itself.</li>
+<li><code><font color="darkblue">trident.jar</font></code> - the 
+<a href="http://kenai.com/projects/trident/pages/Home">Trident animation
+library</a>. Is used for the animation effects.</li>
+<li><code><font color="darkblue">forms-1.2.0.jar</font></code> - 
+	<a href="https://looks.dev.java.net">FormLayout</a>	from JGoodies. Is used
+to layout most of the panels.</li>
+<li><code><font color="darkblue">swingx.jar</font></code> - 
+	<a href="https://swingx.dev.java.net">SwingX</a>. Is used for the status
+bar and the control panel task pane container.</li>
+<li><code><font color="darkblue">substance-swingx.jar</font></code> - 
+	<a href="https://substance-swingx.dev.java.net">Substance plugin</a>
+	for SwingX. Is used to provide consistent appearance for SwingX controls.</li>
+</ul>
+</p>	
+
+</body>
+
+</html>
+

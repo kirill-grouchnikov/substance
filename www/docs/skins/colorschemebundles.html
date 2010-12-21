@@ -1,0 +1,293 @@
+<html>
+<head>
+<title>Substance look and feel - color scheme bundles</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2010 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - color scheme bundles</h1>
+
+<p>A <b>color scheme bundle</b> is a set of information that allows 
+painting controls in a specific decoration area. The 
+<code><font color="darkblue">org.pushingpixels.substance.api.SubstanceColorSchemeBundle</font></code>
+contains all the APIs officially supported by Substance color scheme bundles.</p>
+
+<p>The <code><font color="darkblue">org.pushingpixels.substance.api.ComponentState</font></code>
+is the base class for core and custom <a href="componentstates.html">component states</a>. 
+A color scheme bundle is created with three
+major color schemes - for active, enabled and disabled controls. If no state-specific color
+schemes are registered on the color scheme bundle, the major color schemes are used
+for all component states. A color scheme bundle is created with the following constructor:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;a&nbsp;new&nbsp;color&nbsp;scheme&nbsp;bundle.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">activeColorScheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;active&nbsp;color&nbsp;scheme&nbsp;of&nbsp;this&nbsp;bundle.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">enabledColorScheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;enabled&nbsp;color&nbsp;scheme&nbsp;of&nbsp;this&nbsp;bundle.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">disabledColorScheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;disabled&nbsp;color&nbsp;scheme&nbsp;of&nbsp;this&nbsp;bundle.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorSchemeBundle</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;activeColorScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;enabledColorScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;disabledColorScheme</font><font color="#000000">)</font></code>
+     
+<p>Here is a screenshot of three buttons (active, default and disabled) under the
+core <a href="toneddown.html#BusinessBlackSteelSkin">Business Black Steel</a> skin:</p>
+
+<img src="../../images/screenshots/control-states.png" width=247 height=64>
+
+<p>Here is the relevant code snippet from the definition of this skin:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;activeScheme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SteelBlueColorScheme</font><font color="#000000">()</font><font color="#000000">.tint</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#990000">0.15</font><font color="#000000">)</font><font color="#000000">.named</font><font color="#000000">(</font><font color="#2a00ff">&#34;Business&nbsp;Black&nbsp;Steel&nbsp;Active&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;enabledScheme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">MetallicColorScheme</font><font color="#000000">()</font><font color="#000000">.tint</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#990000">0.05</font><font color="#000000">)</font><font color="#000000">.named</font><font color="#000000">(</font><font color="#2a00ff">&#34;Business&nbsp;Black&nbsp;Steel&nbsp;Enabled&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;disabledScheme&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">LightGrayColorScheme</font><font color="#000000">()</font><font color="#000000">.tint</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#990000">0.05</font><font color="#000000">)</font><font color="#000000">.named</font><font color="#000000">(</font><font color="#2a00ff">&#34;Business&nbsp;Black&nbsp;Steel&nbsp;Disabled&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;the&nbsp;default&nbsp;color&nbsp;scheme&nbsp;bundle</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorSchemeBundle&nbsp;defaultSchemeBundle&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceColorSchemeBundle</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">activeScheme,&nbsp;enabledScheme,&nbsp;disabledScheme</font><font color="#000000">)</font><font color="#000000">;</font></code>
+     
+<p>The following API allows specifying a custom color scheme for a
+specific <a href="componentstates.html">component state</a>:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Registers&nbsp;a&nbsp;color&nbsp;scheme&nbsp;for&nbsp;the&nbsp;specific&nbsp;component&nbsp;state.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">stateColorScheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color&nbsp;scheme&nbsp;for&nbsp;the&nbsp;specified&nbsp;component&nbsp;state.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">states</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component&nbsp;states.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerColorScheme</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;stateColorScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState...&nbsp;states</font><font color="#000000">)</font></code>
+
+<p>For example, you can use this API if you want to visualy distinguish between
+buttons in rollover state and rollover selected state. Here is a screenshot of
+buttons in different states under the core <a href="toneddown.html#OfficeSilver2007Skin">Office Silver 2007</a> skin:</p>
+
+<img src="../../images/screenshots/control-states-extended.png" width=250 height=233>
+
+<p>Here is the relevant code snippet:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerColorScheme</font><font color="#000000">(</font><font color="#000000">rolloverScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState.ROLLOVER_UNSELECTED</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerColorScheme</font><font color="#000000">(</font><font color="#000000">rolloverSelectedScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState.ROLLOVER_SELECTED</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerColorScheme</font><font color="#000000">(</font><font color="#000000">selectedScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState.SELECTED</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerColorScheme</font><font color="#000000">(</font><font color="#000000">pressedScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState.PRESSED_UNSELECTED</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerColorScheme</font><font color="#000000">(</font><font color="#000000">pressedSelectedScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState.PRESSED_SELECTED</font><font color="#000000">)</font><font color="#000000">;</font></code>
+        
+<p>It is possible to specify a custom alpha value for controls in some states. This can
+be useful if you want to use the same color scheme for both default and disabled states, 
+and have disabled controls painted with a custom alpha translucency (making them blend
+with the background). Use the following API:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Registers&nbsp;a&nbsp;color&nbsp;scheme&nbsp;for&nbsp;the&nbsp;specific&nbsp;component&nbsp;state.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">stateColorScheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color&nbsp;scheme&nbsp;for&nbsp;the&nbsp;specified&nbsp;component&nbsp;state.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">alpha</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alpha&nbsp;channel&nbsp;for&nbsp;the&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">states</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component&nbsp;states.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerColorScheme</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;stateColorScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>float&nbsp;</b></font><font color="#000000">alpha,&nbsp;ComponentState...&nbsp;states</font><font color="#000000">)</font></code>
+
+<p>Here is sample code from the core <a href="toneddown.html#AutumnSkin">Autumn</a> skin that uses the same color scheme for
+default and disabled states, setting alpha channel to 60% for the disabled states:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceSkin.ColorSchemes&nbsp;schemes&nbsp;=&nbsp;SubstanceSkin</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.getColorSchemes</font><font color="#000000">(</font><font color="#000000">AutumnSkin.</font><font color="#7f0055"><b>class</b></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.getClassLoader</font><font color="#000000">()</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.getResource</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;org/pushingpixels/substance/api/skin/autumn.colorschemes&#34;</font><font color="#000000">))</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;activeScheme&nbsp;=&nbsp;schemes.get</font><font color="#000000">(</font><font color="#2a00ff">&#34;Autumn&nbsp;Active&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;enabledScheme&nbsp;=&nbsp;schemes.get</font><font color="#000000">(</font><font color="#2a00ff">&#34;Autumn&nbsp;Enabled&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;disabledScheme&nbsp;=&nbsp;enabledScheme;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorSchemeBundle&nbsp;defaultSchemeBundle&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceColorSchemeBundle</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">activeScheme,&nbsp;enabledScheme,&nbsp;disabledScheme</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerColorScheme</font><font color="#000000">(</font><font color="#000000">disabledScheme,&nbsp;</font><font color="#990000">0.6f</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState.DISABLED_UNSELECTED</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerColorScheme</font><font color="#000000">(</font><font color="#000000">activeScheme,&nbsp;</font><font color="#990000">0.6f</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState.DISABLED_SELECTED</font><font color="#000000">)</font><font color="#000000">;</font></code>
+            
+<p>The <a href="../painters/highlight.html">highlight painters</a> are used to 
+paint highlight areas on such components as lists, tables, table headers, trees and
+menus. Use the following APIs to specify custom highlight color schemes for
+specific component states, along with custom alpha values:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Registers&nbsp;a&nbsp;highlight&nbsp;color&nbsp;scheme&nbsp;for&nbsp;the&nbsp;specific&nbsp;component&nbsp;state&nbsp;if</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;the&nbsp;component&nbsp;state&nbsp;is&nbsp;not&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">null</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">,&nbsp;or&nbsp;a&nbsp;global&nbsp;highlight&nbsp;color</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;scheme&nbsp;otherwise.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">stateHighlightScheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Highlight&nbsp;color&nbsp;scheme&nbsp;for&nbsp;the&nbsp;specified&nbsp;component&nbsp;state.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">states</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component&nbsp;states.&nbsp;If&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">null</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">,&nbsp;the&nbsp;specified&nbsp;color&nbsp;scheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;be&nbsp;applied&nbsp;for&nbsp;all&nbsp;states&nbsp;left&nbsp;unspecified.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerHighlightColorScheme</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;stateHighlightScheme,&nbsp;ComponentState...&nbsp;states</font><font color="#000000">)</font><br/><br/>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Registers&nbsp;a&nbsp;highlight&nbsp;color&nbsp;scheme&nbsp;for&nbsp;the&nbsp;specific&nbsp;component&nbsp;state&nbsp;if</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;the&nbsp;component&nbsp;state&nbsp;is&nbsp;not&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">null</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">,&nbsp;or&nbsp;a&nbsp;global&nbsp;highlight&nbsp;color</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;scheme&nbsp;otherwise.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">stateHighlightScheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Highlight&nbsp;color&nbsp;scheme&nbsp;for&nbsp;the&nbsp;specified&nbsp;component&nbsp;state.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">alpha</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alpha&nbsp;channel&nbsp;for&nbsp;the&nbsp;highlight&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">states</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component&nbsp;states.&nbsp;If&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">null</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">,&nbsp;the&nbsp;specified&nbsp;color&nbsp;scheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;be&nbsp;applied&nbsp;for&nbsp;all&nbsp;states&nbsp;left&nbsp;unspecified.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerHighlightColorScheme</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;stateHighlightScheme,&nbsp;</font><font color="#7f0055"><b>float&nbsp;</b></font><font color="#000000">alpha,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState...&nbsp;states</font><font color="#000000">)</font></code>
+    
+<p>Here is an example of using the first API to specify a custom highlight color scheme
+in the core <a href="toneddown.html#BusinessBlueSteelSkin">Business Blue Steel</a> skin:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorSchemeBundle&nbsp;defaultSchemeBundle&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceColorSchemeBundle</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">activeScheme,&nbsp;enabledScheme,&nbsp;disabledScheme</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceSkin.ColorSchemes&nbsp;kitchenSinkSchemes&nbsp;=&nbsp;SubstanceSkin</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.getColorSchemes</font><font color="#000000">(</font><font color="#2a00ff">&#34;org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorScheme&nbsp;highlightColorScheme&nbsp;=&nbsp;kitchenSinkSchemes</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.get</font><font color="#000000">(</font><font color="#2a00ff">&#34;Business&nbsp;Blue&nbsp;Steel&nbsp;Highlight&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerHighlightColorScheme</font><font color="#000000">(</font><font color="#000000">highlightColorScheme</font><font color="#000000">)</font><font color="#000000">;</font></code>
+     
+<p>And here is an example of using the second API to set state-specific alpha values for
+highlights in the core <a href="toneddown.html#BusinessBlackSteelSkin">Business 
+Black Steel</a> skin:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SubstanceColorSchemeBundle&nbsp;defaultSchemeBundle&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceColorSchemeBundle</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">activeScheme,&nbsp;enabledScheme,&nbsp;disabledScheme</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerHighlightColorScheme</font><font color="#000000">(</font><font color="#000000">activeScheme,&nbsp;</font><font color="#990000">0.6f</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState.ROLLOVER_UNSELECTED</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerHighlightColorScheme</font><font color="#000000">(</font><font color="#000000">activeScheme,&nbsp;</font><font color="#990000">0.8f</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState.SELECTED</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerHighlightColorScheme</font><font color="#000000">(</font><font color="#000000">activeScheme,&nbsp;</font><font color="#990000">0.95f</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState.ROLLOVER_SELECTED</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerHighlightColorScheme</font><font color="#000000">(</font><font color="#000000">activeScheme,&nbsp;</font><font color="#990000">0.8f</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState.ARMED,&nbsp;ComponentState.ROLLOVER_ARMED</font><font color="#000000">)</font><font color="#000000">;</font></code>
+    
+<p>As described in the <a href="colorschemeassociationkinds.html">color
+scheme association kind documentation</a>, Swing controls have different visual areas. Even
+such a simple example as <code><font color="darkblue">JCheckBox</font></code> icon
+has three different visual areas: inner fill, border and the "V" mark:</p>
+
+<img src="../../images/screenshots/color-scheme-association-kinds.png" width=93 height=92>
+
+<p>Use the following API to specify custom color schemes to be used
+for specific visual areas under specific component states:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Registers&nbsp;the&nbsp;color&nbsp;scheme&nbsp;to&nbsp;be&nbsp;used&nbsp;for&nbsp;the&nbsp;specified&nbsp;visual&nbsp;area&nbsp;of</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;controls&nbsp;under&nbsp;the&nbsp;specified&nbsp;states.&nbsp;For&nbsp;example,&nbsp;if&nbsp;the&nbsp;light&nbsp;orange</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;scheme&nbsp;has&nbsp;to&nbsp;be&nbsp;used&nbsp;for&nbsp;gradient&nbsp;fill&nbsp;of&nbsp;rollover&nbsp;selected&nbsp;and&nbsp;rollover</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;controls,&nbsp;the&nbsp;parameters&nbsp;would&nbsp;be:</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;ul&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;li&gt;&lt;code&gt;</font><font color="#3f5fbf">scheme</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">=light&nbsp;orange&nbsp;scheme</font><font color="#7f7f9f">&lt;/li&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;li&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">associationKind</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">=</font><font color="#3f3fbf">{@link&nbsp;ColorSchemeAssociationKind#FILL}</font><font color="#7f7f9f">&lt;/li&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;li&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;code&gt;</font><font color="#3f5fbf">states</font><font color="#7f7f9f">&lt;/code&gt;</font><font color="#3f5fbf">=</font><font color="#3f3fbf">{@link&nbsp;ComponentState#ROLLOVER_SELECTED}</font><font color="#3f5fbf">,&nbsp;</font><font color="#3f3fbf">{@link&nbsp;ComponentState#ROLLOVER_UNSELECTED}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;/li&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f7f9f">&lt;/ul&gt;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">scheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">associationKind</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color&nbsp;scheme&nbsp;association&nbsp;kind&nbsp;that&nbsp;specifies&nbsp;the&nbsp;visual&nbsp;areas</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;controls&nbsp;to&nbsp;be&nbsp;painted&nbsp;with&nbsp;this&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">states</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Component&nbsp;states&nbsp;that&nbsp;further&nbsp;restrict&nbsp;the&nbsp;usage&nbsp;of&nbsp;the</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;specified&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@since&nbsp;</font><font color="#3f5fbf">version&nbsp;5.1</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">registerColorScheme</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeAssociationKind&nbsp;associationKind,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ComponentState...&nbsp;states</font><font color="#000000">)</font></code>
+    
+<p>Here is an example of using this API in the core 
+<a href="toneddown.html#OfficeSilver2007Skin">Office Silver 2007</a> skin skin to specify
+a custom color scheme to be used on borders of controls in the 
+<code>ComponentState.SELECTED</code> state:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">defaultSchemeBundle.registerColorScheme</font><font color="#000000">(</font><font color="#000000">borderSelectedScheme,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeAssociationKind.BORDER,&nbsp;ComponentState.SELECTED</font><font color="#000000">)</font><font color="#000000">;</font></code>
+            
+<p>As with <a href="colorschemes.html">color schemes</a>, it is possible to
+create a derived color scheme bundle. The same warning applies - a color scheme bundle is a delicate
+collection of different color schemes and alpha values carefully chosen to work 
+together in providing visually appealing appearance and consistent animation
+sequences. In some cases, creating a derived color scheme bundle will result in
+poor visuals.</p>
+
+<p>You can use the following API to create a derived color scheme bundle:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Creates&nbsp;a&nbsp;new&nbsp;color&nbsp;scheme&nbsp;bundle&nbsp;that&nbsp;has&nbsp;the&nbsp;same&nbsp;settings&nbsp;as&nbsp;this</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;color&nbsp;scheme&nbsp;bundle&nbsp;with&nbsp;the&nbsp;addition&nbsp;of&nbsp;applying&nbsp;the&nbsp;specified&nbsp;color</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;scheme&nbsp;transformation&nbsp;on&nbsp;all&nbsp;the&nbsp;relevant&nbsp;color&nbsp;schemes</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">transform</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color&nbsp;scheme&nbsp;transformation.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">The&nbsp;new&nbsp;color&nbsp;scheme&nbsp;bundle.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorSchemeBundle&nbsp;transform</font><font color="#000000">(</font><font color="#000000">ColorSchemeTransform&nbsp;transform</font><font color="#000000">)</font></code>
+    
+<p>Where the color scheme transformation is defined by the following interface:</p>
+
+    <code>
+<font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*&nbsp;Defines&nbsp;transformation&nbsp;on&nbsp;a&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@author&nbsp;</font><font color="#3f5fbf">Kirill&nbsp;Grouchnikov</font><br />
+<font color="#ffffff">&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#7f0055"><b>public&nbsp;interface&nbsp;</b></font><font color="#000000">ColorSchemeTransform&nbsp;</font><font color="#000000">{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#3f5fbf">/**</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;Transforms&nbsp;the&nbsp;specified&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@param&nbsp;</font><font color="#3f5fbf">scheme</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;original&nbsp;color&nbsp;scheme&nbsp;to&nbsp;transform.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*&nbsp;</font><font color="#7f9fbf">@return&nbsp;</font><font color="#3f5fbf">The&nbsp;transformed&nbsp;color&nbsp;scheme.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><font color="#3f5fbf">*/</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">SubstanceColorScheme&nbsp;transform</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#000000">}</font></code>
+    
+
+</body>
+</html>
+

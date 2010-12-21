@@ -1,0 +1,483 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2009 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+<title>Substance 5.3 release</title>
+</head>
+
+<body>
+
+<h1>Substance 5.3 <font color="darkblue">Reykjavik</font> - new features</h1>
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New Gemini skin</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new 
+    <b><a href="../../docs/skins/toneddown.html#GeminiSkin">Gemini</a></b> 
+    skin is available.
+    To use it in your application, you have the following options:</p>
+
+    <ul>
+    <li><code>-Dswing.defaultlaf=org.jvnet.substance.api.skin.SubstanceGeminiLookAndFeel</code></li>
+    <li><code>UIManager.setLookAndFeel(new SubstanceGeminiLookAndFeel())</code></li>
+    <li><code>UIManager.setLookAndFeel("org.jvnet.substance.api.skin.SubstanceGeminiLookAndFeel")</code></li>
+    <li><code>SubstanceLookAndFeel.setSkin(new GeminiSkin())</code></li>
+    </ul>
+
+		<p>The screenshots below show the Gemini skin in action:</p>
+    
+    <img src="gemini-skeleton.png" height="350" width="500"><br><br>
+    <img src="gemini-small.png" height="245" width="315">
+    <img src="gemini-highlights.png" height="245" width="315">
+   	
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New Magellan skin</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new 
+    <b><a href="../../docs/skins/dark.html#MagellanSkin">Magellan</a></b> 
+    skin is based on the colors and design of the 
+    <a href="http://getballpark.com/public/plans">Ballpark</a> web site.
+    To use it in your application, you have the following options:</p>
+
+    <ul>
+    <li><code>-Dswing.defaultlaf=org.jvnet.substance.api.skin.SubstanceMagellanLookAndFeel</code></li>
+    <li><code>UIManager.setLookAndFeel(new SubstanceMagellanLookAndFeel())</code></li>
+    <li><code>UIManager.setLookAndFeel("org.jvnet.substance.api.skin.SubstanceMagellanLookAndFeel")</code></li>
+    <li><code>SubstanceLookAndFeel.setSkin(new MagellanSkin())</code></li>
+    </ul>
+
+		<p>The screenshots below show the Magellan skin in action:</p>
+    
+    <img src="magellan-skeleton.png" height="350" width="500"><br><br>
+    <img src="magellan-small.png" height="245" width="315">
+    <img src="magellan-highlights.png" height="245" width="315">
+    	
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>New Graphite Aqua skin</b></td>
+    <td width="80%" valign="top">
+
+    <p>The new 
+    <b><a href="../../docs/skins/dark.html#GraphiteAquaSkin">Graphite Aqua</a></b> 
+    skin is based on the existing <code>Raven Graphite</code> skins and the highlight
+    colors of the HUD windows in <a href="http://www.apple.com/ilife/iphoto/">iPhoto 09</a>.
+    To use it in your application, you have the following options:</p>
+
+    <ul>
+    <li><code>-Dswing.defaultlaf=org.jvnet.substance.api.skin.SubstanceGraphiteAquaLookAndFeel</code></li>
+    <li><code>UIManager.setLookAndFeel(new SubstanceGraphiteAquaLookAndFeel())</code></li>
+    <li><code>UIManager.setLookAndFeel("org.jvnet.substance.api.skin.SubstanceGraphiteAquaLookAndFeel")</code></li>
+    <li><code>SubstanceLookAndFeel.setSkin(new GraphiteAquaSkin())</code></li>
+    </ul>
+
+		<p>The screenshots below show the Graphite Aqua skin in action:</p>
+    
+    <img src="graphiteaqua-small.png" height="245" width="315">
+    <img src="graphiteaqua-highlights.png" height="245" width="315">
+    	
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Improved usability of Raven Graphite skins</b></td>
+    <td width="80%" valign="top">
+
+    <p>The visuals of <a href="../../docs/skins/dark.html#RavenGraphiteSkin">Raven Graphite</a> 
+    and <a href="../../docs/skins/dark.html#RavenGraphiteGlassSkin">Raven Graphite Glass</a>
+    skins have been reworked to improve the visual usability. The following two screenshots show
+    the same application panel under 
+    <a href="../../docs/skins/dark.html#RavenGraphiteSkin">Raven Graphite</a> skin in 
+    release 5.2 (first screenshot) and release 5.3 (second screenshot):</p>
+
+		<img src="ravengraphite1-old.png" height="245" width="315">
+		<img src="ravengraphite1-new.png" height="245" width="315">
+
+		<p>The main changes are:</p>
+		
+		<ul>
+		<li>Removing the watermark that contributed significant visual noise</li>
+		<li>Darker border color for controls, bringing more delineation to check boxes and radio buttons</li>
+		<li>Darker background color for text components, resulting in better readability</li>
+		</ul>
+		
+		<p>The same changes were made for the 
+		<a href="../../docs/skins/dark.html#RavenGraphiteGlassSkin">Raven Graphite Glass</a> skin. 
+		Here is the same application window under release 5.2 (first screenshot) and release 5.3 
+		(second screenshot):</p>
+
+		<img src="ravengraphiteglass1-old.png" height="245" width="315">
+		<img src="ravengraphiteglass1-new.png" height="245" width="315">
+
+		<p>In addition to the visual changes above, the Raven Graphite Glass skin has 
+		removed the glass arc gradient from the toolbars and added a two-tone separator 
+		to delineate the title bar / menu bar from the rest of the application content.</p>
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Overlay painters</b></td>
+    <td width="80%" valign="top">
+
+    <p>The <a href="../../docs/painters/decoration.html">decoration painters</a> are used 
+    to paint the entire background area of the relevant containers - such as menu bars, 
+    tool bars, panels etc. <a href="../../docs/painters/overlay.html">Overlay 
+    painters</a>, on the other hand, add the final polish that usually affects 
+    relatively small areas at the edges of the relevant decoration areas.</p>
+    
+    <p>The <a href="../../docs/skins/dark.html#TwilightSkin">Twilight</a> 
+    skin defines custom visual appearance for the title pane, the menu bar, the toolbars
+		and the status bar - the background of these areas is painted by the matching
+		<a href="../../docs/painters/decoration.html">decoration painter</a> - in this case, the
+		<code><font color="darkblue">MatteDecorationPainter</font></code>.
+		To add the final polishing touch and create a unique visual footprint for this skin,
+		a number of overlay painters is used:</p>
+
+		<img src="../../images/screenshots/painters/overlay/twilight-overlays.png" width=500 height=425>
+
+		<p>The <code>Twilight</code> skin defines four separate overlay painters, each
+		one associated with the relevant decoration areas:</p>
+
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;Add&nbsp;overlay&nbsp;painters&nbsp;to&nbsp;paint&nbsp;drop&nbsp;shadows&nbsp;along&nbsp;the&nbsp;bottom</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;edges&nbsp;of&nbsp;toolbars&nbsp;and&nbsp;footers</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#000000">BottomShadowOverlayPainter.getInstance</font><font color="#000000">()</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.TOOLBAR</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#000000">BottomShadowOverlayPainter.getInstance</font><font color="#000000">()</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.FOOTER</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;add&nbsp;an&nbsp;overlay&nbsp;painter&nbsp;to&nbsp;paint&nbsp;a&nbsp;dark&nbsp;line&nbsp;along&nbsp;the&nbsp;bottom</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;edge&nbsp;of&nbsp;toolbars</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.toolbarBottomLineOverlayPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">BottomLineOverlayPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Color&nbsp;query</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">scheme.getUltraDarkColor</font><font color="#000000">()</font><font color="#000000">.darker</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#7f0055"><b>this</b></font><font color="#000000">.toolbarBottomLineOverlayPainter,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.TOOLBAR</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;add&nbsp;an&nbsp;overlay&nbsp;painter&nbsp;to&nbsp;paint&nbsp;a&nbsp;dark&nbsp;line&nbsp;along&nbsp;the&nbsp;bottom</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;edge&nbsp;of&nbsp;toolbars</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.toolbarTopLineOverlayPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">TopLineOverlayPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Color&nbsp;query</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Color&nbsp;fg&nbsp;=&nbsp;scheme.getForegroundColor</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;new&nbsp;</b></font><font color="#000000">Color</font><font color="#000000">(</font><font color="#000000">fg.getRed</font><font color="#000000">()</font><font color="#000000">,&nbsp;fg.getGreen</font><font color="#000000">()</font><font color="#000000">,&nbsp;fg</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.getBlue</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">32</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#7f0055"><b>this</b></font><font color="#000000">.toolbarTopLineOverlayPainter,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.TOOLBAR</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;add&nbsp;an&nbsp;overlay&nbsp;painter&nbsp;to&nbsp;paint&nbsp;a&nbsp;bezel&nbsp;line&nbsp;along&nbsp;the&nbsp;top</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;edge&nbsp;of&nbsp;footer</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.footerTopBezelOverlayPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">TopBezelOverlayPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Color&nbsp;query</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">scheme.getUltraDarkColor</font><font color="#000000">()</font><font color="#000000">.darker</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Color&nbsp;query</font><font color="#000000">(</font><font color="#000000">SubstanceColorScheme&nbsp;scheme</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Color&nbsp;fg&nbsp;=&nbsp;scheme.getForegroundColor</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;new&nbsp;</b></font><font color="#000000">Color</font><font color="#000000">(</font><font color="#000000">fg.getRed</font><font color="#000000">()</font><font color="#000000">,&nbsp;fg.getGreen</font><font color="#000000">()</font><font color="#000000">,&nbsp;fg</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">.getBlue</font><font color="#000000">()</font><font color="#000000">,&nbsp;</font><font color="#990000">32</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.addOverlayPainter</font><font color="#000000">(</font><font color="#7f0055"><b>this</b></font><font color="#000000">.footerTopBezelOverlayPainter,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">DecorationAreaType.FOOTER</font><font color="#000000">)</font><font color="#000000">;</font></code>
+    
+		<p>The overlay painters used in the <code>Twilight</code> skin are:</p>
+
+		<ul>
+		<li>An instance of 
+  		<code><font color="darkblue">TopLineOverlayPainter</font></code>
+			associated with <code>toolbar</code> decoration area - paints the lighter top separator line
+			along the top edge of the tool bar - see the top zoomed area in the screenshot above.</li>
+		<li>An instance of 
+  		<code><font color="darkblue">BottomLineOverlayPainter</font></code>
+			associated with <code>toolbar</code> decoration area - paints the darker bottom separator line
+			along the bottom edge of the tool bar - see the top zoomed area in the screenshot above.</li>
+		<li>An instance of 
+  		<code><font color="darkblue">TopBezelOverlayPainter</font></code>
+			associated with <code>footer</code> decoration area - paints the double bezel separator lines
+			along the top edge of the status bar - see the bottom zoomed area in the screenshot above.</li>
+		<li>The instance of 
+  		<code><font color="darkblue">BottomShadowOverlayPainter</font></code>
+			associated with <code>toolbar</code> and <code>footer</code> decoration areas - paints the 
+			drop shadow along the bottom edge of these areas - see the top zoomed area in the screenshot above.</li>
+		</ul>
+	
+		<p>Core Substance overlay painters are available in the 
+		<code><font color="darkblue">org.jvnet.substance.api.painter.overlay</font></code>
+		package.</p>
+	
+    </td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Fraction based painters</b></td>
+    <td width="80%" valign="top">
+
+    <p>New core implementations of Substance painters are available in the
+    <code><font color="darkblue">org.jvnet.substance.api.painter</font></code>
+    package.</p>
+    
+    <ul>
+    <li><code><font color="darkblue">border.FractionBasedBorderPainter</font></code>
+    	- fraction based border painter</li>
+    <li><code><font color="darkblue">decoration.FractionBasedDecorationPainter</font></code>
+    	- fraction based decoration painter</li>
+    <li><code><font color="darkblue">fill.FractionBasedFillPainter</font></code>
+    	- fraction based gradient painter</li>
+    <li><code><font color="darkblue">highlight.FractionBasedHighlightPainter</font></code>
+    	- fraction based highlight painter</li>
+		</ul>
+		
+		<p>All these painters have very similar definitions based on fraction-based stops and 
+		a color query associated with each stop. They allow painting multi-gradient 
+		fills / contours with exact control over which color is used at every gradient control 
+		point.</p>
+		
+		<p>Here is how the new <a href="../../docs/skins/dark.html#GraphiteAquaSkin">Graphite Aqua</a> skin
+		uses the fraction based highlight painter:</p>
+		
+    <code>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.highlightPainter&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">FractionBasedHighlightPainter</font><font color="#000000">(</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#2a00ff">&#34;Graphite&nbsp;Aqua&#34;</font><font color="#000000">,&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#7f0055"><b>float</b></font><font color="#000000">[]&nbsp;{&nbsp;</font><font color="#990000">0.0f</font><font color="#000000">,&nbsp;</font><font color="#990000">0.5f</font><font color="#000000">,&nbsp;</font><font color="#990000">1.0f&nbsp;</font><font color="#000000">}</font><font color="#000000">,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ColorSchemeSingleColorQuery</font><font color="#000000">[]&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.EXTRALIGHT,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.LIGHT,</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">ColorSchemeSingleColorQuery.MID&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font></code>
+    
+    <p>And the resulting highlights:</p>
+    
+    <img src="graphiteaqua-highlights.png" height="245" width="315">
+    
+    <p>with extra light color at the top (fraction <code>0.0f</code>), light
+    color in the middle (fraction <code>0.5f</code>) and mid color at the bottom
+    (fraction <code>1.0f</code>).</p>
+    
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" valign="top" align="left">
+      <p align="right"><b>Visual editor for color schemes</b></td>
+    <td width="80%" valign="top">
+
+    <p>Jitterbug is a visual editor for creating and editing color schemes for Substance. 
+    It has been significantly reworked in this release to address the most common 
+    steps in the flow of creating new and editing existing color schemes:</p>
+    
+    <ul>
+    <li>Creating a new and empty list of color schemes.</li>
+    <li>Opening an existing <code>.colorschemes</code> file by dragging it to the
+    editor.</li>
+    <li>Showing a list of all color schemes loaded from the file.</li>
+    <li>Adding a new color scheme to the end of the list.</li>
+    <li>Renaming an existing color scheme.</li>
+    <li>Deleting an existing color scheme.</li>
+    <li>Rearranging the order of color schemes.</li>
+    <li>Tracking the modifications to the list of color schemes and each color scheme,
+    showing the modification indication and warning message on closing the editor or 
+    loading another file.</li>
+    <li>Saving the modified list to the original file.</li>
+    <li>Saving the modified list to another file.</li>
+    </ul>
+    
+    <p>The new Jitterbug has been used to create all the color schemes for the new skins - 
+    Gemini, Magellan and Graphite Aqua. The following screenshot shows the new Jitterbug UI, 
+    zooming on the most important UI areas:</p>
+
+    <img src="jitterbug-overlays.png" height="400" width="500">
+    
+    <p>To run Jitterbug remotely, run the following signed WebStart demo:</p>
+		<p style="text-align: center;"><a href="../../webstart/jitterbug.jnlp"><img class="aligncenter" src="../../images/webstart.png" alt="" border="0" height="23" width="88"></a></p>
+   
+    <p>To run Jitterbug locally, run the following command:</p>
+    
+    <code>java -cp substance-tools.jar;substance.jar;forms-1.2.0.jar tools.jitterbug.JitterbugEditor</code>
+   
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+</table>
+
+<h1>Substance 5.3 <font color="darkblue">Reykjavik</font> - deprecated APIs - under development</h1>
+
+<p>The following APIs have been marked as deprecated and will be removed in version 6.0:</p>
+
+<table>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><strong>To be removed</strong></td>
+<td><strong>Instead use</strong></td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>SubstanceColorSchemeBundle.registerBorderColorScheme (SubstanceColorScheme, ComponentState...)</code></td>
+<td><code>SubstanceColorSchemeBundle.registerColorScheme (SubstanceColorScheme, ColorSchemeAssociationKind.BORDER, ComponentState...)</code></td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>SubstanceColorSchemeBundle.getBorderColorScheme (Component, ComponentState)</code></td>
+<td><code>SubstanceColorSchemeBundle.getColorScheme (ColorSchemeAssociationKind.BORDER, ComponentState)</code></td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>SubstanceColorSchemeBundle.getHighlightColorScheme (Component, ComponentState)</code></td>
+<td><code>SubstanceColorSchemeBundle.getColorScheme (ColorSchemeAssociationKind.HIGHLIGHT, ComponentState)</code></td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>SubstanceSkin.getBorderColorScheme (Component, ComponentState)</code></td>
+<td><code>SubstanceSkin.getColorScheme (ColorSchemeAssociationKind.BORDER, ComponentState)</code></td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>SubstanceSkin.getHighlightColorScheme (Component, ComponentState)</code></td>
+<td><code>SubstanceSkin.getColorScheme (ColorSchemeAssociationKind.HIGHLIGHT, ComponentState)</code></td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>SubstanceSkin.setPaintingDropShadows (DecorationAreaType)</code></td>
+<td><code>SubstanceSkin.addOverlayPainter (TopShadowOverlayPainter.getInstance(), DecorationAreaType...)</code></td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>SubstanceSkin.unsetPaintingDropShadows (DecorationAreaType)</code></td>
+<td><code>SubstanceSkin.removeOverlayPainter (TopShadowOverlayPainter.getInstance(), DecorationAreaType...)</code></td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>SubstanceSkin.isPaintingDropShadows (DecorationAreaType)<code></td>
+<td><code>SubstanceSkin.getOverlayPainters (DecorationAreaType)</code> and test for
+presence of <code>TopShadowOverlayPainter.getInstance()</code></td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>SubstanceConstants.ColorShiftKind</code> enum</td>
+<td><code>CompositeBorderPainter</code> and <code>DelegateBorderPainter</code> classes</td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>InnerDelegateBorderPainter</code> base class</td>
+<td><code>CompositeBorderPainter</code> and <code>DelegateBorderPainter</code> classes</td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>ClassicInnerBorderPainter</code> class</td>
+<td><code>CompositeBorderPainter</code> and <code>DelegateBorderPainter</code> classes</td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>FlatInnerBorderPainter</code> class</td>
+<td><code>CompositeBorderPainter</code> and <code>DelegateBorderPainter</code> classes</td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>GlassInnerBorderPainter</code> class</td>
+<td><code>CompositeBorderPainter</code> and <code>DelegateBorderPainter</code> classes</td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>NullBorderPainter</code> class</td>
+<td>Using a border painter that does not paint any border is highly discouraged.
+If your application design requires this feature, include the old version of this
+class in your application code base</td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>ImageWrapperDecorationPainter.setPaintingSeparators (boolean)</code></td>
+<td><code>SubstanceSkin.addOverlayPainter (SubstanceOverlayPainter, DecorationAreaType...)</code> and
+<code>SubstanceSkin.removeOverlayPainter (SubstanceOverlayPainter, DecorationAreaType...)</code> passing
+an instance of <code>TopLineOverlayPainter</code>, <code>BottomLineOverlayPainter</code> or 
+<code>TopBezelOverlayPainter</code></td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>SubstanceButtonShaper.getButtonOutline (AbstractButton)</code></td>
+<td><code>SubstanceButtonShaper.getButtonOutline (AbstractButton, Insets, int, int, boolean)</code></td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>SubstanceButtonShaper.getButtonOutline (AbstractButton, Insets)</code></td>
+<td><code>SubstanceButtonShaper.getButtonOutline (AbstractButton, Insets, int, int, boolean)</code></td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr>
+<td><code>SubstanceButtonShaper.getButtonOutline (AbstractButton, Insets, int, int)</code></td>
+<td><code>SubstanceButtonShaper.getButtonOutline (AbstractButton, Insets, int, int, boolean)</code></td>
+</tr>
+<tr><td colspan="2"><hr></td></tr>
+</table>
+
+</body>
+
+</html>

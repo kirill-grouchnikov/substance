@@ -1,0 +1,29 @@
+Yesterday i have stumbled upon <a href=" http://developer.apple.com/qa/qa2001/qa1146.html">this 
+entry</a> from Apple developer zone. It shows how to indicate that a document window 
+(frame in Swing application) has changed contents. The indication is similar to that of 
+regular Mac application (dark dot in the close button). The way to accomplish this is to 
+put a <b>windowModified</b> client property with <b>Boolean.TRUE</b> value on either the 
+<b>JRootPane</b> or on the <b>JInternalFrame</b>.<br><br>
+This, of course, is Mac-specific, and does not have Swing support on other platforms. 
+That is, until now (kind of). The latest drop of <a href="../../..">Substance</a> 
+version 2.1 provides just that - a pulsating close button of <b>JFrame</b>, <b>JInternalFrame</b> 
+and <b>JDesktopIcon</b> when the above property is set to <b>Boolean.TRUE</b>. You can 
+view it in action in <a href="../../../release-info/2.1/windows-contents.avi">this 
+movie</a> (31-second, 526KB, originally WMV format, but should play as AVI too). In addition, 
+you can run the <a href="../../../webstart/test.jnlp">Web Start 
+demo</a> to see it in action. Go to "Desktop" tab, click on "add" button and click on 
+"Mark changed" in the new internal frame. Here are few screenshots from the movie:
+<br><br>
+Pulsating loop on <b>JInternalFrame</b> - red theme:
+<p><img src="../../../release-info/2.1/window-contents-red.png" height="33" width="286"></p>
+ Pulsating loop on <b>JInternalFrame</b> - yellow theme:
+    <p><img src="../../../release-info/2.1/window-contents-yellow.png" height="33" width="286"></p>    
+    Pulsating loop on <b>JInternalFrame</b> - tooltip on close button in unsaved state:
+    <p><img src="../../../release-info/2.1/window-contents-tooltip.png" height="53" width="406"></p>    
+    Pulsating loop on <b>JDesktopIcon</b>:
+    <p><img src="../../../release-info/2.1/window-contents-desktop-icon.png" height="31" width="152"></p>    
+    Pulsating loop on <b>JFrame</b>:
+    <p><img src="../../../release-info/2.1/window-contents-main-frame.png" height="26" width="408">
+<br><br>
+Note that the close button is painted in red and pulsates every 5 seconds, changing its 
+theme from red to yellow and back to red in two seconds.

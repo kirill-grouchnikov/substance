@@ -1,0 +1,237 @@
+<html>
+<head>
+<title>Substance look and feel - getting started</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META content=substance.dev.java.net name=AUTHOR>
+<META content="Copyright (c) 2005-2008 by Kirill Grouchnikov" name=COPYRIGHT>
+<META content="java, look, feel, skins, plaf, swing, ui, pluggable, substance" name=KEYWORDS>
+<META content="Substance look and feel" name=DESCRIPTION>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<h1>Substance look and feel - getting started</h1>
+
+<p>This document describes the steps to create a sample Swing
+application and run it under Substance look and feel.</p>
+
+<p>Since <b>Substance</b> requires JDK 6.0 or higher, if you don't
+have such an installation on your machine, you need to download
+it from <a href="http://java.sun.com">this site</a> and install
+it. The command-prompt examples below assume that <b>java</b>
+executable is in the path. This executable is part of JRE
+(under <b>bin</b> folder) as well as part of JDK (under <b>bin</b>
+folder). Consult your OS manual on how to add the relevant folder to the
+path. Alternatively, you can put the entire path to the <b>java</b>
+executable in the scripts below.</p>
+
+<p>After you have JDK 6.0+ installed on your machine, create
+the following <code><font color="darkblue">Walkthrough.java</font></code> class:</p>
+
+    <code>
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">Walkthrough&nbsp;</font><font color="#7f0055"><b>extends&nbsp;</b></font><font color="#000000">JFrame&nbsp;</font><font color="#000000">{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#000000">Walkthrough</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>super</b></font><font color="#000000">(</font><font color="#2a00ff">&#34;Sample&nbsp;app&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.setLayout</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">FlowLayout</font><font color="#000000">())</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.add</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">JButton</font><font color="#000000">(</font><font color="#2a00ff">&#34;button&#34;</font><font color="#000000">))</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.add</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">JCheckBox</font><font color="#000000">(</font><font color="#2a00ff">&#34;check&#34;</font><font color="#000000">))</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.add</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">JLabel</font><font color="#000000">(</font><font color="#2a00ff">&#34;label&#34;</font><font color="#000000">))</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.setSize</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">Dimension</font><font color="#000000">(</font><font color="#990000">250</font><font color="#000000">,&nbsp;</font><font color="#990000">80</font><font color="#000000">))</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.setLocationRelativeTo</font><font color="#000000">(</font><font color="#7f0055"><b>null</b></font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>this</b></font><font color="#000000">.setDefaultCloseOperation</font><font color="#000000">(</font><font color="#000000">JFrame.EXIT_ON_CLOSE</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">main</font><font color="#000000">(</font><font color="#000000">String</font><font color="#000000">[]&nbsp;</font><font color="#000000">args</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">JFrame.setDefaultLookAndFeelDecorated</font><font color="#000000">(</font><font color="#7f0055"><b>true</b></font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SwingUtilities.invokeLater</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">Runnable</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">run</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Walkthrough&nbsp;w&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">Walkthrough</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">w.setVisible</font><font color="#000000">(</font><font color="#7f0055"><b>true</b></font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#000000">}</font></code>
+    
+<p>This is a simple frame (that does nothing) with a button, a checkbox and a label.
+You can create this class in your favourite IDE or in any text editor. Once
+this class is created, compile it. If you're using an IDE, consult the IDE
+help on the compilation process. If you're using a simple text editor, you
+can compile this class by using:</p>
+
+<code>
+javac Walktrough.java
+</code>
+
+<p>If you have problems, consult the online help for <b>javac</b> compiler. The compiled
+<code><font color="darkblue">Walkthrough.class</font></code> will be created in the same folder as your 
+<code><font color="darkblue">Walkthrough.java</font></code>.
+In order to run it, use:</p>
+
+<code>
+java -cp . Walkthrough
+</code>
+
+<p>You will see the following frame under the default <b>Ocean</b> look and feel:</p>
+<img src="../images/walkthrough/default-ocean.png" width=250 height=80>
+
+<p>In order to run the same frame under <b>Substance</b> look and feel, you first need to
+choose the Substance skin that you would like to use (see the links at the end
+of this document). Suppose that you choose the 
+<a href="skins/toneddown.html#BusinessSkin"><code>Business</code></a>
+skin. Now you have the following options:</p>
+
+<ul>
+<li>Start your VM with <code>-Dswing.defaultlaf=org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel</code></li>
+<li><code>UIManager.setLookAndFeel(new SubstanceBusinessLookAndFeel())</code></li>
+<li><code>UIManager.setLookAndFeel("org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel");</code></li>
+</ul>
+
+<p>The first option doesn't require any code changes in the application above. Run the
+following script:</p>
+<code>
+java <b>-Dswing.defaultlaf=org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel</b> -cp . Walkthrough
+</code>
+
+<p>You will see the following exception:</p>
+
+<code><pre>
+Exception in thread "AWT-EventQueue-0" java.lang.Error: 
+		Cannot load org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel
+	at javax.swing.UIManager.initializeDefaultLAF(UIManager.java:1345)
+	at javax.swing.UIManager.initialize(UIManager.java:1432)
+	at javax.swing.UIManager.maybeInitialize(UIManager.java:1420)
+	at javax.swing.UIManager.getUI(UIManager.java:1007)
+	at javax.swing.JPanel.updateUI(JPanel.java:109)
+	at javax.swing.JPanel.<init>(JPanel.java:69)
+	at javax.swing.JPanel.<init>(JPanel.java:92)
+	at javax.swing.JPanel.<init>(JPanel.java:100)
+	at javax.swing.JRootPane.createGlassPane(JRootPane.java:527)
+	at javax.swing.JRootPane.<init>(JRootPane.java:347)
+	at javax.swing.JFrame.createRootPane(JFrame.java:260)
+	at javax.swing.JFrame.frameInit(JFrame.java:241)
+	at javax.swing.JFrame.<init>(JFrame.java:208)
+	at Walkthrough.<init>(Walkthrough.java:10)
+	at Walkthrough$1.run(Walkthrough.java:25)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:209)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:597)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:284)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:184)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:174)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:169)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:161)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
+</pre></code>
+
+<p>This means that the <b>org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel</b> class
+in not found in the classpath. This class is located in the <b>substance.jar</b>. Here are the
+steps to locate and download the latest stable version of this file:</p>
+
+<ul>
+<li>Go to the <a href="https://substance.dev.java.net">main project page</a>.</li>
+<li>Click the <strong>Get latest version</strong> link. This should take you to the
+<strong>Documents &amp; Files</strong> sub-folder that contains the downloads for
+the latest stable release.</li>
+<li>Locate the <strong>Substance X.Y library</strong> row and click on the link in the
+first column.</li>
+<li>Starting from version 6.0, you will also need to add the matching 
+<a href="http://kenai.com/projects/trident/pages/Home">Trident animation library</a> in the
+classpath. Locate the <strong>Trident animation library</strong> row (on the
+same Substance download page) and click the link in the first column.</li> 
+</ul>
+
+<p>Assuming that you have saved the <b>substance.jar</b> and <b>trident.jar</b> 
+to the <b>C:/temp</b> folder, use the following script in order to run the frame under 
+<b>Substance</b>:</p>
+
+<code>
+java -Dswing.defaultlaf=org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel -cp .<b>;C:/temp/substance.jar;C:/temp/trident.jar</b> Walkthrough
+</code>
+
+<p>The result is the same frame under <b>Substance</b> look and feel:</p>
+
+<img src="../images/walkthrough/business-substance.png" width=250 height=80>
+
+<p>The other two options for setting <b>Substance</b> require changing the
+code. Go back to your Java editor and replace the 
+<code><font color="darkblue">main()</font></code> method by:</p>
+
+<code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">main</font><font color="#000000">(</font><font color="#000000">String</font><font color="#000000">[]&nbsp;</font><font color="#000000">args</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">JFrame.setDefaultLookAndFeelDecorated</font><font color="#000000">(</font><font color="#7f0055"><b>true</b></font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SwingUtilities.invokeLater</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">Runnable</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">run</font><font color="#000000">()&nbsp;{</font><br />
+<strong>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>try&nbsp;</b></font><font color="#000000">{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">UIManager.setLookAndFeel</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SubstanceGraphiteLookAndFeel</font><font color="#000000">())</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}&nbsp;</font><font color="#7f0055"><b>catch&nbsp;</b></font><font color="#000000">(</font><font color="#000000">Exception&nbsp;e</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">System.out.println</font><font color="#000000">(</font><font color="#2a00ff">&#34;Substance&nbsp;Graphite&nbsp;failed&nbsp;to&nbsp;initialize&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+</strong>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Walkthrough&nbsp;w&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">Walkthrough</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">w.setVisible</font><font color="#000000">(</font><font color="#7f0055"><b>true</b></font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font></code>
+
+<p>Note that here we are using another Substance skin, 
+<a href="skins/dark.html#GraphiteSkin"><code>Graphite</code></a>.
+In order to compile the new 
+<code><font color="darkblue">Walkthrough.java</font></code>, you need to add 
+the <b>substance.jar</b> and <b>trident.jar</b> to the build path. Consult 
+your IDE help if you're using IDE. For command-prompt compilation,
+use the additional <b>-cp</b> flag:</p>
+
+<code>
+javac <b>-cp c:/temp/substance.jar;c:/temp/trident.jar</b> Walktrough.java
+</code>
+
+<p>Now you can run your application without the <b>-Dswing.defaultlaf</b> JVM flag, but
+you still need to specify the location of the <b>substance.jar</b> and <b>trident.jar</b>
+as before:</p>
+
+<code>
+java -cp .<b>;C:/temp/substance.jar;C:/temp/trident.jar</b> Walkthrough
+</code>
+
+<p>If you don't want to create an explicit dependency on the <b>Substance</b>
+classes in your code, change your <code><font color="darkblue">main()</font></code> method to:</p>
+
+<code>
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">main</font><font color="#000000">(</font><font color="#000000">String</font><font color="#000000">[]&nbsp;</font><font color="#000000">args</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">JFrame.setDefaultLookAndFeelDecorated</font><font color="#000000">(</font><font color="#7f0055"><b>true</b></font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SwingUtilities.invokeLater</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">Runnable</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">run</font><font color="#000000">()&nbsp;{</font><br />
+<strong>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>try&nbsp;</b></font><font color="#000000">{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">UIManager.setLookAndFeel</font><font color="#000000">(</font><font color="#2a00ff">&#34;org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}&nbsp;</font><font color="#7f0055"><b>catch&nbsp;</b></font><font color="#000000">(</font><font color="#000000">Exception&nbsp;e</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">System.out.println</font><font color="#000000">(</font><font color="#2a00ff">&#34;Substance&nbsp;Graphite&nbsp;failed&nbsp;to&nbsp;initialize&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+</strong>
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Walkthrough&nbsp;w&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">Walkthrough</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">w.setVisible</font><font color="#000000">(</font><font color="#7f0055"><b>true</b></font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;</font><font color="#000000">}</font></code>
+
+<p>You can run the application the same way as before. Here is how it looks like:</p>
+
+<img src="../images/walkthrough/raven-graphite-substance.png" width=250 height=80>
+
+<p>Where to go from here?</p>
+<ul>
+<li>Read the <a href="faq.html">FAQ</a></li>
+<li>Read about the <a href="vmflags.html">VM flags</a></li>
+<li>Read about the <a href="clientprops/all.html">client properties</a></li>
+<li>Read about the <a href="api/all.html">API</a></li>
+<li>Read about <a href="skins/overview.html">using skins</a></li>
+<li>Download the sources and study the test application in 
+<code><font color="darkblue">test/Check.java</font></code></li>
+<li>Read the Javadocs of <b>SubstanceLookAndFeel</b> class.</li>
+</ul>
+
+</body>
+</html>
+

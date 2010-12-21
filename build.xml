@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="substance" default="all">
+	<property file="local.build.properties" />
+	<property file="build.properties" />
+
+	<!-- Compiler options -->
+	<patternset id="javac.excluded" />
+	<patternset id="javac.resources">
+		<include name="**/?*.properties" />
+		<include name="**/?*.xml" />
+		<include name="**/?*.gif" />
+		<include name="**/?*.png" />
+		<include name="**/?*.jpeg" />
+		<include name="**/?*.jpg" />
+		<include name="**/?*.ttf" />
+		<include name="**/?*.license" />
+		<include name="**/?*.colorscheme*" />
+	</patternset>
+	<!-- JDK definitions -->
+
+	<path id="jdk.classpath">
+		<fileset dir="${jdk.home}">
+			<include name="jre/lib/charsets.jar" />
+			<include name="jre/lib/deploy.jar" />
+			<include name="jre/lib/javaws.jar" />
+			<include name="jre/lib/jce.jar" />
+			<include name="jre/lib/jsse.jar" />
+			<include name="jre/lib/plugin.jar" />
+			<include name="jre/lib/rt.jar" />
+			<include name="jre/lib/ext/dnsns.jar" />
+			<include name="jre/lib/ext/localedata.jar" />
+			<include name="jre/lib/ext/sunjce_provider.jar" />
+			<include name="jre/lib/ext/sunpkcs11.jar" />
+		</fileset>
+	</path>
+
+	<property name="project.jdk.home" value="${jdk.home}" />
+	<property name="project.jdk.classpath" value="jdk.classpath" />
+	<!-- Project Libraries -->
+	<!-- Global Libraries -->
+
+
+	<dirname property="module.substance.basedir" file="${ant.file}" />
+
+	<property name="javac.args.substance" value="${javac.args}" />
+
+	<property name="substance.build.dir" value="${module.substance.basedir}/build/" />
+	<property name="substance.output.dir" value="${substance.build.dir}/classes" />
+	<property name="substance.drop.dir" value="${module.substance.basedir}/drop" />
+	<property name="substance.lib.dir" value="${module.substance.basedir}/lib" />
+	<property name="substance.src.dir" value="${module.substance.basedir}/src/" />
+	<property name="substance.version" value="6.1" />
+	<property name="substance.versionKey" value="6.1RC Trinidad" />
+
+	<path id="substance.module.bootclasspath">
+		<!-- Paths to be included in compilation bootclasspath -->
+	</path>
+
+	<property name="module.jdk.home.substance" value="${project.jdk.home}" />
+	<property name="module.jdk.classpath.substance" value="${project.jdk.classpath}" />
+
+	<path id="substance.module.classpath">
+		<path refid="${module.jdk.classpath.substance}" />
+		<pathelement location="${substance.lib.dir}/trident.jar" />
+		<pathelement location="${substance.lib.dir}/build/laf-plugin.jar" />
+		<pathelement location="${substance.lib.dir}/build/laf-widget.jar" />
+		<pathelement location="${substance.lib.dir}/build/asm-all-2.2.2.jar" />
+		<pathelement location="${substance.lib.dir}/build/forms-1.2.0.jar" />
+		<pathelement location="${substance.lib.dir}/build/swingx.jar" />
+		<pathelement location="${substance.lib.dir}/test/fest-swing-1.2.jar" />
+	</path>
+
+	<patternset id="excluded.from.module.substance" />
+
+	<patternset id="excluded.from.compilation.substance">
+		<patternset refid="excluded.from.module.substance" />
+		<patternset refid="javac.excluded" />
+	</patternset>
+
+	<path id="substance.module.sourcepath">
+		<dirset dir="${substance.src.dir}">
+			<include name="org/pushingpixels/" />
+			<include name="resource" />
+		</dirset>
+	</path>
+
+	<path id="substance.module.testsourcepath">
+		<dirset dir="${substance.src.dir}">
+			<include name="test" />
+		</dirset>
+	</path>
+
+	<path id="substance.module.toolssourcepath">
+		<dirset dir="${substance.src.dir}">
+			<include name="tools" />
+		</dirset>
+	</path>
+
+	<target name="compile.module.substance" depends="compile.module.substance.production,compile.module.substance.tests,compile.module.substance.tools" description="compile module substance" />
+
+	<target name="compile.module.substance.production" description="compile module substance production classes">
+		<mkdir dir="${substance.output.dir}" />
+		<javac source="${javac.source}" target="${javac.target}" encoding="${javac.encoding}" destdir="${substance.output.dir}" debug="${javac.debug}" nowarn="${javac.generate.no.warnings}" memoryMaximumSize="${javac.max.memory}" fork="true" executable="${module.jdk.home.substance}/bin/javac">
+			<compilerarg line="${javac.args.substance}" />
+			<bootclasspath refid="substance.module.bootclasspath" />
+			<classpath refid="substance.module.classpath" />
+			<src refid="substance.module.sourcepath" />
+			<patternset refid="excluded.from.compilation.substance" />
+		</javac>
+		<copy todir="${substance.output.dir}">
+			<fileset dir="${substance.src.dir}">
+				<patternset refid="javac.resources" />
+				<type type="file" />
+				<patternset refid="excluded.from.compilation.substance" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="compile.module.substance.tests" description="compile module substance test classes" unless="skip.tests">
+		<mkdir dir="${substance.output.dir}" />
+		<javac source="${javac.source}" target="${javac.target}" encoding="${javac.encoding}" destdir="${substance.output.dir}" debug="${javac.debug}" nowarn="${javac.generate.no.warnings}" memoryMaximumSize="${javac.max.memory}" fork="true" executable="${module.jdk.home.substance}/bin/javac">
+			<compilerarg line="${javac.args.substance}" />
+			<bootclasspath refid="substance.module.bootclasspath" />
+			<classpath refid="substance.module.classpath" />
+			<src refid="substance.module.testsourcepath" />
+			<patternset refid="excluded.from.compilation.substance" />
+		</javac>
+		<copy todir="${substance.output.dir}/test">
+			<fileset dir="${substance.src.dir}/test">
+				<patternset refid="javac.resources" />
+				<type type="file" />
+				<patternset refid="excluded.from.compilation.substance" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="compile.module.substance.tools" description="compile module substance tool classes">
+		<mkdir dir="${substance.output.dir}" />
+		<javac source="${javac.source}" target="${javac.target}" encoding="${javac.encoding}" destdir="${substance.output.dir}" debug="${javac.debug}" nowarn="${javac.generate.no.warnings}" memoryMaximumSize="${javac.max.memory}" fork="true" executable="${module.jdk.home.substance}/bin/javac">
+			<compilerarg line="${javac.args.substance}" />
+			<bootclasspath refid="substance.module.bootclasspath" />
+			<classpath refid="substance.module.classpath" />
+			<src refid="substance.module.toolssourcepath" />
+			<patternset refid="excluded.from.compilation.substance" />
+		</javac>
+		<copy todir="${substance.output.dir}/tools">
+			<fileset dir="${substance.src.dir}/tools">
+				<patternset refid="javac.resources" />
+				<type type="file" />
+				<patternset refid="excluded.from.compilation.substance" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="clean.module.substance" description="cleanup module">
+		<delete dir="${substance.output.dir}" />
+	</target>
+
+	<target name="init" description="Build initialization">
+		<!-- Perform any build initialization in this target -->
+	</target>
+
+	<!-- Augment tasks definition -->
+	<property name="augment-class-path" value="${substance.lib.dir}/build/laf-widget.jar;${substance.lib.dir}/trident.jar;${substance.lib.dir}/build/asm-all-2.2.2.jar" />
+
+	<taskdef name="delegate-augment" classname="org.pushingpixels.lafwidget.ant.AugmentTask" classpath="${augment-class-path}" />
+	<taskdef name="delegate-update-augment" classname="org.pushingpixels.lafwidget.ant.AugmentUpdateTask" classpath="${augment-class-path}" />
+	<taskdef name="laf-augment" classname="org.pushingpixels.lafwidget.ant.AugmentMainTask" classpath="${augment-class-path}" />
+	<taskdef name="icon-ghosting-augment" classname="org.pushingpixels.lafwidget.ant.AugmentIconGhostingTask" classpath="${augment-class-path}" />
+	<taskdef name="container-ghosting-augment" classname="org.pushingpixels.lafwidget.ant.AugmentContainerGhostingTask" classpath="${augment-class-path}" />
+
+	<target name="augmentation" description="inject additional behavior in UI delegates">
+		<!-- Explode laf-plugin and laf-widget -->
+		<unjar src="${substance.lib.dir}/build/laf-plugin.jar" dest="${substance.output.dir}/" />
+		<unjar src="${substance.lib.dir}/build/laf-widget.jar" dest="${substance.output.dir}/" />
+
+		<!-- LAF augmentation -->
+		<!--
+		<laf-augment verbose="true" mainlafclassname="org.pushingpixels.substance.api.SubstanceLookAndFeel">
+			<delegate name="ViewportUI" />
+			<classpathset dir="${substance.output.dir}" />
+		</laf-augment>
+		-->
+
+		<!-- Delegate augmentation -->
+		<delegate-update-augment verbose="true" pattern=".*UI\u002Eclass">
+			<classpathset dir="${substance.output.dir}" />
+		</delegate-update-augment>
+
+		<delegate-augment verbose="true" pattern=".*UI\u002Eclass">
+			<classpathset dir="${substance.output.dir}" />
+		</delegate-augment>
+
+		<!-- Icon ghosting augmentation -->
+		<icon-ghosting-augment verbose="true">
+			<classpathset dir="${substance.output.dir}" />
+			<iconghosting className="org.pushingpixels.substance.internal.ui.SubstanceButtonUI" methodName="paintIcon" />
+			<iconghosting className="org.pushingpixels.substance.internal.ui.SubstanceToggleButtonUI" methodName="paintIcon" />
+		</icon-ghosting-augment>
+
+		<!-- Container ghosting augmentation -->
+		<container-ghosting-augment verbose="true">
+			<classpathset dir="${substance.output.dir}" />
+			<containerghosting className="org.pushingpixels.substance.internal.ui.SubstanceDesktopPaneUI" toInjectAfterOriginal="true" />
+			<containerghosting className="org.pushingpixels.substance.internal.ui.SubstanceMenuBarUI" toInjectAfterOriginal="true" />
+			<containerghosting className="org.pushingpixels.substance.internal.ui.SubstanceMenuUI" toInjectAfterOriginal="true" />
+			<containerghosting className="org.pushingpixels.substance.internal.ui.SubstancePanelUI" toInjectAfterOriginal="true" />
+			<containerghosting className="org.pushingpixels.substance.internal.ui.SubstanceScrollBarUI" toInjectAfterOriginal="true" />
+			<containerghosting className="org.pushingpixels.substance.internal.ui.SubstanceToolBarUI" toInjectAfterOriginal="true" />
+		</container-ghosting-augment>
+	</target>
+
+	<target name="jar-bin" description="create runtime jar">
+		<mkdir dir="${substance.drop.dir}" />
+		<delete file="${substance.drop.dir}/substance.jar" />
+
+		<jar compress="true" destfile="${substance.drop.dir}/substance.jar">
+			<fileset dir="${substance.output.dir}/" excludes="tools/** test/** org/pushingpixels/lafwidget/ant/**" />
+			<fileset dir="${module.substance.basedir}/" includes="resources/**" />
+			<manifest>
+				<attribute name="Substance-Distribution" value="Full" />
+				<attribute name="Substance-Version" value="${substance.versionKey}" />
+				<attribute name="Substance-BuildStamp" value="${build.time}" />
+			</manifest>
+		</jar>
+		<copy file="${substance.drop.dir}/substance.jar" todir="${module.substance.basedir}/www/webstart" />
+	</target>
+
+	<target name="jar-bin-lite" description="create runtime jar with no custom color choosers">
+		<delete file="${substance.drop.dir}/substance-lite.jar" />
+		<jar compress="true" destfile="${substance.drop.dir}/substance-lite.jar">
+			<fileset dir="${substance.output.dir}/" excludes="tools/** test/** org/pushingpixels/substance/internal/contrib/randelshofer/** org/pushingpixels/substance/internal/contrib/xoetrope/** org/pushingpixels/substance/internal/ui/SubstanceColorChooserUI* org/pushingpixels/lafwidget/ant/**" />
+			<fileset dir="${module.substance.basedir}/" includes="resources/**" />
+			<manifest>
+				<attribute name="Substance-Distribution" value="Lite" />
+				<attribute name="Substance-Version" value="${substance.versionKey}" />
+				<attribute name="Substance-BuildStamp" value="${build.time}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="jar-bin-tst" description="create test runtime jar">
+		<delete file="${substance.drop.dir}/substance-tst.jar" />
+		<jar destfile="${substance.drop.dir}/substance-tst.jar">
+			<fileset dir="${substance.output.dir}/" includes="test/**" />
+			<manifest>
+				<attribute name="Substance-Version" value="${substance.versionKey}" />
+				<attribute name="Substance-BuildStamp" value="${build.time}" />
+				<attribute name="Main-Class" value="test.Check" />
+				<attribute name="Class-Path" value="substance.jar ../lib/trident.jar ../lib/build/forms-1.2.0.jar ../lib/build/swingx.jar ../lib/build/substance-swingx.jar" />
+			</manifest>
+		</jar>
+		<copy file="${substance.drop.dir}/substance-tst.jar" todir="${module.substance.basedir}/www/webstart" />
+	</target>
+
+	<target name="jar-bin-tools" description="create tools runtime jar">
+		<delete file="${substance.drop.dir}/substance-tools.jar" />
+		<jar destfile="${substance.drop.dir}/substance-tools.jar">
+			<fileset dir="${substance.output.dir}/" includes="tools/**/*.class tools/**/*.jpg tools/**/*.png" />
+			<fileset dir="${substance.src.dir}/tools/uidebug/" includes="META-INF/**" />
+			<manifest>
+				<attribute name="Substance-Version" value="${substance.versionKey}" />
+				<attribute name="Substance-BuildStamp" value="${build.time}" />
+			</manifest>
+		</jar>
+		<copy file="${substance.drop.dir}/substance-tools.jar" todir="${module.substance.basedir}/www/webstart" />
+	</target>
+
+	<target name="apt" depends="jar-bin-tools">
+		<apt srcdir="${substance.src.dir}" classpath="${substance.drop.dir}/substance-tools.jar" factory="tools.apt.ListClassApf" compile="false" />
+	</target>
+
+	<target name="jar-bin-tst-lite" description="create test runtime jar">
+		<delete file="${substance.drop.dir}/substance-tst-lite.jar" />
+		<jar destfile="${substance.drop.dir}/substance-tst-lite.jar">
+			<fileset dir="${substance.output.dir}/" includes="test/**" />
+			<fileset dir="${substance.src.dir}/" includes="test/resource/**" />
+			<manifest>
+				<attribute name="Substance-Version" value="${substance.versionKey}" />
+				<attribute name="Substance-BuildStamp" value="${build.time}" />
+				<attribute name="Main-Class" value="test.Check" />
+				<attribute name="Class-Path" value="substance-lite.jar ../lib/trident.jar ../lib/build/forms-1.2.0.jar ../lib/build/swingx.jar ../lib/build/substance-swingx.jar" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="timestamp">
+		<tstamp>
+			<format property="build.time" pattern="MMMM d, yyyy HH:mm:ss z" />
+		</tstamp>
+		<echo message="Beginning build: ${build.time}" />
+		<echo message="Java home: ${java.home}" />
+		<echo message="Java version: ${ant.java.version}" />
+		<echo message="Ant version: ${ant.version}" />
+		<echo message="JavaC home: ${jdk.home}" />
+	</target>
+
+	<target name="jar" depends="jar-bin, jar-bin-lite, jar-bin-tst, jar-bin-tst-lite, jar-bin-tools" description="create all jars" />
+
+	<target name="distro" description="create distribution">
+		<delete file="${module.substance.basedir}/substance-all.zip" />
+		<zip destfile="${module.substance.basedir}/substance-all.zip" compress="true">
+			<fileset dir="${module.substance.basedir}">
+				<!--
+				<include name="docs/**" />
+				<include name="www/index.html" />
+				<include name="www/see.html" />
+				<include name="www/learn.html" />
+				<include name="www/thanks.html" />
+				<include name="www/docs/**" />
+				<include name="www/images/*.png" />
+				<include name="www/images/known-issues/**" />
+				<include name="www/images/api/**" />
+				<include name="www/images/clientprops/**" />
+				<include name="www/images/screenshots/**" />
+				<include name="www/images/themes/**" />
+				<include name="www/images/flags/**" />
+				<include name="www/images/walkthrough/**" />
+				<include name="www/images/learn/**" />
+				<include name="www/release-info/releases.html" />
+				<include name="www/release-info/${substance.version}/**.png" />
+				<include name="www/release-info/${substance.version}/**.htm*" />
+				-->
+				<include name="lib/**" />
+				<include name="src/**" />
+				<include name="build.properties" />
+				<include name="build.xml" />
+				<exclude name="**/*.vsd" />
+			</fileset>
+		</zip>
+	</target>
+
+	<target name="clean" depends="clean.module.substance" description="cleanup all" />
+
+	<target name="all" depends="timestamp, init, clean, compile.module.substance, augmentation, jar" description="build all" />
+</project>
