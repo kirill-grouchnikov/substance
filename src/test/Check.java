@@ -676,8 +676,8 @@ public class Check extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		 final String vendor = System.getProperty("java.vm.vendor");
-		    System.out.println(vendor);
+		final String vendor = System.getProperty("java.vm.vendor");
+		System.out.println(vendor);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				boolean hasLafSpecified = false;
