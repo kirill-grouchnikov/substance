@@ -29,102 +29,30 @@
  */
 package test;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.LayoutManager;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
 import java.net.URL;
-import java.util.EnumSet;
-import java.util.Enumeration;
-import java.util.Set;
+import java.util.*;
 
-import javax.swing.Box;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JScrollPane;
-import javax.swing.JSlider;
-import javax.swing.JTabbedPane;
-import javax.swing.JToggleButton;
-import javax.swing.JToolBar;
-import javax.swing.LookAndFeel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.FontUIResource;
 
-import org.jdesktop.swingx.JXPanel;
-import org.jdesktop.swingx.JXStatusBar;
-import org.jdesktop.swingx.JXTaskPane;
-import org.jdesktop.swingx.JXTaskPaneContainer;
+import org.jdesktop.swingx.*;
 import org.pushingpixels.lafwidget.LafWidget;
 import org.pushingpixels.lafwidget.tabbed.DefaultTabPreviewPainter;
 import org.pushingpixels.lafwidget.utils.LafConstants.TabOverviewKind;
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
-import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.SubstanceConstants.TabCloseKind;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.fonts.FontSet;
 import org.pushingpixels.substance.api.skin.SkinChangeListener;
 import org.pushingpixels.substance.api.skin.SubstanceGeminiLookAndFeel;
-import org.pushingpixels.substance.api.tabbed.TabCloseCallback;
-import org.pushingpixels.substance.api.tabbed.TabCloseListener;
-import org.pushingpixels.substance.api.tabbed.VetoableMultipleTabCloseListener;
-import org.pushingpixels.substance.api.tabbed.VetoableTabCloseListener;
+import org.pushingpixels.substance.api.tabbed.*;
 
-import test.check.ButtonsPanel;
-import test.check.CardPanel;
-import test.check.CellsPanel;
-import test.check.ColoredControlsPanel;
-import test.check.ColorizedControlsPanel;
-import test.check.CombosPanel;
-import test.check.ControlPanelFactory;
-import test.check.Controllable;
-import test.check.Deferrable;
-import test.check.DesktopPanel;
-import test.check.FileTreePanel;
-import test.check.HAlignmentPanel;
-import test.check.ListPanel;
-import test.check.ProgressBarPanel;
-import test.check.SampleMenuFactory;
-import test.check.ScrollPanel;
-import test.check.SizesPanel;
-import test.check.SliderPanel;
-import test.check.SpinnerPanel;
-import test.check.SplitPanel;
-import test.check.TabPanel;
-import test.check.TablePanel;
-import test.check.TextFieldsPanel;
-import test.check.TreePanel;
-import test.check.VAlignmentPanel;
+import test.check.*;
 import test.check.statusbar.FontSizePanel;
 
 public class Check extends JFrame {
@@ -676,8 +604,6 @@ public class Check extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		 final String vendor = System.getProperty("java.vm.vendor");
-		    System.out.println(vendor);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				boolean hasLafSpecified = false;
