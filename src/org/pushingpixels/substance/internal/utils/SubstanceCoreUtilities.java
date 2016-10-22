@@ -53,6 +53,8 @@ import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.api.tabbed.TabCloseCallback;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.JBHiDPIScaledImage;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.ui.*;
 import org.pushingpixels.substance.internal.utils.combo.SubstanceComboPopup;
 import org.pushingpixels.substance.internal.utils.icon.*;
@@ -593,13 +595,17 @@ public class SubstanceCoreUtilities {
 			}
 		}
 
-		GraphicsEnvironment e = GraphicsEnvironment
-				.getLocalGraphicsEnvironment();
-		GraphicsDevice d = e.getDefaultScreenDevice();
-		GraphicsConfiguration c = d.getDefaultConfiguration();
-		BufferedImage compatibleImage = c.createCompatibleImage(width, height,
-				Transparency.TRANSLUCENT);
-		return compatibleImage;
+		if (UIUtil.isRetina()) {
+			return new JBHiDPIScaledImage(width, height,
+					Transparency.TRANSLUCENT);
+		} else {
+			GraphicsEnvironment e = GraphicsEnvironment
+					.getLocalGraphicsEnvironment();
+			GraphicsDevice d = e.getDefaultScreenDevice();
+			GraphicsConfiguration c = d.getDefaultConfiguration();
+			return c.createCompatibleImage(width, height,
+					Transparency.TRANSLUCENT);
+		}
 	}
 
 	/**
@@ -611,35 +617,35 @@ public class SubstanceCoreUtilities {
 	 *            Image height.
 	 * @return Transparent image of specified dimension.
 	 */
-	public static VolatileImage getBlankVolatileImage(int width, int height) {
-		if (MemoryAnalyzer.isRunning()) {
-			// see if the request is unusual
-			if ((width >= 100) || (height >= 100)) {
-				StackTraceElement[] stack = Thread.currentThread()
-						.getStackTrace();
-				StringBuffer sb = new StringBuffer();
-				int count = 0;
-				for (StackTraceElement stackEntry : stack) {
-					if (count++ > 8)
-						break;
-					sb.append(stackEntry.getClassName() + ".");
-					sb.append(stackEntry.getMethodName() + " [");
-					sb.append(stackEntry.getLineNumber() + "]");
-					sb.append("\n");
-				}
-				MemoryAnalyzer.enqueueUsage("Blank " + width + "*" + height
-						+ "\n" + sb.toString());
-			}
-		}
-
-		GraphicsEnvironment e = GraphicsEnvironment
-				.getLocalGraphicsEnvironment();
-		GraphicsDevice d = e.getDefaultScreenDevice();
-		GraphicsConfiguration c = d.getDefaultConfiguration();
-		VolatileImage compatibleImage = c.createCompatibleVolatileImage(width,
-				height, Transparency.TRANSLUCENT);
-		return compatibleImage;
-	}
+//	public static VolatileImage getBlankVolatileImage(int width, int height) {
+//		if (MemoryAnalyzer.isRunning()) {
+//			// see if the request is unusual
+//			if ((width >= 100) || (height >= 100)) {
+//				StackTraceElement[] stack = Thread.currentThread()
+//						.getStackTrace();
+//				StringBuffer sb = new StringBuffer();
+//				int count = 0;
+//				for (StackTraceElement stackEntry : stack) {
+//					if (count++ > 8)
+//						break;
+//					sb.append(stackEntry.getClassName() + ".");
+//					sb.append(stackEntry.getMethodName() + " [");
+//					sb.append(stackEntry.getLineNumber() + "]");
+//					sb.append("\n");
+//				}
+//				MemoryAnalyzer.enqueueUsage("Blank " + width + "*" + height
+//						+ "\n" + sb.toString());
+//			}
+//		}
+//
+//		GraphicsEnvironment e = GraphicsEnvironment
+//				.getLocalGraphicsEnvironment();
+//		GraphicsDevice d = e.getDefaultScreenDevice();
+//		GraphicsConfiguration c = d.getDefaultConfiguration();
+//		VolatileImage compatibleImage = c.createCompatibleVolatileImage(width,
+//				height, Transparency.TRANSLUCENT);
+//		return compatibleImage;
+//	}
 
 	/**
 	 * Checks whether the specified button should have minimal size.
@@ -927,6 +933,8 @@ public class SubstanceCoreUtilities {
 
 		BufferedImage result = getBlankImage(width, height);
 		Graphics2D graphics = (Graphics2D) result.getGraphics().create();
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		graphics.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
 
 		int startY = (int) (start * height);
 		int endY = (int) (end * height);
@@ -986,6 +994,8 @@ public class SubstanceCoreUtilities {
 
 		BufferedImage result = getBlankImage(width, height);
 		Graphics2D graphics = (Graphics2D) result.getGraphics().create();
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		graphics.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
 
 		int startX = (int) (start * width);
 		int endX = (int) (end * width);
@@ -1282,20 +1292,20 @@ public class SubstanceCoreUtilities {
 				.get(SubstanceLookAndFeel.SHOW_EXTRA_WIDGETS));
 	}
 
-	public static Icon getThemedIcon(Component comp, Icon orig) {
+	public static HiDpiAwareIcon getThemedIcon(Component comp, Icon orig) {
 		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities
 				.getColorScheme(comp, ComponentState.ENABLED);
 		float brightnessFactor = colorScheme.isDark() ? 0.2f : 0.8f;
-		return new ImageIcon(SubstanceImageCreator.getColorSchemeImage(comp,
+		return new HiDpiAwareIcon(SubstanceImageCreator.getColorSchemeImage(comp,
 				orig, colorScheme, brightnessFactor));
 	}
 
-	public static Icon getThemedIcon(JTabbedPane tab, int tabIndex, Icon orig) {
+	public static HiDpiAwareIcon getThemedIcon(JTabbedPane tab, int tabIndex, Icon orig) {
 		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities
 				.getColorScheme(tab, tabIndex, ColorSchemeAssociationKind.TAB,
 						ComponentState.ENABLED);
 		float brightnessFactor = colorScheme.isDark() ? 0.2f : 0.8f;
-		return new ImageIcon(SubstanceImageCreator.getColorSchemeImage(tab,
+		return new HiDpiAwareIcon(SubstanceImageCreator.getColorSchemeImage(tab,
 				orig, colorScheme, brightnessFactor));
 	}
 
@@ -1542,6 +1552,21 @@ public class SubstanceCoreUtilities {
 		if (iconUrl == null)
 			return null;
 		return new IconUIResource(new ImageIcon(iconUrl));
+	}
+
+	/**
+	 * Returns an icon pointed to by the specified string.
+	 * 
+	 * @param iconResource
+	 *            Resource location string.
+	 * @return Icon.
+	 */
+	public static Icon getHiDpiAwareIcon(String iconResource) {
+		ClassLoader cl = getClassLoaderForResources();
+		URL iconUrl = cl.getResource(iconResource);
+		if (iconUrl == null)
+			return null;
+		return new HiDpiAwareIconUiResource(new ImageIcon(iconUrl));
 	}
 
 	/**

@@ -39,6 +39,7 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.*;
@@ -260,5 +261,19 @@ public class SubstanceRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI
 			int defaultTextIconGap) {
 		MenuUtilities.paintMenuItem(g, menuItem, checkIcon, arrowIcon,
 				defaultTextIconGap);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
+	 * javax.swing.JComponent)
+	 */
+	@Override
+	public void update(Graphics g, JComponent c) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
+		super.update(g2d, c);
+		g2d.dispose();
 	}
 }

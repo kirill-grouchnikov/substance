@@ -29,15 +29,25 @@
  */
 package org.pushingpixels.substance.internal.utils.border;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.substance.api.*;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
  * Border for toolbar.
@@ -58,8 +68,10 @@ public class SubstanceToolBarBorder extends AbstractBorder implements
 		if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
 			return;
 
-		Graphics2D graphics = (Graphics2D) g;
+		Graphics2D graphics = (Graphics2D) g.create();
 		graphics.translate(x, y);
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		graphics.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
 
 		if (((JToolBar) c).isFloatable()) {
 			SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
@@ -72,15 +84,13 @@ public class SubstanceToolBarBorder extends AbstractBorder implements
 				// fix for defect 3 on NB module
 				int height = c.getHeight() - 4;
 				if (height > 0) {
+					BufferedImage dragImage = SubstanceImageCreator.getDragImage(
+							c, scheme, dragBumpsWidth, height, 2);
 					if (c.getComponentOrientation().isLeftToRight()) {
-						graphics.drawImage(SubstanceImageCreator.getDragImage(
-								c, scheme, dragBumpsWidth, height, 2), 2, 1,
-								null);
+						graphics.drawImage(dragImage, 2, 1, null);
 					} else {
-						graphics.drawImage(SubstanceImageCreator.getDragImage(
-								c, scheme, dragBumpsWidth, height, 2), c
-								.getBounds().width
-								- dragBumpsWidth - 2, 1, null);
+						graphics.drawImage(dragImage, 
+								c.getBounds().width - dragBumpsWidth - 2, 1, null);
 					}
 				}
 			} else // vertical
@@ -88,13 +98,13 @@ public class SubstanceToolBarBorder extends AbstractBorder implements
 				// fix for defect 3 on NB module
 				int width = c.getWidth() - 4;
 				if (width > 0) {
-					graphics.drawImage(SubstanceImageCreator.getDragImage(c,
-							scheme, width, dragBumpsWidth, 2), 2, 2, null);
+					BufferedImage dragImage = SubstanceImageCreator.getDragImage(
+							c, scheme, width, dragBumpsWidth, 2);
+					graphics.drawImage(dragImage, 2, 2, null);
 				}
 			}
 		}
-
-		graphics.translate(-x, -y);
+		graphics.dispose();
 	}
 
 	/*

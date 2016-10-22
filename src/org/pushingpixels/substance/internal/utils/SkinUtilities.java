@@ -14,6 +14,10 @@ import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.inputmaps.InputMapSet;
 import org.pushingpixels.substance.api.inputmaps.SubstanceInputMapUtilities;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultListCellRenderer;
+import org.pushingpixels.substance.internal.svg.Dialog_error;
+import org.pushingpixels.substance.internal.svg.Dialog_information;
+import org.pushingpixels.substance.internal.svg.Dialog_warning;
+import org.pushingpixels.substance.internal.svg.Help_browser;
 import org.pushingpixels.substance.internal.utils.border.*;
 import org.pushingpixels.substance.internal.utils.icon.*;
 import org.pushingpixels.substance.internal.utils.scroll.SubstanceScrollPaneBorder;
@@ -609,42 +613,22 @@ public class SkinUtilities {
 						false),
 
 				"OptionPane.errorIcon",
-				new UIDefaults.LazyValue() {
-					public Object createValue(UIDefaults table) {
-						return SubstanceCoreUtilities
-								.getIcon("resource/32/dialog-error.png");
-					}
-				},
+				new Dialog_error(),
 
 				"OptionPane.foreground",
 				foregroundColor,
 
 				"OptionPane.informationIcon",
-				new UIDefaults.LazyValue() {
-					public Object createValue(UIDefaults table) {
-						return SubstanceCoreUtilities
-								.getIcon("resource/32/dialog-information.png");
-					}
-				},
+				new Dialog_information(),
 
 				"OptionPane.messageForeground",
 				foregroundColor,
 
 				"OptionPane.questionIcon",
-				new UIDefaults.LazyValue() {
-					public Object createValue(UIDefaults table) {
-						return SubstanceCoreUtilities
-								.getIcon("resource/32/help-browser.png");
-					}
-				},
+				new Help_browser(),
 
 				"OptionPane.warningIcon",
-				new UIDefaults.LazyValue() {
-					public Object createValue(UIDefaults table) {
-						return SubstanceCoreUtilities
-								.getIcon("resource/32/dialog-warning.png");
-					}
-				},
+				new Dialog_warning(),
 
 				"Panel.background",
 				SubstanceColorUtilities.getDefaultBackgroundColor(false, skin,
@@ -1134,7 +1118,7 @@ public class SkinUtilities {
 				"Tree.collapsedIcon",
 				new UIDefaults.LazyValue() {
 					public Object createValue(UIDefaults table) {
-						return new IconUIResource(
+						return new HiDpiAwareIconUiResource(
 								SubstanceIconFactory.getTreeIcon(null, true));
 					}
 				},
@@ -1142,7 +1126,7 @@ public class SkinUtilities {
 				"Tree.expandedIcon",
 				new UIDefaults.LazyValue() {
 					public Object createValue(UIDefaults table) {
-						return new IconUIResource(
+						return new HiDpiAwareIconUiResource(
 								SubstanceIconFactory.getTreeIcon(null, false));
 					}
 				},

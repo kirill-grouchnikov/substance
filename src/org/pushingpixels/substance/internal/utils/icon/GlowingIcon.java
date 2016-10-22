@@ -38,10 +38,11 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.pushingpixels.substance.internal.animation.IconGlowTracker;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
-public class GlowingIcon implements Icon {
+public class GlowingIcon implements Icon, IsHiDpiAware {
 
 	protected Icon delegate;
 
@@ -53,6 +54,12 @@ public class GlowingIcon implements Icon {
 		this.delegate = delegate;
 		this.iconGlowTracker = iconGlowTracker;
 		this.iconMap = new HashMap<Float, Icon>();
+	}
+	
+	@Override
+	public boolean isHiDpiAware() {
+		return (this.delegate instanceof IsHiDpiAware) && 
+				((IsHiDpiAware) this.delegate).isHiDpiAware();
 	}
 
 	public Icon getDelegate() {
@@ -67,7 +74,8 @@ public class GlowingIcon implements Icon {
 	public int getIconHeight() {
 		if (this.delegate == null)
 			return 0;
-		return this.delegate.getIconHeight();
+		int scale = isHiDpiAware() && UIUtil.isRetina() ? 2 : 1;
+		return this.delegate.getIconHeight() / scale;
 	}
 
 	/*
@@ -78,7 +86,8 @@ public class GlowingIcon implements Icon {
 	public int getIconWidth() {
 		if (this.delegate == null)
 			return 0;
-		return this.delegate.getIconWidth();
+		int scale = isHiDpiAware() && UIUtil.isRetina() ? 2 : 1;
+		return this.delegate.getIconWidth() / scale;
 	}
 
 	/*
@@ -102,12 +111,16 @@ public class GlowingIcon implements Icon {
 		if (toPaint == null) {
 			int width = this.getIconWidth();
 			int height = this.getIconHeight();
+			int scale = isHiDpiAware() && UIUtil.isRetina() ? 2 : 1;
 			BufferedImage image = SubstanceCoreUtilities.getBlankImage(width,
 					height);
 			Graphics2D graphics = (Graphics2D) image.getGraphics();
+			graphics.scale(1.0f / scale, 1.0f / scale);
 			this.delegate.paintIcon(c, graphics, 0, 0);
-			for (int i = 0; i < width; i++) {
-				for (int j = 0; j < height; j++) {
+			int pixelWidth = image.getWidth();
+			int pixelHeight = image.getHeight();
+			for (int i = 0; i < pixelWidth; i++) {
+				for (int j = 0; j < pixelHeight; j++) {
 					int rgba = image.getRGB(i, j);
 					int transp = (rgba >>> 24) & 0xFF;
 					double coef = Math.sin(2.0 * Math.PI * fadePos / 2.0) / 3.0;
@@ -120,9 +133,12 @@ public class GlowingIcon implements Icon {
 							| (newColor.getGreen() << 8) | newColor.getBlue());
 				}
 			}
-			toPaint = new ImageIcon(image);
+			toPaint = isHiDpiAware() ? new HiDpiAwareIcon(image) : new ImageIcon(image);
 			this.iconMap.put(fadePos, toPaint);
 		}
-		toPaint.paintIcon(c, g, x, y);
+		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.translate(x, y);
+		toPaint.paintIcon(c, g, 0, 0);
+		g2d.dispose();
 	}
 }

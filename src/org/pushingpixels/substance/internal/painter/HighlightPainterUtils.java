@@ -41,6 +41,7 @@ import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.highlight.SubstanceHighlightPainter;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.*;
 
 /**
@@ -113,7 +114,8 @@ public class HighlightPainterUtils {
 						highlightBorderPainter);
 				smallCache.put(key, result);
 			}
-			g2d.drawImage(result, 0, 0, null);
+			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+			g2d.drawImage(result, 0, 0, result.getWidth() / 2, result.getHeight() / 2, null);
 		}
 	}
 

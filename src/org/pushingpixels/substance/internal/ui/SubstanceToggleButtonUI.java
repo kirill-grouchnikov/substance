@@ -59,6 +59,7 @@ import javax.swing.text.View;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -356,21 +357,22 @@ public class SubstanceToggleButtonUI extends BasicToggleButtonUI implements
 		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(b, g));
 		float activeAmount = this.substanceVisualStateTracker
 				.getStateTransitionTracker().getActiveStrength();
+		graphics.translate(iconRect.x, iconRect.y);
 		if (activeAmount >= 0.0f) {
 			if (AnimationConfigurationManager.getInstance().isAnimationAllowed(
 					AnimationFacet.ICON_GLOW, b)
 					&& this.substanceVisualStateTracker
 							.getStateTransitionTracker().getIconGlowTracker()
 							.isPlaying()) {
-				this.glowingIcon.paintIcon(b, graphics, iconRect.x, iconRect.y);
+				this.glowingIcon.paintIcon(b, graphics, 0, 0);
 			} else {
-				themedIcon.paintIcon(b, graphics, iconRect.x, iconRect.y);
+				themedIcon.paintIcon(b, graphics, 0, 0);
 				graphics.setComposite(LafWidgetUtilities.getAlphaComposite(b,
 						activeAmount, g));
-				originalIcon.paintIcon(b, graphics, iconRect.x, iconRect.y);
+				originalIcon.paintIcon(b, graphics, 0, 0);
 			}
 		} else {
-			originalIcon.paintIcon(b, graphics, iconRect.x, iconRect.y);
+			originalIcon.paintIcon(b, graphics, 0, 0);
 		}
 
 		graphics.dispose();
@@ -419,7 +421,10 @@ public class SubstanceToggleButtonUI extends BasicToggleButtonUI implements
 	 */
 	@Override
 	public void update(Graphics g, JComponent c) {
-		this.paint(g, c);
+		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
+		this.paint(g2d, c);
+		g2d.dispose();
 	}
 
 	@Override

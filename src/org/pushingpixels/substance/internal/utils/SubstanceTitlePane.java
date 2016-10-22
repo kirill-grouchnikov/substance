@@ -90,13 +90,14 @@ import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.lafwidget.utils.TrackableThread;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
-import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
 import org.pushingpixels.substance.api.skin.SkinInfo;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
+import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.utils.icon.SubstanceIconFactory;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 
@@ -903,7 +904,7 @@ public class SubstanceTitlePane extends JComponent {
 
 		Icon closeIcon = new TransitionAwareIcon(closeButton,
 				new TransitionAwareIcon.Delegate() {
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme) {
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
 						return SubstanceIconFactory
 								.getTitlePaneIcon(
 										SubstanceIconFactory.IconKind.CLOSE,
@@ -931,7 +932,7 @@ public class SubstanceTitlePane extends JComponent {
 
 			Icon minIcon = new TransitionAwareIcon(this.minimizeButton,
 					new TransitionAwareIcon.Delegate() {
-						public Icon getColorSchemeIcon(
+						public HiDpiAwareIcon getColorSchemeIcon(
 								SubstanceColorScheme scheme) {
 							return SubstanceIconFactory
 									.getTitlePaneIcon(
@@ -959,7 +960,7 @@ public class SubstanceTitlePane extends JComponent {
 
 			Icon maxIcon = new TransitionAwareIcon(this.toggleButton,
 					new TransitionAwareIcon.Delegate() {
-						public Icon getColorSchemeIcon(
+						public HiDpiAwareIcon getColorSchemeIcon(
 								SubstanceColorScheme scheme) {
 							return SubstanceIconFactory
 									.getTitlePaneIcon(
@@ -1052,7 +1053,7 @@ public class SubstanceTitlePane extends JComponent {
 						Icon restoreIcon = new TransitionAwareIcon(
 								this.toggleButton,
 								new TransitionAwareIcon.Delegate() {
-									public Icon getColorSchemeIcon(
+									public HiDpiAwareIcon getColorSchemeIcon(
 											SubstanceColorScheme scheme) {
 										return SubstanceIconFactory
 												.getTitlePaneIcon(
@@ -1077,7 +1078,7 @@ public class SubstanceTitlePane extends JComponent {
 						Icon maxIcon = new TransitionAwareIcon(
 								this.toggleButton,
 								new TransitionAwareIcon.Delegate() {
-									public Icon getColorSchemeIcon(
+									public HiDpiAwareIcon getColorSchemeIcon(
 											SubstanceColorScheme scheme) {
 										return SubstanceIconFactory
 												.getTitlePaneIcon(

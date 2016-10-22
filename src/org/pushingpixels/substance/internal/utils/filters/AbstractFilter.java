@@ -40,6 +40,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.*;
 
+import org.pushingpixels.substance.internal.contrib.intellij.JBHiDPIScaledImage;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
+
 /**
  * <p>
  * Provides an abstract implementation of the <code>BufferedImageOp</code>
@@ -69,9 +72,14 @@ public abstract class AbstractFilter implements BufferedImageOp {
 			destCM = src.getColorModel();
 		}
 
-		return new BufferedImage(destCM, destCM.createCompatibleWritableRaster(
-				src.getWidth(), src.getHeight()),
-				destCM.isAlphaPremultiplied(), null);
+		WritableRaster raster = destCM.createCompatibleWritableRaster(
+				src.getWidth(), src.getHeight());
+		if (UIUtil.isRetina()) {
+			return new JBHiDPIScaledImage(destCM, raster, destCM.isAlphaPremultiplied(), null,
+					src.getWidth() / 2, src.getHeight() / 2);
+		} else {
+			return new BufferedImage(destCM, raster, destCM.isAlphaPremultiplied(), null);
+		}
 	}
 
 	/**

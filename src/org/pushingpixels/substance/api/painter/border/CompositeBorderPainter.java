@@ -29,7 +29,11 @@
  */
 package org.pushingpixels.substance.api.painter.border;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Shape;
+
+import javax.swing.JButton;
 
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 

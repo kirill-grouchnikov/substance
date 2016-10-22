@@ -36,7 +36,6 @@ import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;

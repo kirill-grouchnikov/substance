@@ -42,6 +42,7 @@ import javax.swing.text.JTextComponent;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.*;
 
 /**
@@ -105,6 +106,7 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
 			return;
 
 		Graphics2D graphics = (Graphics2D) g.create();
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 
 		// float cyclePos = 1.0f;
 
@@ -154,7 +156,8 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
 
 					graphics.setComposite(AlphaComposite.SrcOver
 							.derive(baseAlpha));
-					graphics.drawImage(baseLayer, x, y, null);
+					graphics.drawImage(baseLayer, x, y, baseLayer.getWidth() / scaleFactor,
+							baseLayer.getHeight() / scaleFactor, null);
 
 					if (!currState.isDisabled() && (activeStates.size() > 1)) {
 						for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
@@ -194,7 +197,8 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
 
 							graphics.setComposite(AlphaComposite.SrcOver
 									.derive(alpha * contribution));
-							graphics.drawImage(layer, x, y, null);
+							graphics.drawImage(layer, x, y,  layer.getWidth() / scaleFactor,
+									layer.getHeight() / scaleFactor,null);
 						}
 					}
 

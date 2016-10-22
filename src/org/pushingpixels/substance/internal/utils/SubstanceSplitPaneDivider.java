@@ -29,24 +29,37 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
-import java.awt.*;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
-import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker.ModelStateInfo;
+import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.ui.SubstanceSplitPaneUI;
+import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 
 /**
@@ -67,6 +80,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 	 * Listener on property change events.
 	 */
 	private PropertyChangeListener substancePropertyChangeListener;
+	
 	/**
 	 * Surrogate button model for tracking the thumb transitions.
 	 */
@@ -271,37 +285,30 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 		};
 		Icon verticalSplit = new TransitionAwareIcon(oneTouchButton,
 				new TransitionAwareIcon.Delegate() {
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme) {
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
 						int fontSize = SubstanceSizeUtils
 								.getComponentFontSize(splitPane);
 						return SubstanceImageCreator.getArrowIcon(
-								SubstanceSizeUtils
-										.getSplitPaneArrowIconWidth(fontSize),
-								SubstanceSizeUtils
-										.getSplitPaneArrowIconHeight(fontSize),
-								SubstanceSizeUtils
-										.getArrowStrokeWidth(fontSize),
+								SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
+								SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
+								SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
 								SwingConstants.NORTH, scheme);
 					}
 				}, "substance.splitPane.left.vertical");
 		Icon horizontalSplit = new TransitionAwareIcon(oneTouchButton,
 				new TransitionAwareIcon.Delegate() {
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme) {
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
 						int fontSize = SubstanceSizeUtils
 								.getComponentFontSize(splitPane);
 						return SubstanceImageCreator.getArrowIcon(
-								SubstanceSizeUtils
-										.getSplitPaneArrowIconWidth(fontSize),
-								SubstanceSizeUtils
-										.getSplitPaneArrowIconHeight(fontSize),
-								SubstanceSizeUtils
-										.getArrowStrokeWidth(fontSize),
+								SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
+								SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
+								SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
 								SwingConstants.WEST, scheme);
 					}
 				}, "substance.splitPane.left.horizontal");
-		oneTouchButton
-				.setIcon(this.splitPane.getOrientation() == JSplitPane.VERTICAL_SPLIT ? verticalSplit
-						: horizontalSplit);
+		oneTouchButton.setIcon(this.splitPane.getOrientation() == JSplitPane.VERTICAL_SPLIT 
+				? verticalSplit : horizontalSplit);
 
 		oneTouchButton.putClientProperty(
 				SubstanceLookAndFeel.BUTTON_PAINT_NEVER_PROPERTY, Boolean.TRUE);
@@ -334,37 +341,30 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 		};
 		Icon verticalSplit = new TransitionAwareIcon(oneTouchButton,
 				new TransitionAwareIcon.Delegate() {
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme) {
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
 						int fontSize = SubstanceSizeUtils
 								.getComponentFontSize(splitPane);
 						return SubstanceImageCreator.getArrowIcon(
-								SubstanceSizeUtils
-										.getSplitPaneArrowIconWidth(fontSize),
-								SubstanceSizeUtils
-										.getSplitPaneArrowIconHeight(fontSize),
-								SubstanceSizeUtils
-										.getArrowStrokeWidth(fontSize),
+								SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
+								SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
+								SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
 								SwingConstants.SOUTH, scheme);
 					}
 				}, "substance.splitPane.right.vertical");
 		Icon horizontalSplit = new TransitionAwareIcon(oneTouchButton,
 				new TransitionAwareIcon.Delegate() {
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme) {
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
 						int fontSize = SubstanceSizeUtils
 								.getComponentFontSize(splitPane);
 						return SubstanceImageCreator.getArrowIcon(
-								SubstanceSizeUtils
-										.getSplitPaneArrowIconWidth(fontSize),
-								SubstanceSizeUtils
-										.getSplitPaneArrowIconHeight(fontSize),
-								SubstanceSizeUtils
-										.getArrowStrokeWidth(fontSize),
+								SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
+								SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
+								SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
 								SwingConstants.EAST, scheme);
 					}
 				}, "substance.splitPane.right.horizontal");
-		oneTouchButton
-				.setIcon(this.splitPane.getOrientation() == JSplitPane.VERTICAL_SPLIT ? verticalSplit
-						: horizontalSplit);
+		oneTouchButton.setIcon(this.splitPane.getOrientation() == JSplitPane.VERTICAL_SPLIT 
+				? verticalSplit : horizontalSplit);
 
 		oneTouchButton.putClientProperty(
 				SubstanceLookAndFeel.BUTTON_PAINT_NEVER_PROPERTY, Boolean.TRUE);
@@ -392,7 +392,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 			if (this.leftButton != null) {
 				this.leftButton.setIcon(new TransitionAwareIcon(
 						this.leftButton, new TransitionAwareIcon.Delegate() {
-							public Icon getColorSchemeIcon(
+							public HiDpiAwareIcon getColorSchemeIcon(
 									SubstanceColorScheme scheme) {
 								int fontSize = SubstanceSizeUtils
 										.getComponentFontSize(splitPane);
@@ -403,7 +403,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 												SubstanceSizeUtils
 														.getSplitPaneArrowIconHeight(fontSize),
 												SubstanceSizeUtils
-														.getArrowStrokeWidth(fontSize),
+														.getArrowStrokeWidth(fontSize) / 1.5f,
 												SwingConstants.NORTH, scheme);
 							}
 						}, "substance.splitPane.left.vertical"));
@@ -411,7 +411,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 			if (this.rightButton != null) {
 				this.rightButton.setIcon(new TransitionAwareIcon(
 						this.rightButton, new TransitionAwareIcon.Delegate() {
-							public Icon getColorSchemeIcon(
+							public HiDpiAwareIcon getColorSchemeIcon(
 									SubstanceColorScheme scheme) {
 								int fontSize = SubstanceSizeUtils
 										.getComponentFontSize(splitPane);
@@ -422,7 +422,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 												SubstanceSizeUtils
 														.getSplitPaneArrowIconHeight(fontSize),
 												SubstanceSizeUtils
-														.getArrowStrokeWidth(fontSize),
+														.getArrowStrokeWidth(fontSize) / 1.5f,
 												SwingConstants.SOUTH, scheme);
 							}
 						}, "substance.splitPane.right.vertical"));
@@ -431,7 +431,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 			if (this.leftButton != null) {
 				this.leftButton.setIcon(new TransitionAwareIcon(
 						this.leftButton, new TransitionAwareIcon.Delegate() {
-							public Icon getColorSchemeIcon(
+							public HiDpiAwareIcon getColorSchemeIcon(
 									SubstanceColorScheme scheme) {
 								int fontSize = SubstanceSizeUtils
 										.getComponentFontSize(splitPane);
@@ -442,7 +442,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 												SubstanceSizeUtils
 														.getSplitPaneArrowIconHeight(fontSize),
 												SubstanceSizeUtils
-														.getArrowStrokeWidth(fontSize),
+														.getArrowStrokeWidth(fontSize) / 1.5f,
 												SwingConstants.WEST, scheme);
 							}
 						}, "substance.splitPane.left.horizontal"));
@@ -450,7 +450,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 			if (this.rightButton != null) {
 				this.rightButton.setIcon(new TransitionAwareIcon(
 						this.rightButton, new TransitionAwareIcon.Delegate() {
-							public Icon getColorSchemeIcon(
+							public HiDpiAwareIcon getColorSchemeIcon(
 									SubstanceColorScheme scheme) {
 								int fontSize = SubstanceSizeUtils
 										.getComponentFontSize(splitPane);
@@ -461,7 +461,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 												SubstanceSizeUtils
 														.getSplitPaneArrowIconHeight(fontSize),
 												SubstanceSizeUtils
-														.getArrowStrokeWidth(fontSize),
+														.getArrowStrokeWidth(fontSize) / 1.5f,
 												SwingConstants.EAST, scheme);
 							}
 						}, "substance.splitPane.right.horizontal"));

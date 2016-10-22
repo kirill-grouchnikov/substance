@@ -64,6 +64,7 @@ import javax.swing.plaf.basic.BasicListUI;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
@@ -772,6 +773,7 @@ public class SubstanceListUI extends BasicListUI implements
 		BackgroundPaintingUtils.updateIfOpaque(g, c);
 
 		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
 		SubstanceStripingUtils.setup(c);
 		this.updateInfo = new UpdateOptimizationInfo(c);
 		this.paint(g2d, c);

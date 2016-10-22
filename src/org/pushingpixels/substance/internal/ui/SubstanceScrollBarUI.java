@@ -85,6 +85,7 @@ import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.SimplisticFillPainter;
 import org.pushingpixels.substance.internal.painter.SimplisticSoftBorderPainter;
@@ -395,9 +396,11 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 
 		paintTrackBackHorizontal(g, this.scrollbar, leftActiveButton,
 				rightActiveButton, width, height);
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		BufferedImage horizontalTrack = getTrackHorizontal(this.scrollbar,
 				width, height);
-		g.drawImage(horizontalTrack, 0, 0, null);
+		g.drawImage(horizontalTrack, 0, 0, horizontalTrack.getWidth() / scaleFactor,
+				horizontalTrack.getHeight() / scaleFactor, null);
 	}
 
 	/**
@@ -519,9 +522,11 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 
 		paintTrackBackVertical(g, this.scrollbar, topActiveButton,
 				bottomActiveButton, width, height);
-		BufferedImage horizontalTrack = getTrackVertical(this.scrollbar, width,
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		BufferedImage verticalTrack = getTrackVertical(this.scrollbar, width,
 				height);
-		g.drawImage(horizontalTrack, 0, 0, null);
+		g.drawImage(verticalTrack, 0, 0, verticalTrack.getWidth() / scaleFactor,
+				verticalTrack.getHeight() / scaleFactor, null);
 	}
 
 	/**
@@ -662,7 +667,9 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(baseLayer
 				.getWidth(), baseLayer.getHeight());
 		Graphics2D g2d = result.createGraphics();
-		g2d.drawImage(baseLayer, 0, 0, null);
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor,
+				baseLayer.getHeight() / 2, null);
 
 		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
 				.entrySet()) {
@@ -685,7 +692,8 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 							ColorSchemeAssociationKind.BORDER, activeState);
 			BufferedImage layer = getThumbVertical(this.scrollbar, width,
 					height, fillScheme, borderScheme);
-			g2d.drawImage(layer, 0, 0, null);
+			g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor,
+					layer.getHeight() / 2, null);
 		}
 
 		g2d.dispose();
@@ -801,7 +809,9 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(baseLayer
 				.getWidth(), baseLayer.getHeight());
 		Graphics2D g2d = result.createGraphics();
-		g2d.drawImage(baseLayer, 0, 0, null);
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor,
+				baseLayer.getHeight() / 2, null);
 
 		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
 				.entrySet()) {
@@ -826,7 +836,8 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 							ColorSchemeAssociationKind.BORDER, activeState);
 			BufferedImage layer = getThumbHorizontal(this.scrollbar, width,
 					height, fillScheme, borderScheme);
-			g2d.drawImage(layer, 0, 0, null);
+			g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor,
+					layer.getHeight() / 2, null);
 		}
 
 		g2d.dispose();
@@ -998,18 +1009,21 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		this.thumbModel.setSelected(this.thumbModel.isSelected()
 				|| this.isDragging);
 		this.thumbModel.setEnabled(c.isEnabled());
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		boolean isVertical = (this.scrollbar.getOrientation() == Adjustable.VERTICAL);
 		if (isVertical) {
 			Rectangle adjustedBounds = new Rectangle(thumbBounds.x,
 					thumbBounds.y, thumbBounds.width, thumbBounds.height);
 			BufferedImage thumbImage = this.getThumbVertical(adjustedBounds);
 			graphics.drawImage(thumbImage, adjustedBounds.x, adjustedBounds.y,
+					thumbImage.getWidth() / scaleFactor, thumbImage.getHeight() / scaleFactor,
 					null);
 		} else {
 			Rectangle adjustedBounds = new Rectangle(thumbBounds.x,
 					thumbBounds.y, thumbBounds.width, thumbBounds.height);
 			BufferedImage thumbImage = this.getThumbHorizontal(adjustedBounds);
 			graphics.drawImage(thumbImage, adjustedBounds.x, adjustedBounds.y,
+					thumbImage.getWidth() / scaleFactor, thumbImage.getHeight() / scaleFactor,
 					null);
 		}
 		graphics.dispose();

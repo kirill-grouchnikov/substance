@@ -644,11 +644,6 @@ public class Check extends JFrame {
 			}
 		});
 
-		JPanel fontSizePanel = FontSizePanel.getPanel();
-		JXStatusBar.Constraint fontSizePanelConstraints = new JXStatusBar.Constraint();
-		fontSizePanelConstraints.setFixedWidth(270);
-		statusBar.add(fontSizePanel, fontSizePanelConstraints);
-
 		JPanel alphaPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 0));
 
 		final JLabel alphaLabel = new JLabel("100%");
@@ -676,8 +671,8 @@ public class Check extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		final String vendor = System.getProperty("java.vm.vendor");
-		System.out.println(vendor);
+		 final String vendor = System.getProperty("java.vm.vendor");
+		    System.out.println(vendor);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				boolean hasLafSpecified = false;
@@ -707,10 +702,8 @@ public class Check extends JFrame {
 				}
 
 				SubstanceLookAndFeel.setToUseConstantThemesOnDialogs(true);
-				UIManager
-						.put(
-								SubstanceLookAndFeel.TABBED_PANE_CLOSE_BUTTONS_PROPERTY,
-								Boolean.TRUE);
+				UIManager.put(SubstanceLookAndFeel.TABBED_PANE_CLOSE_BUTTONS_PROPERTY,
+						Boolean.TRUE);
 				UIManager.put(SubstanceLookAndFeel.SHOW_EXTRA_WIDGETS,
 						Boolean.TRUE);
 				// try {
@@ -730,7 +723,7 @@ public class Check extends JFrame {
 						((JFrame) e.getComponent()).getRootPane().repaint();
 					}
 				});
-				c.setPreferredSize(new Dimension(820, 560));
+				c.setPreferredSize(new Dimension(1080, 800));
 				c.setMinimumSize(new Dimension(150, 100));
 				c.pack();
 				Dimension d = Toolkit.getDefaultToolkit().getScreenSize();

@@ -29,27 +29,57 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JRadioButton;
+import javax.swing.JToggleButton;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
-import javax.swing.plaf.basic.*;
+import javax.swing.plaf.basic.BasicButtonListener;
+import javax.swing.plaf.basic.BasicHTML;
+import javax.swing.plaf.basic.BasicRadioButtonUI;
 import javax.swing.text.View;
 
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.ComponentStateFacet;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
+import org.pushingpixels.substance.internal.utils.RolloverButtonListener;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
+import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
 
 /**
  * UI for radio buttons in <b>Substance </b> look and feel.
@@ -72,7 +102,7 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements
 	/**
 	 * Icons for all component states
 	 */
-	private static LazyResettableHashMap<Icon> icons = new LazyResettableHashMap<Icon>(
+	private static LazyResettableHashMap<HiDpiAwareIcon> icons = new LazyResettableHashMap<HiDpiAwareIcon>(
 			"SubstanceRadioButtonUI");
 
 	protected StateTransitionTracker stateTransitionTracker;
@@ -167,7 +197,7 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements
 	 *            Previous state of the checkbox.
 	 * @return Matching icon.
 	 */
-	private static Icon getIcon(JToggleButton button,
+	private static HiDpiAwareIcon getIcon(JToggleButton button,
 			StateTransitionTracker stateTransitionTracker) {
 		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
 				.getModelStateInfo();
@@ -201,9 +231,9 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements
 				baseFillColorScheme.getDisplayName(), baseMarkColorScheme
 						.getDisplayName(), baseBorderColorScheme
 						.getDisplayName(), visibility);
-		Icon iconBase = icons.get(keyBase);
+		HiDpiAwareIcon iconBase = icons.get(keyBase);
 		if (iconBase == null) {
-			iconBase = new ImageIcon(SubstanceImageCreator.getRadioButton(
+			iconBase = new HiDpiAwareIcon(SubstanceImageCreator.getRadioButton(
 					button, fillPainter, borderPainter, checkMarkSize,
 					currState, 0, baseFillColorScheme, baseMarkColorScheme,
 					baseBorderColorScheme, visibility));
@@ -248,9 +278,9 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements
 								.getDisplayName(), markColorScheme
 								.getDisplayName(), borderColorScheme
 								.getDisplayName(), visibility);
-				Icon iconLayer = icons.get(keyLayer);
+				HiDpiAwareIcon iconLayer = icons.get(keyLayer);
 				if (iconLayer == null) {
-					iconLayer = new ImageIcon(SubstanceImageCreator
+					iconLayer = new HiDpiAwareIcon(SubstanceImageCreator
 							.getRadioButton(button, fillPainter, borderPainter,
 									checkMarkSize, currState, 0,
 									fillColorScheme, markColorScheme,
@@ -263,7 +293,7 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements
 		}
 
 		g2d.dispose();
-		return new ImageIcon(result);
+		return new HiDpiAwareIcon(result);
 	}
 
 	/*
@@ -308,6 +338,9 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements
 	 */
 	@Override
 	public Icon getDefaultIcon() {
+		if (!(UIManager.getLookAndFeel() instanceof SubstanceLookAndFeel)) {
+			return null;
+		}
 		return SubstanceRadioButtonUI.getIcon(button,
 				this.stateTransitionTracker);
 	}
@@ -423,5 +456,19 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements
 	@Override
 	public StateTransitionTracker getTransitionTracker() {
 		return this.stateTransitionTracker;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
+	 * javax.swing.JComponent)
+	 */
+	@Override
+	public void update(Graphics g, JComponent c) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
+		super.update(g2d, c);
+		g2d.dispose();
 	}
 }

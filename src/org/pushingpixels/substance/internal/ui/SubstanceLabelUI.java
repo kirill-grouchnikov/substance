@@ -45,12 +45,15 @@ import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.plaf.basic.BasicLabelUI;
 import javax.swing.text.View;
 
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
+import org.pushingpixels.substance.internal.utils.icon.IsHiDpiAware;
 
 /**
  * UI for labels in <b>Substance</b> look and feel.
@@ -162,7 +165,14 @@ public class SubstanceLabelUI extends BasicLabelUI {
 		Graphics2D g2d = (Graphics2D) g.create();
 		BackgroundPaintingUtils.updateIfOpaque(g2d, c);
 		if (icon != null) {
-			icon.paintIcon(c, g2d, paintIconR.x, paintIconR.y);
+			g2d.translate(paintIconR.x, paintIconR.y);
+//			if ((icon instanceof IsHiDpiAware) &&
+//					((IsHiDpiAware) icon).isHiDpiAware() &&
+//					UIUtil.isRetina()) {
+//				g2d.scale(0.5f, 0.5f);
+//			}
+			icon.paintIcon(c, g2d, 0, 0);
+			g2d.translate(-paintIconR.x, -paintIconR.y);
 		}
 		ComponentState labelState = label.isEnabled() ? ComponentState.ENABLED
 				: ComponentState.DISABLED_UNSELECTED;
@@ -194,6 +204,9 @@ public class SubstanceLabelUI extends BasicLabelUI {
 		// failsafe for LAF change
 		if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
 			return;
-		this.paint(g, c);
+		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
+		this.paint(g2d, c);
+		g2d.dispose();
 	}
 }

@@ -40,6 +40,7 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.plaf.basic.BasicFormattedTextFieldUI;
 
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
@@ -240,5 +241,13 @@ public class SubstanceFormattedTextFieldUI extends BasicFormattedTextFieldUI
 	@Override
 	public StateTransitionTracker getTransitionTracker() {
 		return this.stateTransitionTracker;
+	}
+
+	@Override
+	public void update(Graphics g, JComponent c) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
+		super.update(g2d, c);
+		g2d.dispose();
 	}
 }

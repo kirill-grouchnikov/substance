@@ -76,8 +76,8 @@ public class CheckBoxMenuItemIcon implements Icon, UIResource {
 	/**
 	 * Icon cache to speed up the painting.
 	 */
-	private static LazyResettableHashMap<Icon> iconMap = new LazyResettableHashMap<Icon>(
-			"CheckBoxMenuItemIcon");
+	private static LazyResettableHashMap<HiDpiAwareIcon> iconMap =
+			new LazyResettableHashMap<HiDpiAwareIcon>("CheckBoxMenuItemIcon");
 
 	/**
 	 * Creates a new icon.
@@ -97,7 +97,7 @@ public class CheckBoxMenuItemIcon implements Icon, UIResource {
 	 * 
 	 * @return Icon to paint.
 	 */
-	private Icon getIconToPaint() {
+	private HiDpiAwareIcon getIconToPaint() {
 		if (this.menuItem == null)
 			return null;
 
@@ -140,9 +140,9 @@ public class CheckBoxMenuItemIcon implements Icon, UIResource {
 				baseFillColorScheme.getDisplayName(), baseMarkColorScheme
 						.getDisplayName(), baseBorderColorScheme
 						.getDisplayName(), visibility, isCheckMarkFadingOut);
-		Icon iconBase = iconMap.get(keyBase);
+		HiDpiAwareIcon iconBase = iconMap.get(keyBase);
 		if (iconBase == null) {
-			iconBase = new ImageIcon(SubstanceImageCreator.getCheckBox(
+			iconBase = new HiDpiAwareIcon(SubstanceImageCreator.getCheckBox(
 					this.menuItem, fillPainter, borderPainter, checkMarkSize,
 					currState, baseFillColorScheme, baseMarkColorScheme,
 					baseBorderColorScheme, visibility, isCheckMarkFadingOut));
@@ -187,9 +187,9 @@ public class CheckBoxMenuItemIcon implements Icon, UIResource {
 								.getDisplayName(), markColorScheme
 								.getDisplayName(), borderColorScheme
 								.getDisplayName(), visibility);
-				Icon iconLayer = iconMap.get(keyLayer);
+				HiDpiAwareIcon iconLayer = iconMap.get(keyLayer);
 				if (iconLayer == null) {
-					iconLayer = new ImageIcon(SubstanceImageCreator
+					iconLayer = new HiDpiAwareIcon(SubstanceImageCreator
 							.getCheckBox(this.menuItem, fillPainter,
 									borderPainter, checkMarkSize, currState,
 									fillColorScheme, markColorScheme,
@@ -203,7 +203,7 @@ public class CheckBoxMenuItemIcon implements Icon, UIResource {
 		}
 
 		g2d.dispose();
-		return new ImageIcon(result);
+		return new HiDpiAwareIcon(result);
 	}
 
 	/*

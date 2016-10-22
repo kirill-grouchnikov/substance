@@ -42,6 +42,7 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.utils.*;
@@ -761,5 +762,13 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 					+ Math.round(height / 2 - stringWidth / 2), fontSizer
 					.getHeight(), stringWidth);
 		}
+	}
+	
+	@Override
+	public void update(Graphics g, JComponent c) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
+		super.update(g2d, c);
+		g2d.dispose();
 	}
 }

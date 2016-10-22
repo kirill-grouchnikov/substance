@@ -30,6 +30,7 @@
 package org.pushingpixels.substance.internal.ui;
 
 import java.awt.AlphaComposite;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Map;
@@ -40,11 +41,14 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicButtonListener;
 
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
 
 /**
  * UI for check boxes in <b>Substance</b> look and feel.
@@ -70,7 +74,7 @@ public class SubstanceCheckBoxUI extends SubstanceRadioButtonUI {
 	/**
 	 * Hash map for storing icons.
 	 */
-	private static LazyResettableHashMap<Icon> icons = new LazyResettableHashMap<Icon>(
+	private static LazyResettableHashMap<HiDpiAwareIcon> icons = new LazyResettableHashMap<HiDpiAwareIcon>(
 			"SubstanceCheckBoxUI");
 
 	/**
@@ -162,9 +166,9 @@ public class SubstanceCheckBoxUI extends SubstanceRadioButtonUI {
 				baseFillColorScheme.getDisplayName(), baseMarkColorScheme
 						.getDisplayName(), baseBorderColorScheme
 						.getDisplayName(), visibility, isCheckMarkFadingOut);
-		Icon iconBase = icons.get(keyBase);
+		HiDpiAwareIcon iconBase = icons.get(keyBase);
 		if (iconBase == null) {
-			iconBase = new ImageIcon(SubstanceImageCreator.getCheckBox(button,
+			iconBase = new HiDpiAwareIcon(SubstanceImageCreator.getCheckBox(button,
 					fillPainter, borderPainter, checkMarkSize, currState,
 					baseFillColorScheme, baseMarkColorScheme,
 					baseBorderColorScheme, visibility, isCheckMarkFadingOut));
@@ -174,8 +178,8 @@ public class SubstanceCheckBoxUI extends SubstanceRadioButtonUI {
 			return iconBase;
 		}
 
-		BufferedImage result = SubstanceCoreUtilities.getBlankImage(iconBase
-				.getIconWidth(), iconBase.getIconHeight());
+		BufferedImage result = SubstanceCoreUtilities.getBlankImage(
+				iconBase.getIconWidth(), iconBase.getIconHeight());
 		Graphics2D g2d = result.createGraphics();
 		// draw the base layer
 		iconBase.paintIcon(button, g2d, 0, 0);
@@ -209,9 +213,9 @@ public class SubstanceCheckBoxUI extends SubstanceRadioButtonUI {
 								.getDisplayName(), markColorScheme
 								.getDisplayName(), borderColorScheme
 								.getDisplayName(), visibility);
-				Icon iconLayer = icons.get(keyLayer);
+				HiDpiAwareIcon iconLayer = icons.get(keyLayer);
 				if (iconLayer == null) {
-					iconLayer = new ImageIcon(SubstanceImageCreator
+					iconLayer = new HiDpiAwareIcon(SubstanceImageCreator
 							.getCheckBox(button, fillPainter, borderPainter,
 									checkMarkSize, currState, fillColorScheme,
 									markColorScheme, borderColorScheme,
@@ -224,7 +228,7 @@ public class SubstanceCheckBoxUI extends SubstanceRadioButtonUI {
 		}
 
 		g2d.dispose();
-		return new ImageIcon(result);
+		return new HiDpiAwareIcon(result);
 	}
 
 	/*
@@ -246,8 +250,25 @@ public class SubstanceCheckBoxUI extends SubstanceRadioButtonUI {
 	 */
 	@Override
 	public Icon getDefaultIcon() {
+		if (!(UIManager.getLookAndFeel() instanceof SubstanceLookAndFeel)) {
+			return null;
+		}
 		return SubstanceCheckBoxUI.getIcon(this.button,
 				this.stateTransitionTracker);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
+	 * javax.swing.JComponent)
+	 */
+	@Override
+	public void update(Graphics g, JComponent c) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
+		super.update(g2d, c);
+		g2d.dispose();
 	}
 
 	/**

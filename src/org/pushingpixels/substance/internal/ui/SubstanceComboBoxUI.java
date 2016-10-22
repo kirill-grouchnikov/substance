@@ -41,6 +41,7 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.text.JTextComponent;
 
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultComboBoxRenderer;
@@ -48,6 +49,7 @@ import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.*;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities.TextComponentAware;
 import org.pushingpixels.substance.internal.utils.border.SubstanceTextComponentBorder;
@@ -531,13 +533,9 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 					.getBaseOutline(
 							width,
 							height,
-							Math
-									.max(
-											0,
-											2.0f
-													* SubstanceSizeUtils
-															.getClassicButtonCornerRadius(componentFontSize)
-													- borderDelta), null,
+							Math.max(0, 2.0f * SubstanceSizeUtils.getClassicButtonCornerRadius(
+									componentFontSize) - borderDelta), 
+							null,
 							borderDelta);
 
 			graphics.setColor(SubstanceTextUtilities
@@ -552,18 +550,28 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 			int ih = icon.getIconHeight();
 			int origButtonWidth = SubstanceSizeUtils
 					.getScrollBarWidth(componentFontSize);
+			Graphics2D forIcon = (Graphics2D) graphics.create();
 			if (this.comboBox.getComponentOrientation().isLeftToRight()) {
 				int iconX = width - origButtonWidth - insets.right / 2
 						+ (origButtonWidth - iw) / 2;
 				int iconY = insets.top
 						+ (height - insets.top - insets.bottom - ih) / 2;
-				icon.paintIcon(this.comboBox, graphics, iconX, iconY);
+				forIcon.translate(iconX, iconY);
+				if (UIUtil.isRetina()) {
+					//forIcon.scale(0.5f, 0.5f);
+				}
+				icon.paintIcon(this.comboBox, forIcon, 0, 0);
 			} else {
 				int iconX = insets.left / 2 + (origButtonWidth - iw) / 2;
 				int iconY = insets.top
 						+ (height - insets.top - insets.bottom - ih) / 2;
-				icon.paintIcon(this.comboBox, graphics, iconX, iconY);
+				forIcon.translate(iconX, iconY);
+				if (UIUtil.isRetina()) {
+					//forIcon.scale(0.5f, 0.5f);
+				}
+				icon.paintIcon(this.comboBox, forIcon, 0, 0);
 			}
+			forIcon.dispose();
 		}
 
 		hasFocus = comboBox.hasFocus();
@@ -774,5 +782,19 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 						.getClassicButtonCornerRadius(SubstanceSizeUtils
 								.getComponentFontSize(this.comboBox)), null);
 		return contour.contains(me.getPoint());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
+	 * javax.swing.JComponent)
+	 */
+	@Override
+	public void update(Graphics g, JComponent c) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
+		this.paint(g2d, c);
+		g2d.dispose();
 	}
 }

@@ -52,7 +52,7 @@ public class JElectrifiedImageComponent extends JComponent {
 
 	private BufferedImage originalImage;
 
-	private static final int WIDTH = 500;
+	private static final int WIDTH = 720;
 
 	private BufferedImage electrifiedImage;
 

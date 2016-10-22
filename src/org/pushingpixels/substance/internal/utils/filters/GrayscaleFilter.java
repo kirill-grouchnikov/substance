@@ -60,7 +60,7 @@ public class GrayscaleFilter extends AbstractFilter {
 		getPixels(src, 0, 0, width, height, pixels);
 		grayScaleColor(pixels);
 		setPixels(dst, 0, 0, width, height, pixels);
-
+		
 		return dst;
 	}
 

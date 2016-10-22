@@ -32,6 +32,7 @@ package org.pushingpixels.substance.internal.ui;
 import java.awt.*;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicOptionPaneUI;
 
@@ -39,9 +40,11 @@ import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.animation.IconGlowTracker;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.icon.GlowingIcon;
+import org.pushingpixels.substance.internal.utils.icon.IsResizable;
 
 /**
  * UI for option panes in <b>Substance</b> look and feel.
@@ -107,14 +110,20 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
 			sideIcon = super.getIconForType(optionPane.getMessageType());
 
 		if (sideIcon != null) {
+			if (sideIcon instanceof IsResizable) {
+				int dimension = 32 * (UIUtil.isRetina() ? 2 : 1);
+				((IsResizable) sideIcon).setDimension(new Dimension(dimension, dimension));
+			}
 			if (!SubstanceLookAndFeel.isToUseConstantThemesOnDialogs()) {
 				sideIcon = SubstanceCoreUtilities.getThemedIcon(null, sideIcon);
 			}
 
 			this.substanceIconLabel = new OptionPaneLabel();
 			this.iconGlowTracker = new IconGlowTracker(substanceIconLabel);
-			this.substanceIconLabel.setIcon(new GlowingIcon(sideIcon,
-					this.iconGlowTracker));
+			GlowingIcon glowingIcon = new GlowingIcon(sideIcon,
+					this.iconGlowTracker);
+			this.substanceIconLabel.setIcon(glowingIcon);
+			this.substanceIconLabel.setBorder(new EmptyBorder(0, 8, 0, 8));
 
 			this.substanceIconLabel.setName("OptionPane.iconLabel");
 			this.substanceIconLabel.setVerticalAlignment(SwingConstants.TOP);

@@ -37,6 +37,7 @@ import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.*;
 
 /**
@@ -65,8 +66,8 @@ public class SubstanceBorder implements Border, UIResource {
 	/**
 	 * Cache of small border images.
 	 */
-	private static LazyResettableHashMap<BufferedImage> smallImageCache = new LazyResettableHashMap<BufferedImage>(
-			"SubstanceBorder");
+	private static LazyResettableHashMap<BufferedImage> smallImageCache =
+			new LazyResettableHashMap<BufferedImage>("SubstanceBorder");
 
 	/**
 	 * Creates a new border with dynamic insets (computed at the invocation time
@@ -180,7 +181,9 @@ public class SubstanceBorder implements Border, UIResource {
 				g2d.dispose();
 				smallImageCache.put(hashKey, result);
 			}
-			graphics.drawImage(result, x, y, null);
+			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+			graphics.drawImage(result, x, y, result.getWidth() / scaleFactor,
+					result.getHeight() / scaleFactor, null);
 		} else {
 			// for borders larger than 100000 pixels, use simple
 			// painting

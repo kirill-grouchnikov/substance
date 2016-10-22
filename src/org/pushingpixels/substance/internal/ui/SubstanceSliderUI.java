@@ -50,6 +50,7 @@ import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
 import org.pushingpixels.substance.internal.utils.*;
@@ -302,6 +303,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 				radius, borderDelta, borderThickness, fillColorScheme
 						.getDisplayName(), borderScheme.getDisplayName());
 
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		BufferedImage trackImage = trackCache.get(key);
 		if (trackImage == null) {
 			trackImage = SubstanceCoreUtilities.getBlankImage(width + 1,
@@ -325,7 +327,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 			cacheGraphics.dispose();
 		}
 
-		g2d.drawImage(trackImage, 0, 0, null);
+		g2d.drawImage(trackImage, 0, 0, trackImage.getWidth() / scaleFactor, trackImage.getHeight() / scaleFactor, null);
 
 		g2d.dispose();
 	}
@@ -480,15 +482,21 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 
 		Icon icon = this.getIcon();
 		if (this.slider.getOrientation() == JSlider.HORIZONTAL) {
-			if (icon != null)
-				icon.paintIcon(this.slider, graphics, -1, 0);
+			if (icon != null) {
+				graphics.translate(-2, 0);
+				icon.paintIcon(this.slider, graphics, 0, 0);
+			}
 		} else {
 			if (this.slider.getComponentOrientation().isLeftToRight()) {
-				if (icon != null)
-					icon.paintIcon(this.slider, graphics, 0, -1);
+				if (icon != null) {
+					graphics.translate(1, -1);
+					icon.paintIcon(this.slider, graphics, 0, 0);
+				}
 			} else {
-				if (icon != null)
-					icon.paintIcon(this.slider, graphics, 0, 1);
+				if (icon != null) {
+					graphics.translate(1, 1);
+					icon.paintIcon(this.slider, graphics, 0, 0);
+				}
 			}
 		}
 

@@ -31,9 +31,14 @@ package org.pushingpixels.substance.internal.utils.icon;
 
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.JMenu;
+import javax.swing.SwingConstants;
 import javax.swing.plaf.UIResource;
+
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 
 /**
  * Icon for the cascading {@link JMenu}s.
@@ -44,12 +49,12 @@ public class MenuArrowIcon implements Icon, UIResource {
 	/**
 	 * Icon for left-to-right {@link JMenu}s.
 	 */
-	private Icon ltrIcon;
+	private final Icon ltrIcon;
 
 	/**
 	 * Icon for right-to-left {@link JMenu}s.
 	 */
-	private Icon rtlIcon;
+	private final Icon rtlIcon;
 
 	/**
 	 * Creates the arrow icon for the specified menu.
@@ -82,17 +87,14 @@ public class MenuArrowIcon implements Icon, UIResource {
 		return this.ltrIcon.getIconWidth();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
-	 * int, int)
-	 */
-	public void paintIcon(Component c, Graphics g, int x, int y) {
+	@Override
+	public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
+		Graphics2D g2d = (Graphics2D) g.create();
 		if (c.getComponentOrientation().isLeftToRight()) {
-			this.ltrIcon.paintIcon(c, g, x, y);
+			this.ltrIcon.paintIcon(c, g2d, x, y);
 		} else {
-			this.rtlIcon.paintIcon(c, g, x, y);
+			this.rtlIcon.paintIcon(c, g2d, x, y);
 		}
+		g2d.dispose();
 	}
 }

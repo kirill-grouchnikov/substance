@@ -30,6 +30,7 @@
 package org.pushingpixels.substance.internal.utils;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -46,8 +47,8 @@ import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.MatteFillPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
@@ -55,6 +56,7 @@ import org.pushingpixels.substance.api.shaper.RectangularButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 
 /**
  * Delegate class for painting backgrounds of buttons in <b>Substance </b> look
@@ -128,6 +130,7 @@ public class PairwiseButtonBackgroundDelegate {
 		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
 				.getStateContributionMap();
 
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		if (currState.isDisabled() || (activeStates.size() == 1)) {
 			fullOpacity = baseLayer;
 		} else {
@@ -136,7 +139,8 @@ public class PairwiseButtonBackgroundDelegate {
 			Graphics2D g2fullOpacity = fullOpacity.createGraphics();
 
 			// draw the base layer
-			g2fullOpacity.drawImage(baseLayer, 0, 0, null);
+			g2fullOpacity.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor,
+					baseLayer.getHeight() / scaleFactor, null);
 
 			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
 					.entrySet()) {
@@ -159,7 +163,8 @@ public class PairwiseButtonBackgroundDelegate {
 
 				g2fullOpacity.setComposite(AlphaComposite.SrcOver
 						.derive(contribution));
-				g2fullOpacity.drawImage(layer, 0, 0, null);
+				g2fullOpacity.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor,
+						layer.getHeight() / scaleFactor, null);
 			}
 
 			g2fullOpacity.dispose();
@@ -193,7 +198,8 @@ public class PairwiseButtonBackgroundDelegate {
 			Graphics2D graphics = (Graphics2D) g.create();
 			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(button,
 					extraAlpha, g));
-			graphics.drawImage(fullOpacity, 0, 0, null);
+			graphics.drawImage(fullOpacity, 0, 0, fullOpacity.getWidth() / scaleFactor,
+					fullOpacity.getHeight() / scaleFactor, null);
 			graphics.dispose();
 		}
 	}
@@ -238,8 +244,6 @@ public class PairwiseButtonBackgroundDelegate {
 		Set<Side> openSides = toIgnoreOpenSides ? EnumSet.noneOf(Side.class)
 				: SubstanceCoreUtilities.getSides(button,
 						SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY);
-		// boolean noBorder = SubstanceCoreUtilities.isSpinnerButton(button);
-		// && !button.getParent().isEnabled();
 		boolean isBorderPainted = button.isBorderPainted();
 		boolean isContentAreaFilled = button.isContentAreaFilled();
 
@@ -285,8 +289,8 @@ public class PairwiseButtonBackgroundDelegate {
 					height);
 			Graphics2D finalGraphics = (Graphics2D) finalBackground
 					.getGraphics();
-			// finalGraphics.setColor(Color.red);
-			// finalGraphics.fillRect(0, 0, width, height);
+//			 finalGraphics.setColor(Color.red);
+//			 finalGraphics.fillRect(0, 0, width, height);
 			finalGraphics.translate(-deltaLeft, -deltaTop);
 			if (side != null) {
 				switch (side) {
@@ -297,7 +301,7 @@ public class PairwiseButtonBackgroundDelegate {
 							+ deltaTop + deltaBottom, width + deltaLeft
 							+ deltaRight, radius, null, borderDelta);
 
-					int translateY = height;
+					int translateY = finalBackground.getHeight();
 					if (SubstanceCoreUtilities.isScrollButton(button)) {
 						translateY += (1 + ((side == SubstanceConstants.Side.BOTTOM) ? 1
 								: -2));
@@ -305,7 +309,11 @@ public class PairwiseButtonBackgroundDelegate {
 					AffineTransform at = AffineTransform.getTranslateInstance(
 							0, translateY);
 					at.rotate(-Math.PI / 2);
+
+					int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+					finalGraphics.scale(1, 1);
 					finalGraphics.setTransform(at);
+					finalGraphics.scale(scaleFactor, scaleFactor);
 
 					if (isContentAreaFilled) {
 						fillPainter.paintContourBackground(finalGraphics,

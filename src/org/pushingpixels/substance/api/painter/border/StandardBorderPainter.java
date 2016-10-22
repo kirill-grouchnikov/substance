@@ -29,11 +29,25 @@
  */
 package org.pushingpixels.substance.api.painter.border;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.LinearGradientPaint;
+import java.awt.MultipleGradientPaint;
 import java.awt.MultipleGradientPaint.CycleMethod;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
+
+import javax.swing.JButton;
 
 import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceInternalArrowButton;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
  * The default border painter. This class is part of officially supported API.
@@ -68,7 +82,7 @@ public class StandardBorderPainter implements SubstanceBorderPainter {
 			Shape contour, Shape innerContour, SubstanceColorScheme borderScheme) {
 		if (contour == null)
 			return;
-
+		
 		Graphics2D graphics = (Graphics2D) g.create();
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);

@@ -37,6 +37,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.*;
 
 /**
@@ -284,8 +285,11 @@ public class SeparatorPainterUtils {
 			graphics.dispose();
 			cached.put(key, singleLine);
 		}
+		
 		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.drawImage(singleLine, 0, 0, null);
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		g2d.drawImage(singleLine, 0, 0, singleLine.getWidth() / scaleFactor,
+				singleLine.getHeight() / scaleFactor, null);
 		g2d.dispose();
 	}
 

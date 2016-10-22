@@ -61,6 +61,7 @@ import javax.swing.tree.TreePath;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.utils.LookUtils;
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
@@ -76,6 +77,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceStripingUtils;
+import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.internal.utils.icon.SubstanceIconFactory;
 import org.pushingpixels.trident.Timeline.TimelineState;
 import org.pushingpixels.trident.callback.TimelineCallback;
@@ -172,9 +174,9 @@ public class SubstanceTreeUI extends BasicTreeUI {
 			}
 		}
 
-		setExpandedIcon(new IconUIResource(SubstanceIconFactory.getTreeIcon(
+		setExpandedIcon(new HiDpiAwareIconUiResource(SubstanceIconFactory.getTreeIcon(
 				this.tree, false)));
-		setCollapsedIcon(new IconUIResource(SubstanceIconFactory.getTreeIcon(
+		setCollapsedIcon(new HiDpiAwareIconUiResource(SubstanceIconFactory.getTreeIcon(
 				this.tree, true)));
 
 		// instead of computing the cell renderer insets on
@@ -1056,6 +1058,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 				|| !tree.isOpaque();
 
 		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
 
 		SubstanceStripingUtils.setup(c);
 		if (initialPath != null && paintingEnumerator != null) {

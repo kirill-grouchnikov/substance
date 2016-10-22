@@ -47,6 +47,7 @@ import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.border.SubstanceTextComponentBorder;
 
@@ -105,7 +106,9 @@ public class SubstanceTextUtilities {
 
 		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c,
 				luminFactor, g));
-		graphics.drawImage(blurred, 0, 0, null);
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		graphics.drawImage(blurred, 0, 0, blurred.getWidth() / scaleFactor,
+				blurred.getHeight() / scaleFactor, null);
 		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c, g));
 
 		FontMetrics fm = graphics.getFontMetrics();

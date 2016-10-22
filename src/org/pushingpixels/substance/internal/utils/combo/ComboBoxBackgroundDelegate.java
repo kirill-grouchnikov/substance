@@ -51,6 +51,7 @@ import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
@@ -134,8 +135,9 @@ public class ComboBoxBackgroundDelegate {
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width,
 				height);
 		Graphics2D g2d = result.createGraphics();
+		int factor = UIUtil.isRetina() ? 2 : 1;
 		// draw the base layer
-		g2d.drawImage(layerBase, 0, 0, null);
+		g2d.drawImage(layerBase, 0, 0, layerBase.getWidth() / factor, layerBase.getHeight() / factor, null);
 		// System.out.println("\nPainting base state " + currState);
 
 		// draw the other active layers
@@ -170,7 +172,7 @@ public class ComboBoxBackgroundDelegate {
 							borderScheme, radius);
 					regularBackgrounds.put(key, layer);
 				}
-				g2d.drawImage(layer, 0, 0, null);
+				g2d.drawImage(layer, 0, 0, layer.getWidth() / factor, layer.getHeight() / factor, null);
 			}
 		}
 		g2d.dispose();
@@ -276,7 +278,9 @@ public class ComboBoxBackgroundDelegate {
 			Graphics2D graphics = (Graphics2D) g.create();
 			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(combo,
 					extraAlpha, g));
-			graphics.drawImage(bgImage, 0, y, null);
+			int factor = UIUtil.isRetina() ? 2 : 1;
+			graphics.drawImage(bgImage, 0, y, bgImage.getWidth() / 2, 
+					bgImage.getHeight() / 2, null);
 			graphics.dispose();
 		}
 	}

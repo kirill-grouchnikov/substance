@@ -34,6 +34,7 @@ import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.image.BufferedImage;
 
 import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
@@ -66,7 +67,7 @@ public class StandardFillPainter implements SubstanceFillPainter {
 		// Fill background
 		// long millis000 = System.nanoTime();
 
-		// graphics.clip(contour);
+//		graphics.clip(contour);
 		MultipleGradientPaint gradient = new LinearGradientPaint(0, 0, 0,
 				height, new float[] { 0.0f, 0.4999999f, 0.5f, 1.0f },
 				new Color[] { topFillColor, midFillColorTop,
@@ -107,6 +108,8 @@ public class StandardFillPainter implements SubstanceFillPainter {
 
 			// millis003 = System.nanoTime();
 
+			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+
 			BufferedImage reverseGhostContour = SubstanceCoreUtilities
 					.getBlankImage(width + 2 * kernelSize, height + 2
 							* kernelSize);
@@ -121,7 +124,9 @@ public class StandardFillPainter implements SubstanceFillPainter {
 			reverseGraphics.fillRect(0, kernelSize, width + 2 * kernelSize,
 					kernelSize + shineHeight);
 			reverseGraphics.setComposite(AlphaComposite.DstOut);
-			reverseGraphics.drawImage(blurredGhostContour, 0, 0, null);
+			reverseGraphics.drawImage(blurredGhostContour, 0, 0, 
+					blurredGhostContour.getWidth() / scaleFactor,
+					blurredGhostContour.getHeight() / scaleFactor, null);
 			// millis004 = System.nanoTime();
 
 			graphics.drawImage(reverseGhostContour, 0, 0, width - 1,
@@ -139,7 +144,9 @@ public class StandardFillPainter implements SubstanceFillPainter {
 			overGraphics.fillRect(kernelSize, kernelSize, kernelSize + width,
 					kernelSize + shineHeight);
 			overGraphics.setComposite(AlphaComposite.DstIn);
-			overGraphics.drawImage(blurredGhostContour, 0, 0, null);
+			overGraphics.drawImage(blurredGhostContour, 0, 0, 
+					blurredGhostContour.getWidth() / scaleFactor,
+					blurredGhostContour.getHeight() / scaleFactor, null);
 			// millis005 = System.nanoTime();
 
 			graphics.drawImage(overGhostContour, 0, 0, width - 1, shineHeight,

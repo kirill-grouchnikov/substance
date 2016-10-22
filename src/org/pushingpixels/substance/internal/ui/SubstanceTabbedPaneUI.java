@@ -29,16 +29,48 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ComponentUI;
@@ -50,19 +82,42 @@ import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
-import org.pushingpixels.substance.api.*;
-import org.pushingpixels.substance.api.SubstanceConstants.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.ComponentStateFacet;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.SubstanceConstants.TabCloseKind;
+import org.pushingpixels.substance.api.SubstanceConstants.TabContentPaneBorderKind;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
-import org.pushingpixels.substance.api.tabbed.*;
+import org.pushingpixels.substance.api.tabbed.BaseTabCloseListener;
+import org.pushingpixels.substance.api.tabbed.MultipleTabCloseListener;
+import org.pushingpixels.substance.api.tabbed.TabCloseCallback;
+import org.pushingpixels.substance.api.tabbed.TabCloseListener;
+import org.pushingpixels.substance.api.tabbed.VetoableMultipleTabCloseListener;
+import org.pushingpixels.substance.api.tabbed.VetoableTabCloseListener;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker.RepaintCallback;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker.StateContributionInfo;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
+import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
+import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 import org.pushingpixels.substance.internal.utils.scroll.SubstanceScrollButton;
 import org.pushingpixels.trident.Timeline;
@@ -901,8 +956,9 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				if (isSelected) {
 					int fw = backgroundImage.getWidth();
 					int fh = backgroundImage.getHeight();
+					int factor = UIUtil.isRetina() ? 2 : 1;
 					BufferedImage fade = SubstanceCoreUtilities.getBlankImage(
-							fw, fh);
+							fw / factor, fh / factor);
 					Graphics2D fadeGraphics = fade.createGraphics();
 					fadeGraphics.setColor(tabColor);
 					fadeGraphics.fillRect(0, 0, fw, fh);
@@ -912,10 +968,13 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 								tabPane, x, y, fw, fh);
 						fadeGraphics.translate(x, y);
 					}
-					fadeGraphics.drawImage(SubstanceTabbedPaneUI
+					BufferedImage background = SubstanceTabbedPaneUI
 							.getTabBackground(tabPane, width, height,
 									tabPlacement, colorScheme, borderScheme,
-									true), 0, 0, null);
+									true);
+					int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+					fadeGraphics.drawImage(background, 0, 0, background.getWidth() / scaleFactor,
+							background.getHeight() / scaleFactor, null);
 
 					backgroundImage = SubstanceCoreUtilities
 							.blendImagesVertical(backgroundImage, fade, skin
@@ -966,7 +1025,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		BufferedImage result = SubstanceTabbedPaneUI.closeButtonMap.get(key);
 		if (result == null) {
 			result = SubstanceCoreUtilities.getBlankImage(width, height);
-			Graphics2D finalGraphics = (Graphics2D) result.getGraphics();
+			Graphics2D finalGraphics = (Graphics2D) result.getGraphics().create();
 
 			if (toPaintBorder) {
 				GeneralPath contour = SubstanceOutlineUtilities.getBaseOutline(
@@ -995,8 +1054,10 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 
 			Icon closeIcon = SubstanceImageCreator.getCloseIcon(iconSize,
 					markScheme, markScheme);
-			closeIcon.paintIcon(tabPane, finalGraphics, delta / 2, delta / 2);
+			finalGraphics.translate(delta / 2, delta / 2);
+			closeIcon.paintIcon(tabPane, finalGraphics, 0, 0);
 
+			finalGraphics.dispose();
 			SubstanceTabbedPaneUI.closeButtonMap.put(key, result);
 		}
 		return result;
@@ -1029,6 +1090,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				.getColorScheme(this.tabPane, tabIndex,
 						ColorSchemeAssociationKind.TAB, currState);
 		BufferedImage fullOpacity = null;
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 
 		// check if have windowModified property
 		Component comp = this.tabPane.getComponentAt(tabIndex);
@@ -1056,10 +1118,12 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			fullOpacity = SubstanceCoreUtilities.getBlankImage(w, h);
 			Graphics2D g2d = fullOpacity.createGraphics();
 			if (cyclePos < 1.0f)
-				g2d.drawImage(layer1, 0, 0, null);
+				g2d.drawImage(layer1, 0, 0, layer1.getWidth() / scaleFactor,
+						layer1.getHeight() / scaleFactor, null);
 			if (cyclePos > 0.0f) {
 				g2d.setComposite(AlphaComposite.SrcOver.derive(cyclePos));
-				g2d.drawImage(layer2, 0, 0, null);
+				g2d.drawImage(layer2, 0, 0, layer2.getWidth() / scaleFactor,
+						layer2.getHeight() / scaleFactor, null);
 			}
 			g2d.dispose();
 		} else {
@@ -1076,7 +1140,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				fullOpacity = SubstanceCoreUtilities.getBlankImage(w, h);
 				Graphics2D g2d = fullOpacity.createGraphics();
 				// draw the base layer
-				g2d.drawImage(layerBase, 0, 0, null);
+				g2d.drawImage(layerBase, 0, 0, layerBase.getWidth() / scaleFactor,
+						layerBase.getHeight() / scaleFactor, null);
 
 				// draw the other active layers
 				for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : modelStateInfo
@@ -1104,7 +1169,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 										tabPlacement,
 										SubstanceConstants.Side.BOTTOM,
 										fillScheme, borderScheme);
-						g2d.drawImage(layer, 0, 0, null);
+						g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor,
+								layer.getHeight() / scaleFactor, null);
 					}
 				}
 			}
@@ -1141,7 +1207,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 
 		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(
 				this.tabPane, finalAlpha, g));
-		graphics.drawImage(fullOpacity, x, y, null);
+		graphics.drawImage(fullOpacity, x, y, fullOpacity.getWidth() / scaleFactor,
+				fullOpacity.getHeight() / scaleFactor, null);
 
 		// Check if requested to paint close buttons.
 		if (SubstanceCoreUtilities.hasCloseButton(this.tabPane, tabIndex)
@@ -1200,12 +1267,14 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 									colorScheme2, baseMarkScheme);
 
 					if (cyclePos < 1.0f) {
-						graphics.drawImage(layer1, orig.x, orig.y, null);
+						graphics.drawImage(layer1, orig.x, orig.y, layer1.getWidth() / scaleFactor,
+								layer1.getHeight() / scaleFactor, null);
 					}
 					if (cyclePos > 0.0f) {
 						graphics.setComposite(AlphaComposite.SrcOver
 								.derive(cyclePos));
-						graphics.drawImage(layer2, orig.x, orig.y, null);
+						graphics.drawImage(layer2, orig.x, orig.y, layer1.getWidth() / scaleFactor,
+								layer1.getHeight() / scaleFactor, null);
 					}
 				} else {
 					BufferedImage layerBase = SubstanceTabbedPaneUI
@@ -1216,13 +1285,15 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 					if ((modelStateInfo == null)
 							|| currState.isDisabled()
 							|| (modelStateInfo.getStateContributionMap().size() == 1)) {
-						graphics.drawImage(layerBase, orig.x, orig.y, null);
+						graphics.drawImage(layerBase, orig.x, orig.y, layerBase.getWidth() / scaleFactor,
+								layerBase.getHeight() / scaleFactor, null);
 					} else {
 						BufferedImage complete = SubstanceCoreUtilities
 								.getBlankImage(orig.width, orig.height);
 						Graphics2D g2d = complete.createGraphics();
 						// draw the base layer
-						g2d.drawImage(layerBase, 0, 0, null);
+						g2d.drawImage(layerBase, 0, 0, layerBase.getWidth() / scaleFactor,
+								layerBase.getHeight() / scaleFactor, null);
 
 						// draw the other active layers
 						for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : modelStateInfo
@@ -1251,11 +1322,13 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 												orig.width, orig.height,
 												toPaintCloseBorder, fillScheme,
 												markScheme);
-								g2d.drawImage(layer, 0, 0, null);
+								g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor,
+										layer.getHeight() / scaleFactor, null);
 							}
 						}
 						g2d.dispose();
-						graphics.drawImage(complete, orig.x, orig.y, null);
+						graphics.drawImage(complete, orig.x, orig.y, complete.getWidth() / scaleFactor,
+								complete.getHeight() / scaleFactor, null);
 					}
 				}
 			}
@@ -1302,7 +1375,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		SubstanceScrollButton ssb = new SubstanceScrollButton(direction);
 		Icon icon = new TransitionAwareIcon(ssb,
 				new TransitionAwareIcon.Delegate() {
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme) {
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
 						// fix for defect 279 - tab pane might not yet have the
 						// font installed.
 						int fontSize = SubstanceSizeUtils
@@ -2703,6 +2776,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		if (icon == null)
 			return;
 
+		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.translate(iconRect.x, iconRect.y);
 		if (SubstanceCoreUtilities.useThemedDefaultIcon(this.tabPane)) {
 			ComponentState currState = this.getTabState(tabIndex);
 			StateTransitionTracker tabTracker = stateTransitionMultiTracker
@@ -2714,8 +2789,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 								.isFacetActive(ComponentStateFacet.SELECTION)
 						|| currState.isDisabled()) {
 					// use the original (full color or disabled) icon
-					super.paintIcon(g, tabPlacement, tabIndex, icon, iconRect,
-							isSelected);
+					icon.paintIcon(this.tabPane, g2d, 0, 0);
 					return;
 				}
 			}
@@ -2723,27 +2797,19 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			Icon themed = SubstanceCoreUtilities.getThemedIcon(this.tabPane,
 					tabIndex, icon);
 			if (tabTracker == null) {
-				super.paintIcon(g, tabPlacement, tabIndex, themed, iconRect,
-						isSelected);
+				themed.paintIcon(this.tabPane, g2d, 0, 0);
 			} else {
-				Graphics2D g2d = (Graphics2D) g.create();
-				super.paintIcon(g2d, tabPlacement, tabIndex, icon, iconRect,
-						isSelected);
-				g2d
-						.setComposite(LafWidgetUtilities
-								.getAlphaComposite(
-										this.tabPane,
-										1.0f - tabTracker
-												.getFacetStrength(ComponentStateFacet.ROLLOVER),
-										g2d));
-				super.paintIcon(g2d, tabPlacement, tabIndex, themed, iconRect,
-						isSelected);
-				g2d.dispose();
+				icon.paintIcon(this.tabPane, g2d, 0, 0);
+				g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
+						this.tabPane,
+						1.0f - tabTracker.getFacetStrength(ComponentStateFacet.ROLLOVER),
+						g2d));
+				themed.paintIcon(this.tabPane, g2d, 0, 0);
 			}
 		} else {
-			super.paintIcon(g, tabPlacement, tabIndex, icon, iconRect,
-					isSelected);
+			icon.paintIcon(this.tabPane, g2d, 0, 0);
 		}
+		g2d.dispose();
 	}
 
 	@Override
@@ -2793,5 +2859,13 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		modifiedTimeline.addCallback(new TabRepaintCallback(tabPane, tabIndex));
 		modifiedTimeline.playLoop(RepeatBehavior.REVERSE);
 		modifiedTimelines.put(tabComponent, modifiedTimeline);
+	}
+
+	@Override
+	public void update(Graphics g, JComponent c) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
+		super.update(g2d, c);
+		g2d.dispose();
 	}
 }

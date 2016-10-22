@@ -29,6 +29,7 @@
  */
 package org.pushingpixels.substance.internal.utils.menu;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -59,8 +60,8 @@ import javax.swing.text.View;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceConstants.MenuGutterFillKind;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
@@ -747,12 +748,11 @@ public class MenuUtilities {
 								.getUI();
 						StateTransitionTracker stateTransitionTracker = transitionAwareUI
 								.getTransitionTracker();
-						float rolloverAmount = Math
-								.max(
-										stateTransitionTracker
-												.getFacetStrength(ComponentStateFacet.ROLLOVER),
-										stateTransitionTracker
-												.getFacetStrength(ComponentStateFacet.ARM));
+						float rolloverAmount = Math.max(
+								stateTransitionTracker
+										.getFacetStrength(ComponentStateFacet.ROLLOVER),
+								stateTransitionTracker
+										.getFacetStrength(ComponentStateFacet.ARM));
 						if (rolloverAmount > 0) {
 							themed.paintIcon(menuItem, g2d, mli.iconRect.x,
 									mli.iconRect.y);
@@ -764,13 +764,8 @@ public class MenuUtilities {
 							g2d.setComposite(LafWidgetUtilities
 									.getAlphaComposite(menuItem, g));
 						} else {
-							// if (model.isRollover() || model.isArmed()) {
-							// icon.paintIcon(menuItem, g2d, mli.iconRect.x,
-							// mli.iconRect.y);
-							// } else {
 							themed.paintIcon(menuItem, g2d, mli.iconRect.x,
 									mli.iconRect.y);
-							// }
 						}
 					}
 				}
@@ -778,10 +773,9 @@ public class MenuUtilities {
 		}
 
 		// Paint the Arrow
-		if (arrowIcon != null) {
-			if (useCheckAndArrow(menuItem))
-				arrowIcon.paintIcon(menuItem, graphics, mli.arrowIconRect.x,
-						mli.arrowIconRect.y);
+		if ((arrowIcon != null) && useCheckAndArrow(menuItem)) {
+			graphics.translate(mli.arrowIconRect.x, mli.arrowIconRect.y);
+			arrowIcon.paintIcon(menuItem, graphics, 0, 0);
 		}
 		graphics.dispose();
 
@@ -817,10 +811,8 @@ public class MenuUtilities {
 	 *            Menu item.
 	 */
 	private static void paintBackground(Graphics g, JMenuItem menuItem) {
-		int textOffset = MenuUtilities.getTextOffset(menuItem, menuItem
-				.getParent());
-		SubstanceMenuBackgroundDelegate
-				.paintBackground(g, menuItem, textOffset);
+		int textOffset = MenuUtilities.getTextOffset(menuItem, menuItem.getParent());
+		SubstanceMenuBackgroundDelegate.paintBackground(g, menuItem, textOffset);
 	}
 
 	/**

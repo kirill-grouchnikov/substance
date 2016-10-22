@@ -14,17 +14,41 @@
 
 package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.AWTException;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dialog;
+import java.awt.Frame;
+import java.awt.Graphics2D;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Robot;
+import java.awt.Transparency;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.security.AccessControlException;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.UIManager;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
-import javax.swing.plaf.IconUIResource;
 
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
+import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 
 /**
@@ -297,11 +321,11 @@ public class ColorPicker extends AbstractColorChooserPanel {
 		pickerButton.setIcon(new TransitionAwareIcon(pickerButton,
 				new TransitionAwareIcon.Delegate() {
 					@Override
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme) {
-						return new IconUIResource(SubstanceImageCreator
-								.getSearchIcon(15, scheme, pickerButton
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
+						return SubstanceImageCreator
+								.getSearchIconUiResource(15, scheme, pickerButton
 										.getComponentOrientation()
-										.isLeftToRight()));
+										.isLeftToRight());
 					}
 				}, "ColorChooser.colorPickerIcon"));
 	}

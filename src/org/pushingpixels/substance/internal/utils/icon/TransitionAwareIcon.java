@@ -65,7 +65,7 @@ public class TransitionAwareIcon implements Icon {
 		 *            Color scheme.
 		 * @return Icon that matches the specified scheme.
 		 */
-		public Icon getColorSchemeIcon(SubstanceColorScheme scheme);
+		public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme);
 	}
 
 	public static interface ColorSchemeAssociationKindDelegate {
@@ -103,8 +103,8 @@ public class TransitionAwareIcon implements Icon {
 	 * is that the {@link #delegate} returns an icon that paints the same for
 	 * the same parameters.
 	 */
-	private static LazyResettableHashMap<Icon> iconMap = new LazyResettableHashMap<Icon>(
-			"TransitionAwareIcon");
+	private static LazyResettableHashMap<HiDpiAwareIcon> iconMap =
+			new LazyResettableHashMap<HiDpiAwareIcon>("TransitionAwareIcon");
 
 	private int iconWidth;
 
@@ -141,14 +141,13 @@ public class TransitionAwareIcon implements Icon {
 		this.delegate = delegate;
 		this.colorSchemeAssociationKindDelegate = colorSchemeAssociationKindDelegate;
 		this.uniqueIconTypeId = uniqueIconTypeId;
-		this.iconWidth = this.delegate.getColorSchemeIcon(
+		
+		HiDpiAwareIcon markEnabledIcon = this.delegate.getColorSchemeIcon(
 				SubstanceColorSchemeUtilities
-						.getColorScheme(comp, ColorSchemeAssociationKind.MARK,
-								ComponentState.ENABLED)).getIconWidth();
-		this.iconHeight = this.delegate.getColorSchemeIcon(
-				SubstanceColorSchemeUtilities
-						.getColorScheme(comp, ColorSchemeAssociationKind.MARK,
-								ComponentState.ENABLED)).getIconHeight();
+				.getColorScheme(comp, ColorSchemeAssociationKind.MARK,
+						ComponentState.ENABLED));
+		this.iconWidth = markEnabledIcon.getIconWidth();
+		this.iconHeight = markEnabledIcon.getIconHeight();
 	}
 
 	/**
@@ -184,9 +183,9 @@ public class TransitionAwareIcon implements Icon {
 				this.uniqueIconTypeId, SubstanceSizeUtils
 						.getComponentFontSize(this.comp), baseScheme
 						.getDisplayName(), baseAlpha);
-		Icon layerBase = iconMap.get(keyBase);
+		HiDpiAwareIcon layerBase = iconMap.get(keyBase);
 		if (layerBase == null) {
-			Icon baseFullOpacity = this.delegate.getColorSchemeIcon(baseScheme);
+			HiDpiAwareIcon baseFullOpacity = this.delegate.getColorSchemeIcon(baseScheme);
 			if (baseAlpha == 1.0f) {
 				layerBase = baseFullOpacity;
 				iconMap.put(keyBase, layerBase);
@@ -198,7 +197,7 @@ public class TransitionAwareIcon implements Icon {
 				g2base.setComposite(AlphaComposite.SrcOver.derive(baseAlpha));
 				baseFullOpacity.paintIcon(this.comp, g2base, 0, 0);
 				g2base.dispose();
-				layerBase = new ImageIcon(baseImage);
+				layerBase = new HiDpiAwareIcon(baseImage);
 				iconMap.put(keyBase, layerBase);
 			}
 		}
@@ -239,9 +238,9 @@ public class TransitionAwareIcon implements Icon {
 						this.uniqueIconTypeId, SubstanceSizeUtils
 								.getComponentFontSize(this.comp), scheme
 								.getDisplayName(), alpha);
-				Icon layer = iconMap.get(key);
+				HiDpiAwareIcon layer = iconMap.get(key);
 				if (layer == null) {
-					Icon fullOpacity = this.delegate.getColorSchemeIcon(scheme);
+					HiDpiAwareIcon fullOpacity = this.delegate.getColorSchemeIcon(scheme);
 					if (alpha == 1.0f) {
 						layer = fullOpacity;
 						iconMap.put(key, layer);
@@ -254,7 +253,7 @@ public class TransitionAwareIcon implements Icon {
 								.derive(alpha));
 						fullOpacity.paintIcon(this.comp, g2layer, 0, 0);
 						g2layer.dispose();
-						layer = new ImageIcon(image);
+						layer = new HiDpiAwareIcon(image);
 						iconMap.put(key, layer);
 					}
 				}
@@ -262,7 +261,7 @@ public class TransitionAwareIcon implements Icon {
 			}
 		}
 		g2d.dispose();
-		return new ImageIcon(result);
+		return new HiDpiAwareIcon(result);
 	}
 
 	/*

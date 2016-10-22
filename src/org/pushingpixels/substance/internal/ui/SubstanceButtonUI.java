@@ -43,12 +43,14 @@ import javax.swing.text.View;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.*;
 import org.pushingpixels.substance.internal.utils.*;
 import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
 import org.pushingpixels.substance.internal.utils.icon.GlowingIcon;
+import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.Timeline.RepeatBehavior;
 import org.pushingpixels.trident.swing.SwingRepaintCallback;
@@ -416,31 +418,38 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 		// 2. The themed version of 1.
 		// 3. The glowing version of 1.
 		AbstractButton b = (AbstractButton) c;
-		Icon originalIcon = SubstanceCoreUtilities.getOriginalIcon(b, b
-				.getIcon());
+		Icon originalIcon = SubstanceCoreUtilities.getOriginalIcon(b, b.getIcon());
 		Icon themedIcon = (!(b instanceof JRadioButton)
-				&& !(b instanceof JCheckBox) && SubstanceCoreUtilities
-				.useThemedDefaultIcon(b)) ? SubstanceCoreUtilities
-				.getThemedIcon(b, originalIcon) : originalIcon;
+				&& !(b instanceof JCheckBox) 
+				&& SubstanceCoreUtilities.useThemedDefaultIcon(b)) 
+					? SubstanceCoreUtilities.getThemedIcon(b, originalIcon) : originalIcon;
 
 		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(b, g));
 		float activeAmount = this.substanceVisualStateTracker
 				.getStateTransitionTracker().getActiveStrength();
+		graphics.translate(iconRect.x, iconRect.y);
 		if (activeAmount >= 0.0f) {
 			if (AnimationConfigurationManager.getInstance().isAnimationAllowed(
 					AnimationFacet.ICON_GLOW, b)
 					&& this.substanceVisualStateTracker
-							.getStateTransitionTracker().getIconGlowTracker()
-							.isPlaying()) {
-				this.glowingIcon.paintIcon(b, graphics, iconRect.x, iconRect.y);
+							.getStateTransitionTracker().getIconGlowTracker().isPlaying()) {
+				this.glowingIcon.paintIcon(b, graphics, 0, 0);
 			} else {
-				themedIcon.paintIcon(b, graphics, iconRect.x, iconRect.y);
+				themedIcon.paintIcon(b, graphics, 0, 0);
 				graphics.setComposite(LafWidgetUtilities.getAlphaComposite(b,
 						activeAmount, g));
-				originalIcon.paintIcon(b, graphics, iconRect.x, iconRect.y);
+				if (originalIcon instanceof HiDpiAwareIcon) {
+					int factor = ((HiDpiAwareIcon) originalIcon).getFactor();
+					graphics.scale(1.0f / factor, 1.0f / factor);
+				}
+				originalIcon.paintIcon(b, graphics, 0, 0);
 			}
 		} else {
-			originalIcon.paintIcon(b, graphics, iconRect.x, iconRect.y);
+			if (originalIcon instanceof HiDpiAwareIcon) {
+				int factor = ((HiDpiAwareIcon) originalIcon).getFactor();
+				graphics.scale(1.0f / factor, 1.0f / factor);
+			}
+			originalIcon.paintIcon(b, graphics, 0, 0);
 		}
 		graphics.dispose();
 	}
@@ -488,7 +497,10 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 	 */
 	@Override
 	public void update(Graphics g, JComponent c) {
-		this.paint(g, c);
+		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
+		this.paint(g2d, c);
+		g2d.dispose();
 	}
 
 	@Override

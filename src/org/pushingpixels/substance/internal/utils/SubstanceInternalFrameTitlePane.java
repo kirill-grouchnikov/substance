@@ -29,24 +29,42 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.LayoutManager;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JInternalFrame;
 import javax.swing.JInternalFrame.JDesktopIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.MenuBarUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.colorscheme.ShiftColorScheme;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
 import org.pushingpixels.substance.internal.ui.SubstanceMenuBarUI;
+import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.utils.icon.SubstanceIconFactory;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 
@@ -414,7 +432,7 @@ public class SubstanceInternalFrameTitlePane extends
 
 		Icon restoreIcon = new TransitionAwareIcon(this.maxButton,
 				new TransitionAwareIcon.Delegate() {
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme) {
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
 						return SubstanceIconFactory
 								.getTitlePaneIcon(
 										SubstanceIconFactory.IconKind.RESTORE,
@@ -428,7 +446,7 @@ public class SubstanceInternalFrameTitlePane extends
 				}, "substance.internalFrame.restoreIcon");
 		Icon maximizeIcon = new TransitionAwareIcon(this.maxButton,
 				new TransitionAwareIcon.Delegate() {
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme) {
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
 						return SubstanceIconFactory
 								.getTitlePaneIcon(
 										SubstanceIconFactory.IconKind.MAXIMIZE,
@@ -442,7 +460,7 @@ public class SubstanceInternalFrameTitlePane extends
 				}, "substance.internalFrame.maxIcon");
 		Icon minimizeIcon = new TransitionAwareIcon(this.iconButton,
 				new TransitionAwareIcon.Delegate() {
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme) {
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
 						return SubstanceIconFactory
 								.getTitlePaneIcon(
 										SubstanceIconFactory.IconKind.MINIMIZE,
@@ -456,7 +474,7 @@ public class SubstanceInternalFrameTitlePane extends
 				}, "substance.internalFrame.minIcon");
 		Icon closeIcon = new TransitionAwareIcon(this.closeButton,
 				new TransitionAwareIcon.Delegate() {
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme) {
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
 						return SubstanceIconFactory
 								.getTitlePaneIcon(
 										SubstanceIconFactory.IconKind.CLOSE,

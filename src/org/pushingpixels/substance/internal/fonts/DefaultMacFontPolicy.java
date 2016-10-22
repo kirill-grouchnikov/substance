@@ -33,6 +33,7 @@ import java.awt.Font;
 
 import javax.swing.UIDefaults;
 
+import org.pushingpixels.lafwidget.utils.LookUtils;
 import org.pushingpixels.substance.api.fonts.FontPolicy;
 import org.pushingpixels.substance.api.fonts.FontSet;
 
@@ -49,8 +50,10 @@ public class DefaultMacFontPolicy implements FontPolicy {
 	 * javax.swing.UIDefaults)
 	 */
 	public FontSet getFontSet(String lafName, UIDefaults table) {
-		Font controlFont = new Font("Lucida Grande", Font.PLAIN, 13);
-		Font menuFont = table == null ? new Font("Lucida Grande", Font.PLAIN,
+		String fontFamily = LookUtils.IS_OS_MAC_EL_CAPITAN ? "San Francisco"
+			: (LookUtils.IS_OS_MAC_YOSEMITE ? "Helvetica Neue" : "Lucida Grande"); 
+		Font controlFont = new Font(fontFamily, Font.PLAIN, 13);
+		Font menuFont = table == null ? new Font(fontFamily, Font.PLAIN,
 				14) : table.getFont("Menu.font");
 		Font titleFont = menuFont;
 		Font messageFont = table == null ? controlFont : table

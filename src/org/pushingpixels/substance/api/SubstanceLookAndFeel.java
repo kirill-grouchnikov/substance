@@ -55,12 +55,14 @@ import org.pushingpixels.substance.api.skin.SkinChangeListener;
 import org.pushingpixels.substance.api.skin.SkinInfo;
 import org.pushingpixels.substance.api.tabbed.BaseTabCloseListener;
 import org.pushingpixels.substance.api.tabbed.TabCloseCallback;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.contrib.jgoodies.looks.common.ShadowPopupFactory;
 import org.pushingpixels.substance.internal.fonts.FontPolicies;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.plugin.SubstanceSkinPlugin;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIconUiResource;
 
 /**
  * <p>
@@ -1389,7 +1391,7 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 
 		initFontDefaults(table);
 		this.skin.addCustomEntriesToTable(table);
-	}
+    }
 
 	/**
 	 * Sets the {@link FontPolicy} to be used with Substance family. If the
@@ -2272,14 +2274,16 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 				ComponentState.DISABLED_UNSELECTED);
 		if (alpha < 1.0f) {
 			BufferedImage intermediate = SubstanceCoreUtilities.getBlankImage(
-					result.getWidth(), result.getHeight());
+					icon.getIconWidth(), icon.getIconHeight());
 			Graphics2D g2d = intermediate.createGraphics();
 			g2d.setComposite(AlphaComposite.SrcOver.derive(alpha));
-			g2d.drawImage(result, 0, 0, null);
+			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+			g2d.drawImage(result, 0, 0, result.getWidth() / scaleFactor, 
+					result.getHeight() / scaleFactor, null);
 			g2d.dispose();
 			result = intermediate;
 		}
 
-		return new IconUIResource(new ImageIcon(result));
+		return new HiDpiAwareIconUiResource(result);
 	}
 }

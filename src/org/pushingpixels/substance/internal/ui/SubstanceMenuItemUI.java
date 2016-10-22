@@ -38,6 +38,7 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicMenuItemUI;
 
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.*;
@@ -245,6 +246,20 @@ public class SubstanceMenuItemUI extends BasicMenuItemUI implements
 
 	@Override
 	public boolean isInside(MouseEvent me) {
-		return true;
+		return this.menuItem.getBounds().contains(me.getX(), me.getY());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
+	 * javax.swing.JComponent)
+	 */
+	@Override
+	public void update(Graphics g, JComponent c) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
+		super.update(g2d, c);
+		g2d.dispose();
 	}
 }

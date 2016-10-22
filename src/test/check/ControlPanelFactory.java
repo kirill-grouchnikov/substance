@@ -45,6 +45,7 @@ import org.pushingpixels.lafwidget.utils.LafConstants.TabOverviewKind;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.SubstanceConstants.*;
 import org.pushingpixels.substance.api.skin.NebulaBrickWallSkin;
+import org.pushingpixels.substance.internal.svg.Dialog_information;
 
 import test.Check;
 import test.SubstanceLogo;

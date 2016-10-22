@@ -32,6 +32,7 @@ package test.check;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
 
 import javax.swing.*;
 
@@ -93,6 +94,19 @@ public class SubstanceLafChanger implements ActionListener {
 									JRootPane.FRAME);
 						}
 						frame.setVisible(wasVisible);
+						
+						UIDefaults uid = UIManager.getLookAndFeelDefaults();
+						Enumeration<Object> newKeys = uid.keys();
+
+						while (newKeys.hasMoreElements()) {
+							Object key = newKeys.nextElement();
+							if (key instanceof String) {
+								if (((String) key).indexOf("AATextInfoPropertyKey") >= 0) {
+								Object value = uid.get(key);
+								System.out.println(key + " : " + value);
+								}
+							}
+						}
 						// wasDecoratedByOS = !frame.isUndecorated();
 					}
 				} catch (ClassNotFoundException cnfe) {

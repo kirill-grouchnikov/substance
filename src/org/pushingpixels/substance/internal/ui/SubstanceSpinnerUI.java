@@ -47,6 +47,7 @@ import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.internal.utils.*;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities.TextComponentAware;
 import org.pushingpixels.substance.internal.utils.border.SubstanceTextComponentBorder;
+import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 
 /**
@@ -120,7 +121,7 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 
 		Icon icon = new TransitionAwareIcon(this.nextButton,
 				new TransitionAwareIcon.Delegate() {
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme) {
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
 						int fontSize = SubstanceSizeUtils
 								.getComponentFontSize(nextButton);
 						return SubstanceImageCreator.getArrowIcon(
@@ -173,7 +174,7 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 
 		Icon icon = new TransitionAwareIcon(this.prevButton,
 				new TransitionAwareIcon.Delegate() {
-					public Icon getColorSchemeIcon(SubstanceColorScheme scheme) {
+					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
 						int fontSize = SubstanceSizeUtils
 								.getComponentFontSize(prevButton);
 						float spinnerArrowIconHeight = SubstanceSizeUtils

@@ -38,6 +38,7 @@ import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.plaf.basic.BasicToolTipUI;
 import javax.swing.text.View;
 
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 
@@ -121,4 +122,11 @@ public class SubstanceToolTipUI extends BasicToolTipUI {
 		return prefSize;
 	}
 
+	@Override
+	public void update(Graphics g, JComponent c) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
+		super.update(g2d, c);
+		g2d.dispose();
+	}
 }

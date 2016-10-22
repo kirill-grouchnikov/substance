@@ -169,7 +169,7 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
             return;
         }
         
-        int rgb = color.getRGB() & 0xffffff;
+        int rgb = (color == null) ? 0x000000 : color.getRGB() & 0xffffff;
         
         // Return quickly if color is the same as selected entry
         PaletteEntry entry = (PaletteEntry) paletteList.getSelectedValue();

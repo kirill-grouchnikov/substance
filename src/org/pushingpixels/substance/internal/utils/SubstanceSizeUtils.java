@@ -39,6 +39,7 @@ import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.fonts.FontPolicy;
 import org.pushingpixels.substance.api.fonts.FontSet;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.fonts.DefaultGnomeFontPolicy;
 
 /**
@@ -226,7 +227,7 @@ public class SubstanceSizeUtils {
 	 * @return Stroke width of borders under the specified font size.
 	 */
 	public static float getBorderStrokeWidth(int fontSize) {
-		return fontSize / 10.0f;
+		return UIUtil.isRetina() ? 0.5f : 1.0f;
 	}
 
 	/**
@@ -298,7 +299,7 @@ public class SubstanceSizeUtils {
 	 *         font size.
 	 */
 	public static float getClassicButtonCornerRadius(int fontSize) {
-		return getAdjustedSize(fontSize, 2, 6, 1, false);
+		return getAdjustedSize(fontSize, 3, 6, 1, false);
 	}
 
 	/**
@@ -453,6 +454,17 @@ public class SubstanceSizeUtils {
 	 * @return Stroke width of focus rings under the specified font size.
 	 */
 	public static float getFocusStrokeWidth(int fontSize) {
+		return UIUtil.isRetina() ? 0.5f : 1.0f;
+	}
+
+	/**
+	 * Returns the stroke width of close icon under the specified font size.
+	 * 
+	 * @param fontSize
+	 *            Font size.
+	 * @return Stroke width of close icon under the specified font size.
+	 */
+	public static float getCloseIconStrokeWidth(int fontSize) {
 		return Math.max(1.0f, fontSize / 10.0f);
 	}
 
@@ -755,7 +767,7 @@ public class SubstanceSizeUtils {
 	 */
 	public static float getSplitPaneArrowIconHeight(int fontSize) {
 		float result = SubstanceSizeUtils.getArrowIconHeight(fontSize)
-				+ SubstanceSizeUtils.getAdjustedSize(fontSize, -1, 1, -0.3f);
+				+ SubstanceSizeUtils.getAdjustedSize(fontSize, -2, 1, -0.3f);
 		return result;
 	}
 
@@ -771,8 +783,8 @@ public class SubstanceSizeUtils {
 	public static float getSplitPaneArrowIconWidth(int fontSize) {
 		float result = SubstanceSizeUtils.getArrowIconWidth(fontSize)
 				+ SubstanceSizeUtils.getAdjustedSize(fontSize, -2, 1, -0.25f);
-		// if (result % 2 == 0)
-		// result--;
+		if (result % 2 == 0)
+			result--;
 		return result;
 	}
 
