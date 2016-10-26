@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,6 +33,7 @@ import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -49,8 +50,6 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.ConvolveOp;
-import java.awt.image.Kernel;
 
 import javax.swing.AbstractButton;
 import javax.swing.CellRendererPane;
@@ -68,6 +67,8 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.api.painter.border.FlatBorderPainter;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
@@ -75,12 +76,11 @@ import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
 import org.pushingpixels.substance.internal.colorscheme.ShiftColorScheme;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.SimplisticFillPainter;
+import org.pushingpixels.substance.internal.svg.System_search;
 import org.pushingpixels.substance.internal.utils.filters.ColorSchemeFilter;
 import org.pushingpixels.substance.internal.utils.filters.GrayscaleFilter;
 import org.pushingpixels.substance.internal.utils.filters.NegatedFilter;
 import org.pushingpixels.substance.internal.utils.filters.TranslucentFilter;
-import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
-import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIconUiResource;
 
 /**
  * Provides utility functions for creating various images for <b>Substance </b>
@@ -678,137 +678,6 @@ public final class SubstanceImageCreator {
 		return new HiDpiAwareIcon(new TranslucentFilter(alpha).filter(result, null));
 	}
 
-	// /**
-	// * Retrieves radio button of the specified size that matches the specified
-	// * parameters.
-	// *
-	// * @param component
-	// * Component.
-	// * @param dimension
-	// * Radio button dimension.
-	// * @param componentState
-	// * Component state.
-	// * @param prevState
-	// * Previous component state.
-	// * @param offsetX
-	// * Offset on X axis - should be positive in order to see the
-	// * entire radio button.
-	// * @param scheme1
-	// * First color scheme.
-	// * @param scheme2
-	// * Second color scheme.
-	// * @param interpolationCyclePos
-	// * Interpolation cycle.
-	// * @param checkMarkVisibility
-	// * Checkmark visibility in 0.0-1.0 range.
-	// * @return Radio button of the specified size that matches the specified
-	// * parameters.
-	// */
-	// public static BufferedImage getRadioButton(JComponent component,
-	// SubstanceFillPainter fillPainter,
-	// SubstanceBorderPainter borderPainter, int dimension,
-	// ComponentState componentState, ComponentState prevState,
-	// int offsetX, SubstanceColorScheme currFillColorScheme,
-	// SubstanceColorScheme prevFillColorScheme,
-	// SubstanceColorScheme currMarkColorScheme,
-	// SubstanceColorScheme prevMarkColorScheme,
-	// SubstanceColorScheme currBorderColorScheme,
-	// SubstanceColorScheme prevBorderColorScheme,
-	// float interpolationCyclePos, float checkMarkVisibility) {
-	//
-	// // ComponentState.ColorSchemeKind kind = componentState
-	// // .getColorSchemeKind();
-	//
-	// float cyclePos = (currFillColorScheme != prevFillColorScheme) ?
-	// interpolationCyclePos
-	// : componentState.getCyclePosition();
-	// float borderCyclePos = (currBorderColorScheme != prevBorderColorScheme) ?
-	// interpolationCyclePos
-	// : componentState.getCyclePosition();
-	// float markCyclePos = (currMarkColorScheme != prevMarkColorScheme) ?
-	// interpolationCyclePos
-	// : componentState.getCyclePosition();
-	//
-	// if (componentState.getColorSchemeKind() != ColorSchemeKind.CURRENT) {
-	// fillPainter = SimplisticSoftBorderReverseFillPainter.INSTANCE;
-	// }
-	//
-	// float borderThickness = SubstanceSizeUtils
-	// .getBorderStrokeWidth(dimension);
-	// int delta = (int) (borderThickness - 0.6);
-	// // System.out.println(dimension + ":" + borderThickness + ":" + delta);
-	//
-	// // float fDelta = borderThickness / 2.0f;
-	// Shape contourBorder = new Ellipse2D.Float(delta, delta, dimension - 2
-	// * delta - 1, dimension - 2 * delta - 1);
-	//
-	// BufferedImage offBackground = SubstanceCoreUtilities.getBlankImage(
-	// dimension + offsetX, dimension);
-	// Graphics2D graphics = (Graphics2D) offBackground.getGraphics();
-	// float alpha = SubstanceColorSchemeUtilities.getAlpha(component,
-	// componentState);
-	// graphics.setComposite(AlphaComposite.getInstance(
-	// AlphaComposite.SRC_OVER, alpha));
-	//
-	// graphics.translate(offsetX, 0);
-	// fillPainter.paintContourBackground(graphics, component, dimension,
-	// dimension, contourBorder, false, currFillColorScheme,
-	// prevFillColorScheme, cyclePos, true,
-	// currFillColorScheme != prevFillColorScheme);
-	//
-	// Shape contourInner = new Ellipse2D.Float(delta + borderThickness, delta
-	// + borderThickness, dimension - 2 * delta - 2 * borderThickness,
-	// dimension - 2 * delta - 2 * borderThickness);
-	//
-	// borderPainter.paintBorder(graphics, component, dimension, dimension,
-	// contourBorder, contourInner, currBorderColorScheme,
-	// prevBorderColorScheme, borderCyclePos,
-	// currBorderColorScheme != prevBorderColorScheme);
-	// graphics.setComposite(AlphaComposite.SrcOver);
-	// // graphics.translate(-offsetX, 0);
-	//
-	// float rc = dimension / 2.0f;
-	// float radius = dimension / 4.5f;
-	// // graphics.translate(offsetX, 0);
-	//
-	// graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-	// RenderingHints.VALUE_ANTIALIAS_ON);
-	//
-	// if (componentState.isFacetActive(AnimationFacet.SELECTION)
-	// || (checkMarkVisibility > 0.0)) {
-	// // mark
-	// Shape markOval = new Ellipse2D.Double(rc - radius, rc - radius,
-	// 2 * radius, 2 * radius);
-	//
-	// graphics.setComposite(AlphaComposite.getInstance(
-	// AlphaComposite.SRC_OVER, alpha * checkMarkVisibility));
-	// drawRadioMark(graphics, SubstanceColorUtilities
-	// .getMarkColor(currMarkColorScheme, componentState
-	// .getColorSchemeKind() != ColorSchemeKind.DISABLED),
-	// markOval);
-	// graphics.setComposite(AlphaComposite.getInstance(
-	// AlphaComposite.SRC_OVER, alpha * checkMarkVisibility
-	// * markCyclePos));
-	// drawRadioMark(graphics, SubstanceColorUtilities
-	// .getMarkColor(prevMarkColorScheme, componentState
-	// .getColorSchemeKind() != ColorSchemeKind.DISABLED),
-	// markOval);
-	// } else {
-	// // draw ghost mark holder
-	// graphics.setPaint(new GradientPaint(rc + radius, rc - radius,
-	// currFillColorScheme.getDarkColor(), rc - radius, rc
-	// + radius, currFillColorScheme.getLightColor()));
-	// Shape markOval = new Ellipse2D.Double(rc - radius, rc - radius,
-	// 2 * radius, 2 * radius);
-	// graphics.setComposite(AlphaComposite.getInstance(
-	// AlphaComposite.SRC_OVER, alpha * 0.3f));
-	// graphics.fill(markOval);
-	// }
-	// graphics.translate(-offsetX, 0);
-	//
-	// return offBackground;
-	// }
-
 	/**
 	 * Retrieves radio button of the specified size that matches the specified
 	 * parameters.
@@ -841,9 +710,6 @@ public final class SubstanceImageCreator {
 			SubstanceColorScheme markColorScheme,
 			SubstanceColorScheme borderColorScheme, float checkMarkVisibility) {
 
-		// ComponentState.ColorSchemeKind kind = componentState
-		// .getColorSchemeKind();
-
 		if (!componentState.isActive()) {
 			fillPainter = SimplisticSoftBorderReverseFillPainter.INSTANCE;
 		}
@@ -859,7 +725,7 @@ public final class SubstanceImageCreator {
 
 		BufferedImage offBackground = SubstanceCoreUtilities.getBlankImage(
 				dimension + offsetX, dimension);
-		Graphics2D graphics = (Graphics2D) offBackground.getGraphics();
+		Graphics2D graphics = (Graphics2D) offBackground.getGraphics().create();
 		float alpha = SubstanceColorSchemeUtilities.getAlpha(component,
 				componentState);
 		graphics.setComposite(AlphaComposite.getInstance(
@@ -876,54 +742,34 @@ public final class SubstanceImageCreator {
 		borderPainter.paintBorder(graphics, component, dimension, dimension,
 				contourBorder, contourInner, borderColorScheme);
 		graphics.setComposite(AlphaComposite.SrcOver);
-		// graphics.translate(-offsetX, 0);
 
-		float rc = dimension / 2.0f;
+		float rc = (dimension - (UIUtil.isRetina() ? 0.5f : 0.0f)) / 2.0f;
 		float radius = dimension / 4.5f;
-		// graphics.translate(offsetX, 0);
 
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
+		Shape markOval = new Ellipse2D.Double(rc - radius, rc - radius,
+				2 * radius, 2 * radius);
 		if (checkMarkVisibility > 0.0) {
 			// mark
-			Shape markOval = new Ellipse2D.Double(rc - radius, rc - radius,
-					2 * radius, 2 * radius);
-
 			graphics.setComposite(AlphaComposite.getInstance(
 					AlphaComposite.SRC_OVER, alpha * checkMarkVisibility));
-			drawRadioMark(graphics, SubstanceColorUtilities.getMarkColor(
-					markColorScheme, !componentState.isDisabled()), markOval);
+			graphics.setColor(SubstanceColorUtilities.getMarkColor(
+					markColorScheme, !componentState.isDisabled()));
+			graphics.fill(markOval);
 		} else {
 			// draw ghost mark holder
+			graphics.setComposite(AlphaComposite.getInstance(
+					AlphaComposite.SRC_OVER, alpha * 0.3f));
 			graphics.setPaint(new GradientPaint(rc + radius, rc - radius,
 					fillColorScheme.getDarkColor(), rc - radius, rc + radius,
 					fillColorScheme.getLightColor()));
-			Shape markOval = new Ellipse2D.Double(rc - radius, rc - radius,
-					2 * radius, 2 * radius);
-			graphics.setComposite(AlphaComposite.getInstance(
-					AlphaComposite.SRC_OVER, alpha * 0.3f));
 			graphics.fill(markOval);
 		}
-		graphics.translate(-offsetX, 0);
+		graphics.dispose();
 
 		return offBackground;
-	}
-
-	/**
-	 * Draws radio mark.
-	 * 
-	 * @param graphics
-	 *            Graphics context.
-	 * @param color
-	 *            Radio mark color.
-	 * @param markOval
-	 *            Radio mark shape.
-	 */
-	private static void drawRadioMark(Graphics2D graphics, Color color,
-			Shape markOval) {
-		graphics.setColor(color);
-		graphics.fill(markOval);
 	}
 
 	/**
@@ -2119,20 +1965,20 @@ public final class SubstanceImageCreator {
 	 *            Icon color scheme.
 	 * @return Icon representation of the specified integer value.
 	 */
-	public static Icon getHexaMarker(int value, SubstanceColorScheme colorScheme) {
+	public static HiDpiAwareIcon getHexaMarker(int value, SubstanceColorScheme colorScheme) {
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(9, 9);
 
 		value %= 16;
 		Color offColor = null;
 		Color onColor = null;
 		if (colorScheme == null) {
-			return new ImageIcon(result);
+			return new HiDpiAwareIcon(result);
 		}
 		boolean isDark = colorScheme.isDark();
-		offColor = isDark ? colorScheme.getMidColor() : colorScheme
-				.getMidColor().darker();
+		offColor = isDark ? SubstanceColorUtilities.getInterpolatedColor(
+				colorScheme.getUltraLightColor(), Color.white, 0.7) : colorScheme.getMidColor().darker();
 		onColor = isDark ? SubstanceColorUtilities.getInterpolatedColor(
-				colorScheme.getUltraLightColor(), Color.white, 0.2)
+					colorScheme.getUltraLightColor(), Color.white, 0.2)
 				: colorScheme.getUltraDarkColor().darker();
 
 		boolean bit1 = ((value & 0x1) != 0);
@@ -2154,7 +2000,7 @@ public final class SubstanceImageCreator {
 		graphics.fillOval(0, 0, 4, 4);
 
 		graphics.dispose();
-		return new ImageIcon(result);
+		return new HiDpiAwareIcon(result);
 	}
 
 	/**
@@ -2170,51 +2016,19 @@ public final class SubstanceImageCreator {
 	 */
 	private static BufferedImage createSearchIcon(int dimension,
 			SubstanceColorScheme colorScheme, boolean leftToRight) {
-		BufferedImage result = SubstanceCoreUtilities.getBlankImage(dimension,
-				dimension);
-
-		Graphics2D graphics = (Graphics2D) result.getGraphics().create();
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-
-		Color color = SubstanceColorUtilities.getMarkColor(colorScheme, true);
-		graphics.setColor(color);
-
-		graphics.setStroke(new BasicStroke(1.5f));
-		if (leftToRight) {
-			int xc = (int) (0.6 * dimension);
-			int yc = (int) (0.45 * dimension);
-			int r = (int) (0.3 * dimension);
-
-			graphics.drawOval(xc - r, yc - r, 2 * r, 2 * r);
-
-			graphics.setStroke(new BasicStroke(3.0f));
-			GeneralPath handle = new GeneralPath();
-			handle.moveTo((float) (xc - r / Math.sqrt(2.0)), (float) (yc + r
-					/ Math.sqrt(2.0)));
-			handle.lineTo(1.8f, dimension - 2.2f);
-			graphics.draw(handle);
-		} else {
-			int xc = (int) (0.4 * dimension);
-			int yc = (int) (0.45 * dimension);
-			int r = (int) (0.3 * dimension);
-
-			graphics.drawOval(xc - r, yc - r, 2 * r, 2 * r);
-
-			graphics.setStroke(new BasicStroke(3.0f));
-			GeneralPath handle = new GeneralPath();
-			handle.moveTo((float) (xc + r / Math.sqrt(2.0)), (float) (yc + r
-					/ Math.sqrt(2.0)));
-			handle.lineTo(dimension - 2.5f, dimension - 2.2f);
-			graphics.draw(handle);
-		}
-
-		graphics.dispose();
-		return result;
+		System_search system_search = new System_search();
+		system_search.setDimension(new Dimension(16, 16));
+		HiDpiAwareIcon hiDpiAwareIcon = new HiDpiAwareIcon(system_search);
+		
+		Color foregroundColor = SubstanceColorUtilities.getForegroundColor(colorScheme);
+		Color forColorization = SubstanceColorUtilities.getAlphaColor(foregroundColor, 160);
+		return hiDpiAwareIcon.colorize(forColorization).toImage();
 	}
 	
-	public static HiDpiAwareIcon getSearchIcon(int dimension,
-			SubstanceColorScheme colorScheme, boolean leftToRight) {
+	public static HiDpiAwareIcon getSearchIcon(JComponent c, int dimension,
+			boolean leftToRight) {
+		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities
+				.getColorScheme(c, ComponentState.ENABLED);
 		return new HiDpiAwareIcon(createSearchIcon(dimension, colorScheme, leftToRight));
 	}
 	

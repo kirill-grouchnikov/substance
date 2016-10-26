@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -47,6 +47,7 @@ import javax.swing.table.*;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableCellRenderer;
@@ -414,170 +415,166 @@ public class SubstanceTableUI extends BasicTableUI implements
 	@Override
 	protected void installListeners() {
 		super.installListeners();
-		this.substancePropertyChangeListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (SubstanceLookAndFeel.WATERMARK_VISIBLE.equals(evt
-						.getPropertyName())) {
-					SubstanceTableUI.this.table
-							.setOpaque(!SubstanceCoreUtilities
-									.toDrawWatermark(SubstanceTableUI.this.table));
-				}
+		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+			if (SubstanceLookAndFeel.WATERMARK_VISIBLE.equals(evt
+					.getPropertyName())) {
+				SubstanceTableUI.this.table
+						.setOpaque(!SubstanceCoreUtilities
+								.toDrawWatermark(SubstanceTableUI.this.table));
+			}
 
-				if ("columnSelectionAllowed".equals(evt.getPropertyName())
-						|| "rowSelectionAllowed".equals(evt.getPropertyName())) {
-					SubstanceTableUI.this.syncSelection(true);
-				}
+			if ("columnSelectionAllowed".equals(evt.getPropertyName())
+					|| "rowSelectionAllowed".equals(evt.getPropertyName())) {
+				SubstanceTableUI.this.syncSelection(true);
+			}
 
-				if ("model".equals(evt.getPropertyName())) {
-					TableModel old = (TableModel) evt.getOldValue();
-					if (old != null) {
-						old.removeTableModelListener(substanceTableStateListener);
-					}
-					// fix for defect 291 - track changes to the table.
-					table.getModel().addTableModelListener(
+			if ("model".equals(evt.getPropertyName())) {
+				TableModel old = (TableModel) evt.getOldValue();
+				if (old != null) {
+					old.removeTableModelListener(substanceTableStateListener);
+				}
+				// fix for defect 291 - track changes to the table.
+				table.getModel().addTableModelListener(
+						substanceTableStateListener);
+				selectedIndices.clear();
+				stateTransitionMultiTracker.clear();
+				SubstanceTableUI.this.syncSelection(true);
+			}
+
+			if ("columnModel".equals(evt.getPropertyName())) {
+				TableColumnModel old = (TableColumnModel) evt.getOldValue();
+				if (old != null) {
+					old.getSelectionModel().removeListSelectionListener(
 							substanceTableStateListener);
-					selectedIndices.clear();
-					stateTransitionMultiTracker.clear();
-					SubstanceTableUI.this.syncSelection(true);
 				}
-
-				if ("columnModel".equals(evt.getPropertyName())) {
-					TableColumnModel old = (TableColumnModel) evt.getOldValue();
-					if (old != null) {
-						old.getSelectionModel().removeListSelectionListener(
+				table.getColumnModel()
+						.getSelectionModel()
+						.addListSelectionListener(
 								substanceTableStateListener);
-					}
-					table.getColumnModel()
-							.getSelectionModel()
-							.addListSelectionListener(
-									substanceTableStateListener);
-					selectedIndices.clear();
-					stateTransitionMultiTracker.clear();
-					SubstanceTableUI.this.syncSelection(true);
+				selectedIndices.clear();
+				stateTransitionMultiTracker.clear();
+				SubstanceTableUI.this.syncSelection(true);
 
-					JTableHeader tableHeader = table.getTableHeader();
-					// fix for issue 408 - table header may be null.
-					if (tableHeader != null) {
-						// fix for issue 309 - syncing animations on tables
-						// and table headers.
-						SubstanceTableHeaderUI headerUI = (SubstanceTableHeaderUI) tableHeader
-								.getUI();
-						headerUI.processColumnModelChangeEvent(
-								(TableColumnModel) evt.getOldValue(),
-								(TableColumnModel) evt.getNewValue());
-					}
+				JTableHeader tableHeader = table.getTableHeader();
+				// fix for issue 408 - table header may be null.
+				if (tableHeader != null) {
+					// fix for issue 309 - syncing animations on tables
+					// and table headers.
+					SubstanceTableHeaderUI headerUI = (SubstanceTableHeaderUI) tableHeader
+							.getUI();
+					headerUI.processColumnModelChangeEvent(
+							(TableColumnModel) evt.getOldValue(),
+							(TableColumnModel) evt.getNewValue());
 				}
+			}
 
-				// fix for defect 243 - not tracking changes to selection
-				// model results in incorrect selection painting on JXTreeTable
-				// component from SwingX.
-				if ("selectionModel".equals(evt.getPropertyName())) {
-					ListSelectionModel old = (ListSelectionModel) evt
-							.getOldValue();
-					if (old != null) {
-						old.removeListSelectionListener(substanceTableStateListener);
-					}
-					table.getSelectionModel().addListSelectionListener(
-							substanceTableStateListener);
-					selectedIndices.clear();
-					stateTransitionMultiTracker.clear();
-					SubstanceTableUI.this.syncSelection(true);
+			// fix for defect 243 - not tracking changes to selection
+			// model results in incorrect selection painting on JXTreeTable
+			// component from SwingX.
+			if ("selectionModel".equals(evt.getPropertyName())) {
+				ListSelectionModel old = (ListSelectionModel) evt
+						.getOldValue();
+				if (old != null) {
+					old.removeListSelectionListener(substanceTableStateListener);
 				}
+				table.getSelectionModel().addListSelectionListener(
+						substanceTableStateListener);
+				selectedIndices.clear();
+				stateTransitionMultiTracker.clear();
+				SubstanceTableUI.this.syncSelection(true);
+			}
 
-				// fix for issue 479 - tracking sort / filter changes and
-				// canceling selection animations
-				if ("rowSorter".equals(evt.getPropertyName())) {
-					RowSorter old = (RowSorter) evt.getOldValue();
-					if (old != null) {
-						old.removeRowSorterListener(substanceTableStateListener);
-					}
-					RowSorter newSorter = (RowSorter) evt.getNewValue();
-					if (newSorter != null) {
-						newSorter
-								.addRowSorterListener(substanceTableStateListener);
-					}
-					selectedIndices.clear();
-					stateTransitionMultiTracker.clear();
-					SubstanceTableUI.this.syncSelection(true);
+			// fix for issue 479 - tracking sort / filter changes and
+			// canceling selection animations
+			if ("rowSorter".equals(evt.getPropertyName())) {
+				RowSorter old = (RowSorter) evt.getOldValue();
+				if (old != null) {
+					old.removeRowSorterListener(substanceTableStateListener);
 				}
-
-				if ("font".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							// fix for bug 341
-							if (table == null)
-								return;
-							table.updateUI();
-						}
-					});
+				RowSorter newSorter = (RowSorter) evt.getNewValue();
+				if (newSorter != null) {
+					newSorter
+							.addRowSorterListener(substanceTableStateListener);
 				}
+				selectedIndices.clear();
+				stateTransitionMultiTracker.clear();
+				SubstanceTableUI.this.syncSelection(true);
+			}
 
-				if ("background".equals(evt.getPropertyName())) {
-					// propagate application-specific background color to the
-					// header.
-					Color newBackgr = (Color) evt.getNewValue();
-					JTableHeader header = table.getTableHeader();
-					if (header != null) {
-						Color headerBackground = header.getBackground();
-						if (SubstanceCoreUtilities
-								.canReplaceChildBackgroundColor(headerBackground)) {
-							if (!(newBackgr instanceof UIResource)) {
-								if (newBackgr == null) {
-									header.setBackground(null);
-								} else {
-									// Issue 450 - wrap the color in
-									// SubstanceColorResource to
-									// mark that it can be replaced.
-									header.setBackground(new SubstanceColorResource(
-											newBackgr));
-								}
+			if ("font".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> {
+					// fix for bug 341
+					if (table == null)
+						return;
+					table.updateUI();
+				});
+			}
+
+			if ("background".equals(evt.getPropertyName())) {
+				// propagate application-specific background color to the
+				// header.
+				Color newBackgr = (Color) evt.getNewValue();
+				JTableHeader header = table.getTableHeader();
+				if (header != null) {
+					Color headerBackground = header.getBackground();
+					if (SubstanceCoreUtilities
+							.canReplaceChildBackgroundColor(headerBackground)) {
+						if (!(newBackgr instanceof UIResource)) {
+							if (newBackgr == null) {
+								header.setBackground(null);
 							} else {
-								header.setBackground(newBackgr);
+								// Issue 450 - wrap the color in
+								// SubstanceColorResource to
+								// mark that it can be replaced.
+								header.setBackground(new SubstanceColorResource(
+										newBackgr));
 							}
+						} else {
+							header.setBackground(newBackgr);
 						}
 					}
 				}
+			}
 
-				// fix for issue 361 - track enabled status of the table
-				// and propagate to the table header
-				if ("enabled".equals(evt.getPropertyName())) {
-					JTableHeader header = table.getTableHeader();
-					if (header != null) {
-						header.setEnabled(table.isEnabled());
-					}
+			// fix for issue 361 - track enabled status of the table
+			// and propagate to the table header
+			if ("enabled".equals(evt.getPropertyName())) {
+				JTableHeader header = table.getTableHeader();
+				if (header != null) {
+					header.setEnabled(table.isEnabled());
 				}
+			}
 
-				if ("dropLocation".equals(evt.getPropertyName())) {
-					JTable.DropLocation oldValue = (JTable.DropLocation) evt
-							.getOldValue();
-					if (oldValue != null) {
-						Rectangle oldRect = getCellRectangleForRepaint(
-								oldValue.getRow(), oldValue.getColumn());
-						table.repaint(oldRect);
-					}
-					JTable.DropLocation newValue = table.getDropLocation();
-					if (newValue != null) {
-						Rectangle newRect = getCellRectangleForRepaint(table
-								.getDropLocation().getRow(), table
-								.getDropLocation().getColumn());
-						table.repaint(newRect);
-					}
+			if ("dropLocation".equals(evt.getPropertyName())) {
+				JTable.DropLocation oldValue = (JTable.DropLocation) evt
+						.getOldValue();
+				if (oldValue != null) {
+					Rectangle oldRect = getCellRectangleForRepaint(
+							oldValue.getRow(), oldValue.getColumn());
+					table.repaint(oldRect);
 				}
+				JTable.DropLocation newValue = table.getDropLocation();
+				if (newValue != null) {
+					Rectangle newRect = getCellRectangleForRepaint(table
+							.getDropLocation().getRow(), table
+							.getDropLocation().getColumn());
+					table.repaint(newRect);
+				}
+			}
 
-				if ("tableCellEditor".equals(evt.getPropertyName())) {
-					// fix for issue 481 - rollovers on cell editing
-					TableCellEditor newEditor = (TableCellEditor) evt
-							.getNewValue();
-					TableCellEditor oldEditor = (TableCellEditor) evt
-							.getOldValue();
-					if (oldEditor != null) {
-						table.getEditorComponent().removeMouseListener(
-								substanceFadeRolloverListener);
-					}
-					if (newEditor != null) {
-						table.getEditorComponent().addMouseListener(
-								substanceFadeRolloverListener);
-					}
+			if ("tableCellEditor".equals(evt.getPropertyName())) {
+				// fix for issue 481 - rollovers on cell editing
+				TableCellEditor newEditor = (TableCellEditor) evt
+						.getNewValue();
+				TableCellEditor oldEditor = (TableCellEditor) evt
+						.getOldValue();
+				if (oldEditor != null) {
+					table.getEditorComponent().removeMouseListener(
+							substanceFadeRolloverListener);
+				}
+				if (newEditor != null) {
+					table.getEditorComponent().addMouseListener(
+							substanceFadeRolloverListener);
 				}
 			}
 		};
@@ -1508,25 +1505,23 @@ public class SubstanceTableUI extends BasicTableUI implements
 		 * Repaints the associated cell.
 		 */
 		private void repaintCell() {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					if (SubstanceTableUI.this.table == null) {
-						// may happen if the LAF was switched in the meantime
-						return;
-					}
-					int rowCount = table.getRowCount();
-					int colCount = table.getColumnCount();
-					if ((rowCount > 0) && (rowIndex < rowCount)
-							&& (colCount > 0) && (columnIndex < colCount)) {
-						// need to retrieve the cell rectangle since the cells
-						// can be moved while animating
-						Rectangle rect = getCellRectangleForRepaint(rowIndex,
-								columnIndex);
-						// System.out.println("Cell Repainting " + rowIndex +
-						// ":"
-						// + columnIndex + ":" + rect);
-						CellRepaintCallback.this.table.repaint(rect);
-					}
+			SwingUtilities.invokeLater(() -> {
+				if (SubstanceTableUI.this.table == null) {
+					// may happen if the LAF was switched in the meantime
+					return;
+				}
+				int rowCount = table.getRowCount();
+				int colCount = table.getColumnCount();
+				if ((rowCount > 0) && (rowIndex < rowCount)
+						&& (colCount > 0) && (columnIndex < colCount)) {
+					// need to retrieve the cell rectangle since the cells
+					// can be moved while animating
+					Rectangle rect = getCellRectangleForRepaint(rowIndex,
+							columnIndex);
+					// System.out.println("Cell Repainting " + rowIndex +
+					// ":"
+					// + columnIndex + ":" + rect);
+					CellRepaintCallback.this.table.repaint(rect);
 				}
 			});
 		}
@@ -2480,6 +2475,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 	public void update(Graphics g, JComponent c) {
 		BackgroundPaintingUtils.updateIfOpaque(g, c);
 		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
 		SubstanceStripingUtils.setup(c);
 		this.updateInfo = new TableUpdateOptimizationInfo();
 		this.paint(g2d, c);
@@ -2577,13 +2573,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 			model.setRollover(initialRollover);
 			tracker = new StateTransitionTracker(table, model);
 			tracker.registerModelListeners();
-			tracker.setRepaintCallback(new RepaintCallback() {
-				@Override
-				public TimelineCallback getRepaintCallback() {
-					return new CellRepaintCallback(table, tableCellId.row,
-							tableCellId.column);
-				}
-			});
+			tracker.setRepaintCallback(() -> new CellRepaintCallback(table, tableCellId.row, tableCellId.column));
 			tracker.setName("row " + tableCellId.row + ", col "
 					+ tableCellId.column);
 			// System.out.println("TableID " + tableCellId +

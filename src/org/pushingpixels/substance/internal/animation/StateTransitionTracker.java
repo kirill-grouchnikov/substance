@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -187,12 +187,7 @@ public class StateTransitionTracker {
 				model, component, true);
 		this.modelStateInfo.clear();
 
-		this.repaintCallback = new StateTransitionTracker.RepaintCallback() {
-			@Override
-			public SwingRepaintCallback getRepaintCallback() {
-				return new SwingRepaintCallback(component);
-			}
-		};
+		this.repaintCallback = () -> new SwingRepaintCallback(component);
 		this.isAutoTrackingModelChanges = true;
 		this.eventListenerList = new EventListenerList();
 
@@ -249,12 +244,9 @@ public class StateTransitionTracker {
 	}
 
 	public void registerModelListeners() {
-		this.modelChangeListener = new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				if (isAutoTrackingModelChanges)
-					onModelStateChanged();
-			}
+		this.modelChangeListener = (ChangeEvent e) -> {
+			if (isAutoTrackingModelChanges)
+				onModelStateChanged();
 		};
 		this.model.addChangeListener(this.modelChangeListener);
 	}
@@ -475,16 +467,13 @@ public class StateTransitionTracker {
 					final TimelineState newState, final float durationFraction,
 					final float timelinePosition) {
 				if (newState == TimelineState.DONE) {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							modelStateInfo.clear();
-							// repaint after the model state info has
-							// been cleared
-							repaintCallback.getRepaintCallback()
-									.onTimelineStateChanged(oldState, newState,
-											durationFraction, timelinePosition);
-						}
+					SwingUtilities.invokeLater(() -> {
+						modelStateInfo.clear();
+						// repaint after the model state info has
+						// been cleared
+						repaintCallback.getRepaintCallback()
+								.onTimelineStateChanged(oldState, newState,
+										durationFraction, timelinePosition);
 					});
 				}
 			}
@@ -495,12 +484,7 @@ public class StateTransitionTracker {
 			public void onTimelineStateChanged(final TimelineState oldState,
 					final TimelineState newState, float durationFraction,
 					float timelinePosition) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						fireModelStateTransitionEvent(oldState, newState);
-					}
-				});
+				SwingUtilities.invokeLater(() -> fireModelStateTransitionEvent(oldState, newState));
 			}
 		});
 		// Add fix for issue 297 - menu items partially covered by lightweight
@@ -510,22 +494,16 @@ public class StateTransitionTracker {
 			public void onTimelineStateChanged(TimelineState oldState,
 					TimelineState newState, float durationFraction,
 					float timelinePosition) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						if (component instanceof JMenuItem) {
-							if (SubstanceCoreUtilities
-									.isCoveredByLightweightPopups(component)) {
-								component
-										.putClientProperty(
-												SubstanceCoreUtilities.IS_COVERED_BY_LIGHTWEIGHT_POPUPS,
-												Boolean.TRUE);
-							} else {
-								component
-										.putClientProperty(
-												SubstanceCoreUtilities.IS_COVERED_BY_LIGHTWEIGHT_POPUPS,
-												null);
-							}
+				SwingUtilities.invokeLater(() -> {
+					if (component instanceof JMenuItem) {
+						if (SubstanceCoreUtilities.isCoveredByLightweightPopups(component)) {
+							component.putClientProperty(
+									SubstanceCoreUtilities.IS_COVERED_BY_LIGHTWEIGHT_POPUPS,
+									Boolean.TRUE);
+						} else {
+							component.putClientProperty(
+									SubstanceCoreUtilities.IS_COVERED_BY_LIGHTWEIGHT_POPUPS,
+									null);
 						}
 					}
 				});
@@ -534,22 +512,16 @@ public class StateTransitionTracker {
 			@Override
 			public void onTimelinePulse(float durationFraction,
 					float timelinePosition) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						if (component instanceof JMenuItem) {
-							if (SubstanceCoreUtilities
-									.isCoveredByLightweightPopups(component)) {
-								component
-										.putClientProperty(
-												SubstanceCoreUtilities.IS_COVERED_BY_LIGHTWEIGHT_POPUPS,
-												Boolean.TRUE);
-							} else {
-								component
-										.putClientProperty(
-												SubstanceCoreUtilities.IS_COVERED_BY_LIGHTWEIGHT_POPUPS,
-												null);
-							}
+				SwingUtilities.invokeLater(() -> {
+					if (component instanceof JMenuItem) {
+						if (SubstanceCoreUtilities.isCoveredByLightweightPopups(component)) {
+							component.putClientProperty(
+									SubstanceCoreUtilities.IS_COVERED_BY_LIGHTWEIGHT_POPUPS,
+									Boolean.TRUE);
+						} else {
+							component.putClientProperty(
+									SubstanceCoreUtilities.IS_COVERED_BY_LIGHTWEIGHT_POPUPS,
+									null);
 						}
 					}
 				});
@@ -571,19 +543,14 @@ public class StateTransitionTracker {
 			}
 
 			private void updateActiveStates(final float timelinePosition) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						for (StateContributionInfo pair : modelStateInfo.stateContributionMap
-								.values()) {
-							pair.updateContribution(timelinePosition);
-						}
-						for (StateContributionInfo pair : modelStateInfo.stateNoSelectionContributionMap
-								.values()) {
-							pair.updateContribution(timelinePosition);
-						}
-						modelStateInfo.sync();
+				SwingUtilities.invokeLater(() -> {
+					for (StateContributionInfo pair : modelStateInfo.stateContributionMap.values()) {
+						pair.updateContribution(timelinePosition);
 					}
+					for (StateContributionInfo pair : modelStateInfo.stateNoSelectionContributionMap.values()) {
+						pair.updateContribution(timelinePosition);
+					}
+					modelStateInfo.sync();
 				});
 			}
 
@@ -603,8 +570,8 @@ public class StateTransitionTracker {
 		if (AnimationConfigurationManager.getInstance().isAnimationAllowed(
 				AnimationFacet.ICON_GLOW, this.component)) {
 			boolean wasRollover = false;
-			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : this.modelStateInfo.stateContributionMap
-					.entrySet()) {
+			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : 
+				this.modelStateInfo.stateContributionMap.entrySet()) {
 				ComponentState activeState = activeEntry.getKey();
 				if (activeState == this.modelStateInfo.currState)
 					continue;

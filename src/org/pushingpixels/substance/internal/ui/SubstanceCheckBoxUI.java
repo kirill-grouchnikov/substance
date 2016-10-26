@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -43,12 +43,12 @@ import javax.swing.plaf.basic.BasicButtonListener;
 
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.*;
-import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
 
 /**
  * UI for check boxes in <b>Substance</b> look and feel.

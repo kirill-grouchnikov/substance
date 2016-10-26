@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -121,31 +121,27 @@ public class SubstanceTextAreaUI extends BasicTextAreaUI implements
 		this.stateTransitionTracker.registerModelListeners();
 		this.stateTransitionTracker.registerFocusListeners();
 
-		this.substancePropertyChangeListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ("font".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							// remember the caret location - issue 404
-							int caretPos = textArea.getCaretPosition();
-							textArea.updateUI();
-							textArea.setCaretPosition(caretPos);
-							Container parent = textArea.getParent();
-							if (parent != null) {
-								parent.invalidate();
-								parent.validate();
-							}
-						}
-					});
-				}
-				if ("componentOrientation".equals(evt.getPropertyName())) {
-					// fix by Davide Raccagni (A03)
-					getComponent().setText(getComponent().getText());
-				}
+		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+			if ("font".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> {
+					// remember the caret location - issue 404
+					int caretPos = textArea.getCaretPosition();
+					textArea.updateUI();
+					textArea.setCaretPosition(caretPos);
+					Container parent = textArea.getParent();
+					if (parent != null) {
+						parent.invalidate();
+						parent.validate();
+					}
+				});
+			}
+			if ("componentOrientation".equals(evt.getPropertyName())) {
+				// fix by Davide Raccagni (A03)
+				getComponent().setText(getComponent().getText());
+			}
 
-				if ("enabled".equals(evt.getPropertyName())) {
-					transitionModel.setEnabled(textArea.isEnabled());
-				}
+			if ("enabled".equals(evt.getPropertyName())) {
+				transitionModel.setEnabled(textArea.isEnabled());
 			}
 		};
 		this.textArea
@@ -179,23 +175,20 @@ public class SubstanceTextAreaUI extends BasicTextAreaUI implements
 		super.installDefaults();
 
 		// support for per-window skins
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
-					return;
-				if (textArea == null)
-					return;
-				Color foregr = textArea.getForeground();
-				if ((foregr == null) || (foregr instanceof UIResource)) {
-					textArea
-							.setForeground(SubstanceColorUtilities
-									.getForegroundColor(SubstanceLookAndFeel
-											.getCurrentSkin(textArea)
-											.getEnabledColorScheme(
-													SubstanceLookAndFeel
-															.getDecorationType(textArea))));
-				}
+		SwingUtilities.invokeLater(() -> {
+			if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
+				return;
+			if (textArea == null)
+				return;
+			Color foregr = textArea.getForeground();
+			if ((foregr == null) || (foregr instanceof UIResource)) {
+				textArea
+						.setForeground(SubstanceColorUtilities
+								.getForegroundColor(SubstanceLookAndFeel
+										.getCurrentSkin(textArea)
+										.getEnabledColorScheme(
+												SubstanceLookAndFeel
+														.getDecorationType(textArea))));
 			}
 		});
 	}

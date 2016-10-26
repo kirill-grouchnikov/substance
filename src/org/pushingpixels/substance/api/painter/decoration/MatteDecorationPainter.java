@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -56,18 +56,7 @@ public class MatteDecorationPainter implements SubstanceDecorationPainter {
 		return DISPLAY_NAME;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * @seeorg.pushingpixels.substance.painter.decoration.SubstanceDecorationPainter
-	 * # paintDecorationArea(java.awt.Graphics2D, java.awt.Component,
-	 * org.pushingpixels.substance.painter.decoration.DecorationAreaType, int,
-	 * int, org.pushingpixels.substance.api.SubstanceSkin)
-	 */
+	@Override
 	public void paintDecorationArea(Graphics2D graphics, Component comp,
 			DecorationAreaType decorationAreaType, int width, int height,
 			SubstanceSkin skin) {
@@ -97,9 +86,9 @@ public class MatteDecorationPainter implements SubstanceDecorationPainter {
 	 */
 	private void paintTitleBackground(Graphics2D graphics, Component comp,
 			int width, int height, SubstanceColorScheme scheme) {
-		Graphics2D temp = (Graphics2D) graphics.create();
-		this.fill(temp, comp, scheme, 0, 0, 0, width, height);
-		temp.dispose();
+		Graphics2D g2d = (Graphics2D) graphics.create();
+		this.fill(g2d, comp, scheme, 0, 0, 0, width, height);
+		g2d.dispose();
 	}
 
 	/**
@@ -121,11 +110,10 @@ public class MatteDecorationPainter implements SubstanceDecorationPainter {
 	 */
 	private void paintExtraBackground(Graphics2D graphics, Component comp,
 			int width, int height, SubstanceColorScheme scheme) {
-
 		Point offset = SubstancePainterUtils.getOffsetInRootPaneCoords(comp);
-		Graphics2D temp = (Graphics2D) graphics.create();
-		this.fill(temp, comp, scheme, offset.y, 0, 0, width, height);
-		temp.dispose();
+		Graphics2D g2d = (Graphics2D) graphics.create();
+		this.fill(g2d, comp, scheme, offset.y, 0, 0, width, height);
+		g2d.dispose();
 	}
 
 	/**

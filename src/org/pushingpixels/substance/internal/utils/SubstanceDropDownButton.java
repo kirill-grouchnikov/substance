@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -42,6 +42,7 @@ import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 
 /**
  * Drop down button in <b>Substance</b> look and feel.
@@ -122,6 +123,7 @@ public final class SubstanceDropDownButton extends JButton implements
 				* SubstanceSizeUtils
 						.getClassicButtonCornerRadius(componentFontSize)
 				- borderDelta);
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 
 		int width = getWidth();
 		int height = getHeight();
@@ -175,7 +177,8 @@ public final class SubstanceDropDownButton extends JButton implements
 		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this, extraAlpha,
 				g));
 
-		g2d.drawImage(offscreen, 0, 0, null);
+		g2d.drawImage(offscreen, 0, 0, offscreen.getWidth() / scaleFactor,
+				offscreen.getHeight() / scaleFactor, null);
 		g2d.dispose();
 	}
 

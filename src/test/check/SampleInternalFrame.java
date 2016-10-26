@@ -99,8 +99,8 @@ public class SampleInternalFrame extends JInternalFrame {
 		text.setEditable(false);
 		builder.append(combo, text);
 		JPanel contentPanel = builder.getPanel();
-		contentPanel.setPreferredSize(new Dimension(contentPanel
-				.getPreferredSize().width,
+		contentPanel.setPreferredSize(new Dimension(
+				contentPanel.getPreferredSize().width,
 				contentPanel.getPreferredSize().height + 100));
 		// contentPanel.setOpaque(false);
 		contentPanel.setBorder(null);
@@ -155,13 +155,7 @@ public class SampleInternalFrame extends JInternalFrame {
 		this.setResizable(true);
 
 		synchronize();
-		SubstanceLookAndFeel
-				.registerSkinChangeListener(new SkinChangeListener() {
-					@Override
-					public void skinChanged() {
-						synchronize();
-					}
-				});
+		SubstanceLookAndFeel.registerSkinChangeListener(() -> synchronize());
 		ok.requestFocusInWindow();
 	}
 
@@ -169,18 +163,16 @@ public class SampleInternalFrame extends JInternalFrame {
 	 * Synchronizes the frame icon with the current theme.
 	 */
 	protected void synchronize() {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				if (UIManager.getLookAndFeel() instanceof SubstanceLookAndFeel) {
-					SubstanceSkin currentSkin = SubstanceLookAndFeel
-							.getCurrentSkin(getRootPane());
-					setFrameIcon(SubstanceLogo.getLogoIcon(currentSkin
-							.getColorScheme(
-									DecorationAreaType.SECONDARY_TITLE_PANE,
-									ColorSchemeAssociationKind.FILL,
-									ComponentState.ENABLED)));
-					setTitle(currentSkin.getDisplayName());
-				}
+		SwingUtilities.invokeLater(() -> {
+			if (UIManager.getLookAndFeel() instanceof SubstanceLookAndFeel) {
+				SubstanceSkin currentSkin = SubstanceLookAndFeel
+						.getCurrentSkin(getRootPane());
+				setFrameIcon(SubstanceLogo.getLogoIcon(currentSkin
+						.getColorScheme(
+								DecorationAreaType.SECONDARY_TITLE_PANE,
+								ColorSchemeAssociationKind.FILL,
+								ComponentState.ENABLED)));
+				setTitle(currentSkin.getDisplayName());
 			}
 		});
 	}

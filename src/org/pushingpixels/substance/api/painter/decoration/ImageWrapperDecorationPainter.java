@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -84,20 +84,7 @@ public abstract class ImageWrapperDecorationPainter implements
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * @seeorg.pushingpixels.substance.painter.decoration.SubstanceDecorationPainter
-	 * # paintDecorationArea(java.awt.Graphics2D, java.awt.Component,
-	 * org.pushingpixels.substance.painter.decoration.DecorationAreaType, int,
-	 * int, org.pushingpixels.substance.api.SubstanceSkin)
-	 */
+	@Override
 	public void paintDecorationArea(Graphics2D graphics, Component comp,
 			DecorationAreaType decorationAreaType, int width, int height,
 			SubstanceSkin skin) {
@@ -270,9 +257,8 @@ public abstract class ImageWrapperDecorationPainter implements
 	protected Image getColorizedTile(SubstanceColorScheme scheme) {
 		Image result = this.colorizedTileMap.get(scheme.getDisplayName());
 		if (result == null) {
-			BufferedImage tileBi = new BufferedImage(this.originalTile
-					.getWidth(null), this.originalTile.getHeight(null),
-					BufferedImage.TYPE_INT_ARGB);
+			BufferedImage tileBi = new BufferedImage(this.originalTile.getWidth(null), 
+					this.originalTile.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 			tileBi.getGraphics().drawImage(this.originalTile, 0, 0, null);
 			result = SubstanceImageCreator.getColorSchemeImage(tileBi, scheme,
 					0.0f);

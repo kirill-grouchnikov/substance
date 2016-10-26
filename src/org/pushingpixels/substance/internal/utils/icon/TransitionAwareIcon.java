@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -36,6 +36,7 @@ import java.util.Map;
 import javax.swing.*;
 
 import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.*;
@@ -112,12 +113,8 @@ public class TransitionAwareIcon implements Icon {
 
 	public TransitionAwareIcon(final AbstractButton button, Delegate delegate,
 			String uniqueIconTypeId) {
-		this(button, (button == null) ? null : new TransitionAwareUIDelegate() {
-			@Override
-			public TransitionAwareUI getTransitionAwareUI() {
-				return (TransitionAwareUI) button.getUI();
-			}
-		}, delegate, null, uniqueIconTypeId);
+		this(button, (button == null) ? null : () -> (TransitionAwareUI) button.getUI(),
+				delegate, null, uniqueIconTypeId);
 	}
 
 	/**
@@ -155,7 +152,7 @@ public class TransitionAwareIcon implements Icon {
 	 * 
 	 * @return Icon to paint.
 	 */
-	private synchronized Icon getIconToPaint() {
+	private synchronized HiDpiAwareIcon getIconToPaint() {
 		StateTransitionTracker stateTransitionTracker = this.transitionAwareUIDelegate
 				.getTransitionAwareUI().getTransitionTracker();
 		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker

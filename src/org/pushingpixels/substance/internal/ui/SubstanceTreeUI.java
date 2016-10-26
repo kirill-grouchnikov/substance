@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -48,13 +48,13 @@ import java.util.Map;
 
 import javax.swing.ButtonModel;
 import javax.swing.DefaultButtonModel;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
@@ -67,20 +67,18 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
-import org.pushingpixels.substance.internal.animation.StateTransitionTracker.RepaintCallback;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.HighlightPainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceStripingUtils;
-import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.internal.utils.icon.SubstanceIconFactory;
 import org.pushingpixels.trident.Timeline.TimelineState;
-import org.pushingpixels.trident.callback.TimelineCallback;
 import org.pushingpixels.trident.callback.UIThreadTimelineCallbackAdapter;
 
 /**
@@ -174,10 +172,10 @@ public class SubstanceTreeUI extends BasicTreeUI {
 			}
 		}
 
-		setExpandedIcon(new HiDpiAwareIconUiResource(SubstanceIconFactory.getTreeIcon(
-				this.tree, false)));
-		setCollapsedIcon(new HiDpiAwareIconUiResource(SubstanceIconFactory.getTreeIcon(
-				this.tree, true)));
+		Icon expandedIcon = SubstanceIconFactory.getTreeIcon(this.tree, false);
+		Icon collapsedIcon = SubstanceIconFactory.getTreeIcon(this.tree, true);
+		setExpandedIcon(new HiDpiAwareIconUiResource(expandedIcon));
+		setCollapsedIcon(new HiDpiAwareIconUiResource(collapsedIcon));
 
 		// instead of computing the cell renderer insets on
 		// every cell rendering, compute it once and expose to the
@@ -511,11 +509,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 							.toDrawWatermark(tree));
 				}
 				if ("font".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							tree.updateUI();
-						}
-					});
+					SwingUtilities.invokeLater(() -> tree.updateUI());
 				}
 				if ("dropLocation".equals(evt.getPropertyName())) {
 					JTree.DropLocation oldValue = (JTree.DropLocation) evt
@@ -752,32 +746,30 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		 * Repaints the associated path.
 		 */
 		private void repaintPath() {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					if (SubstanceTreeUI.this.tree == null) {
-						// may happen if the LAF was switched in the meantime
-						return;
-					}
+			SwingUtilities.invokeLater(() -> {
+				if (SubstanceTreeUI.this.tree == null) {
+					// may happen if the LAF was switched in the meantime
+					return;
+				}
 
-					Rectangle boundsBuffer = new Rectangle();
-					Rectangle bounds = treeState.getBounds(treePath,
-							boundsBuffer);
+				Rectangle boundsBuffer = new Rectangle();
+				Rectangle bounds = treeState.getBounds(treePath,
+						boundsBuffer);
 
-					if (bounds != null) {
-						// still visible
+				if (bounds != null) {
+					// still visible
 
-						// fix for defect 180 - refresh the entire row
-						bounds.x = 0;
-						bounds.width = tree.getWidth();
+					// fix for defect 180 - refresh the entire row
+					bounds.x = 0;
+					bounds.width = tree.getWidth();
 
-						// fix for defect 188 - rollover effects for trees
-						// with insets
-						Insets insets = tree.getInsets();
-						bounds.x += insets.left;
-						bounds.y += insets.top;
+					// fix for defect 188 - rollover effects for trees
+					// with insets
+					Insets insets = tree.getInsets();
+					bounds.x += insets.left;
+					bounds.y += insets.top;
 
-						tree.repaint(bounds);
-					}
+					tree.repaint(bounds);
 				}
 			});
 		}
@@ -1165,20 +1157,14 @@ public class SubstanceTreeUI extends BasicTreeUI {
 
 	private StateTransitionTracker getTracker(final TreePathId pathId,
 			boolean initialRollover, boolean initialSelected) {
-		StateTransitionTracker tracker = stateTransitionMultiTracker
-				.getTracker(pathId);
+		StateTransitionTracker tracker = stateTransitionMultiTracker.getTracker(pathId);
 		if (tracker == null) {
 			ButtonModel model = new DefaultButtonModel();
 			model.setSelected(initialSelected);
 			model.setRollover(initialRollover);
 			tracker = new StateTransitionTracker(this.tree, model);
 			tracker.registerModelListeners();
-			tracker.setRepaintCallback(new RepaintCallback() {
-				@Override
-				public TimelineCallback getRepaintCallback() {
-					return new PathRepaintCallback(tree, pathId.path);
-				}
-			});
+			tracker.setRepaintCallback(() -> new PathRepaintCallback(tree, pathId.path));
 			stateTransitionMultiTracker.addTracker(pathId, tracker);
 		}
 		return tracker;

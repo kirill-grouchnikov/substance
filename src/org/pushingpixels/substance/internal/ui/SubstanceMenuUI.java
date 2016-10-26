@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -38,6 +38,7 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicMenuUI;
 
+import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -207,22 +208,18 @@ public class SubstanceMenuUI extends BasicMenuUI implements SubstanceMenu,
 		};
 		this.menuItem.addFocusListener(this.substanceFocusListener);
 
-		this.substancePropertyListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (AbstractButton.MODEL_CHANGED_PROPERTY.equals(evt
-						.getPropertyName())) {
-					stateTransitionTracker.setModel((ButtonModel) evt
-							.getNewValue());
-				}
-				if ("font".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							if (menuItem != null) {
-								menuItem.updateUI();
-							}
-						}
-					});
-				}
+		this.substancePropertyListener = (PropertyChangeEvent evt) -> {
+			if (AbstractButton.MODEL_CHANGED_PROPERTY.equals(evt
+					.getPropertyName())) {
+				stateTransitionTracker.setModel((ButtonModel) evt
+						.getNewValue());
+			}
+			if ("font".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> {
+					if (menuItem != null) {
+						menuItem.updateUI();
+					}
+				});
 			}
 		};
 		this.menuItem.addPropertyChangeListener(this.substancePropertyListener);
@@ -357,6 +354,7 @@ public class SubstanceMenuUI extends BasicMenuUI implements SubstanceMenu,
 		Graphics2D g2d = (Graphics2D) g.create();
 		RenderingUtils.installDesktopHints(g2d, c);
 		super.update(g2d, c);
+		GhostPaintingUtils.paintGhostImages(c, g2d);
 		g2d.dispose();
 	}
 }

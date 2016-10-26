@@ -29,12 +29,53 @@
  */
 package test.check;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.lang.ref.*;
+import java.awt.AlphaComposite;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.LayoutManager;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
+import java.lang.ref.Reference;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
 import java.util.Locale;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDesktopPane;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.JToolBar;
+import javax.swing.JTree;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.UIManager;
 
 import org.pushingpixels.lafwidget.LafWidget;
 import org.pushingpixels.lafwidget.LafWidgetUtilities2;
@@ -42,14 +83,22 @@ import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.lafwidget.preview.DefaultPreviewPainter;
 import org.pushingpixels.lafwidget.utils.LafConstants.TabOverviewKind;
-import org.pushingpixels.substance.api.*;
-import org.pushingpixels.substance.api.SubstanceConstants.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceConstants.FocusKind;
+import org.pushingpixels.substance.api.SubstanceConstants.MenuGutterFillKind;
+import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.NebulaBrickWallSkin;
 import org.pushingpixels.substance.internal.svg.Dialog_information;
 
 import test.Check;
-import test.SubstanceLogo;
 import test.Check.MyMainTabPreviewPainter;
+import test.SubstanceLogo;
+import test.check.svg.Dialog_error;
+import test.check.svg.Dialog_warning;
+import test.check.svg.Help_browser;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
@@ -414,8 +463,7 @@ public class ControlPanelFactory {
 		DefaultFormBuilder builder = new DefaultFormBuilder(lm);
 
 		builder.appendSeparator("Core choosers");
-		JButton bfo = new JButton("Open dialog", Check
-				.getIcon("JFileChooserColor16"));
+		JButton bfo = new JButton("Open dialog", Check.getIcon("JFileChooserColor16"));
 		bfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -428,8 +476,7 @@ public class ControlPanelFactory {
 		});
 		builder.append("File chooser", bfo);
 
-		JButton bfs = new JButton("Save dialog", Check
-				.getIcon("JFileChooserColor16"));
+		JButton bfs = new JButton("Save dialog", Check.getIcon("JFileChooserColor16"));
 		bfs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -501,8 +548,7 @@ public class ControlPanelFactory {
 		});
 		builder.append("Plain", bop);
 
-		JButton bopi = new JButton("Show", Check
-				.getIcon("22/dialog-information"));
+		JButton bopi = new JButton("Show", Check.configure(new Dialog_information(), 22));
 		bopi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -516,7 +562,7 @@ public class ControlPanelFactory {
 		});
 		builder.append("Info", bopi);
 
-		JButton bope = new JButton("Show", Check.getIcon("22/dialog-error"));
+		JButton bope = new JButton("Show", Check.configure(new Dialog_error(), 22));
 		bope.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -530,7 +576,7 @@ public class ControlPanelFactory {
 		});
 		builder.append("Error", bope);
 
-		JButton bopw = new JButton("Show", Check.getIcon("22/dialog-warning"));
+		JButton bopw = new JButton("Show", Check.configure(new Dialog_warning(), 22));
 		bopw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -544,7 +590,7 @@ public class ControlPanelFactory {
 		});
 		builder.append("Warning", bopw);
 
-		JButton bopq = new JButton("Show", Check.getIcon("22/help-browser"));
+		JButton bopq = new JButton("Show", Check.configure(new Help_browser(), 22));
 		bopq.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {

@@ -29,18 +29,49 @@
  */
 package test.check;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.ComboBoxEditor;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.Icon;
+import javax.swing.InputMap;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.combo.ComboPopupPrototypeCallback;
 import org.pushingpixels.substance.api.combo.WidestComboPopupPrototype;
 
-import test.check.command.*;
+import test.Check;
+import test.check.command.ConfigurationCommand;
+import test.check.command.DisableCommand;
+import test.check.command.EnableCommand;
+import test.check.svg.flags.il;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
@@ -320,32 +351,28 @@ public class CombosPanel extends ControllablePanel implements Deferrable {
 		comboHebrew.setMaximumRowCount(6);
 		builder.append("RTL (Hebrew)", comboHebrew);
 
-		try {
-			final Icon israelFlag = new ImageIcon(ImageIO.read(getClass()
-					.getResource("/test/check/icons/flag_israel.png")));
-			JComboBox comboHebrewCustomRenderer = new FlexiComboBox<String>(
-					"\u05e8\u05d0\u05e9\u05d9 1", "\u05e8\u05d0\u05e9\u05d9 2",
-					"\u05e8\u05d0\u05e9\u05d9 3", "\u05e8\u05d0\u05e9\u05d9 4",
-					"\u05e8\u05d0\u05e9\u05d9 5", "\u05e8\u05d0\u05e9\u05d9 6",
-					"\u05e8\u05d0\u05e9\u05d9 7", "\u05e8\u05d0\u05e9\u05d9 8",
-					"\u05e8\u05d0\u05e9\u05d9 9") {
-				@Override
-				public String getCaption(String item) {
-					return item;
-				}
+		final Icon israelFlag = Check.configure(new il(),  21, 16);
+		JComboBox comboHebrewCustomRenderer = new FlexiComboBox<String>(
+				"\u05e8\u05d0\u05e9\u05d9 1", "\u05e8\u05d0\u05e9\u05d9 2",
+				"\u05e8\u05d0\u05e9\u05d9 3", "\u05e8\u05d0\u05e9\u05d9 4",
+				"\u05e8\u05d0\u05e9\u05d9 5", "\u05e8\u05d0\u05e9\u05d9 6",
+				"\u05e8\u05d0\u05e9\u05d9 7", "\u05e8\u05d0\u05e9\u05d9 8",
+				"\u05e8\u05d0\u05e9\u05d9 9") {
+			@Override
+			public String getCaption(String item) {
+				return item;
+			}
 
-				@Override
-				public Icon getItemIcon(String item) {
-					return israelFlag;
-				}
-			};
-			comboHebrewCustomRenderer.setToolTipText("RTL combo");
-			comboHebrewCustomRenderer
-					.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-			comboHebrewCustomRenderer.setMaximumRowCount(6);
-			builder.append("RTL (Hebrew) with icon", comboHebrewCustomRenderer);
-		} catch (IOException ioe) {
-		}
+			@Override
+			public Icon getItemIcon(String item) {
+				return israelFlag;
+			}
+		};
+		comboHebrewCustomRenderer.setToolTipText("RTL combo");
+		comboHebrewCustomRenderer
+				.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		comboHebrewCustomRenderer.setMaximumRowCount(6);
+		builder.append("RTL (Hebrew) with icon", comboHebrewCustomRenderer);
 
 		JComboBox comboHebrewEditable = new JComboBox(new Object[] {
 				"\u05e8\u05d0\u05e9\u05d9 1", "\u05e8\u05d0\u05e9\u05d9 2",

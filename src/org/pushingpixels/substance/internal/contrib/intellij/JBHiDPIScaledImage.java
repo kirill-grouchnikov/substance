@@ -23,64 +23,72 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
 import java.util.Hashtable;
 
+import org.pushingpixels.substance.api.icon.IsHiDpiAware;
+
 /**
-* @author Konstantin Bulenkov
-*/
-public class JBHiDPIScaledImage extends BufferedImage {
-  private final Image myImage;
-  private int myWidth;  // == myImage.width / scale
-  private int myHeight; // == myImage.height / scale
+ * @author Konstantin Bulenkov
+ */
+public class JBHiDPIScaledImage extends BufferedImage implements IsHiDpiAware {
+	private final Image myImage;
+	private int myWidth; // == myImage.width / scale
+	private int myHeight; // == myImage.height / scale
 
-  public JBHiDPIScaledImage(int width, int height, int type) {
-    this(null, 2 * width, 2 * height, type);
-  }
+	public JBHiDPIScaledImage(int width, int height, int type) {
+		this(null, 2 * width, 2 * height, type);
+	}
 
-  public JBHiDPIScaledImage(Image image, int width, int height, int type) {
-    // In case there's a delegate image, create a dummy wrapper image of 1x1 size
-    super(image != null ? 1 : width, image != null ? 1 : height, type);
-    myImage = image;
-    myWidth = width;
-    myHeight = height;
-  }
+	public JBHiDPIScaledImage(Image image, int width, int height, int type) {
+		// In case there's a delegate image, create a dummy wrapper image of 1x1
+		// size
+		super(image != null ? 1 : width, image != null ? 1 : height, type);
+		myImage = image;
+		myWidth = width;
+		myHeight = height;
+	}
 
-  public JBHiDPIScaledImage(ColorModel cm, WritableRaster raster,
-		boolean isRasterPremultiplied, Hashtable<?, ?> properties, int width, int height) {
-	super(cm, raster, isRasterPremultiplied, properties);
-	myImage = null;
-	myWidth = width;
-	myHeight = height;
-  }
+	public JBHiDPIScaledImage(ColorModel cm, WritableRaster raster, boolean isRasterPremultiplied,
+			Hashtable<?, ?> properties, int width, int height) {
+		super(cm, raster, isRasterPremultiplied, properties);
+		myImage = null;
+		myWidth = width;
+		myHeight = height;
+	}
 
-  public Image getDelegate() {
-    return myImage;
-  }
+	@Override
+	public boolean isHiDpiAware() {
+		return true;
+	}
 
-  @Override
-  public int getWidth() {
-    return myImage != null ? myWidth : super.getWidth();
-  }
+	public Image getDelegate() {
+		return myImage;
+	}
 
-  @Override
-  public int getHeight() {
-    return myImage != null ? myHeight : super.getHeight();
-  }
+	@Override
+	public int getWidth() {
+		return myImage != null ? myWidth : super.getWidth();
+	}
 
-  @Override
-  public int getWidth(ImageObserver observer) {
-    return myImage != null ? myWidth : super.getWidth(observer);
-  }
+	@Override
+	public int getHeight() {
+		return myImage != null ? myHeight : super.getHeight();
+	}
 
-  @Override
-  public int getHeight(ImageObserver observer) {
-    return myImage != null ? myHeight : super.getHeight(observer);
-  }
+	@Override
+	public int getWidth(ImageObserver observer) {
+		return myImage != null ? myWidth : super.getWidth(observer);
+	}
 
-  @Override
-  public Graphics2D createGraphics() {
-    Graphics2D g = super.createGraphics();
-    if (myImage == null) {
-      return new HiDPIScaledGraphics(g);
-    }
-    return g;
-  }
+	@Override
+	public int getHeight(ImageObserver observer) {
+		return myImage != null ? myHeight : super.getHeight(observer);
+	}
+
+	@Override
+	public Graphics2D createGraphics() {
+		Graphics2D g = super.createGraphics();
+		if (myImage == null) {
+			return new HiDPIScaledGraphics(g);
+		}
+		return g;
+	}
 }

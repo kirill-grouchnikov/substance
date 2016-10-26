@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -72,6 +72,7 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
+import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -1157,73 +1158,64 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 
 		// this.thumbStateTransitionTracker.registerModelListeners();
 
-		this.substancePropertyListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ("font".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							scrollbar.updateUI();
+		this.substancePropertyListener = (PropertyChangeEvent evt) -> {
+			if ("font".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> scrollbar.updateUI());
+			}
+			if ("background".equals(evt.getPropertyName())) {
+				// propagate application-specific background color to the
+				// scroll buttons.
+				Color newBackgr = (Color) evt.getNewValue();
+				if (!(newBackgr instanceof UIResource)) {
+					if (mySecondDecreaseButton != null) {
+						if (mySecondDecreaseButton.getBackground() instanceof UIResource) {
+							mySecondDecreaseButton.setBackground(newBackgr);
 						}
-					});
-				}
-				if ("background".equals(evt.getPropertyName())) {
-					// propagate application-specific background color to the
-					// scroll buttons.
-					Color newBackgr = (Color) evt.getNewValue();
-					if (!(newBackgr instanceof UIResource)) {
-						if (mySecondDecreaseButton != null) {
-							if (mySecondDecreaseButton.getBackground() instanceof UIResource) {
-								mySecondDecreaseButton.setBackground(newBackgr);
-							}
+					}
+					if (mySecondIncreaseButton != null) {
+						if (mySecondIncreaseButton.getBackground() instanceof UIResource) {
+							mySecondIncreaseButton.setBackground(newBackgr);
 						}
-						if (mySecondIncreaseButton != null) {
-							if (mySecondIncreaseButton.getBackground() instanceof UIResource) {
-								mySecondIncreaseButton.setBackground(newBackgr);
-							}
+					}
+					if (incrButton != null) {
+						if (incrButton.getBackground() instanceof UIResource) {
+							incrButton.setBackground(newBackgr);
 						}
-						if (incrButton != null) {
-							if (incrButton.getBackground() instanceof UIResource) {
-								incrButton.setBackground(newBackgr);
-							}
-						}
-						if (decrButton != null) {
-							if (decrButton.getBackground() instanceof UIResource) {
-								decrButton.setBackground(newBackgr);
-							}
+					}
+					if (decrButton != null) {
+						if (decrButton.getBackground() instanceof UIResource) {
+							decrButton.setBackground(newBackgr);
 						}
 					}
 				}
 			}
 		};
-		this.scrollbar
-				.addPropertyChangeListener(this.substancePropertyListener);
+		this.scrollbar.addPropertyChangeListener(this.substancePropertyListener);
 
 		this.mySecondDecreaseButton.addMouseListener(this.buttonListener);
 		this.mySecondIncreaseButton.addMouseListener(this.buttonListener);
 
-		this.substanceAdjustmentListener = new AdjustmentListener() {
-			public void adjustmentValueChanged(AdjustmentEvent e) {
-				SubstanceCoreUtilities
-						.testComponentStateChangeThreadingViolation(scrollbar);
-				Component parent = SubstanceScrollBarUI.this.scrollbar
-						.getParent();
-				if (parent instanceof JScrollPane) {
-					JScrollPane jsp = (JScrollPane) parent;
-					JScrollBar hor = jsp.getHorizontalScrollBar();
-					JScrollBar ver = jsp.getVerticalScrollBar();
+		this.substanceAdjustmentListener = (AdjustmentEvent e) -> {
+			SubstanceCoreUtilities
+					.testComponentStateChangeThreadingViolation(scrollbar);
+			Component parent = SubstanceScrollBarUI.this.scrollbar
+					.getParent();
+			if (parent instanceof JScrollPane) {
+				JScrollPane jsp = (JScrollPane) parent;
+				JScrollBar hor = jsp.getHorizontalScrollBar();
+				JScrollBar ver = jsp.getVerticalScrollBar();
 
-					JScrollBar other = null;
-					if (SubstanceScrollBarUI.this.scrollbar == hor) {
-						other = ver;
-					}
-					if (SubstanceScrollBarUI.this.scrollbar == ver) {
-						other = hor;
-					}
-
-					if ((other != null) && other.isVisible())
-						other.repaint();
-					SubstanceScrollBarUI.this.scrollbar.repaint();
+				JScrollBar other = null;
+				if (SubstanceScrollBarUI.this.scrollbar == hor) {
+					other = ver;
 				}
+				if (SubstanceScrollBarUI.this.scrollbar == ver) {
+					other = hor;
+				}
+
+				if ((other != null) && other.isVisible())
+					other.repaint();
+				SubstanceScrollBarUI.this.scrollbar.repaint();
 			}
 		};
 		this.scrollbar.addAdjustmentListener(this.substanceAdjustmentListener);
@@ -2862,6 +2854,12 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			return new Dimension(Math.max(48, 5 * scrollBarWidth),
 					scrollBarWidth);
 		}
+	}
+	
+	@Override
+	public void update(Graphics g, JComponent c) {
+		super.update(g, c);
+		GhostPaintingUtils.paintGhostImages(c, g);
 	}
 
 	/**

@@ -1,13 +1,31 @@
 package test.check;
 
-import java.awt.*;
-import java.awt.geom.*;
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
+
+import javax.swing.Icon;
+import javax.swing.plaf.UIResource;
+
+import org.pushingpixels.substance.api.icon.IsHiDpiAware;
+import org.pushingpixels.substance.api.icon.IsResizable;
 
 /**
  * This class has been automatically generated using <a
  * href="https://flamingo.dev.java.net">Flamingo SVG transcoder</a>.
  */
-public class substance {
+public class substance implements Icon, UIResource, IsResizable, IsHiDpiAware  {
 	/**
 	 * Paints the transcoded SVG image on the specified graphics context. You
 	 * can install a custom transformation on the graphics context to scale the
@@ -112,5 +130,67 @@ g.setTransform(defaultTransform_);
     public static int getOrigHeight() {
         return 400;
     }
+
+	/**
+	 * The current width of this resizable icon.
+	 */
+	int width;
+
+	/**
+	 * The current height of this resizable icon.
+	 */
+	int height;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.Icon#getIconHeight()
+	 */
+    @Override
+	public int getIconHeight() {
+		return height;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.Icon#getIconWidth()
+	 */
+    @Override
+	public int getIconWidth() {
+		return width;
+	}
+
+	@Override
+    public void setDimension(Dimension newDimension) {
+        this.width = newDimension.width;
+        this.height = newDimension.height;
+    }
+    
+    @Override
+    public boolean isHiDpiAware() {
+        return true;
+    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
+	 * int, int)
+	 */
+    @Override
+	public void paintIcon(Component c, Graphics g, int x, int y) {
+		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.translate(x, y);
+
+		double coef1 = (double) this.width / (double) getOrigWidth();
+		double coef2 = (double) this.height / (double) getOrigHeight();
+		double coef = Math.min(coef1, coef2);
+		g2d.scale(coef, coef);
+		paint(g2d);
+		g2d.dispose();
+	}
 }
 

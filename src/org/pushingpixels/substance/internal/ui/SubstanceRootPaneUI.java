@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -413,159 +413,151 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 
 		// System.out.println("Listeners on root " + root.hashCode());
 
-		this.substanceHierarchyListener = new HierarchyListener() {
-			public void hierarchyChanged(HierarchyEvent e) {
-				Component parent = root.getParent();
-				if (parent == null) {
-					// fix for defect 271 - check for null parent
-					// as early as possible
-					return;
-				}
-				// System.out.println("Root pane " + root.hashCode()
-				// + " parent : " + parent.getClass().getName());
-				if (MemoryAnalyzer.isRunning()) {
-					MemoryAnalyzer.enqueueUsage("Root pane @" + root.hashCode()
-							+ "\n"
-							+ SubstanceCoreUtilities.getHierarchy(parent));
-				}
-				if (parent.getClass().getName().startsWith(
-						"org.jdesktop.jdic.tray")
-						|| (parent.getClass().getName().compareTo(
-								"javax.swing.Popup$HeavyWeightWindow") == 0)) {
-					// Workaround for bug 240 - using JDIC system tray
-					// menu results in an HierarchyEvent being fired right
-					// after a MouseEvent. Somehow, the
-					// EventQueue.getCurrentEvent() returns the HierarchyEvent
-					// even when the MouseEvent is being processed, resulting
-					// in zeroed modifiers set on the ActionEvent passed
-					// to the action listeners on that menu item.
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							root
-									.removeHierarchyListener(substanceHierarchyListener);
-							// System.out.println(root.hashCode() + ":"
-							// + root.getHierarchyListeners().length);
-							substanceHierarchyListener = null;
-						};
-					});
-				}
-
-				Window currWindow = null;
-				if (parent instanceof Window) {
-					currWindow = (Window) parent;
-				} else {
-					currWindow = SwingUtilities.getWindowAncestor(parent);
-				}
-				if (substanceWindowListener != null) {
-					substanceCurrentWindow
-							.removeWindowListener(substanceWindowListener);
-					substanceWindowListener = null;
-				}
-				if (substanceWindowComponentListener != null) {
-					substanceCurrentWindow
-							.removeComponentListener(substanceWindowComponentListener);
-					substanceWindowComponentListener = null;
-				}
-				if (currWindow != null) {
-					// fix for bug 116 - stopping threads when all frames
-					// are not displayable
-					substanceWindowListener = new WindowAdapter() {
-						@Override
-						public void windowClosed(WindowEvent e) {
-							SubstanceCoreUtilities
-									.testWindowCloseThreadingViolation(e
-											.getWindow());
-							SwingUtilities.invokeLater(new Runnable() {
-								public void run() {
-									Frame[] frames = Frame.getFrames();
-									for (Frame frame : frames) {
-										if (frame.isDisplayable())
-											return;
-									}
-									SubstanceCoreUtilities.stopThreads();
-								}
-							});
-						}
-					};
-
-					if (!(parent instanceof JInternalFrame)) {
-						currWindow.addWindowListener(substanceWindowListener);
-					}
-
-					// fix for defect 213 - maximizing frame under multiple
-					// screens shouldn't always use insets of the primary
-					// screen.
-					substanceWindowComponentListener = new ComponentAdapter() {
-						@Override
-						public void componentMoved(ComponentEvent e) {
-							this.processNewPosition();
-						}
-
-						@Override
-						public void componentResized(ComponentEvent e) {
-							this.processNewPosition();
-						}
-
-						protected void processNewPosition() {
-							SwingUtilities.invokeLater(new Runnable() {
-								public void run() {
-									if (window == null)
-										return;
-
-									if (!window.isShowing()
-											|| !window.isDisplayable()) {
-										currentRootPaneGC = null;
-										return;
-									}
-
-									GraphicsEnvironment ge = GraphicsEnvironment
-											.getLocalGraphicsEnvironment();
-									GraphicsDevice[] gds = ge
-											.getScreenDevices();
-									if (gds.length == 1)
-										return;
-									Point midLoc = new Point(window
-											.getLocationOnScreen().x
-											+ window.getWidth() / 2, window
-											.getLocationOnScreen().y
-											+ window.getHeight() / 2);
-									// System.out.println("Loc : "
-									// + window.getLocationOnScreen()
-									// + ", width : "
-									// + window.getWidth()
-									// + ", mid : " + midLoc);
-									int index = 0;
-									for (GraphicsDevice gd : gds) {
-										GraphicsConfiguration gc = gd
-												.getDefaultConfiguration();
-										Rectangle bounds = gc.getBounds();
-										// System.out.println("Bounds : "
-										// + bounds);
-										if (bounds.contains(midLoc)) {
-											if (gc != currentRootPaneGC) {
-												currentRootPaneGC = gc;
-												setMaximized();
-												// System.out.println("Set");
-											}
-											break;
-										}
-										index++;
-									}
-								}
-							});
-						}
-					};
-					// fix for defect 225 - install the listener only on
-					// JFrames.
-					if (parent instanceof JFrame) {
-						currWindow
-								.addComponentListener(substanceWindowComponentListener);
-					}
-
-					SubstanceRootPaneUI.this.window = currWindow;
-				}
-				substanceCurrentWindow = currWindow;
+		this.substanceHierarchyListener = (HierarchyEvent e) -> {
+			Component parent = root.getParent();
+			if (parent == null) {
+				// fix for defect 271 - check for null parent
+				// as early as possible
+				return;
 			}
+			// System.out.println("Root pane " + root.hashCode()
+			// + " parent : " + parent.getClass().getName());
+			if (MemoryAnalyzer.isRunning()) {
+				MemoryAnalyzer.enqueueUsage("Root pane @" + root.hashCode()
+						+ "\n"
+						+ SubstanceCoreUtilities.getHierarchy(parent));
+			}
+			if (parent.getClass().getName().startsWith(
+					"org.jdesktop.jdic.tray")
+					|| (parent.getClass().getName().compareTo(
+							"javax.swing.Popup$HeavyWeightWindow") == 0)) {
+				// Workaround for bug 240 - using JDIC system tray
+				// menu results in an HierarchyEvent being fired right
+				// after a MouseEvent. Somehow, the
+				// EventQueue.getCurrentEvent() returns the HierarchyEvent
+				// even when the MouseEvent is being processed, resulting
+				// in zeroed modifiers set on the ActionEvent passed
+				// to the action listeners on that menu item.
+				SwingUtilities.invokeLater(() -> {
+					root.removeHierarchyListener(substanceHierarchyListener);
+					// System.out.println(root.hashCode() + ":"
+					// + root.getHierarchyListeners().length);
+					substanceHierarchyListener = null;
+				});
+			}
+
+			Window currWindow = null;
+			if (parent instanceof Window) {
+				currWindow = (Window) parent;
+			} else {
+				currWindow = SwingUtilities.getWindowAncestor(parent);
+			}
+			if (substanceWindowListener != null) {
+				substanceCurrentWindow
+						.removeWindowListener(substanceWindowListener);
+				substanceWindowListener = null;
+			}
+			if (substanceWindowComponentListener != null) {
+				substanceCurrentWindow
+						.removeComponentListener(substanceWindowComponentListener);
+				substanceWindowComponentListener = null;
+			}
+			if (currWindow != null) {
+				// fix for bug 116 - stopping threads when all frames
+				// are not displayable
+				substanceWindowListener = new WindowAdapter() {
+					@Override
+					public void windowClosed(WindowEvent e) {
+						SubstanceCoreUtilities
+								.testWindowCloseThreadingViolation(e
+										.getWindow());
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								Frame[] frames = Frame.getFrames();
+								for (Frame frame : frames) {
+									if (frame.isDisplayable())
+										return;
+								}
+								SubstanceCoreUtilities.stopThreads();
+							}
+						});
+					}
+				};
+
+				if (!(parent instanceof JInternalFrame)) {
+					currWindow.addWindowListener(substanceWindowListener);
+				}
+
+				// fix for defect 213 - maximizing frame under multiple
+				// screens shouldn't always use insets of the primary
+				// screen.
+				substanceWindowComponentListener = new ComponentAdapter() {
+					@Override
+					public void componentMoved(ComponentEvent e) {
+						this.processNewPosition();
+					}
+
+					@Override
+					public void componentResized(ComponentEvent e) {
+						this.processNewPosition();
+					}
+
+					protected void processNewPosition() {
+						SwingUtilities.invokeLater(() -> {
+							if (window == null)
+								return;
+
+							if (!window.isShowing()
+									|| !window.isDisplayable()) {
+								currentRootPaneGC = null;
+								return;
+							}
+
+							GraphicsEnvironment ge = GraphicsEnvironment
+									.getLocalGraphicsEnvironment();
+							GraphicsDevice[] gds = ge
+									.getScreenDevices();
+							if (gds.length == 1)
+								return;
+							Point midLoc = new Point(window
+									.getLocationOnScreen().x
+									+ window.getWidth() / 2, window
+									.getLocationOnScreen().y
+									+ window.getHeight() / 2);
+							// System.out.println("Loc : "
+							// + window.getLocationOnScreen()
+							// + ", width : "
+							// + window.getWidth()
+							// + ", mid : " + midLoc);
+							int index = 0;
+							for (GraphicsDevice gd : gds) {
+								GraphicsConfiguration gc = gd
+										.getDefaultConfiguration();
+								Rectangle bounds = gc.getBounds();
+								// System.out.println("Bounds : "
+								// + bounds);
+								if (bounds.contains(midLoc)) {
+									if (gc != currentRootPaneGC) {
+										currentRootPaneGC = gc;
+										setMaximized();
+										// System.out.println("Set");
+									}
+									break;
+								}
+								index++;
+							}
+						});
+					}
+				};
+				// fix for defect 225 - install the listener only on
+				// JFrames.
+				if (parent instanceof JFrame) {
+					currWindow.addComponentListener(substanceWindowComponentListener);
+				}
+
+				SubstanceRootPaneUI.this.window = currWindow;
+			}
+			substanceCurrentWindow = currWindow;
 		};
 		root.addHierarchyListener(this.substanceHierarchyListener);
 		// System.out.println(root.hashCode() + ":"
@@ -575,21 +567,18 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 		if (defaultButton != null) {
 			RootPaneDefaultButtonTracker.update(defaultButton);
 		}
-		this.substancePropertyChangeListener = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ("defaultButton".equals(evt.getPropertyName())) {
-					JButton prev = (JButton) evt.getOldValue();
-					JButton next = (JButton) evt.getNewValue();
+		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+			if ("defaultButton".equals(evt.getPropertyName())) {
+				JButton prev = (JButton) evt.getOldValue();
+				JButton next = (JButton) evt.getNewValue();
 
-					RootPaneDefaultButtonTracker.update(prev);
-					RootPaneDefaultButtonTracker.update(next);
-				}
+				RootPaneDefaultButtonTracker.update(prev);
+				RootPaneDefaultButtonTracker.update(next);
+			}
 
-				if (SubstanceLookAndFeel.WINDOW_MODIFIED.equals(evt
-						.getPropertyName())) {
-					propagateModificationState();
-				}
+			if (SubstanceLookAndFeel.WINDOW_MODIFIED.equals(evt
+					.getPropertyName())) {
+				propagateModificationState();
 			}
 		};
 		root.addPropertyChangeListener(this.substancePropertyChangeListener);

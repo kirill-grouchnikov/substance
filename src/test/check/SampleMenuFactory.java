@@ -30,14 +30,33 @@
 package test.check;
 
 import java.awt.Event;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSeparator;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
-import org.pushingpixels.substance.api.*;
-import org.pushingpixels.substance.api.colorscheme.*;
+import org.pushingpixels.substance.api.ColorSchemeTransform;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.colorscheme.LightGrayColorScheme;
+import org.pushingpixels.substance.api.colorscheme.MetallicColorScheme;
+import org.pushingpixels.substance.api.colorscheme.OrangeColorScheme;
 import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.ArcDecorationPainter;
 import org.pushingpixels.substance.api.painter.fill.GlassFillPainter;
@@ -46,6 +65,37 @@ import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.skin.SkinInfo;
 
 import test.Check;
+import test.check.svg.flags.ar;
+import test.check.svg.flags.bg;
+import test.check.svg.flags.br;
+import test.check.svg.flags.ca;
+import test.check.svg.flags.cn;
+import test.check.svg.flags.cz;
+import test.check.svg.flags.de;
+import test.check.svg.flags.dk;
+import test.check.svg.flags.es;
+import test.check.svg.flags.fi;
+import test.check.svg.flags.fr;
+import test.check.svg.flags.gr;
+import test.check.svg.flags.hk;
+import test.check.svg.flags.hu;
+import test.check.svg.flags.il;
+import test.check.svg.flags.it;
+import test.check.svg.flags.jp;
+import test.check.svg.flags.mx;
+import test.check.svg.flags.nl;
+import test.check.svg.flags.no;
+import test.check.svg.flags.pl;
+import test.check.svg.flags.pt;
+import test.check.svg.flags.ro;
+import test.check.svg.flags.ru;
+import test.check.svg.flags.sa;
+import test.check.svg.flags.se;
+import test.check.svg.flags.th;
+import test.check.svg.flags.tr;
+import test.check.svg.flags.tw;
+import test.check.svg.flags.us;
+import test.check.svg.flags.vn;
 
 /**
  * Factory that creates menus for the test applications.
@@ -86,8 +136,8 @@ public class SampleMenuFactory {
 	public static LinkedList<LinkedList<JMenuItem>> getTestMenuItems() {
 		LinkedList<LinkedList<JMenuItem>> result = new LinkedList<LinkedList<JMenuItem>>();
 		LinkedList<JMenuItem> list1 = new LinkedList<JMenuItem>();
-		final JMenuItem jmi1 = new JMenuItem("Menu item enabled", Check
-				.getIcon("flag_sweden"));
+		final JMenuItem jmi1 = new JMenuItem("Menu item enabled", 
+				Check.configure(new se(), 21, 16));
 		jmi1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
 				Event.CTRL_MASK));
 		JMenuItem jmi2 = new JMenuItem("Menu item disabled");
@@ -106,7 +156,7 @@ public class SampleMenuFactory {
 				Event.CTRL_MASK));
 		jcbmi1.setSelected(true);
 		JCheckBoxMenuItem jcbmi2 = new JCheckBoxMenuItem(
-				"Check enabled unselected", Check.getIcon("flag_brazil"));
+				"Check enabled unselected", Check.configure(new br(), 21, 16));
 		jcbmi2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D,
 				Event.CTRL_MASK));
 		jcbmi2.setSelected(false);
@@ -131,7 +181,7 @@ public class SampleMenuFactory {
 
 		LinkedList<JMenuItem> list3 = new LinkedList<JMenuItem>();
 		final JRadioButtonMenuItem jrbmi1 = new JRadioButtonMenuItem(
-				"Radio enabled selected", Check.getIcon("flag_israel"));
+				"Radio enabled selected", Check.configure(new il(), 21, 16));
 		jrbmi1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G,
 				Event.CTRL_MASK));
 		jrbmi1.setSelected(true);
@@ -167,21 +217,18 @@ public class SampleMenuFactory {
 
 		LinkedList<JMenuItem> list4 = new LinkedList<JMenuItem>();
 		JMenu submenu1 = new JMenu("submenu1");
-		submenu1.setIcon(Check.getIcon("flag_germany"));
-		submenu1.add(new JMenuItem("submenu item1", Check
-				.getIcon("flag_finland")));
+		submenu1.setIcon(Check.configure(new de(), 21, 16));
+		submenu1.add(new JMenuItem("submenu item1", Check.configure(new fi(), 21, 16)));
 		submenu1.add(new JMenuItem("submenu item2"));
 		submenu1.add(new JMenuItem("submenu item3"));
 		JMenu submenu11 = new JMenu("submenu1-1");
 		submenu11.add(new JMenuItem("submenu item111"));
 		submenu11.add(new JMenuItem("submenu item112"));
 		submenu11.add(new JMenuItem("submenu item113"));
-		submenu11.add(new JMenuItem("submenu item114", Check
-				.getIcon("flag_france")));
+		submenu11.add(new JMenuItem("submenu item114", Check.configure(new fr(), 21, 16)));
 		submenu1.add(submenu11);
 		JMenu submenu12 = new JMenu("submenu1-2");
-		submenu12.add(new JMenuItem("submenu item121", Check
-				.getIcon("flag_japan")));
+		submenu12.add(new JMenuItem("submenu item121", Check.configure(new jp(), 21, 16)));
 		submenu12.add(new JMenuItem("submenu item122"));
 		submenu12.add(new JMenuItem("submenu item123"));
 		submenu12.add(new JMenuItem("submenu item124"));
@@ -687,158 +734,159 @@ public class SampleMenuFactory {
 		JMenu localeMenus = new JMenu("Change locale");
 		lafMenu.add(localeMenus);
 		// Locale changing
-		JMenuItem localeArabic = new JMenuItem("Arabic Locale", Check
-				.getIcon("flag_saudi_arabia"));
+		JMenuItem localeArabic = new JMenuItem("Arabic Locale", 
+				Check.configure(new sa(), 21, 16));
 		localeArabic.addActionListener(new MyLocaleChangeListener("ar", "AR",
 				frame));
 
-		JMenuItem localeBulgarian = new JMenuItem("Bulgarian Locale", Check
-				.getIcon("flag_bulgaria"));
+		JMenuItem localeBulgarian = new JMenuItem("Bulgarian Locale",  
+				Check.configure(new bg(), 21, 16));
 		localeBulgarian.addActionListener(new MyLocaleChangeListener("bg",
 				"BG", frame));
 
-		JMenuItem localeChinese = new JMenuItem("Chinese (Simplified) Locale",
-				Check.getIcon("flag_china"));
+		JMenuItem localeChinese = new JMenuItem("Chinese (Simplified) Locale", 
+				Check.configure(new cn(), 21, 16));
 		localeChinese.addActionListener(new MyLocaleChangeListener("zh", "CN",
 				frame));
 
-		JMenuItem localeChineseHK = new JMenuItem("Chinese (Hong Kong) Locale",
-				Check.getIcon("flag_hong_kong"));
+		JMenuItem localeChineseHK = new JMenuItem("Chinese (Hong Kong) Locale", 
+				Check.configure(new hk(), 21, 16));
 		localeChineseHK.addActionListener(new MyLocaleChangeListener("zh",
 				"HK", frame));
 
-		JMenuItem localeChineseTW = new JMenuItem("Chinese (Taiwan) Locale",
-				Check.getIcon("flag_taiwan"));
+		JMenuItem localeChineseTW = new JMenuItem("Chinese (Taiwan) Locale", 
+				Check.configure(new tw(), 21, 16));
 		localeChineseTW.addActionListener(new MyLocaleChangeListener("zh",
 				"TW", frame));
 
-		JMenuItem localeCzech = new JMenuItem("Czech Locale", Check
-				.getIcon("flag_czech_republic"));
+		JMenuItem localeCzech = new JMenuItem("Czech Locale",  
+				Check.configure(new cz(), 21, 16));
 		localeCzech.addActionListener(new MyLocaleChangeListener("cs", "CZ",
 				frame));
 
-		JMenuItem localeDanish = new JMenuItem("Danish Locale", Check
-				.getIcon("flag_denmark"));
+		JMenuItem localeDanish = new JMenuItem("Danish Locale",  
+				Check.configure(new dk(), 21, 16));
 		localeDanish.addActionListener(new MyLocaleChangeListener("da", "DK",
 				frame));
 
-		JMenuItem localeDutch = new JMenuItem("Dutch Locale", Check
-				.getIcon("flag_netherlands"));
+		JMenuItem localeDutch = new JMenuItem("Dutch Locale",  
+				Check.configure(new nl(), 21, 16));
 		localeDutch.addActionListener(new MyLocaleChangeListener("nl", "NL",
 				frame));
 
-		JMenuItem localeEnglish = new JMenuItem("English Locale", Check
-				.getIcon("flag_united_states"));
+		JMenuItem localeEnglish = new JMenuItem("English Locale",  
+				Check.configure(new us(), 21, 16));
 		localeEnglish.addActionListener(new MyLocaleChangeListener("en", "US",
 				frame));
 
-		JMenuItem localeFinnish = new JMenuItem("Finnish Locale", Check
-				.getIcon("flag_finland"));
+		JMenuItem localeFinnish = new JMenuItem("Finnish Locale",  
+				Check.configure(new fi(), 21, 16));
 		localeFinnish.addActionListener(new MyLocaleChangeListener("fi", "FI",
 				frame));
 
-		JMenuItem localeFrench = new JMenuItem("French Locale", Check
-				.getIcon("flag_france"));
+		JMenuItem localeFrench = new JMenuItem("French Locale",  
+				Check.configure(new fr(), 21, 16));
 		localeFrench.addActionListener(new MyLocaleChangeListener("fr", "FR",
 				frame));
 
-		JMenuItem localeFrenchCA = new JMenuItem("French (Canada) Locale",
-				Check.getIcon("flag_canada"));
+		JMenuItem localeFrenchCA = new JMenuItem("French (Canada) Locale", 
+				Check.configure(new ca(), 21, 16));
 		localeFrenchCA.addActionListener(new MyLocaleChangeListener("fr", "CA",
 				frame));
 
-		JMenuItem localeGerman = new JMenuItem("German Locale", Check
-				.getIcon("flag_germany"));
+		JMenuItem localeGerman = new JMenuItem("German Locale",   
+				Check.configure(new de(), 21, 16));
 		localeGerman.addActionListener(new MyLocaleChangeListener("de", "DE",
 				frame));
 
-		JMenuItem localeGreek = new JMenuItem("Greek Locale", Check
-				.getIcon("flag_greece"));
+		JMenuItem localeGreek = new JMenuItem("Greek Locale",   
+				Check.configure(new gr(), 21, 16));
 		localeGreek.addActionListener(new MyLocaleChangeListener("el", "GR",
 				frame));
 
-		JMenuItem localeHebrew = new JMenuItem("Hebrew Locale", Check
-				.getIcon("flag_israel"));
+		JMenuItem localeHebrew = new JMenuItem("Hebrew Locale",   
+				Check.configure(new il(), 21, 16));
 		localeHebrew.addActionListener(new MyLocaleChangeListener("iw", "IL",
 				frame));
 
-		JMenuItem localeHungarian = new JMenuItem("Hungarian Locale", Check
-				.getIcon("flag_hungary"));
+		JMenuItem localeHungarian = new JMenuItem("Hungarian Locale",   
+				Check.configure(new hu(), 21, 16));
 		localeHungarian.addActionListener(new MyLocaleChangeListener("hu",
 				"HU", frame));
 
-		JMenuItem localeItalian = new JMenuItem("Italian Locale", Check
-				.getIcon("flag_italy"));
+		JMenuItem localeItalian = new JMenuItem("Italian Locale",   
+				Check.configure(new it(), 21, 16));
 		localeItalian.addActionListener(new MyLocaleChangeListener("it", "IT",
 				frame));
 
-		JMenuItem localeJapanese = new JMenuItem("Japanese Locale", Check
-				.getIcon("flag_japan"));
+		JMenuItem localeJapanese = new JMenuItem("Japanese Locale",   
+				Check.configure(new jp(), 21, 16));
 		localeJapanese.addActionListener(new MyLocaleChangeListener("ja", "JP",
 				frame));
 
-		JMenuItem localeNorwegian = new JMenuItem("Norwegian Locale", Check
-				.getIcon("flag_norway"));
+		JMenuItem localeNorwegian = new JMenuItem("Norwegian Locale",   
+				Check.configure(new no(), 21, 16));
 		localeNorwegian.addActionListener(new MyLocaleChangeListener("no",
 				"NO", frame));
 
-		JMenuItem localePolish = new JMenuItem("Polish Locale", Check
-				.getIcon("flag_poland"));
+		JMenuItem localePolish = new JMenuItem("Polish Locale",   
+				Check.configure(new pl(), 21, 16));
 		localePolish.addActionListener(new MyLocaleChangeListener("pl", "PL",
 				frame));
 
-		JMenuItem localePortuguese = new JMenuItem("Portuguese Locale", Check
-				.getIcon("flag_portugal"));
+		JMenuItem localePortuguese = new JMenuItem("Portuguese Locale",   
+				Check.configure(new pt(), 21, 16));
 		localePortuguese.addActionListener(new MyLocaleChangeListener("pt",
 				"PT", frame));
 
 		JMenuItem localePortugueseBR = new JMenuItem(
-				"Portuguese (Brazil) Locale", Check.getIcon("flag_brazil"));
+				"Portuguese (Brazil) Locale",   
+				Check.configure(new br(), 21, 16));
 		localePortugueseBR.addActionListener(new MyLocaleChangeListener("pt",
 				"BR", frame));
 
-		JMenuItem localeRomanian = new JMenuItem("Romanian Locale", Check
-				.getIcon("flag_romania"));
+		JMenuItem localeRomanian = new JMenuItem("Romanian Locale",   
+				Check.configure(new ro(), 21, 16));
 		localeRomanian.addActionListener(new MyLocaleChangeListener("ro", "RO",
 				frame));
 
-		JMenuItem localeRussian = new JMenuItem("Russian Locale", Check
-				.getIcon("flag_russia"));
+		JMenuItem localeRussian = new JMenuItem("Russian Locale",   
+				Check.configure(new ru(), 21, 16));
 		localeRussian.addActionListener(new MyLocaleChangeListener("ru", "RU",
 				frame));
 
-		JMenuItem localeSpanish = new JMenuItem("Spanish Locale", Check
-				.getIcon("flag_spain"));
+		JMenuItem localeSpanish = new JMenuItem("Spanish Locale",   
+				Check.configure(new es(), 21, 16));
 		localeSpanish.addActionListener(new MyLocaleChangeListener("es", "ES",
 				frame));
 
-		JMenuItem localeSpanishAR = new JMenuItem("Spanish (Argentina) Locale",
-				Check.getIcon("flag_argentina"));
+		JMenuItem localeSpanishAR = new JMenuItem("Spanish (Argentina) Locale",  
+				Check.configure(new ar(), 21, 16));
 		localeSpanishAR.addActionListener(new MyLocaleChangeListener("es",
 				"AR", frame));
 
-		JMenuItem localeSpanishMX = new JMenuItem("Spanish (Mexico) Locale",
-				Check.getIcon("flag_mexico"));
+		JMenuItem localeSpanishMX = new JMenuItem("Spanish (Mexico) Locale",  
+				Check.configure(new mx(), 21, 16));
 		localeSpanishMX.addActionListener(new MyLocaleChangeListener("es",
 				"MX", frame));
 
-		JMenuItem localeSwedish = new JMenuItem("Swedish Locale", Check
-				.getIcon("flag_sweden"));
+		JMenuItem localeSwedish = new JMenuItem("Swedish Locale",   
+				Check.configure(new se(), 21, 16));
 		localeSwedish.addActionListener(new MyLocaleChangeListener("sv", "SE",
 				frame));
 
-		JMenuItem localeThai = new JMenuItem("Thai Locale", Check
-				.getIcon("flag_thailand"));
+		JMenuItem localeThai = new JMenuItem("Thai Locale",   
+				Check.configure(new th(), 21, 16));
 		localeThai.addActionListener(new MyLocaleChangeListener("th", "TH",
 				frame));
 
-		JMenuItem localeTurkish = new JMenuItem("Turkish Locale", Check
-				.getIcon("flag_turkey"));
+		JMenuItem localeTurkish = new JMenuItem("Turkish Locale",   
+				Check.configure(new tr(), 21, 16));
 		localeTurkish.addActionListener(new MyLocaleChangeListener("tr", "TR",
 				frame));
 
-		JMenuItem localeVietnamese = new JMenuItem("Vietnamese Locale", Check
-				.getIcon("flag_vietnam"));
+		JMenuItem localeVietnamese = new JMenuItem("Vietnamese Locale",   
+				Check.configure(new vn(), 21, 16));
 		localeVietnamese.addActionListener(new MyLocaleChangeListener("vi",
 				"VN", frame));
 

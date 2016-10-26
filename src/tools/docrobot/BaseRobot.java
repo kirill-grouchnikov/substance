@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,6 +29,7 @@
  */
 package tools.docrobot;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -49,6 +50,7 @@ import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 
 import test.check.SampleFrame;
+import tools.docrobot.svg.Image_x_generic;
 
 /**
  * The base class for taking a single screenshot for Substance documentation.
@@ -107,15 +109,15 @@ public abstract class BaseRobot {
 			@Override
 			protected void executeInEDT() throws Throwable {
 				sf = new SampleFrame();
+				Image_x_generic original = new Image_x_generic();
+				original.setDimension(new Dimension(16, 16));
 				sf.setIconImage(SubstanceImageCreator.getColorSchemeImage(null,
-						new ImageIcon(SkinRobot.class.getClassLoader()
-								.getResource(
-										"test/resource/image-x-generic.png")),
+						original,
 						SubstanceLookAndFeel.getCurrentSkin(sf.getRootPane())
 								.getActiveColorScheme(
 										DecorationAreaType.PRIMARY_TITLE_PANE),
 						0.0f));
-				sf.setSize(338, 245);
+				sf.setSize(340, 254);
 				sf.setLocationRelativeTo(null);
 				sf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				sf.setVisible(true);

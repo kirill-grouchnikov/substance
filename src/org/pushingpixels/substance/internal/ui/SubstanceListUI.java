@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -129,12 +129,9 @@ public class SubstanceListUI extends BasicListUI implements
 		public void valueChanged(final ListSelectionEvent e) {
 			// fix for issue 469/474 - update the inner structures
 			// in a separate event
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					handleListSelectionChange(e);
-					list.repaint();
-				}
+			SwingUtilities.invokeLater(() -> {
+				handleListSelectionChange(e);
+				list.repaint();
 			});
 		}
 
@@ -217,12 +214,7 @@ public class SubstanceListUI extends BasicListUI implements
 		private void _syncModelContents() {
 			// fix for issue 469/474 - update the inner structures
 			// in a separate event
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					syncModelContents();
-				}
-			});
+			SwingUtilities.invokeLater(() -> syncModelContents());
 		}
 
 		@Override
@@ -460,47 +452,42 @@ public class SubstanceListUI extends BasicListUI implements
 		list.addMouseMotionListener(substanceFadeRolloverListener);
 		list.addMouseListener(substanceFadeRolloverListener);
 
-		substancePropertyChangeListener = new PropertyChangeListener() {
-			public void propertyChange(final PropertyChangeEvent evt) {
-				if (SubstanceLookAndFeel.WATERMARK_VISIBLE.equals(evt
-						.getPropertyName())) {
-					list.setOpaque(!SubstanceCoreUtilities
-							.toDrawWatermark(list));
-				}
-				if ("model".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							ListModel oldModel = (ListModel) evt.getOldValue();
-							if (oldModel != null) {
-								oldModel.removeListDataListener(substanceListDataListener);
-							}
-							ListModel newModel = (ListModel) evt.getNewValue();
-							substanceListDataListener = new SubstanceListDataListener();
-							newModel.addListDataListener(substanceListDataListener);
-							syncModelContents();
+		substancePropertyChangeListener = (final PropertyChangeEvent evt) -> {
+			if (SubstanceLookAndFeel.WATERMARK_VISIBLE.equals(evt
+					.getPropertyName())) {
+				list.setOpaque(!SubstanceCoreUtilities
+						.toDrawWatermark(list));
+			}
+			if ("model".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> {
+					ListModel oldModel = (ListModel) evt.getOldValue();
+					if (oldModel != null) {
+						oldModel.removeListDataListener(substanceListDataListener);
+					}
+					ListModel newModel = (ListModel) evt.getNewValue();
+					substanceListDataListener = new SubstanceListDataListener();
+					newModel.addListDataListener(substanceListDataListener);
+					syncModelContents();
+				});
+			}
+			if ("selectionModel".equals(evt.getPropertyName())) {
+				// fix for issue 475 - wire the listener on the new
+				// selection model
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						ListSelectionModel oldModel = (ListSelectionModel) evt
+								.getOldValue();
+						if (oldModel != null) {
+							oldModel.removeListSelectionListener(substanceListSelectionListener);
 						}
-					});
-				}
-				if ("selectionModel".equals(evt.getPropertyName())) {
-					// fix for issue 475 - wire the listener on the new
-					// selection model
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							ListSelectionModel oldModel = (ListSelectionModel) evt
-									.getOldValue();
-							if (oldModel != null) {
-								oldModel.removeListSelectionListener(substanceListSelectionListener);
-							}
-							ListSelectionModel newModel = (ListSelectionModel) evt
-									.getNewValue();
-							substanceListSelectionListener = new SubstanceListSelectionListener();
-							newModel.addListSelectionListener(substanceListSelectionListener);
-							syncModelContents();
-						}
-					});
-				}
+						ListSelectionModel newModel = (ListSelectionModel) evt
+								.getNewValue();
+						substanceListSelectionListener = new SubstanceListSelectionListener();
+						newModel.addListSelectionListener(substanceListSelectionListener);
+						syncModelContents();
+					}
+				});
 			}
 		};
 		list.addPropertyChangeListener(substancePropertyChangeListener);
@@ -893,12 +880,7 @@ public class SubstanceListUI extends BasicListUI implements
 			model.setRollover(initialRollover);
 			tracker = new StateTransitionTracker(list, model);
 			tracker.registerModelListeners();
-			tracker.setRepaintCallback(new RepaintCallback() {
-				@Override
-				public TimelineCallback getRepaintCallback() {
-					return new CellRepaintCallback(list, row);
-				}
-			});
+			tracker.setRepaintCallback(() -> new CellRepaintCallback(list, row));
 			tracker.setName("row " + row);
 			stateTransitionMultiTracker.addTracker(row, tracker);
 		}

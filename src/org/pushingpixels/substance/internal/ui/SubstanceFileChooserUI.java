@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -29,6 +29,7 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,11 +38,14 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileView;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicFileChooserUI;
 import javax.swing.plaf.metal.MetalFileChooserUI;
 
+import org.pushingpixels.substance.api.icon.IsResizable;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
@@ -175,5 +179,26 @@ public class SubstanceFileChooserUI extends MetalFileChooserUI {
 	@Override
 	public FileView getFileView(JFileChooser fc) {
 		return fileView;
+	}
+	
+	@Override
+	protected void installIcons(JFileChooser fc) {
+		super.installIcons(fc);
+		
+		int scale = UIUtil.isRetina() ? 2 : 1;
+		int iconSize = scale * 16;
+		Dimension iconDimension = new Dimension(20, 20);
+
+		((IsResizable) directoryIcon).setDimension(iconDimension);
+		((IsResizable) fileIcon).setDimension(iconDimension);
+		((IsResizable) computerIcon).setDimension(iconDimension);
+		((IsResizable) hardDriveIcon).setDimension(iconDimension);
+		((IsResizable) floppyDriveIcon).setDimension(iconDimension);
+
+		((IsResizable) newFolderIcon).setDimension(iconDimension);
+		((IsResizable) upFolderIcon).setDimension(iconDimension);
+		((IsResizable) homeFolderIcon).setDimension(iconDimension);
+		((IsResizable) detailsViewIcon).setDimension(iconDimension);
+		((IsResizable) listViewIcon).setDimension(iconDimension);
 	}
 }

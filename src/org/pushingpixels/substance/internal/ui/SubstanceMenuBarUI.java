@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,12 +30,16 @@
 package org.pushingpixels.substance.internal.ui;
 
 import java.awt.Graphics;
+import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicMenuBarUI;
 
+import org.pushingpixels.lafwidget.LafWidget;
+import org.pushingpixels.lafwidget.LafWidgetRepository;
+import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
@@ -48,6 +52,8 @@ import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
  * @author Kirill Grouchnikov
  */
 public class SubstanceMenuBarUI extends BasicMenuBarUI {
+	private Set<LafWidget> lafWidgets;
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -58,6 +64,25 @@ public class SubstanceMenuBarUI extends BasicMenuBarUI {
 		return new SubstanceMenuBarUI();
 	}
 
+	@Override
+	public void installUI(JComponent c) {
+		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+
+		super.installUI(c);
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installUI();
+		}
+	}
+	
+	@Override
+	public void uninstallUI(JComponent c) {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallUI();
+		}
+		super.uninstallUI(c);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -69,6 +94,9 @@ public class SubstanceMenuBarUI extends BasicMenuBarUI {
 
 		SubstanceLookAndFeel.setDecorationType(this.menuBar,
 				DecorationAreaType.HEADER);
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installDefaults();
+		}
 	}
 
 	/*
@@ -80,7 +108,29 @@ public class SubstanceMenuBarUI extends BasicMenuBarUI {
 	protected void uninstallDefaults() {
 		DecorationPainterUtils.clearDecorationType(this.menuBar);
 
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallDefaults();
+		}
+
 		super.uninstallDefaults();
+	}
+	
+	@Override
+	protected void installListeners() {
+		super.installListeners();
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installListeners();
+		}
+	}
+	
+	@Override
+	protected void uninstallListeners() {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallListeners();
+		}
+
+		super.uninstallListeners();
 	}
 
 	/*
@@ -97,6 +147,7 @@ public class SubstanceMenuBarUI extends BasicMenuBarUI {
 		} else {
 			super.update(g, c);
 		}
+		GhostPaintingUtils.paintGhostImages(c, g);
 	}
 
 	/**

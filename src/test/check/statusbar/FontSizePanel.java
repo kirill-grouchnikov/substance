@@ -4,7 +4,13 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.SwingUtilities;
+import javax.swing.UIDefaults;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -16,6 +22,10 @@ import org.pushingpixels.substance.api.fonts.FontSet;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
+
+import test.Check;
+import test.check.svg.View_zoom_in;
+import test.check.svg.View_zoom_out;
 
 public class FontSizePanel {
 	private static class WrapperFontSet implements FontSet {
@@ -106,9 +116,7 @@ public class FontSizePanel {
 		builder.append(fontSizeLabel);
 		// fontSizeLabel.add(Box.createHorizontalStrut(5));
 
-		Icon zoomOutIcon = new ImageIcon(Thread.currentThread()
-				.getContextClassLoader().getResource(
-						"test/check/icons/16/zoom_out.png"));
+		Icon zoomOutIcon = Check.configure(new View_zoom_out(), 16);
 		JLabel zoomOutLabel = new JLabel(zoomOutIcon);
 		builder.append(zoomOutLabel);
 
@@ -150,9 +158,7 @@ public class FontSizePanel {
 		});
 		builder.append(fontSizeSlider);
 
-		Icon zoomInIcon = new ImageIcon(Thread.currentThread()
-				.getContextClassLoader().getResource(
-						"test/check/icons/16/zoom_in.png"));
+		Icon zoomInIcon = Check.configure(new View_zoom_in(), 16);
 		JLabel zoomInLabel = new JLabel(zoomInIcon);
 		builder.append(zoomInLabel);
 

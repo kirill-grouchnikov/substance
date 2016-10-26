@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -34,6 +34,7 @@ import java.awt.image.BufferedImage;
 
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.*;
 
 /**
@@ -101,7 +102,8 @@ public class ClassicDecorationPainter implements SubstanceDecorationPainter {
 						width, height, scheme);
 				smallImageCache.put(key, result);
 			}
-			graphics.drawImage(result, 0, 0, null);
+			int imageScale = UIUtil.isRetina() ? 2 : 1;
+			graphics.drawImage(result, 0, 0, result.getWidth() / imageScale, result.getHeight() / imageScale, null);
 			return;
 		}
 

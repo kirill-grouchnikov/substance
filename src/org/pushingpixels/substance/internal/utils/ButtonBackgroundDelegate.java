@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -75,8 +75,8 @@ public class ButtonBackgroundDelegate {
 	 * is called, it checks <code>this</code> map to see if it already contains
 	 * such background. If so, the background from the map is returned.
 	 */
-	private static LazyResettableHashMap<BufferedImage> regularBackgrounds = new LazyResettableHashMap<BufferedImage>(
-			"ButtonBackgroundDelegate");
+	private static LazyResettableHashMap<BufferedImage> regularBackgrounds = 
+			new LazyResettableHashMap<BufferedImage>("ButtonBackgroundDelegate");
 
 	/**
 	 * Retrieves the background for the specified button.
@@ -101,8 +101,7 @@ public class ButtonBackgroundDelegate {
 			ButtonModel model, SubstanceButtonShaper shaper,
 			SubstanceFillPainter fillPainter,
 			SubstanceBorderPainter borderPainter, int width, int height) {
-		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) button
-				.getUI();
+		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) button.getUI();
 		StateTransitionTracker.ModelStateInfo modelStateInfo = transitionAwareUI
 				.getTransitionTracker().getModelStateInfo();
 
@@ -315,14 +314,13 @@ public class ButtonBackgroundDelegate {
 		int openDelta = (int) (Math.ceil(3.0 * SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
 						.getComponentFontSize(button))));
-		int deltaLeft = ((openSides != null) && openSides.contains(Side.LEFT)) ? openDelta
-				: 0;
-		int deltaRight = ((openSides != null) && openSides.contains(Side.RIGHT)) ? openDelta
-				: 0;
-		int deltaTop = ((openSides != null) && openSides.contains(Side.TOP)) ? openDelta
-				: 0;
-		int deltaBottom = ((openSides != null) && openSides
-				.contains(Side.BOTTOM)) ? openDelta : 0;
+		if (UIUtil.isRetina()) {
+			openDelta *= 2;
+		}
+		int deltaLeft = ((openSides != null) && openSides.contains(Side.LEFT)) ? openDelta : 0;
+		int deltaRight = ((openSides != null) && openSides.contains(Side.RIGHT)) ? openDelta : 0;
+		int deltaTop = ((openSides != null) && openSides.contains(Side.TOP)) ? openDelta : 0;
+		int deltaBottom = ((openSides != null) && openSides.contains(Side.BOTTOM)) ? openDelta : 0;
 
 		// System.err.println(key);
 		int borderDelta = (int) Math.floor(SubstanceSizeUtils

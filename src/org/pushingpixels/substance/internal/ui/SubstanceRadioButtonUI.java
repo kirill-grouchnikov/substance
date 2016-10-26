@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -66,6 +66,7 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -79,7 +80,6 @@ import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
-import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
 
 /**
  * UI for radio buttons in <b>Substance </b> look and feel.
@@ -126,20 +126,14 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements
 		this.stateTransitionTracker.registerModelListeners();
 		this.stateTransitionTracker.registerFocusListeners();
 
-		this.substancePropertyListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (AbstractButton.MODEL_CHANGED_PROPERTY.equals(evt
-						.getPropertyName())) {
-					stateTransitionTracker.setModel((ButtonModel) evt
-							.getNewValue());
-				}
-				if ("font".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							b.updateUI();
-						}
-					});
-				}
+		this.substancePropertyListener = (PropertyChangeEvent evt) -> {
+			if (AbstractButton.MODEL_CHANGED_PROPERTY.equals(evt
+					.getPropertyName())) {
+				stateTransitionTracker.setModel((ButtonModel) evt
+						.getNewValue());
+			}
+			if ("font".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> b.updateUI());
 			}
 		};
 		b.addPropertyChangeListener(substancePropertyListener);

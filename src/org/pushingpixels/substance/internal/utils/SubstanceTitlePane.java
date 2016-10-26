@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -91,13 +91,13 @@ import org.pushingpixels.lafwidget.utils.TrackableThread;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.skin.SkinInfo;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
-import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.utils.icon.SubstanceIconFactory;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 
@@ -616,13 +616,11 @@ public class SubstanceTitlePane extends JComponent {
 				}
 
 				if ("componentOrientation".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							if (SubstanceTitlePane.this.menuBar != null) {
-								SubstanceTitlePane.this.menuBar
-										.applyComponentOrientation((ComponentOrientation) evt
-												.getNewValue());
-							}
+					SwingUtilities.invokeLater(() -> {
+						if (SubstanceTitlePane.this.menuBar != null) {
+							SubstanceTitlePane.this.menuBar
+									.applyComponentOrientation((ComponentOrientation) evt
+											.getNewValue());
 						}
 					});
 				}
@@ -852,15 +850,8 @@ public class SubstanceTitlePane extends JComponent {
 				final String skinClassName = skinEntry.getValue()
 						.getClassName();
 				JMenuItem jmiSkin = new JMenuItem(skinEntry.getKey());
-				jmiSkin.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						SwingUtilities.invokeLater(new Runnable() {
-							public void run() {
-								SubstanceLookAndFeel.setSkin(skinClassName);
-							}
-						});
-					}
-				});
+				jmiSkin.addActionListener((ActionEvent e) ->
+						SwingUtilities.invokeLater(() ->  SubstanceLookAndFeel.setSkin(skinClassName)));
 
 				skinMenu.add(jmiSkin);
 			}
@@ -1500,7 +1491,9 @@ public class SubstanceTitlePane extends JComponent {
 		@Override
 		public void paint(Graphics g) {
 			if (appIcon != null) {
-				g.drawImage(appIcon, 0, 0, null);
+				int scaleFactor = SubstanceCoreUtilities.isHiDpiAwareImage(appIcon) ? 2 : 1;
+				g.drawImage(appIcon, 0, 0, appIcon.getWidth(null) / scaleFactor,
+						appIcon.getHeight(null) / scaleFactor, null);
 			} else {
 				Icon icon = UIManager.getIcon("InternalFrame.icon");
 				if (icon != null) {
@@ -1786,13 +1779,13 @@ public class SubstanceTitlePane extends JComponent {
 			this.appIcon = null;
 			return;
 		}
-		java.util.List<Image> icons = window.getIconImages();
+		java.util.List<Image> iconImages = window.getIconImages();
 
-		if (icons.size() == 0) {
+		if (iconImages.size() == 0) {
 			this.appIcon = null;
 		} else {
 			int prefSize = SubstanceSizeUtils.getTitlePaneIconSize();
-			this.appIcon = SubstanceCoreUtilities.getScaledIconImage(icons,
+			this.appIcon = SubstanceCoreUtilities.getScaledIconImage(iconImages,
 					prefSize, prefSize);
 		}
 	}

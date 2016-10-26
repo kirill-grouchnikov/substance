@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -29,7 +29,10 @@
  */
 package org.pushingpixels.substance.internal.utils.icon;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,8 +40,9 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.icon.IsHiDpiAware;
 import org.pushingpixels.substance.internal.animation.IconGlowTracker;
-import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
@@ -72,10 +76,7 @@ public class GlowingIcon implements Icon, IsHiDpiAware {
 	 * @see javax.swing.Icon#getIconHeight()
 	 */
 	public int getIconHeight() {
-		if (this.delegate == null)
-			return 0;
-		int scale = isHiDpiAware() && UIUtil.isRetina() ? 2 : 1;
-		return this.delegate.getIconHeight() / scale;
+		return this.delegate.getIconHeight();
 	}
 
 	/*
@@ -84,10 +85,7 @@ public class GlowingIcon implements Icon, IsHiDpiAware {
 	 * @see javax.swing.Icon#getIconWidth()
 	 */
 	public int getIconWidth() {
-		if (this.delegate == null)
-			return 0;
-		int scale = isHiDpiAware() && UIUtil.isRetina() ? 2 : 1;
-		return this.delegate.getIconWidth() / scale;
+		return this.delegate.getIconWidth();
 	}
 
 	/*
@@ -111,11 +109,10 @@ public class GlowingIcon implements Icon, IsHiDpiAware {
 		if (toPaint == null) {
 			int width = this.getIconWidth();
 			int height = this.getIconHeight();
-			int scale = isHiDpiAware() && UIUtil.isRetina() ? 2 : 1;
 			BufferedImage image = SubstanceCoreUtilities.getBlankImage(width,
 					height);
 			Graphics2D graphics = (Graphics2D) image.getGraphics();
-			graphics.scale(1.0f / scale, 1.0f / scale);
+			//graphics.scale(1.0f / scale, 1.0f / scale);
 			this.delegate.paintIcon(c, graphics, 0, 0);
 			int pixelWidth = image.getWidth();
 			int pixelHeight = image.getHeight();

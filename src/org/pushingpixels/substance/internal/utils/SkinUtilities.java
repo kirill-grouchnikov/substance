@@ -1,25 +1,55 @@
 package org.pushingpixels.substance.internal.utils;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.util.Locale;
 
 import javax.swing.Icon;
 import javax.swing.UIDefaults;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.*;
+import javax.swing.plaf.BorderUIResource;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.DimensionUIResource;
+import javax.swing.plaf.IconUIResource;
+import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.plaf.basic.BasicBorders.MarginBorder;
 
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.api.inputmaps.InputMapSet;
 import org.pushingpixels.substance.api.inputmaps.SubstanceInputMapUtilities;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultListCellRenderer;
+import org.pushingpixels.substance.internal.svg.Accessories_text_editor;
+import org.pushingpixels.substance.internal.svg.Computer;
 import org.pushingpixels.substance.internal.svg.Dialog_error;
 import org.pushingpixels.substance.internal.svg.Dialog_information;
 import org.pushingpixels.substance.internal.svg.Dialog_warning;
+import org.pushingpixels.substance.internal.svg.Drive_harddisk;
+import org.pushingpixels.substance.internal.svg.Folder;
+import org.pushingpixels.substance.internal.svg.Folder_new;
+import org.pushingpixels.substance.internal.svg.Format_justify_fill;
+import org.pushingpixels.substance.internal.svg.Go_up;
 import org.pushingpixels.substance.internal.svg.Help_browser;
-import org.pushingpixels.substance.internal.utils.border.*;
-import org.pushingpixels.substance.internal.utils.icon.*;
+import org.pushingpixels.substance.internal.svg.Media_floppy;
+import org.pushingpixels.substance.internal.svg.Text_x_generic;
+import org.pushingpixels.substance.internal.svg.User_home;
+import org.pushingpixels.substance.internal.utils.border.SubstanceBorder;
+import org.pushingpixels.substance.internal.utils.border.SubstanceEtchedBorder;
+import org.pushingpixels.substance.internal.utils.border.SubstancePaneBorder;
+import org.pushingpixels.substance.internal.utils.border.SubstanceTextComponentBorder;
+import org.pushingpixels.substance.internal.utils.border.SubstanceToolBarBorder;
+import org.pushingpixels.substance.internal.utils.icon.CheckBoxMenuItemIcon;
+import org.pushingpixels.substance.internal.utils.icon.MenuArrowIcon;
+import org.pushingpixels.substance.internal.utils.icon.RadioButtonMenuItemIcon;
+import org.pushingpixels.substance.internal.utils.icon.SubstanceIconFactory;
 import org.pushingpixels.substance.internal.utils.scroll.SubstanceScrollPaneBorder;
 
 public class SkinUtilities {
@@ -346,87 +376,37 @@ public class SkinUtilities {
 				selectionTextForegroundColor,
 
 				"FileChooser.upFolderIcon",
-				new UIDefaults.LazyValue() {
-					public Object createValue(UIDefaults table) {
-						return SubstanceCoreUtilities
-								.getIcon("resource/go-up.png");
-					}
-				},
+				new Go_up(),
 
 				"FileChooser.newFolderIcon",
-				new UIDefaults.LazyValue() {
-					public Object createValue(UIDefaults table) {
-						return SubstanceCoreUtilities
-								.getIcon("resource/folder-new.png");
-					}
-				},
+				new Folder_new(),
 
 				"FileChooser.homeFolderIcon",
-				new UIDefaults.LazyValue() {
-					public Object createValue(UIDefaults table) {
-						return SubstanceCoreUtilities
-								.getIcon("resource/user-home.png");
-					}
-				},
+				new User_home(),
 
 				"FileChooser.listViewIcon",
-				new UIDefaults.LazyValue() {
-					public Object createValue(UIDefaults table) {
-						return SubstanceCoreUtilities
-								.getIcon("resource/application_view_list.png");
-					}
-				},
+				new Format_justify_fill(),
 
 				"FileChooser.detailsViewIcon",
-				new UIDefaults.LazyValue() {
-					public Object createValue(UIDefaults table) {
-						return SubstanceCoreUtilities
-								.getIcon("resource/application_view_detail.png");
-					}
-				},
+				new Accessories_text_editor(),
 
 				"FileChooser.usesSingleFilePane",
 				Boolean.TRUE,
 
 				"FileView.computerIcon",
-				new UIDefaults.LazyValue() {
-					public Object createValue(UIDefaults table) {
-						return SubstanceCoreUtilities
-								.getIcon("resource/computer.png");
-					}
-				},
+				new Computer(),
 
 				"FileView.directoryIcon",
-				new UIDefaults.LazyValue() {
-					public Object createValue(UIDefaults table) {
-						return SubstanceCoreUtilities
-								.getIcon("resource/folder.png");
-					}
-				},
+				new Folder(),
 
 				"FileView.fileIcon",
-				new UIDefaults.LazyValue() {
-					public Object createValue(UIDefaults table) {
-						return SubstanceCoreUtilities
-								.getIcon("resource/text-x-generic.png");
-					}
-				},
+				new Text_x_generic(),
 
 				"FileView.floppyDriveIcon",
-				new UIDefaults.LazyValue() {
-					public Object createValue(UIDefaults table) {
-						return SubstanceCoreUtilities
-								.getIcon("resource/media-floppy.png");
-					}
-				},
+				new Media_floppy(),
 
 				"FileView.hardDriveIcon",
-				new UIDefaults.LazyValue() {
-					public Object createValue(UIDefaults table) {
-						return SubstanceCoreUtilities
-								.getIcon("resource/drive-harddisk.png");
-					}
-				},
+				new Drive_harddisk(),
 
 				"FormattedTextField.background",
 				SubstanceColorUtilities.getDefaultBackgroundColor(true, skin,

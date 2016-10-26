@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -614,23 +614,15 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 		slider.addMouseListener(this.substanceRolloverListener);
 		slider.addMouseMotionListener(this.substanceRolloverListener);
 
-		this.substancePropertyChangeListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ("enabled".equals(evt.getPropertyName())) {
-					SubstanceSliderUI.this.thumbModel.setEnabled(slider
-							.isEnabled());
-				}
-				if ("font".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							slider.updateUI();
-						}
-					});
-				}
+		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+			if ("enabled".equals(evt.getPropertyName())) {
+				SubstanceSliderUI.this.thumbModel.setEnabled(slider.isEnabled());
+			}
+			if ("font".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> slider.updateUI());
 			}
 		};
-		this.slider
-				.addPropertyChangeListener(this.substancePropertyChangeListener);
+		this.slider.addPropertyChangeListener(this.substancePropertyChangeListener);
 
 		this.stateTransitionTracker.registerModelListeners();
 		this.stateTransitionTracker.registerFocusListeners();

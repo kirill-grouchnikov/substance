@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -212,17 +212,12 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 		substanceValueChangeListener = new SubstanceChangeListener();
 		this.progressBar.addChangeListener(this.substanceValueChangeListener);
 
-		this.substancePropertyChangeListener = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ("font".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							if (progressBar != null)
-								progressBar.updateUI();
-						}
-					});
-				}
+		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+			if ("font".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> {
+					if (progressBar != null)
+						progressBar.updateUI();
+				});
 			}
 		};
 		this.progressBar

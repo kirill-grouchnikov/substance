@@ -29,7 +29,10 @@
  */
 package test.check;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
@@ -37,10 +40,26 @@ import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.swing.*;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DropMode;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JSlider;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
+import javax.swing.TransferHandler;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableRowSorter;
 
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
@@ -50,6 +69,22 @@ import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.Timeline.RepeatBehavior;
 
 import test.Check;
+import test.check.svg.flags.bg;
+import test.check.svg.flags.br;
+import test.check.svg.flags.ca;
+import test.check.svg.flags.cn;
+import test.check.svg.flags.de;
+import test.check.svg.flags.dk;
+import test.check.svg.flags.fi;
+import test.check.svg.flags.fr;
+import test.check.svg.flags.gr;
+import test.check.svg.flags.hu;
+import test.check.svg.flags.il;
+import test.check.svg.flags.it;
+import test.check.svg.flags.jp;
+import test.check.svg.flags.mx;
+import test.check.svg.flags.nl;
+import test.check.svg.flags.no;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
@@ -168,19 +203,24 @@ public class TablePanel extends ControllablePanel implements Deferrable {
 		public MyTableModel(int rows) {
 			this.rows = rows;
 			this.data = new Object[rows][this.cols];
-			Icon[] icons = new Icon[] { Check.getIcon("flag_brazil"),
-					Check.getIcon("flag_bulgaria"),
-					Check.getIcon("flag_canada"), Check.getIcon("flag_china"),
-					Check.getIcon("flag_denmark"),
-					Check.getIcon("flag_finland"),
-					Check.getIcon("flag_france"),
-					Check.getIcon("flag_germany"),
-					Check.getIcon("flag_greece"),
-					Check.getIcon("flag_hungary"),
-					Check.getIcon("flag_israel"), Check.getIcon("flag_italy"),
-					Check.getIcon("flag_japan"), Check.getIcon("flag_mexico"),
-					Check.getIcon("flag_netherlands"),
-					Check.getIcon("flag_norway") };
+			Icon[] icons = new Icon[] { 
+					Check.configure(new br(), 21, 16),
+					Check.configure(new bg(), 21, 16),
+					Check.configure(new ca(), 21, 16),
+					Check.configure(new cn(), 21, 16),
+					Check.configure(new dk(), 21, 16),
+					Check.configure(new fi(), 21, 16),
+					Check.configure(new fr(), 21, 16),
+					Check.configure(new de(), 21, 16),
+					Check.configure(new gr(), 21, 16),
+					Check.configure(new hu(), 21, 16),
+					Check.configure(new il(), 21, 16),
+					Check.configure(new it(), 21, 16),
+					Check.configure(new jp(), 21, 16),
+					Check.configure(new mx(), 21, 16),
+					Check.configure(new nl(), 21, 16),
+					Check.configure(new no(), 21, 16)
+			};
 			for (int i = 0; i < rows; i++) {
 				this.data[i][0] = "cell " + i + ":" + 0;
 				this.data[i][1] = "predef";

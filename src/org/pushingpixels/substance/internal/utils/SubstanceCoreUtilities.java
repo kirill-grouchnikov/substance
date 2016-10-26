@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,24 +29,90 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dialog;
+import java.awt.FontMetrics;
+import java.awt.Frame;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Transparency;
+import java.awt.Window;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.VolatileImage;
 import java.net.URL;
-import java.util.*;
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Set;
 
-import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JInternalFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JPopupMenu;
+import javax.swing.JRadioButton;
+import javax.swing.JRootPane;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JToolBar;
+import javax.swing.JTree;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.ButtonUI;
+import javax.swing.plaf.IconUIResource;
+import javax.swing.plaf.UIResource;
 import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.utils.TrackableThread;
-import org.pushingpixels.substance.api.*;
-import org.pushingpixels.substance.api.SubstanceConstants.*;
-import org.pushingpixels.substance.api.colorscheme.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceConstants.FocusKind;
+import org.pushingpixels.substance.api.SubstanceConstants.MenuGutterFillKind;
+import org.pushingpixels.substance.api.SubstanceConstants.ScrollPaneButtonPolicyKind;
+import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.SubstanceConstants.TabContentPaneBorderKind;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.UiThreadingViolationException;
+import org.pushingpixels.substance.api.colorscheme.BottleGreenColorScheme;
+import org.pushingpixels.substance.api.colorscheme.LightAquaColorScheme;
+import org.pushingpixels.substance.api.colorscheme.SunfireRedColorScheme;
+import org.pushingpixels.substance.api.colorscheme.SunsetColorScheme;
 import org.pushingpixels.substance.api.combo.ComboPopupPrototypeCallback;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIconUiResource;
+import org.pushingpixels.substance.api.icon.IsHiDpiAware;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.SubstanceDecorationPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
@@ -55,9 +121,13 @@ import org.pushingpixels.substance.api.tabbed.TabCloseCallback;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.contrib.intellij.JBHiDPIScaledImage;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
-import org.pushingpixels.substance.internal.ui.*;
+import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
+import org.pushingpixels.substance.internal.ui.SubstanceInternalFrameUI;
+import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 import org.pushingpixels.substance.internal.utils.combo.SubstanceComboPopup;
-import org.pushingpixels.substance.internal.utils.icon.*;
+import org.pushingpixels.substance.internal.utils.icon.ArrowButtonTransitionAwareIcon;
+import org.pushingpixels.substance.internal.utils.icon.TransitionAware;
+import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 import org.pushingpixels.substance.internal.utils.menu.SubstanceMenu;
 import org.pushingpixels.substance.internal.utils.scroll.SubstanceScrollButton;
 import org.pushingpixels.trident.swing.SwingRepaintCallback;
@@ -607,45 +677,10 @@ public class SubstanceCoreUtilities {
 					Transparency.TRANSLUCENT);
 		}
 	}
-
-	/**
-	 * Retrieves transparent image of specified dimension.
-	 * 
-	 * @param width
-	 *            Image width.
-	 * @param height
-	 *            Image height.
-	 * @return Transparent image of specified dimension.
-	 */
-//	public static VolatileImage getBlankVolatileImage(int width, int height) {
-//		if (MemoryAnalyzer.isRunning()) {
-//			// see if the request is unusual
-//			if ((width >= 100) || (height >= 100)) {
-//				StackTraceElement[] stack = Thread.currentThread()
-//						.getStackTrace();
-//				StringBuffer sb = new StringBuffer();
-//				int count = 0;
-//				for (StackTraceElement stackEntry : stack) {
-//					if (count++ > 8)
-//						break;
-//					sb.append(stackEntry.getClassName() + ".");
-//					sb.append(stackEntry.getMethodName() + " [");
-//					sb.append(stackEntry.getLineNumber() + "]");
-//					sb.append("\n");
-//				}
-//				MemoryAnalyzer.enqueueUsage("Blank " + width + "*" + height
-//						+ "\n" + sb.toString());
-//			}
-//		}
-//
-//		GraphicsEnvironment e = GraphicsEnvironment
-//				.getLocalGraphicsEnvironment();
-//		GraphicsDevice d = e.getDefaultScreenDevice();
-//		GraphicsConfiguration c = d.getDefaultConfiguration();
-//		VolatileImage compatibleImage = c.createCompatibleVolatileImage(width,
-//				height, Transparency.TRANSLUCENT);
-//		return compatibleImage;
-//	}
+	
+	public static boolean isHiDpiAwareImage(Image image) {
+		return image instanceof IsHiDpiAware;
+	}
 
 	/**
 	 * Checks whether the specified button should have minimal size.
@@ -1309,59 +1344,6 @@ public class SubstanceCoreUtilities {
 				orig, colorScheme, brightnessFactor));
 	}
 
-	// /**
-	// * Returns the current icon for the specified button.
-	// *
-	// * @param b
-	// * Button.
-	// * @param defaultIcon
-	// * The default icon.
-	// * @param glowingIcon
-	// * The glowing icon.
-	// * @param ignoreRolloverSetting
-	// * If <code>true</code>, the rollover status of the specified
-	// * button is ignored.
-	// * @return Icon for the specified button.
-	// */
-	// public static Icon getIcon(AbstractButton b, Icon defaultIcon,
-	// Icon glowingIcon, boolean ignoreRolloverSetting) {
-	// ButtonModel model = b.getModel();
-	// Icon icon = getActiveIcon(b.getIcon() == null ? defaultIcon : b
-	// .getIcon(), b, glowingIcon, ignoreRolloverSetting);
-	// if (icon == null)
-	// return null;
-	//
-	// if (icon.getClass().isAnnotationPresent(TransitionAware.class))
-	// return icon;
-	//
-	// Icon tmpIcon = null;
-	//
-	// if (icon != null) {
-	// if (!model.isEnabled()) {
-	// if (model.isSelected()) {
-	// tmpIcon = b.getDisabledSelectedIcon();
-	// } else {
-	// tmpIcon = b.getDisabledIcon();
-	// }
-	// } else if (model.isPressed() && model.isArmed()) {
-	// tmpIcon = b.getPressedIcon();
-	// } else if (b.isRolloverEnabled() && model.isRollover()) {
-	// if (model.isSelected()) {
-	// tmpIcon = b.getRolloverSelectedIcon();
-	// } else {
-	// tmpIcon = b.getRolloverIcon();
-	// }
-	// } else if (model.isSelected()) {
-	// tmpIcon = b.getSelectedIcon();
-	// }
-	//
-	// if (tmpIcon != null) {
-	// icon = tmpIcon;
-	// }
-	// }
-	// return icon;
-	// }
-
 	public static Icon getOriginalIcon(AbstractButton b, Icon defaultIcon) {
 		ButtonModel model = b.getModel();
 		Icon icon = b.getIcon();
@@ -2017,7 +1999,7 @@ public class SubstanceCoreUtilities {
 			// Iterate imageList looking for best matching image.
 			// 'Similarity' measure is defined as good scale factor and small
 			// insets.
-			// best possible similarity is 0 (no scale, no insets).
+			// Best possible similarity is 0 (no scale, no insets).
 			// It's found while the experiments that good-looking result is
 			// achieved
 			// with scale factors x1, x3/4, x2/3, xN, x1/N.
@@ -2032,6 +2014,10 @@ public class SubstanceCoreUtilities {
 				ih = im.getHeight(null);
 			} catch (Exception e) {
 				continue;
+			}
+			if (isHiDpiAwareImage(im)) {
+				iw /= 2;
+				ih /= 2;
 			}
 			if (iw > 0 && ih > 0) {
 				// Calc scale factor
@@ -2098,26 +2084,15 @@ public class SubstanceCoreUtilities {
 			// No images were found, possibly all are broken
 			return null;
 		}
-		BufferedImage bimage = new BufferedImage(width, height,
-				BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bimage = getBlankImage(width, height);
 		Graphics2D g = bimage.createGraphics();
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-		// BufferedImage bestBuffered = getBlankImage(bestImage.getWidth(null),
-		// bestImage.getHeight(null));
-		// bestBuffered.getGraphics().drawImage(bestImage, 0, 0, null);
-		// BufferedImage scaled =
-		// LafWidgetUtilities.createThumbnail(bestBuffered,
-		// bestWidth);
-
-		try {
-			int x = (width - bestWidth) / 2;
-			int y = (height - bestHeight) / 2;
-			g.drawImage(bestImage, x, y, bestWidth, bestHeight, null);
-		} finally {
-			g.dispose();
-		}
+		int x = (width - bestWidth) / 2;
+		int y = (height - bestHeight) / 2;
+		g.drawImage(bestImage, x, y, bestWidth, bestHeight, null);
+		g.dispose();
 		return bimage;
 	}
 

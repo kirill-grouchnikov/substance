@@ -40,6 +40,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.*;
 
+import org.pushingpixels.substance.api.icon.IsHiDpiAware;
 import org.pushingpixels.substance.internal.contrib.intellij.JBHiDPIScaledImage;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 
@@ -74,7 +75,7 @@ public abstract class AbstractFilter implements BufferedImageOp {
 
 		WritableRaster raster = destCM.createCompatibleWritableRaster(
 				src.getWidth(), src.getHeight());
-		if (UIUtil.isRetina()) {
+		if (src instanceof IsHiDpiAware) {
 			return new JBHiDPIScaledImage(destCM, raster, destCM.isAlphaPremultiplied(), null,
 					src.getWidth() / 2, src.getHeight() / 2);
 		} else {

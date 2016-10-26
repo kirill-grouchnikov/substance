@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -122,31 +122,26 @@ public class SubstanceEditorPaneUI extends BasicEditorPaneUI implements
 		this.stateTransitionTracker.registerModelListeners();
 		this.stateTransitionTracker.registerFocusListeners();
 
-		this.substancePropertyChangeListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ("font".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							// remember the caret location - issue 404
-							int caretPos = editorPane.getCaretPosition();
-							editorPane.updateUI();
-							editorPane.setCaretPosition(caretPos);
-							Container parent = editorPane.getParent();
-							if (parent != null) {
-								parent.invalidate();
-								parent.validate();
-							}
-						}
-					});
-				}
+		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+			if ("font".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> {
+					// remember the caret location - issue 404
+					int caretPos = editorPane.getCaretPosition();
+					editorPane.updateUI();
+					editorPane.setCaretPosition(caretPos);
+					Container parent = editorPane.getParent();
+					if (parent != null) {
+						parent.invalidate();
+						parent.validate();
+					}
+				});
+			}
 
-				if ("enabled".equals(evt.getPropertyName())) {
-					transitionModel.setEnabled(editorPane.isEnabled());
-				}
+			if ("enabled".equals(evt.getPropertyName())) {
+				transitionModel.setEnabled(editorPane.isEnabled());
 			}
 		};
-		this.editorPane
-				.addPropertyChangeListener(this.substancePropertyChangeListener);
+		this.editorPane.addPropertyChangeListener(this.substancePropertyChangeListener);
 	}
 
 	/*
@@ -176,21 +171,18 @@ public class SubstanceEditorPaneUI extends BasicEditorPaneUI implements
 		super.installDefaults();
 
 		// support for per-window skins
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				if (editorPane == null)
-					return;
-				Color foregr = editorPane.getForeground();
-				if ((foregr == null) || (foregr instanceof UIResource)) {
-					editorPane
-							.setForeground(SubstanceColorUtilities
-									.getForegroundColor(SubstanceLookAndFeel
-											.getCurrentSkin(editorPane)
-											.getEnabledColorScheme(
-													SubstanceLookAndFeel
-															.getDecorationType(editorPane))));
-				}
+		SwingUtilities.invokeLater(() -> {
+			if (editorPane == null)
+				return;
+			Color foregr = editorPane.getForeground();
+			if ((foregr == null) || (foregr instanceof UIResource)) {
+				editorPane
+						.setForeground(SubstanceColorUtilities
+								.getForegroundColor(SubstanceLookAndFeel
+										.getCurrentSkin(editorPane)
+										.getEnabledColorScheme(
+												SubstanceLookAndFeel
+														.getDecorationType(editorPane))));
 			}
 		});
 	}

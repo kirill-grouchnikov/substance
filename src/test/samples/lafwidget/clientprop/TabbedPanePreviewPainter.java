@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -36,7 +36,6 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -48,6 +47,11 @@ import org.pushingpixels.lafwidget.LafWidget;
 import org.pushingpixels.lafwidget.tabbed.DefaultTabPreviewPainter;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.BusinessBlackSteelSkin;
+
+import test.Check;
+import test.check.svg.flags.hk;
+import test.check.svg.flags.mx;
+import test.check.svg.flags.se;
 
 /**
  * Test application that shows the use of the
@@ -68,9 +72,7 @@ public class TabbedPanePreviewPainter extends JFrame {
 		final JTabbedPane jtp = new JTabbedPane();
 		String packageName = TabbedPanePreviewPainter.class.getPackage()
 				.getName();
-		jtp.addTab("First", new ImageIcon(TabbedPanePreviewPainter.class
-				.getClassLoader().getResource(
-						packageName.replace('.', '/') + "/flag_mexico.png")),
+		jtp.addTab("First", Check.configure(new mx(), 21, 16),
 				new JPanel() {
 					@Override
 					protected void paintComponent(Graphics g) {
@@ -78,9 +80,7 @@ public class TabbedPanePreviewPainter extends JFrame {
 						g.fillRect(0, 0, getWidth(), getHeight());
 					}
 				});
-		jtp.addTab("Second", new ImageIcon(TabbedPanePreviewPainter.class
-				.getClassLoader().getResource(
-						packageName.replace('.', '/') + "/flag_sweden.png")),
+		jtp.addTab("Second", Check.configure(new se(), 21, 16),
 				new JPanel() {
 					@Override
 					protected void paintComponent(Graphics g) {
@@ -88,11 +88,7 @@ public class TabbedPanePreviewPainter extends JFrame {
 						g.fillRect(0, 0, getWidth(), getHeight());
 					}
 				});
-		jtp.addTab("Third",
-				new ImageIcon(TabbedPanePreviewPainter.class.getClassLoader()
-						.getResource(
-								packageName.replace('.', '/')
-										+ "/flag_hong_kong.png")),
+		jtp.addTab("Third", Check.configure(new hk(), 21, 16),
 				new JPanel() {
 					@Override
 					protected void paintComponent(Graphics g) {

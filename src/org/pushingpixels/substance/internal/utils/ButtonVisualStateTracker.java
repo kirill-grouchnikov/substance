@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -72,17 +72,13 @@ public class ButtonVisualStateTracker {
 		this.stateTransitionTracker = new StateTransitionTracker(b, b
 				.getModel());
 		if (b instanceof SubstanceScrollButton) {
-			this.stateTransitionTracker
-					.setRepaintCallback(new StateTransitionTracker.RepaintCallback() {
-						@Override
-						public SwingRepaintCallback getRepaintCallback() {
-							JScrollBar scrollBar = (JScrollBar) SwingUtilities
-									.getAncestorOfClass(JScrollBar.class, b);
-							if (scrollBar != null)
-								return new SwingRepaintCallback(scrollBar);
-							return new SwingRepaintCallback(b);
-						}
-					});
+			this.stateTransitionTracker.setRepaintCallback(() -> {
+					JScrollBar scrollBar = (JScrollBar) SwingUtilities
+							.getAncestorOfClass(JScrollBar.class, b);
+					if (scrollBar != null)
+						return new SwingRepaintCallback(scrollBar);
+					return new SwingRepaintCallback(b);
+			});
 		}
 		this.stateTransitionTracker.registerModelListeners();
 		this.stateTransitionTracker.registerFocusListeners();
@@ -96,13 +92,11 @@ public class ButtonVisualStateTracker {
 			b.addChangeListener(this.substanceButtonListener);
 		}
 
-		this.substancePropertyListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (AbstractButton.MODEL_CHANGED_PROPERTY.equals(evt
-						.getPropertyName())) {
-					stateTransitionTracker.setModel((ButtonModel) evt
-							.getNewValue());
-				}
+		this.substancePropertyListener = (PropertyChangeEvent evt) -> {
+			if (AbstractButton.MODEL_CHANGED_PROPERTY.equals(evt
+					.getPropertyName())) {
+				stateTransitionTracker.setModel((ButtonModel) evt
+						.getNewValue());
 			}
 		};
 		b.addPropertyChangeListener(this.substancePropertyListener);

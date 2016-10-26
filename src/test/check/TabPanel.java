@@ -37,6 +37,9 @@ import javax.swing.JTabbedPane;
 import org.pushingpixels.lafwidget.LafWidget;
 
 import test.Check;
+import test.check.svg.flags.mx;
+import test.check.svg.flags.ru;
+import test.check.svg.flags.se;
 
 /**
  * Test application panel for testing {@link JTabbedPane} component.
@@ -57,10 +60,10 @@ public class TabPanel extends ControllablePanel {
 		jtp = new JTabbedPane();
 		NumberedPanel tnp1 = new NumberedPanel(1);
 		jtp.addTab("tab0", null, new JPanel());
-		jtp.addTab("tab1", Check.getIcon("flag_mexico"), tnp1);
-		jtp.addTab("tab 2", Check.getIcon("flag_sweden"), new NumberedPanel(2));
+		jtp.addTab("tab1", Check.configure(new mx(), 21, 16), tnp1);
+		jtp.addTab("tab 2", Check.configure(new se(), 21, 16), new NumberedPanel(2));
 		NumberedPanel tnp3 = new NumberedPanel(3);
-		jtp.addTab("tab  3", Check.getIcon("flag_russia"), tnp3);
+		jtp.addTab("tab  3", Check.configure(new ru(), 21, 16), tnp3);
 		final NumberedPanel np4 = new NumberedPanel(4);
 		jtp.addTab("tab   4", np4);
 		final NumberedPanel np5 = new NumberedPanel(5);

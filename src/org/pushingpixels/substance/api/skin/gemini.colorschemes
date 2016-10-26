@@ -86,14 +86,14 @@ Gemini Light Gray Border {
     colorForeground=#050704
 }
 
-Gemini Light Gray Separator {
+Gemini Dark Gray Separator {
     kind=Light
-    colorUltraLight=#F5F9F9
-    colorExtraLight=#E6F1F2
-    colorLight=#DCE8EA
-    colorMid=#B3C3BE
-    colorDark=#A6B7B4
-    colorUltraDark=#9CA8AB
+    colorUltraLight=#757979
+    colorExtraLight=#667172
+    colorLight=#7C886A
+    colorMid=#63736E
+    colorDark=#566764
+    colorUltraDark=#3C585B
     colorForeground=#000000
 }
 

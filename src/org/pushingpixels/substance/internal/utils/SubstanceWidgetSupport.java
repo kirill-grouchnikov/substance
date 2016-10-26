@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -29,15 +29,28 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JInternalFrame.JDesktopIcon;
+import javax.swing.JMenuBar;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
 import org.pushingpixels.lafwidget.LafWidgetSupport;
 import org.pushingpixels.lafwidget.utils.LafConstants.PasswordStrength;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.ui.SubstanceDesktopIconUI;
 import org.pushingpixels.substance.internal.ui.SubstanceTabbedPaneUI;
 
@@ -91,12 +104,10 @@ public class SubstanceWidgetSupport extends LafWidgetSupport {
 	 * java.awt.ComponentOrientation)
 	 */
 	@Override
-	public Icon getSearchIcon(int dimension,
+	public Icon getSearchIcon(JComponent c, int dimension,
 			ComponentOrientation componentOrientation) {
-		return SubstanceImageCreator.getSearchIcon(dimension,
-				SubstanceColorSchemeUtilities.getColorScheme(null,
-						ComponentState.DEFAULT), componentOrientation
-						.isLeftToRight());
+		return SubstanceImageCreator.getSearchIcon(c, dimension,
+				componentOrientation.isLeftToRight());
 	}
 
 	/*
@@ -106,10 +117,9 @@ public class SubstanceWidgetSupport extends LafWidgetSupport {
 	 */
 	@Override
 	public Icon getArrowIcon(int orientation) {
-		return SubstanceImageCreator.getArrowIcon(SubstanceSizeUtils
-				.getControlFontSize(), orientation,
-				SubstanceColorSchemeUtilities.getColorScheme(null,
-						ComponentState.DEFAULT));
+		return SubstanceImageCreator.getArrowIcon(
+				SubstanceSizeUtils.getControlFontSize(), orientation,
+				SubstanceColorSchemeUtilities.getColorScheme(null, ComponentState.DEFAULT));
 	}
 
 	/*
@@ -118,9 +128,9 @@ public class SubstanceWidgetSupport extends LafWidgetSupport {
 	 * @see org.pushingpixels.lafwidget.LafWidgetSupport#getNumberIcon(int)
 	 */
 	@Override
-	public Icon getNumberIcon(int number) {
-		SubstanceColorScheme colorScheme = SubstanceLookAndFeel.getCurrentSkin(
-				null).getActiveColorScheme(DecorationAreaType.HEADER);
+	public Icon getNumberIcon(JComponent c, int number) {
+		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities
+				.getColorScheme(c, ComponentState.ENABLED);
 		return SubstanceImageCreator.getHexaMarker(number, colorScheme);
 	}
 
@@ -133,8 +143,7 @@ public class SubstanceWidgetSupport extends LafWidgetSupport {
 	 */
 	@Override
 	public void markButtonAsFlat(AbstractButton button) {
-		button.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY,
-				Boolean.TRUE);
+		button.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
 		button.setOpaque(false);
 	}
 

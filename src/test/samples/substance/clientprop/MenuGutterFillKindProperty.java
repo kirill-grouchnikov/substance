@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -29,16 +29,31 @@
  */
 package test.samples.substance.clientprop;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceConstants.MenuGutterFillKind;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultComboBoxRenderer;
 import org.pushingpixels.substance.api.skin.BusinessBlackSteelSkin;
+
+import test.Check;
+import test.check.svg.flags.mx;
+import test.check.svg.flags.se;
 
 /**
  * Test application that shows the use of the
@@ -61,16 +76,12 @@ public class MenuGutterFillKindProperty extends JFrame {
 		JMenu menu = new JMenu("menu");
 		String packageName = MenuGutterFillKindProperty.class.getPackage()
 				.getName();
-		menu.add(new JMenuItem("test item 1", new ImageIcon(
-				MenuGutterFillKindProperty.class.getClassLoader().getResource(
-						packageName.replace('.', '/') + "/flag_mexico.png"))));
+		menu.add(new JMenuItem("test item 1", Check.configure(new mx(), 21, 16)));
 		menu.add(new JMenuItem("test item 2"));
 		menu.add(new JMenuItem("test item 3"));
 		menu.addSeparator();
 		menu.add(new JMenuItem("test menu item 4"));
-		menu.add(new JMenuItem("test menu item 5", new ImageIcon(
-				MenuGutterFillKindProperty.class.getClassLoader().getResource(
-						packageName.replace('.', '/') + "/flag_sweden.png"))));
+		menu.add(new JMenuItem("test menu item 5", Check.configure(new se(), 21, 16)));
 		menu.add(new JMenuItem("test menu item 6"));
 		jmb.add(menu);
 

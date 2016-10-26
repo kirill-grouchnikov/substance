@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -46,6 +46,7 @@ import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
@@ -100,12 +101,7 @@ public class ArrowButtonTransitionAwareIcon implements Icon {
 
 	public ArrowButtonTransitionAwareIcon(final AbstractButton button,
 			int orientation) {
-		this(button, new TransitionAwareIcon.TransitionAwareUIDelegate() {
-			@Override
-			public TransitionAwareUI getTransitionAwareUI() {
-				return (TransitionAwareUI) button.getUI();
-			}
-		}, orientation);
+		this(button, () -> (TransitionAwareUI) button.getUI(), orientation);
 	}
 
 	/**
@@ -123,14 +119,11 @@ public class ArrowButtonTransitionAwareIcon implements Icon {
 		this.component = component;
 		this.transitionAwareUIDelegate = transitionAwareUIDelegate;
 		this.orientation = orientation;
-		this.delegate = new TransitionAwareIcon.Delegate() {
-			@Override
-			public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
-				int fontSize = SubstanceSizeUtils
-						.getComponentFontSize(component);
-				return SubstanceImageCreator.getArrowIcon(fontSize,
-						orientation, scheme);
-			}
+		this.delegate = (SubstanceColorScheme scheme) -> {
+			int fontSize = SubstanceSizeUtils
+					.getComponentFontSize(component);
+			return SubstanceImageCreator.getArrowIcon(fontSize,
+					orientation, scheme);
 		};
 
 		Icon enabledIcon = this.delegate.getColorSchemeIcon(

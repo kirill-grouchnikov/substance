@@ -93,6 +93,7 @@ import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.SubstanceConstants.TabCloseKind;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.fonts.FontSet;
+import org.pushingpixels.substance.api.icon.IsResizable;
 import org.pushingpixels.substance.api.skin.SkinChangeListener;
 import org.pushingpixels.substance.api.skin.SubstanceGeminiLookAndFeel;
 import org.pushingpixels.substance.api.tabbed.TabCloseCallback;
@@ -125,7 +126,20 @@ import test.check.TablePanel;
 import test.check.TextFieldsPanel;
 import test.check.TreePanel;
 import test.check.VAlignmentPanel;
-import test.check.statusbar.FontSizePanel;
+import test.check.svg.Edit_copy;
+import test.check.svg.Edit_cut;
+import test.check.svg.Edit_delete;
+import test.check.svg.Edit_paste;
+import test.check.svg.Edit_select_all;
+import test.check.svg.Format_justify_center;
+import test.check.svg.Format_justify_fill;
+import test.check.svg.Format_justify_left;
+import test.check.svg.Format_justify_right;
+import test.check.svg.Format_text_bold;
+import test.check.svg.Format_text_italic;
+import test.check.svg.Format_text_strikethrough;
+import test.check.svg.Format_text_underline;
+import test.check.svg.Process_stop;
 
 public class Check extends JFrame {
 	private JTabbedPane jtp;
@@ -185,7 +199,6 @@ public class Check extends JFrame {
 		super(
 				"Substance test with very very very very very very very very very very very very very very long title");
 
-		final ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		if (UIManager.getLookAndFeel() instanceof SubstanceLookAndFeel) {
 			setIconImage(SubstanceLogo.getLogoImage(SubstanceLookAndFeel
 					.getCurrentSkin(this.getRootPane()).getColorScheme(
@@ -193,26 +206,14 @@ public class Check extends JFrame {
 							ColorSchemeAssociationKind.FILL,
 							ComponentState.ENABLED)));
 		}
-		SubstanceLookAndFeel
-				.registerSkinChangeListener(new SkinChangeListener() {
-					@Override
-					public void skinChanged() {
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								setIconImage(SubstanceLogo
-										.getLogoImage(SubstanceLookAndFeel
-												.getCurrentSkin(
-														Check.this
-																.getRootPane())
-												.getColorScheme(
-														DecorationAreaType.PRIMARY_TITLE_PANE,
-														ColorSchemeAssociationKind.FILL,
-														ComponentState.ENABLED)));
-							}
-						});
-					}
-				});
+		SubstanceLookAndFeel.registerSkinChangeListener(() ->
+				SwingUtilities.invokeLater(() ->
+						setIconImage(SubstanceLogo.getLogoImage(
+								SubstanceLookAndFeel.getCurrentSkin(Check.this.getRootPane())
+										.getColorScheme(
+												DecorationAreaType.PRIMARY_TITLE_PANE,
+												ColorSchemeAssociationKind.FILL,
+												ComponentState.ENABLED)))));
 
 		setLayout(new BorderLayout());
 
@@ -622,7 +623,7 @@ public class Check extends JFrame {
 				JLabel statusLabel = new JLabel(substanceVer + " [built on "
 						+ substanceBuildStamp + "]");
 				JXStatusBar.Constraint cStatusLabel = new JXStatusBar.Constraint();
-				cStatusLabel.setFixedWidth(300);
+				cStatusLabel.setFixedWidth(400);
 				statusBar.add(statusLabel, cStatusLabel);
 			}
 		} catch (IOException ioe) {
@@ -778,27 +779,36 @@ public class Check extends JFrame {
 			return new ImageIcon(url);
 		return null;
 	}
+	
+	public static Icon configure(Icon icon, int width, int height) {
+		((IsResizable) icon).setDimension(new Dimension(width, height));
+		return icon;
+	}
+	
+	public static Icon configure(Icon icon, int size) {
+		((IsResizable) icon).setDimension(new Dimension(size, size));
+		return icon;
+	}
 
 	public static JToolBar getToolbar(String label, int size, boolean hasStrings) {
 		JToolBar toolBar = new JToolBar();
 
-		JButton buttonCut = new JButton(hasStrings ? "cut" : null, getIcon(size
-				+ "/edit-cut"));
+		JButton buttonCut = new JButton(hasStrings ? "cut" : null, 
+				configure(new Edit_cut(), size));
 		buttonCut.putClientProperty(
 				SubstanceLookAndFeel.BUTTON_NO_MIN_SIZE_PROPERTY, Boolean.TRUE);
 		toolBar.add(buttonCut);
 		JButton buttonCopy = new JButton(hasStrings ? "copy" : null,
-				getIcon(size + "/edit-copy"));
+				configure(new Edit_copy(), size));
 		buttonCopy.putClientProperty(
 				SubstanceLookAndFeel.BUTTON_NO_MIN_SIZE_PROPERTY, Boolean.TRUE);
 		buttonCopy.setEnabled(false);
 		toolBar.add(buttonCopy);
-		JButton buttonPaste = new JButton(getIcon(size + "/edit-paste"));
+		JButton buttonPaste = new JButton(configure(new Edit_paste(), size));
 		toolBar.add(buttonPaste);
-		JButton buttonSelectAll = new JButton(
-				getIcon(size + "/edit-select-all"));
+		JButton buttonSelectAll = new JButton(configure(new Edit_select_all(), size));
 		toolBar.add(buttonSelectAll);
-		JButton buttonDelete = new JButton(getIcon(size + "/edit-delete"));
+		JButton buttonDelete = new JButton(configure(new Edit_delete(), size));
 		toolBar.add(buttonDelete);
 		toolBar.addSeparator();
 
@@ -806,19 +816,19 @@ public class Check extends JFrame {
 		// gradient and drop shadows under different skins.
 		JToolBar innerToolbar = new JToolBar(JToolBar.HORIZONTAL);
 		innerToolbar.setFloatable(false);
-		JToggleButton buttonFormatCenter = new JToggleButton(getIcon(size
-				+ "/format-justify-center"));
+		JToggleButton buttonFormatCenter = new JToggleButton(
+				configure(new Format_justify_center(), size));
 		buttonFormatCenter.putClientProperty(
 				SubstanceLookAndFeel.CORNER_RADIUS, Float.valueOf(5.0f));
 		innerToolbar.add(buttonFormatCenter);
-		JToggleButton buttonFormatLeft = new JToggleButton(getIcon(size
-				+ "/format-justify-left"));
+		JToggleButton buttonFormatLeft = new JToggleButton(
+				configure(new Format_justify_left(), size));
 		innerToolbar.add(buttonFormatLeft);
-		JToggleButton buttonFormatRight = new JToggleButton(getIcon(size
-				+ "/format-justify-right"));
+		JToggleButton buttonFormatRight = new JToggleButton(
+				configure(new Format_justify_right(), size));
 		innerToolbar.add(buttonFormatRight);
-		JToggleButton buttonFormatFill = new JToggleButton(getIcon(size
-				+ "/format-justify-fill"));
+		JToggleButton buttonFormatFill = new JToggleButton(
+				configure(new Format_justify_fill(), size));
 		buttonFormatFill.putClientProperty(SubstanceLookAndFeel.CORNER_RADIUS,
 				Float.valueOf(0.0f));
 		innerToolbar.add(buttonFormatFill);
@@ -835,7 +845,7 @@ public class Check extends JFrame {
 			innerToolbar2.add(innerPanel, BorderLayout.CENTER);
 
 			final JToggleButton buttonStyleBold = new JToggleButton(
-					getIcon(size + "/format-text-bold"));
+					configure(new Format_text_bold(), size));
 			Set<Side> rightSide = EnumSet.of(Side.RIGHT);
 			buttonStyleBold.putClientProperty(
 					SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY, rightSide);
@@ -843,21 +853,21 @@ public class Check extends JFrame {
 					SubstanceLookAndFeel.CORNER_RADIUS, Float.valueOf(3.0f));
 
 			final JToggleButton buttonStyleItalic = new JToggleButton(
-					getIcon(size + "/format-text-italic"));
+					configure(new Format_text_italic(), size));
 			buttonStyleItalic.putClientProperty(
 					SubstanceLookAndFeel.CORNER_RADIUS, Float.valueOf(0.0f));
 			buttonStyleItalic.putClientProperty(
 					SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY, rightSide);
 
 			final JToggleButton buttonStyleUnderline = new JToggleButton(
-					getIcon(size + "/format-text-underline"));
+					configure(new Format_text_underline(), size));
 			buttonStyleUnderline.putClientProperty(
 					SubstanceLookAndFeel.CORNER_RADIUS, Float.valueOf(0.0f));
 			buttonStyleUnderline.putClientProperty(
 					SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY, rightSide);
 
 			final JToggleButton buttonStyleStrikethrough = new JToggleButton(
-					getIcon(size + "/format-text-strikethrough"));
+					configure(new Format_text_strikethrough(), size));
 			buttonStyleStrikethrough.putClientProperty(
 					SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, EnumSet
 							.of(Side.LEFT));
@@ -874,7 +884,7 @@ public class Check extends JFrame {
 		}
 
 		toolBar.add(Box.createGlue());
-		JButton buttonExit = new JButton(getIcon(size + "/process-stop"));
+		JButton buttonExit = new JButton(configure(new Process_stop(), size));
 		buttonExit.setToolTipText("Closes the test application");
 		buttonExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

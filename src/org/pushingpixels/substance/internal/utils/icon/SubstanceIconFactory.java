@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -55,6 +55,8 @@ import javax.swing.plaf.basic.BasicSliderUI;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.icon.IsHiDpiAware;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -866,7 +868,7 @@ public class SubstanceIconFactory {
 		/**
 		 * Icon hash.
 		 */
-		private static LazyResettableHashMap<Icon> icons = new LazyResettableHashMap<Icon>(
+		private static LazyResettableHashMap<HiDpiAwareIcon> icons = new LazyResettableHashMap<HiDpiAwareIcon>(
 				"SubstanceIconFactory.TreeIcon");
 
 		/**
@@ -905,7 +907,7 @@ public class SubstanceIconFactory {
 		 *            The slider icon.
 		 * @return Icon that matches the specified state of the slider thumb.
 		 */
-		private static Icon getIcon(JTree tree, boolean isCollapsed) {
+		private static HiDpiAwareIcon getIcon(JTree tree, boolean isCollapsed) {
 			ComponentState state = ((tree == null) || tree.isEnabled()) ? ComponentState.ENABLED
 					: ComponentState.DISABLED_UNSELECTED;
 			SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
@@ -920,11 +922,11 @@ public class SubstanceIconFactory {
 					fillScheme.getDisplayName(), borderScheme.getDisplayName(),
 					isCollapsed);
 
-			Icon result = TreeIcon.icons.get(key);
+			HiDpiAwareIcon result = TreeIcon.icons.get(key);
 			if (result != null)
 				return result;
 
-			result = new ImageIcon(SubstanceImageCreator.getTreeIcon(tree,
+			result = new HiDpiAwareIcon(SubstanceImageCreator.getTreeIcon(tree,
 					fillScheme, borderScheme, isCollapsed));
 			TreeIcon.icons.put(key, result);
 
@@ -947,7 +949,7 @@ public class SubstanceIconFactory {
 			// "Tree.collapsedIcon" and "Tree.expandedIcon" UIManager
 			// entries to paint on non-JTree components. Sigh.
 			JTree tree = (c instanceof JTree) ? (JTree) c : null;
-			Icon iconToDraw = TreeIcon.getIcon(tree, this.isCollapsed);
+			HiDpiAwareIcon iconToDraw = TreeIcon.getIcon(tree, this.isCollapsed);
 			Graphics2D g2d = (Graphics2D) g.create();
 			g2d.translate(x, y);
 			iconToDraw.paintIcon(c, g2d, 0, 0);

@@ -29,18 +29,41 @@
  */
 package test.check;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.util.EnumSet;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JToggleButton;
 
 import org.pushingpixels.lafwidget.LafWidget;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceConstants.FocusKind;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 
 import test.Check;
-import test.check.command.*;
+import test.check.command.ChainCommand;
+import test.check.command.ClientPropertyCommand;
+import test.check.command.ConfigurationCommand;
+import test.check.command.DisableCommand;
+import test.check.command.SelectCommand;
+import test.check.svg.flags.cn;
+import test.check.svg.flags.gr;
+import test.check.svg.flags.il;
+import test.check.svg.flags.it;
+import test.check.svg.flags.ru;
+import test.check.svg.flags.se;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
@@ -511,8 +534,8 @@ public class ButtonsPanel extends JPanel {
 						new ChainCommand(new TooltipTextCommand(
 								"Sample tooltip"), new DisableCommand()));
 		this.addRow(builder, "Popup menu", null, new PopupMenuCommand());
-		this.addRow(builder, "With icon", Check.getIcon("flag_sweden"),
-				new IconCommand(Check.getIcon("flag_sweden")));
+		this.addRow(builder, "With icon", Check.configure(new se(), 21, 16),
+				new IconCommand(Check.configure(new se(), 21, 16)));
 
 		builder.appendSeparator("Focus indications");
 		this.addRow(builder, "No focus painted", null, new NoFocusCommand());
@@ -563,22 +586,22 @@ public class ButtonsPanel extends JPanel {
 
 		builder.appendSeparator("Unicode texts");
 		this.addRow(builder, "Hebrew", null, new ChainCommand<AbstractButton>(
-				new TextCommand("\u05D0\u05D1\u05D2"), new IconCommand(Check
-						.getIcon("flag_israel"))));
+				new TextCommand("\u05D0\u05D1\u05D2"), 
+				new IconCommand(Check.configure(new il(), 21, 16))));
 		this.addRow(builder, "Chinese", null, new ChainCommand<AbstractButton>(
 				new FontCommand(new Font("Arial Unicode MS", Font.PLAIN, 11)),
-				new TextCommand("\u4E01\u4E02\u4E03"), new IconCommand(Check
-						.getIcon("flag_china"))));
+				new TextCommand("\u4E01\u4E02\u4E03"), 
+				new IconCommand(Check.configure(new cn(), 21, 16))));
 		this.addRow(builder, "Cyrillic", null,
 				new ChainCommand<AbstractButton>(new TextCommand(
-						"\u0430\u0431\u0432"), new IconCommand(Check
-						.getIcon("flag_russia"))));
+						"\u0430\u0431\u0432"),
+						new IconCommand(Check.configure(new ru(), 21, 16))));
 		this.addRow(builder, "Greek", null, new ChainCommand<AbstractButton>(
-				new TextCommand("\u03B1\u03B2\u03B3"), new IconCommand(Check
-						.getIcon("flag_greece"))));
+				new TextCommand("\u03B1\u03B2\u03B3"), 
+				new IconCommand(Check.configure(new gr(), 21, 16))));
 		this.addRow(builder, "Latin", null, new ChainCommand<AbstractButton>(
-				new TextCommand("\u00E6\u00F0\u0127\u2248"), new IconCommand(
-						Check.getIcon("flag_italy"))));
+				new TextCommand("\u00E6\u00F0\u0127\u2248"), 
+				new IconCommand(Check.configure(new it(), 21, 16))));
 
 		builder.appendSeparator("Misc settings");
 		this.addRow(builder, "No content area", null,

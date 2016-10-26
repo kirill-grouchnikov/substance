@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -94,7 +94,7 @@ public class SampleFrame extends JFrame {
 		this.setLayout(new BorderLayout());
 		this.tabbed = new JTabbedPane();
 
-		this.add(Check.getToolbar("", 16, false), BorderLayout.NORTH);
+		this.add(Check.getToolbar("", 22, false), BorderLayout.NORTH);
 		this.add(this.tabbed, BorderLayout.CENTER);
 		// this.tabbed.putClientProperty(LafWidget.TABBED_PANE_PREVIEW_PAINTER,
 		// new DefaultTabPreviewPainter());
@@ -360,53 +360,30 @@ public class SampleFrame extends JFrame {
 	}
 
 	protected void synchronize() {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				if (SubstanceLookAndFeel.isCurrentLookAndFeel()) {
-					SampleFrame.this
-							.setIconImage(SubstanceLogo
-									.getLogoImage(SubstanceLookAndFeel
-											.getCurrentSkin(
-													SampleFrame.this
-															.getRootPane())
-											.getColorScheme(
-													DecorationAreaType.PRIMARY_TITLE_PANE,
-													ColorSchemeAssociationKind.FILL,
-													ComponentState.ENABLED)));
-				}
+		SwingUtilities.invokeLater(() -> {
+			if (SubstanceLookAndFeel.isCurrentLookAndFeel()) {
+				SampleFrame.this.setIconImage(SubstanceLogo.getLogoImage(
+						SubstanceLookAndFeel.getCurrentSkin(SampleFrame.this.getRootPane()).
+								getColorScheme(
+										DecorationAreaType.PRIMARY_TITLE_PANE,
+										ColorSchemeAssociationKind.FILL,
+										ComponentState.ENABLED)));
 			}
 		});
 	}
 
 	public static void main(String... args) throws Exception {
-
-		// UIDefaults uid = UIManager.getLookAndFeelDefaults();
-		// Font segoe = new Font("Segoe UI", Font.PLAIN, 12);
-		// for (Object key : uid.keySet()) {
-		// if (key instanceof String) {
-		// String skey = (String) key;
-		// if (skey.endsWith(".font")) {
-		// System.out.println(skey);
-		// uid.put(skey, segoe);
-		// }
-		// }
-		// }
-
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				if (System.getProperty("swing.defaultlaf") == null) {
-					SubstanceLookAndFeel.setSkin(new GeminiSkin());
-				}
-				JFrame.setDefaultLookAndFeelDecorated(true);
-				SampleFrame sf = new SampleFrame();
-				sf.setSize(338, 245);
-				sf.setLocationRelativeTo(null);
-				sf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				sf.setVisible(true);
+		SwingUtilities.invokeLater(() -> {
+			if (System.getProperty("swing.defaultlaf") == null) {
+				SubstanceLookAndFeel.setSkin(new GeminiSkin());
 			}
+			JFrame.setDefaultLookAndFeelDecorated(true);
+			SampleFrame sf = new SampleFrame();
+			sf.setSize(340, 254);
+			sf.setLocationRelativeTo(null);
+			sf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			sf.setVisible(true);
 		});
-
-		// h(sf, 0);
 	}
 
 	public static void h(Component comp, int depth) {

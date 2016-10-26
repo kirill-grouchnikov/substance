@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -44,6 +44,7 @@ import javax.swing.table.*;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
@@ -767,7 +768,10 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 
 		HighlightPainterUtils.paintHighlight(g, null, c, clip, 0.0f, null,
 				fillScheme, borderScheme);
-		paint(g, c);
+		Graphics2D g2d = (Graphics2D) g.create();
+		RenderingUtils.installDesktopHints(g2d, c);
+		paint(g2d, c);
+		g2d.dispose();
 	}
 
 	/*
@@ -1005,27 +1009,25 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 		 * Repaints the associated cell.
 		 */
 		private void repaintColumnHeader() {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					if (header == null) {
-						// may happen if the LAF was switched in the meantime
-						return;
+			SwingUtilities.invokeLater(() -> {
+				if (header == null) {
+					// may happen if the LAF was switched in the meantime
+					return;
+				}
+				try {
+					// maybeUpdateLayoutState();
+					int cellCount = header.getColumnModel()
+							.getColumnCount();
+					if ((cellCount > 0) && (columnIndex < cellCount)) {
+						// need to retrieve the cell rectangle since the
+						// cells can be moved while animating
+						Rectangle rect = header.getHeaderRect(columnIndex);
+						Rectangle damaged = new Rectangle(rect.x - 5,
+								rect.y, rect.width + 10, rect.height);
+						header.repaint(damaged);
 					}
-					try {
-						// maybeUpdateLayoutState();
-						int cellCount = header.getColumnModel()
-								.getColumnCount();
-						if ((cellCount > 0) && (columnIndex < cellCount)) {
-							// need to retrieve the cell rectangle since the
-							// cells can be moved while animating
-							Rectangle rect = header.getHeaderRect(columnIndex);
-							Rectangle damaged = new Rectangle(rect.x - 5,
-									rect.y, rect.width + 10, rect.height);
-							header.repaint(damaged);
-						}
-					} catch (RuntimeException re) {
-						return;
-					}
+				} catch (RuntimeException re) {
+					return;
 				}
 			});
 		}
@@ -1041,12 +1043,7 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 			model.setRollover(initialRollover);
 			tracker = new StateTransitionTracker(header, model);
 			tracker.registerModelListeners();
-			tracker.setRepaintCallback(new RepaintCallback() {
-				@Override
-				public TimelineCallback getRepaintCallback() {
-					return new ColumnHeaderRepaintCallback(header, columnIndex);
-				}
-			});
+			tracker.setRepaintCallback(() -> new ColumnHeaderRepaintCallback(header, columnIndex));
 			stateTransitionMultiTracker.addTracker(columnIndex, tracker);
 		}
 		return tracker;

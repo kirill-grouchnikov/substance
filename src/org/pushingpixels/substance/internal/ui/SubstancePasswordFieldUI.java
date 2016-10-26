@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -385,27 +385,23 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 		this.stateTransitionTracker.registerModelListeners();
 		this.stateTransitionTracker.registerFocusListeners();
 
-		this.substancePropertyChangeListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ("font".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							// remember the caret location - issue 404
-							int caretPos = passwordField.getCaretPosition();
-							passwordField.updateUI();
-							passwordField.setCaretPosition(caretPos);
-							Container parent = passwordField.getParent();
-							if (parent != null) {
-								parent.invalidate();
-								parent.validate();
-							}
-						}
-					});
-				}
+		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+			if ("font".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> {
+					// remember the caret location - issue 404
+					int caretPos = passwordField.getCaretPosition();
+					passwordField.updateUI();
+					passwordField.setCaretPosition(caretPos);
+					Container parent = passwordField.getParent();
+					if (parent != null) {
+						parent.invalidate();
+						parent.validate();
+					}
+				});
+			}
 
-				if ("enabled".equals(evt.getPropertyName())) {
-					transitionModel.setEnabled(passwordField.isEnabled());
-				}
+			if ("enabled".equals(evt.getPropertyName())) {
+				transitionModel.setEnabled(passwordField.isEnabled());
 			}
 		};
 		this.passwordField
@@ -456,21 +452,18 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 		}
 
 		// support for per-window skins
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				if (passwordField == null)
-					return;
-				Color foregr = passwordField.getForeground();
-				if ((foregr == null) || (foregr instanceof UIResource)) {
-					passwordField
-							.setForeground(SubstanceColorUtilities
-									.getForegroundColor(SubstanceLookAndFeel
-											.getCurrentSkin(passwordField)
-											.getEnabledColorScheme(
-													SubstanceLookAndFeel
-															.getDecorationType(passwordField))));
-				}
+		SwingUtilities.invokeLater(() -> {
+			if (passwordField == null)
+				return;
+			Color foregr = passwordField.getForeground();
+			if ((foregr == null) || (foregr instanceof UIResource)) {
+				passwordField
+						.setForeground(SubstanceColorUtilities
+								.getForegroundColor(SubstanceLookAndFeel
+										.getCurrentSkin(passwordField)
+										.getEnabledColorScheme(
+												SubstanceLookAndFeel
+														.getDecorationType(passwordField))));
 			}
 		});
 	}

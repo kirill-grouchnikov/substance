@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -37,10 +37,6 @@ import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
  * @author Kirill Grouchnikov
  */
 public class NegatedFilter extends AbstractFilter {
-	/**
-	 * @throws IllegalArgumentException
-	 *             if <code>scheme</code> is null
-	 */
 	public NegatedFilter() {
 	}
 

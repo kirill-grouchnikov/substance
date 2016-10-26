@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -106,14 +106,8 @@ public class SubstanceTextFieldUI extends BasicTextFieldUI implements
 
 		this.stateTransitionTracker = new StateTransitionTracker(
 				this.textField, this.transitionModel);
-		this.stateTransitionTracker
-				.setRepaintCallback(new StateTransitionTracker.RepaintCallback() {
-					@Override
-					public SwingRepaintCallback getRepaintCallback() {
-						return SubstanceCoreUtilities
-								.getTextComponentRepaintCallback(textField);
-					}
-				});
+		this.stateTransitionTracker.setRepaintCallback(
+				() -> SubstanceCoreUtilities.getTextComponentRepaintCallback(textField));
 	}
 
 	/*
@@ -143,27 +137,23 @@ public class SubstanceTextFieldUI extends BasicTextFieldUI implements
 		this.stateTransitionTracker.registerModelListeners();
 		this.stateTransitionTracker.registerFocusListeners();
 
-		this.substancePropertyChangeListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ("font".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							// remember the caret location - issue 404
-							int caretPos = textField.getCaretPosition();
-							textField.updateUI();
-							textField.setCaretPosition(caretPos);
-							Container parent = textField.getParent();
-							if (parent != null) {
-								parent.invalidate();
-								parent.validate();
-							}
-						}
-					});
-				}
+		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+			if ("font".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> {
+					// remember the caret location - issue 404
+					int caretPos = textField.getCaretPosition();
+					textField.updateUI();
+					textField.setCaretPosition(caretPos);
+					Container parent = textField.getParent();
+					if (parent != null) {
+						parent.invalidate();
+						parent.validate();
+					}
+				});
+			}
 
-				if ("enabled".equals(evt.getPropertyName())) {
-					transitionModel.setEnabled(textField.isEnabled());
-				}
+			if ("enabled".equals(evt.getPropertyName())) {
+				transitionModel.setEnabled(textField.isEnabled());
 			}
 		};
 		this.textField
@@ -212,21 +202,18 @@ public class SubstanceTextFieldUI extends BasicTextFieldUI implements
 		}
 
 		// support for per-window skins
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				if (textField == null)
-					return;
-				Color foregr = textField.getForeground();
-				if ((foregr == null) || (foregr instanceof UIResource)) {
-					textField
-							.setForeground(SubstanceColorUtilities
-									.getForegroundColor(SubstanceLookAndFeel
-											.getCurrentSkin(textField)
-											.getEnabledColorScheme(
-													SubstanceLookAndFeel
-															.getDecorationType(textField))));
-				}
+		SwingUtilities.invokeLater(() -> {
+			if (textField == null)
+				return;
+			Color foregr = textField.getForeground();
+			if ((foregr == null) || (foregr instanceof UIResource)) {
+				textField
+						.setForeground(SubstanceColorUtilities
+								.getForegroundColor(SubstanceLookAndFeel
+										.getCurrentSkin(textField)
+										.getEnabledColorScheme(
+												SubstanceLookAndFeel
+														.getDecorationType(textField))));
 			}
 		});
 	}

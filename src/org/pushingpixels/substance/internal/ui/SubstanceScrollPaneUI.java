@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -109,12 +109,7 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 		scrollpane.setLayout(new AdjustedLayout((ScrollPaneLayout) scrollpane
 				.getLayout()));
 
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				// System.out.println("Installing");
-				installTableHeaderCornerFiller(scrollpane);
-			}
-		});
+		SwingUtilities.invokeLater(() -> installTableHeaderCornerFiller(scrollpane));
 	}
 
 	/*
@@ -165,76 +160,72 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 	@Override
 	protected void installListeners(final JScrollPane c) {
 		super.installListeners(c);
-		this.substancePropertyChangeListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (SubstanceLookAndFeel.SCROLL_PANE_BUTTONS_POLICY.equals(evt
-						.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							c.getHorizontalScrollBar().doLayout();
-							c.getVerticalScrollBar().doLayout();
-						}
-					});
+		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+			if (SubstanceLookAndFeel.SCROLL_PANE_BUTTONS_POLICY.equals(evt
+					.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> {
+					c.getHorizontalScrollBar().doLayout();
+					c.getVerticalScrollBar().doLayout();
+				});
+			}
+			if (SubstanceLookAndFeel.WATERMARK_VISIBLE.equals(evt
+					.getPropertyName())) {
+				boolean toBleed = SubstanceCoreUtilities.toDrawWatermark(c);
+				c.setOpaque(!toBleed);
+				c.getViewport().setOpaque(!toBleed);
+				Component view = c.getViewport().getView();
+				if (view instanceof JComponent)
+					((JComponent) view).setOpaque(!toBleed);
+			}
+			if ("layoutManager".equals(evt.getPropertyName())) {
+				if (((Boolean) evt.getNewValue()).booleanValue()) {
+					ScrollPaneLayout currLayout = (ScrollPaneLayout) c
+							.getLayout();
+					if (!(currLayout instanceof AdjustedLayout)) {
+						c.setLayout(new AdjustedLayout((ScrollPaneLayout) c
+								.getLayout()));
+					}
 				}
-				if (SubstanceLookAndFeel.WATERMARK_VISIBLE.equals(evt
-						.getPropertyName())) {
-					boolean toBleed = SubstanceCoreUtilities.toDrawWatermark(c);
-					c.setOpaque(!toBleed);
-					c.getViewport().setOpaque(!toBleed);
-					Component view = c.getViewport().getView();
-					if (view instanceof JComponent)
-						((JComponent) view).setOpaque(!toBleed);
-				}
-				if ("layoutManager".equals(evt.getPropertyName())) {
-					if (((Boolean) evt.getNewValue()).booleanValue()) {
-						ScrollPaneLayout currLayout = (ScrollPaneLayout) c
-								.getLayout();
-						if (!(currLayout instanceof AdjustedLayout)) {
-							c.setLayout(new AdjustedLayout((ScrollPaneLayout) c
-									.getLayout()));
+				// else {
+				// ScrollPaneLayout currLayout = (ScrollPaneLayout) c
+				// .getLayout();
+				// if (currLayout instanceof AdjustedLayout) {
+				// c.setLayout(((AdjustedLayout) currLayout).delegate);
+				// }
+				// }
+			}
+			if ("background".equals(evt.getPropertyName())) {
+				// propagate application-specific background color to the
+				// scroll bars.
+				Color newBackgr = (Color) evt.getNewValue();
+				if (!(newBackgr instanceof UIResource)) {
+					JScrollBar vertical = scrollpane.getVerticalScrollBar();
+					if (vertical != null) {
+						if (vertical.getBackground() instanceof UIResource) {
+							vertical.setBackground(newBackgr);
 						}
 					}
-					// else {
-					// ScrollPaneLayout currLayout = (ScrollPaneLayout) c
-					// .getLayout();
-					// if (currLayout instanceof AdjustedLayout) {
-					// c.setLayout(((AdjustedLayout) currLayout).delegate);
-					// }
-					// }
-				}
-				if ("background".equals(evt.getPropertyName())) {
-					// propagate application-specific background color to the
-					// scroll bars.
-					Color newBackgr = (Color) evt.getNewValue();
-					if (!(newBackgr instanceof UIResource)) {
-						JScrollBar vertical = scrollpane.getVerticalScrollBar();
-						if (vertical != null) {
-							if (vertical.getBackground() instanceof UIResource) {
-								vertical.setBackground(newBackgr);
-							}
-						}
-						JScrollBar horizontal = scrollpane
-								.getHorizontalScrollBar();
-						if (horizontal != null) {
-							if (horizontal.getBackground() instanceof UIResource) {
-								horizontal.setBackground(newBackgr);
-							}
+					JScrollBar horizontal = scrollpane
+							.getHorizontalScrollBar();
+					if (horizontal != null) {
+						if (horizontal.getBackground() instanceof UIResource) {
+							horizontal.setBackground(newBackgr);
 						}
 					}
 				}
-				if ("columnHeader".equals(evt.getPropertyName())
-						|| "componentOrientation".equals(evt.getPropertyName())
-						|| "ancestor".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							// need to switch the corner filler based on the
-							// current scroll pane state.
-							if (scrollpane != null) {
-								installTableHeaderCornerFiller(scrollpane);
-							}
+			}
+			if ("columnHeader".equals(evt.getPropertyName())
+					|| "componentOrientation".equals(evt.getPropertyName())
+					|| "ancestor".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						// need to switch the corner filler based on the
+						// current scroll pane state.
+						if (scrollpane != null) {
+							installTableHeaderCornerFiller(scrollpane);
 						}
-					});
-				}
+					}
+				});
 			}
 		};
 		c.addPropertyChangeListener(this.substancePropertyChangeListener);

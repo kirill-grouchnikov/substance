@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -171,9 +171,8 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 	 * @return Icon for the specified button.
 	 */
 	private Icon getCurrentIcon(JButton button) {
-		Icon icon = SubstanceCoreUtilities
-				.getArrowIcon(button, SubstanceCoreUtilities
-						.getPopupFlyoutOrientation(this.comboBox));
+		Icon icon = SubstanceCoreUtilities.getArrowIcon(button, 
+				SubstanceCoreUtilities.getPopupFlyoutOrientation(this.comboBox));
 		return icon;
 	}
 
@@ -239,13 +238,8 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 		// on the combobox
 		this.uneditableArrowIcon = SubstanceCoreUtilities.getArrowIcon(
 				this.comboBox,
-				new TransitionAwareIcon.TransitionAwareUIDelegate() {
-					@Override
-					public TransitionAwareUI getTransitionAwareUI() {
-						return (TransitionAwareUI) comboBox.getUI();
-					}
-				}, SubstanceCoreUtilities
-						.getPopupFlyoutOrientation(this.comboBox));
+				() -> (TransitionAwareUI) comboBox.getUI(),
+				SubstanceCoreUtilities.getPopupFlyoutOrientation(this.comboBox));
 		this.updateComboBoxBorder();
 	}
 
@@ -398,35 +392,33 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 			String propertyName = e.getPropertyName();
 
 			if (propertyName.equals("componentOrientation")) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						if (SubstanceComboBoxUI.this.comboBox == null)
-							return;
-						final ComponentOrientation newOrientation = (ComponentOrientation) e
-								.getNewValue();
-						final ListCellRenderer cellRenderer = SubstanceComboBoxUI.this.comboBox
-								.getRenderer();
-						final ComboBoxEditor editor = SubstanceComboBoxUI.this.comboBox
-								.getEditor();
-						if (SubstanceComboBoxUI.this.popup instanceof Component) {
-							final Component cPopup = (Component) SubstanceComboBoxUI.this.popup;
-							cPopup.applyComponentOrientation(newOrientation);
-							cPopup.doLayout();
-						}
-						if (cellRenderer instanceof Component) {
-							((Component) cellRenderer)
-									.applyComponentOrientation(newOrientation);
-						}
-						if ((editor != null)
-								&& (editor.getEditorComponent() != null)) {
-							(editor.getEditorComponent())
-									.applyComponentOrientation(newOrientation);
-						}
-						if (SubstanceComboBoxUI.this.comboBox != null)
-							SubstanceComboBoxUI.this.comboBox.repaint();
-
-						configureArrowButtonStraightSide();
+				SwingUtilities.invokeLater(() -> {
+					if (SubstanceComboBoxUI.this.comboBox == null)
+						return;
+					final ComponentOrientation newOrientation = (ComponentOrientation) e
+							.getNewValue();
+					final ListCellRenderer cellRenderer = SubstanceComboBoxUI.this.comboBox
+							.getRenderer();
+					final ComboBoxEditor editor = SubstanceComboBoxUI.this.comboBox
+							.getEditor();
+					if (SubstanceComboBoxUI.this.popup instanceof Component) {
+						final Component cPopup = (Component) SubstanceComboBoxUI.this.popup;
+						cPopup.applyComponentOrientation(newOrientation);
+						cPopup.doLayout();
 					}
+					if (cellRenderer instanceof Component) {
+						((Component) cellRenderer)
+								.applyComponentOrientation(newOrientation);
+					}
+					if ((editor != null)
+							&& (editor.getEditorComponent() != null)) {
+						(editor.getEditorComponent())
+								.applyComponentOrientation(newOrientation);
+					}
+					if (SubstanceComboBoxUI.this.comboBox != null)
+						SubstanceComboBoxUI.this.comboBox.repaint();
+
+					configureArrowButtonStraightSide();
 				});
 			}
 
@@ -442,11 +434,9 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 			}
 
 			if ("font".equals(propertyName)) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						if (comboBox != null)
-							comboBox.updateUI();
-					}
+				SwingUtilities.invokeLater(() -> {
+					if (comboBox != null)
+						comboBox.updateUI();
 				});
 			}
 
@@ -483,30 +473,28 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 		final ComponentOrientation currOrientation = this.comboBox
 				.getComponentOrientation();
 
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				if (SubstanceComboBoxUI.this.comboBox == null)
-					return;
+		SwingUtilities.invokeLater(() -> {
+			if (SubstanceComboBoxUI.this.comboBox == null)
+				return;
 
-				if (sPopup instanceof Component) {
-					final Component cPopup = (Component) sPopup;
-					cPopup.applyComponentOrientation(currOrientation);
-					cPopup.doLayout();
-				}
-				ListCellRenderer cellRenderer = SubstanceComboBoxUI.this.comboBox
-						.getRenderer();
-				if (cellRenderer instanceof Component) {
-					((Component) cellRenderer)
-							.applyComponentOrientation(currOrientation);
-				}
-				ComboBoxEditor editor = SubstanceComboBoxUI.this.comboBox
-						.getEditor();
-				if ((editor != null) && (editor.getEditorComponent() != null)) {
-					(editor.getEditorComponent())
-							.applyComponentOrientation(currOrientation);
-				}
-				SubstanceComboBoxUI.this.comboBox.repaint();
+			if (sPopup instanceof Component) {
+				final Component cPopup = (Component) sPopup;
+				cPopup.applyComponentOrientation(currOrientation);
+				cPopup.doLayout();
 			}
+			ListCellRenderer cellRenderer = SubstanceComboBoxUI.this.comboBox
+					.getRenderer();
+			if (cellRenderer instanceof Component) {
+				((Component) cellRenderer)
+						.applyComponentOrientation(currOrientation);
+			}
+			ComboBoxEditor editor = SubstanceComboBoxUI.this.comboBox
+					.getEditor();
+			if ((editor != null) && (editor.getEditorComponent() != null)) {
+				(editor.getEditorComponent())
+						.applyComponentOrientation(currOrientation);
+			}
+			SubstanceComboBoxUI.this.comboBox.repaint();
 		});
 		return sPopup;
 	}

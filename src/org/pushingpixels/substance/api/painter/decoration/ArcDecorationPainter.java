@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -38,6 +38,7 @@ import javax.swing.*;
 
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.painter.SubstancePainterUtils;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
@@ -52,27 +53,12 @@ public class ArcDecorationPainter implements SubstanceDecorationPainter {
 	 */
 	public static final String DISPLAY_NAME = "Arc";
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.utils.SubstanceTrait#getDisplayName()
-	 */
+	@Override
 	public String getDisplayName() {
 		return DISPLAY_NAME;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * @seeorg.pushingpixels.substance.painter.decoration.SubstanceDecorationPainter
-	 * # paintDecorationArea(java.awt.Graphics2D, java.awt.Component,
-	 * org.pushingpixels.substance.painter.decoration.DecorationAreaType, int,
-	 * int, org.pushingpixels.substance.skin.SubstanceSkin)
-	 */
+	@Override
 	public void paintDecorationArea(Graphics2D graphics, Component comp,
 			DecorationAreaType decorationAreaType, int width, int height,
 			SubstanceSkin skin) {
@@ -152,7 +138,9 @@ public class ArcDecorationPainter implements SubstanceDecorationPainter {
 		rgraphics.setClip(new Rectangle(0, 0, width, height));
 		rgraphics.draw(mid);
 
-		graphics.drawImage(rectangular, 0, 0, null);
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		graphics.drawImage(rectangular, 0, 0, rectangular.getWidth() / scaleFactor,
+				rectangular.getHeight() / scaleFactor, null);
 	}
 
 	/**

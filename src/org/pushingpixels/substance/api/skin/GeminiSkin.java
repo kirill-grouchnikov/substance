@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -113,8 +113,8 @@ public class GeminiSkin extends SubstanceSkin {
 				.get("Gemini Gray Border");
 		SubstanceColorScheme lightGrayBorderScheme = schemes
 				.get("Gemini Light Gray Border");
-		SubstanceColorScheme lightGraySeparatorScheme = schemes
-				.get("Gemini Light Gray Separator");
+		SubstanceColorScheme darkGraySeparatorScheme = schemes
+				.get("Gemini Dark Gray Separator");
 		defaultSchemeBundle.registerColorScheme(grayBorderScheme,
 				ColorSchemeAssociationKind.BORDER);
 		defaultSchemeBundle.registerColorScheme(lightGrayBorderScheme,
@@ -124,7 +124,7 @@ public class GeminiSkin extends SubstanceSkin {
 				ComponentState.DISABLED_UNSELECTED);
 		defaultSchemeBundle.registerColorScheme(grayScheme,
 				ComponentState.ROLLOVER_UNSELECTED);
-		defaultSchemeBundle.registerColorScheme(lightGraySeparatorScheme,
+		defaultSchemeBundle.registerColorScheme(darkGraySeparatorScheme,
 				ColorSchemeAssociationKind.SEPARATOR);
 		defaultSchemeBundle.registerColorScheme(grayScheme,
 				ColorSchemeAssociationKind.MARK);

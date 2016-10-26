@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -59,6 +59,8 @@ import javax.swing.text.View;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
+import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
+import org.pushingpixels.lafwidget.animation.effects.GhostingListener;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
@@ -102,6 +104,11 @@ public class SubstanceToggleButtonUI extends BasicToggleButtonUI implements
 	 * Tracker for visual state transitions.
 	 */
 	protected ButtonVisualStateTracker substanceVisualStateTracker;
+
+	/**
+	 * Model change listener for ghost image effects.
+	 */
+	private GhostingListener ghostModelChangeListener;
 
 	protected JToggleButton toggleButton;
 
@@ -215,15 +222,24 @@ public class SubstanceToggleButtonUI extends BasicToggleButtonUI implements
 
 		this.trackGlowingIcon();
 
-		this.substancePropertyListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (AbstractButton.ICON_CHANGED_PROPERTY.equals(evt
-						.getPropertyName())) {
-					trackGlowingIcon();
-				}
+		this.substancePropertyListener = (PropertyChangeEvent evt) -> {
+			if (AbstractButton.ICON_CHANGED_PROPERTY.equals(evt
+					.getPropertyName())) {
+				trackGlowingIcon();
+			}
+
+			if (AbstractButton.MODEL_CHANGED_PROPERTY.equals(evt.getPropertyName())) {
+				if (ghostModelChangeListener != null)
+					ghostModelChangeListener.unregisterListeners();
+				ghostModelChangeListener = new GhostingListener(b, b
+						.getModel());
+				ghostModelChangeListener.registerListeners();
 			}
 		};
 		b.addPropertyChangeListener(this.substancePropertyListener);
+
+		this.ghostModelChangeListener = new GhostingListener(b, b.getModel());
+		this.ghostModelChangeListener.registerListeners();
 	}
 
 	/*
@@ -239,6 +255,9 @@ public class SubstanceToggleButtonUI extends BasicToggleButtonUI implements
 
 		b.removePropertyChangeListener(this.substancePropertyListener);
 		this.substancePropertyListener = null;
+
+		this.ghostModelChangeListener.unregisterListeners();
+		this.ghostModelChangeListener = null;
 
 		super.uninstallListeners(b);
 	}
@@ -342,7 +361,11 @@ public class SubstanceToggleButtonUI extends BasicToggleButtonUI implements
 	 */
 	@Override
 	protected void paintIcon(Graphics g, AbstractButton b, Rectangle iconRect) {
+		b.putClientProperty("icon.bounds", new Rectangle(iconRect));
+
 		Graphics2D graphics = (Graphics2D) g.create();
+		GhostPaintingUtils.paintGhostIcon(graphics, b, iconRect);
+
 		// We have three types of icons:
 		// 1. The original button icon
 		// 2. The themed version of 1.

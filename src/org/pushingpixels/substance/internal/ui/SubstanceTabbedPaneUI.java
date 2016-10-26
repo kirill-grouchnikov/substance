@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -78,6 +78,8 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.View;
 
+import org.pushingpixels.lafwidget.LafWidget;
+import org.pushingpixels.lafwidget.LafWidgetRepository;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
@@ -90,6 +92,7 @@ import org.pushingpixels.substance.api.SubstanceConstants;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.SubstanceConstants.TabCloseKind;
 import org.pushingpixels.substance.api.SubstanceConstants.TabContentPaneBorderKind;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
@@ -117,7 +120,6 @@ import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
-import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 import org.pushingpixels.substance.internal.utils.scroll.SubstanceScrollButton;
 import org.pushingpixels.trident.Timeline;
@@ -162,6 +164,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 	private int currSelectedIndex;
 
 	private StateTransitionMultiTracker<Integer> stateTransitionMultiTracker;
+
+	private Set<LafWidget> lafWidgets;
 
 	/*
 	 * (non-Javadoc)
@@ -410,12 +414,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			if (tabCloseKind == TabCloseKind.NONE)
 				return;
 
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					SubstanceTabbedPaneUI.this.tryCloseTabs(tabIndex,
-							tabCloseKind);
-				}
-			});
+			SwingUtilities.invokeLater(() -> SubstanceTabbedPaneUI.this.tryCloseTabs(tabIndex, tabCloseKind));
 		}
 
 		/*
@@ -659,6 +658,25 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		this.currSelectedIndex = -1;
 	}
 
+	@Override
+	public void installUI(JComponent c) {
+		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+
+		super.installUI(c);
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installUI();
+		}
+	}
+	
+	@Override
+	public void uninstallUI(JComponent c) {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallUI();
+		}
+		super.uninstallUI(c);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -687,45 +705,44 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 
 		this.tabPane.addContainerListener(this.substanceContainerListener);
 
-		this.substanceSelectionListener = new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						if (SubstanceTabbedPaneUI.this.tabPane == null)
-							return;
-						int selected = SubstanceTabbedPaneUI.this.tabPane
-								.getSelectedIndex();
+		this.substanceSelectionListener = (ChangeEvent e) -> {
+			SwingUtilities.invokeLater(() -> {
+				if (SubstanceTabbedPaneUI.this.tabPane == null)
+					return;
+				int selected = SubstanceTabbedPaneUI.this.tabPane
+						.getSelectedIndex();
 
-						// fix for issue 437 - track the selection change,
-						// fading out the previously selected tab
-						if ((currSelectedIndex >= 0)
-								&& (currSelectedIndex < SubstanceTabbedPaneUI.this.tabPane
-										.getTabCount())
-								&& SubstanceTabbedPaneUI.this.tabPane
-										.isEnabledAt(currSelectedIndex)) {
-							StateTransitionTracker tracker = getTracker(
-									currSelectedIndex,
-									getRolloverTabIndex() == currSelectedIndex,
-									true);
-							tracker.getModel().setSelected(false);
-						}
-						currSelectedIndex = selected;
-						if ((selected >= 0)
-								&& (selected < SubstanceTabbedPaneUI.this.tabPane
-										.getTabCount())
-								&& SubstanceTabbedPaneUI.this.tabPane
-										.isEnabledAt(selected)) {
-							StateTransitionTracker tracker = getTracker(
-									selected,
-									getRolloverTabIndex() == selected, false);
-							tracker.getModel().setSelected(true);
-						}
-					}
-				});
-			}
+				// fix for issue 437 - track the selection change,
+				// fading out the previously selected tab
+				if ((currSelectedIndex >= 0)
+						&& (currSelectedIndex < SubstanceTabbedPaneUI.this.tabPane
+								.getTabCount())
+						&& SubstanceTabbedPaneUI.this.tabPane
+								.isEnabledAt(currSelectedIndex)) {
+					StateTransitionTracker tracker = getTracker(
+							currSelectedIndex,
+							getRolloverTabIndex() == currSelectedIndex,
+							true);
+					tracker.getModel().setSelected(false);
+				}
+				currSelectedIndex = selected;
+				if ((selected >= 0)
+						&& (selected < SubstanceTabbedPaneUI.this.tabPane
+								.getTabCount())
+						&& SubstanceTabbedPaneUI.this.tabPane
+								.isEnabledAt(selected)) {
+					StateTransitionTracker tracker = getTracker(
+							selected,
+							getRolloverTabIndex() == selected, false);
+					tracker.getModel().setSelected(true);
+				}
+			});
 		};
-		this.tabPane.getModel().addChangeListener(
-				this.substanceSelectionListener);
+		this.tabPane.getModel().addChangeListener(this.substanceSelectionListener);
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installListeners();
+		}
 	}
 
 	/*
@@ -761,6 +778,10 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		this.tabPane.getModel().removeChangeListener(
 				this.substanceSelectionListener);
 		this.substanceSelectionListener = null;
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallListeners();
+		}
 	}
 
 	/*
@@ -777,6 +798,10 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 
 		this.modifiedTimelines = new HashMap<Component, Timeline>();
 		this.currSelectedIndex = this.tabPane.getSelectedIndex();
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installDefaults();
+		}
 	}
 
 	/*
@@ -789,7 +814,30 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		for (Timeline timeline : this.modifiedTimelines.values())
 			timeline.cancel();
 		this.modifiedTimelines.clear();
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallDefaults();
+		}
+
 		super.uninstallDefaults();
+	}
+	
+	@Override
+	protected void installComponents() {
+		super.installComponents();
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installComponents();
+		}
+	}
+	
+	@Override
+	protected void uninstallComponents() {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallComponents();
+		}
+
+		super.uninstallComponents();
 	}
 
 	/**
@@ -1378,8 +1426,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
 						// fix for defect 279 - tab pane might not yet have the
 						// font installed.
-						int fontSize = SubstanceSizeUtils
-								.getComponentFontSize(tabPane);
+						int fontSize = SubstanceSizeUtils.getComponentFontSize(tabPane);
 						return SubstanceImageCreator.getArrowIcon(fontSize,
 								direction, scheme);
 					}
@@ -1697,28 +1744,26 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		 * Repaints the relevant tab.
 		 */
 		protected void repaintTab() {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					if (SubstanceTabbedPaneUI.this.tabPane == null) {
-						// may happen if the LAF was switched in the meantime
-						return;
-					}
-					SubstanceTabbedPaneUI.this.ensureCurrentLayout();
-					int tabCount = SubstanceTabbedPaneUI.this.tabPane
-							.getTabCount();
-					if ((tabCount > 0)
-							&& (TabRepaintCallback.this.tabIndex < tabCount)
-							&& (TabRepaintCallback.this.tabIndex < SubstanceTabbedPaneUI.this.rects.length)) {
-						// need to retrieve the tab rectangle since the tabs
-						// can be moved while animating (especially when the
-						// current layout is SCROLL_LAYOUT)
-						Rectangle rect = SubstanceTabbedPaneUI.this
-								.getTabBounds(
-										SubstanceTabbedPaneUI.this.tabPane,
-										TabRepaintCallback.this.tabIndex);
-						// System.out.println("Repainting " + tabIndex);
-						SubstanceTabbedPaneUI.this.tabPane.repaint(rect);
-					}
+			SwingUtilities.invokeLater(() -> {
+				if (SubstanceTabbedPaneUI.this.tabPane == null) {
+					// may happen if the LAF was switched in the meantime
+					return;
+				}
+				SubstanceTabbedPaneUI.this.ensureCurrentLayout();
+				int tabCount = SubstanceTabbedPaneUI.this.tabPane
+						.getTabCount();
+				if ((tabCount > 0)
+						&& (TabRepaintCallback.this.tabIndex < tabCount)
+						&& (TabRepaintCallback.this.tabIndex < SubstanceTabbedPaneUI.this.rects.length)) {
+					// need to retrieve the tab rectangle since the tabs
+					// can be moved while animating (especially when the
+					// current layout is SCROLL_LAYOUT)
+					Rectangle rect = SubstanceTabbedPaneUI.this
+							.getTabBounds(
+									SubstanceTabbedPaneUI.this.tabPane,
+									TabRepaintCallback.this.tabIndex);
+					// System.out.println("Repainting " + tabIndex);
+					SubstanceTabbedPaneUI.this.tabPane.repaint(rect);
 				}
 			});
 		}
@@ -2841,12 +2886,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			model.setRollover(initialRollover);
 			tracker = new StateTransitionTracker(tabPane, model);
 			tracker.registerModelListeners();
-			tracker.setRepaintCallback(new RepaintCallback() {
-				@Override
-				public TimelineCallback getRepaintCallback() {
-					return new TabRepaintCallback(tabPane, tabIndex);
-				}
-			});
+			tracker.setRepaintCallback(() -> new TabRepaintCallback(tabPane, tabIndex));
 			stateTransitionMultiTracker.addTracker(tabIndex, tracker);
 		}
 		return tracker;

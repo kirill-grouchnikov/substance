@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,6 +33,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -40,17 +41,21 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.*;
 import javax.swing.text.View;
 
+import org.pushingpixels.lafwidget.LafWidget;
+import org.pushingpixels.lafwidget.LafWidgetRepository;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
+import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
+import org.pushingpixels.lafwidget.animation.effects.GhostingListener;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.*;
 import org.pushingpixels.substance.internal.utils.*;
 import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
 import org.pushingpixels.substance.internal.utils.icon.GlowingIcon;
-import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.Timeline.RepeatBehavior;
 import org.pushingpixels.trident.swing.SwingRepaintCallback;
@@ -122,6 +127,13 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 	 */
 	protected ButtonVisualStateTracker substanceVisualStateTracker;
 
+	/**
+	 * Model change listener for ghost image effects.
+	 */
+	private GhostingListener ghostModelChangeListener;
+
+	private Set<LafWidget> lafWidgets;
+
 	protected AbstractButton button;
 
 	private Timeline modifiedTimeline;
@@ -148,6 +160,25 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 	public SubstanceButtonUI(AbstractButton button) {
 		this.button = button;
 		this.delegate = new ButtonBackgroundDelegate();
+	}
+
+	@Override
+	public void installUI(JComponent c) {
+		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+
+		super.installUI(c);
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installUI();
+		}
+	}
+	
+	@Override
+	public void uninstallUI(JComponent c) {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallUI();
+		}
+		super.uninstallUI(c);
 	}
 
 	/*
@@ -191,6 +222,9 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 				.getClientProperty(SubstanceLookAndFeel.WINDOW_MODIFIED))) {
 			trackModificationFlag();
 		}
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installDefaults();
+		}
 	}
 
 	/*
@@ -212,6 +246,10 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 		if (origIcon != null)
 			b.setIcon(origIcon);
 		b.putClientProperty(SubstanceButtonUI.OPACITY_ORIGINAL, null);
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallDefaults();
+		}
 	}
 
 	/*
@@ -241,34 +279,38 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 
 		this.trackGlowingIcon();
 
-		// this.substanceButtonListener = new RolloverButtonListener(b);
-		// b.addMouseListener(this.substanceButtonListener);
-		// b.addMouseMotionListener(this.substanceButtonListener);
-		// b.addFocusListener(this.substanceButtonListener);
-		// b.addPropertyChangeListener(this.substanceButtonListener);
-		// b.addChangeListener(this.substanceButtonListener);
+		this.substancePropertyListener = (PropertyChangeEvent evt) -> {
+			if (AbstractButton.ICON_CHANGED_PROPERTY.equals(evt.getPropertyName())) {
+				trackGlowingIcon();
+			}
 
-		this.substancePropertyListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (AbstractButton.ICON_CHANGED_PROPERTY.equals(evt
-						.getPropertyName())) {
-					trackGlowingIcon();
-				}
-
-				if (SubstanceLookAndFeel.WINDOW_MODIFIED.equals(evt
-						.getPropertyName())) {
-					boolean newValue = (Boolean) evt.getNewValue();
-					if (newValue) {
-						trackModificationFlag();
-					} else {
-						if (modifiedTimeline != null) {
-							modifiedTimeline.cancel();
-						}
+			if (SubstanceLookAndFeel.WINDOW_MODIFIED.equals(evt.getPropertyName())) {
+				boolean newValue = (Boolean) evt.getNewValue();
+				if (newValue) {
+					trackModificationFlag();
+				} else {
+					if (modifiedTimeline != null) {
+						modifiedTimeline.cancel();
 					}
 				}
 			}
+
+			if (AbstractButton.MODEL_CHANGED_PROPERTY.equals(evt.getPropertyName())) {
+				if (ghostModelChangeListener != null)
+					ghostModelChangeListener.unregisterListeners();
+				ghostModelChangeListener = new GhostingListener(b, b
+						.getModel());
+				ghostModelChangeListener.registerListeners();
+			}
 		};
 		b.addPropertyChangeListener(this.substancePropertyListener);
+
+		this.ghostModelChangeListener = new GhostingListener(b, b.getModel());
+		this.ghostModelChangeListener.registerListeners();
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installListeners();
+		}
 	}
 
 	/*
@@ -284,6 +326,13 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 
 		b.removePropertyChangeListener(this.substancePropertyListener);
 		this.substancePropertyListener = null;
+
+		this.ghostModelChangeListener.unregisterListeners();
+		this.ghostModelChangeListener = null;
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallListeners();
+		}
 
 		super.uninstallListeners(b);
 	}
@@ -408,7 +457,10 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 	 */
 	@Override
 	protected void paintIcon(Graphics g, JComponent c, Rectangle iconRect) {
+		c.putClientProperty("icon.bounds", new Rectangle(iconRect));
+
 		Graphics2D graphics = (Graphics2D) g.create();
+		GhostPaintingUtils.paintGhostIcon(graphics, (AbstractButton) c, iconRect);
 
 		// graphics.setColor(Color.red);
 		// graphics.fill(iconRect);
@@ -438,17 +490,9 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 				themedIcon.paintIcon(b, graphics, 0, 0);
 				graphics.setComposite(LafWidgetUtilities.getAlphaComposite(b,
 						activeAmount, g));
-				if (originalIcon instanceof HiDpiAwareIcon) {
-					int factor = ((HiDpiAwareIcon) originalIcon).getFactor();
-					graphics.scale(1.0f / factor, 1.0f / factor);
-				}
 				originalIcon.paintIcon(b, graphics, 0, 0);
 			}
 		} else {
-			if (originalIcon instanceof HiDpiAwareIcon) {
-				int factor = ((HiDpiAwareIcon) originalIcon).getFactor();
-				graphics.scale(1.0f / factor, 1.0f / factor);
-			}
 			originalIcon.paintIcon(b, graphics, 0, 0);
 		}
 		graphics.dispose();

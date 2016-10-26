@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -107,22 +107,18 @@ public class SubstanceCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI
 
 		this.stateTransitionTracker.registerModelListeners();
 
-		this.substancePropertyListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (AbstractButton.MODEL_CHANGED_PROPERTY.equals(evt
-						.getPropertyName())) {
-					stateTransitionTracker.setModel((ButtonModel) evt
-							.getNewValue());
-				}
-				if ("font".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							if (menuItem != null) {
-								menuItem.updateUI();
-							}
-						}
-					});
-				}
+		this.substancePropertyListener = (PropertyChangeEvent evt) -> {
+			if (AbstractButton.MODEL_CHANGED_PROPERTY.equals(evt
+					.getPropertyName())) {
+				stateTransitionTracker.setModel((ButtonModel) evt
+						.getNewValue());
+			}
+			if ("font".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> {
+					if (menuItem != null) {
+						menuItem.updateUI();
+					}
+				});
 			}
 		};
 		this.menuItem.addPropertyChangeListener(this.substancePropertyListener);

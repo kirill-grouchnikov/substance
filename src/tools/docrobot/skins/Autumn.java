@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -44,6 +44,6 @@ public class Autumn extends SkinRobot {
 	 */
 	public Autumn() {
 		super(new AutumnSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/autumn");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/autumn");
 	}
 }

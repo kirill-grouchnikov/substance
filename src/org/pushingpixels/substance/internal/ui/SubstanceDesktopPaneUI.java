@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,7 +29,9 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 import javax.swing.UIManager;
@@ -39,6 +41,7 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicDesktopPaneUI;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
+import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.border.SubstanceBorder;
@@ -98,10 +101,7 @@ public class SubstanceDesktopPaneUI extends BasicDesktopPaneUI {
 		} else {
 			super.paint(graphics, c);
 		}
-		// graphics.setColor(UIManager.getColor("Desktop.foreground"));
-		// graphics.drawRect(0, 0, c.getWidth() - 1, c.getHeight() - 1);
+		GhostPaintingUtils.paintGhostImages(c, graphics);
 		graphics.dispose();
-
-		// GhostPaintingUtils.paintGhostImages(c, g);
 	}
 }

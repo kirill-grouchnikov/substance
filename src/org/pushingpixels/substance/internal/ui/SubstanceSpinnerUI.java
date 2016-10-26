@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -44,10 +44,10 @@ import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.utils.*;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities.TextComponentAware;
 import org.pushingpixels.substance.internal.utils.border.SubstanceTextComponentBorder;
-import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 
 /**
@@ -256,69 +256,63 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 	@Override
 	protected void installListeners() {
 		super.installListeners();
-		this.substancePropertyChangeListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ("editor".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							if (spinner == null)
-								return;
-							JComponent editor = spinner.getEditor();
-							if ((editor != null)
-									&& (editor instanceof JSpinner.DefaultEditor)) {
-								JTextField tf = ((JSpinner.DefaultEditor) editor)
-										.getTextField();
-								if (tf != null) {
-									Insets ins = SubstanceSizeUtils
-											.getSpinnerTextBorderInsets(SubstanceSizeUtils
-													.getComponentFontSize(spinner));
-									tf.setBorder(new EmptyBorder(ins.top,
-											ins.left, ins.bottom, ins.right));
-									tf.revalidate();
-								}
-							}
-						}
-					});
-				}
-
-				if ("font".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							if (spinner != null) {
-								spinner.updateUI();
-							}
-						}
-					});
-				}
-
-				if ("background".equals(evt.getPropertyName())) {
+		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+			if ("editor".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> {
+					if (spinner == null)
+						return;
 					JComponent editor = spinner.getEditor();
 					if ((editor != null)
 							&& (editor instanceof JSpinner.DefaultEditor)) {
 						JTextField tf = ((JSpinner.DefaultEditor) editor)
 								.getTextField();
 						if (tf != null) {
-							// Use SubstanceColorResource to distingish between
-							// color set by application and color set
-							// (propagated)
-							// by Substance. In the second case we can replace
-							// that color (even though it's not a UIResource).
-							Color tfBackground = tf.getBackground();
-							boolean canReplace = SubstanceCoreUtilities
-									.canReplaceChildBackgroundColor(tfBackground);
-							// fix for issue 387 - if spinner background
-							// is null, do nothing
-							if (spinner.getBackground() == null)
-								canReplace = false;
-							if (canReplace) {
-								tf.setBackground(new SubstanceColorResource(
-										spinner.getBackground()));
-							}
+							Insets ins = SubstanceSizeUtils
+									.getSpinnerTextBorderInsets(SubstanceSizeUtils
+											.getComponentFontSize(spinner));
+							tf.setBorder(new EmptyBorder(ins.top,
+									ins.left, ins.bottom, ins.right));
+							tf.revalidate();
 						}
 					}
-					nextButton.setBackground(spinner.getBackground());
-					prevButton.setBackground(spinner.getBackground());
+				});
+			}
+
+			if ("font".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> {
+					if (spinner != null) {
+						spinner.updateUI();
+					}
+				});
+			}
+
+			if ("background".equals(evt.getPropertyName())) {
+				JComponent editor = spinner.getEditor();
+				if ((editor != null)
+						&& (editor instanceof JSpinner.DefaultEditor)) {
+					JTextField tf = ((JSpinner.DefaultEditor) editor)
+							.getTextField();
+					if (tf != null) {
+						// Use SubstanceColorResource to distingish between
+						// color set by application and color set
+						// (propagated)
+						// by Substance. In the second case we can replace
+						// that color (even though it's not a UIResource).
+						Color tfBackground = tf.getBackground();
+						boolean canReplace = SubstanceCoreUtilities
+								.canReplaceChildBackgroundColor(tfBackground);
+						// fix for issue 387 - if spinner background
+						// is null, do nothing
+						if (spinner.getBackground() == null)
+							canReplace = false;
+						if (canReplace) {
+							tf.setBackground(new SubstanceColorResource(
+									spinner.getBackground()));
+						}
+					}
 				}
+				nextButton.setBackground(spinner.getBackground());
+				prevButton.setBackground(spinner.getBackground());
 			}
 		};
 		this.spinner

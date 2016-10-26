@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -48,6 +48,7 @@ import org.pushingpixels.substance.api.SubstanceConstants.MenuGutterFillKind;
 import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
 import org.pushingpixels.substance.api.combo.ComboPopupPrototypeCallback;
 import org.pushingpixels.substance.api.fonts.*;
+import org.pushingpixels.substance.api.icon.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.api.inputmaps.InputMapSet;
 import org.pushingpixels.substance.api.inputmaps.SubstanceInputMapUtilities;
 import org.pushingpixels.substance.api.shaper.*;
@@ -62,7 +63,6 @@ import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.plugin.SubstanceSkinPlugin;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 import org.pushingpixels.substance.internal.utils.*;
-import org.pushingpixels.substance.internal.utils.icon.HiDpiAwareIconUiResource;
 
 /**
  * <p>
@@ -1935,11 +1935,9 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	public static void setToUseConstantThemesOnDialogs(
 			boolean toUseConstantThemesOnDialogs) {
 		SubstanceLookAndFeel.toUseConstantThemesOnDialogs = toUseConstantThemesOnDialogs;
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				for (Window window : Window.getWindows()) {
-					SwingUtilities.updateComponentTreeUI(window);
-				}
+		SwingUtilities.invokeLater(() -> {
+			for (Window window : Window.getWindows()) {
+				SwingUtilities.updateComponentTreeUI(window);
 			}
 		});
 	}
