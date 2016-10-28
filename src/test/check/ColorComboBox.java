@@ -65,20 +65,18 @@ public class ColorComboBox extends JComboBox {
 		setEditable(true);
 		setEditor(new Renderer());
 		setSelectedItem(new Value(null, null));
-		addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ev) {
-				if (getSelectedItem() == CUSTOM_COLOR) {
-					Color c = JColorChooser.showDialog(SwingUtilities
-							.getAncestorOfClass(Dialog.class,
-									ColorComboBox.this), loc("SelectColor"),
-							lastColor);
-					if (c != null)
-						setColor(c);
-				} else {
-					lastColor = ((Value) getSelectedItem()).color;
-				}
-				ColorComboBox.this.firePropertyChange(PROP_COLOR, null, null);
+		addActionListener((ActionEvent ev) -> {
+			if (getSelectedItem() == CUSTOM_COLOR) {
+				Color c = JColorChooser.showDialog(SwingUtilities
+						.getAncestorOfClass(Dialog.class,
+								ColorComboBox.this), loc("SelectColor"),
+						lastColor);
+				if (c != null)
+					setColor(c);
+			} else {
+				lastColor = ((Value) getSelectedItem()).color;
 			}
+			ColorComboBox.this.firePropertyChange(PROP_COLOR, null, null);
 		});
 	}
 

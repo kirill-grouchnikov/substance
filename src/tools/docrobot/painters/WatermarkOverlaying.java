@@ -61,6 +61,6 @@ public class WatermarkOverlaying extends BaseRobot {
 	public WatermarkOverlaying() {
 		super(
 				new MySkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/painters/titlepane.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/painters/titlepane.png");
 	}
 }

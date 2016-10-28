@@ -44,6 +44,6 @@ public class EmeraldDusk extends SkinRobot {
 	 */
 	public EmeraldDusk() {
 		super(new EmeraldDuskSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/emeralddusk");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/emeralddusk");
 	}
 }

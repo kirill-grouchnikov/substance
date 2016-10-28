@@ -49,7 +49,6 @@ import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
-import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
@@ -120,10 +119,8 @@ public class ArrowButtonTransitionAwareIcon implements Icon {
 		this.transitionAwareUIDelegate = transitionAwareUIDelegate;
 		this.orientation = orientation;
 		this.delegate = (SubstanceColorScheme scheme) -> {
-			int fontSize = SubstanceSizeUtils
-					.getComponentFontSize(component);
-			return SubstanceImageCreator.getArrowIcon(fontSize,
-					orientation, scheme);
+			int fontSize = SubstanceSizeUtils.getComponentFontSize(component);
+			return SubstanceImageCreator.getArrowIcon(fontSize, orientation, scheme);
 		};
 
 		Icon enabledIcon = this.delegate.getColorSchemeIcon(
@@ -149,29 +146,27 @@ public class ArrowButtonTransitionAwareIcon implements Icon {
 		boolean isMenu = (this.component instanceof JMenu);
 		StateTransitionTracker stateTransitionTracker = this.transitionAwareUIDelegate
 				.getTransitionAwareUI().getTransitionTracker();
-		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
-				.getModelStateInfo();
-		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = isMenu ? modelStateInfo
-				.getStateNoSelectionContributionMap()
+		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker.getModelStateInfo();
+		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = isMenu 
+				? modelStateInfo.getStateNoSelectionContributionMap()
 				: modelStateInfo.getStateContributionMap();
-		ComponentState currState = isMenu ? modelStateInfo
-				.getCurrModelStateNoSelection() : modelStateInfo
-				.getCurrModelState();
+		ComponentState currState = isMenu ? modelStateInfo.getCurrModelStateNoSelection() 
+				: modelStateInfo.getCurrModelState();
 
-		// Use HIGHLIGHT for rollover menus (arrow icons)
-		// and MARK for the rest
-		ColorSchemeAssociationKind baseAssociationKind = isMenu
-				&& currState.isFacetActive(ComponentStateFacet.ROLLOVER) ? ColorSchemeAssociationKind.HIGHLIGHT
-				: ColorSchemeAssociationKind.MARK;
+		// Use HIGHLIGHT for rollover menus (arrow icons) and MARK for the rest
+		ColorSchemeAssociationKind baseAssociationKind = 
+				isMenu && currState.isFacetActive(ComponentStateFacet.ROLLOVER) 
+					? ColorSchemeAssociationKind.HIGHLIGHT
+					: ColorSchemeAssociationKind.MARK;
 		SubstanceColorScheme baseScheme = SubstanceColorSchemeUtilities
 				.getColorScheme(this.component, baseAssociationKind, currState);
 		float baseAlpha = SubstanceColorSchemeUtilities.getAlpha(
 				this.component, currState);
 
-		HashMapKey keyBase = SubstanceCoreUtilities.getHashKey(this.component
-				.getClass().getName(), this.orientation, SubstanceSizeUtils
-				.getComponentFontSize(this.component), baseScheme
-				.getDisplayName(), baseAlpha);
+		HashMapKey keyBase = SubstanceCoreUtilities.getHashKey(
+				this.component.getClass().getName(), this.orientation, 
+				SubstanceSizeUtils.getComponentFontSize(this.component), 
+				baseScheme.getDisplayName(), baseAlpha);
 		HiDpiAwareIcon layerBase = iconMap.get(keyBase);
 		if (layerBase == null) {
 			HiDpiAwareIcon baseFullOpacity = this.delegate.getColorSchemeIcon(baseScheme);
@@ -190,14 +185,6 @@ public class ArrowButtonTransitionAwareIcon implements Icon {
 				iconMap.put(keyBase, layerBase);
 			}
 		}
-		// System.out.println("Contribution map in painting");
-		// for (Map.Entry<ComponentState,
-		// StateTransitionTracker.StateContributionInfo> existing : activeStates
-		// .entrySet()) {
-		// System.out.println("\t" + existing.getKey() + " in ["
-		// + existing.getValue().start + ":" + existing.getValue().end
-		// + "] : " + existing.getValue().curr);
-		// }
 
 		if (currState.isDisabled() || (activeStates.size() == 1)) {
 			return layerBase;
@@ -229,16 +216,14 @@ public class ArrowButtonTransitionAwareIcon implements Icon {
 			// + SubstanceColorSchemeUtilities.getAlpha(this.component,
 			// activeState));
 			if (stateContribution > 0.0f) {
-				g2d.setComposite(AlphaComposite.SrcOver
-						.derive(stateContribution));
+				g2d.setComposite(AlphaComposite.SrcOver.derive(stateContribution));
 
-				ColorSchemeAssociationKind associationKind = isMenu
-						&& activeState
-								.isFacetActive(ComponentStateFacet.ROLLOVER) ? ColorSchemeAssociationKind.HIGHLIGHT
-						: ColorSchemeAssociationKind.MARK;
+				ColorSchemeAssociationKind associationKind = 
+						isMenu && activeState.isFacetActive(ComponentStateFacet.ROLLOVER) 
+								? ColorSchemeAssociationKind.HIGHLIGHT
+								: ColorSchemeAssociationKind.MARK;
 				SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
-						.getColorScheme(this.component, associationKind,
-								activeState);
+						.getColorScheme(this.component, associationKind, activeState);
 				float alpha = SubstanceColorSchemeUtilities.getAlpha(
 						this.component, activeState);
 
@@ -258,8 +243,7 @@ public class ArrowButtonTransitionAwareIcon implements Icon {
 								.getBlankImage(fullOpacity.getIconWidth(),
 										fullOpacity.getIconHeight());
 						Graphics2D g2layer = image.createGraphics();
-						g2layer.setComposite(AlphaComposite.SrcOver
-								.derive(alpha));
+						g2layer.setComposite(AlphaComposite.SrcOver.derive(alpha));
 						fullOpacity.paintIcon(this.component, g2layer, 0, 0);
 						g2layer.dispose();
 						layer = new HiDpiAwareIcon(image);

@@ -44,6 +44,6 @@ public class Raven extends SkinRobot {
 	 */
 	public Raven() {
 		super(new RavenSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/raven");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/raven");
 	}
 }

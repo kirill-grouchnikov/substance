@@ -45,6 +45,6 @@ public class UltramarineScheme extends ColorSchemeRobot {
 	public UltramarineScheme() {
 		super(
 				new UltramarineColorScheme(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/ultramarine.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/ultramarine.png");
 	}
 }

@@ -87,7 +87,7 @@ public class StandardBorderPainter implements SubstanceBorderPainter {
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-				RenderingHints.VALUE_STROKE_NORMALIZE);
+				RenderingHints.VALUE_STROKE_PURE);
 
 		Color topBorderColor = getTopBorderColor(borderScheme);
 		Color midBorderColor = getMidBorderColor(borderScheme);

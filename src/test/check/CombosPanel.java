@@ -273,20 +273,7 @@ public class CombosPanel extends ControllablePanel implements Deferrable {
 				"entry2", "entry3", "entry4", "entry5", "entry6" });
 		comboRegular.setToolTipText("This is my combo 1");
 		comboRegular.setMaximumRowCount(4);
-		// class MyLabel extends JLabel {
-		// public MyLabel(String text) {
-		// super("text");
-		// }
-		//
-		// @Override
-		// protected void paintComponent(Graphics g) {
-		// g.setColor(Color.red);
-		// g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-		// super.paintComponent(g);
-		// }
-		// }
 		builder.append("Regular", comboRegular);
-		// builder.append(new MyLabel("Regular"), new JButton("sample"));
 
 		JComboBox comboDisabled = new JComboBox(new Object[] { "entry1",
 				"entry2", "entry3" });

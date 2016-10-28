@@ -45,6 +45,6 @@ public class TerracottaScheme extends ColorSchemeRobot {
 	public TerracottaScheme() {
 		super(
 				new TerracottaColorScheme(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/terracotta.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/terracotta.png");
 	}
 }

@@ -288,8 +288,7 @@ public class SampleMenuFactory {
 			jmiSkin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					String skinClassName = entry.getValue().getClassName();
-					boolean status = SubstanceLookAndFeel
-							.setSkin(skinClassName);
+					boolean status = SubstanceLookAndFeel.setSkin(skinClassName);
 					if (!status) {
 						System.out.println("Failed to set " + skinClassName);
 					}
@@ -472,6 +471,10 @@ public class SampleMenuFactory {
 				.add(SubstanceLafChanger
 						.getMenuItem(frame, "Business Blue Steel",
 								"org.pushingpixels.substance.api.skin.SubstanceBusinessBlueSteelLookAndFeel"));
+		substanceMenus
+				.add(SubstanceLafChanger
+						.getMenuItem(frame, "Cerulean",
+								"org.pushingpixels.substance.api.skin.SubstanceCeruleanLookAndFeel"));
 		substanceMenus
 				.add(SubstanceLafChanger
 						.getMenuItem(frame, "Creme",

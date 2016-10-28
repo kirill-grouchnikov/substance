@@ -48,7 +48,7 @@ public class ImageWatermarkBeyonce extends ImageWatermarkRobot {
 	 */
 	public ImageWatermarkBeyonce() {
 		super(
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/watermarks/image-beyonce.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/watermarks/image-beyonce.png");
 	}
 
 	/*

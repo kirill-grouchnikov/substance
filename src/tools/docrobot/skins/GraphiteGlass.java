@@ -44,6 +44,6 @@ public class GraphiteGlass extends SkinRobot {
 	 */
 	public GraphiteGlass() {
 		super(new GraphiteGlassSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/graphiteglass");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/graphiteglass");
 	}
 }

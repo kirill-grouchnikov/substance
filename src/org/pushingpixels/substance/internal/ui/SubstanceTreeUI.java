@@ -213,10 +213,6 @@ public class SubstanceTreeUI extends BasicTreeUI {
 			// on the editing row
 			if (shouldPaintExpandControl(path, row, isExpanded,
 					hasBeenExpanded, isLeaf)) {
-				if (!this.tree.getComponentOrientation().isLeftToRight()
-						&& LookUtils.IS_JAVA_5) {
-					bounds.x -= 4;
-				}
 				paintExpandControlEnforce(g, clipBounds, insets, bounds, path,
 						row, isExpanded, hasBeenExpanded, isLeaf);
 			}

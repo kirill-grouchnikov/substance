@@ -45,6 +45,6 @@ public class DesertSandScheme extends ColorSchemeRobot {
 	public DesertSandScheme() {
 		super(
 				new DesertSandColorScheme(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/desert-sand.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/desert-sand.png");
 	}
 }

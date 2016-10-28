@@ -44,6 +44,6 @@ public class MistSilver extends SkinRobot {
 	 */
 	public MistSilver() {
 		super(new MistSilverSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/mistsilver");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/mistsilver");
 	}
 }

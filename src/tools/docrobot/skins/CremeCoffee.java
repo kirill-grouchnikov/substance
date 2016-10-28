@@ -44,6 +44,6 @@ public class CremeCoffee extends SkinRobot {
 	 */
 	public CremeCoffee() {
 		super(new CremeCoffeeSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/cremecoffee");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/cremecoffee");
 	}
 }

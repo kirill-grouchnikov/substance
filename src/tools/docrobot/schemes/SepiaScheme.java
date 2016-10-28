@@ -45,6 +45,6 @@ public class SepiaScheme extends ColorSchemeRobot {
 	public SepiaScheme() {
 		super(
 				new SepiaColorScheme(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/sepia.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/sepia.png");
 	}
 }

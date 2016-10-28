@@ -144,11 +144,7 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 		this.nextButton.setMinimumSize(new Dimension(5, 5));
 
 		this.nextButton.putClientProperty(
-				SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY, EnumSet
-						.of(Side.BOTTOM));
-		this.nextButton.putClientProperty(
-				SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, EnumSet
-						.of(Side.BOTTOM));
+				SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY, EnumSet.of(Side.BOTTOM));
 
 		this.installNextButtonListeners(this.nextButton);
 
@@ -197,11 +193,7 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 		this.prevButton.setMinimumSize(new Dimension(5, 5));
 
 		this.prevButton.putClientProperty(
-				SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY, EnumSet
-						.of(Side.TOP));
-		this.prevButton
-				.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
-						EnumSet.of(Side.TOP));
+				SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY, EnumSet.of(Side.TOP));
 
 		this.installPreviousButtonListeners(this.prevButton);
 
@@ -241,10 +233,13 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 
 		Border b = this.spinner.getBorder();
 		if (b == null || b instanceof UIResource) {
-			this.spinner.setBorder(new SubstanceTextComponentBorder(
-					SubstanceSizeUtils
+			SubstanceTextComponentBorder border = 
+					new SubstanceTextComponentBorder(SubstanceSizeUtils
 							.getSpinnerBorderInsets(SubstanceSizeUtils
-									.getComponentFontSize(this.spinner))));
+									.getComponentFontSize(this.spinner)));
+			// remain with consistent corner radius across components
+			border.setCornerRadiusFactor(1.0f);
+			this.spinner.setBorder(border);
 		}
 	}
 
@@ -346,23 +341,13 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 		Graphics2D graphics = (Graphics2D) g.create();
 		int width = this.spinner.getWidth();
 		int height = this.spinner.getHeight();
-		int componentFontSize = SubstanceSizeUtils
-				.getComponentFontSize(this.spinner);
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize));
-		Shape contour = SubstanceOutlineUtilities
-				.getBaseOutline(
-						width,
-						height,
-						Math.max(
-								0,
-								2.0f
-										* SubstanceSizeUtils
-												.getClassicButtonCornerRadius(componentFontSize)
-										- borderDelta), null, borderDelta);
+		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(this.spinner);
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
+		Shape contour = SubstanceOutlineUtilities.getBaseOutline(width, height,
+				Math.max(0, SubstanceSizeUtils.getClassicButtonCornerRadius(componentFontSize)
+						- borderDelta), null, borderDelta);
 
-		graphics.setColor(SubstanceTextUtilities
-				.getTextBackgroundFillColor(this.spinner));
+		graphics.setColor(SubstanceTextUtilities.getTextBackgroundFillColor(this.spinner));
 		graphics.fill(contour);
 
 		graphics.dispose();

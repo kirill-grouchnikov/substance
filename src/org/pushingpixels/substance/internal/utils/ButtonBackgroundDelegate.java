@@ -134,8 +134,7 @@ public class ButtonBackgroundDelegate {
 		boolean isRoundButton = StandardButtonShaper.isRoundButton(button);
 		float radius = 0.0f;
 		if (shaper instanceof RectangularButtonShaper) {
-			radius = ((RectangularButtonShaper) shaper).getCornerRadius(button,
-					null);
+			radius = ((RectangularButtonShaper) shaper).getCornerRadius(button, 0.0f);
 		}
 
 		Set<Side> openSides = SubstanceCoreUtilities.getSides(button,
@@ -323,11 +322,10 @@ public class ButtonBackgroundDelegate {
 		int deltaBottom = ((openSides != null) && openSides.contains(Side.BOTTOM)) ? openDelta : 0;
 
 		// System.err.println(key);
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
+		float borderDelta = SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(button)) / 2.0);
-		Shape contour = shaper.getButtonOutline(button, new Insets(borderDelta,
-				borderDelta, borderDelta, borderDelta), width + deltaLeft
+						.getComponentFontSize(button)) / 2.0f;
+		Shape contour = shaper.getButtonOutline(button, borderDelta, width + deltaLeft
 				+ deltaRight, height + deltaTop + deltaBottom, false);
 
 		BufferedImage newBackground = SubstanceCoreUtilities.getBlankImage(
@@ -341,14 +339,11 @@ public class ButtonBackgroundDelegate {
 		}
 
 		if (isBorderPainted) {
-			int borderThickness = (int) SubstanceSizeUtils
+			float borderThickness = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
 							.getComponentFontSize(button));
 			Shape contourInner = borderPainter.isPaintingInnerContour() ? shaper
-					.getButtonOutline(button, new Insets(borderDelta
-							+ borderThickness, borderDelta + borderThickness,
-							borderDelta + borderThickness, borderDelta
-									+ borderThickness), width + deltaLeft
+					.getButtonOutline(button, borderDelta + borderThickness, width + deltaLeft
 							+ deltaRight, height + deltaTop + deltaBottom, true)
 					: null;
 			borderPainter.paintBorder(finalGraphics, button, width + deltaLeft
@@ -386,9 +381,8 @@ public class ButtonBackgroundDelegate {
 		int y = 0;
 		if (SubstanceCoreUtilities.isScrollButton(button)
 				|| SubstanceCoreUtilities.isSpinnerButton(button)) {
-			Sideable sideable = (Sideable) button;
 			PairwiseButtonBackgroundDelegate.updatePairwiseBackground(g,
-					button, width, height, sideable.getSide(), false);
+					button, width, height, false);
 			return;
 		}
 
@@ -487,7 +481,7 @@ public class ButtonBackgroundDelegate {
 				.getButtonShaper(button);
 		if (shaper == null)
 			return false;
-		Shape contour = shaper.getButtonOutline(button, null,
+		Shape contour = shaper.getButtonOutline(button, 0.0f,
 				button.getWidth(), button.getHeight(), false);
 		return contour.contains(x, y);
 	}

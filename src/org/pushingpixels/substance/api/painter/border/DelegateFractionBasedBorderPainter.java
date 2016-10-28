@@ -109,7 +109,7 @@ public class DelegateFractionBasedBorderPainter implements
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-				RenderingHints.VALUE_STROKE_NORMALIZE);
+				RenderingHints.VALUE_STROKE_PURE);
 
 		// shift schemes
 		SubstanceColorScheme scheme = getShiftScheme(borderScheme);

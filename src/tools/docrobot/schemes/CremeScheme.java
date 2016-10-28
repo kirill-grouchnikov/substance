@@ -45,6 +45,6 @@ public class CremeScheme extends ColorSchemeRobot {
 	public CremeScheme() {
 		super(
 				new CremeColorScheme(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/creme.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/creme.png");
 	}
 }

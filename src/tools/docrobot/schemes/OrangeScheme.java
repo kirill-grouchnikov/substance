@@ -45,6 +45,6 @@ public class OrangeScheme extends ColorSchemeRobot {
 	public OrangeScheme() {
 		super(
 				new OrangeColorScheme(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/orange.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/orange.png");
 	}
 }

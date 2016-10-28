@@ -45,6 +45,6 @@ public class BottleGreenScheme extends ColorSchemeRobot {
 	public BottleGreenScheme() {
 		super(
 				new BottleGreenColorScheme(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/bottle-green.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/bottle-green.png");
 	}
 }

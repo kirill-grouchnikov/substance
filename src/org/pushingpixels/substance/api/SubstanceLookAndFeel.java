@@ -1509,13 +1509,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 		Font titleFont = fontSet.getTitleFont();
 		Font windowFont = fontSet.getWindowTitleFont();
 
-		// System.out.println("Control: " + fontSet.getControlFont());
-		// System.out.println("Menu: " + fontSet.getMenuFont());
-		// System.out.println("Message: " + fontSet.getMessageFont());
-		// System.out.println("Small: " + fontSet.getSmallFont());
-		// System.out.println("Title: " + fontSet.getTitleFont());
-		// System.out.println("Window title: " + fontSet.getWindowTitleFont());
-
 		Object[] defaults = {
 
 		"Button.font", controlFont,
@@ -2058,8 +2051,10 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 		} catch (NoClassDefFoundError ncdfe) {
 			// this may happen when a skin references some class
 			// that can't be found in the classpath.
+			ncdfe.printStackTrace(System.out);
 			return false;
 		} catch (Exception e) {
+			e.printStackTrace(System.out);
 			return false;
 		}
 	}
@@ -2137,8 +2132,7 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 		Map<String, SkinInfo> result = new TreeMap<String, SkinInfo>();
 		for (Object skinPlugin : SubstanceLookAndFeel.skinPlugins
 				.getAvailablePlugins(true)) {
-			for (SkinInfo skinInfo : ((SubstanceSkinPlugin) skinPlugin)
-					.getSkins()) {
+			for (SkinInfo skinInfo : ((SubstanceSkinPlugin) skinPlugin).getSkins()) {
 				result.put(skinInfo.getDisplayName(), skinInfo);
 			}
 		}

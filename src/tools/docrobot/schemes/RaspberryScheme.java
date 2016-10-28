@@ -45,6 +45,6 @@ public class RaspberryScheme extends ColorSchemeRobot {
 	public RaspberryScheme() {
 		super(
 				new RaspberryColorScheme(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/raspberry.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/raspberry.png");
 	}
 }

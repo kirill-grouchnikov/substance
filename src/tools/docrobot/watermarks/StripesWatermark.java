@@ -45,6 +45,6 @@ public class StripesWatermark extends WatermarkRobot {
 	public StripesWatermark() {
 		super(
 				new SubstanceStripeWatermark(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/watermarks/stripes.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/watermarks/stripes.png");
 	}
 }

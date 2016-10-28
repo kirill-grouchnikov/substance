@@ -40,6 +40,7 @@ import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
@@ -79,13 +80,13 @@ public final class SubstanceDropDownButton extends JButton implements
 		this.setRequestFocusEnabled(parent.isEnabled());
 
 		int fontSize = SubstanceSizeUtils.getComponentFontSize(parent);
-		int tbInset = SubstanceSizeUtils.getAdjustedSize(fontSize, 1, 2, 1,
-				false);
-		int lrInset = 0;
-		this.setMargin(new Insets(tbInset, lrInset, tbInset, tbInset));
+		int tbInset = SubstanceSizeUtils.getAdjustedSize(fontSize, 1, 2, 1, false);
+		this.setMargin(new Insets(tbInset, 0, tbInset, tbInset));
 
 		this.setBorderPainted(false);
 		this.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
+		this.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
+				parent.getComponentOrientation().isLeftToRight() ? Side.LEFT : Side.RIGHT);
 		this.setOpaque(false);
 	}
 
@@ -117,10 +118,9 @@ public final class SubstanceDropDownButton extends JButton implements
 			return;
 
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(this);
-		int borderDelta = (int) Math.floor(1.5 * SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize));
-		float radius = Math.max(0, 2.0f
-				* SubstanceSizeUtils
+		float borderDelta = 1.5f * SubstanceSizeUtils
+				.getBorderStrokeWidth(componentFontSize);
+		float radius = Math.max(0, SubstanceSizeUtils
 						.getClassicButtonCornerRadius(componentFontSize)
 				- borderDelta);
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;

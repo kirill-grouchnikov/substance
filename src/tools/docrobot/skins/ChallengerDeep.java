@@ -45,6 +45,6 @@ public class ChallengerDeep extends SkinRobot {
 	public ChallengerDeep() {
 		super(
 				new ChallengerDeepSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/challengerdeep");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/challengerdeep");
 	}
 }

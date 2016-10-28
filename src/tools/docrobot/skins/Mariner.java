@@ -44,6 +44,6 @@ public class Mariner extends SkinRobot {
 	 */
 	public Mariner() {
 		super(new MarinerSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/mariner");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/mariner");
 	}
 }

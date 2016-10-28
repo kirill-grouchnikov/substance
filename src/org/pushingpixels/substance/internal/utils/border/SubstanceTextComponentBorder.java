@@ -55,6 +55,8 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
 	 * Insets of <code>this</code> border.
 	 */
 	protected Insets myInsets;
+	
+	private float cornerRadiusFactor;
 
 	/**
 	 * Cache of small border images.
@@ -71,6 +73,11 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
 	public SubstanceTextComponentBorder(Insets insets) {
 		this.myInsets = new Insets(insets.top, insets.left, insets.bottom,
 				insets.right);
+		this.cornerRadiusFactor = 2.0f;
+	}
+	
+	public void setCornerRadiusFactor(float factor) {
+		this.cornerRadiusFactor = factor;
 	}
 
 	/**
@@ -110,7 +117,7 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
 
 		// float cyclePos = 1.0f;
 
-		float radius = 2.0f * SubstanceSizeUtils
+		float radius = this.cornerRadiusFactor * SubstanceSizeUtils
 				.getClassicButtonCornerRadius(SubstanceSizeUtils
 						.getComponentFontSize(c));
 
@@ -264,7 +271,8 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
 					g2d.dispose();
 					smallImageCache.put(hashKey, result);
 				}
-				graphics.drawImage(result, x, y, null);
+				graphics.drawImage(result, x, y, result.getWidth() / scaleFactor,
+						result.getHeight() / scaleFactor, null);
 			} else {
 				// for borders larger than 100000 pixels, use simple
 				// painting

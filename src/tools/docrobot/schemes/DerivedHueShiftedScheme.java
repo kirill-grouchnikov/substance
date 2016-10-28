@@ -46,6 +46,6 @@ public class DerivedHueShiftedScheme extends ColorSchemeRobot {
 	public DerivedHueShiftedScheme() {
 		super(
 				new PurpleColorScheme().hueShift(0.4),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/derived-hueshift.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/derived-hueshift.png");
 	}
 }

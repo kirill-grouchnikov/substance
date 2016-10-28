@@ -44,6 +44,6 @@ public class Twilight extends SkinRobot {
 	 */
 	public Twilight() {
 		super(new TwilightSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/twilight");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/twilight");
 	}
 }

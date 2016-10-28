@@ -38,7 +38,7 @@ import javax.swing.plaf.UIResource;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceConstants;
-import org.pushingpixels.substance.internal.utils.Sideable;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceInternalArrowButton;
 
 /**
@@ -47,7 +47,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceInternalArrowButton;
  * @author Kirill Grouchnikov
  */
 public class SubstanceScrollButton extends JButton implements UIResource,
-		Sideable, SubstanceInternalArrowButton {
+		SubstanceInternalArrowButton {
 	static {
 		AnimationConfigurationManager.getInstance().disallowAnimations(
 				AnimationFacet.GHOSTING_BUTTON_PRESS,
@@ -74,8 +74,25 @@ public class SubstanceScrollButton extends JButton implements UIResource,
 		this.setRequestFocusEnabled(false);
 		this.setMargin(new Insets(0, 0, 0, 2));
 		this.orientation = orientation;
+		this.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
+				getStraightSide(this.orientation));
 	}
 
+	private static SubstanceConstants.Side getStraightSide(int orientation) {
+		switch (orientation) {
+			case SwingConstants.NORTH:
+				return SubstanceConstants.Side.BOTTOM;
+			case SwingConstants.WEST:
+				return SubstanceConstants.Side.RIGHT;
+			case SwingConstants.SOUTH:
+				return SubstanceConstants.Side.TOP;
+			case SwingConstants.EAST:
+				return SubstanceConstants.Side.LEFT;
+			default:
+				return null;
+		}
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -84,25 +101,5 @@ public class SubstanceScrollButton extends JButton implements UIResource,
 	@Override
 	public boolean isFocusable() {
 		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.utils.Sideable#getSide()
-	 */
-	public SubstanceConstants.Side getSide() {
-		switch (this.orientation) {
-		case SwingConstants.NORTH:
-			return SubstanceConstants.Side.BOTTOM;
-		case SwingConstants.WEST:
-			return SubstanceConstants.Side.RIGHT;
-		case SwingConstants.SOUTH:
-			return SubstanceConstants.Side.TOP;
-		case SwingConstants.EAST:
-			return SubstanceConstants.Side.LEFT;
-		default:
-			return null;
-		}
 	}
 }

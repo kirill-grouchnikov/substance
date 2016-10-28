@@ -367,9 +367,9 @@ public class SubstanceIconFactory {
 				SubstanceBorderPainter borderPainter,
 				SubstanceColorScheme fillScheme,
 				SubstanceColorScheme borderScheme) {
-			int borderDelta = (int) Math.floor(SubstanceSizeUtils
+			float borderDelta = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(slider)) / 2.0);
+							.getComponentFontSize(slider)) / 2.0f;
 			Shape contour = SubstanceOutlineUtilities.getTriangleButtonOutline(
 					width, this.size - 1, 2, borderDelta);
 
@@ -381,7 +381,7 @@ public class SubstanceIconFactory {
 			fillPainter.paintContourBackground(g2d, slider, width,
 					this.size - 1, contour, false, fillScheme, true);
 
-			int borderThickness = (int) SubstanceSizeUtils
+			float borderThickness = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
 							.getComponentFontSize(slider));
 			GeneralPath contourInner = SubstanceOutlineUtilities
@@ -571,9 +571,9 @@ public class SubstanceIconFactory {
 				SubstanceBorderPainter borderPainter,
 				SubstanceColorScheme fillScheme,
 				SubstanceColorScheme borderScheme) {
-			int borderDelta = (int) Math.floor(SubstanceSizeUtils
+			float borderDelta = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(slider)) / 2.0);
+							.getComponentFontSize(slider)) / 2.0f;
 			Shape contour = new Ellipse2D.Float(borderDelta, borderDelta, width
 					- 2 * borderDelta - 1, width - 2 * borderDelta - 1);
 
@@ -585,7 +585,7 @@ public class SubstanceIconFactory {
 			fillPainter.paintContourBackground(g2d, slider, width,
 					this.size - 1, contour, false, fillScheme, true);
 
-			int borderThickness = (int) SubstanceSizeUtils
+			float borderThickness = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
 							.getComponentFontSize(slider));
 			Shape contourInner = new Ellipse2D.Float(borderDelta
@@ -780,9 +780,9 @@ public class SubstanceIconFactory {
 				SubstanceBorderPainter borderPainter,
 				SubstanceColorScheme fillScheme,
 				SubstanceColorScheme borderScheme) {
-			int borderDelta = (int) Math.floor(SubstanceSizeUtils
+			float borderDelta = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(slider)) / 2.0);
+							.getComponentFontSize(slider)) / 2.0f;
 			Shape contour = SubstanceOutlineUtilities.getTriangleButtonOutline(
 					height, this.size, 2, borderDelta);
 
@@ -794,7 +794,7 @@ public class SubstanceIconFactory {
 			fillPainter.paintContourBackground(g2d, slider, height, this.size,
 					contour, false, fillScheme, true);
 
-			int borderThickness = (int) SubstanceSizeUtils
+			float borderThickness = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
 							.getComponentFontSize(slider));
 			GeneralPath contourInner = SubstanceOutlineUtilities

@@ -46,6 +46,6 @@ public class DerivedTonedScheme extends ColorSchemeRobot {
 	public DerivedTonedScheme() {
 		super(
 				new PurpleColorScheme().tone(0.4),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/derived-toned.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/derived-toned.png");
 	}
 }

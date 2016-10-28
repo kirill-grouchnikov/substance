@@ -45,6 +45,6 @@ public class LightAquaScheme extends ColorSchemeRobot {
 	public LightAquaScheme() {
 		super(
 				new LightAquaColorScheme(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/light-aqua.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/light-aqua.png");
 	}
 }

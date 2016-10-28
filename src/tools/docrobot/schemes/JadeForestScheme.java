@@ -45,6 +45,6 @@ public class JadeForestScheme extends ColorSchemeRobot {
 	public JadeForestScheme() {
 		super(
 				new JadeForestColorScheme(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/jade-forest.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/jade-forest.png");
 	}
 }

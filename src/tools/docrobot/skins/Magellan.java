@@ -44,6 +44,6 @@ public class Magellan extends SkinRobot {
 	 */
 	public Magellan() {
 		super(new MagellanSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/magellan");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/magellan");
 	}
 }

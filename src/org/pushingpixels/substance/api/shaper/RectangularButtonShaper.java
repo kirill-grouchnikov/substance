@@ -29,8 +29,6 @@
  */
 package org.pushingpixels.substance.api.shaper;
 
-import java.awt.Insets;
-
 import javax.swing.AbstractButton;
 
 /**
@@ -48,5 +46,5 @@ public interface RectangularButtonShaper {
 	 *            Button insets.
 	 * @return Corner radius of the specified button.
 	 */
-	public float getCornerRadius(AbstractButton button, Insets insets);
+	public float getCornerRadius(AbstractButton button, float insets);
 }

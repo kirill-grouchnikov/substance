@@ -46,6 +46,6 @@ public class DerivedSaturatedScheme extends ColorSchemeRobot {
 	public DerivedSaturatedScheme() {
 		super(
 				new PurpleColorScheme().saturate(0.4),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/derived-saturate.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/derived-saturate.png");
 	}
 }

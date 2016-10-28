@@ -48,7 +48,7 @@ public class ImageWatermarkTerry extends ImageWatermarkRobot {
 	 */
 	public ImageWatermarkTerry() {
 		super(
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/watermarks/image-terry.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/watermarks/image-terry.png");
 	}
 
 	/*

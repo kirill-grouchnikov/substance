@@ -50,6 +50,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.Set;
 
 import javax.swing.AbstractButton;
 import javax.swing.CellRendererPane;
@@ -156,12 +157,11 @@ public final class SubstanceImageCreator {
 				.getBorderPainter(c);
 		graphics.translate(x, y);
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(c);
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize) / 2.0);
+		float borderDelta = SubstanceSizeUtils
+				.getBorderStrokeWidth(componentFontSize) / 2.0f;
 		Shape contour = SubstanceOutlineUtilities.getBaseOutline(width, height,
 				radius, null, borderDelta);
-		int borderThickness = (int) SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize);
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
 		boolean skipInnerBorder = (c instanceof JTextComponent)
 				|| ((SwingUtilities.getAncestorOfClass(CellRendererPane.class,
 						c) != null) && (SwingUtilities.getAncestorOfClass(
@@ -200,18 +200,16 @@ public final class SubstanceImageCreator {
 			float radius, SubstanceColorScheme borderScheme) {
 
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(c);
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize) / 2.0);
-		Shape contour = SubstanceOutlineUtilities
-				.getBaseOutline(width, height, radius,
-						SubstanceCoreUtilities.getSides(c,
-								SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY),
-						borderDelta);
-		int borderThickness = (int) SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize);
+		float borderDelta = SubstanceSizeUtils
+				.getBorderStrokeWidth(componentFontSize) / 2.0f;
+		Set<Side> sides = SubstanceCoreUtilities.getSides(c, 
+				SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
+		Shape contour = SubstanceOutlineUtilities.getBaseOutline(
+				width, height, radius, sides, borderDelta);
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
 		GeneralPath contourInner = SubstanceOutlineUtilities.getBaseOutline(
-				width, height, radius - borderThickness, null, borderThickness
-						+ borderDelta);
+				width, height, radius - borderThickness, sides, 
+				borderThickness + borderDelta);
 
 		Graphics2D g2d = (Graphics2D) graphics.create();
 		g2d.translate(x, y);
@@ -257,7 +255,7 @@ public final class SubstanceImageCreator {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-				RenderingHints.VALUE_STROKE_NORMALIZE);
+				RenderingHints.VALUE_STROKE_PURE);
 
 		float strokeWidth = SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
@@ -296,8 +294,7 @@ public final class SubstanceImageCreator {
 	 */
 	private static BufferedImage getCheckMark(int dimension, boolean isEnabled,
 			SubstanceColorScheme scheme, float checkMarkVisibility) {
-		BufferedImage result = SubstanceCoreUtilities.getBlankImage(dimension,
-				dimension);
+		BufferedImage result = SubstanceCoreUtilities.getBlankImage(dimension, dimension);
 
 		// get graphics and set hints
 		Graphics2D graphics = (Graphics2D) result.getGraphics();
@@ -308,21 +305,17 @@ public final class SubstanceImageCreator {
 		GeneralPath path = new GeneralPath();
 
 		path.moveTo(0.25f * dimension, 0.5f * dimension);
-		path.quadTo(0.37f * dimension, 0.6f * dimension, 0.47f * dimension,
-				0.8f * dimension);
+		path.quadTo(0.37f * dimension, 0.6f * dimension, 0.47f * dimension, 0.8f * dimension);
 		path.quadTo(0.55f * dimension, 0.5f * dimension, 0.85f * dimension, 0f);
 
 		// compute the x-based clip for the visibility
 		float xClipStart = 0.15f * dimension;
 		float xClipEnd = 0.95f * dimension;
-
-		float xClipRealEnd = xClipStart + (xClipEnd - xClipStart)
-				* checkMarkVisibility;
+		float xClipRealEnd = xClipStart + (xClipEnd - xClipStart) * checkMarkVisibility;
 
 		graphics.setClip(0, 0, (int) Math.ceil(xClipRealEnd), dimension);
 
-		graphics.setColor(SubstanceColorUtilities.getMarkColor(scheme,
-				isEnabled));
+		graphics.setColor(SubstanceColorUtilities.getMarkColor(scheme, isEnabled));
 		Stroke stroke = new BasicStroke((float) 0.15 * dimension,
 				BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 		graphics.setStroke(stroke);
@@ -344,13 +337,19 @@ public final class SubstanceImageCreator {
 	 */
 	public static HiDpiAwareIcon getArrowIcon(int fontSize, int direction,
 			SubstanceColorScheme colorScheme) {
-		float width = SubstanceSizeUtils.getArrowIconWidth(fontSize);
-		float height = SubstanceSizeUtils.getArrowIconHeight(fontSize);
+		float origWidth = SubstanceSizeUtils.getArrowIconWidth(fontSize);
+		float origHeight = SubstanceSizeUtils.getArrowIconHeight(fontSize);
+		float width = origWidth;
+		float height = origHeight;
 		if (direction == SwingConstants.CENTER)
 			height *= 2;
 		float strokeWidth = SubstanceSizeUtils.getArrowStrokeWidth(fontSize);
-		return new HiDpiAwareIcon(getArrow(width, height, strokeWidth, direction,
-				colorScheme));
+		HiDpiAwareIcon result = new HiDpiAwareIcon(getArrow(
+				width, height, strokeWidth, direction, colorScheme));
+		int finalWidth = (int) (Math.max(origWidth, origHeight) + 2);
+		int finalHeight = (int) (Math.max(origWidth, height) + 2);
+		result.setDimension(finalWidth, finalHeight);
+		return result;
 	}
 
 	/**
@@ -398,7 +397,7 @@ public final class SubstanceImageCreator {
 	 * @see SwingConstants#EAST
 	 * @see SwingConstants#CENTER
 	 */
-	public static BufferedImage getArrow(float width, float height,
+	private static BufferedImage getArrow(float width, float height,
 			float strokeWidth, int direction, SubstanceColorScheme scheme) {
 		BufferedImage arrowImage = SubstanceCoreUtilities.getBlankImage(
 				(int) width, (int) height);
@@ -407,30 +406,25 @@ public final class SubstanceImageCreator {
 
 		// get graphics and set hints
 		Graphics2D graphics = (Graphics2D) arrowImage.getGraphics();
-
-		// graphics.setColor(Color.red);
-		// graphics.fillRect(0, 0, width, height);
-
-		graphics.translate(1, 1);
-		width -= 2;
-		height -= 2;
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
+		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+                RenderingHints.VALUE_STROKE_PURE);
+//		graphics.setColor(Color.red);
+//		graphics.fillRect(0, 0, (int) width, (int) height);
 
 		Color arrowColor = SubstanceColorUtilities.getMarkColor(scheme, true);
 
 		graphics.setColor(arrowColor);
 		int cap = (width < 15) ? BasicStroke.CAP_BUTT : BasicStroke.CAP_ROUND;
-		Stroke stroke = new BasicStroke(strokeWidth, cap,
-				BasicStroke.JOIN_MITER);
-
+		Stroke stroke = new BasicStroke(strokeWidth, cap, BasicStroke.JOIN_MITER);
 		graphics.setStroke(stroke);
 
-		int cushion = (int) strokeWidth / 2;
 		if (direction == SwingConstants.CENTER) {
-			BufferedImage top = getArrow(width, height / 2, strokeWidth,
+			float smallHeight = (height - strokeWidth) / 2;
+			BufferedImage top = getArrow(width, smallHeight, strokeWidth,
 					SwingConstants.NORTH, scheme);
-			BufferedImage bottom = getArrow(width, height / 2, strokeWidth,
+			BufferedImage bottom = getArrow(width, smallHeight, strokeWidth,
 					SwingConstants.SOUTH, scheme);
 			int factor = UIUtil.isRetina() ? 2 : 1;
 			graphics.drawImage(top, 0, 1, top.getWidth() / factor, top.getHeight() / factor, null);
@@ -438,18 +432,12 @@ public final class SubstanceImageCreator {
 					bottom.getWidth() / factor, bottom.getHeight() / factor, null);
 			return arrowImage;
 		} else {
+			float cushion = strokeWidth / 2.0f;
 			GeneralPath gp = new GeneralPath();
 			gp.moveTo(cushion, strokeWidth);
-			gp.lineTo((float) 0.5 * (width - 1), height - 1 - cushion);
-			gp.lineTo(width - 1 - cushion, strokeWidth);
+			gp.lineTo(0.5f * (width), height - 1 - cushion);
+			gp.lineTo(width - cushion, strokeWidth);
 			graphics.draw(gp);
-
-			// graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-			// RenderingHints.VALUE_ANTIALIAS_OFF);
-			// graphics.setStroke(new BasicStroke(1.0f, cap,
-			// BasicStroke.JOIN_MITER));
-			// graphics.setColor(Color.red);
-			// graphics.drawRect(0, 0, (int)width - 1, (int)height - 1);
 
 			int quadrantCounterClockwise = 0;
 			switch (direction) {
@@ -493,12 +481,10 @@ public final class SubstanceImageCreator {
 	public static HiDpiAwareIcon getDoubleArrowIconDelta(int fontSize, float deltaWidth,
 			float deltaHeight, float deltaStrokeWidth, int direction,
 			SubstanceColorScheme colorScheme) {
-		float arrowWidth = SubstanceSizeUtils.getArrowIconWidth(fontSize)
-				+ deltaWidth;
-		float arrowHeight = SubstanceSizeUtils.getArrowIconHeight(fontSize)
-				+ deltaHeight;
-		float arrowStrokeWidth = SubstanceSizeUtils
-				.getDoubleArrowStrokeWidth(fontSize) + deltaStrokeWidth;
+		float arrowWidth = SubstanceSizeUtils.getArrowIconWidth(fontSize);
+		float arrowHeight = SubstanceSizeUtils.getArrowIconHeight(fontSize) + deltaHeight;
+		float arrowStrokeWidth = SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize)
+				+ deltaStrokeWidth;
 		return getDoubleArrowIcon(fontSize, arrowWidth, arrowHeight,
 				arrowStrokeWidth, direction, colorScheme);
 	}
@@ -714,18 +700,24 @@ public final class SubstanceImageCreator {
 			fillPainter = SimplisticSoftBorderReverseFillPainter.INSTANCE;
 		}
 
-		float borderThickness = SubstanceSizeUtils
-				.getBorderStrokeWidth(dimension);
-		int delta = (int) (borderThickness - 0.6);
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(dimension);
+//		float borderThickness = SubstanceSizeUtils
+//				.getBorderStrokeWidth(dimension);
+//		int delta = (int) (borderThickness - 0.6);
 		// System.out.println(dimension + ":" + borderThickness + ":" + delta);
 
 		// float fDelta = borderThickness / 2.0f;
-		Shape contourBorder = new Ellipse2D.Float(delta, delta, dimension - 2
-				* delta - 1, dimension - 2 * delta - 1);
+		Shape contourBorder = new Ellipse2D.Float(borderDelta / 2.0f, borderDelta / 2.0f, 
+				dimension - borderDelta, dimension - borderDelta);
 
 		BufferedImage offBackground = SubstanceCoreUtilities.getBlankImage(
 				dimension + offsetX, dimension);
 		Graphics2D graphics = (Graphics2D) offBackground.getGraphics().create();
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+                RenderingHints.VALUE_STROKE_PURE);
+
 		float alpha = SubstanceColorSchemeUtilities.getAlpha(component,
 				componentState);
 		graphics.setComposite(AlphaComposite.getInstance(
@@ -735,19 +727,15 @@ public final class SubstanceImageCreator {
 		fillPainter.paintContourBackground(graphics, component, dimension,
 				dimension, contourBorder, false, fillColorScheme, true);
 
-		Shape contourInner = new Ellipse2D.Float(delta + borderThickness, delta
-				+ borderThickness, dimension - 2 * delta - 2 * borderThickness,
-				dimension - 2 * delta - 2 * borderThickness);
+		Shape contourInner = new Ellipse2D.Float(1.5f * borderDelta, 1.5f * borderDelta, 
+				dimension - 3 * borderDelta, dimension - 3 * borderDelta);
 
 		borderPainter.paintBorder(graphics, component, dimension, dimension,
 				contourBorder, contourInner, borderColorScheme);
 		graphics.setComposite(AlphaComposite.SrcOver);
 
-		float rc = (dimension - (UIUtil.isRetina() ? 0.5f : 0.0f)) / 2.0f;
+		float rc = (dimension - (UIUtil.isRetina() ? 0.0f : 0.0f)) / 2.0f;
 		float radius = dimension / 4.5f;
-
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
 
 		Shape markOval = new Ellipse2D.Double(rc - radius, rc - radius,
 				2 * radius, 2 * radius);
@@ -820,9 +808,9 @@ public final class SubstanceImageCreator {
 		}
 
 		int contourDim = dimension - delta;
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
+		float borderDelta = SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(button)) / 2.0);
+						.getComponentFontSize(button)) / 2.0f;
 		GeneralPath contour = SubstanceOutlineUtilities.getBaseOutline(
 				contourDim, contourDim, cornerRadius, null, borderDelta);
 
@@ -842,8 +830,7 @@ public final class SubstanceImageCreator {
 		fillPainter.paintContourBackground(graphics, button, contourDim,
 				contourDim, contour, false, fillColorScheme, true);
 
-		int borderThickness = (int) SubstanceSizeUtils
-				.getBorderStrokeWidth(dimension);
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth(dimension);
 		GeneralPath contourInner = SubstanceOutlineUtilities.getBaseOutline(
 				contourDim, contourDim, cornerRadius - borderThickness, null,
 				borderThickness + borderDelta);
@@ -920,7 +907,8 @@ public final class SubstanceImageCreator {
 			}
 			PairwiseButtonBackgroundDelegate.updatePairwiseBackground(graphics,
 					decrButton, width + 2 * delta, height,
-					flipSides ? Side.RIGHT : Side.LEFT, true);
+					//flipSides ? Side.RIGHT : Side.LEFT, 
+							true);
 			graphics.dispose();
 		}
 
@@ -934,7 +922,8 @@ public final class SubstanceImageCreator {
 			}
 			PairwiseButtonBackgroundDelegate.updatePairwiseBackground(graphics,
 					incrButton, width + 2 * delta, height,
-					flipSides ? Side.LEFT : Side.RIGHT, true);
+					//flipSides ? Side.LEFT : Side.RIGHT, 
+							true);
 			graphics.dispose();
 		}
 	}
@@ -1296,7 +1285,7 @@ public final class SubstanceImageCreator {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-				RenderingHints.VALUE_STROKE_NORMALIZE);
+				RenderingHints.VALUE_STROKE_PURE);
 		int joinKind = BasicStroke.JOIN_ROUND;
 		int capKind = BasicStroke.CAP_BUTT;
 		g2d.setStroke(new BasicStroke(borderThickness, capKind, joinKind));
@@ -1323,7 +1312,7 @@ public final class SubstanceImageCreator {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_OFF);
 		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-				RenderingHints.VALUE_STROKE_NORMALIZE);
+				RenderingHints.VALUE_STROKE_PURE);
 		int joinKind = BasicStroke.JOIN_MITER;
 		int capKind = BasicStroke.CAP_SQUARE;
 		g2d.setStroke(new BasicStroke(borderThickness, capKind, joinKind));
@@ -1704,8 +1693,7 @@ public final class SubstanceImageCreator {
 		SimplisticFillPainter gradPainter = new SimplisticSoftBorderReverseFillPainter();
 		FlatBorderPainter fbp = new FlatBorderPainter();
 
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
-				.getBorderStrokeWidth(fontSize) / 2.0);
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(fontSize) / 2.0f;
 		Shape contour = SubstanceOutlineUtilities.getBaseOutline(dim - 1,
 				dim - 1, SubstanceSizeUtils.getClassicButtonCornerRadius(dim),
 				null, borderDelta);

@@ -29,20 +29,34 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.image.BufferedImage;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JSpinner;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
 
 /**
@@ -50,8 +64,7 @@ import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
  * 
  * @author Kirill Grouchnikov
  */
-public class SubstanceSpinnerButton extends JButton implements Sideable,
-		SubstanceInternalArrowButton {
+public class SubstanceSpinnerButton extends JButton implements SubstanceInternalArrowButton {
 	static {
 		AnimationConfigurationManager.getInstance().disallowAnimations(
 				AnimationFacet.GHOSTING_BUTTON_PRESS,
@@ -109,6 +122,10 @@ public class SubstanceSpinnerButton extends JButton implements Sideable,
 		this.setOpaque(false);
 		this.setBorderPainted(false);
 		this.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
+		Set<Side> straightSides = new HashSet<>();
+		straightSides.add(orientation == SwingConstants.NORTH ? Side.BOTTOM : Side.TOP);
+		straightSides.add(spinner.getComponentOrientation().isLeftToRight() ? Side.LEFT : Side.RIGHT);
+		this.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, straightSides);
 	}
 
 	@Override
@@ -126,26 +143,6 @@ public class SubstanceSpinnerButton extends JButton implements Sideable,
 	@Override
 	public boolean isFocusable() {
 		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.utils.Sideable#getSide()
-	 */
-	public SubstanceConstants.Side getSide() {
-		switch (this.orientation) {
-		case SwingConstants.NORTH:
-			return SubstanceConstants.Side.BOTTOM;
-		case SwingConstants.WEST:
-			return SubstanceConstants.Side.RIGHT;
-		case SwingConstants.SOUTH:
-			return SubstanceConstants.Side.TOP;
-		case SwingConstants.EAST:
-			return SubstanceConstants.Side.LEFT;
-		default:
-			return null;
-		}
 	}
 
 	@Override
@@ -174,10 +171,9 @@ public class SubstanceSpinnerButton extends JButton implements Sideable,
 		boolean isNextButton = "Spinner.nextButton".equals(this.getName());
 
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(this);
-		int borderDelta = (int) Math.floor(1.5 * SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize));
-		float radius = Math.max(0, 2.0f
-				* SubstanceSizeUtils
+		float borderDelta = 1.5f * SubstanceSizeUtils
+				.getBorderStrokeWidth(componentFontSize);
+		float radius = Math.max(0, SubstanceSizeUtils
 						.getClassicButtonCornerRadius(componentFontSize)
 				- borderDelta);
 
@@ -267,9 +263,10 @@ public class SubstanceSpinnerButton extends JButton implements Sideable,
 
 		// System.out.println(prevState + ":" + currState + ":" + extraAlpha);
 		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this, extraAlpha,
-				g));
-		g2d.drawImage(offscreen, 0, 0, null);
+		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this, extraAlpha, g));
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		g2d.drawImage(offscreen, 0, 0, offscreen.getWidth() / scaleFactor,
+				offscreen.getHeight() / scaleFactor, null);
 		g2d.dispose();
 	}
 

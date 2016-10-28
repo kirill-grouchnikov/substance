@@ -44,6 +44,6 @@ public class Moderate extends SkinRobot {
 	 */
 	public Moderate() {
 		super(new ModerateSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/moderate");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/moderate");
 	}
 }

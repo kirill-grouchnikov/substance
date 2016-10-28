@@ -190,8 +190,8 @@ public class SubstanceSizeUtils {
 	 */
 	public static float getArrowIconHeight(int fontSize) {
 		if (fontSize < 12)
-			return 2.5f + fontSize * 0.5f;
-		return 3.0f + fontSize * 0.6f;
+			return 0.5f + fontSize * 0.5f;
+		return 1.0f + fontSize * 0.6f;
 	}
 
 	/**
@@ -203,9 +203,9 @@ public class SubstanceSizeUtils {
 	 */
 	public static float getArrowIconWidth(int fontSize) {
 		int result = 2 * fontSize / 3;
-		if (result % 2 == 0)
-			result++;
-		return result + 4;
+//		if (result % 2 == 0)
+//			result++;
+		return result + 2;
 	}
 
 	/**
@@ -597,8 +597,6 @@ public class SubstanceSizeUtils {
 	 */
 	public static int getRadioButtonMarkSize(int fontSize) {
 		int result = fontSize;
-		if (result % 2 == 0)
-			result--;
 		return result;
 	}
 
@@ -610,7 +608,7 @@ public class SubstanceSizeUtils {
 	 * @return Width of scroll bars under the specified font size.
 	 */
 	public static int getScrollBarWidth(int fontSize) {
-		int result = (int) (getArrowIconWidth(fontSize) * 3 / 2);
+		int result = (int) (getArrowIconWidth(fontSize) * 3 / 2) + 2;
 		if (result % 2 == 0)
 			result++;
 		return result;

@@ -48,7 +48,7 @@ public class ImageWatermarkDominic extends ImageWatermarkRobot {
 	 */
 	public ImageWatermarkDominic() {
 		super(
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/watermarks/image-dominic.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/watermarks/image-dominic.png");
 	}
 
 	/*

@@ -444,9 +444,9 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 					.getClassicButtonCornerRadius(SubstanceSizeUtils
 							.getComponentFontSize(scrollBar));
 
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
+		float borderDelta = SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(scrollBar)) / 2.0);
+						.getComponentFontSize(scrollBar)) / 2.0f;
 		Shape contour = SubstanceOutlineUtilities.getBaseOutline(width, height,
 				radius, null, borderDelta);
 		BufferedImage result = SubstanceScrollBarUI.trackHorizontalMap.get(key);
@@ -572,9 +572,9 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 						.getClassicButtonCornerRadius(SubstanceSizeUtils
 								.getComponentFontSize(scrollBar));
 
-			int borderDelta = (int) Math.floor(SubstanceSizeUtils
+			float borderDelta = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(scrollBar)) / 2.0);
+							.getComponentFontSize(scrollBar)) / 2.0f;
 			Shape contour = SubstanceOutlineUtilities.getBaseOutline(height,
 					width, radius, null, borderDelta);
 
@@ -747,9 +747,9 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 						.getClassicButtonCornerRadius(SubstanceSizeUtils
 								.getComponentFontSize(scrollBar));
 
-			int borderDelta = (int) Math.floor(SubstanceSizeUtils
+			float borderDelta = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(scrollBar)) / 2.0);
+							.getComponentFontSize(scrollBar)) / 2.0f;
 			GeneralPath contour = SubstanceOutlineUtilities.getBaseOutline(
 					height, width, radius, null, borderDelta);
 
@@ -887,9 +887,9 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			radius = SubstanceSizeUtils
 					.getClassicButtonCornerRadius(SubstanceSizeUtils
 							.getComponentFontSize(scrollBar));
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
+		float borderDelta = SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(scrollBar)) / 2.0);
+						.getComponentFontSize(scrollBar)) / 2.0f;
 		GeneralPath contour = SubstanceOutlineUtilities.getBaseOutline(width,
 				height, radius, null, borderDelta);
 		BufferedImage opaque = SubstanceScrollBarUI.thumbHorizontalMap.get(key);

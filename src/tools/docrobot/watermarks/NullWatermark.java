@@ -44,6 +44,6 @@ public class NullWatermark extends WatermarkRobot {
 	 */
 	public NullWatermark() {
 		super(new SubstanceNullWatermark(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/watermarks/null.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/watermarks/null.png");
 	}
 }

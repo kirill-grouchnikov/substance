@@ -45,6 +45,6 @@ public class AquaScheme extends ColorSchemeRobot {
 	public AquaScheme() {
 		super(
 				new AquaColorScheme(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/aqua.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/aqua.png");
 	}
 }

@@ -48,7 +48,7 @@ public class ImageWatermarkAngelina extends ImageWatermarkRobot {
 	 */
 	public ImageWatermarkAngelina() {
 		super(
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/watermarks/image-angelina.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/watermarks/image-angelina.png");
 	}
 
 	/*

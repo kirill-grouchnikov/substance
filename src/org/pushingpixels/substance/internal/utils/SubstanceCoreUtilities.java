@@ -990,6 +990,7 @@ public class SubstanceCoreUtilities {
 
 			BufferedImage tempBottom = getBlankImage(width, height - startY);
 			Graphics2D tempBottomG = (Graphics2D) tempBottom.getGraphics();
+			tempBottomG.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
 			tempBottomG.drawImage(imageBottom, 0, 0, width, height - startY, 0,
 					startY, width, height, null);
 			tempBottomG.setComposite(AlphaComposite.DstOut);
@@ -1188,7 +1189,7 @@ public class SubstanceCoreUtilities {
 	 * @see SubstanceLookAndFeel#CORNER_RADIUS
 	 */
 	public static float getToolbarButtonCornerRadius(JComponent button,
-			Insets insets) {
+			float insets) {
 
 		JToolBar toolbar = null;
 		Component c = button.getParent();
@@ -1202,13 +1203,8 @@ public class SubstanceCoreUtilities {
 		if (toolbar == null)
 			return 2.0f;
 
-		int width = button.getWidth();
-		int height = button.getHeight();
-
-		if (insets != null) {
-			width -= (insets.left + insets.right);
-			height -= (insets.top + insets.bottom);
-		}
+		float width = button.getWidth() - 2 * insets;
+		float height = button.getHeight() -2 * insets;
 		float maxRadius = (width > height) ? (height) / 2.0f : (width) / 2.0f;
 
 		Object buttonProp = button
@@ -1779,8 +1775,7 @@ public class SubstanceCoreUtilities {
 	 *            Arrow orientation.
 	 * @return Arrow icon.
 	 */
-	public static Icon getArrowIcon(
-			JComponent comp,
+	public static Icon getArrowIcon(JComponent comp,
 			TransitionAwareIcon.TransitionAwareUIDelegate transitionAwareUIDelegate,
 			int orientation) {
 		Icon result = new ArrowButtonTransitionAwareIcon(comp,

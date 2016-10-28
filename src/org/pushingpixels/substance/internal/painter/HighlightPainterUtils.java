@@ -29,7 +29,12 @@
  */
 package org.pushingpixels.substance.internal.painter;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.EnumSet;
 import java.util.Set;
@@ -42,7 +47,10 @@ import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.highlight.SubstanceHighlightPainter;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
  * Contains utility methods related to highlight painters. This class is for
@@ -115,7 +123,7 @@ public class HighlightPainterUtils {
 				smallCache.put(key, result);
 			}
 			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
-			g2d.drawImage(result, 0, 0, result.getWidth() / 2, result.getHeight() / 2, null);
+			g2d.drawImage(result, 0, 0, result.getWidth() / scaleFactor, result.getHeight() / scaleFactor, null);
 		}
 	}
 
@@ -173,25 +181,19 @@ public class HighlightPainterUtils {
 		int deltaTop = openSides.contains(Side.TOP) ? openDelta : 0;
 		int deltaBottom = openSides.contains(Side.BOTTOM) ? openDelta : 0;
 
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(comp)) / 2.0);
-		Shape contour = new Rectangle(borderDelta, borderDelta, width
-				+ deltaLeft + deltaRight - 2 * borderDelta - 1, height
-				+ deltaTop + deltaBottom - 2 * borderDelta - 1);
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(SubstanceSizeUtils
+						.getComponentFontSize(comp));
+		Shape contour = new Rectangle2D.Float(borderDelta / 2.0f, borderDelta / 2.0f, width
+				+ deltaLeft + deltaRight - borderDelta, height
+				+ deltaTop + deltaBottom - borderDelta);
 
 		Graphics2D g2d = (Graphics2D) graphics.create();
 		g2d.translate(-deltaLeft, -deltaTop);
 		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(null,
 				borderAlpha, graphics));
-		int borderThickness = (int) SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(comp));
-		Shape contourInner = new Rectangle(borderDelta + borderThickness,
-				borderDelta + borderThickness, width + deltaLeft + deltaRight
-						- 2 * borderDelta - 2 * borderThickness - 1, height
-						+ deltaTop + deltaBottom - 2 * borderDelta - 2
-						* borderThickness - 1);
+		Shape contourInner = new Rectangle2D.Float(1.5f * borderDelta, 1.5f * borderDelta, 
+				width + deltaLeft + deltaRight - 3 * borderDelta, 
+				height + deltaTop + deltaBottom - 3 * borderDelta);
 
 		highlightBorderPainter.paintBorder(g2d, comp, width + deltaLeft
 				+ deltaRight, height + deltaTop + deltaBottom, contour,

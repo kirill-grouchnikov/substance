@@ -44,6 +44,6 @@ public class Gemini extends SkinRobot {
 	 */
 	public Gemini() {
 		super(new GeminiSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/gemini");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/gemini");
 	}
 }

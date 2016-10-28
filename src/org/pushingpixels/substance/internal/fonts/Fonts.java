@@ -272,16 +272,6 @@ public final class Fonts {
 				|| LookUtils.IS_OS_WINDOWS_NT || LookUtils.IS_OS_WINDOWS_ME)
 			return defaultGUIFont;
 
-		// Java 1.4 and Java 5 raster the Segoe UI poorly,
-		// so we use the older Tahoma, if it can display the localized text.
-		if (LookUtils.IS_OS_WINDOWS_VISTA) {
-			if (LookUtils.IS_JAVA_1_4_OR_5) {
-				Font tahoma = getDefaultGUIFontWesternModernWindowsNormal();
-				return Boolean.TRUE.equals(canDisplayLocalizedText(tahoma,
-						Locale.getDefault())) ? tahoma : defaultGUIFont;
-			}
-		}
-
 		Font iconFont = getDesktopFont(WINDOWS_ICON_FONT_KEY);
 		return Boolean.TRUE.equals(canDisplayLocalizedText(iconFont, Locale
 				.getDefault())) ? iconFont : defaultGUIFont;

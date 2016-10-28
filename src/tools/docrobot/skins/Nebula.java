@@ -44,6 +44,6 @@ public class Nebula extends SkinRobot {
 	 */
 	public Nebula() {
 		super(new NebulaSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/nebula");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/nebula");
 	}
 }

@@ -71,20 +71,13 @@ public class ClassicButtonShaper implements SubstanceButtonShaper,
 		return "Classic";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.substance.shaper.SubstanceButtonShaper#getButtonOutline
-	 * (javax .swing.AbstractButton, java.awt.Insets, int, int, boolean)
-	 */
 	@Override
-	public GeneralPath getButtonOutline(AbstractButton button, Insets insets,
-			int width, int height, boolean isInner) {
+	public GeneralPath getButtonOutline(AbstractButton button, float extraInsets,
+			float width, float height, boolean isInner) {
 		Set<SubstanceConstants.Side> straightSides = SubstanceCoreUtilities
 				.getSides(button, SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
 
-		float radius = this.getCornerRadius(button, insets);
+		float radius = this.getCornerRadius(button, extraInsets);
 		if (isInner) {
 			radius -= (int) SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
@@ -94,7 +87,7 @@ public class ClassicButtonShaper implements SubstanceButtonShaper,
 		}
 
 		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height,
-				straightSides, radius, insets);
+				straightSides, radius, extraInsets);
 
 		GeneralPath result = contours.get(key);
 		if (result != null) {
@@ -102,7 +95,7 @@ public class ClassicButtonShaper implements SubstanceButtonShaper,
 		}
 
 		result = SubstanceOutlineUtilities.getBaseOutline(width, height,
-				radius, straightSides, insets);
+				radius, straightSides, extraInsets);
 		contours.put(key, result);
 		return result;
 	}
@@ -271,7 +264,7 @@ public class ClassicButtonShaper implements SubstanceButtonShaper,
 	 * (javax .swing.JComponent, java.awt.Insets)
 	 */
 	@Override
-	public float getCornerRadius(AbstractButton button, Insets insets) {
+	public float getCornerRadius(AbstractButton button, float insets) {
 		float radius = SubstanceSizeUtils
 				.getClassicButtonCornerRadius(SubstanceSizeUtils
 						.getComponentFontSize(button));

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2010 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -27,23 +27,29 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.pushingpixels.substance.internal.utils;
+package org.pushingpixels.substance.api.skin;
 
-import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 
 /**
- * Interface for components that have a side. An example of such a component is
- * scroll bar button or spinner button.
- * 
- * @author Kirill Grouchnikov
+ * Standalone look-and-feel that uses the <code>Cerulean</code> skin from
+ * {@link org.pushingpixels.substance.api.skin.CeruleanSkin}. You can set this look-and-feel by:
+ * <ul>
+ * <li>
+ * -Dswing.defaultlaf=org.pushingpixels.substance.api.skin.
+ * SubstanceCeruleanLookAndFeel</li>
+ * <li>UIManager.setLookAndFeel(
+ * "org.pushingpixels.substance.api.skin.SubstanceCeruleanLookAndFeel" );</li>
+ * <li>UIManager.setLookAndFeel(new SubstanceCeruleanLookAndFeel());</li>
+ * </ul>
+ *
+ * @since version 7.0
  */
-public interface Sideable {
+public class SubstanceCeruleanLookAndFeel extends SubstanceLookAndFeel {
 	/**
-	 * Returns side that corresponds to the orientation of the associated
-	 * button.
-	 * 
-	 * @return Side that corresponds to the orientation of the associated
-	 *         button.
+	 * Creates a new <code>Cerulean</code> look-and-feel.
 	 */
-	public SubstanceConstants.Side getSide();
+	public SubstanceCeruleanLookAndFeel() {
+		super(new CeruleanSkin());
+	}
 }

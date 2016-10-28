@@ -44,6 +44,6 @@ public class Business extends SkinRobot {
 	 */
 	public Business() {
 		super(new BusinessSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/business");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/business");
 	}
 }

@@ -55,7 +55,7 @@ public interface SubstanceButtonShaper extends SubstanceTrait {
 	 * 
 	 * @param button
 	 *            A button.
-	 * @param insets
+	 * @param extraInsets
 	 *            Button insets.
 	 * @param width
 	 *            Button width.
@@ -66,8 +66,8 @@ public interface SubstanceButtonShaper extends SubstanceTrait {
 	 *            contour.
 	 * @return The outline path for the specified button.
 	 */
-	public Shape getButtonOutline(AbstractButton button, Insets insets,
-			int width, int height, boolean isInner);
+	public Shape getButtonOutline(AbstractButton button, float extraInsets,
+			float width, float height, boolean isInner);
 
 	/**
 	 * Returns the border for the specified button.

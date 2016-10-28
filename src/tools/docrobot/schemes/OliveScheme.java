@@ -45,6 +45,6 @@ public class OliveScheme extends ColorSchemeRobot {
 	public OliveScheme() {
 		super(
 				new OliveColorScheme(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/olive.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/olive.png");
 	}
 }

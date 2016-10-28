@@ -290,14 +290,10 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
 				.getBorderPainter(this.slider);
 
-		int componentFontSize = SubstanceSizeUtils
-				.getComponentFontSize(this.slider);
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize) / 2.0);
-		float radius = SubstanceSizeUtils
-				.getClassicButtonCornerRadius(componentFontSize) / 2.0f;
-		int borderThickness = (int) SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize);
+		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(this.slider);
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize) / 2.0f;
+		float radius = SubstanceSizeUtils.getClassicButtonCornerRadius(componentFontSize) / 2.0f;
+		float borderThickness = (int) SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
 
 		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height,
 				radius, borderDelta, borderThickness, fillColorScheme
@@ -370,9 +366,9 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 		float radius = SubstanceSizeUtils
 				.getClassicButtonCornerRadius(SubstanceSizeUtils
 						.getComponentFontSize(slider)) / 2.0f;
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
+		float borderDelta = SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(slider)) / 2.0);
+						.getComponentFontSize(slider)) / 2.0f;
 
 		// fill selected portion
 		if (this.slider.isEnabled()) {

@@ -45,6 +45,6 @@ public class BusinessBlackSteel extends SkinRobot {
 	public BusinessBlackSteel() {
 		super(
 				new BusinessBlackSteelSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/businessblacksteel");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/businessblacksteel");
 	}
 }

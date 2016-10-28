@@ -69,32 +69,22 @@ public class BaseSkinPlugin implements SubstanceSkinPlugin {
 		Set<SkinInfo> result = new HashSet<SkinInfo>();
 		// result.add(create(AutumnSkin.NAME, AutumnSkin.class, false));
 		result.add(create(BusinessSkin.NAME, BusinessSkin.class, false));
-		result.add(create(BusinessBlackSteelSkin.NAME,
-				BusinessBlackSteelSkin.class, false));
-		result.add(create(BusinessBlueSteelSkin.NAME,
-				BusinessBlueSteelSkin.class, false));
+		result.add(create(BusinessBlackSteelSkin.NAME, BusinessBlackSteelSkin.class, false));
+		result.add(create(BusinessBlueSteelSkin.NAME, BusinessBlueSteelSkin.class, false));
 		result.add(create(CremeSkin.NAME, CremeSkin.class, false));
 		result.add(create(ModerateSkin.NAME, ModerateSkin.class, false));
 		result.add(create(SaharaSkin.NAME, SaharaSkin.class, false));
-		result.add(create(OfficeBlack2007Skin.NAME, OfficeBlack2007Skin.class,
-				false));
-		result.add(create(OfficeBlue2007Skin.NAME, OfficeBlue2007Skin.class,
-				false));
-		result.add(create(OfficeSilver2007Skin.NAME,
-				OfficeSilver2007Skin.class, false));
+		result.add(create(OfficeBlack2007Skin.NAME, OfficeBlack2007Skin.class, false));
+		result.add(create(OfficeBlue2007Skin.NAME, OfficeBlue2007Skin.class, false));
+		result.add(create(OfficeSilver2007Skin.NAME, OfficeSilver2007Skin.class, false));
 		result.add(create(RavenSkin.NAME, RavenSkin.class, false));
 		result.add(create(GraphiteSkin.NAME, GraphiteSkin.class, false));
-		result.add(create(GraphiteGlassSkin.NAME, GraphiteGlassSkin.class,
-				false));
-		result
-				.add(create(GraphiteAquaSkin.NAME, GraphiteAquaSkin.class,
-						false));
-		result.add(create(ChallengerDeepSkin.NAME, ChallengerDeepSkin.class,
-				false));
+		result.add(create(GraphiteGlassSkin.NAME, GraphiteGlassSkin.class, false));
+		result.add(create(GraphiteAquaSkin.NAME, GraphiteAquaSkin.class, false));
+		result.add(create(ChallengerDeepSkin.NAME, ChallengerDeepSkin.class, false));
 		result.add(create(EmeraldDuskSkin.NAME, EmeraldDuskSkin.class, false));
 		result.add(create(NebulaSkin.NAME, NebulaSkin.class, false));
-		result.add(create(NebulaBrickWallSkin.NAME, NebulaBrickWallSkin.class,
-				false));
+		result.add(create(NebulaBrickWallSkin.NAME, NebulaBrickWallSkin.class, false));
 		result.add(create(MistSilverSkin.NAME, MistSilverSkin.class, false));
 		result.add(create(MistAquaSkin.NAME, MistAquaSkin.class, false));
 		result.add(create(AutumnSkin.NAME, AutumnSkin.class, false));
@@ -105,6 +95,7 @@ public class BaseSkinPlugin implements SubstanceSkinPlugin {
 		result.add(create(MagellanSkin.NAME, MagellanSkin.class, false));
 		result.add(create(GeminiSkin.NAME, GeminiSkin.class, false));
 		result.add(create(MarinerSkin.NAME, MarinerSkin.class, false));
+		result.add(create(CeruleanSkin.NAME, CeruleanSkin.class, false));
 
 		return result;
 	}

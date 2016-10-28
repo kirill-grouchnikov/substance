@@ -44,6 +44,6 @@ public class Graphite extends SkinRobot {
 	 */
 	public Graphite() {
 		super(new GraphiteSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/graphite");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/graphite");
 	}
 }

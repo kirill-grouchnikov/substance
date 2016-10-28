@@ -45,6 +45,6 @@ public class SteelBlueScheme extends ColorSchemeRobot {
 	public SteelBlueScheme() {
 		super(
 				new SteelBlueColorScheme(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/steel-blue.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/steel-blue.png");
 	}
 }

@@ -45,6 +45,6 @@ public class NebulaBrickWall extends SkinRobot {
 	public NebulaBrickWall() {
 		super(
 				new NebulaBrickWallSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/nebulabrickwall");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/nebulabrickwall");
 	}
 }

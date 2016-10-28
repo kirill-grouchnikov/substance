@@ -540,8 +540,7 @@ public class SubstanceTextUtilities {
 		Graphics2D g2d = (Graphics2D) g.create();
 
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(comp);
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize));
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
 		Border compBorder = comp.getBorder();
 
 		if (compBorder instanceof LockBorder) {

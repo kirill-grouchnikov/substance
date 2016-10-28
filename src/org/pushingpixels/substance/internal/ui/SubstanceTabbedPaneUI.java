@@ -876,18 +876,18 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		SubstanceButtonShaper shaper = SubstanceCoreUtilities
 				.getButtonShaper(tabPane);
 
-		int borderDelta = (int) Math.ceil(2.0 * SubstanceSizeUtils
+		float borderDelta = 2.0f * SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(tabPane)));
-		int borderInsets = (int) Math.floor(SubstanceSizeUtils
+						.getComponentFontSize(tabPane));
+		float borderInsets = SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(tabPane)) / 2.0);
-		int dy = 2 + borderDelta;
+						.getComponentFontSize(tabPane)) / 2.0f;
+		int dy = (int)(2 + borderDelta);
 		Set<Side> straightSides = EnumSet.of(Side.BOTTOM);
 
-		int cornerRadius = height / 3;
+		float cornerRadius = height / 3.0f;
 		if (shaper instanceof ClassicButtonShaper) {
-			cornerRadius = (int) SubstanceSizeUtils
+			cornerRadius = SubstanceSizeUtils
 					.getClassicButtonCornerRadius(SubstanceSizeUtils
 							.getComponentFontSize(tabPane));
 			if ((tabPlacement == TOP) || (tabPlacement == BOTTOM))
@@ -908,7 +908,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 					height + dy, contour, false, fillScheme, true);
 		}
 
-		int borderThickness = (int) SubstanceSizeUtils
+		float borderThickness = SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
 						.getComponentFontSize(tabPane));
 		GeneralPath contourInner = borderPainter.isPaintingInnerContour() ? SubstanceOutlineUtilities
@@ -1020,9 +1020,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 							.getTabBackground(tabPane, width, height,
 									tabPlacement, colorScheme, borderScheme,
 									true);
-					int scaleFactor = UIUtil.isRetina() ? 2 : 1;
-					fadeGraphics.drawImage(background, 0, 0, background.getWidth() / scaleFactor,
-							background.getHeight() / scaleFactor, null);
+					fadeGraphics.drawImage(background, 0, 0, background.getWidth() / factor,
+							background.getHeight() / factor, null);
 
 					backgroundImage = SubstanceCoreUtilities
 							.blendImagesVertical(backgroundImage, fade, skin
@@ -2162,9 +2161,9 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				|| (kind == TabContentPaneBorderKind.DOUBLE_PLACEMENT);
 		boolean isPlacement = (kind == TabContentPaneBorderKind.SINGLE_PLACEMENT)
 				|| (kind == TabContentPaneBorderKind.DOUBLE_PLACEMENT);
-		int delta = isDouble ? (int) (3.0 * SubstanceSizeUtils
+		int delta = isDouble ? (int) (SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(tabPane))) : 0;
+						.getComponentFontSize(tabPane)) + 1.5f) : 0;
 
 		if (isPlacement) {
 			switch (tabPlacement) {
@@ -2280,9 +2279,9 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			SubstanceButtonShaper shaper = SubstanceCoreUtilities
 					.getButtonShaper(this.tabPane);
 			int delta = (shaper instanceof ClassicButtonShaper) ? 1 : 0;
-			int borderInsets = (int) Math.floor(SubstanceSizeUtils
+			float borderInsets = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(tabPane)) / 2.0);
+							.getComponentFontSize(tabPane)) / 2.0f;
 			GeneralPath bottomOutline = new GeneralPath();
 			bottomOutline.moveTo(x, y + h - 1);
 			bottomOutline.lineTo(selRect.x + borderInsets, y + h - 1);
@@ -2290,7 +2289,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 					SubstanceSizeUtils.getComponentFontSize(this.tabPane)) / 2;
 			bottomOutline.lineTo(selRect.x + borderInsets, y + h + bumpHeight);
 			if (selRect.x + selRect.width < x + w - 1) {
-				int selectionEndX = selRect.x + selRect.width - delta - 1
+				float selectionEndX = selRect.x + selRect.width - delta - 1
 						- borderInsets;
 				bottomOutline.lineTo(selectionEndX, y + h - 1 + bumpHeight);
 				bottomOutline.lineTo(selectionEndX, y + h - 1);
@@ -2348,9 +2347,9 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			if (tabPlacement != SwingConstants.LEFT)
 				return;
 		}
-		int ribbonDelta = (int) (3.0 * SubstanceSizeUtils
+		int ribbonDelta = (int) (SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(tabPane)));
+						.getComponentFontSize(tabPane)) + 1.5f);
 
 		Rectangle selRect = selectedIndex < 0 ? null : this.getTabBounds(
 				selectedIndex, this.calcRect);
@@ -2395,9 +2394,9 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 					.getButtonShaper(this.tabPane);
 			int delta = (shaper instanceof ClassicButtonShaper) ? 1 : 0;
 
-			int borderInsets = (int) Math.floor(SubstanceSizeUtils
+			float borderInsets = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(tabPane)) / 2.0);
+							.getComponentFontSize(tabPane)) / 2.0f;
 			GeneralPath leftOutline = new GeneralPath();
 			leftOutline.moveTo(x, y);
 			leftOutline.lineTo(x, selRect.y + borderInsets);
@@ -2405,7 +2404,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 					SubstanceSizeUtils.getComponentFontSize(this.tabPane)) / 2;
 			leftOutline.lineTo(x - bumpWidth, selRect.y + borderInsets);
 			if (selRect.y + selRect.height < y + h) {
-				int selectionEndY = selRect.y + selRect.height - delta - 1
+				float selectionEndY = selRect.y + selRect.height - delta - 1
 						- borderInsets;
 				leftOutline.lineTo(x - bumpWidth, selectionEndY);
 				leftOutline.lineTo(x, selectionEndY);
@@ -2461,9 +2460,9 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			if (tabPlacement != SwingConstants.RIGHT)
 				return;
 		}
-		int ribbonDelta = (int) (3.0 * SubstanceSizeUtils
+		int ribbonDelta = (int) (SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(tabPane)));
+						.getComponentFontSize(tabPane)) + 1.5f);
 
 		Rectangle selRect = selectedIndex < 0 ? null : this.getTabBounds(
 				selectedIndex, this.calcRect);
@@ -2507,9 +2506,9 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 					.getButtonShaper(this.tabPane);
 			int delta = (shaper instanceof ClassicButtonShaper) ? 1 : 0;
 
-			int borderInsets = (int) Math.floor(SubstanceSizeUtils
+			float borderInsets = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(tabPane)) / 2.0);
+							.getComponentFontSize(tabPane)) / 2.0f;
 			GeneralPath rightOutline = new GeneralPath();
 			rightOutline.moveTo(x + w - 1, y);
 			rightOutline.lineTo(x + w - 1, selRect.y + borderInsets);
@@ -2518,7 +2517,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			rightOutline
 					.lineTo(x + w - 1 + bumpWidth, selRect.y + borderInsets);
 			if (selRect.y + selRect.height < y + h) {
-				int selectionEndY = selRect.y + selRect.height - delta - 1
+				float selectionEndY = selRect.y + selRect.height - delta - 1
 						- borderInsets;
 				rightOutline.lineTo(x + w - 1 + bumpWidth, selectionEndY);
 				rightOutline.lineTo(x + w - 1, selectionEndY);
@@ -2575,9 +2574,6 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			if (tabPlacement != SwingConstants.TOP)
 				return;
 		}
-		int ribbonDelta = (int) (3.0 * SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(tabPane)));
 
 		Rectangle selRect = selectedIndex < 0 ? null : this.getTabBounds(
 				selectedIndex, this.calcRect);
@@ -2594,6 +2590,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		int capKind = BasicStroke.CAP_BUTT;
 		g2d.setStroke(new BasicStroke(strokeWidth, capKind, joinKind));
 		int offset = (int) (strokeWidth / 2.0);
+
+		int ribbonDelta = (int) Math.ceil(strokeWidth + 1.5f);
 
 		boolean isUnbroken = (tabPlacement != TOP || selectedIndex < 0
 				|| (selRect.y + selRect.height + 1 < y) || (selRect.x < x || selRect.x > x
@@ -2621,9 +2619,9 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			SubstanceButtonShaper shaper = SubstanceCoreUtilities
 					.getButtonShaper(this.tabPane);
 			int delta = (shaper instanceof ClassicButtonShaper) ? 1 : 0;
-			int borderInsets = (int) Math.floor(SubstanceSizeUtils
+			float borderInsets = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(tabPane)) / 2.0);
+							.getComponentFontSize(tabPane)) / 2.0f;
 			GeneralPath topOutline = new GeneralPath();
 			topOutline.moveTo(x, y);
 			topOutline.lineTo(selRect.x + borderInsets, y);
@@ -2631,7 +2629,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 					SubstanceSizeUtils.getComponentFontSize(this.tabPane)) / 2;
 			topOutline.lineTo(selRect.x + borderInsets, y - bumpHeight);
 			if (selRect.x + selRect.width < x + w - 1) {
-				int selectionEndX = selRect.x + selRect.width - delta - 1
+				float selectionEndX = selRect.x + selRect.width - delta - 1
 						- borderInsets;
 				topOutline.lineTo(selectionEndX, y - bumpHeight);
 				topOutline.lineTo(selectionEndX, y);
@@ -2647,9 +2645,6 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			if (tabPlacement == TOP) {
 				g2d.setColor(darkShadowColor);
 				g2d.drawLine(x, y + ribbonDelta, x + w - 1, y + ribbonDelta);
-				g2d.setColor(this.highlight);
-				// g2d.drawLine(x, y + 1 + ribbonDelta, x + w - 1, y + 1 +
-				// ribbonDelta);
 			}
 			if (tabPlacement == LEFT) {
 				g2d.setPaint(new GradientPaint(x, y, darkShadowColor, x + 4

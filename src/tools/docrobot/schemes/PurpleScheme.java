@@ -45,6 +45,6 @@ public class PurpleScheme extends ColorSchemeRobot {
 	public PurpleScheme() {
 		super(
 				new PurpleColorScheme(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/purple.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/purple.png");
 	}
 }

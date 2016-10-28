@@ -44,6 +44,6 @@ public class Sahara extends SkinRobot {
 	 */
 	public Sahara() {
 		super(new SaharaSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/sahara");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/sahara");
 	}
 }

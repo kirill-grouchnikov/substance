@@ -45,6 +45,6 @@ public class CrosshatchWatermark extends WatermarkRobot {
 	public CrosshatchWatermark() {
 		super(
 				new SubstanceCrosshatchWatermark(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/watermarks/crosshatch.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/watermarks/crosshatch.png");
 	}
 }

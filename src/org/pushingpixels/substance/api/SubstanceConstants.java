@@ -170,8 +170,7 @@ public class SubstanceConstants {
 							new float[] { dashLength, dashGap }, dashPhase));
 
 					Shape contour = shaper.getButtonOutline(
-							(AbstractButton) mainComp, null, mainComp
-									.getWidth(), mainComp.getHeight(), false);
+							(AbstractButton) mainComp, 0.0f, mainComp.getWidth(), mainComp.getHeight(), false);
 					graphics.draw(contour);
 					// }
 				} else {
@@ -253,9 +252,8 @@ public class SubstanceConstants {
 								insetsPix, insetsPix);
 
 						Shape contour = shaper.getButtonOutline(
-								(AbstractButton) mainComp, insets, mainComp
-										.getWidth(), mainComp.getHeight(),
-								false);
+								(AbstractButton) mainComp, insetsPix, mainComp.getWidth(), 
+								mainComp.getHeight(), false);
 						graphics.draw(contour);
 					}
 				} else {
@@ -315,13 +313,9 @@ public class SubstanceConstants {
 						return;
 
 					if (shaper.isProportionate()) {
-						Insets insets = new Insets(extraPadding, extraPadding,
-								extraPadding, extraPadding);
-
 						Shape contour = shaper.getButtonOutline(
-								(AbstractButton) mainComp, insets, mainComp
-										.getWidth(), mainComp.getHeight(),
-								false);
+								(AbstractButton) mainComp, extraPadding, mainComp.getWidth(),
+								mainComp.getHeight(), false);
 						graphics.draw(contour);
 					}
 				} else {

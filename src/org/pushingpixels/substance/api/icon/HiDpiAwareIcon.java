@@ -49,19 +49,32 @@ public class HiDpiAwareIcon implements Icon, IsHiDpiAware {
 	private BufferedImage imageSource;
 	private Icon iconSource;
 	
+	private int width;
+	private int height;
+	
 	public HiDpiAwareIcon(BufferedImage image) {
 		this.imageSource = image;
-
-		factor = UIUtil.isRetina() ? 2 : 1;
-		isHiDpiAwareSource = image instanceof JBHiDPIScaledImage;
+		this.factor = UIUtil.isRetina() ? 2 : 1;
+		this.isHiDpiAwareSource = image instanceof JBHiDPIScaledImage;
+		this.width = getInternalWidth();
+		this.height = getInternalHeight();
 	}
 	
 	public HiDpiAwareIcon(Icon icon) {
 		this.iconSource = icon;
-
-		factor = UIUtil.isRetina() ? 2 : 1;
-		isHiDpiAwareSource = (icon instanceof IsHiDpiAware) && 
+		this.factor = UIUtil.isRetina() ? 2 : 1;
+		this.isHiDpiAwareSource = (icon instanceof IsHiDpiAware) && 
 				((IsHiDpiAware) icon).isHiDpiAware();
+		this.width = getInternalWidth();
+		this.height = getInternalHeight();
+	}
+	
+	public void setDimension(int width, int height) {
+		if ((getIconWidth() > width) || (getIconHeight() > height)) {
+			throw new IllegalArgumentException();
+		}
+		this.width = width;
+		this.height = height;
 	}
 	
 	@Override
@@ -72,7 +85,11 @@ public class HiDpiAwareIcon implements Icon, IsHiDpiAware {
 	@Override
 	public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
 		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.translate(x, y);
+		int dx = (this.width - this.getInternalWidth()) / 2;
+		int dy = (this.height - this.getInternalHeight()) / 2;
+//		g2d.setColor(Color.green);
+//		g2d.fillRect(x, y, this.width, this.height);
+		g2d.translate(x + dx, y + dy);
 		if (this.imageSource != null) {
 			g2d.drawImage(this.imageSource, 0, 0, this.imageSource.getWidth() / this.factor,
 					this.imageSource.getHeight() / this.factor, null);
@@ -82,8 +99,7 @@ public class HiDpiAwareIcon implements Icon, IsHiDpiAware {
 		g2d.dispose();
 	}
 	
-	@Override
-	public int getIconWidth() {
+	private int getInternalWidth() {
 		if (this.imageSource != null) {
 			return this.imageSource.getWidth() / this.factor;
 		}
@@ -94,7 +110,11 @@ public class HiDpiAwareIcon implements Icon, IsHiDpiAware {
 	}
 	
 	@Override
-	public int getIconHeight() {
+	public int getIconWidth() {
+		return this.width;
+	}
+	
+	private int getInternalHeight() {
 		if (this.imageSource != null) {
 			return this.imageSource.getHeight() / this.factor;
 		}
@@ -102,6 +122,11 @@ public class HiDpiAwareIcon implements Icon, IsHiDpiAware {
 			return this.iconSource.getIconHeight() / (this.isHiDpiAwareSource ? 1 : this.factor);
 		}
 		return 0;
+	}
+	
+	@Override
+	public int getIconHeight() {
+		return this.height;
 	}
 	
 	public int getFactor() {

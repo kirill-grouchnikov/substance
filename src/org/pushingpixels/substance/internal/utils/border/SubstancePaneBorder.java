@@ -80,6 +80,9 @@ public class SubstancePaneBorder extends AbstractBorder implements UIResource {
 
 		Graphics2D graphics = (Graphics2D) g;
 
+		graphics.setColor(Color.red);
+		graphics.setStroke(new BasicStroke(1.5f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+		
 		// bottom and right in ultra dark
 		graphics.setColor(borderScheme.getUltraDarkColor());
 		graphics.drawLine(x, y + h - 1, x + w - 1, y + h - 1);

@@ -46,6 +46,6 @@ public class DerivedNegatedScheme extends ColorSchemeRobot {
 	public DerivedNegatedScheme() {
 		super(
 				new PurpleColorScheme().negate(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/derived-negate.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/derived-negate.png");
 	}
 }

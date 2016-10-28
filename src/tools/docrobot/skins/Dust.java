@@ -44,6 +44,6 @@ public class Dust extends SkinRobot {
 	 */
 	public Dust() {
 		super(new DustSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/dust");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/dust");
 	}
 }

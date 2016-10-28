@@ -44,6 +44,6 @@ public class DustCoffee extends SkinRobot {
 	 */
 	public DustCoffee() {
 		super(new DustCoffeeSkin(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/skins/dustcoffee");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/skins/dustcoffee");
 	}
 }

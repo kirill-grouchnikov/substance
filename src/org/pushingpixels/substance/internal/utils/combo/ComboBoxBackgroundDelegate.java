@@ -185,8 +185,7 @@ public class ComboBoxBackgroundDelegate {
 			SubstanceColorScheme fillScheme, SubstanceColorScheme borderScheme,
 			float radius) {
 		int comboFontSize = SubstanceSizeUtils.getComponentFontSize(combo);
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
-				.getBorderStrokeWidth(comboFontSize) / 2.0);
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(comboFontSize) / 2.0f;
 		Shape contour = SubstanceOutlineUtilities.getBaseOutline(width, height,
 				radius, null, borderDelta);
 
@@ -195,8 +194,7 @@ public class ComboBoxBackgroundDelegate {
 		Graphics2D finalGraphics = (Graphics2D) newBackground.getGraphics();
 		fillPainter.paintContourBackground(finalGraphics, combo, width, height,
 				contour, false, fillScheme, true);
-		int borderThickness = (int) SubstanceSizeUtils
-				.getBorderStrokeWidth(comboFontSize);
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth(comboFontSize);
 		Shape contourInner = borderPainter.isPaintingInnerContour() ? SubstanceOutlineUtilities
 				.getBaseOutline(width, height, radius - borderThickness, null,
 						borderDelta + borderThickness)
@@ -279,8 +277,8 @@ public class ComboBoxBackgroundDelegate {
 			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(combo,
 					extraAlpha, g));
 			int factor = UIUtil.isRetina() ? 2 : 1;
-			graphics.drawImage(bgImage, 0, y, bgImage.getWidth() / 2, 
-					bgImage.getHeight() / 2, null);
+			graphics.drawImage(bgImage, 0, y, bgImage.getWidth() / factor, 
+					bgImage.getHeight() / factor, null);
 			graphics.dispose();
 		}
 	}

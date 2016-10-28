@@ -45,6 +45,6 @@ public class LimeGreenScheme extends ColorSchemeRobot {
 	public LimeGreenScheme() {
 		super(
 				new LimeGreenColorScheme(),
-				"/Users/kirillg/JProjects/substance/www/images/screenshots/colorschemes/lime-green.png");
+				"/Users/kirillg/Projects/substance/www/images/screenshots/colorschemes/lime-green.png");
 	}
 }

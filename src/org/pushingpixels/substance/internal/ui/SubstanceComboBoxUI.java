@@ -171,8 +171,9 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 	 * @return Icon for the specified button.
 	 */
 	private Icon getCurrentIcon(JButton button) {
-		Icon icon = SubstanceCoreUtilities.getArrowIcon(button, 
-				SubstanceCoreUtilities.getPopupFlyoutOrientation(this.comboBox));
+		int popupFlyoutOrientation = 
+				SubstanceCoreUtilities.getPopupFlyoutOrientation(this.comboBox);
+		Icon icon = SubstanceCoreUtilities.getArrowIcon(button, popupFlyoutOrientation);
 		return icon;
 	}
 
@@ -273,11 +274,10 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 			int height = cb.getHeight();
 
 			Insets insets = layoutInsets;
-			int buttonWidth = SubstanceSizeUtils
-					.getScrollBarWidth(SubstanceSizeUtils
-							.getComponentFontSize(comboBox));
-			// buttonWidth = Math.max(buttonWidth,
-			// arrowButton.getPreferredSize().width);
+			int buttonWidth = (comboBox.isEditable()) 
+					? SubstanceSizeUtils.getScrollBarWidth(SubstanceSizeUtils
+							.getComponentFontSize(comboBox))
+					: uneditableArrowIcon.getIconWidth();
 
 			if (arrowButton != null) {
 				if (!comboBox.isEditable()) {
@@ -422,15 +422,13 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 				});
 			}
 
-			if (SubstanceLookAndFeel.COMBO_BOX_POPUP_FLYOUT_ORIENTATION
-					.equals(propertyName)) {
-				((SubstanceDropDownButton) arrowButton)
-						.setIcon(SubstanceCoreUtilities
-								.getArrowIcon(
-										arrowButton,
-										SubstanceCoreUtilities
-												.getPopupFlyoutOrientation(SubstanceComboBoxUI.this.comboBox)));
-
+			if (SubstanceLookAndFeel.COMBO_BOX_POPUP_FLYOUT_ORIENTATION.equals(propertyName)) {
+				SubstanceDropDownButton dropDownButton = (SubstanceDropDownButton) arrowButton;
+				dropDownButton.setIcon(getCurrentIcon(dropDownButton));
+				uneditableArrowIcon = SubstanceCoreUtilities.getArrowIcon(
+						comboBox,
+						() -> (TransitionAwareUI) comboBox.getUI(),
+						SubstanceCoreUtilities.getPopupFlyoutOrientation(comboBox));
 			}
 
 			if ("font".equals(propertyName)) {
@@ -515,13 +513,12 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 		int componentFontSize = SubstanceSizeUtils
 				.getComponentFontSize(this.comboBox);
 		if (this.comboBox.isEditable()) {
-			int borderDelta = (int) Math.floor(SubstanceSizeUtils
-					.getBorderStrokeWidth(componentFontSize));
+			float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
 			Shape contour = SubstanceOutlineUtilities
 					.getBaseOutline(
 							width,
 							height,
-							Math.max(0, 2.0f * SubstanceSizeUtils.getClassicButtonCornerRadius(
+							Math.max(0, SubstanceSizeUtils.getClassicButtonCornerRadius(
 									componentFontSize) - borderDelta), 
 							null,
 							borderDelta);
@@ -530,8 +527,7 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 					.getTextBackgroundFillColor(this.comboBox));
 			graphics.fill(contour);
 		} else {
-			this.delegate.updateBackground(graphics, this.comboBox,
-					this.transitionModel);
+			this.delegate.updateBackground(graphics, this.comboBox, this.transitionModel);
 
 			Icon icon = this.uneditableArrowIcon;
 			int iw = icon.getIconWidth();
@@ -545,18 +541,12 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 				int iconY = insets.top
 						+ (height - insets.top - insets.bottom - ih) / 2;
 				forIcon.translate(iconX, iconY);
-				if (UIUtil.isRetina()) {
-					//forIcon.scale(0.5f, 0.5f);
-				}
 				icon.paintIcon(this.comboBox, forIcon, 0, 0);
 			} else {
 				int iconX = insets.left / 2 + (origButtonWidth - iw) / 2;
 				int iconY = insets.top
 						+ (height - insets.top - insets.bottom - ih) / 2;
 				forIcon.translate(iconX, iconY);
-				if (UIUtil.isRetina()) {
-					//forIcon.scale(0.5f, 0.5f);
-				}
 				icon.paintIcon(this.comboBox, forIcon, 0, 0);
 			}
 			forIcon.dispose();
@@ -654,18 +644,6 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 		// focusable comboboxes
 		this.arrowButton.setFocusable(false);
 
-		// this.substanceFocusListener = new FocusListener() {
-		// public void focusGained(FocusEvent e) {
-		// arrowButton.setSelected(true);
-		// }
-		//
-		// public void focusLost(FocusEvent e) {
-		// arrowButton.setSelected(false);
-		// }
-		// };
-		// this.arrowButton.setSelected(this.comboBox.hasFocus());
-		// this.comboBox.addFocusListener(this.substanceFocusListener);
-
 		this.configureArrowButtonStraightSide();
 	}
 
@@ -725,13 +703,14 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 	private void updateComboBoxBorder() {
 		Border b = this.comboBox.getBorder();
 		if (b == null || b instanceof UIResource) {
-			int comboFontSize = SubstanceSizeUtils
-					.getComponentFontSize(this.comboBox);
-			Insets comboBorderInsets = SubstanceSizeUtils
-					.getComboBorderInsets(comboFontSize);
+			int comboFontSize = SubstanceSizeUtils.getComponentFontSize(this.comboBox);
+			Insets comboBorderInsets = SubstanceSizeUtils.getComboBorderInsets(comboFontSize);
 			if (this.comboBox.isEditable()) {
-				this.comboBox.setBorder(new SubstanceTextComponentBorder(
-						comboBorderInsets));
+				SubstanceTextComponentBorder border = 
+						new SubstanceTextComponentBorder(comboBorderInsets);
+				// remain with consistent corner radius across combos
+				border.setCornerRadiusFactor(1.0f);
+				this.comboBox.setBorder(border);
 			} else {
 				this.comboBox
 						.setBorder(new BorderUIResource.EmptyBorderUIResource(

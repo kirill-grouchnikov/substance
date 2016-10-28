@@ -80,9 +80,9 @@ public class SubstanceOutlineUtilities {
 	 *            Contains all sides which are straight.
 	 * @return The basic outline for the specified parameters.
 	 */
-	public static GeneralPath getBaseOutline(int width, int height,
+	public static GeneralPath getBaseOutline(float width, float height,
 			float radius, Set<Side> straightSides) {
-		return getBaseOutline(width, height, radius, straightSides, null);
+		return getBaseOutline(width, height, radius, straightSides, 0.0f);
 	}
 
 	/**
@@ -102,31 +102,8 @@ public class SubstanceOutlineUtilities {
 	 *            Shape insets.
 	 * @return The basic outline for the specified parameters.
 	 */
-	public static GeneralPath getBaseOutline(int width, int height,
-			float radius, Set<Side> straightSides, int insets) {
-		return getBaseOutline(width, height, radius, straightSides, new Insets(
-				insets, insets, insets, insets));
-	}
-
-	/**
-	 * Returns basic outline for the specified parameters. The basic outline is
-	 * a rectangle with rounded corners. Some corners may not be rounded based
-	 * on the contents of <code>straightSides</code> parameter.
-	 * 
-	 * @param width
-	 *            Width of some UI component.
-	 * @param height
-	 *            Height of some UI component.
-	 * @param radius
-	 *            Corner radius.
-	 * @param straightSides
-	 *            Contains all sides which are straight.
-	 * @param insets
-	 *            Shape insets.
-	 * @return The basic outline for the specified parameters.
-	 */
-	public static GeneralPath getBaseOutline(int width, int height,
-			float radius, Set<Side> straightSides, Insets insets) {
+	public static GeneralPath getBaseOutline(float width, float height,
+			float radius, Set<Side> straightSides, float insets) {
 		boolean isTopLeftCorner = (straightSides != null)
 				&& (straightSides.contains(Side.LEFT) || straightSides
 						.contains(Side.TOP));
@@ -140,14 +117,10 @@ public class SubstanceOutlineUtilities {
 				&& (straightSides.contains(Side.LEFT) || straightSides
 						.contains(Side.BOTTOM));
 
-		int xs = (insets == null) ? 0 : insets.left;
-		int ys = (insets == null) ? 0 : insets.top;
-		if (insets != null) {
-			width -= (insets.right + insets.left);
-		}
-		if (insets != null) {
-			height -= (insets.top + insets.bottom);
-		}
+		float xs = insets;
+		float ys = insets;
+		width -= 2 * insets;
+		height -= 2 * insets;
 
 		GeneralPath result = new GeneralPath();
 		// float radius3 = (float) (radius / (1.5 * Math.pow(height, 0.5)));
@@ -231,37 +204,15 @@ public class SubstanceOutlineUtilities {
 	 * @return Outline that has a triangle poiting downwards.
 	 */
 	public static GeneralPath getTriangleButtonOutline(int width, int height,
-			float radius, int insets) {
-		return getTriangleButtonOutline(width, height, radius, new Insets(
-				insets, insets, insets, insets));
+			float radius, float insets) {
 
-	}
-
-	/**
-	 * Returns outline that has a triangle poiting downwards. The top two
-	 * corners in the outline are rounded. This function can be used to draw
-	 * slider thumbs.
-	 * 
-	 * @param width
-	 *            Width of some UI component.
-	 * @param height
-	 *            Height of some UI component.
-	 * @param radius
-	 *            Corner radius for the top two corners.
-	 * @param insets
-	 *            Insets to compute the outline.
-	 * @return Outline that has a triangle poiting downwards.
-	 */
-	public static GeneralPath getTriangleButtonOutline(int width, int height,
-			float radius, Insets insets) {
-
-		int xs = insets.left;
-		int ys = insets.top;
-		int xe = width - insets.right;
+		float xs = insets;
+		float ys = insets;
+		float xe = width - insets;
 		xe--;
-		int ye = height - insets.bottom;
-		width -= (insets.right + insets.left);
-		height -= (insets.top + insets.bottom);
+		float ye = height - insets;
+		width -= 2 * insets;
+		height -= 2 * insets;
 
 		GeneralPath result = new GeneralPath();
 		float radius3 = (float) (radius / (1.5 * Math.pow(height, 0.5)));
@@ -280,7 +231,7 @@ public class SubstanceOutlineUtilities {
 			result.lineTo(xe, h2);
 		}
 
-		result.lineTo((xe + insets.right) / 2.0f, ye - 1);
+		result.lineTo((xe + insets) / 2.0f, ye - 1);
 		result.lineTo(xs, h2);
 
 		if (h2 >= radius) {
