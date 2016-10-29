@@ -524,8 +524,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		paintTrackBackVertical(g, this.scrollbar, topActiveButton,
 				bottomActiveButton, width, height);
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
-		BufferedImage verticalTrack = getTrackVertical(this.scrollbar, width,
-				height);
+		BufferedImage verticalTrack = getTrackVertical(this.scrollbar, width, height);
 		g.drawImage(verticalTrack, 0, 0, verticalTrack.getWidth() / scaleFactor,
 				verticalTrack.getHeight() / scaleFactor, null);
 	}
@@ -617,8 +616,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 	private static void paintTrackBackVertical(Graphics g,
 			JScrollBar scrollBar, AbstractButton topActiveButton,
 			AbstractButton bottomActiveButton, int width, int height) {
-		SubstanceButtonShaper shaper = SubstanceCoreUtilities
-				.getButtonShaper(scrollBar);
+		SubstanceButtonShaper shaper = SubstanceCoreUtilities.getButtonShaper(scrollBar);
 		int radius = width / 2;
 		if (shaper instanceof ClassicButtonShaper)
 			radius = 2;

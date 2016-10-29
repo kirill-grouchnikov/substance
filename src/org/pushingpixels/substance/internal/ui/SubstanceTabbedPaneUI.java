@@ -1639,7 +1639,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		int dimension = SubstanceCoreUtilities.getCloseButtonSize(this.tabPane,
 				tabIndex);
 
-		int borderDelta = (int) Math.ceil(3.0 * SubstanceSizeUtils
+		int borderDelta = (int) Math.ceil(3.0f + SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
 						.getComponentFontSize(this.tabPane)));
 

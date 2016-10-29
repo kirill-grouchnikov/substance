@@ -30,7 +30,6 @@
 package org.pushingpixels.substance.internal.utils;
 
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -71,8 +70,8 @@ public class PairwiseButtonBackgroundDelegate {
 	 * it checks <code>this</code> map to see if it already contains such
 	 * background. If so, the background from the map is returned.
 	 */
-	private static LazyResettableHashMap<BufferedImage> pairwiseBackgrounds = new LazyResettableHashMap<BufferedImage>(
-			"PairwiseButtonBackgroundDelegate");
+	private static LazyResettableHashMap<BufferedImage> pairwiseBackgrounds = 
+			new LazyResettableHashMap<BufferedImage>("PairwiseButtonBackgroundDelegate");
 
 	/**
 	 * Paints background image for the specified button in button pair (such as
@@ -101,13 +100,10 @@ public class PairwiseButtonBackgroundDelegate {
 		if (SubstanceCoreUtilities.isButtonNeverPainted(button))
 			return;
 
-		SubstanceButtonShaper shaper = SubstanceCoreUtilities
-				.getButtonShaper(button);
+		SubstanceButtonShaper shaper = SubstanceCoreUtilities.getButtonShaper(button);
 
-		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) button
-				.getUI();
-		StateTransitionTracker stateTransitionTracker = transitionAwareUI
-				.getTransitionTracker();
+		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) button.getUI();
+		StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
 		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
 				.getModelStateInfo();
 
@@ -118,17 +114,22 @@ public class PairwiseButtonBackgroundDelegate {
 				.getColorScheme(button, ColorSchemeAssociationKind.BORDER,
 						currState);
 
-		SubstanceFillPainter fillPainter = SubstanceCoreUtilities
-				.isSpinnerButton(button) ? MatteFillPainter.INSTANCE
+		SubstanceFillPainter fillPainter = SubstanceCoreUtilities.isSpinnerButton(button) 
+				? MatteFillPainter.INSTANCE
 				: SubstanceImageCreator.SimplisticSoftBorderReverseFillPainter.INSTANCE;
+		
+		Set<Side> openSides = toIgnoreOpenSides ? EnumSet.noneOf(Side.class)
+				: SubstanceCoreUtilities.getSides(button,
+						SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY);
+		boolean needsRotation = openSides.contains(Side.BOTTOM) || openSides.contains(Side.TOP);
 
 		BufferedImage baseLayer = getPairwiseFullAlphaBackground(button,
 				fillPainter, shaper, width, height, baseFillScheme,
-				baseBorderScheme, toIgnoreOpenSides);
+				baseBorderScheme, toIgnoreOpenSides, needsRotation);
 		BufferedImage fullOpacity = null;
 
-		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
-				.getStateContributionMap();
+		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = 
+				modelStateInfo.getStateContributionMap();
 
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		if (currState.isDisabled() || (activeStates.size() == 1)) {
@@ -142,8 +143,8 @@ public class PairwiseButtonBackgroundDelegate {
 			g2fullOpacity.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor,
 					baseLayer.getHeight() / scaleFactor, null);
 
-			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
-					.entrySet()) {
+			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : 
+					activeStates.entrySet()) {
 				ComponentState activeState = activeEntry.getKey();
 				if (activeState == currState)
 					continue;
@@ -159,10 +160,9 @@ public class PairwiseButtonBackgroundDelegate {
 								ColorSchemeAssociationKind.BORDER, activeState);
 				BufferedImage layer = getPairwiseFullAlphaBackground(button,
 						fillPainter, shaper, width, height, fillScheme,
-						borderScheme, toIgnoreOpenSides);
+						borderScheme, toIgnoreOpenSides, needsRotation);
 
-				g2fullOpacity.setComposite(AlphaComposite.SrcOver
-						.derive(contribution));
+				g2fullOpacity.setComposite(AlphaComposite.SrcOver.derive(contribution));
 				g2fullOpacity.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor,
 						layer.getHeight() / scaleFactor, null);
 			}
@@ -178,8 +178,8 @@ public class PairwiseButtonBackgroundDelegate {
 			if (isFlat) {
 				// Special handling of flat buttons
 				extraAlpha = 0.0f;
-				for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
-						.entrySet()) {
+				for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : 
+						activeStates.entrySet()) {
 					ComponentState activeState = activeEntry.getKey();
 					if (activeState.isDisabled())
 						continue;
@@ -196,8 +196,7 @@ public class PairwiseButtonBackgroundDelegate {
 		}
 		if (extraAlpha > 0.0f) {
 			Graphics2D graphics = (Graphics2D) g.create();
-			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(button,
-					extraAlpha, g));
+			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(button, extraAlpha, g));
 			graphics.drawImage(fullOpacity, 0, 0, fullOpacity.getWidth() / scaleFactor,
 					fullOpacity.getHeight() / scaleFactor, null);
 			graphics.dispose();
@@ -238,7 +237,8 @@ public class PairwiseButtonBackgroundDelegate {
 			AbstractButton button, SubstanceFillPainter fillPainter,
 			SubstanceButtonShaper shaper, int width, int height,
 			SubstanceColorScheme colorScheme,
-			SubstanceColorScheme borderScheme, boolean toIgnoreOpenSides) {
+			SubstanceColorScheme borderScheme, boolean toIgnoreOpenSides,
+			boolean needsRotation) {
 		if (SubstanceCoreUtilities.isButtonNeverPainted(button))
 			return null;
 		Set<Side> openSides = toIgnoreOpenSides ? EnumSet.noneOf(Side.class)
@@ -262,8 +262,7 @@ public class PairwiseButtonBackgroundDelegate {
 
 		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height, straightSides,
 				openSides, colorScheme.getDisplayName(), borderScheme.getDisplayName(), 
-				button.getClass().getName(),
-				fillPainter.getDisplayName(), shaper.getDisplayName(),
+				button.getClass().getName(), fillPainter.getDisplayName(), shaper.getDisplayName(),
 				isBorderPainted, isContentAreaFilled, radius);
 		// System.out.println("\tKey " + key);
 		BufferedImage finalBackground = pairwiseBackgrounds.get(key);
@@ -274,10 +273,8 @@ public class PairwiseButtonBackgroundDelegate {
 					&& openSides.contains(Side.LEFT) ? 3 : 0;
 			int deltaRight = (openSides != null)
 					&& openSides.contains(Side.RIGHT) ? 3 : 0;
-			int deltaTop = (openSides != null) && openSides.contains(Side.TOP) ? 3
-					: 0;
-			int deltaBottom = (openSides != null)
-					&& openSides.contains(Side.BOTTOM) ? 3 : 0;
+			int deltaTop = (openSides != null) && openSides.contains(Side.TOP) ? 3 : 0;
+			int deltaBottom = (openSides != null) && openSides.contains(Side.BOTTOM) ? 3 : 0;
 
 			GeneralPath contour = null;
 
@@ -287,83 +284,60 @@ public class PairwiseButtonBackgroundDelegate {
 			float borderDelta = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
 							.getComponentFontSize(button)) / 2.0f;
-			finalBackground = SubstanceCoreUtilities.getBlankImage(width,
-					height);
-			Graphics2D finalGraphics = (Graphics2D) finalBackground
-					.getGraphics();
+			finalBackground = SubstanceCoreUtilities.getBlankImage(width, height);
+			Graphics2D finalGraphics = (Graphics2D) finalBackground.getGraphics();
 			finalGraphics.translate(-deltaLeft, -deltaTop);
-//			if (side != null) {
-//				switch (side) {
-//				case TOP:
-//				case BOTTOM:
-//					// rotate by 90% for better visuals
-//					contour = SubstanceOutlineUtilities.getBaseOutline(height
-//							+ deltaTop + deltaBottom, width + deltaLeft
-//							+ deltaRight, radius, null, borderDelta);
-//
-//					int translateY = finalBackground.getHeight();
-//					if (SubstanceCoreUtilities.isScrollButton(button)) {
-//						translateY += (1 + ((side == SubstanceConstants.Side.BOTTOM) ? 1
-//								: -2));
-//					}
-//					AffineTransform at = AffineTransform.getTranslateInstance(
-//							0, translateY);
-//					at.rotate(-Math.PI / 2);
-//
-//					int scaleFactor = UIUtil.isRetina() ? 2 : 1;
-//					finalGraphics.scale(1, 1);
-//					finalGraphics.setTransform(at);
-//					finalGraphics.scale(scaleFactor, scaleFactor);
-//
-//					if (isContentAreaFilled) {
-//						fillPainter.paintContourBackground(finalGraphics,
-//								button, height + deltaTop + deltaBottom, width
-//										+ deltaLeft + deltaRight, contour,
-//								false, colorScheme, true);
-//					}
-//					if (isBorderPainted) {
-//						borderPainter.paintBorder(finalGraphics, button, height
-//								+ deltaTop + deltaBottom, width + deltaLeft
-//								+ deltaRight, contour, null, borderScheme);
-//					}
-//					break;
-//				case RIGHT:
-//				case LEFT:
-//					// arrow in horizontal bar
-//					contour = SubstanceOutlineUtilities.getBaseOutline(width
-//							+ deltaLeft + deltaRight, height + deltaTop
-//							+ deltaBottom, radius, straightSides, borderDelta);
-//
-//					if (isContentAreaFilled) {
-//						fillPainter.paintContourBackground(finalGraphics,
-//								button, width + deltaLeft + deltaRight, height
-//										+ deltaTop + deltaBottom, contour,
-//								false, colorScheme, true);
-//					}
-//					if (isBorderPainted) {
-//						borderPainter.paintBorder(finalGraphics, button, width
-//								+ deltaLeft + deltaRight, height + deltaTop
-//								+ deltaBottom, contour, null, borderScheme);
-//					}
-//					break;
-//				}
-//			} else {
-				contour = SubstanceOutlineUtilities.getBaseOutline(width
-						+ deltaLeft + deltaRight, height + deltaTop
-						+ deltaBottom, radius, straightSides, borderDelta);
+			if (needsRotation) {
+				// rotate by 90% for better visuals
+				contour = SubstanceOutlineUtilities.getBaseOutline(height
+						+ deltaTop + deltaBottom, width + deltaLeft
+						+ deltaRight, radius, null, borderDelta);
 
-				fillPainter.paintContourBackground(finalGraphics, button, width
-						+ deltaLeft + deltaRight, height + deltaTop
-						+ deltaBottom, contour, false, colorScheme, true);
-				if (isBorderPainted) {
-					borderPainter.paintBorder(finalGraphics, button, width
-							+ deltaLeft + deltaRight, height + deltaTop
-							+ deltaBottom, contour, null, borderScheme);
+				int translateY = finalBackground.getHeight();
+				if (SubstanceCoreUtilities.isScrollButton(button) &&
+						openSides.contains(SubstanceConstants.Side.BOTTOM)) {
+					translateY += 3;
 				}
-			//}
+				AffineTransform at = AffineTransform.getTranslateInstance(0, translateY);
+				at.rotate(-Math.PI / 2);
 
-			// System.out.println("\tCreated new background " + width + ":" +
-			// height);
+				int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+				finalGraphics.scale(1, 1);
+				finalGraphics.setTransform(at);
+				finalGraphics.scale(scaleFactor, scaleFactor);
+
+				if (isContentAreaFilled) {
+					fillPainter.paintContourBackground(finalGraphics,
+							button, height + deltaTop + deltaBottom, 
+							width + deltaLeft + deltaRight, contour,
+							false, colorScheme, true);
+				}
+				if (isBorderPainted) {
+					borderPainter.paintBorder(finalGraphics, button, 
+							height + deltaTop + deltaBottom, 
+							width + deltaLeft + deltaRight, 
+							contour, null, borderScheme);
+				}
+			} else {
+				contour = SubstanceOutlineUtilities.getBaseOutline(
+						width + deltaLeft + deltaRight, 
+						height + deltaTop + deltaBottom, 
+						radius, straightSides, borderDelta);
+
+				if (isContentAreaFilled) {
+				fillPainter.paintContourBackground(finalGraphics, button, 
+						width + deltaLeft + deltaRight, 
+						height + deltaTop + deltaBottom, 
+						contour, false, colorScheme, true);
+				}
+				if (isBorderPainted) {
+					borderPainter.paintBorder(finalGraphics, button, 
+							width + deltaLeft + deltaRight, 
+							height + deltaTop + deltaBottom, 
+							contour, null, borderScheme);
+				}
+			}
+
 			pairwiseBackgrounds.put(key, finalBackground);
 		}
 		return finalBackground;

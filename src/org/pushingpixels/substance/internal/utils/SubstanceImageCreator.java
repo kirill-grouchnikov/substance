@@ -77,6 +77,7 @@ import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
 import org.pushingpixels.substance.internal.colorscheme.ShiftColorScheme;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.SimplisticFillPainter;
+import org.pushingpixels.substance.internal.svg.Locked;
 import org.pushingpixels.substance.internal.svg.System_search;
 import org.pushingpixels.substance.internal.utils.filters.ColorSchemeFilter;
 import org.pushingpixels.substance.internal.utils.filters.GrayscaleFilter;
@@ -658,8 +659,7 @@ public final class SubstanceImageCreator {
 		int width = icon.getIconWidth();
 		int height = icon.getIconHeight();
 
-		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width,
-				height);
+		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
 		icon.paintIcon(c, result.getGraphics(), 0, 0);
 		return new HiDpiAwareIcon(new TranslucentFilter(alpha).filter(result, null));
 	}
@@ -1557,10 +1557,8 @@ public final class SubstanceImageCreator {
 		int bumpDotDiameter = SubstanceSizeUtils
 				.getBigDragBumpDiameter(componentFontSize);
 		int bumpCellSize = (int) (1.5 * bumpDotDiameter + 1);
-		int bumpRows = isHorizontal ? 1 : Math
-				.max(1, height / bumpCellSize - 1);
-		int bumpColumns = isHorizontal ? Math
-				.max(1, (width - 2) / bumpCellSize) : 1;
+		int bumpRows = isHorizontal ? 1 : Math.max(1, height / bumpCellSize - 1);
+		int bumpColumns = isHorizontal ? Math.max(1, (width - 2) / bumpCellSize) : 1;
 
 		int bumpRowOffset = (height - bumpCellSize * bumpRows) / 2;
 		int bumpColOffset = 1 + (width - bumpCellSize * bumpColumns) / 2;
@@ -1570,6 +1568,8 @@ public final class SubstanceImageCreator {
 		Graphics2D dotGraphics = (Graphics2D) singleDot.getGraphics();
 		dotGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
+		dotGraphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+                RenderingHints.VALUE_STROKE_PURE);
 
 		Color markColor = SubstanceColorUtilities.getMarkColor(colorScheme,
 				divider.isEnabled());
@@ -1580,18 +1580,15 @@ public final class SubstanceImageCreator {
 				AlphaComposite.SRC_OVER, 0.4f));
 		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
 				.getBorderPainter(divider);
-		borderPainter.paintBorder(dotGraphics, divider, width, height,
-				new Ellipse2D.Float(0, 0, bumpDotDiameter - 1,
-						bumpDotDiameter - 1), null, colorScheme);
+		borderPainter.paintBorder(dotGraphics, divider, bumpDotDiameter, bumpDotDiameter,
+				new Ellipse2D.Float(0, 0, bumpDotDiameter, bumpDotDiameter), null, colorScheme);
 
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(divider,
-				0.8f, g));
+		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(divider, 0.8f, g));
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		for (int col = 0; col < bumpColumns; col++) {
 			int cx = bumpColOffset + col * bumpCellSize;
 			for (int row = 0; row < bumpRows; row++) {
-				int cy = bumpRowOffset + row * bumpCellSize
-						+ (bumpCellSize - bumpDotDiameter) / 2;
+				int cy = bumpRowOffset + row * bumpCellSize + (bumpCellSize - bumpDotDiameter) / 2;
 				graphics.drawImage(singleDot, cx, cy, 
 						singleDot.getWidth() / scaleFactor, 
 						singleDot.getHeight() / scaleFactor, null);
@@ -1623,9 +1620,6 @@ public final class SubstanceImageCreator {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
 		boolean isDark = colorScheme.isDark();
-		// SubstanceCoreUtilities
-		// .getActiveScheme(null) : SubstanceCoreUtilities
-		// .getDefaultScheme(null);
 		Color back1 = isDark ? colorScheme.getLightColor()
 				: SubstanceColorUtilities.getInterpolatedColor(
 						colorScheme.getLightColor(),
@@ -1651,11 +1645,9 @@ public final class SubstanceImageCreator {
 			for (int row = (bumpLines - col - 1); row < bumpLines; row++) {
 				int cy = bumpOffset + row * bumpCellSize;
 				graphics.setColor(fore);
-				graphics.fillOval(cx + 1, cy + 1, bumpDotDiameter,
-						bumpDotDiameter);
-				// graphics.setColor(back1);
-				graphics.setPaint(new GradientPaint(cx, cy, back1, cx
-						+ bumpDotDiameter - 1, cy + bumpDotDiameter - 1, back2));
+				graphics.fillOval(cx + 1, cy + 1, bumpDotDiameter, bumpDotDiameter);
+				graphics.setPaint(new GradientPaint(cx, cy, back1, 
+						cx + bumpDotDiameter - 1, cy + bumpDotDiameter - 1, back2));
 				graphics.fillOval(cx, cy, bumpDotDiameter, bumpDotDiameter);
 			}
 		}
@@ -1695,7 +1687,7 @@ public final class SubstanceImageCreator {
 
 		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(fontSize) / 2.0f;
 		Shape contour = SubstanceOutlineUtilities.getBaseOutline(dim - 1,
-				dim - 1, SubstanceSizeUtils.getClassicButtonCornerRadius(dim),
+				dim - 1, SubstanceSizeUtils.getClassicButtonCornerRadius(dim) / 1.5f,
 				null, borderDelta);
 
 		g2.translate(0, 1);
@@ -2045,7 +2037,7 @@ public final class SubstanceImageCreator {
 						SubstanceColorSchemeUtilities.METALLIC_SKIN, 0, 0,
 						iSize, iSize);
 		graphics.dispose();
-		return new ImageIcon(result);
+		return new HiDpiAwareIcon(result);
 	}
 
 	/**
@@ -2057,71 +2049,16 @@ public final class SubstanceImageCreator {
 	 */
 	public static Icon getSmallLockIcon(SubstanceColorScheme scheme, Component c) {
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(c);
-		int extraPadding = SubstanceSizeUtils
-				.getExtraPadding(componentFontSize);
-		int width = 6 + 2 * extraPadding;
-		int height = 9 + 2 * extraPadding;
-		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width,
-				height);
+		int extraPadding = SubstanceSizeUtils.getExtraPadding(componentFontSize);
+		int size = 9 + 2 * extraPadding;
+		Locked locked = new Locked();
+		locked.setDimension(new Dimension(size, size));
 
-		Color fore = scheme.getForegroundColor();
-		Color fill = new Color(208, 208, 48);
-
-		Graphics2D graphics = (Graphics2D) result.getGraphics().create();
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-
-		float borderStrokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize) / 1.2f;
-		float extraInsets = borderStrokeWidth / 2.0f;
-		graphics.setStroke(new BasicStroke(borderStrokeWidth,
-				BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
-
-		float lockPadTop = height / 3.0f;
-		float lockPadBottom = height - extraInsets;
-		float lockPadLeft = extraInsets;
-		float lockPadRight = width - extraInsets;
-
-		// lock pad fill
-		graphics.setColor(fill);
-		graphics.fill(new Rectangle2D.Float(lockPadLeft, lockPadTop,
-				lockPadRight - lockPadLeft, lockPadBottom - lockPadTop));
-		// lock pad outline
-		graphics.setColor(fore);
-		graphics.draw(new Rectangle2D.Float(lockPadLeft, lockPadTop,
-				lockPadRight - lockPadLeft, lockPadBottom - lockPadTop));
-
-		// lock handle
-		graphics.setColor(fore);
-		float lockHandleLeft = width / 4.0f;
-		float lockHandleRight = width - width / 4.0f;
-
-		GeneralPath handle = new GeneralPath();
-		handle.moveTo(lockHandleLeft, lockPadTop);
-		// up to top-left
-		handle.lineTo(lockHandleLeft, extraInsets);
-		// right to top-right
-		handle.lineTo(lockHandleRight, extraInsets);
-		// down
-		handle.lineTo(lockHandleRight, lockPadTop);
-
-		graphics.draw(handle);
-
-		// lock keyhole
-		graphics.setColor(fore);
-		float lockKeyholeTop = lockPadTop + 2 * borderStrokeWidth;
-		float lockKeyholeBottom = lockPadBottom - 2 * borderStrokeWidth + 1;
-		float lockKeyholeLeft = lockHandleLeft + 1;
-		float lockKeyholeRight = lockHandleRight;
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_OFF);
-		graphics.setStroke(new BasicStroke(1.0f));
-		graphics.fill(new Rectangle2D.Float(lockKeyholeLeft, lockKeyholeTop,
-				lockKeyholeRight - lockKeyholeLeft, lockKeyholeBottom
-						- lockKeyholeTop));
-
-		graphics.dispose();
-		return new ImageIcon(result);
+		BufferedImage result = SubstanceCoreUtilities.getBlankImage(size, size);
+		locked.paintIcon(c, result.getGraphics(), 0, 0);
+		float brightnessFactor = scheme.isDark() ? 1.0f : 0.3f;
+		ColorSchemeFilter filter = ColorSchemeFilter.getColorSchemeFilter(scheme, brightnessFactor);
+		return new HiDpiAwareIcon(filter.filter(result, null));
 	}
 
 	/**

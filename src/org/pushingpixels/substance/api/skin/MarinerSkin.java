@@ -247,7 +247,6 @@ public class MarinerSkin extends SubstanceSkin {
 				DecorationAreaType.TOOLBAR);
 
 		this.buttonShaper = new ClassicButtonShaper();
-		this.watermark = new TextureWatermark();
 		this.fillPainter = new FractionBasedFillPainter("Mariner", new float[] {
 				0.0f, 0.5f, 1.0f }, new ColorSchemeSingleColorQuery[] {
 				ColorSchemeSingleColorQuery.EXTRALIGHT,

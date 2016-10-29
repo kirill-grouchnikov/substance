@@ -29,21 +29,34 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
+import javax.swing.JComponent;
+import javax.swing.JEditorPane;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicEditorPaneUI;
 
+import org.pushingpixels.lafwidget.LafWidget;
+import org.pushingpixels.lafwidget.LafWidgetRepository;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.RolloverTextControlListener;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 
 /**
  * UI for editor panes in <b>Substance</b> look and feel.
@@ -74,6 +87,8 @@ public class SubstanceEditorPaneUI extends BasicEditorPaneUI implements
 	 */
 	private ButtonModel transitionModel;
 
+	private Set<LafWidget> lafWidgets;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -103,6 +118,25 @@ public class SubstanceEditorPaneUI extends BasicEditorPaneUI implements
 
 		this.stateTransitionTracker = new StateTransitionTracker(
 				this.editorPane, this.transitionModel);
+	}
+
+	@Override
+	public void installUI(JComponent c) {
+		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+
+		super.installUI(c);
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installUI();
+		}
+	}
+	
+	@Override
+	public void uninstallUI(JComponent c) {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallUI();
+		}
+		super.uninstallUI(c);
 	}
 
 	/*
@@ -142,6 +176,10 @@ public class SubstanceEditorPaneUI extends BasicEditorPaneUI implements
 			}
 		};
 		this.editorPane.addPropertyChangeListener(this.substancePropertyChangeListener);
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installListeners();
+		}
 	}
 
 	/*
@@ -158,6 +196,10 @@ public class SubstanceEditorPaneUI extends BasicEditorPaneUI implements
 				.removePropertyChangeListener(this.substancePropertyChangeListener);
 		this.substancePropertyChangeListener = null;
 
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallListeners();
+		}
+
 		super.uninstallListeners();
 	}
 
@@ -169,6 +211,8 @@ public class SubstanceEditorPaneUI extends BasicEditorPaneUI implements
 	@Override
 	protected void installDefaults() {
 		super.installDefaults();
+		
+		editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 
 		// support for per-window skins
 		SwingUtilities.invokeLater(() -> {
@@ -176,15 +220,26 @@ public class SubstanceEditorPaneUI extends BasicEditorPaneUI implements
 				return;
 			Color foregr = editorPane.getForeground();
 			if ((foregr == null) || (foregr instanceof UIResource)) {
-				editorPane
-						.setForeground(SubstanceColorUtilities
-								.getForegroundColor(SubstanceLookAndFeel
-										.getCurrentSkin(editorPane)
-										.getEnabledColorScheme(
-												SubstanceLookAndFeel
-														.getDecorationType(editorPane))));
+				editorPane.setForeground(SubstanceColorUtilities
+						.getForegroundColor(SubstanceLookAndFeel
+								.getCurrentSkin(editorPane)
+								.getEnabledColorScheme(
+										SubstanceLookAndFeel
+												.getDecorationType(editorPane))));
 			}
 		});
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installDefaults();
+		}
+	}
+	
+	@Override
+	protected void uninstallDefaults() {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallDefaults();
+		}
+
+		super.uninstallDefaults();
 	}
 
 	/*

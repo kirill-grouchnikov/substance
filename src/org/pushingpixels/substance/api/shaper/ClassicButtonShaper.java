@@ -79,9 +79,8 @@ public class ClassicButtonShaper implements SubstanceButtonShaper,
 
 		float radius = this.getCornerRadius(button, extraInsets);
 		if (isInner) {
-			radius -= (int) SubstanceSizeUtils
-					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(button));
+			radius -= (int) SubstanceSizeUtils.getBorderStrokeWidth(
+					SubstanceSizeUtils.getComponentFontSize(button));
 			if (radius < 0.0f)
 				radius = 0.0f;
 		}

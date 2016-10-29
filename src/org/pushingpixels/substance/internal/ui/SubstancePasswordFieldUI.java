@@ -33,6 +33,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -41,6 +42,8 @@ import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.plaf.basic.BasicPasswordFieldUI;
 import javax.swing.text.*;
 
+import org.pushingpixels.lafwidget.LafWidget;
+import org.pushingpixels.lafwidget.LafWidgetRepository;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -77,7 +80,7 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 	 */
 	private ButtonModel transitionModel;
 
-	// private FocusListener substanceFocusListener;
+	private Set<LafWidget> lafWidgets;
 
 	/**
 	 * Custom password view.
@@ -136,9 +139,8 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 			int dotDiameter = SubstanceSizeUtils
 					.getPasswordDotDiameter(fontSize);
 			int dotGap = SubstanceSizeUtils.getPasswordDotGap(fontSize);
-			ComponentState state = // isSelected ? ComponentState.SELECTED
-			(field.isEnabled() ? ComponentState.ENABLED
-					: ComponentState.DISABLED_UNSELECTED);
+			ComponentState state = field.isEnabled() ? ComponentState.ENABLED
+					: ComponentState.DISABLED_UNSELECTED;
 			SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
 					.getColorScheme(field, state);
 			Color topColor = isSelected ? scheme.getSelectionForegroundColor()
@@ -310,16 +312,11 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 				if (c instanceof JPasswordField) {
 					JPasswordField f = (JPasswordField) c;
 					if (f.echoCharIsSet()) {
-						int echoPerChar = SubstanceCoreUtilities
-								.getEchoPerChar(f);
-						int fontSize = SubstanceSizeUtils
-								.getComponentFontSize(this.field);
-						int dotWidth = SubstanceSizeUtils
-								.getPasswordDotDiameter(fontSize)
-								+ SubstanceSizeUtils
-										.getPasswordDotGap(fontSize);
-						return echoPerChar * dotWidth
-								* this.getDocument().getLength();
+						int echoPerChar = SubstanceCoreUtilities.getEchoPerChar(f);
+						int fontSize = SubstanceSizeUtils.getComponentFontSize(this.field);
+						int dotWidth = SubstanceSizeUtils.getPasswordDotDiameter(fontSize)
+								+ SubstanceSizeUtils.getPasswordDotGap(fontSize);
+						return echoPerChar * dotWidth * this.getDocument().getLength();
 					}
 				}
 			}
@@ -357,6 +354,25 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 
 		this.stateTransitionTracker = new StateTransitionTracker(
 				this.passwordField, this.transitionModel);
+	}
+
+	@Override
+	public void installUI(JComponent c) {
+		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+
+		super.installUI(c);
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installUI();
+		}
+	}
+	
+	@Override
+	public void uninstallUI(JComponent c) {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallUI();
+		}
+		super.uninstallUI(c);
 	}
 
 	/*
@@ -406,6 +422,9 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 		};
 		this.passwordField
 				.addPropertyChangeListener(this.substancePropertyChangeListener);
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installListeners();
+		}
 	}
 
 	/*
@@ -427,8 +446,9 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 				.removeMouseMotionListener(this.substanceRolloverListener);
 		this.substanceRolloverListener = null;
 
-		// this.passwordField.removeFocusListener(this.substanceFocusListener);
-		// this.substanceFocusListener = null;
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallListeners();
+		}
 
 		super.uninstallListeners();
 	}
@@ -466,6 +486,18 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 														.getDecorationType(passwordField))));
 			}
 		});
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installDefaults();
+		}
+	}
+	
+	@Override
+	protected void uninstallDefaults() {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallDefaults();
+		}
+
+		super.uninstallDefaults();
 	}
 
 	/*

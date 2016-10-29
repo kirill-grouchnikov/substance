@@ -125,22 +125,17 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 			this.addMouseListener(this.substanceRolloverListener);
 			this.addMouseMotionListener(this.substanceRolloverListener);
 
-			this.substancePropertyChangeListener = new PropertyChangeListener() {
-				public void propertyChange(PropertyChangeEvent evt) {
-					if ("enabled".equals(evt.getPropertyName())) {
-						boolean isEnabled = splitPane.isEnabled();
-						gripModel.setEnabled(isEnabled);
-						if (leftButton != null)
-							leftButton.setEnabled(isEnabled);
-						if (rightButton != null)
-							rightButton.setEnabled(isEnabled);
-						setEnabled(isEnabled);
-					}
+			this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+				if ("enabled".equals(evt.getPropertyName())) {
+					boolean isEnabled = splitPane.isEnabled();
+					gripModel.setEnabled(isEnabled);
+					if (leftButton != null)
+						leftButton.setEnabled(isEnabled);
+					if (rightButton != null)
+						rightButton.setEnabled(isEnabled);
+					setEnabled(isEnabled);
 				}
 			};
-			// System.out.println("Registering " + this.hashCode() + ":"
-			// + this.substancePropertyChangeListener.hashCode() + " on "
-			// + this.splitPane.hashCode());
 			this.splitPane
 					.addPropertyChangeListener(this.substancePropertyChangeListener);
 

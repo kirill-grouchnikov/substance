@@ -47,7 +47,6 @@ import javax.swing.SwingUtilities;
 import org.pushingpixels.lafwidget.LafWidgetSupport;
 import org.pushingpixels.lafwidget.utils.LafConstants.PasswordStrength;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
@@ -71,8 +70,7 @@ public class SubstanceWidgetSupport extends LafWidgetSupport {
 	 */
 	@Override
 	public JComponent getComponentForHover(JDesktopIcon desktopIcon) {
-		SubstanceDesktopIconUI ui = (SubstanceDesktopIconUI) desktopIcon
-				.getUI();
+		SubstanceDesktopIconUI ui = (SubstanceDesktopIconUI) desktopIcon.getUI();
 		return ui.getComponentForHover();
 	}
 
@@ -252,10 +250,9 @@ public class SubstanceWidgetSupport extends LafWidgetSupport {
 	 */
 	@Override
 	public Icon getLockIcon(Component c) {
-		return SubstanceImageCreator.makeTransparent(null,
-				SubstanceImageCreator.getSmallLockIcon(
-						SubstanceColorSchemeUtilities.getColorScheme(null,
-								ComponentState.ENABLED), c), 0.3);
+		return SubstanceImageCreator.getSmallLockIcon(
+						SubstanceColorSchemeUtilities.getColorScheme(c,
+								ComponentState.ENABLED), c);
 	}
 
 	/*

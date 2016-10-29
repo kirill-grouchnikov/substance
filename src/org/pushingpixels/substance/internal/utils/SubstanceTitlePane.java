@@ -590,40 +590,19 @@ public class SubstanceTitlePane extends JComponent {
 		// Property change listener for pulsating close button
 		// when window has been marked as changed.
 		// Fix for defect 109 - memory leak on skin change.
-		this.propertyListener = new PropertyChangeListener() {
-			public void propertyChange(final PropertyChangeEvent evt) {
-				if (SubstanceLookAndFeel.WINDOW_MODIFIED.equals(evt
-						.getPropertyName())) {
-					syncCloseButtonTooltip();
-					// if (Boolean.TRUE.equals(evt.getNewValue())) {
-					// SubstanceTitlePane.this.closeButton
-					// .setToolTipText(SubstanceLookAndFeel
-					// .getLabelBundle().getString(
-					// "SystemMenu.close")
-					// + " ["
-					// + SubstanceLookAndFeel
-					// .getLabelBundle()
-					// .getString(
-					// "Tooltip.contentsNotSaved")
-					// + "]");
-					// } else {
-					// SubstanceTitlePane.this.closeButton
-					// .setToolTipText(SubstanceLookAndFeel
-					// .getLabelBundle().getString(
-					// "SystemMenu.close"));
-					// }
-					// SubstanceTitlePane.this.closeButton.repaint();
-				}
+		this.propertyListener = (final PropertyChangeEvent evt) -> {
+			if (SubstanceLookAndFeel.WINDOW_MODIFIED.equals(evt.getPropertyName())) {
+				syncCloseButtonTooltip();
+			}
 
-				if ("componentOrientation".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(() -> {
-						if (SubstanceTitlePane.this.menuBar != null) {
-							SubstanceTitlePane.this.menuBar
-									.applyComponentOrientation((ComponentOrientation) evt
-											.getNewValue());
-						}
-					});
-				}
+			if ("componentOrientation".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> {
+					if (SubstanceTitlePane.this.menuBar != null) {
+						SubstanceTitlePane.this.menuBar
+								.applyComponentOrientation((ComponentOrientation) evt
+										.getNewValue());
+					}
+				});
 			}
 		};
 		// Wire it on the frame itself and its root pane.

@@ -1463,8 +1463,7 @@ public class SubstanceCoreUtilities {
 		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(mainComp,
 				alpha, g));
 
-		Color color = SubstanceColorUtilities.getFocusColor(mainComp,
-				transitionAwareUI);
+		Color color = SubstanceColorUtilities.getFocusColor(mainComp, transitionAwareUI);
 		graphics.setColor(color);
 		focusKind.paintFocus(mainComp, focusedComp, transitionAwareUI,
 				graphics, focusShape, textRect, extraPadding);

@@ -149,6 +149,7 @@ public class ButtonBackgroundDelegate {
 		// }
 		boolean isContentAreaFilled = button.isContentAreaFilled();
 		boolean isBorderPainted = button.isBorderPainted();
+		int factor = UIUtil.isRetina() ? 2 : 1;
 
 		// compute color scheme
 		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities
@@ -212,11 +213,11 @@ public class ButtonBackgroundDelegate {
 							.getBlankImage(width, height);
 					Graphics2D g2d = result.createGraphics();
 					if (cyclePos < 1.0f)
-						g2d.drawImage(layer1, 0, 0, null);
+						g2d.drawImage(layer1, 0, 0, layer1.getWidth() / factor, layer1.getHeight() / factor, null);
 					if (cyclePos > 0.0f) {
 						g2d.setComposite(AlphaComposite.SrcOver
 								.derive(cyclePos));
-						g2d.drawImage(layer2, 0, 0, null);
+						g2d.drawImage(layer2, 0, 0, layer2.getWidth() / factor, layer2.getHeight() / factor, null);
 					}
 					g2d.dispose();
 					return result;
@@ -256,7 +257,6 @@ public class ButtonBackgroundDelegate {
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width,
 				height);
 		Graphics2D g2d = result.createGraphics();
-		int factor = UIUtil.isRetina() ? 2 : 1;
 		// draw the base layer
 		g2d.drawImage(layerBase, 0, 0, layerBase.getWidth() / factor, layerBase.getHeight() / factor, null);
 		// System.out.println("\nPainting base state " + currState);

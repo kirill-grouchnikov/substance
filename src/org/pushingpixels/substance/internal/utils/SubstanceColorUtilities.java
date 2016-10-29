@@ -468,17 +468,6 @@ public class SubstanceColorUtilities {
 	 */
 	public static Color getFocusColor(Component comp,
 			TransitionAwareUI transitionAwareUI) {
-		// SubstanceColorScheme activeScheme =
-		// / SubstanceCoreUtilities.getSkin(comp).getMainActiveColorScheme(
-		// );
-		// // SubstanceColorSchemeUtilities
-		// .getColorScheme(comp, ComponentState.ACTIVE);
-
-		// if (comp instanceof AbstractButton) {
-		// AbstractButton ab = (AbstractButton) comp;
-
-		// TransitionAwareUI transitionAwareUI = (TransitionAwareUI) ab
-		// .getUI();
 		StateTransitionTracker stateTransitionTracker = transitionAwareUI
 				.getTransitionTracker();
 		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
@@ -512,10 +501,6 @@ public class SubstanceColorUtilities {
 			aggrBlue += alpha * activeForeground.getBlue();
 		}
 		return new Color((int) aggrRed, (int) aggrGreen, (int) aggrBlue);
-		// }
-
-		// Color color = activeScheme.getFocusRingColor();
-		// return color;
 	}
 
 	/**

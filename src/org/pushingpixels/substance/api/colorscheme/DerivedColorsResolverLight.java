@@ -151,7 +151,7 @@ public class DerivedColorsResolverLight implements SchemeDerivedColors {
 	 */
 	@Override
 	public Color getFocusRingColor() {
-		return this.scheme.getDarkColor();
+		return this.scheme.getForegroundColor();
 	}
 
 	/*

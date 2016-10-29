@@ -104,25 +104,25 @@ public class SubstanceConstants {
 				if ((textRect.width == 0) || (textRect.height == 0))
 					return;
 
-				int fontSize = SubstanceSizeUtils
-						.getComponentFontSize(mainComp);
+				int fontSize = SubstanceSizeUtils.getComponentFontSize(mainComp);
 				float dashLength = getDashLength(fontSize);
 				float dashGap = getDashGap(fontSize);
 				float dashPhase = (dashLength + dashGap)
 						* (1.0f - transitionAwareUI.getTransitionTracker()
 								.getFocusLoopPosition());
 
-				graphics.setStroke(new BasicStroke(SubstanceSizeUtils
-						.getFocusStrokeWidth(fontSize), BasicStroke.CAP_BUTT,
-						BasicStroke.JOIN_ROUND, 0.0f, new float[] { dashLength,
-								dashGap }, dashPhase));
+				graphics.setStroke(new BasicStroke(
+						SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+						BasicStroke.CAP_BUTT,
+						BasicStroke.JOIN_ROUND, 0.0f, 
+						new float[] { dashLength, dashGap }, 
+						dashPhase));
 
 				int delta = ((mainComp instanceof JComboBox) || (mainComp instanceof JSpinner)) ? 0
 						: 1;
 				GeneralPath contour = SubstanceOutlineUtilities.getBaseOutline(
 						textRect.width + 2 * delta, textRect.height,
-						SubstanceSizeUtils
-								.getClassicButtonCornerRadius(fontSize), null);
+						SubstanceSizeUtils.getClassicButtonCornerRadius(fontSize), null);
 
 				graphics.translate(textRect.x - delta, textRect.y);
 				graphics.draw(contour);
@@ -157,24 +157,23 @@ public class SubstanceConstants {
 					if (shaper == null)
 						return;
 
-					int fontSize = SubstanceSizeUtils
-							.getComponentFontSize(mainComp);
+					int fontSize = SubstanceSizeUtils.getComponentFontSize(mainComp);
 					float dashLength = getDashLength(fontSize);
 					float dashGap = getDashGap(fontSize);
 					float dashPhase = (dashLength + dashGap)
 							* (1.0f - transitionAwareUI.getTransitionTracker()
 									.getFocusLoopPosition());
-					graphics.setStroke(new BasicStroke(SubstanceSizeUtils
-							.getFocusStrokeWidth(fontSize),
-							BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 0.0f,
-							new float[] { dashLength, dashGap }, dashPhase));
+					graphics.setStroke(new BasicStroke(
+							SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+							BasicStroke.CAP_BUTT,
+							BasicStroke.JOIN_ROUND, 0.0f, 
+							new float[] { dashLength, dashGap }, 
+							dashPhase));
 
 					Shape contour = shaper.getButtonOutline(
 							(AbstractButton) mainComp, 0.0f, mainComp.getWidth(), mainComp.getHeight(), false);
 					graphics.draw(contour);
-					// }
 				} else {
-					// graphics.translate(textRect.x - 1, textRect.y - 1);
 					graphics.translate(1, 1);
 					Shape contour = (focusShape != null) ? focusShape
 							: SubstanceOutlineUtilities
@@ -193,10 +192,12 @@ public class SubstanceConstants {
 					float dashPhase = (dashLength + dashGap)
 							* (1.0f - transitionAwareUI.getTransitionTracker()
 									.getFocusLoopPosition());
-					graphics.setStroke(new BasicStroke(SubstanceSizeUtils
-							.getFocusStrokeWidth(fontSize),
-							BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 0.0f,
-							new float[] { dashLength, dashGap }, dashPhase));
+					graphics.setStroke(new BasicStroke(
+							SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+							BasicStroke.CAP_BUTT,
+							BasicStroke.JOIN_ROUND, 0.0f, 
+							new float[] { dashLength, dashGap }, 
+							dashPhase));
 					graphics.draw(contour);
 				}
 			}
@@ -241,19 +242,17 @@ public class SubstanceConstants {
 								* (1.0f - transitionAwareUI
 										.getTransitionTracker()
 										.getFocusLoopPosition());
-						float focusStrokeWidth = SubstanceSizeUtils
-								.getFocusStrokeWidth(fontSize);
-						graphics.setStroke(new BasicStroke(focusStrokeWidth,
-								BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND,
-								0.0f, new float[] { dashLength, dashGap },
+						graphics.setStroke(new BasicStroke(
+								SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+								BasicStroke.CAP_BUTT,
+								BasicStroke.JOIN_ROUND, 0.0f, 
+								new float[] { dashLength, dashGap }, 
 								dashPhase));
 						int insetsPix = extraPadding;
-						Insets insets = new Insets(insetsPix, insetsPix,
-								insetsPix, insetsPix);
 
 						Shape contour = shaper.getButtonOutline(
 								(AbstractButton) mainComp, insetsPix, mainComp.getWidth(), 
-								mainComp.getHeight(), false);
+								mainComp.getHeight(), true);
 						graphics.draw(contour);
 					}
 				} else {
@@ -261,11 +260,10 @@ public class SubstanceConstants {
 					int fontSize = SubstanceSizeUtils
 							.getComponentFontSize(mainComp);
 					Shape contour = (focusShape != null) ? focusShape
-							: SubstanceOutlineUtilities.getBaseOutline(mainComp
-									.getWidth()
-									- extraPadding, mainComp.getHeight()
-									- extraPadding, SubstanceSizeUtils
-									.getClassicButtonCornerRadius(fontSize),
+							: SubstanceOutlineUtilities.getBaseOutline(
+									mainComp.getWidth() - extraPadding, 
+									mainComp.getHeight() - extraPadding, 
+									SubstanceSizeUtils.getClassicButtonCornerRadius(fontSize) - extraPadding,
 									null);
 
 					float dashLength = getDashLength(fontSize);
@@ -274,10 +272,12 @@ public class SubstanceConstants {
 							* (1.0f - transitionAwareUI.getTransitionTracker()
 									.getFocusLoopPosition());
 
-					graphics.setStroke(new BasicStroke(SubstanceSizeUtils
-							.getFocusStrokeWidth(fontSize),
-							BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 0.0f,
-							new float[] { dashLength, dashGap }, dashPhase));
+					graphics.setStroke(new BasicStroke(
+							SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+							BasicStroke.CAP_BUTT,
+							BasicStroke.JOIN_ROUND, 0.0f, 
+							new float[] { dashLength, dashGap }, 
+							dashPhase));
 					graphics.draw(contour);
 				}
 			}
@@ -304,6 +304,11 @@ public class SubstanceConstants {
 			public void paintFocus(Component mainComp, Component focusedComp,
 					TransitionAwareUI transitionAwareUI, Graphics2D graphics,
 					Shape focusShape, Rectangle textRect, int extraPadding) {
+				int fontSize = SubstanceSizeUtils.getComponentFontSize(mainComp);
+				graphics.setStroke(new BasicStroke(
+						1.5f * SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+						BasicStroke.CAP_BUTT,
+						BasicStroke.JOIN_ROUND));
 				if ((focusShape == null)
 						&& ((mainComp instanceof AbstractButton)
 								&& !(mainComp instanceof JCheckBox) && !(mainComp instanceof JRadioButton))) {
@@ -315,20 +320,17 @@ public class SubstanceConstants {
 					if (shaper.isProportionate()) {
 						Shape contour = shaper.getButtonOutline(
 								(AbstractButton) mainComp, extraPadding, mainComp.getWidth(),
-								mainComp.getHeight(), false);
+								mainComp.getHeight(), true);
 						graphics.draw(contour);
 					}
 				} else {
 					graphics.translate(extraPadding / 2, extraPadding / 2);
 					Shape contour = (focusShape != null) ? focusShape
-							: SubstanceOutlineUtilities
-									.getBaseOutline(
-											mainComp.getWidth() - extraPadding,
-											mainComp.getHeight() - extraPadding,
-											SubstanceSizeUtils
-													.getClassicButtonCornerRadius(SubstanceSizeUtils
-															.getComponentFontSize(mainComp)),
-											null);
+							: SubstanceOutlineUtilities.getBaseOutline(
+									mainComp.getWidth() - extraPadding,
+									mainComp.getHeight() - extraPadding,
+									SubstanceSizeUtils.getClassicButtonCornerRadius(fontSize) - extraPadding,
+									null);
 
 					graphics.draw(contour);
 				}
@@ -346,18 +348,19 @@ public class SubstanceConstants {
 				if (textRect == null)
 					return;
 
-				int fontSize = SubstanceSizeUtils
-						.getComponentFontSize(mainComp);
+				int fontSize = SubstanceSizeUtils.getComponentFontSize(mainComp);
 				float dashLength = getDashLength(fontSize);
 				float dashGap = getDashGap(fontSize);
 				float dashPhase = (dashLength + dashGap)
 						* (1.0f - transitionAwareUI.getTransitionTracker()
 								.getFocusLoopPosition());
 
-				graphics.setStroke(new BasicStroke(SubstanceSizeUtils
-						.getFocusStrokeWidth(fontSize), BasicStroke.CAP_BUTT,
-						BasicStroke.JOIN_ROUND, 0.0f, new float[] { dashLength,
-								dashGap }, dashPhase));
+				graphics.setStroke(new BasicStroke(
+						SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+						BasicStroke.CAP_BUTT,
+						BasicStroke.JOIN_ROUND, 0.0f, 
+						new float[] { dashLength, dashGap }, 
+						dashPhase));
 
 				graphics.translate(textRect.x - 1, textRect.y);
 				graphics.drawLine(0, textRect.height - 1, textRect.width,
@@ -389,6 +392,11 @@ public class SubstanceConstants {
 				if (textRect == null)
 					return;
 
+				int fontSize = SubstanceSizeUtils.getComponentFontSize(mainComp);
+				graphics.setStroke(new BasicStroke(
+						1.5f * SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+						BasicStroke.CAP_BUTT,
+						BasicStroke.JOIN_ROUND));
 				graphics.translate(textRect.x - 1, textRect.y);
 				graphics.drawLine(0, textRect.height - 1, textRect.width,
 						textRect.height - 1);

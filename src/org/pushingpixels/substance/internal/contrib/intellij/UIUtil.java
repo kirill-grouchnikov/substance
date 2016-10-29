@@ -142,21 +142,23 @@ public class UIUtil {
 		}
 	}
 
-	// public static boolean isMacRetina(Graphics2D g) {
-	// return DetectRetinaKit.isMacRetina(g);
-	// }
-
-	private static final Ref<Boolean> ourRetina = Ref.create(LookUtils.IS_OS_MAC ? null : false);
+	private static Boolean cachedRetinaReply = null;
 
 	public static boolean isRetina() {
-		if (GraphicsEnvironment.isHeadless())
-			return false;
-
-		// Temporary workaround for HiDPI on Windows/Linux
-		if ("true".equalsIgnoreCase(System.getProperty("is.hidpi"))) {
-			return true;
+		if (cachedRetinaReply != null) {
+			return cachedRetinaReply;
 		}
-
-		return DetectRetinaKit.isRetina();
+		
+		boolean result = false;
+		if (GraphicsEnvironment.isHeadless()) {
+			result = false;
+		} else if ("true".equalsIgnoreCase(System.getProperty("is.hidpi"))) {
+			// Temporary workaround for HiDPI on Windows/Linux
+			result = true;
+		} else {
+			result = DetectRetinaKit.isRetina();
+		}
+		cachedRetinaReply = Boolean.valueOf(result);
+		return cachedRetinaReply;
 	}
 }

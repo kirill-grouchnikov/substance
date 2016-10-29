@@ -29,21 +29,34 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
+import javax.swing.JComponent;
+import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicTextPaneUI;
 
+import org.pushingpixels.lafwidget.LafWidget;
+import org.pushingpixels.lafwidget.LafWidgetRepository;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.RolloverTextControlListener;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 
 /**
  * UI for text panes in <b>Substance</b> look and feel.
@@ -74,6 +87,8 @@ public class SubstanceTextPaneUI extends BasicTextPaneUI implements
 	 */
 	private ButtonModel transitionModel;
 
+	private Set<LafWidget> lafWidgets;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -103,6 +118,25 @@ public class SubstanceTextPaneUI extends BasicTextPaneUI implements
 
 		this.stateTransitionTracker = new StateTransitionTracker(this.textPane,
 				this.transitionModel);
+	}
+
+	@Override
+	public void installUI(JComponent c) {
+		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+
+		super.installUI(c);
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installUI();
+		}
+	}
+	
+	@Override
+	public void uninstallUI(JComponent c) {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallUI();
+		}
+		super.uninstallUI(c);
 	}
 
 	@Override
@@ -137,6 +171,9 @@ public class SubstanceTextPaneUI extends BasicTextPaneUI implements
 		};
 		this.textPane
 				.addPropertyChangeListener(this.substancePropertyChangeListener);
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installListeners();
+		}
 	}
 
 	/*
@@ -152,6 +189,10 @@ public class SubstanceTextPaneUI extends BasicTextPaneUI implements
 		this.textPane
 				.removePropertyChangeListener(this.substancePropertyChangeListener);
 		this.substancePropertyChangeListener = null;
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallListeners();
+		}
 
 		super.uninstallListeners();
 	}
@@ -171,15 +212,26 @@ public class SubstanceTextPaneUI extends BasicTextPaneUI implements
 				return;
 			Color foregr = textPane.getForeground();
 			if ((foregr == null) || (foregr instanceof UIResource)) {
-				textPane
-						.setForeground(SubstanceColorUtilities
-								.getForegroundColor(SubstanceLookAndFeel
-										.getCurrentSkin(textPane)
-										.getEnabledColorScheme(
-												SubstanceLookAndFeel
-														.getDecorationType(textPane))));
+				textPane.setForeground(SubstanceColorUtilities
+						.getForegroundColor(SubstanceLookAndFeel
+								.getCurrentSkin(textPane)
+								.getEnabledColorScheme(
+										SubstanceLookAndFeel
+												.getDecorationType(textPane))));
 			}
 		});
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installDefaults();
+		}
+	}
+	
+	@Override
+	protected void uninstallDefaults() {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallDefaults();
+		}
+
+		super.uninstallDefaults();
 	}
 
 	/*

@@ -29,11 +29,25 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.CellRendererPane;
+import javax.swing.JComponent;
+import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.ComponentUI;
@@ -41,9 +55,11 @@ import javax.swing.plaf.basic.BasicGraphicsUtils;
 import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.text.LockBorder;
+import org.pushingpixels.lafwidget.utils.BorderWrapper;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.ComponentStateFacet;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
@@ -543,8 +559,8 @@ public class SubstanceTextUtilities {
 		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
 		Border compBorder = comp.getBorder();
 
-		if (compBorder instanceof LockBorder) {
-			compBorder = ((LockBorder) compBorder).getOriginalBorder();
+		if (compBorder instanceof BorderWrapper) {
+			compBorder = ((BorderWrapper) compBorder).getOriginalBorder();
 		}
 		boolean isSubstanceBorder = compBorder instanceof SubstanceTextComponentBorder;
 
@@ -565,17 +581,13 @@ public class SubstanceTextUtilities {
 			}
 		}
 
-		Shape contour = isSubstanceBorder ? SubstanceOutlineUtilities
-				.getBaseOutline(
+		Shape contour = isSubstanceBorder 
+				? SubstanceOutlineUtilities.getBaseOutline(
 						comp.getWidth(),
 						comp.getHeight(),
-						Math
-								.max(
-										0,
-										2.0f
-												* SubstanceSizeUtils
-														.getClassicButtonCornerRadius(componentFontSize)
-												- borderDelta), null,
+						Math.max(0, 2.0f* SubstanceSizeUtils.getClassicButtonCornerRadius(
+								componentFontSize) - borderDelta), 
+						null,
 						borderDelta)
 				: new Rectangle(0, 0, comp.getWidth(), comp.getHeight());
 

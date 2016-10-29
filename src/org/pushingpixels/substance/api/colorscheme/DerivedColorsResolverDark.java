@@ -141,7 +141,7 @@ class DerivedColorsResolverDark implements SchemeDerivedColors {
 	 */
 	@Override
 	public Color getFocusRingColor() {
-		return this.scheme.getUltraDarkColor();
+		return this.scheme.getForegroundColor();
 	}
 
 	/*

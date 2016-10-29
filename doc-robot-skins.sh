@@ -5,6 +5,7 @@ JAVA -cp ./drop/substance-tools.jar:./drop/substance-tst.jar:./lib/forms-1.2.0.j
 JAVA -cp ./drop/substance-tools.jar:./drop/substance-tst.jar:./lib/forms-1.2.0.jar:./lib/test/*:./lib/build/swingx-all-1.6.4.jar tools.docrobot.RobotMain tools.docrobot.skins.BusinessBlackSteel
 JAVA -cp ./drop/substance-tools.jar:./drop/substance-tst.jar:./lib/forms-1.2.0.jar:./lib/test/*:./lib/build/swingx-all-1.6.4.jar tools.docrobot.RobotMain tools.docrobot.skins.BusinessBlueSteel
 JAVA -cp ./drop/substance-tools.jar:./drop/substance-tst.jar:./lib/forms-1.2.0.jar:./lib/test/*:./lib/build/swingx-all-1.6.4.jar tools.docrobot.RobotMain tools.docrobot.skins.ChallengerDeep
+JAVA -cp ./drop/substance-tools.jar:./drop/substance-tst.jar:./lib/forms-1.2.0.jar:./lib/test/*:./lib/build/swingx-all-1.6.4.jar tools.docrobot.RobotMain tools.docrobot.skins.Cerulean
 JAVA -cp ./drop/substance-tools.jar:./drop/substance-tst.jar:./lib/forms-1.2.0.jar:./lib/test/*:./lib/build/swingx-all-1.6.4.jar tools.docrobot.RobotMain tools.docrobot.skins.Creme
 JAVA -cp ./drop/substance-tools.jar:./drop/substance-tst.jar:./lib/forms-1.2.0.jar:./lib/test/*:./lib/build/swingx-all-1.6.4.jar tools.docrobot.RobotMain tools.docrobot.skins.CremeCoffee
 JAVA -cp ./drop/substance-tools.jar:./drop/substance-tst.jar:./lib/forms-1.2.0.jar:./lib/test/*:./lib/build/swingx-all-1.6.4.jar tools.docrobot.RobotMain tools.docrobot.skins.Dust
