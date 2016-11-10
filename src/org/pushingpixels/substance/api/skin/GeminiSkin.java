@@ -245,11 +245,13 @@ public class GeminiSkin extends SubstanceSkin {
 
 		this.buttonShaper = new ClassicButtonShaper();
 		this.watermark = null;
-		this.fillPainter = new FractionBasedFillPainter("Gemini", new float[] {
-				0.0f, 0.5f, 1.0f }, new ColorSchemeSingleColorQuery[] {
-				ColorSchemeSingleColorQuery.EXTRALIGHT,
-				ColorSchemeSingleColorQuery.LIGHT,
-				ColorSchemeSingleColorQuery.MID });
+		this.fillPainter = new FractionBasedFillPainter("Gemini", 
+				new float[] { 0.0f, 0.5f, 1.0f }, 
+				new ColorSchemeSingleColorQuery[] {
+					ColorSchemeSingleColorQuery.EXTRALIGHT,
+					ColorSchemeSingleColorQuery.LIGHT,
+					ColorSchemeSingleColorQuery.MID 
+				});
 
 		this.decorationPainter = new MatteDecorationPainter();
 		this.highlightPainter = new ClassicHighlightPainter();
@@ -292,7 +294,7 @@ public class GeminiSkin extends SubstanceSkin {
 			SubstanceColorScheme highlightBorderScheme) {
 
 		// specify custom alpha values for the highlights
-		schemeBundle.registerHighlightColorScheme(highlightScheme, 0.75f,
+		schemeBundle.registerHighlightColorScheme(highlightScheme, 0.85f,
 				ComponentState.ROLLOVER_UNSELECTED);
 		schemeBundle.registerHighlightColorScheme(highlightScheme, 0.9f,
 				ComponentState.SELECTED);

@@ -43,6 +43,8 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.BasicScrollPaneUI;
 import javax.swing.table.JTableHeader;
 
+import org.pushingpixels.lafwidget.LafWidget;
+import org.pushingpixels.lafwidget.LafWidgetRepository;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
@@ -78,6 +80,8 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 	 */
 	protected Timeline horizontalScrollTimeline;
 
+	private Set<LafWidget> lafWidgets;
+
 	/**
 	 * Creates new UI delegate.
 	 * 
@@ -88,6 +92,25 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 	public static ComponentUI createUI(JComponent comp) {
 		SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
 		return new SubstanceScrollPaneUI();
+	}
+
+	@Override
+	public void installUI(JComponent c) {
+		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+
+		super.installUI(c);
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installUI();
+		}
+	}
+	
+	@Override
+	public void uninstallUI(JComponent c) {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallUI();
+		}
+		super.uninstallUI(c);
 	}
 
 	/*
@@ -110,6 +133,10 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 				.getLayout()));
 
 		SwingUtilities.invokeLater(() -> installTableHeaderCornerFiller(scrollpane));
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installDefaults();
+		}
 	}
 
 	/*
@@ -134,22 +161,13 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 		if (lm instanceof AdjustedLayout) {
 			c.setLayout(((AdjustedLayout) lm).delegate);
 		}
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallDefaults();
+		}
 		super.uninstallDefaults(c);
 	}
 
-	// /*
-	// * (non-Javadoc)
-	// *
-	// * @see
-	// javax.swing.plaf.basic.BasicScrollPaneUI#uninstallDefaults(javax.swing.
-	// JScrollPane)
-	// */
-	// @Override
-	// protected void uninstallDefaults(JScrollPane c) {
-	// super.uninstallDefaults(c);
-	// ScrollPaneSelector.uninstallScrollPaneSelector(scrollpane);
-	// }
-	//
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -186,13 +204,6 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 								.getLayout()));
 					}
 				}
-				// else {
-				// ScrollPaneLayout currLayout = (ScrollPaneLayout) c
-				// .getLayout();
-				// if (currLayout instanceof AdjustedLayout) {
-				// c.setLayout(((AdjustedLayout) currLayout).delegate);
-				// }
-				// }
 			}
 			if ("background".equals(evt.getPropertyName())) {
 				// propagate application-specific background color to the
@@ -238,11 +249,9 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 						&& (c.getViewport().getView() instanceof JTree)) {
 					JTree tree = (JTree) c.getViewport().getView();
 					// check if the smart scroll is enabled
-					if (AnimationConfigurationManager
-							.getInstance()
-							.isAnimationAllowed(
-									SubstanceLookAndFeel.TREE_SMART_SCROLL_ANIMATION_KIND,
-									tree)) {
+					if (AnimationConfigurationManager.getInstance().isAnimationAllowed(
+							SubstanceLookAndFeel.TREE_SMART_SCROLL_ANIMATION_KIND,
+							tree)) {
 						SubstanceTreeUI treeUI = (SubstanceTreeUI) tree.getUI();
 						final Rectangle viewportRect = c.getViewport()
 								.getViewRect();
@@ -269,13 +278,9 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 												float timelinePosition) {
 											if (timelinePosition >= 0.5) {
 												int nudge = (int) (finalDelta * (timelinePosition - 0.5));
-												c
-														.getViewport()
-														.setViewPosition(
-																new Point(
-																		viewportRect.x
-																				+ nudge,
-																		viewportRect.y));
+												c.getViewport().setViewPosition(
+														new Point(viewportRect.x + nudge,
+																viewportRect.y));
 											}
 										}
 									});
@@ -302,6 +307,10 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 		};
 		c.getVerticalScrollBar().getModel().addChangeListener(
 				this.substanceVerticalScrollbarChangeListener);
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installListeners();
+		}
 	}
 
 	/*
@@ -320,6 +329,10 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 		jsp.getVerticalScrollBar().getModel().removeChangeListener(
 				this.substanceVerticalScrollbarChangeListener);
 		this.substanceVerticalScrollbarChangeListener = null;
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallListeners();
+		}
 
 		super.uninstallListeners(c);
 	}

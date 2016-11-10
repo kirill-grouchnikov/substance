@@ -38,10 +38,10 @@ import javax.swing.plaf.basic.BasicOptionPaneUI;
 
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
+import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
+import org.pushingpixels.lafwidget.icon.IsResizable;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.icon.IsResizable;
 import org.pushingpixels.substance.internal.animation.IconGlowTracker;
-import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.icon.GlowingIcon;

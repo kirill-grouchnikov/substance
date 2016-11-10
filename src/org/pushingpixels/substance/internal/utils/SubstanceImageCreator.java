@@ -64,18 +64,18 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
+import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
+import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
+import org.pushingpixels.lafwidget.icon.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
-import org.pushingpixels.substance.api.icon.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.api.painter.border.FlatBorderPainter;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
 import org.pushingpixels.substance.internal.colorscheme.ShiftColorScheme;
-import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.SimplisticFillPainter;
 import org.pushingpixels.substance.internal.svg.Locked;
 import org.pushingpixels.substance.internal.svg.System_search;
@@ -570,7 +570,7 @@ public final class SubstanceImageCreator {
 	 * @param bi
 	 *            Image to rotate.
 	 * @param quadrantClockwise
-	 *            Amount of quadrants to rotate in clockwise directio. The
+	 *            Amount of quadrants to rotate in clockwise direction. The
 	 *            rotation angle is 90 times this value.
 	 * @return Rotated image.
 	 */
@@ -1350,8 +1350,7 @@ public final class SubstanceImageCreator {
 			Graphics g, int startX, int startY, int width, int height,
 			SubstanceColorScheme colorScheme, BufferedImage stripeImage,
 			int stripeOffset, float borderAlpha, boolean isVertical) {
-		Graphics2D graphics = (Graphics2D) g.create(startX, startY, width,
-				height);
+		Graphics2D graphics = (Graphics2D) g.create(startX, startY, width, height);
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		if (!isVertical) {
 			LinearGradientPaint paint = new LinearGradientPaint(0, 0, 0,
@@ -1734,7 +1733,7 @@ public final class SubstanceImageCreator {
 	 *            Crayon height.
 	 * @return Crayon image.
 	 */
-	public static BufferedImage getSingleCrayon(Color mainColor, int width,
+	private static BufferedImage getSingleCrayon(Color mainColor, int width,
 			int height) {
 		BufferedImage image = SubstanceCoreUtilities.getBlankImage(width,
 				height);
@@ -1918,13 +1917,15 @@ public final class SubstanceImageCreator {
 		graphics.setColor(new Color(240, 240, 240));
 		graphics.fillRect(0, 0, iw, ih);
 
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		for (int i = 0; i < SubstanceImageCreator.crayonColors.length; i++) {
 			Color crayonColor = new Color(
 					0xff000000 | SubstanceImageCreator.crayonColors[i]);
-			Image crayonImage = SubstanceImageCreator.getSingleCrayon(
+			BufferedImage crayonImage = SubstanceImageCreator.getSingleCrayon(
 					crayonColor, 22, 120);
 			graphics.drawImage(crayonImage, SubstanceImageCreator.crayonX(i),
-					SubstanceImageCreator.crayonY(i), null);
+					SubstanceImageCreator.crayonY(i), crayonImage.getWidth() / scaleFactor, 
+					crayonImage.getHeight() / scaleFactor, null);
 		}
 
 		graphics.setColor(new Color(190, 190, 190));

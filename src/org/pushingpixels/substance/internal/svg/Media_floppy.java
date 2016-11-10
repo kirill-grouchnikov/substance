@@ -6,8 +6,8 @@ import java.awt.geom.*;
 import javax.swing.Icon;
 import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.substance.api.icon.IsHiDpiAware;
-import org.pushingpixels.substance.api.icon.IsResizable;
+import org.pushingpixels.lafwidget.icon.IsHiDpiAware;
+import org.pushingpixels.lafwidget.icon.IsResizable;
 
 /**
  * This class has been automatically generated using <a

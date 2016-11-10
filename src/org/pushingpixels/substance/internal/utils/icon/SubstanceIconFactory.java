@@ -30,38 +30,31 @@
 package org.pushingpixels.substance.internal.utils.icon;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.ButtonModel;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JSlider;
 import javax.swing.JTree;
-import javax.swing.plaf.SliderUI;
 import javax.swing.plaf.UIResource;
-import javax.swing.plaf.basic.BasicSliderUI;
 
+import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
+import org.pushingpixels.lafwidget.icon.IsHiDpiAware;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
-import org.pushingpixels.substance.api.icon.IsHiDpiAware;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
-import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.ui.SubstanceSliderUI;
 import org.pushingpixels.substance.internal.ui.SubstanceTreeUI;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
@@ -168,83 +161,6 @@ public class SubstanceIconFactory {
 	}
 
 	/**
-	 * Trackable slider (for sliders that do not use {@link SubstanceSliderUI}
-	 * as their UI (such as
-	 * {@link org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser.ColorSliderUI}
-	 * from Quaqua). Uses reflection to implement the {@link TransitionAwareUI}
-	 * interface, fetching the value of {@link BasicSliderUI#thumbRect}field.
-	 * 
-	 * @author Kirill Grouchnikov
-	 */
-	private static class TrackableSlider implements TransitionAwareUI {
-		/**
-		 * The associated slider.
-		 */
-		private JSlider slider;
-
-		/**
-		 * Reflection reference to {@link BasicSliderUI#thumbRect}field. If
-		 * reflection failed, or no such field (for example the custom UI
-		 * implements {@link SliderUI}directly, <code>this</code> field is
-		 * <code>null</code>.
-		 */
-		private Field thumbRectField;
-
-		private ButtonModel transitionModel;
-
-		private StateTransitionTracker stateTransitionTracker;
-
-		/**
-		 * Simple constructor.
-		 * 
-		 * @param slider
-		 *            The associated slider.
-		 */
-		public TrackableSlider(JSlider slider, ButtonModel transitionModel) {
-			this.slider = slider;
-			this.transitionModel = transitionModel;
-
-			SliderUI sliderUI = slider.getUI();
-			if (sliderUI instanceof BasicSliderUI) {
-				try {
-					this.thumbRectField = BasicSliderUI.class
-							.getDeclaredField("thumbRect");
-					this.thumbRectField.setAccessible(true);
-				} catch (Exception exc) {
-					this.thumbRectField = null;
-				}
-			}
-
-			this.stateTransitionTracker = new StateTransitionTracker(
-					this.slider, this.transitionModel);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.pushingpixels.substance.Trackable#isInside(java.awt.event.MouseEvent
-		 * )
-		 */
-		public boolean isInside(MouseEvent me) {
-			try {
-				Rectangle thumbB = (Rectangle) this.thumbRectField
-						.get(this.slider.getUI());
-				if (thumbB == null)
-					return false;
-				return thumbB.contains(me.getX(), me.getY());
-			} catch (Exception exc) {
-				return false;
-			}
-		}
-
-		@Override
-		public StateTransitionTracker getTransitionTracker() {
-			return this.stateTransitionTracker;
-		}
-	}
-
-	/**
 	 * Icon for horizontal slider in {@link SubstanceSliderUI}.
 	 * 
 	 * @author Kirill Grouchnikov
@@ -289,9 +205,7 @@ public class SubstanceIconFactory {
 					.getModelStateInfo().getCurrModelState();
 
 			float activeStrength = stateTransitionTracker.getActiveStrength();
-			int width = (int) (this.size * (2.0 + activeStrength) / 3.0);
-			width = Math.min(width, this.size - 2);
-			int delta = (this.size - width) / 2;
+			float width = this.size * (2.0f + activeStrength) / 3.0f;
 
 			SubstanceFillPainter fillPainter = SubstanceCoreUtilities
 					.getFillPainter(slider);
@@ -311,7 +225,7 @@ public class SubstanceIconFactory {
 
 			HiDpiAwareIcon baseLayer = SliderHorizontalIcon.icons.get(baseKey);
 			if (baseLayer == null) {
-				baseLayer = getSingleLayer(slider, width, delta, fillPainter,
+				baseLayer = getSingleLayer(slider, width, fillPainter,
 						borderPainter, baseFillScheme, baseBorderScheme);
 				SliderHorizontalIcon.icons.put(baseKey, baseLayer);
 			}
@@ -322,8 +236,6 @@ public class SubstanceIconFactory {
 			BufferedImage result = SubstanceCoreUtilities.getBlankImage(
 					baseLayer.getIconWidth(), baseLayer.getIconHeight());
 			Graphics2D g2d = result.createGraphics();
-			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
-			g2d.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
 			baseLayer.paintIcon(slider, g2d, 0, 0);
 			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
 					.entrySet()) {
@@ -349,7 +261,7 @@ public class SubstanceIconFactory {
 
 				HiDpiAwareIcon layer = SliderHorizontalIcon.icons.get(key);
 				if (layer == null) {
-					layer = getSingleLayer(slider, width, delta, fillPainter,
+					layer = getSingleLayer(slider, width, fillPainter,
 							borderPainter, fillScheme, borderScheme);
 					SliderHorizontalIcon.icons.put(key, layer);
 				}
@@ -362,7 +274,7 @@ public class SubstanceIconFactory {
 			return new HiDpiAwareIcon(result);
 		}
 
-		private HiDpiAwareIcon getSingleLayer(JSlider slider, int width, int delta,
+		private HiDpiAwareIcon getSingleLayer(JSlider slider, float width,
 				SubstanceFillPainter fillPainter,
 				SubstanceBorderPainter borderPainter,
 				SubstanceColorScheme fillScheme,
@@ -374,12 +286,12 @@ public class SubstanceIconFactory {
 					width, this.size - 1, 2, borderDelta);
 
 			BufferedImage stateImage = SubstanceCoreUtilities.getBlankImage(
-					this.size - 1, this.size - 1);
+					this.size, this.size);
 			Graphics2D g2d = stateImage.createGraphics();
-			g2d.translate(delta, 0);
+			g2d.translate((this.size - width) / 2.0f, 0);
 
 			fillPainter.paintContourBackground(g2d, slider, width,
-					this.size - 1, contour, false, fillScheme, true);
+					this.size, contour, false, fillScheme, true);
 
 			float borderThickness = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
@@ -388,9 +300,9 @@ public class SubstanceIconFactory {
 					.getTriangleButtonOutline(width, this.size - 1, 2,
 							borderThickness + borderDelta);
 
-			borderPainter.paintBorder(g2d, slider, width, this.size - 1,
+			borderPainter.paintBorder(g2d, slider, width, this.size,
 					contour, contourInner, borderScheme);
-			g2d.translate(-delta, 0);
+			g2d.dispose();
 
 			if (this.isMirrorred)
 				stateImage = SubstanceImageCreator.getRotated(stateImage, 2);
@@ -410,10 +322,8 @@ public class SubstanceIconFactory {
 			}
 
 			JSlider slider = (JSlider) c;
-			TransitionAwareUI transitionAwareUI = (TransitionAwareUI) slider
-					.getUI();
-			StateTransitionTracker stateTransitionTracker = transitionAwareUI
-					.getTransitionTracker();
+			TransitionAwareUI transitionAwareUI = (TransitionAwareUI) slider.getUI();
+			StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
 			Icon iconToDraw = getIcon(slider, stateTransitionTracker);
 			Graphics2D g2d = (Graphics2D) g.create();
 			g2d.translate(x, y);
@@ -427,7 +337,7 @@ public class SubstanceIconFactory {
 		 * @see javax.swing.Icon#getIconWidth()
 		 */
 		public int getIconWidth() {
-			return this.size - 1;
+			return this.size;
 		}
 
 		/*
@@ -436,7 +346,7 @@ public class SubstanceIconFactory {
 		 * @see javax.swing.Icon#getIconHeight()
 		 */
 		public int getIconHeight() {
-			return this.size - 1;
+			return this.size;
 		}
 	}
 
@@ -490,11 +400,7 @@ public class SubstanceIconFactory {
 					.getModelStateInfo().getCurrModelState();
 
 			float activeStrength = stateTransitionTracker.getActiveStrength();
-			int width = (int) (this.size * (2.0 + activeStrength) / 3.0);
-			width = Math.min(width, this.size - 2);
-			if (width % 2 == 0)
-				width--;
-			int delta = (this.size - width) / 2;
+			float width = this.size * (2.0f + activeStrength) / 3.0f;
 
 			SubstanceFillPainter fillPainter = SubstanceCoreUtilities
 					.getFillPainter(slider);
@@ -514,7 +420,7 @@ public class SubstanceIconFactory {
 
 			HiDpiAwareIcon baseLayer = SliderRoundIcon.icons.get(baseKey);
 			if (baseLayer == null) {
-				baseLayer = getSingleLayer(slider, width, delta, fillPainter,
+				baseLayer = getSingleLayer(slider, width, fillPainter,
 						borderPainter, baseFillScheme, baseBorderScheme);
 				SliderRoundIcon.icons.put(baseKey, baseLayer);
 			}
@@ -525,8 +431,6 @@ public class SubstanceIconFactory {
 			BufferedImage result = SubstanceCoreUtilities.getBlankImage(
 					baseLayer.getIconWidth(), baseLayer.getIconHeight());
 			Graphics2D g2d = result.createGraphics();
-			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
-			g2d.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
 			baseLayer.paintIcon(slider, g2d, 0, 0);
 
 			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
@@ -553,7 +457,7 @@ public class SubstanceIconFactory {
 
 				HiDpiAwareIcon layer = SliderRoundIcon.icons.get(key);
 				if (layer == null) {
-					layer = getSingleLayer(slider, width, delta, fillPainter,
+					layer = getSingleLayer(slider, width, fillPainter,
 							borderPainter, fillScheme, borderScheme);
 					SliderRoundIcon.icons.put(key, layer);
 				}
@@ -566,7 +470,7 @@ public class SubstanceIconFactory {
 			return new HiDpiAwareIcon(result);
 		}
 
-		private HiDpiAwareIcon getSingleLayer(JSlider slider, int width, int delta,
+		private HiDpiAwareIcon getSingleLayer(JSlider slider, float width,
 				SubstanceFillPainter fillPainter,
 				SubstanceBorderPainter borderPainter,
 				SubstanceColorScheme fillScheme,
@@ -577,23 +481,25 @@ public class SubstanceIconFactory {
 			Shape contour = new Ellipse2D.Float(borderDelta, borderDelta, width
 					- 2 * borderDelta - 1, width - 2 * borderDelta - 1);
 
-			BufferedImage stateImage = SubstanceCoreUtilities.getBlankImage(
-					this.size - 1, this.size - 1);
+			BufferedImage stateImage = SubstanceCoreUtilities.getBlankImage(this.size, this.size);
 			Graphics2D g2d = stateImage.createGraphics();
+			
+			float delta = (this.size - width) / 2.0f;
 			g2d.translate(delta, delta);
 
 			fillPainter.paintContourBackground(g2d, slider, width,
-					this.size - 1, contour, false, fillScheme, true);
+					this.size, contour, false, fillScheme, true);
 
 			float borderThickness = SubstanceSizeUtils
 					.getBorderStrokeWidth(SubstanceSizeUtils
 							.getComponentFontSize(slider));
-			Shape contourInner = new Ellipse2D.Float(borderDelta
-					+ borderThickness, borderDelta + borderThickness, width - 2
-					* borderDelta - 2 * borderThickness - 1, width - 2
-					* borderDelta - 2 * borderThickness - 1);
+			Shape contourInner = new Ellipse2D.Float(
+					borderDelta + borderThickness, 
+					borderDelta + borderThickness, 
+					width - 2 * borderDelta - 2 * borderThickness - 1, 
+					width - 2 * borderDelta - 2 * borderThickness - 1);
 
-			borderPainter.paintBorder(g2d, slider, width, this.size - 1,
+			borderPainter.paintBorder(g2d, slider, width, this.size,
 					contour, contourInner, borderScheme);
 
 			return new HiDpiAwareIcon(stateImage);
@@ -611,10 +517,8 @@ public class SubstanceIconFactory {
 			}
 
 			JSlider slider = (JSlider) c;
-			TransitionAwareUI transitionAwareUI = (TransitionAwareUI) slider
-					.getUI();
-			StateTransitionTracker stateTransitionTracker = transitionAwareUI
-					.getTransitionTracker();
+			TransitionAwareUI transitionAwareUI = (TransitionAwareUI) slider.getUI();
+			StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
 			Icon iconToDraw = getIcon(slider, stateTransitionTracker);
 			Graphics2D g2d = (Graphics2D) g.create();
 			g2d.translate(x, y);
@@ -628,7 +532,7 @@ public class SubstanceIconFactory {
 		 * @see javax.swing.Icon#getIconWidth()
 		 */
 		public int getIconWidth() {
-			return this.size - 1;
+			return this.size;
 		}
 
 		/*
@@ -637,7 +541,7 @@ public class SubstanceIconFactory {
 		 * @see javax.swing.Icon#getIconHeight()
 		 */
 		public int getIconHeight() {
-			return this.size - 1;
+			return this.size;
 		}
 	}
 
@@ -733,8 +637,6 @@ public class SubstanceIconFactory {
 			BufferedImage result = SubstanceCoreUtilities.getBlankImage(
 					baseLayer.getIconWidth(), baseLayer.getIconHeight());
 			Graphics2D g2d = result.createGraphics();
-			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
-			g2d.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
 			baseLayer.paintIcon(slider, g2d, 0, 0);
 
 			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
@@ -784,7 +686,7 @@ public class SubstanceIconFactory {
 					.getBorderStrokeWidth(SubstanceSizeUtils
 							.getComponentFontSize(slider)) / 2.0f;
 			Shape contour = SubstanceOutlineUtilities.getTriangleButtonOutline(
-					height, this.size, 2, borderDelta);
+					height, this.size - 1, 2, borderDelta);
 
 			BufferedImage stateImage = SubstanceCoreUtilities.getBlankImage(
 					this.size - 1, this.size - 1);
@@ -798,12 +700,11 @@ public class SubstanceIconFactory {
 					.getBorderStrokeWidth(SubstanceSizeUtils
 							.getComponentFontSize(slider));
 			GeneralPath contourInner = SubstanceOutlineUtilities
-					.getTriangleButtonOutline(height, this.size, 2,
+					.getTriangleButtonOutline(height, this.size - 1, 2,
 							borderThickness + borderDelta);
 
 			borderPainter.paintBorder(g2d, slider, height, this.size - 1,
 					contour, contourInner, borderScheme);
-			// bg2d.translate(-delta, 0);
 
 			if (this.isMirrorred)
 				stateImage = SubstanceImageCreator.getRotated(stateImage, 1);
@@ -829,10 +730,8 @@ public class SubstanceIconFactory {
 			}
 
 			JSlider slider = (JSlider) c;
-			TransitionAwareUI transitionAwareUI = (TransitionAwareUI) slider
-					.getUI();
-			StateTransitionTracker stateTransitionTracker = transitionAwareUI
-					.getTransitionTracker();
+			TransitionAwareUI transitionAwareUI = (TransitionAwareUI) slider.getUI();
+			StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
 			Icon iconToDraw = getIcon(slider, stateTransitionTracker);
 			Graphics2D g2d = (Graphics2D) g.create();
 			g2d.translate(x, y);

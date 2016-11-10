@@ -64,6 +64,7 @@ import java.beans.PropertyChangeListener;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -80,6 +81,8 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicRootPaneUI;
 
+import org.pushingpixels.lafwidget.LafWidget;
+import org.pushingpixels.lafwidget.LafWidgetRepository;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.internal.animation.RootPaneDefaultButtonTracker;
@@ -191,6 +194,8 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 	 */
 	private static int rootPanesWithCustomSkin = 0;
 
+	private Set<LafWidget> lafWidgets;
+
 	/**
 	 * Creates a UI for a <code>JRootPane</code>.
 	 * 
@@ -218,7 +223,10 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 	 */
 	@Override
 	public void installUI(JComponent c) {
+		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+
 		super.installUI(c);
+		
 		this.root = (JRootPane) c;
 		int style = this.root.getWindowDecorationStyle();
 		if (style != JRootPane.NONE) {
@@ -232,10 +240,14 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 		if (this.root.getClientProperty(SubstanceLookAndFeel.SKIN_PROPERTY) instanceof SubstanceSkin) {
 			rootPanesWithCustomSkin++;
 		}
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installUI();
+		}
 	}
 
 	/**
-	 * Invokes supers implementation to uninstall any of its state. This will
+	 * Invokes super implementation to uninstall any of its state. This will
 	 * also reset the <code>LayoutManager</code> of the <code>JRootPane</code>.
 	 * If a <code>Component</code> has been added to the <code>JRootPane</code>
 	 * to render the window decoration style, this method will remove it.
@@ -259,6 +271,10 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 		}
 
 		this.root = null;
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallUI();
+		}
 	}
 
 	/**
@@ -301,8 +317,21 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 				c.setBackground(new ColorUIResource(backgroundFillColor));
 			}
 		}
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installDefaults();
+		}
 	}
 
+	@Override
+	protected void uninstallDefaults(JRootPane root) {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallDefaults();
+		}
+
+		super.uninstallDefaults(root);
+	}
+	
 	@Override
 	public void update(Graphics g, JComponent c) {
 		if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
@@ -582,6 +611,10 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 			}
 		};
 		root.addPropertyChangeListener(this.substancePropertyChangeListener);
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installListeners();
+		}
 	}
 
 	/*
@@ -608,7 +641,29 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 		root.removePropertyChangeListener(this.substancePropertyChangeListener);
 		this.substancePropertyChangeListener = null;
 
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallListeners();
+		}
+
 		super.uninstallListeners(root);
+	}
+	
+	@Override
+	protected void installComponents(JRootPane root) {
+		super.installComponents(root);
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installComponents();
+		}
+	}
+
+	@Override
+	protected void uninstallComponents(JRootPane root) {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallComponents();
+		}
+
+		super.uninstallComponents(root);
 	}
 
 	/**

@@ -97,13 +97,15 @@ public class SubstanceEtchedBorder implements Border {
 				BasicStroke.JOIN_ROUND));
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+				RenderingHints.VALUE_STROKE_PURE);
 
 		g2d.translate(x, y);
 
 		g2d.setColor(getShadowColor(c));
 
 		// this is to prevent clipping of thick outer borders.
-		int delta = (int) Math.floor(strokeWidth / 2.0);
+		float delta = strokeWidth / 2.0f;
 
 		g2d.draw(new Rectangle2D.Float(delta, delta, w - delta - 2
 				* strokeWidth, h - delta - 2 * strokeWidth));

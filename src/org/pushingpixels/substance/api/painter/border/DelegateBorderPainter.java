@@ -156,7 +156,7 @@ public class DelegateBorderPainter extends StandardBorderPainter {
 	}
 
 	@Override
-	public void paintBorder(Graphics g, Component c, int width, int height,
+	public void paintBorder(Graphics g, Component c, float width, float height,
 			Shape contour, Shape innerContour, SubstanceColorScheme borderScheme) {
 		super.paintBorder(g, c, width, height, contour, innerContour,
 				getShiftScheme(borderScheme));

@@ -468,20 +468,17 @@ public class SubstanceColorUtilities {
 	 */
 	public static Color getFocusColor(Component comp,
 			TransitionAwareUI transitionAwareUI) {
-		StateTransitionTracker stateTransitionTracker = transitionAwareUI
-				.getTransitionTracker();
-		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
-				.getModelStateInfo();
+		StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
+		StateTransitionTracker.ModelStateInfo modelStateInfo = 
+				stateTransitionTracker.getModelStateInfo();
 
 		ComponentState currState = modelStateInfo.getCurrModelState();
-		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
-				.getStateContributionMap();
+		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = 
+				modelStateInfo.getStateContributionMap();
 
-		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(comp, ColorSchemeAssociationKind.MARK,
-						currState);
-		if (currState.isDisabled() || (activeStates == null)
-				|| (activeStates.size() == 1)) {
+		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities.getColorScheme(
+				comp, ColorSchemeAssociationKind.MARK, currState);
+		if (currState.isDisabled() || (activeStates == null) || (activeStates.size() == 1)) {
 			return colorScheme.getFocusRingColor();
 		}
 

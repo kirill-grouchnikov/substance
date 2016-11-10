@@ -44,13 +44,13 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.BasicSliderUI;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
+import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
-import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
 import org.pushingpixels.substance.internal.utils.*;
@@ -98,8 +98,8 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	/**
 	 * Cache of track images.
 	 */
-	protected static final LazyResettableHashMap<BufferedImage> trackCache = new LazyResettableHashMap<BufferedImage>(
-			"SubstanceSliderUI.track");
+	protected static final LazyResettableHashMap<BufferedImage> trackCache = 
+			new LazyResettableHashMap<BufferedImage>("SubstanceSliderUI.track");
 
 	/*
 	 * (non-Javadoc)
@@ -139,11 +139,17 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	protected void calculateTrackRect() {
 		super.calculateTrackRect();
 		if (this.slider.getOrientation() == SwingConstants.HORIZONTAL) {
-			this.trackRect.y = 3
-					+ (int) Math.ceil(SubstanceSizeUtils
-							.getFocusStrokeWidth(SubstanceSizeUtils
-									.getComponentFontSize(this.slider)))
-					+ this.insetCache.top;
+//			this.trackRect.y = 3
+//					+ (int) Math.ceil(SubstanceSizeUtils
+//							.getFocusStrokeWidth(SubstanceSizeUtils
+//									.getComponentFontSize(this.slider)))
+//					+ this.insetCache.top;
+		} else {
+			if (this.slider.getComponentOrientation().isLeftToRight()) {
+				this.trackRect.x += 2;
+			} else {
+				this.trackRect.x -= 2;
+			}
 		}
 	}
 
@@ -156,9 +162,17 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 		int trackLeft = 0, trackRight = 0, trackTop = 0, trackBottom = 0;
 		int trackWidth = this.getTrackWidth();
 		if (this.slider.getOrientation() == SwingConstants.HORIZONTAL) {
-			trackTop = 3 + this.insetCache.top + 2 * this.focusInsets.top;
-			trackBottom = trackTop + trackWidth - 1;
 			trackRight = this.trackRect.width;
+			if (this.slider.getPaintLabels() || this.slider.getPaintTicks()) {
+				trackTop = 3 + this.insetCache.top + 2 * this.focusInsets.top;
+			} else {
+				// vertically center the track
+				int topInset = this.insetCache.top + this.focusInsets.top;
+				int bottomInset = this.insetCache.bottom + this.focusInsets.bottom;
+				trackTop = topInset + (this.slider.getHeight() - topInset - bottomInset) / 2
+						- trackWidth / 2;
+			}
+			trackBottom = trackTop + trackWidth - 1;
 			return new Rectangle(this.trackRect.x + trackLeft, trackTop,
 					trackRight - trackLeft, trackBottom - trackTop);
 		} else {
@@ -174,17 +188,11 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 				}
 			} else {
 				// horizontally center the track
-				if (this.slider.getComponentOrientation().isLeftToRight()) {
-					trackLeft = (this.insetCache.left + this.focusInsets.left
-							+ this.slider.getWidth() - this.insetCache.right - this.focusInsets.right)
-							/ 2 - trackWidth / 2;
-					trackRight = trackLeft + trackWidth - 1;
-				} else {
-					trackRight = (this.insetCache.left + this.focusInsets.left
-							+ this.slider.getWidth() - this.insetCache.right - this.focusInsets.right)
-							/ 2 + trackWidth / 2;
-					trackLeft = trackRight - trackWidth - 1;
-				}
+				int leftInset = this.insetCache.left + this.focusInsets.left;
+				int rightInset = this.insetCache.right + this.focusInsets.right;
+				trackLeft = leftInset + (this.slider.getWidth() - leftInset - rightInset) / 2
+						- trackWidth / 2;
+				trackRight = trackLeft + trackWidth - 1;
 			}
 			trackBottom = this.trackRect.height - 1;
 			return new Rectangle(trackLeft, this.trackRect.y + trackTop,
@@ -439,8 +447,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	@Override
 	protected Dimension getThumbSize() {
 		Icon thumbIcon = this.getIcon();
-		return new Dimension(thumbIcon.getIconWidth(), thumbIcon
-				.getIconHeight());
+		return new Dimension(thumbIcon.getIconWidth(), thumbIcon.getIconHeight());
 	}
 
 	/**
@@ -470,9 +477,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	@Override
 	public void paintThumb(Graphics g) {
 		Graphics2D graphics = (Graphics2D) g.create();
-		// graphics.setComposite(TransitionLayout.getAlphaComposite(slider));
 		Rectangle knobBounds = this.thumbRect;
-		// System.out.println(thumbRect);
 
 		graphics.translate(knobBounds.x, knobBounds.y);
 
@@ -496,7 +501,6 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 			}
 		}
 
-		// graphics.translate(-knobBounds.x, -knobBounds.y);
 		graphics.dispose();
 	}
 
@@ -659,15 +663,6 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 				null, null, 1.0f, (int) Math.ceil(SubstanceSizeUtils
 						.getFocusStrokeWidth(SubstanceSizeUtils
 								.getComponentFontSize(this.slider))) / 2);
-	}
-
-	/**
-	 * Returns the amount that the thumb goes past the slide bar.
-	 * 
-	 * @return Amount that the thumb goes past the slide bar.
-	 */
-	protected int getThumbOverhang() {
-		return (int) (this.getThumbSize().getHeight() - this.getTrackWidth()) / 2;
 	}
 
 	/**
@@ -862,12 +857,12 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 			double centerY = trackRect.y + trackRect.height / 2.0;
 			thumbRect.y = (int) (centerY - thumbRect.height / 2.0) + 1;
 
-			thumbRect.x = valuePosition - thumbRect.width / 2;
+			thumbRect.x = valuePosition - thumbRect.width / 2 + 1;
 		} else {
 			int valuePosition = yPositionForValue(slider.getValue());
 
 			double centerX = trackRect.x + trackRect.width / 2.0;
-			thumbRect.x = (int) (centerX - thumbRect.width / 2.0) + 1;
+			thumbRect.x = (int) (centerX - thumbRect.width / 2.0);
 
 			thumbRect.y = valuePosition - (thumbRect.height / 2);
 		}

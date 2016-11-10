@@ -71,8 +71,11 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
+import org.pushingpixels.lafwidget.LafWidget;
+import org.pushingpixels.lafwidget.LafWidgetRepository;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
+import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -86,7 +89,6 @@ import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
-import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.SimplisticFillPainter;
 import org.pushingpixels.substance.internal.painter.SimplisticSoftBorderPainter;
@@ -210,6 +212,8 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 	 */
 	protected CompositeButtonModel compositeScrollTrackModel;
 
+	private Set<LafWidget> lafWidgets;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -235,6 +239,25 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		this.thumbModel.setRollover(false);
 
 		b.setOpaque(false);
+	}
+
+	@Override
+	public void installUI(JComponent c) {
+		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+
+		super.installUI(c);
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installUI();
+		}
+	}
+	
+	@Override
+	public void uninstallUI(JComponent c) {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallUI();
+		}
+		super.uninstallUI(c);
 	}
 
 	/**
@@ -1051,6 +1074,19 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		this.scrollBarWidth = SubstanceSizeUtils
 				.getScrollBarWidth(SubstanceSizeUtils
 						.getComponentFontSize(this.scrollbar));
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installDefaults();
+		}
+	}
+	
+	@Override
+	protected void uninstallDefaults() {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallDefaults();
+		}
+
+		super.uninstallDefaults();
 	}
 
 	/*
@@ -1094,6 +1130,10 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		this.compositeStateTransitionTracker = new StateTransitionTracker(
 				this.scrollbar, this.compositeScrollTrackModel);
 		this.compositeStateTransitionTracker.registerModelListeners();
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installComponents();
+		}
 	}
 
 	/*
@@ -1108,6 +1148,11 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 
 		this.scrollbar.remove(this.mySecondDecreaseButton);
 		this.scrollbar.remove(this.mySecondIncreaseButton);
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallComponents();
+		}
+
 		super.uninstallComponents();
 	}
 
@@ -1217,6 +1262,10 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			}
 		};
 		this.scrollbar.addAdjustmentListener(this.substanceAdjustmentListener);
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installListeners();
+		}
 	}
 
 	/*
@@ -1250,6 +1299,10 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		this.scrollbar
 				.removeAdjustmentListener(this.substanceAdjustmentListener);
 		this.substanceAdjustmentListener = null;
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallListeners();
+		}
 
 		super.uninstallListeners();
 	}

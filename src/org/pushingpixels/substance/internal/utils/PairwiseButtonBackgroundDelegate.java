@@ -42,6 +42,7 @@ import java.util.Set;
 import javax.swing.AbstractButton;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
+import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -55,7 +56,6 @@ import org.pushingpixels.substance.api.shaper.RectangularButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
-import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 
 /**
  * Delegate class for painting backgrounds of buttons in <b>Substance </b> look
@@ -296,7 +296,7 @@ public class PairwiseButtonBackgroundDelegate {
 				int translateY = finalBackground.getHeight();
 				if (SubstanceCoreUtilities.isScrollButton(button) &&
 						openSides.contains(SubstanceConstants.Side.BOTTOM)) {
-					translateY += 3;
+					translateY += 4;
 				}
 				AffineTransform at = AffineTransform.getTranslateInstance(0, translateY);
 				at.rotate(-Math.PI / 2);

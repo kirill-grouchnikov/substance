@@ -45,11 +45,11 @@ import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.plaf.basic.BasicLabelUI;
 import javax.swing.text.View;
 
+import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
+import org.pushingpixels.lafwidget.icon.IsHiDpiAware;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.icon.IsHiDpiAware;
-import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -97,13 +97,6 @@ public class SubstanceLabelUI extends BasicLabelUI {
 							.getClientProperty(SubstanceButtonUI.LOCK_OPACITY))) {
 						c.putClientProperty(SubstanceButtonUI.OPACITY_ORIGINAL,
 								evt.getNewValue());
-						// System.out
-						// .println("PCL: "
-						// + b.getText()
-						// + "->"
-						// + b
-						// .getClientProperty(SubstanceButtonUI.OPACITY_ORIGINAL)
-						// );
 					}
 				}
 
@@ -155,8 +148,8 @@ public class SubstanceLabelUI extends BasicLabelUI {
 		paintIconR.x = paintIconR.y = paintIconR.width = paintIconR.height = 0;
 		paintTextR.x = paintTextR.y = paintTextR.width = paintTextR.height = 0;
 
-		String clippedText = SwingUtilities.layoutCompoundLabel(label, g
-				.getFontMetrics(), text, icon, label.getVerticalAlignment(),
+		String clippedText = SwingUtilities.layoutCompoundLabel(label, g.getFontMetrics(), 
+				text, icon, label.getVerticalAlignment(),
 				label.getHorizontalAlignment(),
 				label.getVerticalTextPosition(), label
 						.getHorizontalTextPosition(), paintViewR, paintIconR,
@@ -166,11 +159,6 @@ public class SubstanceLabelUI extends BasicLabelUI {
 		BackgroundPaintingUtils.updateIfOpaque(g2d, c);
 		if (icon != null) {
 			g2d.translate(paintIconR.x, paintIconR.y);
-//			if ((icon instanceof IsHiDpiAware) &&
-//					((IsHiDpiAware) icon).isHiDpiAware() &&
-//					UIUtil.isRetina()) {
-//				g2d.scale(0.5f, 0.5f);
-//			}
 			icon.paintIcon(c, g2d, 0, 0);
 			g2d.translate(-paintIconR.x, -paintIconR.y);
 		}

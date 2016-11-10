@@ -64,7 +64,6 @@
 		<pathelement location="${substance.lib.dir}/trident.jar" />
 		<pathelement location="${substance.lib.dir}/build/laf-plugin.jar" />
 		<pathelement location="${substance.lib.dir}/build/laf-widget.jar" />
-		<pathelement location="${substance.lib.dir}/build/asm-all-2.2.2.jar" />
 		<pathelement location="${substance.lib.dir}/build/forms-1.2.0.jar" />
 		<pathelement location="${substance.lib.dir}/build/swingx-all-1.6.4.jar" />
 		<pathelement location="${substance.lib.dir}/test/fest-swing-1.2.jar" />
@@ -100,6 +99,9 @@
 
 	<target name="compile.module.substance.production" description="compile module substance production classes">
 		<mkdir dir="${substance.output.dir}" />
+        <!-- Explode laf-plugin and laf-widget -->
+        <unjar src="${substance.lib.dir}/build/laf-plugin.jar" dest="${substance.output.dir}/" />
+        <unjar src="${substance.lib.dir}/build/laf-widget.jar" dest="${substance.output.dir}/" />
 		<javac source="${javac.source}" target="${javac.target}" encoding="${javac.encoding}" destdir="${substance.output.dir}" debug="${javac.debug}" nowarn="${javac.generate.no.warnings}" memoryMaximumSize="${javac.max.memory}" fork="true">
 			<compilerarg line="${javac.args.substance}" />
 			<bootclasspath refid="substance.module.bootclasspath" />
@@ -160,30 +162,12 @@
 		<!-- Perform any build initialization in this target -->
 	</target>
 
-	<!-- Augment tasks definition -->
-	<property name="augment-class-path" value="${substance.lib.dir}/build/laf-widget.jar;${substance.lib.dir}/trident.jar;${substance.lib.dir}/build/asm-all-2.2.2.jar" />
-
-	<taskdef name="delegate-augment" classname="org.pushingpixels.lafwidget.ant.AugmentTask" classpath="${augment-class-path}" />
-
-	<target name="augmentation" description="inject additional behavior in UI delegates">
-		<!-- Explode laf-plugin and laf-widget -->
-		<unjar src="${substance.lib.dir}/build/laf-plugin.jar" dest="${substance.output.dir}/" />
-		<unjar src="${substance.lib.dir}/build/laf-widget.jar" dest="${substance.output.dir}/" />
-
-		<!-- Delegate augmentation -->
-<!--
-		<delegate-augment verbose="true" pattern=".*UI\u002Eclass">
-			<classpathset dir="${substance.output.dir}" />
-		</delegate-augment>
- -->
-	</target>
-
 	<target name="jar-bin" description="create runtime jar">
 		<mkdir dir="${substance.drop.dir}" />
 		<delete file="${substance.drop.dir}/substance.jar" />
 
 		<jar compress="true" destfile="${substance.drop.dir}/substance.jar">
-			<fileset dir="${substance.output.dir}/" excludes="tools/** test/** org/pushingpixels/lafwidget/ant/**" />
+			<fileset dir="${substance.output.dir}/" excludes="tools/** test/**" />
 			<fileset dir="${module.substance.basedir}/" includes="resources/**" />
 			<manifest>
 				<attribute name="Substance-Distribution" value="Full" />
@@ -215,7 +199,7 @@
 				<attribute name="Substance-Version" value="${substance.versionKey}" />
 				<attribute name="Substance-BuildStamp" value="${build.time}" />
 				<attribute name="Main-Class" value="test.Check" />
-				<attribute name="Class-Path" value="substance.jar ../lib/trident.jar ../lib/build/forms-1.2.0.jar ../lib/build/swingx.jar ../lib/build/substance-swingx.jar" />
+				<attribute name="Class-Path" value="substance.jar ../lib/trident.jar ../lib/build/forms-1.2.0.jar ../lib/build/swingx-all-1.6.4.jar ../lib/build/substance-swingx.jar" />
 			</manifest>
 		</jar>
 		<copy file="${substance.drop.dir}/substance-tst.jar" todir="${module.substance.basedir}/www/webstart" />
@@ -247,7 +231,7 @@
 				<attribute name="Substance-Version" value="${substance.versionKey}" />
 				<attribute name="Substance-BuildStamp" value="${build.time}" />
 				<attribute name="Main-Class" value="test.Check" />
-				<attribute name="Class-Path" value="substance-lite.jar ../lib/trident.jar ../lib/build/forms-1.2.0.jar ../lib/build/swingx.jar ../lib/build/substance-swingx.jar" />
+				<attribute name="Class-Path" value="substance-lite.jar ../lib/trident.jar ../lib/build/forms-1.2.0.jar ../lib/build/swingx-all-1.6.4.jar ../lib/build/substance-swingx.jar" />
 			</manifest>
 		</jar>
 	</target>
@@ -300,5 +284,5 @@
 
 	<target name="clean" depends="clean.module.substance" description="cleanup all" />
 
-	<target name="all" depends="timestamp, init, clean, compile.module.substance, augmentation, jar" description="build all" />
+	<target name="all" depends="timestamp, init, clean, compile.module.substance, jar" description="build all" />
 </project>

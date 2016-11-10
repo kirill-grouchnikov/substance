@@ -70,7 +70,7 @@ public interface SubstanceBorderPainter extends SubstanceTrait {
 	 * @param borderScheme
 	 *            The border color scheme.
 	 */
-	public void paintBorder(Graphics g, Component c, int width, int height,
+	public void paintBorder(Graphics g, Component c, float width, float height,
 			Shape contour, Shape innerContour, SubstanceColorScheme borderScheme);
 
 	/**

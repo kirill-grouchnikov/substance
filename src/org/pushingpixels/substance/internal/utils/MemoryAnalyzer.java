@@ -179,90 +179,62 @@ public class MemoryAnalyzer extends TrackableThread {
 		// output all settings from UIManager
 		// Need to run on EDT - issue 392
 		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-				@Override
-				public void run() {
-					BufferedWriter bw = null;
-					try {
-						bw = new BufferedWriter(new FileWriter(new File(
-								filename), true));
-						bw.write(sdf.format(new Date()) + "\n");
+			SwingUtilities.invokeAndWait(() -> {
+				try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File(filename), true))) {
+					bw.write(sdf.format(new Date()) + "\n");
 
-						UIDefaults uidefs = UIManager.getLookAndFeel()
-								.getDefaults();
-						// Retrieve the keys. Can't use an iterator since the
-						// map may be modified during the iteration. So retrieve
-						// all at once.
-						Set<Object> keySet = uidefs.keySet();
-						List<String> keyList = new LinkedList<String>();
-						for (Object key : keySet) {
-							keyList.add((String) key);
-						}
-						Collections.sort(keyList);
-
-						for (String key : keyList) {
-							Object v = uidefs.get(key);
-
-							if (v instanceof Integer) {
-								int intVal = uidefs.getInt(key);
-								bw.write(key + " (int) : " + intVal);
-							} else if (v instanceof Boolean) {
-								boolean boolVal = uidefs.getBoolean(key);
-								bw.write(key + " (bool) : " + boolVal);
-							} else if (v instanceof String) {
-								String strVal = uidefs.getString(key);
-								bw.write(key + " (string) : " + strVal);
-							} else if (v instanceof Dimension) {
-								Dimension dimVal = uidefs.getDimension(key);
-								bw.write(key + " (Dimension) : " + dimVal.width
-										+ "*" + dimVal.height);
-							} else if (v instanceof Insets) {
-								Insets insetsVal = uidefs.getInsets(key);
-								bw.write(key + " (Insets) : " + insetsVal.top
-										+ "*" + insetsVal.left + "*"
-										+ insetsVal.bottom + "*"
-										+ insetsVal.right);
-							} else if (v instanceof Color) {
-								Color colorVal = uidefs.getColor(key);
-								bw.write(key + " (int) : " + colorVal.getRed()
-										+ "," + colorVal.getGreen() + ","
-										+ colorVal.getBlue());
-							} else if (v instanceof Font) {
-								Font fontVal = uidefs.getFont(key);
-								bw.write(key + " (Font) : "
-										+ fontVal.getFontName() + "*"
-										+ fontVal.getSize());
-							} else {
-								bw
-										.write(key + " (Object) : "
-												+ uidefs.get(key));
-							}
-							bw.write("\n");
-						}
-					} catch (IOException ioe) {
-						requestStop();
-					} catch (Throwable t) {
-					} finally {
-						if (bw != null) {
-							try {
-								bw.close();
-							} catch (Exception exc) {
-							}
-						}
+					UIDefaults uidefs = UIManager.getLookAndFeel().getDefaults();
+					// Retrieve the keys. Can't use an iterator since the
+					// map may be modified during the iteration. So retrieve
+					// all at once.
+					Set<Object> keySet = uidefs.keySet();
+					List<String> keyList = new LinkedList<String>();
+					for (Object key : keySet) {
+						keyList.add((String) key);
 					}
+					Collections.sort(keyList);
 
+					for (String key : keyList) {
+						Object v = uidefs.get(key);
+
+						if (v instanceof Integer) {
+							int intVal = uidefs.getInt(key);
+							bw.write(key + " (int) : " + intVal);
+						} else if (v instanceof Boolean) {
+							boolean boolVal = uidefs.getBoolean(key);
+							bw.write(key + " (bool) : " + boolVal);
+						} else if (v instanceof String) {
+							String strVal = uidefs.getString(key);
+							bw.write(key + " (string) : " + strVal);
+						} else if (v instanceof Dimension) {
+							Dimension dimVal = uidefs.getDimension(key);
+							bw.write(key + " (Dimension) : " + dimVal.width + "*" + dimVal.height);
+						} else if (v instanceof Insets) {
+							Insets insetsVal = uidefs.getInsets(key);
+							bw.write(key + " (Insets) : " + insetsVal.top + "*" + insetsVal.left + "*"
+									+ insetsVal.bottom + "*" + insetsVal.right);
+						} else if (v instanceof Color) {
+							Color colorVal = uidefs.getColor(key);
+							bw.write(key + " (int) : " + colorVal.getRed() + "," + colorVal.getGreen() + ","
+									+ colorVal.getBlue());
+						} else if (v instanceof Font) {
+							Font fontVal = uidefs.getFont(key);
+							bw.write(key + " (Font) : " + fontVal.getFontName() + "*" + fontVal.getSize());
+						} else {
+							bw.write(key + " (Object) : " + uidefs.get(key));
+						}
+						bw.write("\n");
+					}
+				} catch (IOException ioe) {
+					requestStop();
 				}
 			});
 		} catch (Exception exc) {
 			requestStop();
 		}
-		BufferedWriter bw = null;
 		while (!hasStopRequest()) {
 			// gather statistics and print them to file
-			bw = null;
-			try {
-				bw = new BufferedWriter(new FileWriter(new File(this.filename),
-						true));
+			try (BufferedWriter bw = new BufferedWriter(new FileWriter(new File(this.filename), true))) {
 				bw.write(sdf.format(new Date()) + "\n");
 				java.util.List<String> stats = LazyResettableHashMap.getStats();
 				if (stats != null) {
@@ -274,8 +246,7 @@ public class MemoryAnalyzer extends TrackableThread {
 				for (String usage : usages) {
 					bw.write(usage + "\n");
 				}
-				bw.write("UIManager has " + UIManager.getDefaults().size()
-						+ " entries\n");
+				bw.write("UIManager has " + UIManager.getDefaults().size() + " entries\n");
 				long heapSize = Runtime.getRuntime().totalMemory();
 				long heapFreeSize = Runtime.getRuntime().freeMemory();
 
@@ -285,13 +256,6 @@ public class MemoryAnalyzer extends TrackableThread {
 				bw.write("\n");
 			} catch (IOException ioe) {
 				this.requestStop();
-			} finally {
-				if (bw != null) {
-					try {
-						bw.close();
-					} catch (Exception exc) {
-					}
-				}
 			}
 
 			// sleep

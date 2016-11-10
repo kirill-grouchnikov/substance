@@ -33,8 +33,8 @@ import java.awt.*;
 import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.image.BufferedImage;
 
+import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
@@ -49,9 +49,12 @@ public class StandardFillPainter implements SubstanceFillPainter {
 		return "Standard";
 	}
 
-	public void paintContourBackground(Graphics g, Component comp, int width,
-			int height, Shape contour, boolean isFocused,
+	public void paintContourBackground(Graphics g, Component comp, float width,
+			float height, Shape contour, boolean isFocused,
 			SubstanceColorScheme fillScheme, boolean hasShine) {
+		
+		int iWidth = (int) Math.ceil(width);
+		int iHeight = (int) Math.ceil(height);
 
 		// long millis = System.nanoTime();
 
@@ -86,7 +89,7 @@ public class StandardFillPainter implements SubstanceFillPainter {
 				kernelSize = 3;
 
 			BufferedImage blurredGhostContour = SubstanceCoreUtilities
-					.getBlankImage(width + 2 * kernelSize, height + 2
+					.getBlankImage(iWidth + 2 * kernelSize, iHeight + 2
 							* kernelSize);
 			Graphics2D blurredGhostGraphics = (Graphics2D) blurredGhostContour
 					.getGraphics().create();
@@ -111,7 +114,7 @@ public class StandardFillPainter implements SubstanceFillPainter {
 			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 
 			BufferedImage reverseGhostContour = SubstanceCoreUtilities
-					.getBlankImage(width + 2 * kernelSize, height + 2
+					.getBlankImage(iWidth + 2 * kernelSize, iHeight + 2
 							* kernelSize);
 			Graphics2D reverseGraphics = (Graphics2D) reverseGhostContour
 					.getGraphics();
@@ -121,7 +124,7 @@ public class StandardFillPainter implements SubstanceFillPainter {
 					topShineColor, 0, kernelSize + shineHeight,
 					bottomShineColorTransp, true);
 			reverseGraphics.setPaint(gradientShine);
-			reverseGraphics.fillRect(0, kernelSize, width + 2 * kernelSize,
+			reverseGraphics.fillRect(0, kernelSize, iWidth + 2 * kernelSize,
 					kernelSize + shineHeight);
 			reverseGraphics.setComposite(AlphaComposite.DstOut);
 			reverseGraphics.drawImage(blurredGhostContour, 0, 0, 
@@ -129,19 +132,19 @@ public class StandardFillPainter implements SubstanceFillPainter {
 					blurredGhostContour.getHeight() / scaleFactor, null);
 			// millis004 = System.nanoTime();
 
-			graphics.drawImage(reverseGhostContour, 0, 0, width - 1,
+			graphics.drawImage(reverseGhostContour, 0, 0, iWidth - 1,
 					shineHeight, kernelSize, kernelSize,
-					kernelSize + width - 1, kernelSize + shineHeight, null);
+					kernelSize + iWidth - 1, kernelSize + shineHeight, null);
 
 			BufferedImage overGhostContour = SubstanceCoreUtilities
-					.getBlankImage(width + 2 * kernelSize, height + 2
+					.getBlankImage(iWidth + 2 * kernelSize, iHeight + 2
 							* kernelSize);
 			Graphics2D overGraphics = (Graphics2D) overGhostContour
 					.getGraphics();
 			overGraphics.setPaint(new GradientPaint(0, kernelSize,
 					topFillColor, 0, kernelSize + height / 2, midFillColorTop,
 					true));
-			overGraphics.fillRect(kernelSize, kernelSize, kernelSize + width,
+			overGraphics.fillRect(kernelSize, kernelSize, kernelSize + iWidth,
 					kernelSize + shineHeight);
 			overGraphics.setComposite(AlphaComposite.DstIn);
 			overGraphics.drawImage(blurredGhostContour, 0, 0, 
@@ -149,8 +152,8 @@ public class StandardFillPainter implements SubstanceFillPainter {
 					blurredGhostContour.getHeight() / scaleFactor, null);
 			// millis005 = System.nanoTime();
 
-			graphics.drawImage(overGhostContour, 0, 0, width - 1, shineHeight,
-					kernelSize, kernelSize, kernelSize + width - 1, kernelSize
+			graphics.drawImage(overGhostContour, 0, 0, iWidth - 1, shineHeight,
+					kernelSize, kernelSize, kernelSize + iWidth - 1, kernelSize
 							+ shineHeight, null);
 		}
 

@@ -121,8 +121,7 @@ public class SubstanceInternalFrameUI extends BasicInternalFrameUI {
 						.getPropertyName())) {
 					titlePane.uninstall();
 					JDesktopIcon jdi = frame.getDesktopIcon();
-					SubstanceDesktopIconUI ui = (SubstanceDesktopIconUI) jdi
-							.getUI();
+					SubstanceDesktopIconUI ui = (SubstanceDesktopIconUI) jdi.getUI();
 					ui.uninstallIfNecessary(jdi);
 				}
 
@@ -138,8 +137,7 @@ public class SubstanceInternalFrameUI extends BasicInternalFrameUI {
 					// fix for issue 344 - reopening an internal frame
 					// that has been closed.
 					JDesktopIcon jdi = frame.getDesktopIcon();
-					SubstanceDesktopIconUI ui = (SubstanceDesktopIconUI) jdi
-							.getUI();
+					SubstanceDesktopIconUI ui = (SubstanceDesktopIconUI) jdi.getUI();
 					ui.installIfNecessary(jdi);
 				}
 			}

@@ -83,7 +83,7 @@ public class CompositeBorderPainter implements SubstanceBorderPainter {
 	}
 
 	@Override
-	public void paintBorder(Graphics g, Component c, int width, int height,
+	public void paintBorder(Graphics g, Component c, float width, float height,
 			Shape contour, Shape innerContour, SubstanceColorScheme borderScheme) {
 		if (innerContour != null) {
 			this.inner.paintBorder(g, c, width, height, innerContour, null,

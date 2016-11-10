@@ -14,7 +14,6 @@
 
 package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser;
 
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
@@ -22,6 +21,8 @@ import java.awt.geom.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
+import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.*;
 import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.util.*;
 
@@ -41,7 +42,7 @@ public class Crayons extends javax.swing.JPanel {
     /**
      * Shared crayons image.
      */
-    private Image crayonsImage;
+    private BufferedImage crayonsImage;
     
     /**
      * Coordinates of crayon shaped polygon.
@@ -114,8 +115,8 @@ public class Crayons extends javax.swing.JPanel {
         addMouseListener(mouseHandler);
     }
 
-    protected Image createCrayonsImage() {
-         return (Image) UIManager.get("ColorChooser.crayonsImage");
+    protected BufferedImage createCrayonsImage() {
+         return (BufferedImage) UIManager.get("ColorChooser.crayonsImage");
     }
     
     /**
@@ -171,27 +172,21 @@ public class Crayons extends javax.swing.JPanel {
     }
     
     public void paintComponent(Graphics gr) {
-        Graphics2D g = (Graphics2D) gr;
-        Object oldHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
-        
-        g.drawImage(crayonsImage, 0, 0, this);
-        
+        Graphics2D g2d = (Graphics2D) gr.create();
+        RenderingUtils.installDesktopHints(g2d, this);
+        int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+        g2d.drawImage(crayonsImage, 0, 0, crayonsImage.getWidth() / scaleFactor,
+        		crayonsImage.getHeight() / scaleFactor, this);
         
         if (selectedCrayon != null) {
-            /*
-            g.setColor(new Color(0x60ffffff & selectedCrayon.color.getRGB(),true));
-            g.fill(selectedCrayon.shape);
-             */
-            g.setColor(getForeground());
-            FontMetrics fm = g.getFontMetrics();
+            g2d.setColor(getForeground());
+            FontMetrics fm = g2d.getFontMetrics();
             int nameWidth = fm.stringWidth(selectedCrayon.name);
-            g.drawString(
-            selectedCrayon.name,
-            (crayonsImage.getWidth(this) - nameWidth) / 2,
-            fm.getAscent() + 1
-            );
+            g2d.drawString(selectedCrayon.name,
+            		(crayonsImage.getWidth() / scaleFactor - nameWidth) / 2,
+            		fm.getAscent() + 1);
         }
-        QuaquaUtilities.endGraphics((Graphics2D) g, oldHints);
+        g2d.dispose();
     }
     
     /** This method is called from within the constructor to

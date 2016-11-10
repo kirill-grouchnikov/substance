@@ -203,13 +203,12 @@ public class SubstanceOutlineUtilities {
 	 *            Insets to compute the outline.
 	 * @return Outline that has a triangle poiting downwards.
 	 */
-	public static GeneralPath getTriangleButtonOutline(int width, int height,
+	public static GeneralPath getTriangleButtonOutline(float width, float height,
 			float radius, float insets) {
 
 		float xs = insets;
-		float ys = insets;
+		float ys = insets + 1;
 		float xe = width - insets;
-		xe--;
 		float ye = height - insets;
 		width -= 2 * insets;
 		height -= 2 * insets;
@@ -224,14 +223,14 @@ public class SubstanceOutlineUtilities {
 		if ((xe - radius) >= radius) {
 			result.lineTo(xe - radius, ys);
 		}
-		result.quadTo(xe - radius3, xs + radius3, xe, xs + radius);
+		result.quadTo(xe - radius3, ys + radius3, xe, ys + radius);
 
 		float h2 = (ye - 1.0f) / 2.0f;
 		if (h2 >= radius) {
 			result.lineTo(xe, h2);
 		}
 
-		result.lineTo((xe + insets) / 2.0f, ye - 1);
+		result.lineTo((xs + xe) / 2.0f, ye - 1);
 		result.lineTo(xs, h2);
 
 		if (h2 >= radius) {

@@ -31,6 +31,8 @@ package org.pushingpixels.substance.internal.utils.filters;
 
 import java.awt.image.BufferedImage;
 
+import org.pushingpixels.lafwidget.utils.AbstractFilter;
+
 /**
  * @author Kirill Grouchnikov
  */

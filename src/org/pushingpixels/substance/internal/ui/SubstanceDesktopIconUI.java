@@ -32,6 +32,7 @@ package org.pushingpixels.substance.internal.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.UIManager;
@@ -41,6 +42,8 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicDesktopIconUI;
 
+import org.pushingpixels.lafwidget.LafWidget;
+import org.pushingpixels.lafwidget.LafWidgetRepository;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -61,6 +64,8 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 	 * Width of minimized component (desktop icon).
 	 */
 	private int width;
+
+	private Set<LafWidget> lafWidgets;
 
 	/*
 	 * (non-Javadoc)
@@ -85,13 +90,23 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 			this.desktopIcon.setFont(UIManager.getFont("DesktopIcon.font"));
 		}
 		this.width = UIManager.getInt("DesktopIcon.width");
-		this.desktopIcon.setBackground(SubstanceCoreUtilities.getSkin(
-				this.desktopIcon.getInternalFrame()).getBackgroundColorScheme(
-				DecorationAreaType.SECONDARY_TITLE_PANE)
-		// SubstanceColorSchemeUtilities
-				// //.getColorScheme(this.desktopIcon.getInternalFrame(),
-				// ComponentState.ACTIVE).
-				.getBackgroundFillColor());
+		this.desktopIcon.setBackground(
+				SubstanceCoreUtilities.getSkin(this.desktopIcon.getInternalFrame()).
+					getBackgroundColorScheme(DecorationAreaType.SECONDARY_TITLE_PANE)
+						.getBackgroundFillColor());
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installDefaults();
+		}
+	}
+	
+	@Override
+	protected void uninstallDefaults() {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallDefaults();
+		}
+
+		super.uninstallDefaults();
 	}
 
 	/*
@@ -102,13 +117,15 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 	@Override
 	protected void installComponents() {
 		this.frame = this.desktopIcon.getInternalFrame();
-		// this.frame.setOpaque(false);
-		// Icon icon = this.frame.getFrameIcon();
 
 		this.iconPane = new SubstanceInternalFrameTitlePane(this.frame);
 		this.iconPane.setOpaque(false);
 		this.desktopIcon.setLayout(new BorderLayout());
 		this.desktopIcon.add(this.iconPane, BorderLayout.CENTER);
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installComponents();
+		}
 	}
 
 	/*
@@ -122,6 +139,10 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 
 		this.desktopIcon.setLayout(null);
 		this.desktopIcon.remove(this.iconPane);
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallComponents();
+		}
 
 		this.frame = null;
 	}
@@ -138,6 +159,10 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 		this.iconPane
 				.addMouseMotionListener(this.substanceLabelMouseInputListener);
 		this.iconPane.addMouseListener(this.substanceLabelMouseInputListener);
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installListeners();
+		}
 	}
 
 	/*
@@ -154,6 +179,10 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 		this.iconPane
 				.removeMouseListener(this.substanceLabelMouseInputListener);
 		this.substanceLabelMouseInputListener = null;
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallListeners();
+		}
 
 		super.uninstallListeners();
 	}
@@ -197,46 +226,6 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 		return this.getMinimumSize(c);
 	}
 
-	// /*
-	// * (non-Javadoc)
-	// *
-	// * @see javax.swing.plaf.ComponentUI#paint(java.awt.Graphics,
-	// * javax.swing.JComponent)
-	// */
-	// @Override
-	// public void paint(Graphics g, JComponent c) {
-	// JInternalFrame.JDesktopIcon di = (JInternalFrame.JDesktopIcon) c;
-	// di.setOpaque(false);
-	//
-	// int width = di.getWidth();
-	// int height = di.getHeight();
-	//
-	// Graphics2D graphics = (Graphics2D) g.create();
-	// // the background is translucent
-	// // graphics.setComposite(AlphaComposite.getInstance(
-	// // AlphaComposite.SRC_ATOP, 0.6f));
-	// //
-	// // SubstanceImageCreator.paintRectangularBackground(graphics, 0, 0,
-	// // width,
-	// // height, SubstanceCoreUtilities.getActiveScheme(this.desktopIcon
-	// // .getInternalFrame()), false, false);
-	//
-	// di.paintComponents(graphics);
-	//
-	// graphics.dispose();
-	// }
-	//
-	// /*
-	// * (non-Javadoc)
-	// *
-	// * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
-	// * javax.swing.JComponent)
-	// */
-	// @Override
-	// public void update(Graphics g, JComponent c) {
-	// this.paint(g, c);
-	// }
-	//
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -246,14 +235,21 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 	 */
 	@Override
 	public void installUI(JComponent c) {
+		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+
 		super.installUI(c);
 		c.setOpaque(false);
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installUI();
+		}
 	}
 
 	@Override
 	public void uninstallUI(JComponent c) {
-		// desktopIcon.remove(this.titleLabel);
-		// super.uninstallUI(c);
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallUI();
+		}
 
 		SubstanceInternalFrameTitlePane thePane = (SubstanceInternalFrameTitlePane) this.iconPane;
 		super.uninstallUI(c);

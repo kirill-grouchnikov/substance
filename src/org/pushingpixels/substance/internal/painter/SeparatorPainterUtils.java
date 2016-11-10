@@ -36,8 +36,8 @@ import java.util.Collection;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.*;
-import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.*;
 
 /**
@@ -380,8 +380,10 @@ public class SeparatorPainterUtils {
 		}
 
 		Graphics2D g2d = (Graphics2D) g.create();
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		for (int lineX : x) {
-			g2d.drawImage(singleLine, lineX - offset / 2, y, null);
+			g2d.drawImage(singleLine, lineX - offset / 2, y, singleLine.getWidth() / scaleFactor,
+					singleLine.getHeight() / scaleFactor, null);
 		}
 		g2d.dispose();
 	}
@@ -461,8 +463,10 @@ public class SeparatorPainterUtils {
 		}
 
 		Graphics2D g2d = (Graphics2D) g.create();
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		for (int lineY : y) {
-			g2d.drawImage(singleLine, x, lineY - offset / 2, null);
+			g2d.drawImage(singleLine, x, lineY - offset / 2, singleLine.getWidth() / scaleFactor,
+					singleLine.getHeight() / scaleFactor, null);
 		}
 		g2d.dispose();
 	}

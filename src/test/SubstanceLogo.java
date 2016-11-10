@@ -3,8 +3,8 @@ package test;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
+import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 
 import test.check.substance;
 

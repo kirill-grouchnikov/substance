@@ -103,7 +103,7 @@ public class DelegateFractionBasedBorderPainter implements
 	}
 
 	@Override
-	public void paintBorder(Graphics g, Component c, int width, int height,
+	public void paintBorder(Graphics g, Component c, float width, float height,
 			Shape contour, Shape innerContour, SubstanceColorScheme borderScheme) {
 		Graphics2D graphics = (Graphics2D) g.create();
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,

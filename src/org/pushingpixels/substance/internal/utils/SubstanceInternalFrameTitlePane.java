@@ -57,10 +57,10 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
+import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.colorscheme.ShiftColorScheme;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
@@ -255,10 +255,8 @@ public class SubstanceInternalFrameTitlePane extends
 		// }
 		Graphics2D graphics = (Graphics2D) g.create();
 		// Desktop icon is translucent.
-		final float coef = (this.getParent() instanceof JDesktopIcon) ? 0.6f
-				: 1.0f;
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(this.frame,
-				coef, g));
+		final float coef = (this.getParent() instanceof JDesktopIcon) ? 0.9f : 1.0f;
+		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(this.frame, coef, g));
 
 		boolean leftToRight = this.frame.getComponentOrientation()
 				.isLeftToRight();

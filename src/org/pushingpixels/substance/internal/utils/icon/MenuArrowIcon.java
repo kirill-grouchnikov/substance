@@ -38,7 +38,7 @@ import javax.swing.JMenu;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
+import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 
 /**
  * Icon for the cascading {@link JMenu}s.

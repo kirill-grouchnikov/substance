@@ -18,12 +18,12 @@ import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.plaf.basic.BasicBorders.MarginBorder;
 
+import org.pushingpixels.lafwidget.icon.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceSkin;
-import org.pushingpixels.substance.api.icon.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.api.inputmaps.InputMapSet;
 import org.pushingpixels.substance.api.inputmaps.SubstanceInputMapUtilities;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultListCellRenderer;
@@ -134,6 +134,13 @@ public class SkinUtilities {
 			public Object createValue(UIDefaults table) {
 				return new BorderUIResource.CompoundBorderUIResource(
 						new SubstanceBorder(), new BasicBorders.MarginBorder());
+			}
+		};
+
+		Object desktopIconMarginBorder = new UIDefaults.LazyValue() {
+			@Override
+			public Object createValue(UIDefaults table) {
+				return new BorderUIResource(new SubstanceBorder(new Insets(0, 0, 0, 0))); 
 			}
 		};
 
@@ -330,7 +337,7 @@ public class SkinUtilities {
 				selectionCellForegroundColor,
 
 				"DesktopIcon.border",
-				regularMarginBorder,
+				desktopIconMarginBorder,
 
 				"DesktopIcon.width",
 				new Integer(140),

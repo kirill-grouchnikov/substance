@@ -86,6 +86,7 @@ public abstract class ColorSliderModel {
             .unconfigureColorSlider(slider);
         }
         if ( ! (slider.getUI() instanceof ColorSliderUI)) {
+        	slider.setPaintLabels(true);
             slider.setUI(new ColorSliderUI(slider));
         }
         slider.setModel(getBoundedRangeModel(component));

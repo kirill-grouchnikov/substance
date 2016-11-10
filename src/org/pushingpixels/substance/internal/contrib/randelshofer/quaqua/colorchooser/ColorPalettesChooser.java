@@ -203,7 +203,10 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
     }
     
     public void setColorToModel(Color color) {
-        getColorSelectionModel().setSelectedColor(color);
+    	ColorSelectionModel colorSelectionModel = getColorSelectionModel();
+    	if (colorSelectionModel != null) {
+    		colorSelectionModel.setSelectedColor(color);
+    	}
     }
     
     

@@ -211,7 +211,7 @@ public class BasePlugin implements LafComponentPlugin {
 					"ColorChooser.resetMnemonic",
 					new Integer(-1),
 					"ColorChooser.crayonsImage",
-					makeImage(commonDir + "big_crayons.png"),
+					SubstanceImageCreator.getCrayonsImage(),
 					"ColorChooser.textSliderGap",
 					new Integer(0),
 					"ColorChooser.colorPalettesIcon",
