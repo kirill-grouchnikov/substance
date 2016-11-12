@@ -305,7 +305,7 @@ public class SubstanceIconFactory {
 			g2d.dispose();
 
 			if (this.isMirrorred)
-				stateImage = SubstanceImageCreator.getRotated(stateImage, 2);
+				stateImage = SubstanceImageCreator.getRotated(stateImage, 2, false);
 
 			return new HiDpiAwareIcon(stateImage);
 		}
@@ -707,12 +707,12 @@ public class SubstanceIconFactory {
 					contour, contourInner, borderScheme);
 
 			if (this.isMirrorred)
-				stateImage = SubstanceImageCreator.getRotated(stateImage, 1);
+				stateImage = SubstanceImageCreator.getRotated(stateImage, 1, false);
 			else
-				stateImage = SubstanceImageCreator.getRotated(stateImage, 3);
+				stateImage = SubstanceImageCreator.getRotated(stateImage, 3, false);
 
 			if (!slider.getComponentOrientation().isLeftToRight()) {
-				stateImage = SubstanceImageCreator.getRotated(stateImage, 2);
+				stateImage = SubstanceImageCreator.getRotated(stateImage, 2, false);
 			}
 
 			return new HiDpiAwareIcon(stateImage);

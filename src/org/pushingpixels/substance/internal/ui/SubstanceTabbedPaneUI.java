@@ -882,7 +882,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		float borderInsets = SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
 						.getComponentFontSize(tabPane)) / 2.0f;
-		int dy = (int)(2 + borderDelta);
+		int dy = (int) (2 + borderDelta);
 		Set<Side> straightSides = EnumSet.of(Side.BOTTOM);
 
 		float cornerRadius = height / 3.0f;
@@ -890,10 +890,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			cornerRadius = SubstanceSizeUtils
 					.getClassicButtonCornerRadius(SubstanceSizeUtils
 							.getComponentFontSize(tabPane));
-			if ((tabPlacement == TOP) || (tabPlacement == BOTTOM))
-				width -= 1;
-			else
-				height -= 1;
+			width -= 1;
 		}
 
 		GeneralPath contour = SubstanceOutlineUtilities.getBaseOutline(width,
@@ -991,10 +988,11 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 
 			switch (tabPlacement) {
 			case BOTTOM:
-				return SubstanceImageCreator.getRotated(
-						getFinalTabBackgroundImage(tabPane, tabIndex, x, y,
-								width, height, isSelected, SwingConstants.TOP,
-								side, colorScheme, borderScheme), 2);
+				BufferedImage unrotated = getFinalTabBackgroundImage(tabPane, tabIndex, x, y,
+						width, height, isSelected, SwingConstants.TOP,
+						side, colorScheme, borderScheme);
+				BufferedImage rotated = SubstanceImageCreator.getRotated(unrotated, 2, isSelected);
+				return rotated;
 			case TOP:
 			case LEFT:
 			case RIGHT:
@@ -1023,10 +1021,10 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 					fadeGraphics.drawImage(background, 0, 0, background.getWidth() / factor,
 							background.getHeight() / factor, null);
 
-					backgroundImage = SubstanceCoreUtilities
-							.blendImagesVertical(backgroundImage, fade, skin
-									.getSelectedTabFadeStart(), skin
-									.getSelectedTabFadeEnd());
+					backgroundImage = SubstanceCoreUtilities.blendImagesVertical(
+							backgroundImage, fade, 
+							skin.getSelectedTabFadeStart(), 
+							skin.getSelectedTabFadeEnd());
 				}
 			}
 			SubstanceTabbedPaneUI.backgroundMap.put(key, backgroundImage);
@@ -2284,12 +2282,12 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 							.getComponentFontSize(tabPane)) / 2.0f;
 			GeneralPath bottomOutline = new GeneralPath();
 			bottomOutline.moveTo(x, y + h - 1);
-			bottomOutline.lineTo(selRect.x + borderInsets, y + h - 1);
+			bottomOutline.lineTo(selRect.x + borderInsets + 1, y + h - 1);
 			int bumpHeight = super.calculateTabHeight(tabPlacement, 0,
 					SubstanceSizeUtils.getComponentFontSize(this.tabPane)) / 2;
-			bottomOutline.lineTo(selRect.x + borderInsets, y + h + bumpHeight);
+			bottomOutline.lineTo(selRect.x + borderInsets + 1, y + h + bumpHeight);
 			if (selRect.x + selRect.width < x + w - 1) {
-				float selectionEndX = selRect.x + selRect.width - delta - 1
+				float selectionEndX = selRect.x + selRect.width - delta
 						- borderInsets;
 				bottomOutline.lineTo(selectionEndX, y + h - 1 + bumpHeight);
 				bottomOutline.lineTo(selectionEndX, y + h - 1);
@@ -2399,13 +2397,12 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 							.getComponentFontSize(tabPane)) / 2.0f;
 			GeneralPath leftOutline = new GeneralPath();
 			leftOutline.moveTo(x, y);
-			leftOutline.lineTo(x, selRect.y + borderInsets);
+			leftOutline.lineTo(x, selRect.y + borderInsets + delta + 1);
 			int bumpWidth = super.calculateTabHeight(tabPlacement, 0,
 					SubstanceSizeUtils.getComponentFontSize(this.tabPane)) / 2;
-			leftOutline.lineTo(x - bumpWidth, selRect.y + borderInsets);
+			leftOutline.lineTo(x - bumpWidth, selRect.y + borderInsets + delta + 1);
 			if (selRect.y + selRect.height < y + h) {
-				float selectionEndY = selRect.y + selRect.height - delta - 1
-						- borderInsets;
+				float selectionEndY = selRect.y + selRect.height - borderInsets;
 				leftOutline.lineTo(x - bumpWidth, selectionEndY);
 				leftOutline.lineTo(x, selectionEndY);
 				leftOutline.lineTo(x, y + h);
@@ -2414,7 +2411,6 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 					x - bumpWidth, y, SubstanceColorUtilities.getAlphaColor(
 							darkShadowColor, 0)));
 			g2d.draw(leftOutline);
-
 		}
 
 		if (isDouble) {

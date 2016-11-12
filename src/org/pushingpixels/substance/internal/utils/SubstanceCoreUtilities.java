@@ -967,9 +967,11 @@ public class SubstanceCoreUtilities {
 					+ imageTop.getHeight() + " and " + imageBottom.getHeight());
 
 		BufferedImage result = getBlankImage(width, height);
-		Graphics2D graphics = (Graphics2D) result.getGraphics().create();
+		Graphics2D graphics = (Graphics2D) result.createGraphics();
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		graphics.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
+//		graphics.setPaint(new GradientPaint(0, 0, Color.red, 0, height / scaleFactor, Color.blue));
+//		graphics.fillRect(0, 0, width / scaleFactor, height / 1);
 
 		int startY = (int) (start * height);
 		int endY = (int) (end * height);
@@ -983,9 +985,9 @@ public class SubstanceCoreUtilities {
 		} else {
 			BufferedImage rampBottom = getBlankImage(width, rampHeight);
 			Graphics2D rampBottomG = (Graphics2D) rampBottom.getGraphics();
-			rampBottomG.setPaint(new GradientPaint(new Point(0, 0), new Color(
-					0, 0, 0, 255), new Point(0, rampHeight), new Color(0, 0, 0,
-					0)));
+			rampBottomG.setPaint(new GradientPaint(
+					new Point(0, 0), new Color(0, 0, 0, 255), 
+					new Point(0, rampHeight), new Color(0, 0, 0, 0)));
 			rampBottomG.fillRect(0, 0, width, rampHeight);
 
 			BufferedImage tempBottom = getBlankImage(width, height - startY);

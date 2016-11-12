@@ -30,6 +30,7 @@
 package org.pushingpixels.substance.internal.utils;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -121,7 +122,8 @@ public class PairwiseButtonBackgroundDelegate {
 		Set<Side> openSides = toIgnoreOpenSides ? EnumSet.noneOf(Side.class)
 				: SubstanceCoreUtilities.getSides(button,
 						SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY);
-		boolean needsRotation = openSides.contains(Side.BOTTOM) || openSides.contains(Side.TOP);
+		boolean needsRotation = (openSides != null) && 
+				(openSides.contains(Side.BOTTOM) || openSides.contains(Side.TOP));
 
 		BufferedImage baseLayer = getPairwiseFullAlphaBackground(button,
 				fillPainter, shaper, width, height, baseFillScheme,
@@ -249,17 +251,11 @@ public class PairwiseButtonBackgroundDelegate {
 		boolean isBorderPainted = button.isBorderPainted();
 		boolean isContentAreaFilled = button.isContentAreaFilled();
 
-		// buttons will be rectangular to make two scrolls (horizontal
-		// and vertical) touch the corners.
-		// int radius = 0;
-
 		float radius = 0.0f;
 		if (SubstanceCoreUtilities.isSpinnerButton(button)
 				&& shaper instanceof RectangularButtonShaper) {
-			radius = ((RectangularButtonShaper) shaper).getCornerRadius(button,
-					0.0f);
+			radius = ((RectangularButtonShaper) shaper).getCornerRadius(button, 0.0f);
 		}
-
 		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height, straightSides,
 				openSides, colorScheme.getDisplayName(), borderScheme.getDisplayName(), 
 				button.getClass().getName(), fillPainter.getDisplayName(), shaper.getDisplayName(),
@@ -294,9 +290,9 @@ public class PairwiseButtonBackgroundDelegate {
 						+ deltaRight, radius, null, borderDelta);
 
 				int translateY = finalBackground.getHeight();
-				if (SubstanceCoreUtilities.isScrollButton(button) &&
-						openSides.contains(SubstanceConstants.Side.BOTTOM)) {
-					translateY += 4;
+				if (SubstanceCoreUtilities.isScrollButton(button)) {
+					if ((openSides != null) && openSides.contains(SubstanceConstants.Side.BOTTOM))
+						translateY += 4;
 				}
 				AffineTransform at = AffineTransform.getTranslateInstance(0, translateY);
 				at.rotate(-Math.PI / 2);
@@ -323,12 +319,16 @@ public class PairwiseButtonBackgroundDelegate {
 						width + deltaLeft + deltaRight, 
 						height + deltaTop + deltaBottom, 
 						radius, straightSides, borderDelta);
+				if (SubstanceCoreUtilities.isScrollButton(button)) {
+					if ((openSides != null) && openSides.contains(SubstanceConstants.Side.LEFT))
+						finalGraphics.translate(1, 0);
+				}
 
 				if (isContentAreaFilled) {
-				fillPainter.paintContourBackground(finalGraphics, button, 
-						width + deltaLeft + deltaRight, 
-						height + deltaTop + deltaBottom, 
-						contour, false, colorScheme, true);
+					fillPainter.paintContourBackground(finalGraphics, button, 
+							width + deltaLeft + deltaRight, 
+							height + deltaTop + deltaBottom, 
+							contour, false, colorScheme, true);
 				}
 				if (isBorderPainted) {
 					borderPainter.paintBorder(finalGraphics, button, 

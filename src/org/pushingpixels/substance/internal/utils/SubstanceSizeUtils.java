@@ -191,7 +191,7 @@ public class SubstanceSizeUtils {
 	public static float getArrowIconHeight(int fontSize) {
 		if (fontSize < 12)
 			return 0.5f + fontSize * 0.5f;
-		return 1.0f + fontSize * 0.6f;
+		return fontSize * 0.6f;
 	}
 
 	/**
@@ -203,8 +203,6 @@ public class SubstanceSizeUtils {
 	 */
 	public static float getArrowIconWidth(int fontSize) {
 		int result = 2 * fontSize / 3;
-//		if (result % 2 == 0)
-//			result++;
 		return result + 2;
 	}
 
@@ -231,11 +229,11 @@ public class SubstanceSizeUtils {
 	}
 
 	/**
-	 * Returns the list cell renderer insets under the specified font size.
+	 * Returns the button insets under the specified font size.
 	 * 
 	 * @param fontSize
 	 *            Font size.
-	 * @return List cell renderer insets under the specified font size.
+	 * @return Button insets under the specified font size.
 	 */
 	public static Insets getButtonInsets(int fontSize) {
 		// Special handling to make buttons

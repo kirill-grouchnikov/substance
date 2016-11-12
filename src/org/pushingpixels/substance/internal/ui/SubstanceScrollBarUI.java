@@ -608,7 +608,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			SubstanceBorderPainter borderPainter = new SimplisticSoftBorderPainter();
 			borderPainter.paintBorder(result.getGraphics(), scrollBar, height,
 					width, contour, null, mainBorderScheme);
-			result = SubstanceImageCreator.getRotated(result, 3);
+			result = SubstanceImageCreator.getRotated(result, 3, false);
 
 			SubstanceScrollBarUI.trackVerticalMap.put(key, result);
 		}
@@ -786,7 +786,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			// borderThickness + borderDelta);
 			borderPainter.paintBorder(result.getGraphics(), scrollBar, height,
 					width, contour, null, borderScheme);
-			result = SubstanceImageCreator.getRotated(result, 3);
+			result = SubstanceImageCreator.getRotated(result, 3, false);
 			// System.out.println(key);
 			SubstanceScrollBarUI.thumbVerticalMap.put(key, result);
 		}

@@ -45,6 +45,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.ButtonModel;
 import javax.swing.DefaultButtonModel;
@@ -59,6 +60,8 @@ import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
+import org.pushingpixels.lafwidget.LafWidget;
+import org.pushingpixels.lafwidget.LafWidgetRepository;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.icon.HiDpiAwareIconUiResource;
 import org.pushingpixels.lafwidget.utils.LookUtils;
@@ -135,6 +138,8 @@ public class SubstanceTreeUI extends BasicTreeUI {
 	 */
 	private Insets cellRendererInsets;
 
+	private Set<LafWidget> lafWidgets;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -152,6 +157,25 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		super();
 		this.selectedPaths = new HashMap<TreePathId, Object>();
 		this.stateTransitionMultiTracker = new StateTransitionMultiTracker<TreePathId>();
+	}
+
+	@Override
+	public void installUI(JComponent c) {
+		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+
+		super.installUI(c);
+		
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installUI();
+		}
+	}
+	
+	@Override
+	public void uninstallUI(JComponent c) {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallUI();
+		}
+		super.uninstallUI(c);
 	}
 
 	/*
@@ -183,6 +207,10 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		this.cellRendererInsets = SubstanceSizeUtils
 				.getTreeCellRendererInsets(SubstanceSizeUtils
 						.getComponentFontSize(tree));
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installDefaults();
+		}
 	}
 
 	/*
@@ -193,6 +221,9 @@ public class SubstanceTreeUI extends BasicTreeUI {
 	@Override
 	protected void uninstallDefaults() {
 		this.selectedPaths.clear();
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallDefaults();
+		}
 		super.uninstallDefaults();
 	}
 
@@ -497,33 +528,28 @@ public class SubstanceTreeUI extends BasicTreeUI {
 	@Override
 	protected void installListeners() {
 		super.installListeners();
-		this.substancePropertyChangeListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (SubstanceLookAndFeel.WATERMARK_VISIBLE.equals(evt
-						.getPropertyName())) {
-					tree.setOpaque(!SubstanceCoreUtilities
-							.toDrawWatermark(tree));
+		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+			if (SubstanceLookAndFeel.WATERMARK_VISIBLE.equals(evt.getPropertyName())) {
+				tree.setOpaque(!SubstanceCoreUtilities.toDrawWatermark(tree));
+			}
+			if ("font".equals(evt.getPropertyName())) {
+				SwingUtilities.invokeLater(() -> tree.updateUI());
+			}
+			if ("dropLocation".equals(evt.getPropertyName())) {
+				JTree.DropLocation oldValue = (JTree.DropLocation) evt.getOldValue();
+				if (oldValue != null) {
+					TreePath oldDrop = oldValue.getPath();
+					Rectangle oldBounds = getPathBounds(tree, oldDrop);
+					tree.repaint(0, oldBounds.y, tree.getWidth(),
+							oldBounds.height);
 				}
-				if ("font".equals(evt.getPropertyName())) {
-					SwingUtilities.invokeLater(() -> tree.updateUI());
-				}
-				if ("dropLocation".equals(evt.getPropertyName())) {
-					JTree.DropLocation oldValue = (JTree.DropLocation) evt
-							.getOldValue();
-					if (oldValue != null) {
-						TreePath oldDrop = oldValue.getPath();
-						Rectangle oldBounds = getPathBounds(tree, oldDrop);
-						tree.repaint(0, oldBounds.y, tree.getWidth(),
-								oldBounds.height);
-					}
-					JTree.DropLocation currLocation = tree.getDropLocation();
-					if (currLocation != null) {
-						TreePath newDrop = currLocation.getPath();
-						if (newDrop != null) {
-							Rectangle newBounds = getPathBounds(tree, newDrop);
-							tree.repaint(0, newBounds.y, tree.getWidth(),
-									newBounds.height);
-						}
+				JTree.DropLocation currLocation = tree.getDropLocation();
+				if (currLocation != null) {
+					TreePath newDrop = currLocation.getPath();
+					if (newDrop != null) {
+						Rectangle newBounds = getPathBounds(tree, newDrop);
+						tree.repaint(0, newBounds.y, tree.getWidth(),
+								newBounds.height);
 					}
 				}
 			}
@@ -542,6 +568,10 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		this.substanceFadeRolloverListener = new RolloverFadeListener();
 		this.tree.addMouseMotionListener(this.substanceFadeRolloverListener);
 		this.tree.addMouseListener(this.substanceFadeRolloverListener);
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installListeners();
+		}
 	}
 
 	/*
@@ -567,7 +597,29 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		this.tree.removeMouseListener(this.substanceFadeRolloverListener);
 		this.substanceFadeRolloverListener = null;
 
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallListeners();
+		}
+
 		super.uninstallListeners();
+	}
+	
+	@Override
+	protected void installComponents() {
+		super.installComponents();
+
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.installComponents();
+		}
+	}
+	
+	@Override
+	protected void uninstallComponents() {
+		for (LafWidget lafWidget : this.lafWidgets) {
+			lafWidget.uninstallComponents();
+		}
+
+		super.uninstallComponents();
 	}
 
 	/**

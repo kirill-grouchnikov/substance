@@ -74,11 +74,6 @@ public class SubstanceSpinnerButton extends JButton implements SubstanceInternal
 				SubstanceSpinnerButton.class);
 	}
 
-	/**
-	 * Button orientation.
-	 */
-	private int orientation;
-
 	private abstract static class SpinnerButtonBorder extends
 			SubstanceButtonBorder {
 		public SpinnerButtonBorder(Class<?> buttonShaperClass) {
@@ -117,7 +112,6 @@ public class SubstanceSpinnerButton extends JButton implements SubstanceInternal
 						extraPadding + deltaBottom, extraPadding);
 			}
 		});
-		this.orientation = orientation;
 
 		this.setOpaque(false);
 		this.setBorderPainted(false);

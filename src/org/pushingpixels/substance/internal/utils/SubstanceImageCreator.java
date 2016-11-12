@@ -55,7 +55,6 @@ import java.util.Set;
 import javax.swing.AbstractButton;
 import javax.swing.CellRendererPane;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JTree;
@@ -411,7 +410,7 @@ public final class SubstanceImageCreator {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
                 RenderingHints.VALUE_STROKE_PURE);
-//		graphics.setColor(Color.red);
+//		graphics.setColor(Color.green);
 //		graphics.fillRect(0, 0, (int) width, (int) height);
 
 		Color arrowColor = SubstanceColorUtilities.getMarkColor(scheme, true);
@@ -435,9 +434,9 @@ public final class SubstanceImageCreator {
 		} else {
 			float cushion = strokeWidth / 2.0f;
 			GeneralPath gp = new GeneralPath();
-			gp.moveTo(cushion, strokeWidth);
+			gp.moveTo(cushion, cushion);
 			gp.lineTo(0.5f * (width), height - 1 - cushion);
-			gp.lineTo(width - cushion, strokeWidth);
+			gp.lineTo(width - cushion, cushion);
 			graphics.draw(gp);
 
 			int quadrantCounterClockwise = 0;
@@ -456,7 +455,7 @@ public final class SubstanceImageCreator {
 				break;
 			}
 			BufferedImage rotatedImage = SubstanceImageCreator.getRotated(
-					arrowImage, quadrantCounterClockwise);
+					arrowImage, quadrantCounterClockwise, false);
 
 			return rotatedImage;
 		}
@@ -559,7 +558,7 @@ public final class SubstanceImageCreator {
 			break;
 		}
 		BufferedImage arrowImage = SubstanceImageCreator.getRotated(
-				downArrowImage, quadrantCounterClockwise);
+				downArrowImage, quadrantCounterClockwise, false);
 
 		return new HiDpiAwareIcon(arrowImage);
 	}
@@ -574,8 +573,8 @@ public final class SubstanceImageCreator {
 	 *            rotation angle is 90 times this value.
 	 * @return Rotated image.
 	 */
-	public static BufferedImage getRotated(BufferedImage bi,
-			int quadrantClockwise) {
+	public static BufferedImage getRotated(BufferedImage bi, int quadrantClockwise,
+			boolean respectScaleFactorDuringRotation) {
 		if (quadrantClockwise == 0) {
 			return bi;
 		}
@@ -590,26 +589,26 @@ public final class SubstanceImageCreator {
 		BufferedImage biRot = SubstanceCoreUtilities.getBlankImage(width / factor,
 				height / factor);
 		AffineTransform at = null;
+		int factorForRotation = respectScaleFactorDuringRotation ? factor : 1;
 		switch (quadrantClockwise) {
 		case 1:
-			at = AffineTransform.getTranslateInstance(width, 0);
+			at = AffineTransform.getTranslateInstance(width / factorForRotation, 0);
 			at.rotate(Math.PI / 2);
 			break;
 		case 2:
-			at = AffineTransform.getTranslateInstance(width, height);
+			at = AffineTransform.getTranslateInstance(width / factorForRotation, height / factorForRotation);
 			at.rotate(Math.PI);
 			break;
 		case 3:
-			at = AffineTransform.getTranslateInstance(0, height);
+			at = AffineTransform.getTranslateInstance(0, height / factorForRotation);
 			at.rotate(-Math.PI / 2);
 		}
 		Graphics2D rotg = biRot.createGraphics();
-		rotg.scale(1, 1);
+		rotg.scale(1.0f / factor, 1.0f / factor);
 		if (at != null) {
 			rotg.setTransform(at);
 		}
-		rotg.scale(factor, factor);
-		rotg.drawImage(bi, 0, 0, bi.getWidth() / factor, bi.getHeight() / factor, null);
+		rotg.drawImage(bi, 0, 0, bi.getWidth(), bi.getHeight(), null);
 		rotg.dispose();
 		return biRot;
 	}

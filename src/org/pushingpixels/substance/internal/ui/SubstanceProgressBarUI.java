@@ -311,7 +311,7 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 			result = SubstanceImageCreator.getStripe(baseSize, colorScheme
 					.getUltraLightColor());
 			if (isRotated) {
-				result = SubstanceImageCreator.getRotated(result, 1);
+				result = SubstanceImageCreator.getRotated(result, 1, false);
 			}
 			SubstanceProgressBarUI.stripeMap.put(key, result);
 		}
@@ -358,7 +358,7 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 			g2d.dispose();
 
 			if (orientation == SwingConstants.VERTICAL) {
-				result = SubstanceImageCreator.getRotated(result, 3);
+				result = SubstanceImageCreator.getRotated(result, 3, false);
 			}
 			SubstanceProgressBarUI.backgroundMap.put(key, result);
 		}
@@ -408,7 +408,7 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 			g2d.dispose();
 
 			if (orientation == SwingConstants.VERTICAL) {
-				result = SubstanceImageCreator.getRotated(result, 3);
+				result = SubstanceImageCreator.getRotated(result, 3, false);
 			}
 			SubstanceProgressBarUI.progressMap.put(key, result);
 		}

@@ -1847,37 +1847,30 @@ public class SubstanceTableUI extends BasicTableUI implements
 		 */
 		public void tableChanged(final TableModelEvent e) {
 			// fix for defect 291 - tracking changes to the table.
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					// fix for defect 350 - font might have been
-					// switched in the middle of update
-					if (table == null)
-						return;
+			SwingUtilities.invokeLater(() -> {
+				// fix for defect 350 - font might have been
+				// switched in the middle of update
+				if (table == null)
+					return;
 
-					// fix for defect 328 - do not clear the
-					// internal selection and focus tracking
-					// when the event is table update.
-					if (e.getType() != TableModelEvent.UPDATE) {
-						selectedIndices.clear();
-						stateTransitionMultiTracker.clear();
-						focusedCellId = null;
-					}
-					syncSelection(true);
-					table.repaint();
+				// fix for defect 328 - do not clear the
+				// internal selection and focus tracking
+				// when the event is table update.
+				if (e.getType() != TableModelEvent.UPDATE) {
+					selectedIndices.clear();
+					stateTransitionMultiTracker.clear();
+					focusedCellId = null;
 				}
+				syncSelection(true);
+				table.repaint();
 			});
 		}
 
 		@Override
 		public void sorterChanged(RowSorterEvent e) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					// fix for issue 479 - cancel selection animations
-					// that are happening due to changes in sorter
-					stateTransitionMultiTracker.clear();
-				}
-			});
+			// fix for issue 479 - cancel selection animations
+			// that are happening due to changes in sorter
+			SwingUtilities.invokeLater(stateTransitionMultiTracker::clear);
 		}
 	}
 

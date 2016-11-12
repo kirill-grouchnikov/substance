@@ -32,13 +32,11 @@ package org.pushingpixels.substance.internal.utils.scroll;
 import java.awt.Insets;
 
 import javax.swing.JButton;
-import javax.swing.SwingConstants;
+import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.substance.api.SubstanceConstants;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceInternalArrowButton;
 
 /**
@@ -56,10 +54,6 @@ public class SubstanceScrollButton extends JButton implements UIResource,
 				AnimationFacet.GHOSTING_ICON_ROLLOVER,
 				SubstanceScrollButton.class);
 	}
-	/**
-	 * Button orientation.
-	 */
-	private int orientation;
 
 	/**
 	 * Simple constructor.
@@ -72,27 +66,9 @@ public class SubstanceScrollButton extends JButton implements UIResource,
 	public SubstanceScrollButton(int orientation) {
 		super();
 		this.setRequestFocusEnabled(false);
-		this.setMargin(new Insets(0, 0, 0, 2));
-		this.orientation = orientation;
-		this.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
-				getStraightSide(this.orientation));
+		this.setIconTextGap(0);
 	}
 
-	private static SubstanceConstants.Side getStraightSide(int orientation) {
-		switch (orientation) {
-			case SwingConstants.NORTH:
-				return SubstanceConstants.Side.BOTTOM;
-			case SwingConstants.WEST:
-				return SubstanceConstants.Side.RIGHT;
-			case SwingConstants.SOUTH:
-				return SubstanceConstants.Side.TOP;
-			case SwingConstants.EAST:
-				return SubstanceConstants.Side.LEFT;
-			default:
-				return null;
-		}
-	}
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -101,5 +77,20 @@ public class SubstanceScrollButton extends JButton implements UIResource,
 	@Override
 	public boolean isFocusable() {
 		return false;
+	}
+
+	@Override
+	public Insets getInsets() {
+		return new Insets(0, 0, 0, 0);
+	}
+	
+	@Override
+	public Insets getInsets(Insets insets) {
+        if (insets == null) {
+            insets = new Insets(0, 0, 0, 0);
+        } else {
+        	insets.set(0, 0, 0, 0);
+        }
+		return insets;
 	}
 }

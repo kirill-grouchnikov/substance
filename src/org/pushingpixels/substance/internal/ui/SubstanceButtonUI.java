@@ -372,11 +372,10 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 		Font f = c.getFont();
 
 		// layout the text and icon
-		String text = SwingUtilities.layoutCompoundLabel(c, fm, b.getText(), b
-				.getIcon(), b.getVerticalAlignment(), b
-				.getHorizontalAlignment(), b.getVerticalTextPosition(), b
-				.getHorizontalTextPosition(), viewRect, iconRect, textRect, b
-				.getText() == null ? 0 : b.getIconTextGap());
+		String text = SwingUtilities.layoutCompoundLabel(c, fm, b.getText(), 
+				b.getIcon(), b.getVerticalAlignment(), b.getHorizontalAlignment(), 
+				b.getVerticalTextPosition(), b.getHorizontalTextPosition(), viewRect, 
+				iconRect, textRect, b.getText() == null ? 0 : b.getIconTextGap());
 
 		Graphics2D g2d = (Graphics2D) g.create();
 
@@ -462,8 +461,8 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 		Graphics2D graphics = (Graphics2D) g.create();
 		GhostPaintingUtils.paintGhostIcon(graphics, (AbstractButton) c, iconRect);
 
-		// graphics.setColor(Color.red);
-		// graphics.fill(iconRect);
+//		 graphics.setColor(Color.blue);
+//		 graphics.fill(iconRect);
 
 		// We have three types of icons:
 		// 1. The original button icon
