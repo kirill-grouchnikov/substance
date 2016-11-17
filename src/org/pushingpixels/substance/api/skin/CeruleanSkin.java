@@ -37,6 +37,7 @@ import org.pushingpixels.substance.api.painter.decoration.ArcDecorationPainter;
 import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.GlassHighlightPainter;
 import org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter;
+import org.pushingpixels.substance.api.painter.overlay.TopShadowOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.internal.colorscheme.BlendBiColorScheme;
 
@@ -54,12 +55,6 @@ public class CeruleanSkin extends SubstanceSkin {
      */
     public static final String NAME = "Cerulean";
 
-
-    /**
-     * Overlay painter to paint separator lines on some decoration areas.
-     */
-    private BottomLineOverlayPainter bottomLineOverlayPainter;
-
     /**
      * Creates a new <code>Nebulous</code> skin.
      */
@@ -71,8 +66,6 @@ public class CeruleanSkin extends SubstanceSkin {
 
         SubstanceColorScheme activeScheme = schemes.get("Nebula Active");
         SubstanceColorScheme enabledScheme = schemes.get("Nebula Enabled").saturate(-0.9);
-        SubstanceColorScheme rolloverUnselectedScheme = schemes
-                .get("Nebula Rollover Unselected");
         final SubstanceColorScheme pressedScheme = schemes.get("Nebula Pressed");
         SubstanceColorScheme rolloverSelectedScheme = schemes
                 .get("Nebula Rollover Selected");
@@ -88,7 +81,6 @@ public class CeruleanSkin extends SubstanceSkin {
         double tint = 0.4;
         double shade = tint/4;
         CopyMutableColorScheme pressed = new CopyMutableColorScheme("Cerulean Pressed", steelBlue.saturate(saturate).shade(shade));
-        //pressed.setForegroundColor(pressedScheme.getForegroundColor());
         defaultSchemeBundle.registerColorScheme(pressed,
                 ComponentState.PRESSED_SELECTED, ComponentState.PRESSED_UNSELECTED);
         defaultSchemeBundle.registerColorScheme(new BlendBiColorScheme(
@@ -156,7 +148,6 @@ public class CeruleanSkin extends SubstanceSkin {
                 .getColorSchemes("org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes");
         SubstanceColorScheme highlightColorScheme = kitchenSinkSchemes
                 .get("Moderate Highlight");
-//        SubstanceColorScheme highlightColorScheme = activeScheme.hueShift(-0.5).saturate(0.5).tint(0.5);
         defaultSchemeBundle.registerHighlightColorScheme(highlightColorScheme);
 
         registerDecorationAreaSchemeBundle(defaultSchemeBundle,
@@ -164,17 +155,21 @@ public class CeruleanSkin extends SubstanceSkin {
 
         CopyMutableColorScheme chrome = new CopyMutableColorScheme("Cerulean Chrome", pressedScheme);
         chrome.setUltraDarkColor(chrome.getExtraLightColor());
-        registerDecorationAreaSchemeBundle(new SubstanceColorSchemeBundle(pressedScheme, pressedScheme, disabledScheme), chrome,
+        registerDecorationAreaSchemeBundle(
+        		new SubstanceColorSchemeBundle(pressedScheme, pressedScheme, 
+        				pressedScheme.shade(0.5)), 
+        		chrome,
                 DecorationAreaType.PRIMARY_TITLE_PANE,
-                DecorationAreaType.SECONDARY_TITLE_PANE);
+                DecorationAreaType.SECONDARY_TITLE_PANE,
+				DecorationAreaType.HEADER);
 
-//        this.registerAsDecorationArea(enabledScheme,
-//                DecorationAreaType.PRIMARY_TITLE_PANE_INACTIVE,
-//                DecorationAreaType.SECONDARY_TITLE_PANE_INACTIVE);
-
-        registerAsDecorationArea(activeScheme.saturate(-0.75),
-                DecorationAreaType.HEADER, DecorationAreaType.FOOTER,
+        registerAsDecorationArea(activeScheme.saturate(-0.75), DecorationAreaType.FOOTER,
                 DecorationAreaType.GENERAL);
+
+        // add an overlay painter to paint a drop shadow along the top
+		// edge of toolbars
+		this.addOverlayPainter(TopShadowOverlayPainter.getInstance(),
+				DecorationAreaType.TOOLBAR);
 
         this.buttonShaper = new ClassicButtonShaper();
         this.fillPainter = new ClassicFillPainter();

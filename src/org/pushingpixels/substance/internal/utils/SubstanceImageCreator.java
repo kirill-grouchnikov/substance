@@ -693,17 +693,14 @@ public final class SubstanceImageCreator {
 			ComponentState componentState, int offsetX,
 			SubstanceColorScheme fillColorScheme,
 			SubstanceColorScheme markColorScheme,
-			SubstanceColorScheme borderColorScheme, float checkMarkVisibility) {
+			SubstanceColorScheme borderColorScheme, float checkMarkVisibility,
+			float alpha) {
 
 		if (!componentState.isActive()) {
 			fillPainter = SimplisticSoftBorderReverseFillPainter.INSTANCE;
 		}
 
 		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(dimension);
-//		float borderThickness = SubstanceSizeUtils
-//				.getBorderStrokeWidth(dimension);
-//		int delta = (int) (borderThickness - 0.6);
-		// System.out.println(dimension + ":" + borderThickness + ":" + delta);
 
 		// float fDelta = borderThickness / 2.0f;
 		Shape contourBorder = new Ellipse2D.Float(borderDelta / 2.0f, borderDelta / 2.0f, 
@@ -717,8 +714,6 @@ public final class SubstanceImageCreator {
 		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
                 RenderingHints.VALUE_STROKE_PURE);
 
-		float alpha = SubstanceColorSchemeUtilities.getAlpha(component,
-				componentState);
 		graphics.setComposite(AlphaComposite.getInstance(
 				AlphaComposite.SRC_OVER, alpha));
 
@@ -791,7 +786,7 @@ public final class SubstanceImageCreator {
 			SubstanceColorScheme fillColorScheme,
 			SubstanceColorScheme markColorScheme,
 			SubstanceColorScheme borderColorScheme, float checkMarkVisibility,
-			boolean isCheckMarkFadingOut) {
+			boolean isCheckMarkFadingOut, float alpha) {
 
 		int offset = SubstanceSizeUtils
 				.getAdjustedSize(
@@ -820,8 +815,6 @@ public final class SubstanceImageCreator {
 		BufferedImage offBackground = SubstanceCoreUtilities.getBlankImage(
 				dimension, dimension);
 		Graphics2D graphics = (Graphics2D) offBackground.getGraphics();
-		float alpha = SubstanceColorSchemeUtilities.getAlpha(button,
-				componentState);
 		graphics.setComposite(AlphaComposite.getInstance(
 				AlphaComposite.SRC_OVER, alpha));
 
@@ -853,78 +846,6 @@ public final class SubstanceImageCreator {
 		}
 
 		return offBackground;
-	}
-
-	/**
-	 * Retrieves composite background for the specified parameters. The
-	 * composite background consists of three layers:
-	 * <ol>
-	 * <li>Layer that matches the <code>increased</code> state.
-	 * <li>Layer that matches the <code>decreased</code> state.
-	 * <li>Regular layer with rounded background.
-	 * </ol>
-	 * The layers are drawn in the following order:
-	 * <ol>
-	 * <li>The left half of the first layer
-	 * <li>The right half of the second layer
-	 * <li>The third layer
-	 * </ol>
-	 * Combined together, the layers create the image for scrollbar track with
-	 * continuation of the arrow increase and decrease buttons.
-	 * 
-	 * @param component
-	 *            Component.
-	 * @param width
-	 *            Image width.
-	 * @param height
-	 *            Image height.
-	 * @param cornerRadius
-	 *            Corner radius.
-	 * @param decrButton
-	 *            The <code>decrease</code> button.
-	 * @param incrButton
-	 *            The <code>increase</code> button.
-	 * @param flipSides
-	 *            If <code>true</code>, the drawn halves of the first and the
-	 *            second layers above will be swapped.
-	 * @return Composite background for the specified parameters.
-	 */
-	public static void paintCompositeRoundedBackground(JComponent component,
-			Graphics g, int width, int height, int cornerRadius,
-			AbstractButton decrButton, AbstractButton incrButton,
-			boolean flipSides) {
-
-		int delta = 3;
-
-		if (decrButton != null) {
-			Graphics2D graphics = (Graphics2D) g.create();
-			if (!flipSides) {
-				graphics.clip(new Rectangle(-delta, 0, width / 2, height));
-				graphics.translate(-delta, 0);
-			} else {
-				graphics.clip(new Rectangle(width / 2, 0, width / 2 + 1, height));
-			}
-			PairwiseButtonBackgroundDelegate.updatePairwiseBackground(graphics,
-					decrButton, width + 2 * delta, height,
-					//flipSides ? Side.RIGHT : Side.LEFT, 
-							true);
-			graphics.dispose();
-		}
-
-		if (incrButton != null) {
-			Graphics2D graphics = (Graphics2D) g.create();
-			if (!flipSides) {
-				graphics.clip(new Rectangle(width / 2, 0, width / 2 + 1, height));
-			} else {
-				graphics.clip(new Rectangle(-delta, 0, width / 2, height));
-				graphics.translate(-delta, 0);
-			}
-			PairwiseButtonBackgroundDelegate.updatePairwiseBackground(graphics,
-					incrButton, width + 2 * delta, height,
-					//flipSides ? Side.LEFT : Side.RIGHT, 
-							true);
-			graphics.dispose();
-		}
 	}
 
 	/**
@@ -1093,11 +1014,10 @@ public final class SubstanceImageCreator {
 	 */
 	public static HiDpiAwareIcon getMaximizeIcon(int iSize, SubstanceColorScheme scheme,
 			SubstanceColorScheme backgroundScheme) {
-		BufferedImage image = SubstanceCoreUtilities
-				.getBlankImage(iSize, iSize);
+		BufferedImage image = SubstanceCoreUtilities.getBlankImage(iSize, iSize);
 		Graphics2D graphics = (Graphics2D) image.getGraphics();
 		int start = (iSize / 4) - 1;
-		int end = iSize - start - 1;// (3 * iSize / 4);
+		int end = iSize - start - 1;
 		Color color = SubstanceColorUtilities.getMarkColor(scheme, true);
 		graphics.setColor(color);
 		graphics.drawRect(start, start, end - start, end - start);

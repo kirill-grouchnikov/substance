@@ -27,72 +27,29 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.pushingpixels.substance.internal.utils.scroll;
+package org.pushingpixels.substance.api.skin;
 
-import java.awt.Insets;
-
-import javax.swing.JButton;
-import javax.swing.plaf.ButtonUI;
-import javax.swing.plaf.UIResource;
-
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.substance.internal.utils.SubstanceInternalArrowButton;
-import org.pushingpixels.substance.internal.utils.SubstanceInternalButton;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 
 /**
- * Scroll bar button in <b>Substance</b> look and feel.
+ * Standalone look-and-feel that uses the <code>Graphite Gold</code> skin from
+ * {@link GraphiteGoldSkin}. You can set this look-and-feel by:
+ * <ul>
+ * <li>-Dswing.defaultlaf=org.pushingpixels.substance.api.skin.
+ * SubstanceGraphiteGoldLookAndFeel</li>
+ * <li>UIManager.setLookAndFeel(
+ * "org.pushingpixels.substance.api.skin.SubstanceGraphiteGoldLookAndFeel" );</li>
+ * <li>UIManager.setLookAndFeel(new SubstanceGraphiteGoldLookAndFeel());</li>
+ * </ul>
  * 
  * @author Kirill Grouchnikov
+ * @since version 6.2
  */
-@SubstanceInternalButton
-@SubstanceInternalArrowButton
-public class SubstanceScrollButton extends JButton implements UIResource {
-	static {
-		AnimationConfigurationManager.getInstance().disallowAnimations(
-				AnimationFacet.GHOSTING_BUTTON_PRESS,
-				SubstanceScrollButton.class);
-		AnimationConfigurationManager.getInstance().disallowAnimations(
-				AnimationFacet.GHOSTING_ICON_ROLLOVER,
-				SubstanceScrollButton.class);
-	}
-
+public class SubstanceGraphiteGoldLookAndFeel extends SubstanceLookAndFeel {
 	/**
-	 * Simple constructor.
-	 * 
-	 * @param scrollBarIcon
-	 *            The icon.
-	 * @param orientation
-	 *            The button icon arrow orientation.
+	 * Creates a new <code>Raven Graphite Gold</code> look-and-feel.
 	 */
-	public SubstanceScrollButton(int orientation) {
-		super();
-		this.setRequestFocusEnabled(false);
-		this.setIconTextGap(0);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.Component#isFocusable()
-	 */
-	@Override
-	public boolean isFocusable() {
-		return false;
-	}
-
-	@Override
-	public Insets getInsets() {
-		return new Insets(0, 0, 0, 0);
-	}
-	
-	@Override
-	public Insets getInsets(Insets insets) {
-        if (insets == null) {
-            insets = new Insets(0, 0, 0, 0);
-        } else {
-        	insets.set(0, 0, 0, 0);
-        }
-		return insets;
+	public SubstanceGraphiteGoldLookAndFeel() {
+		super(new GraphiteGoldSkin());
 	}
 }

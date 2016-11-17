@@ -41,7 +41,8 @@ import org.pushingpixels.lafwidget.animation.AnimationFacet;
  * 
  * @author Kirill Grouchnikov
  */
-public class SubstanceTitleButton extends JButton implements SubstanceInternalButton {
+@SubstanceInternalButton
+public class SubstanceTitleButton extends JButton {
 	static {
 		AnimationConfigurationManager.getInstance().disallowAnimations(
 				AnimationFacet.GHOSTING_BUTTON_PRESS,

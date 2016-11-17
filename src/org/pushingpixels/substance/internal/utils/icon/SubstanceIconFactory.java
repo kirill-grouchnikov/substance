@@ -940,9 +940,8 @@ public class SubstanceIconFactory {
 
 		LazyResettableHashMap<HiDpiAwareIcon> kindMap = SubstanceIconFactory.titlePaneIcons
 				.get(iconKind);
-
-		HashMapKey key = SubstanceCoreUtilities.getHashKey(scheme
-				.getDisplayName(), backgroundScheme.getDisplayName());
+		HashMapKey key = SubstanceCoreUtilities.getHashKey(scheme.getDisplayName(), 
+				backgroundScheme.getDisplayName());
 		HiDpiAwareIcon result = kindMap.get(key);
 		if (result != null)
 			return result;

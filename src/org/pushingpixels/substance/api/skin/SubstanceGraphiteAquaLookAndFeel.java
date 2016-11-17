@@ -32,7 +32,7 @@ package org.pushingpixels.substance.api.skin;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 
 /**
- * Standalone look-and-feel that uses the <code>Raven Graphite</code> skin from
+ * Standalone look-and-feel that uses the <code>Graphite Aqua</code> skin from
  * {@link GraphiteAquaSkin}. You can set this look-and-feel by:
  * <ul>
  * <li>-Dswing.defaultlaf=org.pushingpixels.substance.api.skin.

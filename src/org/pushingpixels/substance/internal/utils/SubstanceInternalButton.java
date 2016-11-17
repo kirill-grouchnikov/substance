@@ -29,10 +29,17 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * Interface to mark buttons used in various UI delegates.
  * 
  * @author Kirill Grouchnikov
  */
-public interface SubstanceInternalButton {
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface SubstanceInternalButton {
 }

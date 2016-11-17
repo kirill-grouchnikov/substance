@@ -533,48 +533,6 @@ public class SubstanceConstants {
 	}
 
 	/**
-	 * Enumerates possible button policies for scroll panes.
-	 * 
-	 * @author Kirill Grouchnikov
-	 * @see SubstanceLookAndFeel#SCROLL_PANE_BUTTONS_POLICY
-	 */
-	public enum ScrollPaneButtonPolicyKind {
-		/**
-		 * The <code>empty</code> button policy - no buttons.
-		 */
-		NONE,
-
-		/**
-		 * The <code>opposite</code> (default) button policy - the decrease
-		 * button is on one side of the scroll bar, and the increase button is
-		 * on the other side of the scroll bar.
-		 */
-		OPPOSITE,
-
-		/**
-		 * The <code>adjacent</code> button policy - both the decrease button
-		 * and the increase button are on the same side of the scroll bar
-		 * adjacent to each other (like on Mac).
-		 */
-		ADJACENT,
-
-		/**
-		 * The <code>multiple</code> button policy - there are two decrease
-		 * buttons on the opposite side of the scroll bar and the increase
-		 * button is adjacent to the second decrease button. This combines the
-		 * {@link #OPPOSITE} and the {@link #ADJACENT} policies together.
-		 */
-		MULTIPLE,
-
-		/**
-		 * The <code>multiple both</code> button policy - there are two pairs of
-		 * decrease-increase buttons on the opposite sides of the scroll bar.
-		 * This extends the {@link #MULTIPLE} policy.
-		 */
-		MULTIPLE_BOTH
-	}
-
-	/**
 	 * Enumerates possible values for menu gutter fill kind.
 	 * 
 	 * @author Kirill Grouchnikov

@@ -116,8 +116,8 @@ public class StandardFillPainter implements SubstanceFillPainter {
 			BufferedImage reverseGhostContour = SubstanceCoreUtilities
 					.getBlankImage(iWidth + 2 * kernelSize, iHeight + 2
 							* kernelSize);
-			Graphics2D reverseGraphics = (Graphics2D) reverseGhostContour
-					.getGraphics();
+			Graphics2D reverseGraphics = (Graphics2D) reverseGhostContour.createGraphics();
+			reverseGraphics.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
 			Color bottomShineColorTransp = new Color(bottomShineColor.getRed(),
 					bottomShineColor.getGreen(), bottomShineColor.getBlue(), 64);
 			GradientPaint gradientShine = new GradientPaint(0, kernelSize,
@@ -131,6 +131,9 @@ public class StandardFillPainter implements SubstanceFillPainter {
 					blurredGhostContour.getWidth() / scaleFactor,
 					blurredGhostContour.getHeight() / scaleFactor, null);
 			// millis004 = System.nanoTime();
+			reverseGraphics.dispose();
+			
+			//graphics.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
 
 			graphics.drawImage(reverseGhostContour, 0, 0, iWidth - 1,
 					shineHeight, kernelSize, kernelSize,
@@ -139,8 +142,8 @@ public class StandardFillPainter implements SubstanceFillPainter {
 			BufferedImage overGhostContour = SubstanceCoreUtilities
 					.getBlankImage(iWidth + 2 * kernelSize, iHeight + 2
 							* kernelSize);
-			Graphics2D overGraphics = (Graphics2D) overGhostContour
-					.getGraphics();
+			Graphics2D overGraphics = (Graphics2D) overGhostContour.createGraphics();
+			overGraphics.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
 			overGraphics.setPaint(new GradientPaint(0, kernelSize,
 					topFillColor, 0, kernelSize + height / 2, midFillColorTop,
 					true));

@@ -29,14 +29,19 @@
  */
 package test.samples.substance.clientprop;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.SubstanceConstants.ScrollPaneButtonPolicyKind;
 import org.pushingpixels.substance.api.skin.BusinessBlackSteelSkin;
 
 /**
@@ -76,31 +81,6 @@ public class ScrollPaneButtonsPolicy extends JFrame {
 		final JScrollPane scrollPane = new JScrollPane(samplePanel);
 
 		this.add(scrollPane, BorderLayout.CENTER);
-
-		JPanel controls = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-
-		final JComboBox buttonsPolicyCombo = new JComboBox(new Object[] {
-				ScrollPaneButtonPolicyKind.NONE,
-				ScrollPaneButtonPolicyKind.OPPOSITE,
-				ScrollPaneButtonPolicyKind.ADJACENT,
-				ScrollPaneButtonPolicyKind.MULTIPLE,
-				ScrollPaneButtonPolicyKind.MULTIPLE_BOTH });
-		buttonsPolicyCombo.setSelectedItem(ScrollPaneButtonPolicyKind.OPPOSITE);
-		buttonsPolicyCombo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// set the selected button policy kind on the scroll pane
-				ScrollPaneButtonPolicyKind buttonPolicy = (ScrollPaneButtonPolicyKind) buttonsPolicyCombo
-						.getSelectedItem();
-				scrollPane.putClientProperty(
-						SubstanceLookAndFeel.SCROLL_PANE_BUTTONS_POLICY,
-						buttonPolicy);
-				scrollPane.repaint();
-			}
-		});
-
-		controls.add(new JLabel("Buttons policy"));
-		controls.add(buttonsPolicyCombo);
-		this.add(controls, BorderLayout.SOUTH);
 
 		this.setSize(400, 200);
 		this.setLocationRelativeTo(null);

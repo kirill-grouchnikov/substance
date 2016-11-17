@@ -773,24 +773,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	public final static String COMBO_BOX_POPUP_FLYOUT_ORIENTATION = "substancelaf.comboboxpopupFlyoutOrientation";
 
 	/**
-	 * Client property name for specifying scroll pane button policy. This
-	 * property can be set on either a specific {@link JScrollPane} or globally
-	 * on {@link UIManager}. The value should be one of the
-	 * {@link SubstanceConstants.ScrollPaneButtonPolicyKind} enum. Example of
-	 * setting a scroll pane with a custom button policy:
-	 * 
-	 * <p>
-	 * <code>
-	 * JScrollPane jsp = new JScrollPane(new JPanel());<br>
-	 * jsp.putClientProperty(SubstanceLookAndFeel.SCROLL_PANE_BUTTONS_POLICY,<br>
-	 * &nbsp;&nbsp;ScrollPaneButtonPolicyKind.MULTIPLE);
-	 * </code>
-	 * 
-	 * @since version 3.1
-	 */
-	public final static String SCROLL_PANE_BUTTONS_POLICY = "substancelaf.scrollPaneButtonsPolicy";
-
-	/**
 	 * Property name for specifying that extra UI elements (such as menu items
 	 * in system menu or lock borders) should be shown. This property can be set
 	 * as a global setting on {@link UIManager} or as a client property on a

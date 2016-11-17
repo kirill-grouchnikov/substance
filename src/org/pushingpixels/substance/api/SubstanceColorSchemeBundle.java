@@ -173,10 +173,27 @@ public class SubstanceColorSchemeBundle {
 	 */
 	public void registerColorScheme(SubstanceColorScheme stateColorScheme,
 			float alpha, ComponentState... states) {
+		this.registerColorScheme(stateColorScheme, alpha, ColorSchemeAssociationKind.FILL, states);
+	}
+
+	/**
+	 * Registers a color scheme for the specific component state.
+	 * 
+	 * @param stateColorScheme
+	 *            Color scheme for the specified component state.
+	 * @param alpha
+	 *            Alpha channel for the color scheme.
+	 * @param associationKind
+	 *            Color scheme association kind that specifies the visual areas
+	 *            of controls to be painted with this color scheme.
+	 * @param states
+	 *            Component states.
+	 */
+	public void registerColorScheme(SubstanceColorScheme stateColorScheme,
+			float alpha, ColorSchemeAssociationKind associationKind, ComponentState... states) {
 		if (states != null) {
 			for (ComponentState state : states) {
-				this.colorSchemeMap.get(ColorSchemeAssociationKind.FILL).put(
-						state, stateColorScheme);
+				this.colorSchemeMap.get(associationKind).put(state, stateColorScheme);
 				this.stateAlphaMap.put(state, alpha);
 			}
 		}
@@ -210,9 +227,7 @@ public class SubstanceColorSchemeBundle {
 			SubstanceColorScheme stateHighlightScheme, ComponentState... states) {
 		if ((states == null) || (states.length == 0)) {
 			for (ComponentState state : ComponentState.getAllStates()) {
-				if (this.colorSchemeMap.get(
-						ColorSchemeAssociationKind.HIGHLIGHT)
-						.containsKey(state))
+				if (this.colorSchemeMap.get(ColorSchemeAssociationKind.HIGHLIGHT).containsKey(state))
 					continue;
 				if (state.isDisabled())
 					continue;

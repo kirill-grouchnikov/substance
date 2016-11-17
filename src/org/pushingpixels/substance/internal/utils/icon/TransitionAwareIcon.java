@@ -140,8 +140,8 @@ public class TransitionAwareIcon implements Icon {
 		this.uniqueIconTypeId = uniqueIconTypeId;
 		
 		HiDpiAwareIcon markEnabledIcon = this.delegate.getColorSchemeIcon(
-				SubstanceColorSchemeUtilities
-				.getColorScheme(comp, ColorSchemeAssociationKind.MARK,
+				SubstanceColorSchemeUtilities.getColorScheme(comp, 
+						ColorSchemeAssociationKind.MARK,
 						ComponentState.ENABLED));
 		this.iconWidth = markEnabledIcon.getIconWidth();
 		this.iconHeight = markEnabledIcon.getIconHeight();
@@ -168,7 +168,8 @@ public class TransitionAwareIcon implements Icon {
 				currState = ComponentState.ENABLED;
 		}
 
-		ColorSchemeAssociationKind baseAssociationKind = (this.colorSchemeAssociationKindDelegate == null) ? ColorSchemeAssociationKind.MARK
+		ColorSchemeAssociationKind baseAssociationKind = (this.colorSchemeAssociationKindDelegate == null) 
+				? ColorSchemeAssociationKind.MARK
 				: this.colorSchemeAssociationKindDelegate
 						.getColorSchemeAssociationKind(currState);
 		SubstanceColorScheme baseScheme = SubstanceColorSchemeUtilities
@@ -177,9 +178,8 @@ public class TransitionAwareIcon implements Icon {
 				currState);
 
 		HashMapKey keyBase = SubstanceCoreUtilities.getHashKey(
-				this.uniqueIconTypeId, SubstanceSizeUtils
-						.getComponentFontSize(this.comp), baseScheme
-						.getDisplayName(), baseAlpha);
+				this.uniqueIconTypeId, SubstanceSizeUtils.getComponentFontSize(this.comp), 
+				baseScheme.getDisplayName(), baseAlpha);
 		HiDpiAwareIcon layerBase = iconMap.get(keyBase);
 		if (layerBase == null) {
 			HiDpiAwareIcon baseFullOpacity = this.delegate.getColorSchemeIcon(baseScheme);
@@ -188,8 +188,7 @@ public class TransitionAwareIcon implements Icon {
 				iconMap.put(keyBase, layerBase);
 			} else {
 				BufferedImage baseImage = SubstanceCoreUtilities.getBlankImage(
-						baseFullOpacity.getIconWidth(), baseFullOpacity
-								.getIconHeight());
+						baseFullOpacity.getIconWidth(), baseFullOpacity.getIconHeight());
 				Graphics2D g2base = baseImage.createGraphics();
 				g2base.setComposite(AlphaComposite.SrcOver.derive(baseAlpha));
 				baseFullOpacity.paintIcon(this.comp, g2base, 0, 0);
@@ -220,21 +219,20 @@ public class TransitionAwareIcon implements Icon {
 
 			float stateContribution = activeEntry.getValue().getContribution();
 			if (stateContribution > 0.0f) {
-				g2d.setComposite(AlphaComposite.SrcOver
-						.derive(stateContribution));
+				g2d.setComposite(AlphaComposite.SrcOver.derive(stateContribution));
 
-				ColorSchemeAssociationKind associationKind = (this.colorSchemeAssociationKindDelegate == null) ? ColorSchemeAssociationKind.MARK
-						: this.colorSchemeAssociationKindDelegate
-								.getColorSchemeAssociationKind(activeState);
+				ColorSchemeAssociationKind associationKind = (this.colorSchemeAssociationKindDelegate == null) 
+						? ColorSchemeAssociationKind.MARK
+						: this.colorSchemeAssociationKindDelegate.getColorSchemeAssociationKind(activeState);
 				SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
 						.getColorScheme(this.comp, associationKind, activeState);
 				float alpha = SubstanceColorSchemeUtilities.getAlpha(this.comp,
 						activeState);
 
 				HashMapKey key = SubstanceCoreUtilities.getHashKey(
-						this.uniqueIconTypeId, SubstanceSizeUtils
-								.getComponentFontSize(this.comp), scheme
-								.getDisplayName(), alpha);
+						this.uniqueIconTypeId, 
+						SubstanceSizeUtils.getComponentFontSize(this.comp), 
+						scheme.getDisplayName(), alpha);
 				HiDpiAwareIcon layer = iconMap.get(key);
 				if (layer == null) {
 					HiDpiAwareIcon fullOpacity = this.delegate.getColorSchemeIcon(scheme);

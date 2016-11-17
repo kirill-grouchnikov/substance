@@ -132,19 +132,18 @@ public class RadioButtonMenuItemIcon implements Icon, UIResource {
 						ColorSchemeAssociationKind.BORDER, currState);
 		float visibility = stateTransitionTracker
 				.getFacetStrength(ComponentStateFacet.SELECTION);
+		float alpha = SubstanceColorSchemeUtilities.getAlpha(this.menuItem, currState);
 
 		HashMapKey keyBase = SubstanceCoreUtilities.getHashKey(fontSize,
-				checkMarkSize, fillPainter.getDisplayName(), borderPainter
-						.getDisplayName(),
-				baseFillColorScheme.getDisplayName(), baseMarkColorScheme
-						.getDisplayName(), baseBorderColorScheme
-						.getDisplayName(), visibility);
+				checkMarkSize, fillPainter.getDisplayName(), borderPainter.getDisplayName(),
+				baseFillColorScheme.getDisplayName(), baseMarkColorScheme.getDisplayName(),
+				baseBorderColorScheme.getDisplayName(), visibility, alpha);
 		HiDpiAwareIcon iconBase = iconMap.get(keyBase);
 		if (iconBase == null) {
 			iconBase = new HiDpiAwareIcon(SubstanceImageCreator.getRadioButton(
 					this.menuItem, fillPainter, borderPainter, checkMarkSize,
 					currState, 0, baseFillColorScheme, baseMarkColorScheme,
-					baseBorderColorScheme, visibility));
+					baseBorderColorScheme, visibility, alpha));
 			iconMap.put(keyBase, iconBase);
 		}
 		if (currState.isDisabled() || (activeStates.size() == 1)) {
@@ -181,18 +180,16 @@ public class RadioButtonMenuItemIcon implements Icon, UIResource {
 								ColorSchemeAssociationKind.BORDER, activeState);
 
 				HashMapKey keyLayer = SubstanceCoreUtilities.getHashKey(
-						fontSize, checkMarkSize, fillPainter.getDisplayName(),
-						borderPainter.getDisplayName(), fillColorScheme
-								.getDisplayName(), markColorScheme
-								.getDisplayName(), borderColorScheme
-								.getDisplayName(), visibility);
+						fontSize, checkMarkSize, fillPainter.getDisplayName(), borderPainter.getDisplayName(),
+						fillColorScheme.getDisplayName(), markColorScheme.getDisplayName(),
+						borderColorScheme.getDisplayName(), visibility, alpha);
 				HiDpiAwareIcon iconLayer = iconMap.get(keyLayer);
 				if (iconLayer == null) {
 					iconLayer = new HiDpiAwareIcon(SubstanceImageCreator
 							.getRadioButton(this.menuItem, fillPainter,
 									borderPainter, checkMarkSize, currState, 0,
 									fillColorScheme, markColorScheme,
-									borderColorScheme, visibility));
+									borderColorScheme, visibility, alpha));
 					iconMap.put(keyLayer, iconLayer);
 				}
 

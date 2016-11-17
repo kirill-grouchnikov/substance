@@ -41,11 +41,6 @@ import javax.swing.JMenuItem;
  */
 public interface SubstanceMenu {
 	/**
-	 * Name for internal client property that holds the cached text offset.
-	 */
-	// public static final String SINGLE_MENU_TEXT_OFFSET =
-	// "substancelaf.internal.singleMenuTextOffset";
-	/**
 	 * Returns the font of the accelerator string of <code>this</code> UI
 	 * delegate.
 	 * 

@@ -6,7 +6,7 @@ Graphite Enabled {
     colorMid=#3F3F3F
     colorDark=#353535
     colorUltraDark=#313131
-    colorForeground=#B4B4B4
+    colorForeground=#C4C4C4
 }
 
 Graphite Border {
@@ -39,7 +39,7 @@ Graphite Active {
     colorMid=#535353
     colorDark=#434343
     colorUltraDark=#3B3B3B
-    colorForeground=#C8C8C8
+    colorForeground=#D8D8D8
 }
 
 Graphite Selected {
@@ -50,7 +50,7 @@ Graphite Selected {
     colorMid=#505050
     colorDark=#404040
     colorUltraDark=#383838
-    colorForeground=#C8C8C8
+    colorForeground=#D8D8D8
 }
 
 Graphite Selected Disabled {
@@ -61,7 +61,7 @@ Graphite Selected Disabled {
     colorMid=#535353
     colorDark=#434343
     colorUltraDark=#3B3B3B
-    colorForeground=#202020
+    colorForeground=#A0A0A0
 }
 
 Graphite Disabled {
@@ -72,7 +72,7 @@ Graphite Disabled {
     colorMid=#474747
     colorDark=#3A3A3A
     colorUltraDark=#333333
-    colorForeground=#202020
+    colorForeground=#A0A0A0
 }
 
 Graphite Highlight {
@@ -184,3 +184,26 @@ Raven Selected Disabled {
     colorUltraDark=#3B3B3B
     colorForeground=#C8C8C8
 }
+
+Graphite Gold {
+    kind=Dark
+    colorUltraLight=#FFDA5C
+    colorExtraLight=#FFD656
+    colorLight=#FFCB44
+    colorMid=#FFB725
+    colorDark=#E49700
+    colorUltraDark=#924400
+    colorForeground=#000000
+}
+
+Graphite Gold Light Text {
+    kind=Dark
+    colorUltraLight=#FFDA5C
+    colorExtraLight=#FFD656
+    colorLight=#FFCB44
+    colorMid=#FFB725
+    colorDark=#E49700
+    colorUltraDark=#924400
+    colorForeground=#FFFFFF
+}
+

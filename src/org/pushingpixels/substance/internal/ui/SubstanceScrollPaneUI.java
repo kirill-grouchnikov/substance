@@ -48,6 +48,7 @@ import org.pushingpixels.lafwidget.LafWidgetRepository;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.scroll.SubstanceScrollPaneBorder;
@@ -129,8 +130,6 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 			scrollpane.setOpaque(false);
 			scrollpane.getViewport().setOpaque(false);
 		}
-		scrollpane.setLayout(new AdjustedLayout((ScrollPaneLayout) scrollpane
-				.getLayout()));
 
 		SwingUtilities.invokeLater(() -> installTableHeaderCornerFiller(scrollpane));
 		
@@ -157,11 +156,6 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 			c.setCorner(JScrollPane.UPPER_LEFT_CORNER, null);
 		}
 
-		LayoutManager lm = scrollpane.getLayout();
-		if (lm instanceof AdjustedLayout) {
-			c.setLayout(((AdjustedLayout) lm).delegate);
-		}
-		
 		for (LafWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallDefaults();
 		}
@@ -179,13 +173,6 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 	protected void installListeners(final JScrollPane c) {
 		super.installListeners(c);
 		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
-			if (SubstanceLookAndFeel.SCROLL_PANE_BUTTONS_POLICY.equals(evt
-					.getPropertyName())) {
-				SwingUtilities.invokeLater(() -> {
-					c.getHorizontalScrollBar().doLayout();
-					c.getVerticalScrollBar().doLayout();
-				});
-			}
 			if (SubstanceLookAndFeel.WATERMARK_VISIBLE.equals(evt
 					.getPropertyName())) {
 				boolean toBleed = SubstanceCoreUtilities.toDrawWatermark(c);
@@ -194,16 +181,6 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 				Component view = c.getViewport().getView();
 				if (view instanceof JComponent)
 					((JComponent) view).setOpaque(!toBleed);
-			}
-			if ("layoutManager".equals(evt.getPropertyName())) {
-				if (((Boolean) evt.getNewValue()).booleanValue()) {
-					ScrollPaneLayout currLayout = (ScrollPaneLayout) c
-							.getLayout();
-					if (!(currLayout instanceof AdjustedLayout)) {
-						c.setLayout(new AdjustedLayout((ScrollPaneLayout) c
-								.getLayout()));
-					}
-				}
 			}
 			if ("background".equals(evt.getPropertyName())) {
 				// propagate application-specific background color to the
@@ -585,34 +562,6 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 	public void update(Graphics g, JComponent c) {
 		BackgroundPaintingUtils.updateIfOpaque(g, c);
 		JScrollPane jsp = (JScrollPane) c;
-		// if (SubstanceCoreUtilities.hasOverlayProperty(jsp)) {
-		// JViewport viewport = jsp.getViewport();
-		// int dx = -viewport.getX() + viewport.getViewRect().x;
-		// int dy = viewport.getY() - viewport.getViewRect().y;
-		// Graphics2D graphics = (Graphics2D) g.create();
-		//
-		// Area clip = new Area();
-		// if ((jsp.getVerticalScrollBar() != null)
-		// && jsp.getVerticalScrollBar().isVisible())
-		// clip.add(new Area(jsp.getVerticalScrollBar().getBounds()));
-		// if ((jsp.getHorizontalScrollBar() != null)
-		// && jsp.getHorizontalScrollBar().isVisible())
-		// clip.add(new Area(jsp.getHorizontalScrollBar().getBounds()));
-		// graphics.setClip(clip);
-		//
-		// graphics.translate(-dx, dy);
-		// JComponent view = (JComponent) viewport.getView();
-		// // fix for defect 201 - set non-double buffer for the viewport
-		// // recursively. Takes care of desktop pane wrapped in scroll pane.
-		// Map<Component, Boolean> dbSnapshot = new HashMap<Component,
-		// Boolean>();
-		// SubstanceCoreUtilities.makeNonDoubleBuffered(view, dbSnapshot);
-		// view.paint(graphics);
-		// // restore the double buffer.
-		// SubstanceCoreUtilities.restoreDoubleBuffered(view, dbSnapshot);
-		// graphics.translate(dx, -dy);
-		// graphics.dispose();
-		// }
 
 		LayoutManager lm = jsp.getLayout();
 		ScrollPaneLayout scrollLm = null;
@@ -640,9 +589,33 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 			}
 
 			if (SubstanceCoreUtilities.isOpaque(c)) {
+				Graphics2D g2d = (Graphics2D) g.create();
+				g2d.setColor(SubstanceColorUtilities.getBackgroundFillColorScrollBar(
+						this.scrollpane.getVerticalScrollBar()));
 				for (Component corner : corners) {
-					BackgroundPaintingUtils.fillAndWatermark(g, c, c
-							.getBackground(), corner.getBounds());
+					g2d.fill(corner.getBounds());
+//					BackgroundPaintingUtils.fillAndWatermark(g, c, c
+//							.getBackground(), corner.getBounds());
+				}
+				
+				JScrollBar horizontal = this.scrollpane.getHorizontalScrollBar();
+				JScrollBar vertical = this.scrollpane.getVerticalScrollBar();
+				if (this.scrollpane.getComponentOrientation().isLeftToRight()) {
+					// Bottom right corner
+					if (scrollLm.getCorner(ScrollPaneLayout.LOWER_RIGHT_CORNER) == null) {
+						g2d.fillRect(horizontal.getX() + horizontal.getWidth(),
+								horizontal.getY(),
+								vertical.getWidth(),
+								horizontal.getHeight());
+					}
+				} else {
+					// Bottom left corner
+					if (scrollLm.getCorner(ScrollPaneLayout.LOWER_LEFT_CORNER) == null) {
+						g2d.fillRect(0,
+								horizontal.getY(),
+								vertical.getWidth(),
+								horizontal.getHeight());
+					}
 				}
 			}
 		}
@@ -675,7 +648,8 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 			return;
 		SubstanceTableHeaderUI ui = (SubstanceTableHeaderUI) tableHeaderUI;
 		JComponent scrollPaneCornerFiller = ui.getScrollPaneCornerFiller();
-		String cornerKey = scrollpane.getComponentOrientation().isLeftToRight() ? JScrollPane.UPPER_RIGHT_CORNER
+		String cornerKey = scrollpane.getComponentOrientation().isLeftToRight() 
+				? JScrollPane.UPPER_RIGHT_CORNER
 				: JScrollPane.UPPER_LEFT_CORNER;
 		Component cornerComp = scrollpane.getCorner(cornerKey);
 		// Corner component can be replaced when the current one is null or

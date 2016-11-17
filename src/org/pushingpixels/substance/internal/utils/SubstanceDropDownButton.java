@@ -50,8 +50,9 @@ import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
  * 
  * @author Kirill Grouchnikov
  */
-public final class SubstanceDropDownButton extends JButton implements
-		SubstanceInternalArrowButton {
+@SubstanceInternalButton
+@SubstanceInternalArrowButton
+public final class SubstanceDropDownButton extends JButton {
 	static {
 		AnimationConfigurationManager.getInstance().disallowAnimations(
 				AnimationFacet.GHOSTING_BUTTON_PRESS,

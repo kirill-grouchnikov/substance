@@ -29,22 +29,27 @@
  */
 package test.check;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JCheckBox;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
 import org.pushingpixels.lafwidget.LafWidget;
 import org.pushingpixels.lafwidget.preview.DefaultPreviewPainter;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.SubstanceConstants.ScrollPaneButtonPolicyKind;
-
-import test.Check;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
+
+import test.Check;
 
 /**
  * Test application panel for testing {@link JScrollPane} component.
@@ -123,24 +128,6 @@ public class ScrollPanel extends ControllablePanel {
 		builder.append("Auto scroll", hasAutoScroll);
 
 		builder.appendSeparator("Scroll buttons settings");
-		final JComboBox buttonPolicyCombo = new JComboBox(new Object[] {
-				ScrollPaneButtonPolicyKind.NONE,
-				ScrollPaneButtonPolicyKind.OPPOSITE,
-				ScrollPaneButtonPolicyKind.ADJACENT,
-				ScrollPaneButtonPolicyKind.MULTIPLE,
-				ScrollPaneButtonPolicyKind.MULTIPLE_BOTH });
-		buttonPolicyCombo.setSelectedItem(ScrollPaneButtonPolicyKind.OPPOSITE);
-		buttonPolicyCombo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ScrollPaneButtonPolicyKind buttonPolicy = (ScrollPaneButtonPolicyKind) buttonPolicyCombo
-						.getSelectedItem();
-				sp.putClientProperty(
-						SubstanceLookAndFeel.SCROLL_PANE_BUTTONS_POLICY,
-						buttonPolicy);
-				sp.repaint();
-			}
-		});
-		builder.append("Button policy", buttonPolicyCombo);
 
 		final JCheckBox isFlat = new JCheckBox("Is flat");
 		isFlat.addActionListener(new ActionListener() {

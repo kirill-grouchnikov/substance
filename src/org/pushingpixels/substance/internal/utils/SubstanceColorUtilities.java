@@ -526,13 +526,8 @@ public class SubstanceColorUtilities {
 	public static Color getMarkColor(SubstanceColorScheme colorScheme,
 			boolean isEnabled) {
 		if (colorScheme.isDark()) {
-			if (!isEnabled) {
-				return colorScheme.getDarkColor();
-
-			} else {
-				return getInterpolatedColor(colorScheme.getForegroundColor(),
-						colorScheme.getUltraLightColor(), 0.9);
-			}
+			return getInterpolatedColor(colorScheme.getForegroundColor(),
+					colorScheme.getUltraLightColor(), 0.9);
 		} else {
 			Color color1 = isEnabled ? colorScheme.getUltraDarkColor()
 					: colorScheme.getUltraDarkColor();
@@ -728,6 +723,32 @@ public class SubstanceColorUtilities {
 		return backgr;
 	}
 
+	public static Color getBackgroundFillColorScrollBar(JScrollBar scrollbar) {
+		ComponentState state = scrollbar.isEnabled() ? ComponentState.ENABLED
+				: ComponentState.DISABLED_UNSELECTED;
+		Color backgr = SubstanceColorUtilities.getDefaultBackgroundColor(
+				scrollbar, state);
+
+		if (state.isDisabled()) {
+			float alpha = SubstanceColorSchemeUtilities.getAlpha(scrollbar,
+					state);
+			if (alpha < 1.0f) {
+				Color defaultColor = SubstanceColorUtilities
+						.getDefaultBackgroundColor(scrollbar,
+								ComponentState.ENABLED);
+				backgr = SubstanceColorUtilities.getInterpolatedColor(
+						backgr, defaultColor, 1.0f - (1.0f - alpha) / 2.0f);
+			}
+		}
+
+		SubstanceColorScheme colorScheme = 
+				SubstanceColorSchemeUtilities.getColorScheme(scrollbar, state);
+		backgr = SubstanceColorUtilities.getInterpolatedColor(backgr, 
+				SubstanceColorUtilities.getAlphaColor(colorScheme.getForegroundColor(), backgr.getAlpha()),
+				0.9);
+		return backgr;
+	}
+	
 	private static final ComponentState EDITABLE = new ComponentState(
 			"editable", ComponentState.ENABLED, new ComponentStateFacet[] {
 					ComponentStateFacet.ENABLE, ComponentStateFacet.EDITABLE },

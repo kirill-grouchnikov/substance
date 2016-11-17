@@ -50,7 +50,7 @@ Magellan Blue Controls Enabled {
     colorMid=#003977
     colorDark=#003977
     colorUltraDark=#003977
-    colorForeground=#8FC1F9
+    colorForeground=#9FD1FF
 }
 
 Magellan Blue Controls Enabled Border {
@@ -61,7 +61,7 @@ Magellan Blue Controls Enabled Border {
     colorMid=#083C77
     colorDark=#06284D
     colorUltraDark=#042040
-    colorForeground=#FFFFFF
+    colorForeground=#9FD1FF
 }
 
 Magellan Blue Controls Pressed {
@@ -94,7 +94,7 @@ Magellan Blue Controls Active {
     colorMid=#0E67CA
     colorDark=#0D5FBB
     colorUltraDark=#0C5AB0
-    colorForeground=#021C3A
+    colorForeground=#B2D6FF
 }
 
 Magellan Blue Controls Active Border {
@@ -105,7 +105,7 @@ Magellan Blue Controls Active Border {
     colorMid=#0C457A
     colorDark=#093F75
     colorUltraDark=#0C3E70
-    colorForeground=#B7D8FC
+    colorForeground=#8FC1F9
 }
 
 Magellan Light Blue Controls Active {

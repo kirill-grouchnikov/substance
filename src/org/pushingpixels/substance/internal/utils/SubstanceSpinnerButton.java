@@ -64,7 +64,9 @@ import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
  * 
  * @author Kirill Grouchnikov
  */
-public class SubstanceSpinnerButton extends JButton implements SubstanceInternalArrowButton {
+@SubstanceInternalButton
+@SubstanceInternalArrowButton
+public class SubstanceSpinnerButton extends JButton {
 	static {
 		AnimationConfigurationManager.getInstance().disallowAnimations(
 				AnimationFacet.GHOSTING_BUTTON_PRESS,

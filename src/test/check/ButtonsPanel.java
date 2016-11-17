@@ -625,10 +625,7 @@ public class ButtonsPanel extends JPanel {
 
 		JPanel panel = builder.getPanel();
 		JScrollPane jsp = new JScrollPane(panel);
-		panel.setOpaque(false);
 		jsp.putClientProperty(LafWidget.AUTO_SCROLL, Boolean.TRUE);
-		jsp.setOpaque(false);
-		jsp.getViewport().setOpaque(false);
 		this.add(jsp, BorderLayout.CENTER);
 	}
 }

@@ -51,11 +51,6 @@ public class AutumnSkin extends SubstanceSkin {
 	public static final String NAME = "Autumn";
 
 	/**
-	 * Overlay painter to paint separator lines on some decoration areas.
-	 */
-	private BottomLineOverlayPainter bottomLineOverlayPainter;
-
-	/**
 	 * Creates a new <code>Autumn</code> skin.
 	 */
 	public AutumnSkin() {
@@ -109,9 +104,9 @@ public class AutumnSkin extends SubstanceSkin {
 
 		// add an overlay painter to paint separator lines along the bottom
 		// edges of title panes and menu bars
-		this.bottomLineOverlayPainter = new BottomLineOverlayPainter(
+		BottomLineOverlayPainter bottomLineOverlayPainter = new BottomLineOverlayPainter(
 				ColorSchemeSingleColorQuery.DARK);
-		this.addOverlayPainter(this.bottomLineOverlayPainter,
+		this.addOverlayPainter(bottomLineOverlayPainter,
 				DecorationAreaType.PRIMARY_TITLE_PANE,
 				DecorationAreaType.SECONDARY_TITLE_PANE,
 				DecorationAreaType.HEADER);
@@ -119,7 +114,16 @@ public class AutumnSkin extends SubstanceSkin {
 		this.buttonShaper = new ClassicButtonShaper();
 		this.fillPainter = new MatteFillPainter();
 		this.borderPainter = new CompositeBorderPainter("Autumn",
-				new ClassicBorderPainter(), new DelegateBorderPainter(
+				new DelegateBorderPainter(
+						"Autumn Outer", new ClassicBorderPainter(),
+						new ColorSchemeTransform() {
+							@Override
+							public SubstanceColorScheme transform(
+									SubstanceColorScheme scheme) {
+								return scheme.shade(0.1f);
+							}
+						}), 
+				new DelegateBorderPainter(
 						"Autumn Inner", new ClassicBorderPainter(),
 						new ColorSchemeTransform() {
 							@Override

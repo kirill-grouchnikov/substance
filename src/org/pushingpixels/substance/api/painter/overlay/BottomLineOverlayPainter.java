@@ -30,6 +30,7 @@
 package org.pushingpixels.substance.api.painter.overlay;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.painter.SubstancePainterUtils;
@@ -78,10 +79,9 @@ public final class BottomLineOverlayPainter implements SubstanceOverlayPainter {
 		// colorScheme =
 		skin.getBackgroundColorScheme(decorationAreaType);
 		graphics.setColor(this.colorSchemeQuery.query(colorScheme));
-		graphics.drawLine(0, topMostWithSameDecorationAreaType.getHeight()
-				- (int) borderStrokeWidth, width,
-				topMostWithSameDecorationAreaType.getHeight()
-						- (int) borderStrokeWidth);
+		float bottomY = topMostWithSameDecorationAreaType.getHeight() - borderStrokeWidth;
+		Line2D.Float line = new Line2D.Float(0, bottomY, width, bottomY);
+		graphics.draw(line);
 	}
 
 	@Override

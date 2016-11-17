@@ -29,21 +29,16 @@
  */
 package org.pushingpixels.substance.internal.utils.scroll;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
 
-import javax.swing.*;
+import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.substance.api.*;
-import org.pushingpixels.substance.api.painter.border.StandardBorderPainter;
-import org.pushingpixels.substance.internal.painter.SimplisticSoftBorderPainter;
-import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
-import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
-
 /**
- * Default border on {@link JScrollPane}s. Provides continuous appearance of the
- * border + scroll bars.
+ * Default border on {@link JScrollPane}s.
  * 
  * @author Kirill Grouchnikov
  */
@@ -54,11 +49,7 @@ public class SubstanceScrollPaneBorder implements Border, UIResource {
 	 * @see javax.swing.border.Border#getBorderInsets(java.awt.Component)
 	 */
 	public Insets getBorderInsets(Component c) {
-		float borderStrokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(c));
-		int ins = (int) borderStrokeWidth;
-		return new Insets(ins, ins, ins, ins);
+		return new Insets(0, 0, 0, 0);
 	}
 
 	/*
@@ -76,151 +67,6 @@ public class SubstanceScrollPaneBorder implements Border, UIResource {
 	 * @see javax.swing.border.Border#paintBorder(java.awt.Component,
 	 * java.awt.Graphics, int, int, int, int)
 	 */
-	public void paintBorder(Component c, Graphics g, int x, int y, int width,
-			int height) {
-		if (!(c instanceof JScrollPane)) {
-			// Applications (such as NetBeans RCP) may incorrectly assume
-			// that scroll pane border specified by the ""ScrollPane.border"
-			// UIManager key by a look-and-feel can be installed on any
-			// component. In case this component is not JScrollPane, do
-			// nothing.
-			return;
-		}
-
-		JScrollPane scrollPane = (JScrollPane) c;
-		JScrollBar vertical = scrollPane.getVerticalScrollBar();
-		JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
-		JViewport columnHeader = scrollPane.getColumnHeader();
-
-		StandardBorderPainter painter = new SimplisticSoftBorderPainter();
-
-		SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
-				.getColorScheme(c, ColorSchemeAssociationKind.BORDER, c
-						.isEnabled() ? ComponentState.ENABLED
-						: ComponentState.DISABLED_UNSELECTED);
-
-		float borderStrokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(c));
-		int borderDelta = (int) Math.floor(SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(c)) / 2.0);
-		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setStroke(new BasicStroke(borderStrokeWidth,
-				BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		x += borderDelta;
-		y += borderDelta;
-		width -= 2 * borderDelta;
-		height -= 2 * borderDelta;
-
-		boolean horizontalVisible = (horizontal != null)
-				&& horizontal.isVisible();
-		boolean verticalVisible = (vertical != null) && vertical.isVisible();
-		boolean hasRowHeader = (scrollPane.getRowHeader() != null);
-
-		if (scrollPane.getComponentOrientation().isLeftToRight()) {
-			// top portion
-			g2d.setColor(painter.getTopBorderColor(scheme));
-			if (verticalVisible && (columnHeader == null)) {
-				g2d.drawLine(x, y, x + width - vertical.getWidth(), y);
-			} else {
-				g2d.drawLine(x, y, x + width, y);
-			}
-
-			// left portion
-			g2d.setColor(painter.getTopBorderColor(scheme));
-			if (horizontalVisible && !hasRowHeader) {
-				g2d.drawLine(x, y, x, y + height - horizontal.getHeight());
-			} else {
-				g2d.drawLine(x, y, x, y + height);
-			}
-
-			// bottom portion
-			g2d.setColor(painter.getBottomBorderColor(scheme));
-			if (horizontalVisible) {
-				if (hasRowHeader) {
-					g2d.drawLine(x, y + height - 1, x
-							+ scrollPane.getRowHeader().getSize().width, y
-							+ height - 1);
-				}
-			} else {
-				if (verticalVisible) {
-					g2d.drawLine(x, y + height - 1, x + width
-							- vertical.getWidth(), y + height - 1);
-				} else {
-					g2d.drawLine(x, y + height - 1, x + width, y + height - 1);
-				}
-			}
-
-			// right portion
-			g2d.setColor(painter.getBottomBorderColor(scheme));
-			if (verticalVisible) {
-				// g.drawLine(x + width - 1, y + vertical.getHeight(), x + width
-				// - 1, y + height);
-
-				if (columnHeader != null) {
-					g2d.drawLine(x + width - 1, y, x + width - 1, y
-							+ columnHeader.getHeight());
-				}
-			} else {
-				if (horizontalVisible)
-					g2d.drawLine(x + width - 1, y, x + width - 1, y + height
-							- horizontal.getHeight());
-				else
-					g2d.drawLine(x + width - 1, y, x + width - 1, y + height);
-			}
-		} else {
-			// top portion
-			g2d.setColor(painter.getTopBorderColor(scheme));
-			if (verticalVisible && (columnHeader == null)) {
-				g2d.drawLine(x + vertical.getWidth(), y, x + width, y);
-			} else {
-				g2d.drawLine(x, y, x + width, y);
-			}
-
-			// left portion
-			g2d.setColor(painter.getBottomBorderColor(scheme));
-			if (verticalVisible) {
-				// g.drawLine(x, y, x, y + height - horizontal.getHeight());
-				if (columnHeader != null) {
-					g2d.drawLine(x, y, x, y + columnHeader.getHeight());
-				}
-			} else {
-				if (horizontalVisible) {
-					g2d.drawLine(x, y, x, y + height - horizontal.getHeight());
-				} else {
-					g2d.drawLine(x, y, x, y + height - 1);
-				}
-			}
-
-			// bottom portion
-			g2d.setColor(painter.getBottomBorderColor(scheme));
-			if (horizontalVisible) {
-				if (hasRowHeader) {
-					g2d.drawLine(x + width
-							- scrollPane.getRowHeader().getSize().width, y
-							+ height - 1, x + width - 1, y + height - 1);
-				}
-			} else {
-				if (verticalVisible) {
-					g2d.drawLine(x + vertical.getWidth(), y + height - 1, x
-							+ width, y + height - 1);
-				} else {
-					g2d.drawLine(x, y + height - 1, x + width, y + height - 1);
-				}
-			}
-
-			// right portion
-			g2d.setColor(painter.getTopBorderColor(scheme));
-			if (horizontalVisible && !hasRowHeader) {
-				g2d.drawLine(x + width - 1, y, x + width - 1, y + height
-						- horizontal.getHeight());
-			} else {
-				g2d.drawLine(x + width - 1, y, x + width - 1, y + height);
-			}
-		}
-		g2d.dispose();
+	public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
 	}
 }

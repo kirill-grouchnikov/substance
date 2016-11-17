@@ -39,6 +39,7 @@ import org.pushingpixels.substance.api.painter.fill.FractionBasedFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
 import org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
 /**
  * <code>Office Black 2007</code> skin. This class is part of officially
@@ -215,7 +216,7 @@ public class OfficeBlack2007Skin extends SubstanceSkin {
 
 		this.registerDecorationAreaSchemeBundle(headerSchemeBundle,
 				activeHeaderScheme, DecorationAreaType.PRIMARY_TITLE_PANE,
-				DecorationAreaType.HEADER);
+				DecorationAreaType.HEADER, DecorationAreaType.TOOLBAR);
 
 		// color scheme bundle for footer
 		SubstanceColorScheme enabledFooterScheme = colorSchemes
@@ -256,11 +257,6 @@ public class OfficeBlack2007Skin extends SubstanceSkin {
 		this.registerAsDecorationArea(this.watermarkScheme,
 				DecorationAreaType.GENERAL);
 
-		SubstanceColorScheme headerWatermarkScheme = colorSchemes
-				.get("Office Black Header Watermark");
-		this.registerAsDecorationArea(headerWatermarkScheme,
-				DecorationAreaType.HEADER, DecorationAreaType.TOOLBAR);
-
 		setSelectedTabFadeStart(0.6);
 		setSelectedTabFadeEnd(0.9);
 
@@ -269,8 +265,7 @@ public class OfficeBlack2007Skin extends SubstanceSkin {
 					@Override
 					public Color query(SubstanceColorScheme scheme) {
 						Color fg = scheme.getUltraDarkColor();
-						return new Color(fg.getRed(), fg.getGreen(), fg
-								.getBlue(), 192);
+						return SubstanceColorUtilities.getAlphaColor(fg, 192);
 					}
 				}), DecorationAreaType.PRIMARY_TITLE_PANE);
 

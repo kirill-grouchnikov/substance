@@ -131,22 +131,22 @@ public class CheckBoxMenuItemIcon implements Icon, UIResource {
 				.getFacetStrength(ComponentStateFacet.SELECTION);
 		boolean isCheckMarkFadingOut = !currState
 				.isFacetActive(ComponentStateFacet.SELECTION);
+		float alpha = SubstanceColorSchemeUtilities.getAlpha(this.menuItem, currState);
 
 		int fontSize = SubstanceSizeUtils.getComponentFontSize(this.menuItem);
 		int checkMarkSize = this.size + 3;
 
-		HashMapKey keyBase = SubstanceCoreUtilities.getHashKey(fontSize,
-				checkMarkSize, fillPainter.getDisplayName(), borderPainter
-						.getDisplayName(),
-				baseFillColorScheme.getDisplayName(), baseMarkColorScheme
-						.getDisplayName(), baseBorderColorScheme
-						.getDisplayName(), visibility, isCheckMarkFadingOut);
+		HashMapKey keyBase = SubstanceCoreUtilities.getHashKey(fontSize, checkMarkSize, 
+				fillPainter.getDisplayName(), borderPainter.getDisplayName(), 
+				baseFillColorScheme.getDisplayName(), baseMarkColorScheme.getDisplayName(), 
+				baseBorderColorScheme.getDisplayName(), visibility,
+				isCheckMarkFadingOut, alpha);
 		HiDpiAwareIcon iconBase = iconMap.get(keyBase);
 		if (iconBase == null) {
 			iconBase = new HiDpiAwareIcon(SubstanceImageCreator.getCheckBox(
 					this.menuItem, fillPainter, borderPainter, checkMarkSize,
 					currState, baseFillColorScheme, baseMarkColorScheme,
-					baseBorderColorScheme, visibility, isCheckMarkFadingOut));
+					baseBorderColorScheme, visibility, isCheckMarkFadingOut, alpha));
 			iconMap.put(keyBase, iconBase);
 		}
 		if (currState.isDisabled() || (activeStates.size() == 1)) {
@@ -184,18 +184,19 @@ public class CheckBoxMenuItemIcon implements Icon, UIResource {
 
 				HashMapKey keyLayer = SubstanceCoreUtilities.getHashKey(
 						fontSize, checkMarkSize, fillPainter.getDisplayName(),
-						borderPainter.getDisplayName(), fillColorScheme
+						borderPainter.getDisplayName(), 
+						fillColorScheme
 								.getDisplayName(), markColorScheme
 								.getDisplayName(), borderColorScheme
-								.getDisplayName(), visibility);
+								.getDisplayName(), visibility, alpha);
 				HiDpiAwareIcon iconLayer = iconMap.get(keyLayer);
 				if (iconLayer == null) {
-					iconLayer = new HiDpiAwareIcon(SubstanceImageCreator
-							.getCheckBox(this.menuItem, fillPainter,
-									borderPainter, checkMarkSize, currState,
-									fillColorScheme, markColorScheme,
-									borderColorScheme, visibility,
-									isCheckMarkFadingOut));
+					iconLayer = new HiDpiAwareIcon(SubstanceImageCreator.getCheckBox(
+							this.menuItem, fillPainter,
+							borderPainter, checkMarkSize, currState,
+							fillColorScheme, markColorScheme,
+							borderColorScheme, visibility,
+							isCheckMarkFadingOut, alpha));
 					iconMap.put(keyLayer, iconLayer);
 				}
 

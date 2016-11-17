@@ -398,8 +398,7 @@ public class SubstanceTextUtilities {
 		// System.out.println(text + ":" + prevState.name() + "->" +
 		// state.name() + ":" + fgColor);
 		if (textAlpha < 1.0f) {
-			Color bgFillColor = SubstanceColorUtilities
-					.getBackgroundFillColor(component);
+			Color bgFillColor = SubstanceColorUtilities.getBackgroundFillColor(component);
 			fgColor = SubstanceColorUtilities.getInterpolatedColor(fgColor,
 					bgFillColor, textAlpha);
 		}

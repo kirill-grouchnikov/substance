@@ -607,8 +607,8 @@ public class SubstanceSizeUtils {
 	 */
 	public static int getScrollBarWidth(int fontSize) {
 		int result = (int) (getArrowIconWidth(fontSize) * 3 / 2) + 2;
-		if (result % 2 == 0)
-			result++;
+		if (result % 2 == 1)
+			result--;
 		return result;
 	}
 

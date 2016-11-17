@@ -120,6 +120,12 @@ public class MagellanSkin extends SubstanceSkin {
 		defaultColorSchemeBundle.registerColorScheme(blueControlsEnabledBorder,
 				ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED,
 				ComponentState.DISABLED_UNSELECTED);
+		defaultColorSchemeBundle.registerColorScheme(blueControlsActiveBorder,
+				ColorSchemeAssociationKind.MARK,
+				ComponentState.SELECTED);
+		defaultColorSchemeBundle.registerColorScheme(blueControlsActiveBorder,
+				0.5f, ColorSchemeAssociationKind.MARK,
+				ComponentState.DISABLED_SELECTED);
 
 		// color schemes for the pressed states
 		SubstanceColorScheme blueControlsPressed = colorSchemes
@@ -174,9 +180,9 @@ public class MagellanSkin extends SubstanceSkin {
 
 		// highlight alphas
 		defaultColorSchemeBundle.registerHighlightColorScheme(greenControls,
-				0.7f, ComponentState.ROLLOVER_UNSELECTED);
+				0.75f, ComponentState.ROLLOVER_UNSELECTED);
 		defaultColorSchemeBundle.registerHighlightColorScheme(greenControls,
-				0.8f, ComponentState.SELECTED);
+				0.85f, ComponentState.SELECTED);
 		defaultColorSchemeBundle.registerHighlightColorScheme(greenControls,
 				0.95f, ComponentState.ROLLOVER_SELECTED);
 		defaultColorSchemeBundle.registerHighlightColorScheme(greenControls,

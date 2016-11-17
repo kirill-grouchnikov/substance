@@ -29,6 +29,7 @@
  */
 package org.pushingpixels.substance.api.skin;
 
+import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
 import org.pushingpixels.substance.api.ColorSchemeTransform;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
@@ -43,6 +44,8 @@ import org.pushingpixels.substance.api.painter.decoration.ArcDecorationPainter;
 import org.pushingpixels.substance.api.painter.decoration.BrushedMetalDecorationPainter;
 import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
+import org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter;
+import org.pushingpixels.substance.api.painter.overlay.TopShadowOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 
 /**
@@ -92,13 +95,22 @@ public class BusinessSkin extends SubstanceSkin {
 
 		SubstanceSkin.ColorSchemes kitchenSkinSchemes = SubstanceSkin
 				.getColorSchemes("org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes");
-		this
-				.registerAsDecorationArea(kitchenSkinSchemes
-						.get("LightGray General Watermark"),
+		this.registerAsDecorationArea(kitchenSkinSchemes.get("LightGray General Watermark"),
 						DecorationAreaType.GENERAL);
 
 		this.setSelectedTabFadeStart(0.6);
 		this.setSelectedTabFadeEnd(1.0);
+
+		// add an overlay painter to paint a drop shadow along the top
+		// edge of toolbars
+		this.addOverlayPainter(TopShadowOverlayPainter.getInstance(),
+				DecorationAreaType.TOOLBAR);
+
+		// add an overlay painter to paint separator lines along the bottom
+		// edges of title panes and menu bars
+		BottomLineOverlayPainter bottomLineOverlayPainter = new BottomLineOverlayPainter(
+				ColorSchemeSingleColorQuery.MID);
+		this.addOverlayPainter(bottomLineOverlayPainter, DecorationAreaType.HEADER);
 
 		this.buttonShaper = new ClassicButtonShaper();
 		this.fillPainter = new ClassicFillPainter();

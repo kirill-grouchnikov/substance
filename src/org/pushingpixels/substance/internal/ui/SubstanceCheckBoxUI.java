@@ -156,22 +156,23 @@ public class SubstanceCheckBoxUI extends SubstanceRadioButtonUI {
 				.getFacetStrength(ComponentStateFacet.SELECTION);
 		boolean isCheckMarkFadingOut = !currState
 				.isFacetActive(ComponentStateFacet.SELECTION);
+		float alpha = SubstanceColorSchemeUtilities.getAlpha(button, currState);
 
 		int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
 		int checkMarkSize = SubstanceSizeUtils.getCheckBoxMarkSize(fontSize);
 
 		HashMapKey keyBase = SubstanceCoreUtilities.getHashKey(fontSize,
-				checkMarkSize, fillPainter.getDisplayName(), borderPainter
-						.getDisplayName(),
-				baseFillColorScheme.getDisplayName(), baseMarkColorScheme
-						.getDisplayName(), baseBorderColorScheme
-						.getDisplayName(), visibility, isCheckMarkFadingOut);
+				checkMarkSize, fillPainter.getDisplayName(), borderPainter.getDisplayName(),
+				baseFillColorScheme.getDisplayName(), 
+				baseMarkColorScheme.getDisplayName(), 
+				baseBorderColorScheme.getDisplayName(), visibility, 
+				isCheckMarkFadingOut, alpha);
 		HiDpiAwareIcon iconBase = icons.get(keyBase);
 		if (iconBase == null) {
 			iconBase = new HiDpiAwareIcon(SubstanceImageCreator.getCheckBox(button,
 					fillPainter, borderPainter, checkMarkSize, currState,
 					baseFillColorScheme, baseMarkColorScheme,
-					baseBorderColorScheme, visibility, isCheckMarkFadingOut));
+					baseBorderColorScheme, visibility, isCheckMarkFadingOut, alpha));
 			icons.put(keyBase, iconBase);
 		}
 		if (currState.isDisabled() || (activeStates.size() == 1)) {
@@ -215,11 +216,11 @@ public class SubstanceCheckBoxUI extends SubstanceRadioButtonUI {
 								.getDisplayName(), visibility);
 				HiDpiAwareIcon iconLayer = icons.get(keyLayer);
 				if (iconLayer == null) {
-					iconLayer = new HiDpiAwareIcon(SubstanceImageCreator
-							.getCheckBox(button, fillPainter, borderPainter,
-									checkMarkSize, currState, fillColorScheme,
-									markColorScheme, borderColorScheme,
-									visibility, isCheckMarkFadingOut));
+					iconLayer = new HiDpiAwareIcon(SubstanceImageCreator.getCheckBox(
+							button, fillPainter, borderPainter,
+							checkMarkSize, currState, fillColorScheme,
+							markColorScheme, borderColorScheme,
+							visibility, isCheckMarkFadingOut, alpha));
 					icons.put(keyLayer, iconLayer);
 				}
 

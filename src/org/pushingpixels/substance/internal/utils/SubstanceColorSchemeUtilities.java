@@ -110,7 +110,8 @@ public class SubstanceColorSchemeUtilities {
 		Component forQuerying = component;
 		if ((component != null)
 				&& (component.getParent() != null)
-				&& ((component instanceof SubstanceInternalArrowButton) || (component instanceof SubstanceTitleButton))) {
+				&& ((component.getClass().isAnnotationPresent(SubstanceInternalArrowButton.class) || 
+						(component instanceof SubstanceTitleButton)))) {
 			forQuerying = component.getParent();
 		}
 		return getColorizedScheme(component, scheme,
@@ -301,11 +302,9 @@ public class SubstanceColorSchemeUtilities {
 			component = component.getParent();
 		}
 
-		SubstanceColorScheme nonColorized = SubstanceCoreUtilities.getSkin(
-				component).getColorScheme(component, associationKind,
-				componentState);
-		return getColorizedScheme(component, nonColorized, !componentState
-				.isDisabled());
+		SubstanceColorScheme nonColorized = SubstanceCoreUtilities.getSkin(component).
+				getColorScheme(component, associationKind, componentState);
+		return getColorizedScheme(component, nonColorized, !componentState.isDisabled());
 	}
 
 	/**

@@ -29,6 +29,7 @@
  */
 package org.pushingpixels.substance.api.skin;
 
+import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
@@ -38,9 +39,11 @@ import org.pushingpixels.substance.api.colorscheme.LightGrayColorScheme;
 import org.pushingpixels.substance.api.colorscheme.MetallicColorScheme;
 import org.pushingpixels.substance.api.colorscheme.OliveColorScheme;
 import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
-import org.pushingpixels.substance.api.painter.decoration.ClassicDecorationPainter;
+import org.pushingpixels.substance.api.painter.decoration.MatteDecorationPainter;
 import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
+import org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter;
+import org.pushingpixels.substance.api.painter.overlay.TopShadowOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 
 /**
@@ -71,18 +74,24 @@ public class SaharaSkin extends SubstanceSkin {
 
 		this.registerAsDecorationArea(activeScheme,
 				DecorationAreaType.PRIMARY_TITLE_PANE,
-				DecorationAreaType.SECONDARY_TITLE_PANE);
+				DecorationAreaType.SECONDARY_TITLE_PANE,
+				DecorationAreaType.HEADER);
 
-		SubstanceSkin.ColorSchemes kitchenSinkSchemes = SubstanceSkin
-				.getColorSchemes("org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes");
-		this.registerAsDecorationArea(kitchenSinkSchemes
-				.get("LightGray General Watermark"),
-				DecorationAreaType.GENERAL, DecorationAreaType.HEADER);
+		// add an overlay painter to paint a drop shadow along the top
+		// edge of toolbars
+		this.addOverlayPainter(TopShadowOverlayPainter.getInstance(),
+				DecorationAreaType.TOOLBAR);
+
+		// add an overlay painter to paint separator lines along the bottom
+		// edges of title panes and menu bars
+		BottomLineOverlayPainter bottomLineOverlayPainter = new BottomLineOverlayPainter(
+				ColorSchemeSingleColorQuery.MID);
+		this.addOverlayPainter(bottomLineOverlayPainter, DecorationAreaType.HEADER);
 
 		this.buttonShaper = new ClassicButtonShaper();
 		this.fillPainter = new ClassicFillPainter();
 		this.borderPainter = new ClassicBorderPainter();
-		this.decorationPainter = new ClassicDecorationPainter();
+		this.decorationPainter = new MatteDecorationPainter();
 		this.highlightPainter = new ClassicHighlightPainter();
 	}
 

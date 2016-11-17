@@ -35,29 +35,29 @@ import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceSkin;
 
 /**
- * <code>Graphite Aqua</code> skin. This class is part of officially supported
+ * <code>Graphite Gold</code> skin. This class is part of officially supported
  * API.
  * 
  * @author Kirill Grouchnikov
- * @since version 5.3
+ * @since version 6.3
  */
-public class GraphiteAquaSkin extends GraphiteSkin {
+public class GraphiteGoldSkin extends GraphiteSkin {
 	/**
 	 * Display name for <code>this</code> skin.
 	 */
-	public static final String NAME = "Graphite Aqua";
+	public static final String NAME = "Graphite Gold";
 
 	/**
-	 * Creates a new <code>Graphite Aqua</code> skin.
+	 * Creates a new <code>Graphite Gold</code> skin.
 	 */
-	public GraphiteAquaSkin() {
-		super();
-		
+	public GraphiteGoldSkin() {
 		SubstanceSkin.ColorSchemes schemes = SubstanceSkin
 				.getColorSchemes("org/pushingpixels/substance/api/skin/graphite.colorschemes");
 
-		// highlight fill scheme + custom alpha for rollover unselected state
-		SubstanceColorScheme highlightScheme = schemes.get("Graphite Aqua");
+		// highlight fill scheme + custom alphas for states
+		SubstanceColorScheme highlightScheme = schemes.get("Graphite Gold");
+		SubstanceColorScheme schemeSelectedTab = schemes.get("Graphite Gold Light Text");
+		
 		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme,
 				0.8f, ComponentState.ROLLOVER_UNSELECTED);
 		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 0.9f,
@@ -75,17 +75,20 @@ public class GraphiteAquaSkin extends GraphiteSkin {
 		defaultSchemeBundle.registerColorScheme(highlightScheme,
 				ColorSchemeAssociationKind.FILL, 
 				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED);
-		defaultSchemeBundle.registerColorScheme(highlightScheme.shade(0.2),
+		defaultSchemeBundle.registerColorScheme(highlightScheme.shade(0.2).saturate(0.2),
 				ColorSchemeAssociationKind.FILL, 
 				ComponentState.PRESSED_SELECTED, ComponentState.PRESSED_UNSELECTED);
 		defaultSchemeBundle.registerColorScheme(highlightScheme,
 				ColorSchemeAssociationKind.TAB,
 				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED);
 
-		// border schemes
 		defaultSchemeBundle.registerColorScheme(highlightScheme,
 				ColorSchemeAssociationKind.HIGHLIGHT_BORDER, ComponentState
 						.getActiveStates());
+		
+		defaultSchemeBundle.registerColorScheme(highlightScheme, 
+				ColorSchemeAssociationKind.MARK, 
+				ComponentState.SELECTED);
 
 		// text highlight scheme
 		defaultSchemeBundle.registerColorScheme(highlightScheme,
@@ -96,7 +99,12 @@ public class GraphiteAquaSkin extends GraphiteSkin {
 				ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
 
 		defaultSchemeBundle.registerColorScheme(highlightScheme,
-				ComponentState.ROLLOVER_SELECTED);
+				ComponentState.ROLLOVER_UNSELECTED);
+
+		// scheme for rolling over selected tabs
+		defaultSchemeBundle.registerColorScheme(schemeSelectedTab, 
+				ColorSchemeAssociationKind.TAB, 
+				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED);
 	}
 
 	/*

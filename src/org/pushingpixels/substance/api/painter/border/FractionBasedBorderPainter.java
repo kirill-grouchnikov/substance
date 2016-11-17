@@ -101,7 +101,7 @@ public class FractionBasedBorderPainter extends FractionBasedPainter implements
 		// issue 433 - the "c" can be null when painting
 		// the border of a tree icon used outside the
 		// JTree context.
-		boolean isSpecialButton = c instanceof SubstanceInternalArrowButton;
+		boolean isSpecialButton = c.getClass().isAnnotationPresent(SubstanceInternalArrowButton.class);
 		int joinKind = isSpecialButton ? BasicStroke.JOIN_MITER
 				: BasicStroke.JOIN_ROUND;
 		int capKind = isSpecialButton ? BasicStroke.CAP_SQUARE

@@ -43,7 +43,6 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -78,7 +77,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JRootPane;
 import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -104,7 +102,6 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.FocusKind;
 import org.pushingpixels.substance.api.SubstanceConstants.MenuGutterFillKind;
-import org.pushingpixels.substance.api.SubstanceConstants.ScrollPaneButtonPolicyKind;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.SubstanceConstants.TabContentPaneBorderKind;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
@@ -892,7 +889,7 @@ public class SubstanceCoreUtilities {
 	 * @see SubstanceLookAndFeel#USE_THEMED_DEFAULT_ICONS
 	 */
 	public static boolean useThemedDefaultIcon(JComponent comp) {
-		if (comp instanceof SubstanceInternalButton) {
+		if ((comp == null) || comp.getClass().isAnnotationPresent(SubstanceInternalButton.class)) {
 			return false;
 		}
 		return Boolean.TRUE.equals(UIManager
@@ -1121,30 +1118,6 @@ public class SubstanceCoreUtilities {
 
 		// check if this object is in the model ???
 		return objProp;
-	}
-
-	/**
-	 * Returns the scroll bar buttons kind of the specified scroll bar.
-	 * 
-	 * @param scrollBar
-	 *            Scroll bar.
-	 * @return The scroll bar buttons kind of the specified scroll bar.
-	 * @see SubstanceLookAndFeel#SCROLL_PANE_BUTTONS_POLICY
-	 */
-	public static ScrollPaneButtonPolicyKind getScrollPaneButtonsPolicyKind(
-			JScrollBar scrollBar) {
-		Component parent = scrollBar.getParent();
-		if (parent instanceof JScrollPane) {
-			Object jspKind = ((JScrollPane) parent)
-					.getClientProperty(SubstanceLookAndFeel.SCROLL_PANE_BUTTONS_POLICY);
-			if (jspKind instanceof ScrollPaneButtonPolicyKind)
-				return (ScrollPaneButtonPolicyKind) jspKind;
-		}
-		Object globalJspKind = UIManager
-				.get(SubstanceLookAndFeel.SCROLL_PANE_BUTTONS_POLICY);
-		if (globalJspKind instanceof ScrollPaneButtonPolicyKind)
-			return (ScrollPaneButtonPolicyKind) globalJspKind;
-		return ScrollPaneButtonPolicyKind.OPPOSITE;
 	}
 
 	/**

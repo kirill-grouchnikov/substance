@@ -108,7 +108,6 @@ import org.pushingpixels.substance.api.tabbed.VetoableMultipleTabCloseListener;
 import org.pushingpixels.substance.api.tabbed.VetoableTabCloseListener;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
-import org.pushingpixels.substance.internal.animation.StateTransitionTracker.RepaintCallback;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker.StateContributionInfo;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
@@ -125,7 +124,6 @@ import org.pushingpixels.substance.internal.utils.scroll.SubstanceScrollButton;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.Timeline.RepeatBehavior;
 import org.pushingpixels.trident.Timeline.TimelineState;
-import org.pushingpixels.trident.callback.TimelineCallback;
 import org.pushingpixels.trident.callback.UIThreadTimelineCallbackAdapter;
 
 /**
@@ -548,16 +546,14 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				if ((this.prevRolledOver >= 0)
 						&& (this.prevRolledOver < tabPane.getTabCount())
 						&& tabPane.isEnabledAt(this.prevRolledOver)) {
-					StateTransitionTracker tracker = getTracker(prevRolledOver,
-							true, prevRolledOver == currSelectedIndex);
-					tracker.getModel().setRollover(false);
+					getTracker(prevRolledOver, true, prevRolledOver == currSelectedIndex).
+							getModel().setRollover(false);
 				}
 				if ((currRolledOver >= 0)
 						&& (currRolledOver < tabPane.getTabCount())
 						&& tabPane.isEnabledAt(currRolledOver)) {
-					StateTransitionTracker tracker = getTracker(currRolledOver,
-							false, currRolledOver == currSelectedIndex);
-					tracker.getModel().setRollover(true);
+					getTracker(currRolledOver, false, currRolledOver == currSelectedIndex).
+							getModel().setRollover(true);
 				}
 			}
 			this.prevRolledOver = currRolledOver;
@@ -582,9 +578,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				// only the previously rolled-over tab needs to be
 				// repainted (fade-out) instead of repainting the
 				// whole tab as before.
-				StateTransitionTracker tracker = getTracker(prevRolledOver,
-						true, prevRolledOver == currSelectedIndex);
-				tracker.getModel().setRollover(false);
+				getTracker(prevRolledOver, true, prevRolledOver == currSelectedIndex).
+						getModel().setRollover(false);
 
 				if (SubstanceCoreUtilities.getTabCloseCallback(e, tabPane,
 						this.prevRolledOver) != null) {
@@ -908,10 +903,10 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		float borderThickness = SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
 						.getComponentFontSize(tabPane));
-		GeneralPath contourInner = borderPainter.isPaintingInnerContour() ? SubstanceOutlineUtilities
-				.getBaseOutline(width, height + dy, cornerRadius
-						- borderThickness, straightSides, borderThickness
-						+ borderInsets)
+		GeneralPath contourInner = borderPainter.isPaintingInnerContour() 
+				? SubstanceOutlineUtilities.getBaseOutline(width, height + dy, 
+						cornerRadius - borderThickness, straightSides, 
+						borderThickness + borderInsets)
 				: null;
 
 		borderPainter.paintBorder(resGraphics, tabPane, width, height + dy,
@@ -1124,7 +1119,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				this.tabPane, g));
 
 		boolean isEnabled = this.tabPane.isEnabledAt(tabIndex);
-		ComponentState currState = this.getTabState(tabIndex);
+		ComponentState currState = this.getTabState(tabIndex, false);
 		StateTransitionTracker.ModelStateInfo modelStateInfo = this
 				.getModelStateInfo(tabIndex);
 
@@ -1240,7 +1235,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			finalAlpha += 0.5f * tabTracker
 					.getFacetStrength(ComponentStateFacet.ROLLOVER);
 		} else {
-			ComponentState tabState = getTabState(tabIndex);
+			ComponentState tabState = getTabState(tabIndex, false);
 			if (tabState.isFacetActive(ComponentStateFacet.ROLLOVER)
 					|| tabState.isFacetActive(ComponentStateFacet.SELECTION)) {
 				finalAlpha = 1.0f;
@@ -2664,33 +2659,10 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		return this.getTabBounds(i, tabRect);
 	}
 
-	// /**
-	// * Returns the previous state for the specified tab.
-	// *
-	// * @param tabIndex
-	// * Tab index.
-	// * @return The previous state for the specified tab.
-	// */
-	// protected ComponentState getPrevTabState(int tabIndex) {
-	// StateTransitionTracker tracker = this.stateTransitionMultiTracker
-	// .getTracker(tabIndex);
-	// if (tracker == null) {
-	// return getTabState(tabIndex);
-	// } else {
-	// ComponentState fromTracker = tracker.getPrevModelState();
-	// boolean isEnabled = this.tabPane.isEnabledAt(tabIndex);
-	// return ComponentState.getState(isEnabled, fromTracker
-	// .isFacetActive(AnimationFacet.ROLLOVER), fromTracker
-	// .isFacetActive(AnimationFacet.SELECTION));
-	// }
-	// }
-
-	protected StateTransitionTracker.ModelStateInfo getModelStateInfo(
-			int tabIndex) {
+	private StateTransitionTracker.ModelStateInfo getModelStateInfo(int tabIndex) {
 		if (this.stateTransitionMultiTracker.size() == 0)
 			return null;
-		StateTransitionTracker tracker = this.stateTransitionMultiTracker
-				.getTracker(tabIndex);
+		StateTransitionTracker tracker = this.stateTransitionMultiTracker.getTracker(tabIndex);
 		if (tracker == null) {
 			return null;
 		} else {
@@ -2705,20 +2677,22 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 	 *            Tab index.
 	 * @return The current state for the specified tab.
 	 */
-	protected ComponentState getTabState(int tabIndex) {
+	protected ComponentState getTabState(int tabIndex, boolean toAllowIgnoringSelectedState) {
 		boolean isEnabled = this.tabPane.isEnabledAt(tabIndex);
 		StateTransitionTracker tracker = this.stateTransitionMultiTracker
 				.getTracker(tabIndex);
+		boolean ignoreSelectedState = toAllowIgnoringSelectedState &&
+				(SubstanceCoreUtilities.getSkin(tabPane).getSelectedTabFadeEnd() <= 0.5);
 		if (tracker == null) {
 			boolean isRollover = this.getRolloverTabIndex() == tabIndex;
-			boolean isSelected = this.tabPane.getSelectedIndex() == tabIndex;
+			boolean isSelected = ignoreSelectedState ? false : this.tabPane.getSelectedIndex() == tabIndex;
 			return ComponentState.getState(isEnabled, isRollover, isSelected);
 		} else {
 			ComponentState fromTracker = tracker.getModelStateInfo()
 					.getCurrModelState();
-			return ComponentState.getState(isEnabled, fromTracker
-					.isFacetActive(ComponentStateFacet.ROLLOVER), fromTracker
-					.isFacetActive(ComponentStateFacet.SELECTION));
+			return ComponentState.getState(isEnabled, 
+					fromTracker.isFacetActive(ComponentStateFacet.ROLLOVER), 
+					ignoreSelectedState ? false : fromTracker.isFacetActive(ComponentStateFacet.SELECTION));
 		}
 	}
 
@@ -2743,11 +2717,11 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		} else {
 			// plain text
 			int mnemIndex = this.tabPane.getDisplayedMnemonicIndexAt(tabIndex);
-			StateTransitionTracker.ModelStateInfo modelStateInfo = this
-					.getModelStateInfo(tabIndex);
-			ComponentState currState = this.getTabState(tabIndex);
+			StateTransitionTracker.ModelStateInfo modelStateInfo = 
+					 this.getModelStateInfo(tabIndex);
+			ComponentState currState = this.getTabState(tabIndex, false);
 
-			// System.out.println("Tab " + title + ":" + currState);
+			//System.out.println("Tab " + title + ":" + currState);
 			Color fg = null;
 			if (modelStateInfo != null) {
 				Map<ComponentState, StateContributionInfo> activeStates = modelStateInfo
@@ -2773,13 +2747,14 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 						Color schemeFg = scheme.getForegroundColor();
 						float contribution = activeEntry.getValue()
 								.getContribution();
-						// // System.out.println("\t" + activeState + ":"
-						// + contribution + ":" + scheme.getDisplayName()
-						// + ":" + schemeFg);
+//						  System.out.println("\t" + activeState + ":"
+//						 + contribution + ":" + scheme.getDisplayName()
+//						 + ":" + schemeFg);
 						aggrRed += schemeFg.getRed() * contribution;
 						aggrGreen += schemeFg.getGreen() * contribution;
 						aggrBlue += schemeFg.getBlue() * contribution;
 					}
+//					System.out.println("");
 					fg = new Color((int) aggrRed, (int) aggrGreen,
 							(int) aggrBlue);
 				}
@@ -2815,14 +2790,13 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		Graphics2D g2d = (Graphics2D) g.create();
 		g2d.translate(iconRect.x, iconRect.y);
 		if (SubstanceCoreUtilities.useThemedDefaultIcon(this.tabPane)) {
-			ComponentState currState = this.getTabState(tabIndex);
+			ComponentState currState = this.getTabState(tabIndex, true);
 			StateTransitionTracker tabTracker = stateTransitionMultiTracker
 					.getTracker(tabIndex);
 
 			if (tabTracker == null) {
 				if (currState.isFacetActive(ComponentStateFacet.ROLLOVER)
-						|| currState
-								.isFacetActive(ComponentStateFacet.SELECTION)
+						|| currState.isFacetActive(ComponentStateFacet.SELECTION)
 						|| currState.isDisabled()) {
 					// use the original (full color or disabled) icon
 					icon.paintIcon(this.tabPane, g2d, 0, 0);
