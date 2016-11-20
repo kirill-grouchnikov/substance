@@ -113,6 +113,7 @@ public class StandardBorderPainter implements SubstanceBorderPainter {
 					new Color[] { topBorderColor, midBorderColor,
 							bottomBorderColor }, CycleMethod.REPEAT);
 			graphics.setPaint(gradient);
+//			graphics.setColor(Color.green);
 			graphics.draw(contour);
 		}
 

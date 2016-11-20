@@ -96,30 +96,27 @@ public class SubstanceTextUtilities {
 	 *            Text rectangle Y offset.
 	 */
 	public static void paintTextWithDropShadow(JComponent c, Graphics g,
-			Color foregroundColor, String text, int width, int height,
+			Color foregroundColor, Color echoColor, String text, int width, int height,
 			int xOffset, int yOffset) {
 		Graphics2D graphics = (Graphics2D) g.create();
 		RenderingUtils.installDesktopHints(graphics, c);
 
 		// blur the text shadow
-		BufferedImage blurred = SubstanceCoreUtilities.getBlankImage(width,
-				height);
+		BufferedImage blurred = SubstanceCoreUtilities.getBlankImage(width, height);
 		Graphics2D gBlurred = (Graphics2D) blurred.getGraphics();
 		gBlurred.setFont(graphics.getFont());
 		gBlurred.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 		// Color neg =
 		// SubstanceColorUtilities.getNegativeColor(foregroundColor);
-		float luminFactor = SubstanceColorUtilities
-				.getColorStrength(foregroundColor);
-		gBlurred.setColor(SubstanceColorUtilities
-				.getNegativeColor(foregroundColor));
+		float luminFactor = SubstanceColorUtilities.getColorStrength(foregroundColor);
+		gBlurred.setColor(echoColor);
 		ConvolveOp convolve = new ConvolveOp(new Kernel(3, 3, new float[] {
-				.02f, .05f, .02f, .05f, .02f, .05f, .02f, .05f, .02f }),
+				.04f, .06f, .04f, .06f, .04f, .06f, .04f, .06f, .04f }),
 				ConvolveOp.EDGE_NO_OP, null);
-		gBlurred.drawString(text, xOffset, yOffset - 1);
+		gBlurred.drawString(text, xOffset, yOffset);
 		blurred = convolve.filter(blurred, null);
-
+		
 		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c,
 				luminFactor, g));
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
@@ -128,10 +125,9 @@ public class SubstanceTextUtilities {
 		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c, g));
 
 		FontMetrics fm = graphics.getFontMetrics();
-		SubstanceTextUtilities.paintText(graphics, c, new Rectangle(xOffset,
-				yOffset - fm.getAscent(), width - xOffset, fm.getHeight()),
-				text, -1, graphics.getFont(), foregroundColor, graphics
-						.getClipBounds());
+		SubstanceTextUtilities.paintText(graphics, c, 
+				new Rectangle(xOffset, yOffset - fm.getAscent(), width - xOffset, fm.getHeight()),
+				text, -1, graphics.getFont(), foregroundColor, graphics.getClipBounds());
 
 		graphics.dispose();
 	}

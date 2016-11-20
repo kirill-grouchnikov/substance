@@ -48,9 +48,8 @@ public class Alignment extends JFrame {
 							textFieldBounds.width, textFieldBounds.height);
 					g.setColor(new Color(255, 0, 0, 196));
 					g.drawLine(0, buttonBounds.y, getWidth(), buttonBounds.y);
-					g.drawLine(0, buttonBounds.y + buttonBounds.height - 1,
-							getWidth(), buttonBounds.y + buttonBounds.height
-									- 1);
+					g.drawLine(0, buttonBounds.y + buttonBounds.height,
+							getWidth(), buttonBounds.y + buttonBounds.height);
 					g.setColor(new Color(0, 128, 0, 196));
 					g.drawLine(0, textFieldBounds.y + textFieldBaseline,
 							getWidth(), textFieldBounds.y + textFieldBaseline);

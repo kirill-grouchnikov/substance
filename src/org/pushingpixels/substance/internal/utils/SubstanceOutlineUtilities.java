@@ -35,6 +35,7 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
 import java.util.Set;
 
+import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 
 /**
@@ -123,73 +124,60 @@ public class SubstanceOutlineUtilities {
 		height -= 2 * insets;
 
 		GeneralPath result = new GeneralPath();
-		// float radius3 = (float) (radius / (1.5 * Math.pow(height, 0.5)));
-		// if (Math.max(width, height) < 15)
-		// radius3 /= 2;
 
-		if (isTopLeftCorner) {
+		if (isTopLeftCorner || (radius <= 0.0f)) {
 			result.moveTo(xs, ys);
 		} else {
 			result.moveTo(xs + radius, ys);
 		}
 
-		if (isTopRightCorner) {
-			result.lineTo(xs + width - 1, ys);
+		if (isTopRightCorner || (radius <= 0.0f)) {
+			result.lineTo(xs + width, ys);
 		} else {
-			if (isTopLeftCorner || ((xs + width - radius - 1) >= radius)) {
-				result.lineTo(xs + width - radius - 1, ys);
+			if (isTopLeftCorner || ((xs + width - radius) >= radius)) {
+				result.lineTo(xs + width - radius, ys);
 			}
-			result.append(new Arc2D.Double(xs + width - 1 - 2 * radius, ys,
+			result.append(new Arc2D.Double(xs + width - 2 * radius, ys,
 					2 * radius, 2 * radius, 90, -90, Arc2D.OPEN), true);
-
-			// result.quadTo(xs + width - 1 - radius3, ys + radius3, xs + width
-			// - 1, ys + radius);
 		}
 
-		if (isBottomRightCorner) {
-			result.lineTo(xs + width - 1, ys + height - 1);
+		if (isBottomRightCorner || (radius <= 0.0f)) {
+			result.lineTo(xs + width, ys + height);
 		} else {
-			if (isTopRightCorner || ((ys + height - radius - 1) >= radius)) {
-				result.lineTo(xs + width - 1, ys + height - radius - 1);
+			if (isTopRightCorner || ((ys + height - radius) >= radius)) {
+				result.lineTo(xs + width, ys + height - radius);
 			}
 
-			result.append(new Arc2D.Double(xs + width - 2 * radius - 1, ys
-					+ height - 1 - 2 * radius, 2 * radius, 2 * radius, 0, -90,
+			result.append(new Arc2D.Double(xs + width - 2 * radius, 
+					ys + height - 2 * radius, 2 * radius, 2 * radius, 0, -90,
 					Arc2D.OPEN), true);
-
-			// result.quadTo(xs + width - 1 - radius3, ys + height - 1 -
-			// radius3,
-			// xs + width - radius - 1, ys + height - 1);
 		}
 
-		if (isBottomLeftCorner) {
-			result.lineTo(xs, ys + height - 1);
+		if (isBottomLeftCorner || (radius <= 0.0f)) {
+			result.lineTo(xs, ys + height);
 		} else {
-			if (isBottomRightCorner || ((xs + width - radius - 1) >= radius)) {
-				result.lineTo(xs + radius, ys + height - 1);
+			if (isBottomRightCorner || ((xs + width - radius) >= radius)) {
+				result.lineTo(xs + radius, ys + height);
 			}
-			result.append(new Arc2D.Double(xs, ys + height - 2 * radius - 1,
+			result.append(new Arc2D.Double(xs, ys + height - 2 * radius,
 					2 * radius, 2 * radius, 270, -90, Arc2D.OPEN), true);
-			// result.quadTo(xs + radius3, ys + height - 1 - radius3, xs, ys
-			// + height - radius - 1);
 		}
 
-		if (isTopLeftCorner) {
+		if (isTopLeftCorner || (radius == 0.0f)) {
 			result.lineTo(xs, ys);
 		} else {
-			if (isBottomLeftCorner || ((ys + height - radius - 1) >= radius)) {
+			if (isBottomLeftCorner || ((ys + height - radius) >= radius)) {
 				result.lineTo(xs, ys + radius);
 			}
 			result.append(new Arc2D.Double(xs, ys, 2 * radius, 2 * radius, 180,
 					-90, Arc2D.OPEN), true);
-			// result.quadTo(xs + radius3, ys + radius3, xs + radius, ys);
 		}
 
 		return result;
 	}
 
 	/**
-	 * Returns outline that has a triangle poiting downwards. The top two
+	 * Returns outline that has a triangle pointing downwards. The top two
 	 * corners in the outline are rounded. This function can be used to draw
 	 * slider thumbs.
 	 * 

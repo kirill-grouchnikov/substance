@@ -96,8 +96,6 @@ public class SampleFrame extends JFrame {
 
 		this.add(Check.getToolbar("", 22, false), BorderLayout.NORTH);
 		this.add(this.tabbed, BorderLayout.CENTER);
-		// this.tabbed.putClientProperty(LafWidget.TABBED_PANE_PREVIEW_PAINTER,
-		// new DefaultTabPreviewPainter());
 
 		JPanel transPanel = new JPanel();
 		transPanel.setLayout(new BorderLayout());
@@ -214,7 +212,7 @@ public class SampleFrame extends JFrame {
 				+ "fill:default:grow(1)",
 				"pref, 3dlu, pref, 3dlu, pref, 3dlu, pref");
 		PanelBuilder builder = new PanelBuilder(lm);
-		builder.setBorder(new EmptyBorder(0, 2, 0, 2));
+		builder.setBorder(new EmptyBorder(2, 2, 2, 2));
 		CellConstraints cc = new CellConstraints();
 
 		JCheckBox cbes = new JCheckBox("Enabled selected");
@@ -260,8 +258,7 @@ public class SampleFrame extends JFrame {
 		scroll.setOpaque(false);
 		scroll.getViewport().setOpaque(false);
 
-		final JPanel buttons2 = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5,
-				2));
+		final JPanel buttons2 = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 2));
 		this.prev = new JButton("prev");
 		JButton cancel = new JButton("cancel");
 		cancel.setEnabled(false);
@@ -271,6 +268,7 @@ public class SampleFrame extends JFrame {
 		buttons2.add(this.prev);
 		buttons2.add(cancel);
 		buttons2.add(ok);
+		buttons2.setBorder(new EmptyBorder(2, 0, 2, 0));
 		this.getRootPane().setDefaultButton(ok);
 		// ok.requestFocusInWindow();
 		this.addWindowListener(new WindowAdapter() {
@@ -333,8 +331,6 @@ public class SampleFrame extends JFrame {
 		this.tabbed.add("Renderers", samplePanel2);
 
 		this.tabbed.setSelectedComponent(samplePanel);
-		this.tabbed.setOpaque(false);
-		this.tabbed.setBorder(new EmptyBorder(0, 2, 2, 2));
 		JMenuBar jmb = new JMenuBar();
 
 		if (UIManager.getLookAndFeel() instanceof SubstanceLookAndFeel) {

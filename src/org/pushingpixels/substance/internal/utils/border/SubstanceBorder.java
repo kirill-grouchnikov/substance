@@ -102,7 +102,14 @@ public class SubstanceBorder implements Border, UIResource {
 		this.myInsets = new Insets(insets.top, insets.left, insets.bottom,
 				insets.right);
 	}
-
+	
+	public SubstanceBorder(float radiusScaleFactor, Insets insets) {
+		this();
+		this.radiusScaleFactor = radiusScaleFactor;
+		this.myInsets = new Insets(insets.top, insets.left, insets.bottom,
+				insets.right);
+	}
+	
 	/**
 	 * Sets the alpha for this border.
 	 * 

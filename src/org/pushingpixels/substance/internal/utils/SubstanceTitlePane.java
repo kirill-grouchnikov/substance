@@ -29,6 +29,7 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
@@ -1226,9 +1227,13 @@ public class SubstanceTitlePane extends JComponent {
 			FontMetrics fm = rootPane.getFontMetrics(graphics.getFont());
 			int yOffset = ((height - fm.getHeight()) / 2) + fm.getAscent();
 
+			SubstanceColorScheme fillScheme = skin.getBackgroundColorScheme(
+					DecorationAreaType.PRIMARY_TITLE_PANE);
+			Color echoColor = !fillScheme.isDark() ? fillScheme.getUltraDarkColor() 
+					: fillScheme.getUltraLightColor();
 			SubstanceTextUtilities.paintTextWithDropShadow(this, graphics,
 					SubstanceColorUtilities.getForegroundColor(scheme),
-					theTitle, width, height, xOffset, yOffset);
+					echoColor, theTitle, width, height, xOffset, yOffset);
 		}
 
 		GhostPaintingUtils.paintGhostImages(this, graphics);

@@ -30,8 +30,10 @@
 package org.pushingpixels.substance.internal.utils;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.*;
 
+import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceSkin;
 
@@ -75,10 +77,9 @@ public class NoiseFactory {
 		// Color c2 = scheme.getWatermarkStampColor();
 		Color c3 = scheme.getWatermarkLightColor();
 
-		BufferedImage dst = SubstanceCoreUtilities.getBlankImage(width, height);
-		//			
-		// new BufferedImage(width, height,
-		// BufferedImage.TYPE_INT_ARGB);
+		// Note that we are starting with non-hi DPI aware image for creating the
+		// source for the noise
+		BufferedImage dst = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
 		// Borrow from Sebastien Petrucci fast blur code - direct access
 		// to the raster data
@@ -93,8 +94,7 @@ public class NoiseFactory {
 			double jj = yFactor * j;
 			for (int i = 0; i < width; i++) {
 				double ii = xFactor * i;
-				double z = hasConstantZ ? 1.0 : Math.sqrt(m2 - ii * ii - jj
-						* jj);
+				double z = hasConstantZ ? 1.0 : Math.sqrt(m2 - ii * ii - jj * jj);
 				double noise = 0.5 + 0.5 * PerlinNoiseGenerator
 						.noise(ii, jj, z);
 
@@ -106,11 +106,22 @@ public class NoiseFactory {
 		}
 		// System.out.println((dstBuffer[0] >>> 24) & 0xFF);
 		if (toBlur) {
+			// and staying here with non-hi DPI aware image for blurred noise
 			ConvolveOp convolve = new ConvolveOp(new Kernel(3, 3, new float[] {
 					.08f, .08f, .08f, .08f, .38f, .08f, .08f, .08f, .08f }),
 					ConvolveOp.EDGE_NO_OP, null);
 			dst = convolve.filter(dst, null);
 		}
-		return dst;
+		
+		// and now returning an image that is hi DPI aware if needed
+		if (UIUtil.isRetina()) {
+			BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
+			Graphics2D g2d = result.createGraphics();
+			g2d.drawImage(dst, 0, 0, null);
+			g2d.dispose();
+			return result;
+		} else {
+			return dst;
+		}
 	}
 }

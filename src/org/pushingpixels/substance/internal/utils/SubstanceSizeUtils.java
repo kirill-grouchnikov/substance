@@ -284,7 +284,7 @@ public class SubstanceSizeUtils {
 	 * @return Check mark size for check boxes under the specified font size.
 	 */
 	public static int getCheckBoxMarkSize(int fontSize) {
-		return 5 + fontSize;
+		return 3 + fontSize;
 	}
 
 	/**
@@ -808,9 +808,8 @@ public class SubstanceSizeUtils {
 	 */
 	public static Insets getTabbedPaneContentInsets(int fontSize) {
 		float borderStrokeWidth = getBorderStrokeWidth(fontSize);
-		int tbIns = (int) (Math.ceil(2.5 * borderStrokeWidth));
-		int lrIns = (int) (Math.ceil(3.0 * borderStrokeWidth));
-		return new Insets(tbIns, lrIns, tbIns, lrIns);
+		int inset = (int) Math.ceil(borderStrokeWidth + 0.5f);
+		return new Insets(inset, inset, inset, inset);
 	}
 
 	/**

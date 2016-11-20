@@ -91,9 +91,8 @@ public final class BottomShadowOverlayPainter implements
 		fillGraphics.translate(0, -dy);
 
 		int shadowHeight = 4;
-		GradientPaint fillPaint = new GradientPaint(0,
-				topHeight - shadowHeight, SubstanceColorUtilities
-						.getAlphaColor(shadowColor, 0), 0, topHeight,
+		GradientPaint fillPaint = new GradientPaint(0, topHeight - shadowHeight, 
+				SubstanceColorUtilities.getAlphaColor(shadowColor, 0), 0, topHeight,
 				SubstanceColorUtilities.getAlphaColor(shadowColor, 128));
 		fillGraphics.setPaint(fillPaint);
 		fillGraphics.fillRect(0, topHeight - shadowHeight, width, shadowHeight);

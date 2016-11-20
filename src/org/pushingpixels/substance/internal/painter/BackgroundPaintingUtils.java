@@ -93,11 +93,6 @@ public class BackgroundPaintingUtils {
 					.getClientProperty(LafWidgetUtilities.PREVIEW_MODE)));
 		}
 
-		// if (!force && !isPreviewMode && !c.isShowing() && !isInCellRenderer)
-		// {
-		// return;
-		// }
-
 		Graphics2D graphics = (Graphics2D) g.create();
 		// optimization - do not call fillRect on graphics
 		// with anti-alias turned on
@@ -114,9 +109,17 @@ public class BackgroundPaintingUtils {
 			// use the decoration painter
 			DecorationPainterUtils
 					.paintDecorationBackground(graphics, c, force);
-			// and add overlays
-			OverlayPainterUtils
-					.paintOverlays(graphics, c, skin, decorationType);
+			// and add overlays unless it's not a top-level menu
+			boolean showOverlays = true;
+			if (c instanceof JMenuItem) {
+				showOverlays = false;
+				if (c instanceof JMenu) {
+					showOverlays = ((JMenu) c).isTopLevelMenu();
+				}
+			}
+			if (showOverlays) {
+				OverlayPainterUtils.paintOverlays(graphics, c, skin, decorationType);
+			}
 		} else {
 			// fill the area with solid color
 			Color backgr = SubstanceColorUtilities

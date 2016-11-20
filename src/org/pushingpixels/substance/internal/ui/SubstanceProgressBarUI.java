@@ -462,7 +462,7 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 					barRectHeight, barRectWidth, fillScheme,
 					fillPainter, progressBar.getOrientation(), 
 					this.progressBar.getComponentOrientation());
-			g2d.drawImage(back, margin, margin - 1, back.getWidth() / scaleFactor,
+			g2d.drawImage(back, margin, margin, back.getWidth() / scaleFactor,
 					back.getHeight() / scaleFactor, null);
 		}
 
@@ -502,7 +502,7 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 							progressFillPainter, progressBar.getOrientation(), 
 							this.progressBar.getComponentOrientation());
 					g2d.drawImage(progress, margin, 
-							margin + barRectHeight - progressHeight - 1, 
+							margin + barRectHeight - progressHeight, 
 							progress.getWidth() / scaleFactor,
 							progress.getHeight() / scaleFactor, null);
 				}
@@ -562,8 +562,8 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 
 		ComponentState progressState = getProgressState();
 
-		final int barRectWidth = progressBar.getWidth() - 2 * margin - 1;
-		final int barRectHeight = progressBar.getHeight() - 2 * margin - 1;
+		final int barRectWidth = progressBar.getWidth() - 2 * margin;
+		final int barRectHeight = progressBar.getHeight() - 2 * margin;
 
 		int valComplete = 0;
 		if (progressBar.getOrientation() == SwingConstants.HORIZONTAL) {

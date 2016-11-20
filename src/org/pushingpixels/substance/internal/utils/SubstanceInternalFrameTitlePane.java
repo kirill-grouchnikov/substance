@@ -397,9 +397,13 @@ public class SubstanceInternalFrameTitlePane extends
 			FontMetrics fm = rootPane.getFontMetrics(graphics.getFont());
 			int yOffset = ((height - fm.getHeight()) / 2) + fm.getAscent();
 
+			SubstanceColorScheme fillScheme = SubstanceCoreUtilities.getSkin(this.frame).
+					getBackgroundColorScheme(DecorationAreaType.SECONDARY_TITLE_PANE);
+			Color echoColor = !fillScheme.isDark() ? fillScheme.getUltraDarkColor() 
+					: fillScheme.getUltraLightColor();
 			SubstanceTextUtilities.paintTextWithDropShadow(this, graphics,
 					SubstanceColorUtilities.getForegroundColor(scheme),
-					theTitle, width, height, xOffset, yOffset);
+					echoColor, theTitle, width, height, xOffset, yOffset);
 		}
 
 		Icon icon = this.frame.getFrameIcon();

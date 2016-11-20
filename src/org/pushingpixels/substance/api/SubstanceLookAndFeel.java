@@ -710,7 +710,7 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	 * {@link UIManager}. The value should be one of
 	 * {@link SubstanceConstants.TabContentPaneBorderKind} enum. By default, the
 	 * border kind is
-	 * {@link SubstanceConstants.TabContentPaneBorderKind#DOUBLE_FULL}.
+	 * {@link SubstanceConstants.TabContentPaneBorderKind#DOUBLE_PLACEMENT}.
 	 * 
 	 * <p>
 	 * Example of setting that all tabbed panes in the application have single

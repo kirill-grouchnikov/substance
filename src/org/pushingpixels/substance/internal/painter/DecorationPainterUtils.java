@@ -95,6 +95,7 @@ public class DecorationPainterUtils {
 	 * @return Decoration area type of the component.
 	 */
 	public static DecorationAreaType getDecorationType(Component comp) {
+		JPopupMenu popupMenu = null;
 		Component c = comp;
 		while (c != null) {
 			if (c instanceof JComponent) {
@@ -104,7 +105,16 @@ public class DecorationPainterUtils {
 					return (DecorationAreaType) prop;
 				}
 			}
+			if (c instanceof JPopupMenu) {
+				popupMenu = (JPopupMenu) c;
+			}
 			c = c.getParent();
+		}
+		if (popupMenu != null) {
+			Component invoker = popupMenu.getInvoker();
+			if (popupMenu != invoker) {
+				return getDecorationType(popupMenu.getInvoker());
+			}
 		}
 		return DecorationAreaType.NONE;
 	}

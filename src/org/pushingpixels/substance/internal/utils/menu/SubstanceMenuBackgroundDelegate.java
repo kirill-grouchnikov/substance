@@ -54,6 +54,7 @@ import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.HighlightPainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.menu.MenuUtilities.MenuLayoutMetrics;
 
 /**
  * Delegate for painting background of menu items.
@@ -94,18 +95,28 @@ public class SubstanceMenuBackgroundDelegate {
 			// IllegalArgumenException on LinearGradientPaint below.
 			return;
 		}
+		
+
 		if (menuItem.getParent() instanceof JPopupMenu) {
-			if (menuItem.getComponentOrientation().isLeftToRight()) {
-				MenuGutterFillKind fillKind = SubstanceCoreUtilities
-						.getMenuGutterFillKind();
-				if (fillKind != MenuGutterFillKind.NONE) {
+			JPopupMenu parent = (JPopupMenu) menuItem.getParent();
+			MenuLayoutMetrics popupMetrics = MenuUtilities.getPopupLayoutMetrics(
+					parent, true);
+			MenuGutterFillKind fillKind = SubstanceCoreUtilities
+					.getMenuGutterFillKind();
+			boolean hasGutterContent = (popupMetrics.maxIconWidth > 0) ||
+					(popupMetrics.maxCheckIconWidth > 0);
+			boolean shouldPaintGutter = hasGutterContent && (fillKind != null)
+					&& (fillKind != MenuGutterFillKind.NONE);
+
+			if (shouldPaintGutter) {
+				if (menuItem.getComponentOrientation().isLeftToRight()) {
 					SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
 							.getColorScheme(menuItem, ComponentState.ENABLED);
-					Color leftColor = ((fillKind == MenuGutterFillKind.SOFT_FILL) || (fillKind == MenuGutterFillKind.HARD)) ? scheme
-							.getUltraLightColor()
+					Color leftColor = ((fillKind == MenuGutterFillKind.SOFT_FILL) || 
+							(fillKind == MenuGutterFillKind.HARD)) ? scheme.getUltraLightColor()
 							: scheme.getLightColor();
-					Color rightColor = ((fillKind == MenuGutterFillKind.SOFT_FILL) || (fillKind == MenuGutterFillKind.SOFT)) ? scheme
-							.getUltraLightColor()
+					Color rightColor = ((fillKind == MenuGutterFillKind.SOFT_FILL) || 
+							(fillKind == MenuGutterFillKind.SOFT)) ? scheme.getUltraLightColor()
 							: scheme.getLightColor();
 					LinearGradientPaint gp = new LinearGradientPaint(0, 0,
 							textOffset, 0, new float[] { 0.0f, 1.0f },
@@ -114,34 +125,21 @@ public class SubstanceMenuBackgroundDelegate {
 					graphics.setComposite(LafWidgetUtilities.getAlphaComposite(
 							menuItem, 0.7f, g));
 
-					// System.out.println(menuItem.getText()
-					// + "["
-					// + menuItem.isEnabled()
-					// + "] : "
-					// + ((AlphaComposite) graphics.getComposite())
-					// .getAlpha() + ", " + leftColor + "->"
-					// + rightColor);
-					//
 					graphics.setPaint(gp);
 					graphics.fillRect(0, 0, textOffset - 2, menuHeight);
-				}
-			} else {
-				// fix for defect 125 - support of RTL menus
-				MenuGutterFillKind fillKind = SubstanceCoreUtilities
-						.getMenuGutterFillKind();
-				if (fillKind != MenuGutterFillKind.NONE) {
+				} else {
+					// fix for defect 125 - support of RTL menus
 					SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
 							.getColorScheme(menuItem, ComponentState.ENABLED);
-					Color leftColor = ((fillKind == MenuGutterFillKind.HARD_FILL) || (fillKind == MenuGutterFillKind.HARD)) ? scheme
-							.getLightColor()
+					Color leftColor = ((fillKind == MenuGutterFillKind.HARD_FILL) 
+							|| (fillKind == MenuGutterFillKind.HARD)) ? scheme.getLightColor()
 							: scheme.getUltraLightColor();
-					Color rightColor = ((fillKind == MenuGutterFillKind.HARD_FILL) || (fillKind == MenuGutterFillKind.SOFT)) ? scheme
-							.getLightColor()
+					Color rightColor = ((fillKind == MenuGutterFillKind.HARD_FILL) || 
+							(fillKind == MenuGutterFillKind.SOFT)) ? scheme.getLightColor()
 							: scheme.getUltraLightColor();
 
 					LinearGradientPaint gp = new LinearGradientPaint(
-							textOffset, 0, menuWidth, 0, new float[] { 0.0f,
-									1.0f },
+							textOffset, 0, menuWidth, 0, new float[] { 0.0f, 1.0f },
 							new Color[] { leftColor, rightColor },
 							CycleMethod.REPEAT);
 					graphics.setComposite(LafWidgetUtilities.getAlphaComposite(

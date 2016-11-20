@@ -580,7 +580,7 @@ public class SubstanceConstants {
 		/**
 		 * The content pane has full border on all sides plus an additional line
 		 * along the tab placement side (as in Firefox 2.0, Internet Explorer
-		 * 7.0 and Nimbus). This is the default kind starting from version 4.1.
+		 * 7.0 and Nimbus). This is the default kind starting in versions 4.1-6.1.
 		 */
 		DOUBLE_FULL,
 
@@ -592,6 +592,7 @@ public class SubstanceConstants {
 
 		/**
 		 * The content pane has double border along the tab placement side.
+		 * This is the default kind starting from version 6.2.
 		 */
 		DOUBLE_PLACEMENT,
 

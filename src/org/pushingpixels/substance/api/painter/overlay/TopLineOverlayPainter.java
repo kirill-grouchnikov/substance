@@ -83,7 +83,7 @@ public final class TopLineOverlayPainter implements SubstanceOverlayPainter {
 		SubstanceColorScheme colorScheme = skin
 				.getBackgroundColorScheme(decorationAreaType);
 		graphics.setColor(this.colorSchemeQuery.query(colorScheme));
-		float topY = borderStrokeWidth - dy - 1;
+		float topY = borderStrokeWidth - dy;
 		Line2D.Float line = new Line2D.Float(0, topY, width, topY);
 		graphics.draw(line);
 	}

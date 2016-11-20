@@ -586,7 +586,7 @@ public class SubstanceCoreUtilities {
 				.get(SubstanceLookAndFeel.TABBED_PANE_CONTENT_BORDER_KIND);
 		if (globalProp instanceof TabContentPaneBorderKind)
 			return (TabContentPaneBorderKind) globalProp;
-		return TabContentPaneBorderKind.DOUBLE_FULL;
+		return TabContentPaneBorderKind.DOUBLE_PLACEMENT;
 	}
 
 	/**

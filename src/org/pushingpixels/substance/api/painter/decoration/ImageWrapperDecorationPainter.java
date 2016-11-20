@@ -29,14 +29,20 @@
  */
 package org.pushingpixels.substance.api.painter.decoration;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.painter.SubstancePainterUtils;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 
 /**
@@ -62,7 +68,7 @@ public abstract class ImageWrapperDecorationPainter implements
 	/**
 	 * Map of colorized tiles.
 	 */
-	protected LinkedHashMap<String, Image> colorizedTileMap;
+	protected LinkedHashMap<String, BufferedImage> colorizedTileMap;
 
 	/**
 	 * Alpha channel for the texture image (colorized tiles applied on top of
@@ -76,9 +82,9 @@ public abstract class ImageWrapperDecorationPainter implements
 	public ImageWrapperDecorationPainter() {
 		this.textureAlpha = 0.3f;
 
-		this.colorizedTileMap = new LinkedHashMap<String, Image>() {
+		this.colorizedTileMap = new LinkedHashMap<String, BufferedImage>() {
 			@Override
-			protected boolean removeEldestEntry(Entry<String, Image> eldest) {
+			protected boolean removeEldestEntry(Entry<String, BufferedImage> eldest) {
 				return this.size() > 10;
 			}
 		};
@@ -201,14 +207,14 @@ public abstract class ImageWrapperDecorationPainter implements
 	protected void tileArea(Graphics2D g, Component comp,
 			SubstanceColorScheme tileScheme, int offsetTextureX,
 			int offsetTextureY, int x, int y, int width, int height) {
-
 		Graphics2D graphics = (Graphics2D) g.create();
 		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(comp,
 				this.textureAlpha, g));
 
 		Image colorizedTile = this.getColorizedTile(tileScheme);
-		int tileWidth = colorizedTile.getWidth(null);
-		int tileHeight = colorizedTile.getHeight(null);
+		int scaleFactor = SubstanceCoreUtilities.isHiDpiAwareImage(this.originalTile) ? 2 : 1;
+		int tileWidth = colorizedTile.getWidth(null) / scaleFactor;
+		int tileHeight = colorizedTile.getHeight(null) / scaleFactor;
 
 		offsetTextureX = offsetTextureX % tileWidth;
 		offsetTextureY = offsetTextureY % tileHeight;
@@ -217,7 +223,7 @@ public abstract class ImageWrapperDecorationPainter implements
 			int currTileLeft = -offsetTextureX;
 			do {
 				graphics.drawImage(colorizedTile, currTileLeft, currTileTop,
-						null);
+						tileWidth, tileHeight, null);
 				currTileLeft += tileWidth;
 			} while (currTileLeft < width);
 			currTileTop += tileHeight;
@@ -254,14 +260,19 @@ public abstract class ImageWrapperDecorationPainter implements
 	 *            Color scheme for the colorization.
 	 * @return Colorized tile.
 	 */
-	protected Image getColorizedTile(SubstanceColorScheme scheme) {
-		Image result = this.colorizedTileMap.get(scheme.getDisplayName());
+	protected BufferedImage getColorizedTile(SubstanceColorScheme scheme) {
+		BufferedImage result = this.colorizedTileMap.get(scheme.getDisplayName());
 		if (result == null) {
-			BufferedImage tileBi = new BufferedImage(this.originalTile.getWidth(null), 
-					this.originalTile.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-			tileBi.getGraphics().drawImage(this.originalTile, 0, 0, null);
-			result = SubstanceImageCreator.getColorSchemeImage(tileBi, scheme,
-					0.0f);
+			int scaleFactor = SubstanceCoreUtilities.isHiDpiAwareImage(this.originalTile) ? 2 : 1;
+			int tileWidth = this.originalTile.getWidth(null);
+			int tileHeight = this.originalTile.getHeight(null);
+			BufferedImage tileBi = SubstanceCoreUtilities.getBlankImage(
+					tileWidth / scaleFactor, tileHeight / scaleFactor);
+			Graphics2D tile2D = tileBi.createGraphics();
+			tile2D.drawImage(this.originalTile, 0, 0, tileWidth / scaleFactor,
+					tileHeight / scaleFactor, null);
+			tile2D.dispose();
+			result = SubstanceImageCreator.getColorSchemeImage(tileBi, scheme, 0.0f);
 			this.colorizedTileMap.put(scheme.getDisplayName(), result);
 		}
 		return result;

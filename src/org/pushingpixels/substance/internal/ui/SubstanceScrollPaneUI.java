@@ -600,21 +600,23 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 				
 				JScrollBar horizontal = this.scrollpane.getHorizontalScrollBar();
 				JScrollBar vertical = this.scrollpane.getVerticalScrollBar();
-				if (this.scrollpane.getComponentOrientation().isLeftToRight()) {
-					// Bottom right corner
-					if (scrollLm.getCorner(ScrollPaneLayout.LOWER_RIGHT_CORNER) == null) {
-						g2d.fillRect(horizontal.getX() + horizontal.getWidth(),
-								horizontal.getY(),
-								vertical.getWidth(),
-								horizontal.getHeight());
-					}
-				} else {
-					// Bottom left corner
-					if (scrollLm.getCorner(ScrollPaneLayout.LOWER_LEFT_CORNER) == null) {
-						g2d.fillRect(0,
-								horizontal.getY(),
-								vertical.getWidth(),
-								horizontal.getHeight());
+				if ((horizontal != null) && (vertical != null)) {
+					if (this.scrollpane.getComponentOrientation().isLeftToRight()) {
+						// Bottom right corner
+						if (scrollLm.getCorner(ScrollPaneLayout.LOWER_RIGHT_CORNER) == null) {
+							g2d.fillRect(horizontal.getX() + horizontal.getWidth(),
+									horizontal.getY(),
+									vertical.getWidth(),
+									horizontal.getHeight());
+						}
+					} else {
+						// Bottom left corner
+						if (scrollLm.getCorner(ScrollPaneLayout.LOWER_LEFT_CORNER) == null) {
+							g2d.fillRect(0,
+									horizontal.getY(),
+									vertical.getWidth(),
+									horizontal.getHeight());
+						}
 					}
 				}
 			}

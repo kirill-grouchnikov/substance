@@ -74,10 +74,7 @@ public final class BottomLineOverlayPainter implements SubstanceOverlayPainter {
 				.getBorderStrokeWidth(fontSize);
 		graphics.setStroke(new BasicStroke(borderStrokeWidth));
 
-		SubstanceColorScheme colorScheme = // skin.getColorScheme(comp,
-		// ColorSchemeAssociationKind.SEPARATOR, ComponentState.DEFAULT);
-		// colorScheme =
-		skin.getBackgroundColorScheme(decorationAreaType);
+		SubstanceColorScheme colorScheme = skin.getBackgroundColorScheme(decorationAreaType);
 		graphics.setColor(this.colorSchemeQuery.query(colorScheme));
 		float bottomY = topMostWithSameDecorationAreaType.getHeight() - borderStrokeWidth;
 		Line2D.Float line = new Line2D.Float(0, bottomY, width, bottomY);

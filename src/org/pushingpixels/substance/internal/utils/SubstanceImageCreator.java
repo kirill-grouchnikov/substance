@@ -41,7 +41,6 @@ import java.awt.Image;
 import java.awt.LinearGradientPaint;
 import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.Polygon;
-import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -66,6 +65,7 @@ import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
 import org.pushingpixels.lafwidget.icon.HiDpiAwareIconUiResource;
+import org.pushingpixels.lafwidget.utils.ColorFilter;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
@@ -80,7 +80,6 @@ import org.pushingpixels.substance.internal.svg.Locked;
 import org.pushingpixels.substance.internal.svg.System_search;
 import org.pushingpixels.substance.internal.utils.filters.ColorSchemeFilter;
 import org.pushingpixels.substance.internal.utils.filters.GrayscaleFilter;
-import org.pushingpixels.substance.internal.utils.filters.NegatedFilter;
 import org.pushingpixels.substance.internal.utils.filters.TranslucentFilter;
 
 /**
@@ -150,15 +149,14 @@ public final class SubstanceImageCreator {
 	 *            Cycle position for interpolating the border color schemes.
 	 */
 	public static void paintBorder(Component c, Graphics2D graphics, int x,
-			int y, int width, int height, float radius,
+			float y, float width, float height, float radius,
 			SubstanceColorScheme borderScheme) {
 
 		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
 				.getBorderPainter(c);
 		graphics.translate(x, y);
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(c);
-		float borderDelta = SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize) / 2.0f;
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize) / 2.0f;
 		Shape contour = SubstanceOutlineUtilities.getBaseOutline(width, height,
 				radius, null, borderDelta);
 		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
@@ -168,8 +166,7 @@ public final class SubstanceImageCreator {
 						JFileChooser.class, c) != null));
 		GeneralPath contourInner = skipInnerBorder ? null
 				: SubstanceOutlineUtilities.getBaseOutline(width, height,
-						radius - borderThickness, null, borderThickness
-								+ borderDelta);
+						radius - borderThickness, null, borderThickness + borderDelta);
 		borderPainter.paintBorder(graphics, c, width, height, contour,
 				contourInner, borderScheme);
 		graphics.translate(-x, -y);
@@ -427,8 +424,8 @@ public final class SubstanceImageCreator {
 			BufferedImage bottom = getArrow(width, smallHeight, strokeWidth,
 					SwingConstants.SOUTH, scheme);
 			int factor = UIUtil.isRetina() ? 2 : 1;
-			graphics.drawImage(top, 0, 1, top.getWidth() / factor, top.getHeight() / factor, null);
-			graphics.drawImage(bottom, 0, (int) height / 2 - 1, 
+			graphics.drawImage(top, 0, 0, top.getWidth() / factor, top.getHeight() / factor, null);
+			graphics.drawImage(bottom, 0, (int) (height / 2.0), 
 					bottom.getWidth() / factor, bottom.getHeight() / factor, null);
 			return arrowImage;
 		} else {
@@ -534,13 +531,12 @@ public final class SubstanceImageCreator {
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		int arrowHeight = singleArrow.getHeight();
 		int arrowWidth = singleArrow.getWidth();
-		int offset = toggle ? (int) (height - arrowHeight / scaleFactor - delta / scaleFactor) / 2
-				: (int) (width - arrowWidth / scaleFactor - delta / scaleFactor) / 2;
-		offset /= scaleFactor;
-		graphics.drawImage(singleArrow, 0, offset, singleArrow.getWidth() / scaleFactor,
-				singleArrow.getHeight() / 2, null);
-		graphics.drawImage(singleArrow, 0, offset+delta, singleArrow.getWidth() / scaleFactor,
-				singleArrow.getHeight() / 2, null);
+		int bottomOfSecondArrow = (int) (height);
+		int topOfFirstArrow = bottomOfSecondArrow - arrowHeight / scaleFactor - delta;
+		graphics.drawImage(singleArrow, 0, topOfFirstArrow, arrowWidth / scaleFactor,
+				arrowHeight / scaleFactor, null);
+		graphics.drawImage(singleArrow, 0, topOfFirstArrow + delta, arrowWidth / scaleFactor,
+				arrowHeight / scaleFactor, null);
 
 		int quadrantCounterClockwise = 0;
 		switch (direction) {
@@ -837,7 +833,7 @@ public final class SubstanceImageCreator {
 			}
 
 			BufferedImage checkMark = SubstanceImageCreator.getCheckMark(
-					dimension - 2 * offset / 3, !componentState.isDisabled(),
+					dimension - offset / 2, !componentState.isDisabled(),
 					markColorScheme, checkMarkVisibility);
 			int factor = UIUtil.isRetina() ? 2 : 1;
 			graphics.drawImage(checkMark, 1 + 2 * offset / 3,
@@ -862,16 +858,12 @@ public final class SubstanceImageCreator {
 	 * @return Image with overlayed echo.
 	 */
 	private static BufferedImage overlayEcho(BufferedImage image,
-			float echoAlpha, int offsetX, int offsetY) {
+			float echoAlpha, Color echoColor, int offsetX, int offsetY) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 
-		// blur the original image
-		// ConvolveOp convolve = new ConvolveOp(new Kernel(3, 3, new float[] {
-		// .4f, .4f, .4f, .4f, .0f, .4f, .4f, .4f, .4f }),
-		// ConvolveOp.EDGE_NO_OP, null);
 		offsetX = offsetY = 0;
-		BufferedImage negated = getNegated(image);
+		BufferedImage echo = new ColorFilter(echoColor).filter(image, null);
 		int factor = UIUtil.isRetina() ? 2 : 1;
 		int tweakedWidth = width / factor;
 		int tweakedHeight = height / factor;
@@ -881,17 +873,17 @@ public final class SubstanceImageCreator {
 		graphics.setComposite(AlphaComposite.getInstance(
 				AlphaComposite.SRC_OVER, 0.2f * echoAlpha * echoAlpha
 						* echoAlpha));
-		graphics.drawImage(negated, offsetX - 1, offsetY - 1, tweakedWidth, tweakedHeight, null);
-		graphics.drawImage(negated, offsetX + 1, offsetY - 1, tweakedWidth, tweakedHeight, null);
-		graphics.drawImage(negated, offsetX - 1, offsetY + 1, tweakedWidth, tweakedHeight, null);
-		graphics.drawImage(negated, offsetX + 1, offsetY + 1, tweakedWidth, tweakedHeight, null);
+		graphics.drawImage(echo, offsetX - 1, offsetY - 1, tweakedWidth, tweakedHeight, null);
+		graphics.drawImage(echo, offsetX + 1, offsetY - 1, tweakedWidth, tweakedHeight, null);
+		graphics.drawImage(echo, offsetX - 1, offsetY + 1, tweakedWidth, tweakedHeight, null);
+		graphics.drawImage(echo, offsetX + 1, offsetY + 1, tweakedWidth, tweakedHeight, null);
 		graphics.setComposite(AlphaComposite.getInstance(
 				AlphaComposite.SRC_OVER, 0.7f * echoAlpha * echoAlpha
 						* echoAlpha));
-		graphics.drawImage(negated, offsetX, offsetY - 1, tweakedWidth, tweakedHeight, null);
-		graphics.drawImage(negated, offsetX, offsetY + 1, tweakedWidth, tweakedHeight, null);
-		graphics.drawImage(negated, offsetX - 1, offsetY, tweakedWidth, tweakedHeight, null);
-		graphics.drawImage(negated, offsetX + 1, offsetY, tweakedWidth, tweakedHeight, null);
+		graphics.drawImage(echo, offsetX, offsetY - 1, tweakedWidth, tweakedHeight, null);
+		graphics.drawImage(echo, offsetX, offsetY + 1, tweakedWidth, tweakedHeight, null);
+		graphics.drawImage(echo, offsetX - 1, offsetY, tweakedWidth, tweakedHeight, null);
+		graphics.drawImage(echo, offsetX + 1, offsetY, tweakedWidth, tweakedHeight, null);
 
 		graphics.setComposite(AlphaComposite.getInstance(
 				AlphaComposite.SRC_OVER, 1.0f));
@@ -927,13 +919,14 @@ public final class SubstanceImageCreator {
 			SubstanceColorScheme backgroundScheme) {
 		BufferedImage image = SubstanceCoreUtilities
 				.getBlankImage(iSize, iSize);
-		Graphics2D graphics = (Graphics2D) image.getGraphics();
-		int start = (iSize / 4) - 2;
-		int end = (3 * iSize / 4);// - 1;
+		Graphics2D graphics = (Graphics2D) image.createGraphics();
+		int start = iSize / 4 - 2;
+		int end = 3 * iSize / 4;
 		int size = end - start - 3;
 		Color color = SubstanceColorUtilities.getMarkColor(scheme, true);
 		graphics.setColor(color);
-		graphics.fillRect(start + 2, end - 2, size, 3);
+		graphics.fillRect(start + 2, end - 1, size, 3);
+		graphics.dispose();
 
 		int fgStrength = SubstanceColorUtilities.getColorBrightness(color
 				.getRGB());
@@ -945,9 +938,11 @@ public final class SubstanceImageCreator {
 		boolean noEcho = (fgStrength > fgNegativeStrength)
 				&& (fgStrength < bgStrength);
 
+		Color echoColor = scheme.isDark() ? backgroundScheme.getUltraDarkColor() 
+				: backgroundScheme.getUltraLightColor();
 		return new HiDpiAwareIcon(SubstanceImageCreator.overlayEcho(image,
 				noEcho ? 0 : SubstanceColorUtilities.getColorStrength(color),
-				1, 1));
+				echoColor, 1, 1));
 	}
 
 	/**
@@ -960,23 +955,40 @@ public final class SubstanceImageCreator {
 	public static HiDpiAwareIcon getRestoreIcon(SubstanceColorScheme scheme,
 			SubstanceColorScheme backgroundScheme) {
 		int iSize = SubstanceSizeUtils.getTitlePaneIconSize();
-		BufferedImage image = SubstanceCoreUtilities
-				.getBlankImage(iSize, iSize);
-		Graphics2D graphics = (Graphics2D) image.getGraphics();
-		int start = (iSize / 4) - 2;
-		int end = (3 * iSize / 4) - 1;
-		int size = end - start - 3;
+		BufferedImage image = SubstanceCoreUtilities.getBlankImage(iSize, iSize);
+		Graphics2D graphics = (Graphics2D) image.createGraphics();
+		int start = iSize / 4 - 1;
+		int end = iSize - start;
+		int smallSquareSize = end - start - 3;
 		Color color = SubstanceColorUtilities.getMarkColor(scheme, true);
 		graphics.setColor(color);
-		graphics.drawRect(start, end - size + 1, size, size);
-		graphics.drawLine(start, end - size + 2, start + size, end - size + 2);
-		graphics.fillRect(end - size, start + 1, size + 1, 2);
-		graphics.drawLine(end, start + 1, end, start + size + 1);
-		graphics.drawLine(start + size + 2, start + size + 1, end, start + size
-				+ 1);
 
-		int fgStrength = SubstanceColorUtilities.getColorBrightness(color
-				.getRGB());
+		// "Main" rectangle 
+		int mainStartX = start;
+		int mainStartY = end - smallSquareSize;
+		// top (thicker)
+		graphics.fillRect(mainStartX, mainStartY, smallSquareSize, 2);
+		// left
+		graphics.fillRect(mainStartX, mainStartY, 1, smallSquareSize);
+		// right
+		graphics.fillRect(mainStartX + smallSquareSize - 1, mainStartY, 1, smallSquareSize);
+		// bottom
+		graphics.fillRect(mainStartX, mainStartY + smallSquareSize - 1, smallSquareSize, 1);
+
+		// "Secondary rectangle"
+		int secondaryStartX = mainStartX + 3;
+		int secondaryStartY = mainStartY - 3;
+		// top (thicker)
+		graphics.fillRect(secondaryStartX, secondaryStartY, smallSquareSize, 2);
+		// right
+		graphics.fillRect(secondaryStartX + smallSquareSize - 1, secondaryStartY, 1, smallSquareSize);
+		// bottom (partial)
+		graphics.fillRect(mainStartX + smallSquareSize + 1, secondaryStartY + smallSquareSize - 1, 
+				2, 1);
+
+		graphics.dispose();
+
+		int fgStrength = SubstanceColorUtilities.getColorBrightness(color.getRGB());
 		int fgNegativeStrength = SubstanceColorUtilities
 				.getColorBrightness(SubstanceColorUtilities
 						.getNegativeColor(color.getRGB()));
@@ -985,9 +997,11 @@ public final class SubstanceImageCreator {
 		boolean noEcho = (fgStrength > fgNegativeStrength)
 				&& (fgStrength < bgStrength);
 
+		Color echoColor = scheme.isDark() ? backgroundScheme.getUltraDarkColor() 
+				: backgroundScheme.getUltraLightColor();
 		return new HiDpiAwareIcon(SubstanceImageCreator.overlayEcho(image,
 				noEcho ? 0 : SubstanceColorUtilities.getColorStrength(color),
-				1, 1));
+				echoColor, 1, 1));
 	}
 
 	/**
@@ -1015,16 +1029,22 @@ public final class SubstanceImageCreator {
 	public static HiDpiAwareIcon getMaximizeIcon(int iSize, SubstanceColorScheme scheme,
 			SubstanceColorScheme backgroundScheme) {
 		BufferedImage image = SubstanceCoreUtilities.getBlankImage(iSize, iSize);
-		Graphics2D graphics = (Graphics2D) image.getGraphics();
-		int start = (iSize / 4) - 1;
-		int end = iSize - start - 1;
+		Graphics2D graphics = (Graphics2D) image.createGraphics();
+		int start = iSize / 4 - 1;
+		int end = iSize - start;
 		Color color = SubstanceColorUtilities.getMarkColor(scheme, true);
 		graphics.setColor(color);
-		graphics.drawRect(start, start, end - start, end - start);
-		graphics.drawLine(start, start + 1, end, start + 1);
+		// top (thicker)
+		graphics.fillRect(start, start, end - start, 2);
+		// left
+		graphics.fillRect(start, start, 1, end - start);
+		// right
+		graphics.fillRect(end - 1, start, 1, end - start);
+		// bottom
+		graphics.fillRect(start, end - 1, end - start, 1);
+		graphics.dispose();
 
-		int fgStrength = SubstanceColorUtilities.getColorBrightness(color
-				.getRGB());
+		int fgStrength = SubstanceColorUtilities.getColorBrightness(color.getRGB());
 		int fgNegativeStrength = SubstanceColorUtilities
 				.getColorBrightness(SubstanceColorUtilities
 						.getNegativeColor(color.getRGB()));
@@ -1032,10 +1052,13 @@ public final class SubstanceImageCreator {
 				.getColorBrightness(backgroundScheme.getLightColor().getRGB());
 		boolean noEcho = (fgStrength > fgNegativeStrength)
 				&& (fgStrength < bgStrength);
+		noEcho = true;
 
+		Color echoColor = scheme.isDark() ? backgroundScheme.getUltraDarkColor() 
+				: backgroundScheme.getUltraLightColor();
 		return new HiDpiAwareIcon(SubstanceImageCreator.overlayEcho(image,
 				noEcho ? 0 : SubstanceColorUtilities.getColorStrength(color),
-				1, 1));
+				echoColor, 1, 1));
 	}
 
 	/**
@@ -1064,18 +1087,12 @@ public final class SubstanceImageCreator {
 	public static HiDpiAwareIcon getCloseIcon(int iSize,
 			SubstanceColorScheme colorScheme,
 			SubstanceColorScheme backgroundScheme) {
-		BufferedImage image = SubstanceCoreUtilities
-				.getBlankImage(iSize, iSize);
-		Graphics2D graphics = (Graphics2D) image.getGraphics();
-		if (iSize < 15) {
-			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);
-		} else {
-			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_OFF);
-		}
-		int start = (iSize / 4);// - 1;
-		int end = (3 * iSize / 4);
+		BufferedImage image = SubstanceCoreUtilities.getBlankImage(iSize, iSize);
+		Graphics2D graphics = (Graphics2D) image.createGraphics();
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		int start = iSize / 4;
+		int end = iSize - start;
 
 		// System.out.println(iSize + ":" + start + ":" + end);
 
@@ -1088,6 +1105,7 @@ public final class SubstanceImageCreator {
 		graphics.setColor(color);
 		graphics.drawLine(start, start, end, end);
 		graphics.drawLine(start, end, end, start);
+		graphics.dispose();
 
 		int fgStrength = SubstanceColorUtilities.getColorBrightness(color
 				.getRGB());
@@ -1098,19 +1116,12 @@ public final class SubstanceImageCreator {
 				.getColorBrightness(backgroundScheme.getLightColor().getRGB());
 		boolean noEcho = (fgStrength > fgNegativeStrength)
 				&& (fgStrength < bgStrength);
-		// System.out.println(SubstanceColorUtilities.getColorBrightness(color
-		// .getRGB())
-		// + ":"
-		// + SubstanceColorUtilities
-		// .getColorBrightness(SubstanceColorUtilities
-		// .getNegativeColor(color.getRGB()))
-		// + ":"
-		// + SubstanceColorUtilities.getColorBrightness(backgroundScheme
-		// .getLightColor().getRGB()));
 
+		Color echoColor = colorScheme.isDark() ? backgroundScheme.getUltraDarkColor()
+				: backgroundScheme.getUltraLightColor();
 		return new HiDpiAwareIcon(SubstanceImageCreator.overlayEcho(image,
 				noEcho ? 0 : SubstanceColorUtilities.getColorStrength(color),
-				1, 1));
+				echoColor, 1, 1));
 	}
 
 	/**
@@ -1190,7 +1201,7 @@ public final class SubstanceImageCreator {
 	 *            Interpolation cycle.
 	 */
 	public static void paintSimpleBorder(Component c, Graphics2D g2d,
-			int width, int height, SubstanceColorScheme borderColorScheme) {
+			float width, float height, SubstanceColorScheme borderColorScheme) {
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(c);
 		// int borderDelta = (int) Math.floor(SubstanceSizeUtils
 		// .getBorderStrokeWidth(componentFontSize) / 2.0);
@@ -1979,17 +1990,6 @@ public final class SubstanceImageCreator {
 		float brightnessFactor = scheme.isDark() ? 1.0f : 0.3f;
 		ColorSchemeFilter filter = ColorSchemeFilter.getColorSchemeFilter(scheme, brightnessFactor);
 		return new HiDpiAwareIcon(filter.filter(result, null));
-	}
-
-	/**
-	 * Returns the negative of the specified image.
-	 * 
-	 * @param bi
-	 *            Image.
-	 * @return The negative of the specified image.
-	 */
-	public static BufferedImage getNegated(BufferedImage bi) {
-		return new NegatedFilter().filter(bi, null);
 	}
 
 	/**

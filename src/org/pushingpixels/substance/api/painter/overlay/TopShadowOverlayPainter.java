@@ -86,9 +86,8 @@ public final class TopShadowOverlayPainter implements SubstanceOverlayPainter {
 
 		Graphics2D g2d = (Graphics2D) graphics.create();
 		g2d.translate(0, -dy);
-		g2d.setPaint(new GradientPaint(0, 0, SubstanceColorUtilities
-				.getAlphaColor(shadowColor, 160), 0, 4, SubstanceColorUtilities
-				.getAlphaColor(shadowColor, 16)));
+		g2d.setPaint(new GradientPaint(0, 0, SubstanceColorUtilities.getAlphaColor(shadowColor, 160), 
+				0, 4, SubstanceColorUtilities.getAlphaColor(shadowColor, 16)));
 		g2d.fillRect(0, 0, comp.getWidth(), 4);
 		g2d.dispose();
 	}

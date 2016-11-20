@@ -29,19 +29,27 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.DefaultButtonModel;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 
@@ -82,7 +90,7 @@ public final class SubstanceDropDownButton extends JButton {
 
 		int fontSize = SubstanceSizeUtils.getComponentFontSize(parent);
 		int tbInset = SubstanceSizeUtils.getAdjustedSize(fontSize, 1, 2, 1, false);
-		this.setMargin(new Insets(tbInset, 0, tbInset, tbInset));
+		super.setBorder(new EmptyBorder(tbInset + 1, 0, tbInset - 1, 0));
 
 		this.setBorderPainted(false);
 		this.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);

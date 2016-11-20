@@ -1131,6 +1131,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 						ColorSchemeAssociationKind.TAB, currState);
 		BufferedImage fullOpacity = null;
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		// Slightly reduce the tab width to create "gaps" between tab visuals
+		w -= 1;
 
 		// check if have windowModified property
 		Component comp = this.tabPane.getComponentAt(tabIndex);
@@ -2154,7 +2156,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				|| (kind == TabContentPaneBorderKind.DOUBLE_PLACEMENT);
 		boolean isPlacement = (kind == TabContentPaneBorderKind.SINGLE_PLACEMENT)
 				|| (kind == TabContentPaneBorderKind.DOUBLE_PLACEMENT);
-		int delta = isDouble ? (int) (SubstanceSizeUtils
+		int delta = isDouble ? (int) Math.ceil(SubstanceSizeUtils
 				.getBorderStrokeWidth(SubstanceSizeUtils
 						.getComponentFontSize(tabPane)) + 1.5f) : 0;
 
@@ -2227,9 +2229,6 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			if (tabPlacement != SwingConstants.BOTTOM)
 				return;
 		}
-		int ribbonDelta = (int) (2.0 * SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(tabPane)));
 
 		Rectangle selRect = selectedIndex < 0 ? null : this.getTabBounds(
 				selectedIndex, this.calcRect);
@@ -2246,6 +2245,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		int capKind = BasicStroke.CAP_BUTT;
 		g2d.setStroke(new BasicStroke(strokeWidth, capKind, joinKind));
 		int offset = (int) (strokeWidth / 2.0);
+		int ribbonDelta = (int) Math.ceil(strokeWidth + 1.5f);
 
 		boolean isUnbroken = (tabPlacement != BOTTOM || selectedIndex < 0
 				|| (selRect.y - 1 > h) || (selRect.x < x || selRect.x > x + w));
@@ -2266,7 +2266,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				.getMidBorderColor(borderScheme);
 		if (isUnbroken) {
 			g2d.setColor(this.highlight);
-			g2d.drawLine(x, y + h - 1, x + w - 1, y + h - 1);
+			g2d.drawLine(x, y + h - 1, x + w, y + h - 1);
 		} else {
 			// Break line to show visual connection to selected tab
 			SubstanceButtonShaper shaper = SubstanceCoreUtilities
@@ -2281,12 +2281,12 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			int bumpHeight = super.calculateTabHeight(tabPlacement, 0,
 					SubstanceSizeUtils.getComponentFontSize(this.tabPane)) / 2;
 			bottomOutline.lineTo(selRect.x + borderInsets + 1, y + h + bumpHeight);
-			if (selRect.x + selRect.width < x + w - 1) {
+			if (selRect.x + selRect.width < x + w) {
 				float selectionEndX = selRect.x + selRect.width - delta
 						- borderInsets;
 				bottomOutline.lineTo(selectionEndX, y + h - 1 + bumpHeight);
 				bottomOutline.lineTo(selectionEndX, y + h - 1);
-				bottomOutline.lineTo(x + w - 1, y + h - 1);
+				bottomOutline.lineTo(x + w, y + h - 1);
 			}
 			g2d.setPaint(new GradientPaint(x, y + h - 1, darkShadowColor, x, y
 					+ h - 1 + bumpHeight, SubstanceColorUtilities
@@ -2297,10 +2297,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		if (isDouble) {
 			if (tabPlacement == BOTTOM) {
 				g2d.setColor(this.highlight);
-				// g2d.drawLine(x+1, y + h - 2 - ribbonDelta, x + w - 2,
-				// y + h - 2 - ribbonDelta);
 				g2d.setColor(darkShadowColor);
-				g2d.drawLine(x, y + h - 1 - ribbonDelta, x + w - 1, y + h - 1
+				g2d.drawLine(x, y + h - 1 - ribbonDelta, x + w, y + h - 1
 						- ribbonDelta);
 			}
 			if (tabPlacement == LEFT) {
@@ -2604,7 +2602,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				.getMidBorderColor(borderScheme);
 		if (isUnbroken) {
 			g2d.setColor(this.highlight);
-			g2d.drawLine(x, y, x + w - 1, y);
+			g2d.drawLine(x, y, x + w, y);
 		} else {
 			// Break line to show visual connection to selected tab
 			SubstanceButtonShaper shaper = SubstanceCoreUtilities
@@ -2619,12 +2617,12 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			int bumpHeight = super.calculateTabHeight(tabPlacement, 0,
 					SubstanceSizeUtils.getComponentFontSize(this.tabPane)) / 2;
 			topOutline.lineTo(selRect.x + borderInsets, y - bumpHeight);
-			if (selRect.x + selRect.width < x + w - 1) {
+			if (selRect.x + selRect.width < x + w) {
 				float selectionEndX = selRect.x + selRect.width - delta - 1
 						- borderInsets;
 				topOutline.lineTo(selectionEndX, y - bumpHeight);
 				topOutline.lineTo(selectionEndX, y);
-				topOutline.lineTo(x + w - 1, y);
+				topOutline.lineTo(x + w, y);
 			}
 			g2d.setPaint(new GradientPaint(x, y, darkShadowColor, x, y
 					- bumpHeight, SubstanceColorUtilities.getAlphaColor(
@@ -2635,7 +2633,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		if (isDouble) {
 			if (tabPlacement == TOP) {
 				g2d.setColor(darkShadowColor);
-				g2d.drawLine(x, y + ribbonDelta, x + w - 1, y + ribbonDelta);
+				g2d.drawLine(x, y + ribbonDelta, x + w, y + ribbonDelta);
 			}
 			if (tabPlacement == LEFT) {
 				g2d.setPaint(new GradientPaint(x, y, darkShadowColor, x + 4

@@ -529,9 +529,11 @@ public class MenuUtilities {
 				menuItem, true);
 		Insets i = menuItem.getInsets();
 		if (popupMetrics != null) {
+			boolean hasGutterContent = (popupMetrics.maxCheckIconWidth > 0) ||
+					(popupMetrics.maxIconWidth > 0);
 			MenuGutterFillKind gutterFillKind = SubstanceCoreUtilities
 					.getMenuGutterFillKind();
-			boolean needExtraIconTextGap = (gutterFillKind != null)
+			boolean needExtraIconTextGap = hasGutterContent && (gutterFillKind != null)
 					&& (gutterFillKind != MenuGutterFillKind.NONE);
 			int gap = popupMetrics.maxIconTextGap;
 			if (menuItem.getComponentOrientation().isLeftToRight()) {
@@ -818,7 +820,7 @@ public class MenuUtilities {
 	 *            Popup menu.
 	 * @return Layout metrics of the specified popup menu.
 	 */
-	protected static MenuLayoutMetrics getMetrics(JPopupMenu popupMenu,
+	public static MenuLayoutMetrics getMetrics(JPopupMenu popupMenu,
 			boolean forPainting) {
 		MenuLayoutMetrics metrics = new MenuLayoutMetrics();
 		for (int i = 0; i < popupMenu.getComponentCount(); i++) {
@@ -829,10 +831,9 @@ public class MenuUtilities {
 				if (!(bui instanceof SubstanceMenu))
 					continue;
 				SubstanceMenu ui = (SubstanceMenu) bui;
-				MenuLayoutInfo mli = MenuUtilities.getMenuLayoutInfo(
-						forPainting, childMenuItem, ui.getAcceleratorFont(), ui
-								.getCheckIcon(), ui.getArrowIcon(), ui
-								.getDefaultTextIconGap());
+				MenuLayoutInfo mli = MenuUtilities.getMenuLayoutInfo(forPainting, childMenuItem,
+						ui.getAcceleratorFont(), ui.getCheckIcon(), ui.getArrowIcon(), 
+						ui.getDefaultTextIconGap());
 				metrics.maxIconWidth = Math.max(metrics.maxIconWidth,
 						mli.iconRect.width);
 				metrics.maxCheckIconWidth = Math.max(metrics.maxCheckIconWidth,
@@ -957,16 +958,17 @@ public class MenuUtilities {
 			gapsToAdd++;
 
 		int gap = popupMetrics.maxIconTextGap;
-		width += ((1 + gapsToAdd) * gap);
+		width += (1 + gapsToAdd) * gap;
 
 		if (popupMetrics.maxAcceleratorWidth > 0) {
 			// at least one menu item has accelerator text
 			width += 5 * gap;
 		}
 
-		MenuGutterFillKind gutterFillKind = SubstanceCoreUtilities
-				.getMenuGutterFillKind();
-		boolean needExtraIconTextGap = (gutterFillKind != null)
+		boolean hasGutterContent = (popupMetrics.maxCheckIconWidth > 0) ||
+				(popupMetrics.maxIconWidth > 0);
+		MenuGutterFillKind gutterFillKind = SubstanceCoreUtilities.getMenuGutterFillKind();
+		boolean needExtraIconTextGap = hasGutterContent && (gutterFillKind != null)
 				&& (gutterFillKind != MenuGutterFillKind.NONE);
 		if (needExtraIconTextGap)
 			width += gap;

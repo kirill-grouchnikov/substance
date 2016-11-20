@@ -30,6 +30,7 @@
 package org.pushingpixels.substance.api.painter.overlay;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 
 import javax.swing.SwingUtilities;
 
@@ -88,26 +89,24 @@ public final class TopBezelOverlayPainter implements SubstanceOverlayPainter {
 		int dy = inTopMost.y;
 
 		int fontSize = SubstanceSizeUtils.getComponentFontSize(comp);
-		float borderStrokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(fontSize);
+		float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth(fontSize);
 		graphics.setStroke(new BasicStroke(borderStrokeWidth));
 
 		SubstanceColorScheme colorScheme = skin
 				.getBackgroundColorScheme(decorationAreaType);
-		// skin.getColorScheme(comp,
-		// ColorSchemeAssociationKind.SEPARATOR, ComponentState.DEFAULT);
 		graphics.setColor(this.colorSchemeQueryTop.query(colorScheme));
-		graphics.drawLine(0, (int) (borderStrokeWidth) - dy - 1, width,
-				(int) (borderStrokeWidth) - dy - 1);
+		float topY = borderStrokeWidth - dy;
+		Line2D.Float topLine = new Line2D.Float(0, topY, width, topY);
+		graphics.draw(topLine);
 
 		graphics.setColor(this.colorSchemeQueryBottom.query(colorScheme));
-		graphics.drawLine(0, (int) (2 * borderStrokeWidth) - dy - 1, width,
-				(int) (2 * borderStrokeWidth) - dy - 1);
+		float bezelY = 2 * borderStrokeWidth - dy;
+		Line2D.Float bezelLine = new Line2D.Float(0, bezelY, width, bezelY);
+		graphics.draw(bezelLine);
 	}
 
 	@Override
 	public String getDisplayName() {
-		return "Top Line Shadow";
+		return "Top Bezel Shadow";
 	}
-
 }

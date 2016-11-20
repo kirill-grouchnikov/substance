@@ -23,6 +23,7 @@ import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.inputmaps.InputMapSet;
 import org.pushingpixels.substance.api.inputmaps.SubstanceInputMapUtilities;
@@ -129,11 +130,10 @@ public class SkinUtilities {
 		Color selectionCellBackgroundColor = new ColorUIResource(
 				textHighlightColorScheme.getBackgroundFillColor());
 
-		Object regularMarginBorder = new UIDefaults.LazyValue() {
+		Object popupMenuBorder = new UIDefaults.LazyValue() {
 			@Override
 			public Object createValue(UIDefaults table) {
-				return new BorderUIResource.CompoundBorderUIResource(
-						new SubstanceBorder(), new BasicBorders.MarginBorder());
+				return new BorderUIResource(new SubstanceBorder(0.0f, new Insets(2, 2, 2, 2))); 
 			}
 		};
 
@@ -655,11 +655,10 @@ public class SkinUtilities {
 				selectionTextForegroundColor,
 
 				"PopupMenu.background",
-				SubstanceColorUtilities.getDefaultBackgroundColor(false, skin,
-						false),
+				new ColorUIResource(skin.getBackgroundColorScheme(DecorationAreaType.NONE).getBackgroundFillColor()),
 
 				"PopupMenu.border",
-				regularMarginBorder,
+				popupMenuBorder,
 
 				"ProgressBar.border",
 				new BorderUIResource(new SubstanceBorder()),

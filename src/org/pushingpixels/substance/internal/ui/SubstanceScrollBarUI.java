@@ -214,8 +214,8 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 	 */
 	private BufferedImage getThumbVertical(Rectangle thumbBounds) {
 		int width = Math.max(1, thumbBounds.width);
-		int delta = Math.max(0, (int) (0.35 * width));
-		if (delta % 2 == 0) {
+		int delta = Math.max(0, (int) (0.4 * width));
+		if (delta % 2 == 1) {
 			delta--;
 		}
 		width -= delta;
@@ -351,8 +351,8 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 	private BufferedImage getThumbHorizontal(Rectangle thumbBounds) {
 		int width = Math.max(1, thumbBounds.width);
 		int height = Math.max(1, thumbBounds.height);
-		int delta = Math.max(0, (int) (0.35 * height));
-		if (delta % 2 == 0) {
+		int delta = Math.max(0, (int) (0.4 * height));
+		if (delta % 2 == 1) {
 			delta--;
 		}
 		height -= delta;
@@ -543,18 +543,15 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			Rectangle adjustedBounds = new Rectangle(thumbBounds.x,
 					thumbBounds.y, thumbBounds.width, thumbBounds.height);
 			BufferedImage thumbImage = this.getThumbVertical(adjustedBounds);
-			int xdelta = 1 + (thumbBounds.width - thumbImage.getWidth() / scaleFactor) / 2;
-//			graphics.setColor(Color.blue);
-//			graphics.fillRect(adjustedBounds.x + xdelta, adjustedBounds.y, 
-//					thumbImage.getWidth() / scaleFactor, thumbImage.getHeight() / scaleFactor - 1);
-			graphics.drawImage(thumbImage, adjustedBounds.x + xdelta, adjustedBounds.y - 1,
+			int xdelta = (thumbBounds.width - thumbImage.getWidth() / scaleFactor) / 2;
+			graphics.drawImage(thumbImage, adjustedBounds.x + xdelta, adjustedBounds.y,
 					thumbImage.getWidth() / scaleFactor, thumbImage.getHeight() / scaleFactor,
 					null);
 		} else {
 			Rectangle adjustedBounds = new Rectangle(thumbBounds.x,
 					thumbBounds.y, thumbBounds.width, thumbBounds.height);
 			BufferedImage thumbImage = this.getThumbHorizontal(adjustedBounds);
-			int ydelta = 1 + (thumbBounds.height - thumbImage.getHeight() / scaleFactor) / 2;
+			int ydelta = (thumbBounds.height - thumbImage.getHeight() / scaleFactor) / 2;
 			graphics.drawImage(thumbImage, adjustedBounds.x, adjustedBounds.y + ydelta,
 					thumbImage.getWidth() / scaleFactor, thumbImage.getHeight() / scaleFactor,
 					null);
