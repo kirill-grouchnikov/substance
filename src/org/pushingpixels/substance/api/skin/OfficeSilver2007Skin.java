@@ -92,6 +92,8 @@ public class OfficeSilver2007Skin extends SubstanceSkin {
 				ComponentState.PRESSED_UNSELECTED);
 		defaultSchemeBundle.registerColorScheme(pressedSelectedScheme,
 				ComponentState.PRESSED_SELECTED);
+		defaultSchemeBundle.registerColorScheme(selectedScheme.tone(0.2f), 0.5f,
+				ComponentState.DISABLED_SELECTED);
 
 		// register state-specific highlight color schemes on rollover and
 		// selections

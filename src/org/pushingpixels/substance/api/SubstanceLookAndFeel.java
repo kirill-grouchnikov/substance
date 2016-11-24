@@ -796,7 +796,7 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	 * part of the menu where checkmarks and icons are painted. The value should
 	 * be one of {@link MenuGutterFillKind} enum. This property can be set
 	 * globally on the {@link UIManager}. The default value is
-	 * {@link MenuGutterFillKind#HARD}.
+	 * {@link MenuGutterFillKind#HARD_FILL}.
 	 * 
 	 * <p>
 	 * Example of setting soft fill kind:

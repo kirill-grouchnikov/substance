@@ -33,7 +33,6 @@ import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -709,7 +708,7 @@ public final class SubstanceImageCreator {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
                 RenderingHints.VALUE_STROKE_PURE);
-
+		
 		graphics.setComposite(AlphaComposite.getInstance(
 				AlphaComposite.SRC_OVER, alpha));
 
@@ -784,16 +783,17 @@ public final class SubstanceImageCreator {
 			SubstanceColorScheme borderColorScheme, float checkMarkVisibility,
 			boolean isCheckMarkFadingOut, float alpha) {
 
-		int offset = SubstanceSizeUtils
-				.getAdjustedSize(
-						SubstanceSizeUtils.getComponentFontSize(button), 3, 9,
-						1, false);
-		int delta = offset;
+		int xOffset = SubstanceSizeUtils.getAdjustedSize(
+				SubstanceSizeUtils.getComponentFontSize(button), 2, 9,
+				1, false);
+		int yOffset = xOffset + 1;
+		int delta = xOffset;
 		float cornerRadius = SubstanceSizeUtils
 				.getClassicButtonCornerRadius(SubstanceSizeUtils
 						.getComponentFontSize(button));
 		if (dimension <= 10) {
-			offset = 2;
+			xOffset = 1;
+			yOffset = 2;
 			cornerRadius = 2;
 		}
 
@@ -833,10 +833,10 @@ public final class SubstanceImageCreator {
 			}
 
 			BufferedImage checkMark = SubstanceImageCreator.getCheckMark(
-					dimension - offset / 2, !componentState.isDisabled(),
+					dimension - yOffset / 2, !componentState.isDisabled(),
 					markColorScheme, checkMarkVisibility);
 			int factor = UIUtil.isRetina() ? 2 : 1;
-			graphics.drawImage(checkMark, 1 + 2 * offset / 3,
+			graphics.drawImage(checkMark, 1 + 2 * xOffset / 3,
 					(dimension < 14) ? 0 : -1, checkMark.getWidth() / factor, 
 							checkMark.getHeight() / factor, null);
 		}
@@ -1107,15 +1107,12 @@ public final class SubstanceImageCreator {
 		graphics.drawLine(start, end, end, start);
 		graphics.dispose();
 
-		int fgStrength = SubstanceColorUtilities.getColorBrightness(color
-				.getRGB());
-		int fgNegativeStrength = SubstanceColorUtilities
-				.getColorBrightness(SubstanceColorUtilities
-						.getNegativeColor(color.getRGB()));
-		int bgStrength = SubstanceColorUtilities
-				.getColorBrightness(backgroundScheme.getLightColor().getRGB());
-		boolean noEcho = (fgStrength > fgNegativeStrength)
-				&& (fgStrength < bgStrength);
+		int fgStrength = SubstanceColorUtilities.getColorBrightness(color.getRGB());
+		int fgNegativeStrength = SubstanceColorUtilities.getColorBrightness(
+				SubstanceColorUtilities.getNegativeColor(color.getRGB()));
+		int bgStrength = SubstanceColorUtilities.getColorBrightness(
+				backgroundScheme.getLightColor().getRGB());
+		boolean noEcho = (fgStrength > fgNegativeStrength) && (fgStrength < bgStrength);
 
 		Color echoColor = colorScheme.isDark() ? backgroundScheme.getUltraDarkColor()
 				: backgroundScheme.getUltraLightColor();
@@ -1207,8 +1204,7 @@ public final class SubstanceImageCreator {
 		// .getBorderStrokeWidth(componentFontSize) / 2.0);
 		// int borderDelta2 = (int) Math.floor(SubstanceSizeUtils
 		// .getBorderStrokeWidth(componentFontSize));
-		float borderThickness = (float) Math.floor(SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize));
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
 
 		g2d.setColor(SubstanceColorUtilities
 				.getMidBorderColor(borderColorScheme));
@@ -1601,8 +1597,7 @@ public final class SubstanceImageCreator {
 			boolean isCollapsed) {
 		int fontSize = SubstanceSizeUtils.getComponentFontSize(tree);
 		int dim = SubstanceSizeUtils.getTreeIconSize(fontSize);
-		BufferedImage result = SubstanceCoreUtilities.getBlankImage(dim + 2,
-				dim);
+		BufferedImage result = SubstanceCoreUtilities.getBlankImage(dim, dim);
 		Graphics2D graphics = (Graphics2D) result.getGraphics();
 
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -1615,25 +1610,24 @@ public final class SubstanceImageCreator {
 		FlatBorderPainter fbp = new FlatBorderPainter();
 
 		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(fontSize) / 2.0f;
-		Shape contour = SubstanceOutlineUtilities.getBaseOutline(dim - 1,
-				dim - 1, SubstanceSizeUtils.getClassicButtonCornerRadius(dim) / 1.5f,
+		Shape contour = SubstanceOutlineUtilities.getBaseOutline(dim, dim, 
+				SubstanceSizeUtils.getClassicButtonCornerRadius(dim) / 1.5f,
 				null, borderDelta);
 
-		g2.translate(0, 1);
+		//g2.translate(0, 1);
 
 		boolean isDark = fillScheme.isDark();
 
-		fillScheme = new ShiftColorScheme(fillScheme,
-				fillScheme.getExtraLightColor(), 0.7);
+		fillScheme = new ShiftColorScheme(fillScheme, fillScheme.getExtraLightColor(), 0.7);
 
-		gradPainter.paintContourBackground(g2, tree, dim - 1, dim - 1, contour,
+		gradPainter.paintContourBackground(g2, tree, dim, dim, contour,
 				false, fillScheme, false);
 		borderScheme = new ShiftColorScheme(borderScheme,
 				isDark ? borderScheme.getUltraLightColor()
 						: borderScheme.getLightColor(), 0.5);
-		fbp.paintBorder(g2, tree, dim - 1, dim - 1, contour, null, borderScheme);
+		fbp.paintBorder(g2, tree, dim, dim, contour, null, borderScheme);
 
-		g2.translate(-1, -1);
+		//g2.translate(-1, -1);
 
 		Color signColor = isDark ? borderScheme.getUltraLightColor().brighter()
 				.brighter() : borderScheme.getUltraDarkColor();
@@ -1641,7 +1635,7 @@ public final class SubstanceImageCreator {
 			signColor = borderScheme.getForegroundColor();
 		g2.setColor(signColor);
 		int mid = dim / 2;
-		int length = 5 * dim / 12;
+		int length = 7 * dim / 12;
 		g2.drawLine(mid - length / 2, dim / 2, mid + length / 2, dim / 2);
 		if (isCollapsed) {
 			g2.drawLine(dim / 2, mid - length / 2, dim / 2, mid + length / 2);
@@ -1927,9 +1921,7 @@ public final class SubstanceImageCreator {
 	 */
 	private static BufferedImage createSearchIcon(int dimension,
 			SubstanceColorScheme colorScheme, boolean leftToRight) {
-		System_search system_search = new System_search();
-		system_search.setDimension(new Dimension(16, 16));
-		HiDpiAwareIcon hiDpiAwareIcon = new HiDpiAwareIcon(system_search);
+		HiDpiAwareIcon hiDpiAwareIcon = new HiDpiAwareIcon(System_search.of(16, 16));
 		
 		Color foregroundColor = SubstanceColorUtilities.getForegroundColor(colorScheme);
 		Color forColorization = SubstanceColorUtilities.getAlphaColor(foregroundColor, 160);
@@ -1982,11 +1974,9 @@ public final class SubstanceImageCreator {
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(c);
 		int extraPadding = SubstanceSizeUtils.getExtraPadding(componentFontSize);
 		int size = 9 + 2 * extraPadding;
-		Locked locked = new Locked();
-		locked.setDimension(new Dimension(size, size));
 
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(size, size);
-		locked.paintIcon(c, result.getGraphics(), 0, 0);
+		Locked.of(size, size).paintIcon(c, result.getGraphics(), 0, 0);
 		float brightnessFactor = scheme.isDark() ? 1.0f : 0.3f;
 		ColorSchemeFilter filter = ColorSchemeFilter.getColorSchemeFilter(scheme, brightnessFactor);
 		return new HiDpiAwareIcon(filter.filter(result, null));

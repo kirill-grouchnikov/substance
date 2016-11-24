@@ -88,8 +88,8 @@ Mariner Watermark {
 
 Mariner Header {
     kind=Dark
-    colorUltraLight=#453A38
-    colorExtraLight=#3E3433
+    colorUltraLight=#493E3C
+    colorExtraLight=#433837
     colorLight=#2E2425
     colorMid=#201718
     colorDark=#181317
@@ -99,11 +99,11 @@ Mariner Header {
 
 Mariner Header Border {
     kind=Dark
-    colorUltraLight=#18161B
-    colorExtraLight=#18171C
-    colorLight=#110D0E
-    colorMid=#070004
-    colorDark=#050004
+    colorUltraLight=#121115
+    colorExtraLight=#111014
+    colorLight=#080607
+    colorMid=#050003
+    colorDark=#040003
     colorUltraDark=#000000
     colorForeground=#686262
 }

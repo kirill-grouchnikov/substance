@@ -382,9 +382,8 @@ public class FileTreePanel extends ControllablePanel implements Deferrable {
 		}
 		FileTreeNode rootTreeNode = new FileTreeNode(rootsList);
 		this.tree = new JTree(rootTreeNode);
-		this.tree
-				.setCellRenderer((UIManager.getLookAndFeel() instanceof SubstanceLookAndFeel) ? new SubstanceFileTreeCellRenderer()
-						: new FileTreeCellRenderer());
+		this.tree.setCellRenderer((UIManager.getLookAndFeel() instanceof SubstanceLookAndFeel) 
+				? new SubstanceFileTreeCellRenderer() : new FileTreeCellRenderer());
 		this.tree.setRootVisible(false);
 		final JScrollPane jsp = new JScrollPane(this.tree);
 		jsp.setBorder(new EmptyBorder(0, 0, 0, 0));

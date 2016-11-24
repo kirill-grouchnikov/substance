@@ -75,6 +75,7 @@ public class BusinessBlackSteelSkin extends SubstanceSkin {
 		// the default color scheme bundle
 		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
 				activeScheme, enabledScheme, disabledScheme);
+		defaultSchemeBundle.registerColorScheme(activeScheme, 0.5f, ComponentState.DISABLED_SELECTED);
 		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.6f,
 				ComponentState.ROLLOVER_UNSELECTED);
 		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f,

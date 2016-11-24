@@ -29,7 +29,12 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.colorscheme.DarkMetallicColorScheme;
 import org.pushingpixels.substance.api.colorscheme.EbonyColorScheme;
 import org.pushingpixels.substance.api.painter.border.GlassBorderPainter;
@@ -37,7 +42,6 @@ import org.pushingpixels.substance.api.painter.decoration.ArcDecorationPainter;
 import org.pushingpixels.substance.api.painter.fill.GlassFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
-import org.pushingpixels.substance.api.watermark.SubstanceCrosshatchWatermark;
 
 /**
  * <code>Raven</code> skin. This class is part of officially supported API.
@@ -61,9 +65,6 @@ public class RavenSkin extends SubstanceSkin {
 		SubstanceColorScheme activeScheme = new EbonyColorScheme();
 		SubstanceColorScheme enabledScheme = new DarkMetallicColorScheme();
 		SubstanceColorScheme disabledScheme = schemes.get("Raven Disabled");
-
-		SubstanceColorScheme selectedDisabledScheme = schemes
-				.get("Raven Selected Disabled");
 
 		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
 				activeScheme, enabledScheme, disabledScheme);
@@ -101,9 +102,9 @@ public class RavenSkin extends SubstanceSkin {
 				ColorSchemeAssociationKind.HIGHLIGHT_MARK, ComponentState
 						.getActiveStates());
 
-		defaultSchemeBundle.registerColorScheme(disabledScheme, 0.5f,
+		defaultSchemeBundle.registerColorScheme(enabledScheme, 0.5f,
 				ComponentState.DISABLED_UNSELECTED);
-		defaultSchemeBundle.registerColorScheme(selectedDisabledScheme, 0.65f,
+		defaultSchemeBundle.registerColorScheme(highlightScheme, 0.5f,
 				ComponentState.DISABLED_SELECTED);
 
 		SubstanceColorScheme tabHighlightScheme = schemes
@@ -132,7 +133,7 @@ public class RavenSkin extends SubstanceSkin {
 				ComponentState.DISABLED_SELECTED);
 
 		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
-				DecorationAreaType.NONE);
+				schemes.get("Graphite Background").shade(0.4), DecorationAreaType.NONE);
 
 		this.registerAsDecorationArea(enabledScheme,
 				DecorationAreaType.PRIMARY_TITLE_PANE,
@@ -142,8 +143,10 @@ public class RavenSkin extends SubstanceSkin {
 
 		this.watermarkScheme = activeScheme.shade(0.4);
 
+		this.setSelectedTabFadeStart(0.18);
+		this.setSelectedTabFadeEnd(0.18);
+
 		this.buttonShaper = new ClassicButtonShaper();
-		this.watermark = new SubstanceCrosshatchWatermark();
 		this.fillPainter = new GlassFillPainter();
 		this.decorationPainter = new ArcDecorationPainter();
 		this.highlightPainter = new ClassicHighlightPainter();

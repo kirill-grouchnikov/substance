@@ -523,8 +523,8 @@ public class MenuUtilities {
 		// .getArrowIcon(), menuUi.getDefaultTextIconGap());
 
 		MenuLayoutInfo mli = MenuUtilities.getMenuLayoutInfo(true, menuItem,
-				menuUi.getAcceleratorFont(), menuUi.getCheckIcon(), menuUi
-						.getArrowIcon(), menuUi.getDefaultTextIconGap());
+				menuUi.getAcceleratorFont(), menuUi.getCheckIcon(), 
+				menuUi.getArrowIcon(), menuUi.getDefaultTextIconGap());
 		MenuLayoutMetrics popupMetrics = MenuUtilities.getPopupLayoutMetrics(
 				menuItem, true);
 		Insets i = menuItem.getInsets();
@@ -539,10 +539,9 @@ public class MenuUtilities {
 			if (menuItem.getComponentOrientation().isLeftToRight()) {
 				int currX = i.left + gap / 2;
 				if (checkIcon != null) {
-					mli.checkIconRect = new Rectangle(currX, i.top, checkIcon
-							.getIconWidth(), checkIcon.getIconHeight());
-					int bump = (popupMetrics.maxCheckIconWidth - checkIcon
-							.getIconWidth()) / 2;
+					mli.checkIconRect = new Rectangle(currX, i.top, 
+							checkIcon.getIconWidth(), checkIcon.getIconHeight());
+					int bump = (popupMetrics.maxCheckIconWidth - checkIcon.getIconWidth()) / 2;
 					mli.checkIconRect.x += bump;
 				}
 				if (popupMetrics.maxCheckIconWidth > 0) {
@@ -707,9 +706,11 @@ public class MenuUtilities {
 				textAlpha, g2d));
 		// Paint the Check
 		if (checkIcon != null) {
-			if (useCheckAndArrow(menuItem))
-				checkIcon.paintIcon(menuItem, graphics, mli.checkIconRect.x,
-						mli.checkIconRect.y);
+			if (useCheckAndArrow(menuItem)) {
+				graphics.translate(mli.checkIconRect.x, mli.checkIconRect.y);
+				checkIcon.paintIcon(menuItem, graphics, 0, 0);
+				graphics.translate(-mli.checkIconRect.x, -mli.checkIconRect.y);
+			}
 		}
 
 		// Paint the Icon
@@ -727,20 +728,18 @@ public class MenuUtilities {
 			}
 
 			if (icon != null) {
-				boolean useThemed = SubstanceCoreUtilities
-						.useThemedDefaultIcon(menuItem);
+				boolean useThemed = SubstanceCoreUtilities.useThemedDefaultIcon(menuItem);
 
+				graphics.translate(mli.iconRect.x, mli.iconRect.y);
 				if (!useThemed) {
-					icon.paintIcon(menuItem, g2d, mli.iconRect.x,
-							mli.iconRect.y);
+					icon.paintIcon(menuItem, graphics, 0, 0);
 				} else {
 					Icon themed = SubstanceCoreUtilities.getThemedIcon(
 							menuItem, icon);
 					boolean useRegularVersion = model.isPressed()
 							|| model.isSelected();
 					if (useRegularVersion) {
-						icon.paintIcon(menuItem, g2d, mli.iconRect.x,
-								mli.iconRect.y);
+						icon.paintIcon(menuItem, graphics, 0, 0);
 					} else {
 						TransitionAwareUI transitionAwareUI = (TransitionAwareUI) menuItem
 								.getUI();
@@ -752,21 +751,19 @@ public class MenuUtilities {
 								stateTransitionTracker
 										.getFacetStrength(ComponentStateFacet.ARM));
 						if (rolloverAmount > 0) {
-							themed.paintIcon(menuItem, g2d, mli.iconRect.x,
-									mli.iconRect.y);
-							g2d.setComposite(LafWidgetUtilities
+							themed.paintIcon(menuItem, graphics, 0, 0);
+							graphics.setComposite(LafWidgetUtilities
 									.getAlphaComposite(menuItem,
 											rolloverAmount, g));
-							icon.paintIcon(menuItem, g2d, mli.iconRect.x,
-									mli.iconRect.y);
-							g2d.setComposite(LafWidgetUtilities
+							icon.paintIcon(menuItem, graphics, 0, 0);
+							graphics.setComposite(LafWidgetUtilities
 									.getAlphaComposite(menuItem, g));
 						} else {
-							themed.paintIcon(menuItem, g2d, mli.iconRect.x,
-									mli.iconRect.y);
+							themed.paintIcon(menuItem, graphics, 0, 0);
 						}
 					}
 				}
+				graphics.translate(-mli.iconRect.x, -mli.iconRect.y);
 			}
 		}
 

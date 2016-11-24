@@ -820,7 +820,7 @@ public class SubstanceSizeUtils {
 	 * @return Stroke width of tab close buttons under the specified size.
 	 */
 	public static float getTabCloseButtonStrokeWidth(int fontSize) {
-		return fontSize / 10.0f;
+		return getBorderStrokeWidth(fontSize);
 	}
 
 	/**

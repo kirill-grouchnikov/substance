@@ -436,8 +436,8 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements
 	 */
 	protected void paintButtonText(Graphics g, AbstractButton button,
 			Rectangle textRect, String text) {
-		SubstanceTextUtilities.paintText(g, button, textRect, text, button
-				.getDisplayedMnemonicIndex());
+		SubstanceTextUtilities.paintText(g, button, textRect, text, 
+				button.getDisplayedMnemonicIndex());
 	}
 
 	@Override

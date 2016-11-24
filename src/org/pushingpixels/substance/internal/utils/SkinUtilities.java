@@ -23,7 +23,6 @@ import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.inputmaps.InputMapSet;
 import org.pushingpixels.substance.api.inputmaps.SubstanceInputMapUtilities;
@@ -45,6 +44,7 @@ import org.pushingpixels.substance.internal.svg.User_home;
 import org.pushingpixels.substance.internal.utils.border.SubstanceBorder;
 import org.pushingpixels.substance.internal.utils.border.SubstanceEtchedBorder;
 import org.pushingpixels.substance.internal.utils.border.SubstancePaneBorder;
+import org.pushingpixels.substance.internal.utils.border.SubstancePopupMenuBorder;
 import org.pushingpixels.substance.internal.utils.border.SubstanceTextComponentBorder;
 import org.pushingpixels.substance.internal.utils.border.SubstanceToolBarBorder;
 import org.pushingpixels.substance.internal.utils.icon.CheckBoxMenuItemIcon;
@@ -133,7 +133,7 @@ public class SkinUtilities {
 		Object popupMenuBorder = new UIDefaults.LazyValue() {
 			@Override
 			public Object createValue(UIDefaults table) {
-				return new BorderUIResource(new SubstanceBorder(0.0f, new Insets(2, 2, 2, 2))); 
+				return new SubstancePopupMenuBorder(); 
 			}
 		};
 
@@ -383,37 +383,37 @@ public class SkinUtilities {
 				selectionTextForegroundColor,
 
 				"FileChooser.upFolderIcon",
-				new Go_up(),
+				Go_up.of(16, 16),
 
 				"FileChooser.newFolderIcon",
-				new Folder_new(),
+				Folder_new.of(16, 16),
 
 				"FileChooser.homeFolderIcon",
-				new User_home(),
+				User_home.of(16, 16),
 
 				"FileChooser.listViewIcon",
-				new Format_justify_fill(),
+				Format_justify_fill.of(16, 16),
 
 				"FileChooser.detailsViewIcon",
-				new Accessories_text_editor(),
+				Accessories_text_editor.of(16, 16),
 
 				"FileChooser.usesSingleFilePane",
 				Boolean.TRUE,
 
 				"FileView.computerIcon",
-				new Computer(),
+				Computer.of(16, 16),
 
 				"FileView.directoryIcon",
-				new Folder(),
+				Folder.of(16, 16),
 
 				"FileView.fileIcon",
-				new Text_x_generic(),
+				Text_x_generic.of(16, 16),
 
 				"FileView.floppyDriveIcon",
-				new Media_floppy(),
+				Media_floppy.of(16, 16),
 
 				"FileView.hardDriveIcon",
-				new Drive_harddisk(),
+				Drive_harddisk.of(16, 16),
 
 				"FormattedTextField.background",
 				SubstanceColorUtilities.getDefaultBackgroundColor(true, skin,

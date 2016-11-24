@@ -80,7 +80,7 @@ public abstract class ImageWrapperDecorationPainter implements
 	 * Creates a new image wrapper decoration painter.
 	 */
 	public ImageWrapperDecorationPainter() {
-		this.textureAlpha = 0.3f;
+		this.textureAlpha = 0.2f;
 
 		this.colorizedTileMap = new LinkedHashMap<String, BufferedImage>() {
 			@Override

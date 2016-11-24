@@ -96,6 +96,8 @@ import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.fonts.FontSet;
 import org.pushingpixels.substance.api.skin.SkinChangeListener;
 import org.pushingpixels.substance.api.skin.SubstanceGeminiLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceMarinerLookAndFeel;
+import org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel;
 import org.pushingpixels.substance.api.tabbed.TabCloseCallback;
 import org.pushingpixels.substance.api.tabbed.TabCloseListener;
 import org.pushingpixels.substance.api.tabbed.VetoableMultipleTabCloseListener;
@@ -672,8 +674,6 @@ public class Check extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		 final String vendor = System.getProperty("java.vm.vendor");
-		    System.out.println(vendor);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				boolean hasLafSpecified = false;

@@ -63,10 +63,11 @@ public class SaharaSkin extends SubstanceSkin {
 	public SaharaSkin() {
 		SubstanceColorScheme activeScheme = new DesertSandColorScheme();
 		SubstanceColorScheme enabledScheme = new MetallicColorScheme();
-		SubstanceColorScheme disabledScheme = new LightGrayColorScheme();
 
+		SubstanceSkin.ColorSchemes kitchenSinkSchemes = SubstanceSkin
+				.getColorSchemes("org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes");
 		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
-				activeScheme, enabledScheme, disabledScheme);
+				activeScheme, enabledScheme, kitchenSinkSchemes.get("Gray Disabled"));
 		defaultSchemeBundle.registerHighlightColorScheme(new OliveColorScheme()
 				.tint(0.2).named("Sahara Highlight"));
 		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,

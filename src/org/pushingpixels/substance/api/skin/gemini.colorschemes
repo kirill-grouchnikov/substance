@@ -33,9 +33,9 @@ Gemini Dark Blue {
 
 Gemini Black {
     kind=Dark
-    colorUltraLight=#17242C
-    colorExtraLight=#162125
-    colorLight=#121C1E
+    colorUltraLight=#3A4953
+    colorExtraLight=#293338
+    colorLight=#1D292F
     colorMid=#111B1D
     colorDark=#0D1313
     colorUltraDark=#0C100F
@@ -88,11 +88,11 @@ Gemini Light Gray Border {
 
 Gemini Dark Gray Separator {
     kind=Light
-    colorUltraLight=#757979
-    colorExtraLight=#667172
-    colorLight=#7C886A
-    colorMid=#63736E
-    colorDark=#566764
+    colorUltraLight=#E5E9E9
+    colorExtraLight=#B6C1C2
+    colorLight=#9CA88A
+    colorMid=#83938E
+    colorDark=#73837E
     colorUltraDark=#3C585B
     colorForeground=#000000
 }

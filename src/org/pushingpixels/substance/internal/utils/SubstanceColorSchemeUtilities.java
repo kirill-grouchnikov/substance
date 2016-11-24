@@ -136,7 +136,7 @@ public class SubstanceColorSchemeUtilities {
 	private static SubstanceColorScheme getColorizedScheme(Component component,
 			SubstanceColorScheme scheme, Color fgColor, Color bgColor,
 			boolean isEnabled) {
-		if (component != null) {
+		if ((scheme != null) && (component != null)) {
 			// Support for enhancement 256 - colorizing
 			// controls.
 			if (bgColor instanceof UIResource)
@@ -157,55 +157,6 @@ public class SubstanceColorSchemeUtilities {
 		}
 		return scheme;
 	}
-
-	// /**
-	// * Returns a colorized version of the specified color scheme.
-	// *
-	// * @param component
-	// * Component.
-	// * @param scheme
-	// * Color scheme.
-	// * @param support
-	// * Used to compute the colorized scheme.
-	// * @param isEnabled
-	// * Indicates whether the component is enabled.
-	// * @return Colorized version of the specified color scheme.
-	// */
-	// private static SubstanceColorScheme getColorizedScheme(Component
-	// component,
-	// SubstanceColorScheme scheme, Component forQuerying,
-	// boolean isEnabled) {
-	// if (component != null) {
-	// // Support for enhancement 256 - colorizing
-	// // controls.
-	// Color bk = forQuerying.getBackground();
-	// Color fg = forQuerying.getForeground();
-	// // if (component instanceof SubstanceTitleButton) {
-	// // if ((fg != null) && (bk != null)) {
-	// // // guard for issue 322 - these are null when JavaHelp
-	// // // window is printed.
-	// // fg = SubstanceColorUtilities.getInterpolatedColor(fg, bk,
-	// // 0.5);
-	// // }
-	// // }
-	// if (bk instanceof UIResource)
-	// bk = null;
-	// if (fg instanceof UIResource) {
-	// fg = null;
-	// }
-	// if ((bk != null) || (fg != null)) {
-	// double colorization = SubstanceCoreUtilities
-	// .getColorizationFactor(component);
-	// if (!isEnabled)
-	// colorization /= 2.0;
-	// if (colorization > 0.0) {
-	// return ShiftColorScheme.getShiftedScheme(scheme, bk,
-	// colorization, fg, colorization);
-	// }
-	// }
-	// }
-	// return scheme;
-	// }
 
 	/**
 	 * Returns the color scheme of the specified tabbed pane tab.
@@ -309,6 +260,35 @@ public class SubstanceColorSchemeUtilities {
 
 	/**
 	 * Returns the color scheme of the component.
+	 * 
+	 * @param component
+	 *            Component.
+	 * @param associationKind
+	 *            Association kind.
+	 * @param componentState
+	 *            Component state.
+	 * @return Component color scheme.
+	 */
+	public static SubstanceColorScheme getDirectColorScheme(Component component,
+			ColorSchemeAssociationKind associationKind,
+			ComponentState componentState) {
+		// special case - if the component is marked as flat and
+		// it is in the default state, get the color scheme of the parent.
+		// However, flat toolbars should be ignored, since they are
+		// the "top" level decoration area.
+		if (!(component instanceof JToolBar)
+				&& SubstanceCoreUtilities.hasFlatAppearance(component, false)
+				&& (componentState == ComponentState.ENABLED)) {
+			component = component.getParent();
+		}
+
+		SubstanceColorScheme nonColorized = SubstanceCoreUtilities.getSkin(component).
+				getDirectColorScheme(component, associationKind, componentState);
+		return getColorizedScheme(component, nonColorized, !componentState.isDisabled());
+	}
+
+	/**
+	 * Returns the active color scheme of the component.
 	 * 
 	 * @param component
 	 *            Component.
@@ -765,5 +745,4 @@ public class SubstanceColorSchemeUtilities {
 		}
 		return new SubstanceSkin.ColorSchemes(schemes);
 	}
-
 }

@@ -107,14 +107,17 @@ public class BackgroundPaintingUtils {
 		if (isShowing && (decorationType != DecorationAreaType.NONE)
 				&& (skin.isRegisteredAsDecorationArea(decorationType))) {
 			// use the decoration painter
-			DecorationPainterUtils
-					.paintDecorationBackground(graphics, c, force);
+			DecorationPainterUtils.paintDecorationBackground(graphics, c, force);
 			// and add overlays unless it's not a top-level menu
 			boolean showOverlays = true;
-			if (c instanceof JMenuItem) {
+			if (c.getParent() instanceof JPopupMenu) {
 				showOverlays = false;
-				if (c instanceof JMenu) {
-					showOverlays = ((JMenu) c).isTopLevelMenu();
+			} else {
+				if (c instanceof JMenuItem) {
+					showOverlays = false;
+					if (c instanceof JMenu) {
+						showOverlays = ((JMenu) c).isTopLevelMenu();
+					}
 				}
 			}
 			if (showOverlays) {
@@ -123,9 +126,8 @@ public class BackgroundPaintingUtils {
 		} else {
 			// fill the area with solid color
 			Color backgr = SubstanceColorUtilities
-					.getBackgroundFillColor(((c instanceof JTextComponent) || (c instanceof JSpinner)) ? c
-							.getParent()
-							: c);
+					.getBackgroundFillColor(((c instanceof JTextComponent) || (c instanceof JSpinner)) 
+							? c.getParent() : c);
 			graphics.setColor(backgr);
 			graphics.fillRect(0, 0, c.getWidth(), c.getHeight());
 

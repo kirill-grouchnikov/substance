@@ -29,22 +29,10 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
-import org.pushingpixels.substance.api.ColorSchemeTransform;
-import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
-import org.pushingpixels.substance.api.SubstanceSkin;
-import org.pushingpixels.substance.api.colorscheme.EbonyColorScheme;
-import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
-import org.pushingpixels.substance.api.painter.border.CompositeBorderPainter;
-import org.pushingpixels.substance.api.painter.border.DelegateBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.FlatDecorationPainter;
 import org.pushingpixels.substance.api.painter.fill.FractionBasedFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
-import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 
 /**
  * <code>Graphite</code> skin. This class is part of officially supported API.

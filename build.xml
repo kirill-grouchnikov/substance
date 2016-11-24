@@ -167,7 +167,7 @@
 		<delete file="${substance.drop.dir}/substance.jar" />
 
 		<jar compress="true" destfile="${substance.drop.dir}/substance.jar">
-			<fileset dir="${substance.output.dir}/" excludes="tools/** test/**" />
+			<fileset dir="${substance.output.dir}/" excludes="tools/** test/** **/*.svg" />
 			<fileset dir="${module.substance.basedir}/" includes="resources/**" />
 			<manifest>
 				<attribute name="Substance-Distribution" value="Full" />
@@ -181,7 +181,7 @@
 	<target name="jar-bin-lite" description="create runtime jar with no custom color choosers">
 		<delete file="${substance.drop.dir}/substance-lite.jar" />
 		<jar compress="true" destfile="${substance.drop.dir}/substance-lite.jar">
-			<fileset dir="${substance.output.dir}/" excludes="tools/** test/** org/pushingpixels/substance/internal/contrib/randelshofer/** org/pushingpixels/substance/internal/contrib/xoetrope/** org/pushingpixels/substance/internal/ui/SubstanceColorChooserUI* org/pushingpixels/lafwidget/ant/**" />
+			<fileset dir="${substance.output.dir}/" excludes="tools/** test/** **/*.svg org/pushingpixels/substance/internal/contrib/randelshofer/** org/pushingpixels/substance/internal/contrib/xoetrope/** org/pushingpixels/substance/internal/ui/SubstanceColorChooserUI* org/pushingpixels/lafwidget/ant/**" />
 			<fileset dir="${module.substance.basedir}/" includes="resources/**" />
 			<manifest>
 				<attribute name="Substance-Distribution" value="Lite" />

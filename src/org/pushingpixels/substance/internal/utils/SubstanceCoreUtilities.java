@@ -1366,7 +1366,7 @@ public class SubstanceCoreUtilities {
 				.get(SubstanceLookAndFeel.MENU_GUTTER_FILL_KIND);
 		if (globalSetting instanceof MenuGutterFillKind)
 			return (MenuGutterFillKind) globalSetting;
-		return MenuGutterFillKind.HARD;
+		return MenuGutterFillKind.HARD_FILL;
 	}
 
 	/**

@@ -1221,9 +1221,18 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		// at this point the 'fillOpacity' has all the relevant layers for the
 		// fill + border
 
+		// Special handling of selected tabs under skins that show partial visuals
+		boolean isTextOnParentBackground = 
+				isSelected && (SubstanceCoreUtilities.getSkin(tabPane).getSelectedTabFadeEnd() <= 0.5);
+		ComponentState markState = currState;
+		if (isTextOnParentBackground) {
+			// Ignore all other "aspects" of tab's state
+			markState = this.tabPane.isEnabledAt(tabIndex) ? ComponentState.ENABLED 
+					: ComponentState.DISABLED_UNSELECTED;
+		}
 		SubstanceColorScheme baseMarkScheme = SubstanceColorSchemeUtilities
 				.getColorScheme(this.tabPane, tabIndex,
-						ColorSchemeAssociationKind.MARK, currState);
+						ColorSchemeAssociationKind.MARK, markState);
 
 		// fix for defect 138
 		graphics.clip(new Rectangle(x, y, w, h));
@@ -2715,9 +2724,17 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		} else {
 			// plain text
 			int mnemIndex = this.tabPane.getDisplayedMnemonicIndexAt(tabIndex);
-			StateTransitionTracker.ModelStateInfo modelStateInfo = 
-					 this.getModelStateInfo(tabIndex);
-			ComponentState currState = this.getTabState(tabIndex, false);
+			// Special handling of selected tabs under skins that show partial visuals
+			boolean isTextOnParentBackground = 
+					isSelected && (SubstanceCoreUtilities.getSkin(tabPane).getSelectedTabFadeEnd() <= 0.5);
+			ComponentState currState = this.getTabState(tabIndex, true);
+			if (isTextOnParentBackground) {
+				// Ignore all other "aspects" of tab's state
+				currState = this.tabPane.isEnabledAt(tabIndex) ? ComponentState.ENABLED 
+						: ComponentState.DISABLED_UNSELECTED;
+			}
+			StateTransitionTracker.ModelStateInfo modelStateInfo =
+					isTextOnParentBackground ? null : this.getModelStateInfo(tabIndex);
 
 			//System.out.println("Tab " + title + ":" + currState);
 			Color fg = null;

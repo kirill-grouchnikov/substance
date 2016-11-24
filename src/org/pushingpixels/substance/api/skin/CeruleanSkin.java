@@ -155,10 +155,15 @@ public class CeruleanSkin extends SubstanceSkin {
 
         CopyMutableColorScheme chrome = new CopyMutableColorScheme("Cerulean Chrome", pressedScheme);
         chrome.setUltraDarkColor(chrome.getExtraLightColor());
-        registerDecorationAreaSchemeBundle(
+        SubstanceColorSchemeBundle headerSchemeBundle = 
         		new SubstanceColorSchemeBundle(pressedScheme, pressedScheme, 
-        				pressedScheme.shade(0.5)), 
-        		chrome,
+        				pressedScheme.tone(0.2));
+		headerSchemeBundle.registerColorScheme(pressedScheme, 0.6f,
+				ComponentState.DISABLED_SELECTED, ComponentState.DISABLED_UNSELECTED);
+		headerSchemeBundle.registerColorScheme(pressedScheme, 0.6f,
+				ColorSchemeAssociationKind.MARK, 
+				ComponentState.DISABLED_SELECTED, ComponentState.DISABLED_UNSELECTED);
+        registerDecorationAreaSchemeBundle(headerSchemeBundle, chrome,
                 DecorationAreaType.PRIMARY_TITLE_PANE,
                 DecorationAreaType.SECONDARY_TITLE_PANE,
 				DecorationAreaType.HEADER);

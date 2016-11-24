@@ -489,7 +489,7 @@ public class SubstanceColorSchemeBundle {
 	 */
 	public SubstanceColorScheme getColorScheme(
 			ColorSchemeAssociationKind associationKind,
-			ComponentState componentState) {
+			ComponentState componentState, boolean allowFallback) {
 		if (associationKind == ColorSchemeAssociationKind.FILL)
 			return this.getColorScheme(componentState);
 
@@ -516,11 +516,16 @@ public class SubstanceColorSchemeBundle {
 		}
 		// }
 
-		ColorSchemeAssociationKind fallback = associationKind.getFallback();
-		if (fallback == null)
+		if (!allowFallback) {
 			return null;
+		}
+		
+		ColorSchemeAssociationKind fallback = associationKind.getFallback();
+		if (fallback == null) {
+			return null;
+		}
 
-		return getColorScheme(fallback, componentState);
+		return getColorScheme(fallback, componentState, allowFallback);
 	}
 
 	/**

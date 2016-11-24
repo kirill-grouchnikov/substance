@@ -67,6 +67,8 @@ public class GraphiteGoldSkin extends GraphiteSkin {
 		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1.0f,
 				ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
 
+		defaultSchemeBundle.registerColorScheme(highlightScheme, 0.5f, 
+				ComponentState.DISABLED_SELECTED);
 		defaultSchemeBundle.registerColorScheme(highlightScheme,
 				ColorSchemeAssociationKind.BORDER,
 				ComponentState.ROLLOVER_ARMED,
@@ -89,6 +91,9 @@ public class GraphiteGoldSkin extends GraphiteSkin {
 		defaultSchemeBundle.registerColorScheme(highlightScheme, 
 				ColorSchemeAssociationKind.MARK, 
 				ComponentState.SELECTED);
+		defaultSchemeBundle.registerColorScheme(highlightScheme, 0.5f,
+				ColorSchemeAssociationKind.MARK, 
+				ComponentState.DISABLED_SELECTED);
 
 		// text highlight scheme
 		defaultSchemeBundle.registerColorScheme(highlightScheme,

@@ -67,6 +67,8 @@ public class GraphiteAquaSkin extends GraphiteSkin {
 		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1.0f,
 				ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
 
+		defaultSchemeBundle.registerColorScheme(highlightScheme, 0.5f, 
+				ComponentState.DISABLED_SELECTED);
 		defaultSchemeBundle.registerColorScheme(highlightScheme,
 				ColorSchemeAssociationKind.BORDER,
 				ComponentState.ROLLOVER_ARMED,

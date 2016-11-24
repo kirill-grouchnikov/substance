@@ -340,12 +340,12 @@ g.setTransform(defaultTransform_);
 	/**
 	 * The current width of this resizable icon.
 	 */
-	int width;
+	private int width;
 
 	/**
 	 * The current height of this resizable icon.
 	 */
-	int height;
+	private int height;
 
 	/**
 	 * Creates a new transcoded SVG image.
@@ -406,6 +406,13 @@ g.setTransform(defaultTransform_);
 		g2d.scale(coef, coef);
 		paint(g2d);
 		g2d.dispose();
+	}
+	
+	public static Locked of(int width, int height) {
+	   Locked result = new Locked();
+	   result.width = width;
+	   result.height = height;
+	   return result;
 	}
 }
 

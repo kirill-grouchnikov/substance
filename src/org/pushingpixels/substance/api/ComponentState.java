@@ -321,7 +321,7 @@ public final class ComponentState {
 	 *            only used in the {@link #toString()}.
 	 * @param hardFallback
 	 *            The fallback state that will be used in
-	 *            {@link SubstanceColorSchemeBundle#getColorScheme(ColorSchemeAssociationKind, ComponentState)}
+	 *            {@link SubstanceColorSchemeBundle#getColorScheme(ColorSchemeAssociationKind, ComponentState, boolean)}
 	 *            in case {@link #bestFit(Collection)} returns <code>null</code>
 	 * @param facetsOn
 	 *            Indicates that are turned on for this state. For example,
@@ -542,11 +542,11 @@ public final class ComponentState {
 			isRolloverEnabled = ((AbstractButton) component)
 					.isRolloverEnabled();
 		if (!model.isEnabled()) {
-			if (model.isSelected())
+			if (!toIgnoreSelection && model.isSelected())
 				return DISABLED_SELECTED;
 			return DISABLED_UNSELECTED;
 		} else if (model.isArmed() && model.isPressed()) {
-			if (model.isSelected())
+			if (!toIgnoreSelection && model.isSelected())
 				return PRESSED_SELECTED;
 			return PRESSED_UNSELECTED;
 		} else if (!toIgnoreSelection && model.isSelected()) {

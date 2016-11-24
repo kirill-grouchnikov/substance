@@ -82,8 +82,6 @@ public class BaseSkinPlugin implements SubstanceSkinPlugin {
 		result.add(create(GraphiteGlassSkin.NAME, GraphiteGlassSkin.class, false));
 		result.add(create(GraphiteAquaSkin.NAME, GraphiteAquaSkin.class, false));
 		result.add(create(GraphiteGoldSkin.NAME, GraphiteGoldSkin.class, false));
-		result.add(create(ChallengerDeepSkin.NAME, ChallengerDeepSkin.class, false));
-		result.add(create(EmeraldDuskSkin.NAME, EmeraldDuskSkin.class, false));
 		result.add(create(NebulaSkin.NAME, NebulaSkin.class, false));
 		result.add(create(NebulaBrickWallSkin.NAME, NebulaBrickWallSkin.class, false));
 		result.add(create(MistSilverSkin.NAME, MistSilverSkin.class, false));

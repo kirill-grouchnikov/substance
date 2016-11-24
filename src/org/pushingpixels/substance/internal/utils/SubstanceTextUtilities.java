@@ -107,8 +107,6 @@ public class SubstanceTextUtilities {
 		gBlurred.setFont(graphics.getFont());
 		gBlurred.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-		// Color neg =
-		// SubstanceColorUtilities.getNegativeColor(foregroundColor);
 		float luminFactor = SubstanceColorUtilities.getColorStrength(foregroundColor);
 		gBlurred.setColor(echoColor);
 		ConvolveOp convolve = new ConvolveOp(new Kernel(3, 3, new float[] {
@@ -290,19 +288,20 @@ public class SubstanceTextUtilities {
 	public static void paintText(Graphics g, AbstractButton button,
 			ButtonModel model, Rectangle textRect, String text,
 			int mnemonicIndex) {
-		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) button
-				.getUI();
-		StateTransitionTracker stateTransitionTracker = transitionAwareUI
-				.getTransitionTracker();
-
-		float buttonAlpha = SubstanceColorSchemeUtilities.getAlpha(button,
-				ComponentState.getState(button));
+		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) button.getUI();
+		StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
 
 		if (button instanceof JMenuItem) {
+			// A slightly different path for menu items as we ignore the selection
+			// state for visual consistency in menu content
+			float menuItemAlpha = SubstanceColorSchemeUtilities.getAlpha(button,
+					ComponentState.getState(button.getModel(), button, true));
 			paintMenuItemText(g, (JMenuItem) button, textRect, text,
 					mnemonicIndex, stateTransitionTracker.getModelStateInfo(),
-					buttonAlpha);
+					menuItemAlpha);
 		} else {
+			float buttonAlpha = SubstanceColorSchemeUtilities.getAlpha(button,
+					ComponentState.getState(button));
 			paintText(g, button, textRect, text, mnemonicIndex,
 					stateTransitionTracker.getModelStateInfo(), buttonAlpha);
 		}
@@ -439,8 +438,7 @@ public class SubstanceTextUtilities {
 		// System.out.println(text + ":" + prevState.name() + "->" +
 		// state.name() + ":" + fgColor);
 		if (textAlpha < 1.0f) {
-			Color bgFillColor = SubstanceColorUtilities
-					.getBackgroundFillColor(component);
+			Color bgFillColor = SubstanceColorUtilities.getBackgroundFillColor(component);
 			fgColor = SubstanceColorUtilities.getInterpolatedColor(fgColor,
 					bgFillColor, textAlpha);
 		}
@@ -465,7 +463,7 @@ public class SubstanceTextUtilities {
 	 *            rasterization will be performed on 6u10 on Windows.
 	 * @return The foreground color for the specified component.
 	 */
-	public static Color getMenuComponentForegroundColor(Component menuComponent,
+	public static Color getMenuComponentForegroundColor(JMenuItem menuComponent,
 			String text, StateTransitionTracker.ModelStateInfo modelStateInfo,
 			float textAlpha) {
 		if ((text == null) || (text.length() == 0))

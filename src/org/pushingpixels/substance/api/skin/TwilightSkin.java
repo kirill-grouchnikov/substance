@@ -31,12 +31,24 @@ package org.pushingpixels.substance.api.skin;
 
 import java.awt.Color;
 
-import org.pushingpixels.substance.api.*;
-import org.pushingpixels.substance.api.painter.border.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
+import org.pushingpixels.substance.api.ColorSchemeTransform;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
+import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
+import org.pushingpixels.substance.api.painter.border.CompositeBorderPainter;
+import org.pushingpixels.substance.api.painter.border.DelegateBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.MatteDecorationPainter;
-import org.pushingpixels.substance.api.painter.fill.StandardFillPainter;
+import org.pushingpixels.substance.api.painter.fill.FractionBasedFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
-import org.pushingpixels.substance.api.painter.overlay.*;
+import org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter;
+import org.pushingpixels.substance.api.painter.overlay.BottomShadowOverlayPainter;
+import org.pushingpixels.substance.api.painter.overlay.TopBezelOverlayPainter;
+import org.pushingpixels.substance.api.painter.overlay.TopLineOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 
 /**
@@ -78,8 +90,10 @@ public class TwilightSkin extends SubstanceSkin {
 
 		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
 				activeScheme, enabledScheme, enabledScheme);
-		defaultSchemeBundle.registerColorScheme(enabledScheme, 0.5f,
+		defaultSchemeBundle.registerColorScheme(enabledScheme, 0.6f, 
 				ComponentState.DISABLED_UNSELECTED);
+		defaultSchemeBundle.registerColorScheme(activeScheme, 0.6f, 
+				ComponentState.DISABLED_SELECTED);
 
 		// borders
 		SubstanceColorScheme borderDisabledSelectedScheme = schemes
@@ -92,20 +106,19 @@ public class TwilightSkin extends SubstanceSkin {
 				ColorSchemeAssociationKind.BORDER);
 
 		// marks
-		SubstanceColorScheme markActiveScheme = schemes
-				.get("Twilight Mark Active");
+		SubstanceColorScheme markActiveScheme = schemes.get("Twilight Mark Active");
 		defaultSchemeBundle.registerColorScheme(markActiveScheme,
 				ColorSchemeAssociationKind.MARK, ComponentState
 						.getActiveStates());
+		defaultSchemeBundle.registerColorScheme(markActiveScheme, 0.6f,
+				ColorSchemeAssociationKind.MARK, 
+				ComponentState.DISABLED_SELECTED, ComponentState.DISABLED_UNSELECTED);
 
 		// separators
-		SubstanceColorScheme separatorScheme = schemes
-				.get("Twilight Separator");
-		defaultSchemeBundle.registerColorScheme(separatorScheme,
-				ColorSchemeAssociationKind.SEPARATOR);
+		SubstanceColorScheme separatorScheme = schemes.get("Twilight Separator");
+		defaultSchemeBundle.registerColorScheme(separatorScheme, ColorSchemeAssociationKind.SEPARATOR);
 
-		SubstanceColorScheme watermarkScheme = schemes
-				.get("Twilight Watermark");
+		SubstanceColorScheme watermarkScheme = schemes.get("Twilight Watermark");
 
 		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
 				watermarkScheme, DecorationAreaType.NONE);
@@ -230,9 +243,14 @@ public class TwilightSkin extends SubstanceSkin {
 		this.addOverlayPainter(this.footerTopBezelOverlayPainter,
 				DecorationAreaType.FOOTER);
 
+		this.setSelectedTabFadeStart(0.18);
+		this.setSelectedTabFadeEnd(0.18);
+
 		this.buttonShaper = new ClassicButtonShaper();
 		this.watermark = null;
-		this.fillPainter = new StandardFillPainter();
+		this.fillPainter = new FractionBasedFillPainter("Twilight", new float[] { 0.0f, 0.5f, 1.0f },
+				new ColorSchemeSingleColorQuery[] { ColorSchemeSingleColorQuery.ULTRALIGHT,
+						ColorSchemeSingleColorQuery.LIGHT, ColorSchemeSingleColorQuery.LIGHT });
 		this.decorationPainter = new MatteDecorationPainter();
 		this.highlightPainter = new ClassicHighlightPainter();
 		this.borderPainter = new CompositeBorderPainter("Twilight",
@@ -243,7 +261,7 @@ public class TwilightSkin extends SubstanceSkin {
 							@Override
 							public SubstanceColorScheme transform(
 									SubstanceColorScheme scheme) {
-								return scheme.tint(0.3);
+								return scheme.tint(0.2);
 							}
 						}));
 	}

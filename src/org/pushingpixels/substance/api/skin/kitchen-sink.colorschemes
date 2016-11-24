@@ -53,3 +53,14 @@ Moderate Highlight {
     colorForeground=#000000
 }
 
+Gray Disabled {
+    kind=Light
+    colorUltraLight=#FAFBFC
+    colorExtraLight=#F0F2F4
+    colorLight=#E1E4E7
+    colorMid=#D2D6DA
+    colorDark=#B4B9BE
+    colorUltraDark=#646A70
+    colorForeground=#70757A
+}
+

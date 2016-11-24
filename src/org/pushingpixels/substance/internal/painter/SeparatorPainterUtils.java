@@ -30,9 +30,11 @@
 package org.pushingpixels.substance.internal.painter;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 
+import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
@@ -134,9 +136,27 @@ public class SeparatorPainterUtils {
 			int height, int orientation, boolean hasShadow,
 			int maxGradLengthStart, int maxGradLengthEnd,
 			boolean toEnforceAlphaColors) {
-		SubstanceColorScheme compScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(c, ColorSchemeAssociationKind.SEPARATOR,
-						ComponentState.ENABLED);
+		SubstanceColorScheme compScheme = null;
+		if (c.getParent() instanceof JPopupMenu) {
+			// For separators in popup menus, first see if we have a color scheme
+			// explicitly registered for the SEPARATOR association kind.
+			compScheme = SubstanceColorSchemeUtilities.getDirectColorScheme(
+					c, ColorSchemeAssociationKind.SEPARATOR, ComponentState.ENABLED);
+			if (compScheme == null) {
+				// Then get a background color scheme associated with the decoration type
+				// of that separator
+				compScheme = SubstanceCoreUtilities.getSkin(c).getBackgroundColorScheme(
+						SubstanceLookAndFeel.getDecorationType(c));
+			}
+		} 
+		if (compScheme == null) {
+			// And finally, get the separator's color scheme via the regular route that
+			// includes fall back in case there is no explicitly registered color scheme
+			// for the SEPARATOR association kind.
+			compScheme = SubstanceColorSchemeUtilities.getColorScheme(
+					c, ColorSchemeAssociationKind.SEPARATOR, ComponentState.ENABLED);
+		}
+		
 		paintSeparator(c, g, compScheme, width, height, orientation, hasShadow,
 				maxGradLengthStart, maxGradLengthEnd, toEnforceAlphaColors);
 	}
@@ -190,8 +210,7 @@ public class SeparatorPainterUtils {
 
 		Color backgrFill = SubstanceColorUtilities.getBackgroundFillColor(c);
 		int fontSize = SubstanceSizeUtils.getComponentFontSize(c);
-		float borderStrokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(fontSize);
+		float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth(fontSize);
 		if ((orientation == JSeparator.HORIZONTAL) && (height == 0)) {
 			height = (int) Math.ceil(2.0 * borderStrokeWidth);
 		}
@@ -216,70 +235,58 @@ public class SeparatorPainterUtils {
 			Color foreDark = getSeparatorDarkColor(scheme);
 			Color back = getSeparatorShadowColor(scheme);
 
-			Color foreLight12 = toUseAlphaColors ? SubstanceColorUtilities
-					.getAlphaColor(foreLight, 32) : SubstanceColorUtilities
-					.getInterpolatedColor(foreLight, backgrFill, 0.12);
-			Color foreDark95 = toUseAlphaColors ? SubstanceColorUtilities
-					.getAlphaColor(foreDark, 240) : SubstanceColorUtilities
-					.getInterpolatedColor(foreDark, backgrFill, 0.95);
-			Color back12 = toUseAlphaColors ? SubstanceColorUtilities
-					.getAlphaColor(back, 32) : SubstanceColorUtilities
-					.getInterpolatedColor(back, backgrFill, 0.12);
-			Color back95 = toUseAlphaColors ? SubstanceColorUtilities
-					.getAlphaColor(back, 240) : SubstanceColorUtilities
-					.getInterpolatedColor(back, backgrFill, 0.95);
+			Color foreLight12 = toUseAlphaColors ? SubstanceColorUtilities.getAlphaColor(foreLight, 32)
+					: SubstanceColorUtilities.getInterpolatedColor(foreLight, backgrFill, 0.12);
+			Color foreDark95 = toUseAlphaColors ? SubstanceColorUtilities.getAlphaColor(foreDark, 240)
+					: SubstanceColorUtilities.getInterpolatedColor(foreDark, backgrFill, 0.95);
+			Color back12 = toUseAlphaColors ? SubstanceColorUtilities.getAlphaColor(back, 32)
+					: SubstanceColorUtilities.getInterpolatedColor(back, backgrFill, 0.12);
+			Color back95 = toUseAlphaColors ? SubstanceColorUtilities.getAlphaColor(back, 240)
+					: SubstanceColorUtilities.getInterpolatedColor(back, backgrFill, 0.95);
 			graphics.setStroke(new BasicStroke(borderStrokeWidth,
 					BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
 			if (orientation == JSeparator.VERTICAL) {
 				int gradStart = Math.min(maxGradLengthStart, height / 2);
 				int gradEnd = Math.min(maxGradLengthEnd, height / 2);
-				graphics.translate(Math.max(0, width / 2 - 1), 0);
-				graphics.setPaint(new GradientPaint(0, 0, foreLight12, 0,
-						gradStart, foreDark95));
-				graphics.drawLine(0, 0, 0, gradStart);
+				float regularX = Math.max(0, width / 2.0f - borderStrokeWidth);
+				graphics.setPaint(new GradientPaint(0, 0, foreLight12, 0, gradStart, foreDark95));
+				graphics.draw(new Line2D.Float(regularX, 0, regularX, gradStart));
 				graphics.setColor(foreDark95);
-				graphics.drawLine(0, gradStart, 0, height - gradEnd);
-				graphics.setPaint(new GradientPaint(0, height - gradEnd,
-						foreDark95, 0, height, foreLight12));
-				graphics.drawLine(0, height - gradEnd, 0, height);
+				graphics.draw(new Line2D.Float(regularX, gradStart, regularX, height - gradEnd));
+				graphics.setPaint(new GradientPaint(0, height - gradEnd, foreDark95, 0, height, foreLight12));
+				graphics.draw(new Line2D.Float(regularX, height - gradEnd, regularX, height));
 
 				if (hasShadow) {
-					int offset = (int) borderStrokeWidth;
-					graphics.setPaint(new GradientPaint(offset, 0, back12,
-							offset, gradStart, back95));
-					graphics.drawLine(offset, 0, offset, gradStart);
+					float shadowX = regularX + borderStrokeWidth;
+					graphics.setPaint(new GradientPaint(0, 0, back12, 0, gradStart, back95));
+					graphics.draw(new Line2D.Float(shadowX, 0, shadowX, gradStart));
 					graphics.setColor(back95);
-					graphics.drawLine(offset, gradStart, offset, height
-							- gradEnd);
-					graphics.setPaint(new GradientPaint(offset, height
-							- gradEnd, back95, offset, height, back12));
-					graphics.drawLine(offset, height - gradEnd, offset, height);
+					graphics.draw(new Line2D.Float(shadowX, gradStart, shadowX, height - gradEnd));
+					graphics.setPaint(new GradientPaint(0, height - gradEnd, back95, 0, height, back12));
+					graphics.draw(new Line2D.Float(shadowX, height - gradEnd, shadowX, height));
 				}
 			} else {
 				// HORIZONTAL
 				int gradStart = Math.min(maxGradLengthStart, width / 2);
 				int gradEnd = Math.min(maxGradLengthEnd, width / 2);
 				graphics.translate(0, Math.max(0, height / 2 - 1));
+				float regularY = Math.max(0, height / 2.0f - borderStrokeWidth);
 				graphics.setPaint(new GradientPaint(0, 0, foreLight12,
 						gradStart, 0, foreDark95));
-				graphics.drawLine(0, 0, gradStart, 0);
+				graphics.draw(new Line2D.Float(0, regularY, gradStart, regularY));
 				graphics.setColor(foreDark95);
-				graphics.drawLine(gradStart, 0, width - gradEnd, 0);
-				graphics.setPaint(new GradientPaint(width - gradEnd, 0,
-						foreDark95, width, 0, foreLight12));
-				graphics.drawLine(width - gradEnd, 0, width, 0);
+				graphics.draw(new Line2D.Float(gradStart, regularY, width - gradEnd, regularY));
+				graphics.setPaint(new GradientPaint(width - gradEnd, 0, foreDark95, width, 0, foreLight12));
+				graphics.draw(new Line2D.Float(width - gradEnd, regularY, width, regularY));
 
 				if (hasShadow) {
-					int offset = (int) borderStrokeWidth;
-					graphics.setPaint(new GradientPaint(0, offset, back12,
-							gradStart, offset, back95));
-					graphics.drawLine(0, offset, gradStart, offset);
+					float shadowY = regularY + borderStrokeWidth;
+					graphics.setPaint(new GradientPaint(0, 0, back12, gradStart, 0, back95));
+					graphics.draw(new Line2D.Float(0, shadowY, gradStart, shadowY));
 					graphics.setColor(back95);
-					graphics.drawLine(gradStart, offset, width - gradEnd,
-							offset);
-					graphics.setPaint(new GradientPaint(width - gradEnd,
-							offset, back95, width, offset, back12));
-					graphics.drawLine(width - gradEnd, offset, width, offset);
+					graphics.draw(new Line2D.Float(gradStart, shadowY, width - gradEnd, shadowY));
+					graphics.setPaint(new GradientPaint(width - gradEnd, 0, back95, width, 0, back12));
+					graphics.draw(new Line2D.Float(width - gradEnd, shadowY, width, shadowY));
 				}
 			}
 			graphics.dispose();
@@ -340,7 +347,6 @@ public class SeparatorPainterUtils {
 
 		float borderStrokeWidth = SubstanceSizeUtils
 				.getBorderStrokeWidth(componentFontSize);
-		int offset = (int) borderStrokeWidth;
 		BufferedImage singleLine = cached.get(key);
 		if (singleLine == null) {
 			singleLine = SubstanceCoreUtilities.getBlankImage(Math.max(2,
@@ -367,13 +373,15 @@ public class SeparatorPainterUtils {
 					new Color[] { foreDark95, foreDark95, foreLight12 });
 			graphics.setPaint(forePaint);
 			graphics.translate(borderStrokeWidth / 2, 0);
-			graphics.drawLine(0, 0, 0, height);
+			graphics.draw(new Line2D.Float(borderStrokeWidth / 2, 0, 
+					borderStrokeWidth / 2, height));
 
 			LinearGradientPaint backPaint = new LinearGradientPaint(0, 0, 0,
 					height, new float[] { 0.0f, fadeStartFraction, 1.0f },
 					new Color[] { back95, back95, back12 });
 			graphics.setPaint(backPaint);
-			graphics.drawLine(offset, 0, offset, height);
+			graphics.draw(new Line2D.Float(3 * borderStrokeWidth / 2, 0, 
+					3 * borderStrokeWidth / 2, height));
 
 			graphics.dispose();
 			cached.put(key, singleLine);
@@ -382,7 +390,7 @@ public class SeparatorPainterUtils {
 		Graphics2D g2d = (Graphics2D) g.create();
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		for (int lineX : x) {
-			g2d.drawImage(singleLine, lineX - offset / 2, y, singleLine.getWidth() / scaleFactor,
+			g2d.drawImage(singleLine, lineX, y, singleLine.getWidth() / scaleFactor,
 					singleLine.getHeight() / scaleFactor, null);
 		}
 		g2d.dispose();
@@ -422,7 +430,6 @@ public class SeparatorPainterUtils {
 
 		float borderStrokeWidth = SubstanceSizeUtils
 				.getBorderStrokeWidth(componentFontSize);
-		int offset = (int) borderStrokeWidth;
 		BufferedImage singleLine = cached.get(key);
 		if (singleLine == null) {
 			singleLine = SubstanceCoreUtilities.getBlankImage(width, Math.max(
@@ -449,14 +456,16 @@ public class SeparatorPainterUtils {
 					new Color[] { isLtr ? foreDark95 : foreLight12, foreDark95,
 							isLtr ? foreLight12 : foreDark95 });
 			graphics.setPaint(forePaint);
-			graphics.drawLine(0, 0, width, 0);
+			graphics.draw(new Line2D.Float(0, borderStrokeWidth / 2, width, 
+					borderStrokeWidth / 2));
 
 			LinearGradientPaint backPaint = new LinearGradientPaint(0, 9,
 					width, 0, new float[] { 0.0f, fadeStartFraction, 1.0f },
 					new Color[] { isLtr ? back95 : back12, back95,
 							isLtr ? back12 : back95 });
 			graphics.setPaint(backPaint);
-			graphics.drawLine(0, offset, width, offset);
+			graphics.draw(new Line2D.Float(0, 3 * borderStrokeWidth / 2, width, 
+					3 * borderStrokeWidth / 2));
 
 			graphics.dispose();
 			cached.put(key, singleLine);
@@ -465,7 +474,7 @@ public class SeparatorPainterUtils {
 		Graphics2D g2d = (Graphics2D) g.create();
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		for (int lineY : y) {
-			g2d.drawImage(singleLine, x, lineY - offset / 2, singleLine.getWidth() / scaleFactor,
+			g2d.drawImage(singleLine, x, lineY, singleLine.getWidth() / scaleFactor,
 					singleLine.getHeight() / scaleFactor, null);
 		}
 		g2d.dispose();

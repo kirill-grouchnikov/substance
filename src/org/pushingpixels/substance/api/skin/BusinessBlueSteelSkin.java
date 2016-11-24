@@ -75,6 +75,7 @@ public class BusinessBlueSteelSkin extends SubstanceSkin {
 				.getColorSchemes("org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes");
 		SubstanceColorScheme highlightColorScheme = kitchenSinkSchemes
 				.get("Business Blue Steel Highlight");
+		defaultSchemeBundle.registerColorScheme(activeScheme, 0.5f, ComponentState.DISABLED_SELECTED);
 		defaultSchemeBundle.registerHighlightColorScheme(highlightColorScheme);
 		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
 				DecorationAreaType.NONE);

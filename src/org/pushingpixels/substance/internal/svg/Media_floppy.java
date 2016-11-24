@@ -293,12 +293,12 @@ g.setTransform(defaultTransform_);
 	/**
 	 * The current width of this resizable icon.
 	 */
-	int width;
+	private int width;
 
 	/**
 	 * The current height of this resizable icon.
 	 */
-	int height;
+	private int height;
 
 	/**
 	 * Creates a new transcoded SVG image.
@@ -355,9 +355,17 @@ g.setTransform(defaultTransform_);
 		double coef1 = (double) this.width / (double) getOrigWidth();
 		double coef2 = (double) this.height / (double) getOrigHeight();
 		double coef = Math.min(coef1, coef2);
+        g2d.clipRect(0, 0, this.width, this.height);
 		g2d.scale(coef, coef);
 		paint(g2d);
 		g2d.dispose();
+	}
+	
+	public static Media_floppy of(int width, int height) {
+	   Media_floppy result = new Media_floppy();
+	   result.width = width;
+	   result.height = height;
+	   return result;
 	}
 }
 

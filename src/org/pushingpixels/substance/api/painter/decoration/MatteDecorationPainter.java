@@ -33,6 +33,7 @@ import java.awt.*;
 
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.painter.SubstancePainterUtils;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
 /**
  * Implementation of {@link SubstanceDecorationPainter} that uses matte painting
@@ -151,11 +152,13 @@ public class MatteDecorationPainter implements SubstanceDecorationPainter {
 			startY = 0;
 		int endY = startY + height;
 
+		Color startColor = scheme.getLightColor();
+		Color endColor = SubstanceColorUtilities.getInterpolatedColor(startColor, scheme.getMidColor(), 0.4);
+		
 		int currStart = 0;
 		if (flexPoint >= startY) {
-			graphics.setPaint(new GradientPaint(x, currStart - offsetY, scheme
-					.getLightColor(), x, flexPoint - offsetY, scheme
-					.getMidColor()));
+			graphics.setPaint(new GradientPaint(x, currStart - offsetY, startColor, 
+					x, flexPoint - offsetY, endColor));
 			graphics.fillRect(x, currStart - offsetY, width, flexPoint);
 		}
 		currStart += flexPoint;
@@ -163,8 +166,7 @@ public class MatteDecorationPainter implements SubstanceDecorationPainter {
 		if (currStart > endY)
 			return;
 
-		graphics.setColor(scheme.getMidColor());
-		graphics.fillRect(x, currStart - offsetY, width, endY - currStart
-				+ offsetY);
+		graphics.setColor(endColor);
+		graphics.fillRect(x, currStart - offsetY, width, endY - currStart + offsetY);
 	}
 }

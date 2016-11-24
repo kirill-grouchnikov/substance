@@ -63,12 +63,11 @@ public class ModerateSkin extends SubstanceSkin {
 	public ModerateSkin() {
 		SubstanceColorScheme activeScheme = new SteelBlueColorScheme();
 		SubstanceColorScheme enabledScheme = new MetallicColorScheme();
-		SubstanceColorScheme disabledScheme = new LightGrayColorScheme();
 
-		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
-				activeScheme, enabledScheme, disabledScheme);
 		SubstanceSkin.ColorSchemes kitchenSinkSchemes = SubstanceSkin
 				.getColorSchemes("org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes");
+		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
+				activeScheme, enabledScheme, kitchenSinkSchemes.get("Gray Disabled"));
 		SubstanceColorScheme highlightColorScheme = kitchenSinkSchemes
 				.get("Moderate Highlight");
 		defaultSchemeBundle.registerHighlightColorScheme(highlightColorScheme);

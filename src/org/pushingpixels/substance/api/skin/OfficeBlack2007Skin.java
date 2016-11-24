@@ -71,8 +71,6 @@ public class OfficeBlack2007Skin extends SubstanceSkin {
 				activeScheme, enabledScheme, enabledScheme);
 		defaultSchemeBundle.registerColorScheme(enabledScheme, 0.5f,
 				ComponentState.DISABLED_UNSELECTED);
-		defaultSchemeBundle.registerColorScheme(activeScheme, 0.5f,
-				ComponentState.DISABLED_SELECTED);
 
 		SubstanceColorScheme rolloverScheme = colorSchemes
 				.get("Office Silver Rollover");
@@ -96,6 +94,8 @@ public class OfficeBlack2007Skin extends SubstanceSkin {
 				ComponentState.PRESSED_UNSELECTED);
 		defaultSchemeBundle.registerColorScheme(pressedSelectedScheme,
 				ComponentState.PRESSED_SELECTED);
+		defaultSchemeBundle.registerColorScheme(selectedScheme.tone(0.2f), 0.5f,
+				ComponentState.DISABLED_SELECTED);
 
 		// register state-specific highlight color schemes on rollover and
 		// selections

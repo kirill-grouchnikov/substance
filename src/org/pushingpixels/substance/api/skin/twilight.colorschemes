@@ -33,12 +33,12 @@ Twilight Selected Disabled Border {
 
 Twilight Border {
     kind=Dark
-    colorUltraLight=#292823
-    colorExtraLight=#292823
-    colorLight=#292823
-    colorMid=#292823
-    colorDark=#292823
-    colorUltraDark=#292823
+    colorUltraLight=#191813
+    colorExtraLight=#191813
+    colorLight=#191813
+    colorMid=#191813
+    colorDark=#191813
+    colorUltraDark=#191813
     colorForeground=#B9B49E
 }
 

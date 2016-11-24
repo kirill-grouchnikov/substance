@@ -489,8 +489,8 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 	 */
 	public void registerDecorationAreaSchemeBundle(
 			SubstanceColorSchemeBundle bundle, DecorationAreaType... areaTypes) {
-		this.registerDecorationAreaSchemeBundle(bundle, bundle
-				.getEnabledColorScheme(), areaTypes);
+		this.registerDecorationAreaSchemeBundle(bundle, bundle.getEnabledColorScheme(), 
+				areaTypes);
 	}
 
 	/**
@@ -755,11 +755,11 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 		if (this.colorSchemeBundleMap.size() > 1) {
 			if (this.colorSchemeBundleMap.containsKey(decorationAreaType)) {
 				return this.colorSchemeBundleMap.get(decorationAreaType)
-						.getColorScheme(associationKind, componentState);
+						.getColorScheme(associationKind, componentState, true);
 			}
 		}
 		return this.colorSchemeBundleMap.get(DecorationAreaType.NONE)
-				.getColorScheme(associationKind, componentState);
+				.getColorScheme(associationKind, componentState, true);
 	}
 
 	/**
@@ -786,11 +786,42 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 					.getDecorationType(comp);
 			if (this.colorSchemeBundleMap.containsKey(decorationAreaType)) {
 				return this.colorSchemeBundleMap.get(decorationAreaType)
-						.getColorScheme(associationKind, componentState);
+						.getColorScheme(associationKind, componentState, true);
 			}
 		}
 		return this.colorSchemeBundleMap.get(DecorationAreaType.NONE)
-				.getColorScheme(associationKind, componentState);
+				.getColorScheme(associationKind, componentState, true);
+	}
+
+	/**
+	 * Returns the color scheme to be used for painting the specified visual
+	 * area of the component under the specified component state.
+	 * 
+	 * @param comp
+	 *            Component.
+	 * @param associationKind
+	 *            Color scheme association kind.
+	 * @param componentState
+	 *            Component state.
+	 * @return Color scheme to be used for painting the specified visual area of
+	 *         the component under the specified component state.
+	 * @since version 5.1
+	 */
+	public final SubstanceColorScheme getDirectColorScheme(Component comp,
+			ColorSchemeAssociationKind associationKind,
+			ComponentState componentState) {
+		// small optimization - lookup the decoration area only if there
+		// are decoration-specific scheme bundles.
+		if (this.colorSchemeBundleMap.size() > 1) {
+			DecorationAreaType decorationAreaType = SubstanceLookAndFeel
+					.getDecorationType(comp);
+			if (this.colorSchemeBundleMap.containsKey(decorationAreaType)) {
+				return this.colorSchemeBundleMap.get(decorationAreaType)
+						.getColorScheme(associationKind, componentState, false);
+			}
+		}
+		return this.colorSchemeBundleMap.get(DecorationAreaType.NONE)
+				.getColorScheme(associationKind, componentState, false);
 	}
 
 	/**

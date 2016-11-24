@@ -53,6 +53,7 @@ import org.pushingpixels.substance.internal.animation.StateTransitionTracker.Mod
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.HighlightPainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.menu.MenuUtilities.MenuLayoutMetrics;
 
@@ -62,6 +63,17 @@ import org.pushingpixels.substance.internal.utils.menu.MenuUtilities.MenuLayoutM
  * @author Kirill Grouchnikov
  */
 public class SubstanceMenuBackgroundDelegate {
+	public static Color getGutterSoftFillColor(SubstanceColorScheme colorScheme) {
+		return colorScheme.isDark() ? colorScheme.getUltraLightColor() 
+				: colorScheme.getExtraLightColor();
+	}
+	
+	public static Color getGutterHardFillColor(SubstanceColorScheme colorScheme) {
+		return colorScheme.isDark() 
+				? SubstanceColorUtilities.getLighterColor(colorScheme.getUltraLightColor(), 0.1) 
+				: colorScheme.getUltraLightColor();
+	}
+	
 	/**
 	 * Updates the specified menu item with the background that matches the
 	 * provided parameters.
@@ -109,15 +121,17 @@ public class SubstanceMenuBackgroundDelegate {
 					&& (fillKind != MenuGutterFillKind.NONE);
 
 			if (shouldPaintGutter) {
+				SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
+						.getColorScheme(menuItem, ComponentState.ENABLED);
+				Color extraLight = getGutterHardFillColor(scheme);
+				Color ultraLight = getGutterSoftFillColor(scheme);
 				if (menuItem.getComponentOrientation().isLeftToRight()) {
-					SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
-							.getColorScheme(menuItem, ComponentState.ENABLED);
 					Color leftColor = ((fillKind == MenuGutterFillKind.SOFT_FILL) || 
-							(fillKind == MenuGutterFillKind.HARD)) ? scheme.getUltraLightColor()
-							: scheme.getLightColor();
+							(fillKind == MenuGutterFillKind.HARD)) ? ultraLight
+							: extraLight;
 					Color rightColor = ((fillKind == MenuGutterFillKind.SOFT_FILL) || 
-							(fillKind == MenuGutterFillKind.SOFT)) ? scheme.getUltraLightColor()
-							: scheme.getLightColor();
+							(fillKind == MenuGutterFillKind.SOFT)) ? ultraLight
+							: extraLight;
 					LinearGradientPaint gp = new LinearGradientPaint(0, 0,
 							textOffset, 0, new float[] { 0.0f, 1.0f },
 							new Color[] { leftColor, rightColor },
@@ -129,14 +143,12 @@ public class SubstanceMenuBackgroundDelegate {
 					graphics.fillRect(0, 0, textOffset - 2, menuHeight);
 				} else {
 					// fix for defect 125 - support of RTL menus
-					SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
-							.getColorScheme(menuItem, ComponentState.ENABLED);
 					Color leftColor = ((fillKind == MenuGutterFillKind.HARD_FILL) 
-							|| (fillKind == MenuGutterFillKind.HARD)) ? scheme.getLightColor()
-							: scheme.getUltraLightColor();
+							|| (fillKind == MenuGutterFillKind.HARD)) ? extraLight
+							: ultraLight;
 					Color rightColor = ((fillKind == MenuGutterFillKind.HARD_FILL) || 
-							(fillKind == MenuGutterFillKind.SOFT)) ? scheme.getLightColor()
-							: scheme.getUltraLightColor();
+							(fillKind == MenuGutterFillKind.SOFT)) ? extraLight
+							: ultraLight;
 
 					LinearGradientPaint gp = new LinearGradientPaint(
 							textOffset, 0, menuWidth, 0, new float[] { 0.0f, 1.0f },

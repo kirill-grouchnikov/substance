@@ -29,20 +29,26 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.awt.Color;
 
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.ComponentStateFacet;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
 import org.pushingpixels.substance.api.painter.border.FractionBasedBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.MatteDecorationPainter;
 import org.pushingpixels.substance.api.painter.fill.FractionBasedFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
-import org.pushingpixels.substance.api.painter.overlay.*;
+import org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter;
+import org.pushingpixels.substance.api.painter.overlay.BottomShadowOverlayPainter;
+import org.pushingpixels.substance.api.painter.overlay.TopBezelOverlayPainter;
+import org.pushingpixels.substance.api.painter.overlay.TopLineOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
-import org.pushingpixels.substance.api.watermark.SubstanceCrosshatchWatermark;
-import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
-import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
  * <code>Mariner</code> skin. This class is part of officially supported API.
@@ -135,8 +141,7 @@ public class MarinerSkin extends SubstanceSkin {
 
 		// header color scheme bundle
 		SubstanceColorScheme headerColorScheme = schemes.get("Mariner Header");
-		SubstanceColorScheme headerBorderColorScheme = schemes
-				.get("Mariner Header Border");
+		SubstanceColorScheme headerBorderColorScheme = schemes.get("Mariner Header Border");
 		SubstanceColorSchemeBundle headerSchemeBundle = new SubstanceColorSchemeBundle(
 				headerColorScheme, headerColorScheme, headerColorScheme);
 		headerSchemeBundle.registerColorScheme(headerColorScheme, 0.5f,
@@ -263,8 +268,6 @@ public class MarinerSkin extends SubstanceSkin {
 						ColorSchemeSingleColorQuery.DARK,
 						ColorSchemeSingleColorQuery.MID });
 		this.highlightBorderPainter = new ClassicBorderPainter();
-
-		this.watermarkScheme = schemes.get("Mariner Watermark");
 	}
 
 	/*
@@ -274,170 +277,5 @@ public class MarinerSkin extends SubstanceSkin {
 	 */
 	public String getDisplayName() {
 		return NAME;
-	}
-
-	private static class TextureWatermark implements SubstanceWatermark {
-		/**
-		 * Watermark image (screen-sized).
-		 */
-		private static Image watermarkImage = null;
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @seeorg.pushingpixels.substance.watermark.SubstanceWatermark#
-		 * drawWatermarkImage(java .awt.Graphics, int, int, int, int)
-		 */
-		public void drawWatermarkImage(Graphics graphics, Component c, int x,
-				int y, int width, int height) {
-			if (!c.isShowing())
-				return;
-			int dx = c.getLocationOnScreen().x;
-			int dy = c.getLocationOnScreen().y;
-			graphics.drawImage(TextureWatermark.watermarkImage, x, y,
-					x + width, y + height, x + dx, y + dy, x + dx + width, y
-							+ dy + height, null);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @seeorg.pushingpixels.substance.watermark.SubstanceWatermark#
-		 * updateWatermarkImage (org.pushingpixels.substance.skin.SubstanceSkin)
-		 */
-		public boolean updateWatermarkImage(SubstanceSkin skin) {
-			// fix by Chris for bug 67 - support for multiple screens
-			Rectangle virtualBounds = new Rectangle();
-			GraphicsEnvironment ge = GraphicsEnvironment
-					.getLocalGraphicsEnvironment();
-			GraphicsDevice[] gds = ge.getScreenDevices();
-			for (GraphicsDevice gd : gds) {
-				GraphicsConfiguration gc = gd.getDefaultConfiguration();
-				virtualBounds = virtualBounds.union(gc.getBounds());
-			}
-
-			int screenWidth = virtualBounds.width;
-			int screenHeight = virtualBounds.height;
-			TextureWatermark.watermarkImage = SubstanceCoreUtilities
-					.getBlankImage(screenWidth, screenHeight);
-
-			Graphics2D graphics = (Graphics2D) TextureWatermark.watermarkImage
-					.getGraphics().create();
-			boolean status = this.drawWatermarkImage(skin, graphics, 0, 0,
-					screenWidth, screenHeight, false);
-			graphics.dispose();
-			return status;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @seeorg.pushingpixels.substance.api.watermark.SubstanceWatermark#
-		 * previewWatermark (java.awt.Graphics,
-		 * org.pushingpixels.substance.api.SubstanceSkin, int, int, int, int)
-		 */
-		@Override
-		public void previewWatermark(Graphics g, SubstanceSkin skin, int x,
-				int y, int width, int height) {
-			this.drawWatermarkImage(skin, (Graphics2D) g, x, y, width, height,
-					true);
-		}
-
-		/**
-		 * Draws the specified portion of the watermark image.
-		 * 
-		 * @param skin
-		 *            Skin to use for painting the watermark.
-		 * @param graphics
-		 *            Graphic context.
-		 * @param x
-		 *            the <i>x</i> coordinate of the watermark to be drawn.
-		 * @param y
-		 *            The <i>y</i> coordinate of the watermark to be drawn.
-		 * @param width
-		 *            The width of the watermark to be drawn.
-		 * @param height
-		 *            The height of the watermark to be drawn.
-		 * @param isPreview
-		 *            Indication whether the result is a preview image.
-		 * @return Indication whether the draw succeeded.
-		 */
-		private boolean drawWatermarkImage(SubstanceSkin skin,
-				Graphics2D graphics, int x, int y, int width, int height,
-				boolean isPreview) {
-			Color stampColorDark = null;
-			Color stampColorAll = null;
-			Color stampColorLight = null;
-			SubstanceColorScheme scheme = skin.getWatermarkColorScheme();
-			if (isPreview) {
-				stampColorDark = scheme.isDark() ? Color.white : Color.black;
-				stampColorAll = Color.lightGray;
-				stampColorLight = scheme.isDark() ? Color.black : Color.white;
-			} else {
-				stampColorDark = scheme.getWatermarkDarkColor();
-				stampColorAll = scheme.getWatermarkStampColor();
-				stampColorLight = scheme.getWatermarkLightColor();
-			}
-
-			graphics.setColor(stampColorAll);
-			graphics.fillRect(0, 0, width, height);
-
-			BufferedImage tile = SubstanceCoreUtilities.getBlankImage(8, 4);
-			int rgbDark = stampColorDark.getRGB();
-			tile.setRGB(0, 0, rgbDark);
-			tile.setRGB(0, 1, rgbDark);
-			tile.setRGB(0, 2, rgbDark);
-			tile.setRGB(0, 3, rgbDark);
-			tile.setRGB(1, 2, rgbDark);
-			tile.setRGB(2, 1, rgbDark);
-			tile.setRGB(3, 0, rgbDark);
-			tile.setRGB(4, 0, rgbDark);
-			tile.setRGB(4, 1, rgbDark);
-			tile.setRGB(4, 2, rgbDark);
-			tile.setRGB(4, 3, rgbDark);
-			tile.setRGB(5, 0, rgbDark);
-			tile.setRGB(6, 1, rgbDark);
-			tile.setRGB(7, 2, rgbDark);
-
-			Graphics2D g2d = (Graphics2D) graphics.create();
-			g2d.setComposite(AlphaComposite.getInstance(
-					AlphaComposite.SRC_OVER, 0.05f));
-			for (int row = y; row < (y + height); row += 4) {
-				for (int col = x; col < (x + width); col += 8) {
-					g2d.drawImage(tile, col, row, null);
-				}
-			}
-			g2d.dispose();
-			return true;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.pushingpixels.substance.api.trait.SubstanceTrait#getDisplayName()
-		 */
-		public String getDisplayName() {
-			return SubstanceCrosshatchWatermark.getName();
-		}
-
-		/**
-		 * Returns the name of all watermarks of <code>this</code> class.
-		 * 
-		 * @return The name of all watermarks of <code>this</code> class.
-		 */
-		public static String getName() {
-			return "Crosshatch";
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.pushingpixels.substance.watermark.SubstanceWatermark#dispose()
-		 */
-		public void dispose() {
-			watermarkImage = null;
-		}
 	}
 }

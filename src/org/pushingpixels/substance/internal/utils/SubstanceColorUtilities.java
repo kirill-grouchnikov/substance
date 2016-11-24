@@ -565,6 +565,9 @@ public class SubstanceColorUtilities {
 				if (!currState.isDisabled()) {
 					currState = ComponentState.ENABLED;
 					activeStates = null;
+				} else {
+					currState = ComponentState.DISABLED_UNSELECTED;
+					activeStates = null;
 				}
 			}
 		}
@@ -602,12 +605,11 @@ public class SubstanceColorUtilities {
 	 *            Model state info for the component.
 	 * @return The foreground text color of the specified menu component.
 	 */
-	public static Color getMenuComponentForegroundColor(Component menuComponent,
+	public static Color getMenuComponentForegroundColor(JMenuItem menuComponent,
 			StateTransitionTracker.ModelStateInfo modelStateInfo) {
-		ComponentState currState = modelStateInfo
-				.getCurrModelStateNoSelection();
-		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
-				.getStateNoSelectionContributionMap();
+		ComponentState currState = modelStateInfo.getCurrModelStateNoSelection();
+		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = 
+				modelStateInfo.getStateNoSelectionContributionMap();
 
 		ColorSchemeAssociationKind currAssocKind = ColorSchemeAssociationKind.FILL;
 		// use HIGHLIGHT on active menu items

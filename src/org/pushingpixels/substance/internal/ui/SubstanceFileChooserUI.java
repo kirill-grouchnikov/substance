@@ -38,13 +38,11 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.UIManager;
 import javax.swing.filechooser.FileView;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicFileChooserUI;
 import javax.swing.plaf.metal.MetalFileChooserUI;
 
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.lafwidget.icon.IsResizable;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
@@ -185,8 +183,6 @@ public class SubstanceFileChooserUI extends MetalFileChooserUI {
 	protected void installIcons(JFileChooser fc) {
 		super.installIcons(fc);
 		
-		int scale = UIUtil.isRetina() ? 2 : 1;
-		int iconSize = scale * 16;
 		Dimension iconDimension = new Dimension(20, 20);
 
 		((IsResizable) directoryIcon).setDimension(iconDimension);
