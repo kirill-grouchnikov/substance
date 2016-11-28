@@ -579,14 +579,6 @@ public class Check extends JFrame {
 						return (userCloseAnswer == JOptionPane.NO_OPTION);
 					}
 				});
-
-		addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-				System.out.println("Size " + getSize());
-			}
-		});
-
 	}
 
 	protected static JXStatusBar getStatusBar(final JXPanel jxPanel,

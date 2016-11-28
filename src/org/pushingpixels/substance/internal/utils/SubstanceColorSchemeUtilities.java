@@ -253,8 +253,12 @@ public class SubstanceColorSchemeUtilities {
 			component = component.getParent();
 		}
 
-		SubstanceColorScheme nonColorized = SubstanceCoreUtilities.getSkin(component).
-				getColorScheme(component, associationKind, componentState);
+		SubstanceSkin skin = SubstanceCoreUtilities.getSkin(component);
+		if (skin == null) {
+			return null;
+		}
+		SubstanceColorScheme nonColorized = skin.getColorScheme(component, associationKind, 
+				componentState);
 		return getColorizedScheme(component, nonColorized, !componentState.isDisabled());
 	}
 
@@ -366,7 +370,6 @@ public class SubstanceColorSchemeUtilities {
 	public final static SubstanceColorScheme GREEN = new BottleGreenColorScheme();
 
 	public static SchemeBaseColors getBaseColorScheme(InputStream is) {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 		Color ultraLight = null;
 		Color extraLight = null;
 		Color light = null;
@@ -374,7 +377,7 @@ public class SubstanceColorSchemeUtilities {
 		Color dark = null;
 		Color ultraDark = null;
 		Color foreground = null;
-		try {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
 			while (true) {
 				String line = reader.readLine();
 				if (line == null)
@@ -490,13 +493,6 @@ public class SubstanceColorSchemeUtilities {
 			};
 		} catch (IOException ioe) {
 			throw new IllegalArgumentException(ioe);
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException ioe) {
-				}
-			}
 		}
 	}
 
@@ -579,7 +575,6 @@ public class SubstanceColorSchemeUtilities {
 	public static SubstanceSkin.ColorSchemes getColorSchemes(URL url) {
 		List<SubstanceColorScheme> schemes = new ArrayList<SubstanceColorScheme>();
 
-		BufferedReader reader = null;
 		Color ultraLight = null;
 		Color extraLight = null;
 		Color light = null;
@@ -590,8 +585,7 @@ public class SubstanceColorSchemeUtilities {
 		String name = null;
 		ColorSchemeKind kind = null;
 		boolean inColorSchemeBlock = false;
-		try {
-			reader = new BufferedReader(new InputStreamReader(url.openStream()));
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()))) {
 			while (true) {
 				String line = reader.readLine();
 				if (line == null)
@@ -735,13 +729,6 @@ public class SubstanceColorSchemeUtilities {
 			;
 		} catch (IOException ioe) {
 			throw new IllegalArgumentException(ioe);
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException ioe) {
-				}
-			}
 		}
 		return new SubstanceSkin.ColorSchemes(schemes);
 	}

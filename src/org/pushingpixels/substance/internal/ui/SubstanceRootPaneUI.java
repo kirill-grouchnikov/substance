@@ -185,8 +185,7 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 	 * <code>Cursor</code> used to track the cursor set by the user. This is
 	 * initially <code>Cursor.DEFAULT_CURSOR</code>.
 	 */
-	private Cursor lastCursor = Cursor
-			.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+	private Cursor lastCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
 	/**
 	 * Optimization to speed up the
@@ -365,18 +364,6 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 		} else {
 			this.window = SwingUtilities.getWindowAncestor(parent);
 		}
-		// System.out.println(titlePanes.size() + " entries in map after adding
-		// "
-		// + window.getClass().getName() + ":" + window.hashCode());
-		// for (Iterator<Map.Entry<JComponent, WeakReference<Window>>> it =
-		// titlePanes
-		// .entrySet().iterator(); it.hasNext();) {
-		// Map.Entry<JComponent, WeakReference<Window>> entry = it
-		// .next();
-		// Window w = entry.getValue().get();
-		// System.out.println("\t" + w.getClass().getName()
-		// + ":" + w.hashCode());
-		// }
 
 		if (this.window != null) {
 			if (this.substanceMouseInputListener == null) {
@@ -440,8 +427,6 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 	protected void installListeners(final JRootPane root) {
 		super.installListeners(root);
 
-		// System.out.println("Listeners on root " + root.hashCode());
-
 		this.substanceHierarchyListener = (HierarchyEvent e) -> {
 			Component parent = root.getParent();
 			if (parent == null) {
@@ -449,8 +434,6 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 				// as early as possible
 				return;
 			}
-			// System.out.println("Root pane " + root.hashCode()
-			// + " parent : " + parent.getClass().getName());
 			if (MemoryAnalyzer.isRunning()) {
 				MemoryAnalyzer.enqueueUsage("Root pane @" + root.hashCode()
 						+ "\n"
@@ -469,8 +452,6 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 				// to the action listeners on that menu item.
 				SwingUtilities.invokeLater(() -> {
 					root.removeHierarchyListener(substanceHierarchyListener);
-					// System.out.println(root.hashCode() + ":"
-					// + root.getHierarchyListeners().length);
 					substanceHierarchyListener = null;
 				});
 			}
@@ -553,27 +534,17 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 									+ window.getWidth() / 2, window
 									.getLocationOnScreen().y
 									+ window.getHeight() / 2);
-							// System.out.println("Loc : "
-							// + window.getLocationOnScreen()
-							// + ", width : "
-							// + window.getWidth()
-							// + ", mid : " + midLoc);
-							int index = 0;
 							for (GraphicsDevice gd : gds) {
 								GraphicsConfiguration gc = gd
 										.getDefaultConfiguration();
 								Rectangle bounds = gc.getBounds();
-								// System.out.println("Bounds : "
-								// + bounds);
 								if (bounds.contains(midLoc)) {
 									if (gc != currentRootPaneGC) {
 										currentRootPaneGC = gc;
 										setMaximized();
-										// System.out.println("Set");
 									}
 									break;
 								}
-								index++;
 							}
 						});
 					}
@@ -589,8 +560,6 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 			substanceCurrentWindow = currWindow;
 		};
 		root.addHierarchyListener(this.substanceHierarchyListener);
-		// System.out.println(root.hashCode() + ":"
-		// + root.getHierarchyListeners().length);
 
 		JButton defaultButton = root.getDefaultButton();
 		if (defaultButton != null) {
@@ -1167,6 +1136,8 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 		 * Set to true if the drag operation is moving the window.
 		 */
 		private boolean isMovingWindow;
+		
+		private boolean isMousePressed;
 
 		/**
 		 * Used to determine the corner the resize is occuring from.
@@ -1206,6 +1177,7 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 
 		public void mousePressed(MouseEvent ev) {
 			JRootPane rootPane = SubstanceRootPaneUI.this.getRootPane();
+			this.isMousePressed = true;
 
 			if (rootPane.getWindowDecorationStyle() == JRootPane.NONE) {
 				return;
@@ -1261,6 +1233,7 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 				SubstanceRootPaneUI.this.window.validate();
 				SubstanceRootPaneUI.this.getRootPane().repaint();
 			}
+			this.isMousePressed = false;
 			this.isMovingWindow = false;
 			this.dragCursor = 0;
 		}
@@ -1287,13 +1260,14 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 			int cursor = this.getCursor(this.calculateCorner(w, ev.getX(), ev
 					.getY()));
 
-			if ((cursor != 0)
-					&& (((f != null) && (f.isResizable() && ((f
-							.getExtendedState() & Frame.MAXIMIZED_BOTH) == 0))) || ((d != null) && d
-							.isResizable()))) {
+			boolean isFrameResizable = (f != null) && (f.isResizable() && 
+					(f.getExtendedState() & Frame.MAXIMIZED_BOTH) == 0);
+			boolean isDialogResizable = (d != null) && d.isResizable();
+			if ((cursor != 0) && (isFrameResizable || isDialogResizable)) {
 				w.setCursor(Cursor.getPredefinedCursor(cursor));
 			} else {
 				w.setCursor(SubstanceRootPaneUI.this.lastCursor);
+				SubstanceRootPaneUI.this.lastCursor = null;
 			}
 		}
 
@@ -1359,12 +1333,12 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 
 				switch (this.dragCursor) {
 				case Cursor.E_RESIZE_CURSOR:
-					this.adjust(r, min, 0, 0, pt.x
-							+ (this.dragWidth - this.dragOffsetX) - r.width, 0);
+					this.adjust(r, min, 0, 0, pt.x + (this.dragWidth - this.dragOffsetX) - r.width, 
+							0);
 					break;
 				case Cursor.S_RESIZE_CURSOR:
-					this.adjust(r, min, 0, 0, 0, pt.y
-							+ (this.dragHeight - this.dragOffsetY) - r.height);
+					this.adjust(r, min, 0, 0, 0, 
+							pt.y + (this.dragHeight - this.dragOffsetY) - r.height);
 					break;
 				case Cursor.N_RESIZE_CURSOR:
 					this.adjust(r, min, 0, pt.y - this.dragOffsetY, 0,
@@ -1375,26 +1349,23 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 							-(pt.x - this.dragOffsetX), 0);
 					break;
 				case Cursor.NE_RESIZE_CURSOR:
-					this.adjust(r, min, 0, pt.y - this.dragOffsetY, pt.x
-							+ (this.dragWidth - this.dragOffsetX) - r.width,
+					this.adjust(r, min, 0, pt.y - this.dragOffsetY, 
+							pt.x + (this.dragWidth - this.dragOffsetX) - r.width,
 							-(pt.y - this.dragOffsetY));
 					break;
 				case Cursor.SE_RESIZE_CURSOR:
-					this.adjust(r, min, 0, 0, pt.x
-							+ (this.dragWidth - this.dragOffsetX) - r.width,
-							pt.y + (this.dragHeight - this.dragOffsetY)
-									- r.height);
+					this.adjust(r, min, 0, 0, pt.x + (this.dragWidth - this.dragOffsetX) - r.width,
+							pt.y + (this.dragHeight - this.dragOffsetY) - r.height);
 					break;
 				case Cursor.NW_RESIZE_CURSOR:
-					this.adjust(r, min, pt.x - this.dragOffsetX, pt.y
-							- this.dragOffsetY, -(pt.x - this.dragOffsetX),
+					this.adjust(r, min, pt.x - this.dragOffsetX, 
+							pt.y - this.dragOffsetY, -(pt.x - this.dragOffsetX),
 							-(pt.y - this.dragOffsetY));
 					break;
 				case Cursor.SW_RESIZE_CURSOR:
 					this.adjust(r, min, pt.x - this.dragOffsetX, 0,
-							-(pt.x - this.dragOffsetX), pt.y
-									+ (this.dragHeight - this.dragOffsetY)
-									- r.height);
+							-(pt.x - this.dragOffsetX), 
+							pt.y + (this.dragHeight - this.dragOffsetY) - r.height);
 					break;
 				default:
 					break;
@@ -1414,9 +1385,12 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 		private CursorState cursorState = CursorState.NIL;
 
 		public void mouseEntered(MouseEvent ev) {
+			if (isMousePressed) {
+				return;
+			}
 			Window w = (Window) ev.getSource();
-			if (cursorState == CursorState.EXITED
-					|| cursorState == CursorState.NIL) {
+			if ((SubstanceRootPaneUI.this.lastCursor == null) && 
+					(cursorState != CursorState.ENTERED)) {
 				// fix for defect 107
 				SubstanceRootPaneUI.this.lastCursor = w.getCursor();
 			}
@@ -1425,8 +1399,12 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 		}
 
 		public void mouseExited(MouseEvent ev) {
+			if (isMousePressed) {
+				return;
+			}
 			Window w = (Window) ev.getSource();
 			w.setCursor(SubstanceRootPaneUI.this.lastCursor);
+			SubstanceRootPaneUI.this.lastCursor = null;
 			cursorState = CursorState.EXITED;
 		}
 
@@ -1484,12 +1462,10 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 		 */
 		private int calculateCorner(Window w, int x, int y) {
 			Insets insets = w.getInsets();
-			int xPosition = this.calculatePosition(x - insets.left, w
-					.getWidth()
-					- insets.left - insets.right);
-			int yPosition = this.calculatePosition(y - insets.top, w
-					.getHeight()
-					- insets.top - insets.bottom);
+			int xPosition = this.calculatePosition(x - insets.left, 
+					w.getWidth() - insets.left - insets.right);
+			int yPosition = this.calculatePosition(y - insets.top,
+					w.getHeight() - insets.top - insets.bottom);
 
 			if ((xPosition == -1) || (yPosition == -1)) {
 				return -1;

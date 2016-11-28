@@ -67,8 +67,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceStripingUtils;
  * @author Kirill Grouchnikov
  */
 @SubstanceRenderer
-public class SubstanceDefaultTreeCellRenderer extends JLabel implements
-		TreeCellRenderer {
+public class SubstanceDefaultTreeCellRenderer extends JLabel implements TreeCellRenderer {
 	/** Last tree the renderer was painted in. */
 	private JTree tree;
 
@@ -188,21 +187,19 @@ public class SubstanceDefaultTreeCellRenderer extends JLabel implements
 						ui, currState);
 				if (currState.isDisabled() || (activeStates == null)
 						|| (activeStates.size() == 1)) {
-					super.setForeground(new ColorUIResource(colorScheme
-							.getForegroundColor()));
+					super.setForeground(new ColorUIResource(colorScheme.getForegroundColor()));
 				} else {
 					float aggrRed = 0;
 					float aggrGreen = 0;
 					float aggrBlue = 0;
 
-					for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : modelStateInfo
-							.getStateContributionMap().entrySet()) {
+					for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry 
+							: modelStateInfo.getStateContributionMap().entrySet()) {
 						ComponentState activeState = activeEntry.getKey();
 						SubstanceColorScheme scheme = getColorSchemeForState(
 								tree, ui, activeState);
 						Color schemeFg = scheme.getForegroundColor();
-						float contribution = activeEntry.getValue()
-								.getContribution();
+						float contribution = activeEntry.getValue().getContribution();
 						aggrRed += schemeFg.getRed() * contribution;
 						aggrGreen += schemeFg.getGreen() * contribution;
 						aggrBlue += schemeFg.getBlue() * contribution;
@@ -211,20 +208,19 @@ public class SubstanceDefaultTreeCellRenderer extends JLabel implements
 							(int) aggrRed, (int) aggrGreen, (int) aggrBlue)));
 				}
 			} else {
-				SubstanceColorScheme scheme = getColorSchemeForState(tree, ui,
-						currState);
+				SubstanceColorScheme scheme = getColorSchemeForState(tree, ui, currState);
 				if (isDropLocation) {
 					scheme = SubstanceColorSchemeUtilities.getColorScheme(tree,
 							ColorSchemeAssociationKind.TEXT_HIGHLIGHT,
 							currState);
 				}
-				super.setForeground(new ColorUIResource(scheme
-						.getForegroundColor()));
+				if (scheme != null) {
+					super.setForeground(new ColorUIResource(scheme.getForegroundColor()));
+				}
 			}
 		} else {
 			if (sel)
-				this.setForeground(UIManager
-						.getColor("Tree.selectionForeground"));
+				this.setForeground(UIManager.getColor("Tree.selectionForeground"));
 			else
 				this.setForeground(UIManager.getColor("Tree.textForeground"));
 		}
@@ -236,23 +232,17 @@ public class SubstanceDefaultTreeCellRenderer extends JLabel implements
 		if (!tree.isEnabled()) {
 			this.setEnabled(false);
 			if (leaf) {
-				this.setDisabledIcon(SubstanceImageCreator
-						.toGreyscale(SubstanceImageCreator.makeTransparent(
+				this.setDisabledIcon(SubstanceImageCreator.toGreyscale(
+						SubstanceImageCreator.makeTransparent(
 								tree, this.getDefaultLeafIcon(), 0.5)));
 			} else if (expanded) {
-				this.setDisabledIcon(SubstanceImageCreator
-						.toGreyscale(SubstanceImageCreator.makeTransparent(
+				this.setDisabledIcon(SubstanceImageCreator.toGreyscale(
+						SubstanceImageCreator.makeTransparent(
 								tree, this.getDefaultOpenIcon(), 0.5)));
-				// setIcon(SubstanceImageCreator.toGreyscale(
-				// SubstanceImageCreator
-				// .makeTransparent(getDefaultOpenIcon(), 0.5)));
 			} else {
-				this.setDisabledIcon(SubstanceImageCreator
-						.toGreyscale(SubstanceImageCreator.makeTransparent(
+				this.setDisabledIcon(SubstanceImageCreator.toGreyscale(
+						SubstanceImageCreator.makeTransparent(
 								tree, this.getDefaultClosedIcon(), 0.5)));
-				// setIcon(SubstanceImageCreator.toGreyscale(
-				// SubstanceImageCreator
-				// .makeTransparent(getDefaultClosedIcon(), 0.5)));
 			}
 		} else {
 			this.setEnabled(true);
@@ -273,9 +263,7 @@ public class SubstanceDefaultTreeCellRenderer extends JLabel implements
 		if (treeUI instanceof SubstanceTreeUI) {
 			SubstanceTreeUI ui = (SubstanceTreeUI) treeUI;
 			Insets regInsets = ui.getCellRendererInsets();
-			this
-					.setBorder(new BorderUIResource.EmptyBorderUIResource(
-							regInsets));
+			this.setBorder(new BorderUIResource.EmptyBorderUIResource(regInsets));
 		}
 
 		return this;
@@ -283,8 +271,8 @@ public class SubstanceDefaultTreeCellRenderer extends JLabel implements
 
 	private SubstanceColorScheme getColorSchemeForState(JTree tree,
 			SubstanceTreeUI ui, ComponentState activeState) {
-		SubstanceColorScheme scheme = (activeState == ComponentState.ENABLED) ? ui
-				.getDefaultColorScheme()
+		SubstanceColorScheme scheme = (activeState == ComponentState.ENABLED) 
+				? ui.getDefaultColorScheme()
 				: SubstanceColorSchemeUtilities.getColorScheme(tree,
 						ColorSchemeAssociationKind.HIGHLIGHT, activeState);
 		if (scheme == null) {

@@ -490,19 +490,12 @@ public class SubstanceTitlePane extends JComponent {
 				}
 				// see if need to put info in log file
 				if (SubstanceTitlePane.heapStatusLogfileName != null) {
-					PrintWriter pw = null;
-					try {
-						pw = new PrintWriter(new FileWriter(
-								SubstanceTitlePane.heapStatusLogfileName, true));
+					try (PrintWriter pw = new PrintWriter(new FileWriter(
+								SubstanceTitlePane.heapStatusLogfileName, true))) {
 						pw.println(this.format.format(new Date()) + " "
 								+ this.takenHeapSizeKB + "KB / "
 								+ this.heapSizeKB + "KB");
 					} catch (IOException ioe) {
-
-					} finally {
-						if (pw != null) {
-							pw.close();
-						}
 					}
 				}
 			}

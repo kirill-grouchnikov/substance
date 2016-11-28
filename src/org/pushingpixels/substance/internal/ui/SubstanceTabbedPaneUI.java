@@ -1122,6 +1122,11 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		ComponentState currState = this.getTabState(tabIndex, false);
 		StateTransitionTracker.ModelStateInfo modelStateInfo = this
 				.getModelStateInfo(tabIndex);
+		
+		boolean isRollover = (this.getRolloverTab() == tabIndex);
+		if (!isSelected && !isRollover && (modelStateInfo == null)) {
+			return;
+		}
 
 		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities
 				.getColorScheme(this.tabPane, tabIndex,
@@ -1237,18 +1242,13 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		// fix for defect 138
 		graphics.clip(new Rectangle(x, y, w, h));
 
-		boolean isRollover = (this.getRolloverTab() == tabIndex);
-
-		float finalAlpha = 0.5f;
+		float finalAlpha = 0.0f;
 		StateTransitionTracker tabTracker = this.stateTransitionMultiTracker
 				.getTracker(tabIndex);
 		if (modelStateInfo != null) {
-			finalAlpha += 0.5f * tabTracker
-					.getFacetStrength(ComponentStateFacet.ROLLOVER);
+			finalAlpha += tabTracker.getFacetStrength(ComponentStateFacet.ROLLOVER);
 		} else {
-			ComponentState tabState = getTabState(tabIndex, false);
-			if (tabState.isFacetActive(ComponentStateFacet.ROLLOVER)
-					|| tabState.isFacetActive(ComponentStateFacet.SELECTION)) {
+			if (isRollover || isSelected) {
 				finalAlpha = 1.0f;
 			}
 		}
@@ -1647,8 +1647,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				.getBorderStrokeWidth(SubstanceSizeUtils
 						.getComponentFontSize(this.tabPane)));
 
-		int xs = this.tabPane.getComponentOrientation().isLeftToRight() ? (x
-				+ width - dimension - borderDelta) : (x + borderDelta);
+		int xs = this.tabPane.getComponentOrientation().isLeftToRight() 
+				? x + width - dimension - borderDelta : x + borderDelta;
 		int ys = y + (height - dimension) / 2 + 1;
 		return new Rectangle(xs, ys, dimension, dimension);
 	}
@@ -2286,13 +2286,12 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 							.getComponentFontSize(tabPane)) / 2.0f;
 			GeneralPath bottomOutline = new GeneralPath();
 			bottomOutline.moveTo(x, y + h - 1);
-			bottomOutline.lineTo(selRect.x + borderInsets + 1, y + h - 1);
+			bottomOutline.lineTo(selRect.x + borderInsets, y + h - 1);
 			int bumpHeight = super.calculateTabHeight(tabPlacement, 0,
 					SubstanceSizeUtils.getComponentFontSize(this.tabPane)) / 2;
-			bottomOutline.lineTo(selRect.x + borderInsets + 1, y + h + bumpHeight);
+			bottomOutline.lineTo(selRect.x + borderInsets, y + h + bumpHeight);
 			if (selRect.x + selRect.width < x + w) {
-				float selectionEndX = selRect.x + selRect.width - delta
-						- borderInsets;
+				float selectionEndX = selRect.x + selRect.width - delta - 1 - borderInsets;
 				bottomOutline.lineTo(selectionEndX, y + h - 1 + bumpHeight);
 				bottomOutline.lineTo(selectionEndX, y + h - 1);
 				bottomOutline.lineTo(x + w, y + h - 1);
