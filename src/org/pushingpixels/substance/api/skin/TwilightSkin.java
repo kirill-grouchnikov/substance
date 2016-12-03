@@ -50,6 +50,7 @@ import org.pushingpixels.substance.api.painter.overlay.BottomShadowOverlayPainte
 import org.pushingpixels.substance.api.painter.overlay.TopBezelOverlayPainter;
 import org.pushingpixels.substance.api.painter.overlay.TopLineOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
 /**
  * <code>Twilight</code> skin. This class is part of officially supported API.
@@ -188,8 +189,8 @@ public class TwilightSkin extends SubstanceSkin {
 				DecorationAreaType.SECONDARY_TITLE_PANE,
 				DecorationAreaType.HEADER);
 
-		setSelectedTabFadeStart(0.2);
-		setSelectedTabFadeEnd(0.9);
+		setTabFadeStart(0.2);
+		setTabFadeEnd(0.9);
 
 		// Add overlay painters to paint drop shadows along the bottom
 		// edges of toolbars and footers
@@ -236,15 +237,14 @@ public class TwilightSkin extends SubstanceSkin {
 					@Override
 					public Color query(SubstanceColorScheme scheme) {
 						Color fg = scheme.getForegroundColor();
-						return new Color(fg.getRed(), fg.getGreen(), fg
-								.getBlue(), 32);
+						return SubstanceColorUtilities.getAlphaColor(fg, 32);
 					}
 				});
 		this.addOverlayPainter(this.footerTopBezelOverlayPainter,
 				DecorationAreaType.FOOTER);
 
-		this.setSelectedTabFadeStart(0.18);
-		this.setSelectedTabFadeEnd(0.18);
+		this.setTabFadeStart(0.18);
+		this.setTabFadeEnd(0.18);
 
 		this.buttonShaper = new ClassicButtonShaper();
 		this.watermark = null;

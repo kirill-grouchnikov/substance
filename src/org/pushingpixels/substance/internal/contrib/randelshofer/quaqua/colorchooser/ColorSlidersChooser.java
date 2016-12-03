@@ -14,18 +14,17 @@
 
 package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.colorchooser.*;
-import javax.swing.plaf.*;
+import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
-import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.*;
-import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.util.*;
-
-
-import java.util.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.JColorChooser;
+import javax.swing.UIManager;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
+import javax.swing.plaf.UIResource;
 /**
  * The ColorSlidersChooser contains four individual color slider pages: gray
  * slider, RGB sliders, CMYK sliders, and HTML sliders.

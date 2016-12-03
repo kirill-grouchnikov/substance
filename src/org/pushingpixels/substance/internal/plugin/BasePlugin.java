@@ -33,7 +33,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Toolkit;
 import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 import java.util.Enumeration;
@@ -41,7 +40,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.swing.Icon;
 import javax.swing.UIDefaults;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.DimensionUIResource;
@@ -55,8 +53,12 @@ import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.fonts.FontSet;
-import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.ButtonStateIcon;
-import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.util.Images;
+import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.svg.ic_album_black_24px;
+import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.svg.ic_brightness_high_black_24px;
+import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.svg.ic_grid_on_black_24px;
+import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.svg.ic_menu_black_24px;
+import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.svg.ic_mode_edit_black_24px;
+import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.svg.ic_palette_black_24px;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
@@ -96,44 +98,6 @@ public class BasePlugin implements LafComponentPlugin {
 		} catch (ClassNotFoundException cnfe) {
 			this.hasQuaquaColorChooser = false;
 		}
-	}
-
-	/**
-	 * From Quaqua
-	 */
-	protected Icon createButtonStateIcon(final String location, final int states) {
-		BufferedImage[] images = Images.split(Toolkit.getDefaultToolkit()
-				.getImage(this.getClass().getResource(location)), states, true);
-
-		return new ButtonStateIcon(images);
-	}
-
-	/**
-	 * From Quaqua
-	 */
-	protected Object makeImage(String location) {
-		return new UIDefaults.ProxyLazyValue(
-				"org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.QuaquaIconFactory",
-				"createImage", new Object[] { location });
-	}
-
-	protected static Object makeButtonStateIcon(String location, int states) {
-		return new UIDefaults.ProxyLazyValue(
-				"org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.QuaquaIconFactory",
-				"createButtonStateIcon", new Object[] { location,
-						new Integer(states) });
-	}
-
-	protected Object makeBufferedImage(String location) {
-		return new UIDefaults.ProxyLazyValue(
-				"org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.QuaquaIconFactory",
-				"createBufferedImage", new Object[] { location });
-	}
-
-	public static Object makeIcon(Class baseClass, String location) {
-		return new UIDefaults.ProxyLazyValue(
-				"org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.QuaquaIconFactory",
-				"createIcon", new Object[] { baseClass, location });
 	}
 
 	/*
@@ -215,17 +179,17 @@ public class BasePlugin implements LafComponentPlugin {
 					"ColorChooser.textSliderGap",
 					new Integer(0),
 					"ColorChooser.colorPalettesIcon",
-					makeButtonStateIcon(commonDir + "palette.png", 1),
+					ic_palette_black_24px.of(18, 18),
 					"ColorChooser.colorSlidersIcon",
-					makeButtonStateIcon(commonDir + "chart_bar.png", 1),
+					ic_menu_black_24px.of(18, 18),
 					"ColorChooser.colorSwatchesIcon",
-					makeButtonStateIcon(commonDir + "color_swatch.png", 1),
+					ic_grid_on_black_24px.of(18, 18),
 					"ColorChooser.colorWheelIcon",
-					makeButtonStateIcon(commonDir + "color_wheel.png", 1),
+					ic_album_black_24px.of(18, 18),
 					"ColorChooser.crayonsIcon",
-					makeButtonStateIcon(commonDir + "pencil.png", 1),
+					ic_mode_edit_black_24px.of(18, 18),
 					"ColorChooser.imagePalettesIcon",
-					makeButtonStateIcon(commonDir + "image.png", 1),
+					ic_brightness_high_black_24px.of(18, 18),
 
 					// Icon of the color picker tool
 					"ColorChooser.colorPickerIcon",

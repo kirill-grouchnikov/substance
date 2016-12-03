@@ -660,9 +660,8 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	@Override
 	public void paintFocus(Graphics g) {
 		SubstanceCoreUtilities.paintFocus(g, this.slider, this.slider, this,
-				null, null, 1.0f, (int) Math.ceil(SubstanceSizeUtils
-						.getFocusStrokeWidth(SubstanceSizeUtils
-								.getComponentFontSize(this.slider))) / 2);
+				null, null, 1.0f, SubstanceSizeUtils.getFocusStrokeWidth(
+						SubstanceSizeUtils.getComponentFontSize(this.slider)) / 2);
 	}
 
 	/**
@@ -898,7 +897,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 				d.height += getTickLength();
 			if (this.slider.getPaintLabels())
 				d.height += getHeightOfTallestLabel();
-			d.height += 3;
+			d.height += 6;
 		}
 
 		return d;

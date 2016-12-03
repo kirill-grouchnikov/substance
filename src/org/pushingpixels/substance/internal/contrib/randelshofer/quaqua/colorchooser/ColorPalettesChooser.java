@@ -14,19 +14,19 @@
 
 package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
-import java.text.*;
-import javax.swing.*;
-import javax.swing.colorchooser.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-import javax.swing.plaf.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.text.MessageFormat;
+import java.util.Vector;
 
-import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.*;
-import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.util.*;
-
-
-import java.util.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.UIManager;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
+import javax.swing.colorchooser.ColorSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.UIResource;
 
 /**
  * ColorPalettesChooser.

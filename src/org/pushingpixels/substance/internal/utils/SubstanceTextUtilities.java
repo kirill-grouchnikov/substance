@@ -160,8 +160,6 @@ public class SubstanceTextUtilities {
 			return;
 
 		Graphics2D g2d = (Graphics2D) g.create();
-		// workaroundBug6576507(g2d);
-		// RenderingUtils.installDesktopHints(g2d);
 
 		g2d.setFont(font);
 		g2d.setColor(color);

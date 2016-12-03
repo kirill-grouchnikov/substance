@@ -326,8 +326,8 @@ public class SampleMenuFactory {
 			this.decorationPainter = new ArcDecorationPainter();
 			this.highlightPainter = new GlassHighlightPainter();
 
-			this.selectedTabFadeStart = 1.0f;
-			this.selectedTabFadeEnd = 1.0f;
+			this.tabFadeStart = 1.0f;
+			this.tabFadeEnd = 1.0f;
 		}
 	}
 

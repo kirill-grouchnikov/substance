@@ -162,6 +162,10 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 	private int currSelectedIndex;
 
 	private StateTransitionMultiTracker<Integer> stateTransitionMultiTracker;
+	
+//	private JPanel tabStrip;
+//	
+//	private JScrollablePanel<JPanel> scrollableTabStrip;
 
 	private Set<LafWidget> lafWidgets;
 
@@ -831,7 +835,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		for (LafWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallComponents();
 		}
-
+		
 		super.uninstallComponents();
 	}
 
@@ -948,7 +952,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 	 */
 	private static BufferedImage getFinalTabBackgroundImage(
 			JTabbedPane tabPane, int tabIndex, int x, int y, int width,
-			int height, boolean isSelected, int tabPlacement,
+			int height, int tabPlacement,
 			SubstanceConstants.Side side, SubstanceColorScheme colorScheme,
 			SubstanceColorScheme borderScheme) {
 
@@ -964,13 +968,12 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		if (compForBackground == null)
 			compForBackground = tabPane;
 		Color tabColor = compForBackground.getBackground();
-		if (isSelected && (tabColor instanceof UIResource)) {
+		if (tabColor instanceof UIResource) {
 			// special handling of tabs placed in decoration areas
-			tabColor = SubstanceColorUtilities
-					.getBackgroundFillColor(compForBackground);
+			tabColor = SubstanceColorUtilities.getBackgroundFillColor(compForBackground);
 		}
 		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height,
-				isSelected, tabPlacement, fillPainter.getDisplayName(),
+				tabPlacement, fillPainter.getDisplayName(),
 				borderPainter.getDisplayName(), shaper.getDisplayName(),
 				tabPlacement == SwingConstants.BOTTOM, side.name(), colorScheme
 						.getDisplayName(), borderScheme.getDisplayName(),
@@ -984,9 +987,9 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			switch (tabPlacement) {
 			case BOTTOM:
 				BufferedImage unrotated = getFinalTabBackgroundImage(tabPane, tabIndex, x, y,
-						width, height, isSelected, SwingConstants.TOP,
+						width, height, SwingConstants.TOP,
 						side, colorScheme, borderScheme);
-				BufferedImage rotated = SubstanceImageCreator.getRotated(unrotated, 2, isSelected);
+				BufferedImage rotated = SubstanceImageCreator.getRotated(unrotated, 2, true);
 				return rotated;
 			case TOP:
 			case LEFT:
@@ -994,33 +997,31 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				backgroundImage = SubstanceTabbedPaneUI.getTabBackground(
 						tabPane, width, height, SwingConstants.TOP,
 						colorScheme, borderScheme, false);
-				if (isSelected) {
-					int fw = backgroundImage.getWidth();
-					int fh = backgroundImage.getHeight();
-					int factor = UIUtil.isRetina() ? 2 : 1;
-					BufferedImage fade = SubstanceCoreUtilities.getBlankImage(
-							fw / factor, fh / factor);
-					Graphics2D fadeGraphics = fade.createGraphics();
-					fadeGraphics.setColor(tabColor);
-					fadeGraphics.fillRect(0, 0, fw, fh);
-					if (skin.getWatermark() != null) {
-						fadeGraphics.translate(-x, -y);
-						skin.getWatermark().drawWatermarkImage(fadeGraphics,
-								tabPane, x, y, fw, fh);
-						fadeGraphics.translate(x, y);
-					}
-					BufferedImage background = SubstanceTabbedPaneUI
-							.getTabBackground(tabPane, width, height,
-									tabPlacement, colorScheme, borderScheme,
-									true);
-					fadeGraphics.drawImage(background, 0, 0, background.getWidth() / factor,
-							background.getHeight() / factor, null);
-
-					backgroundImage = SubstanceCoreUtilities.blendImagesVertical(
-							backgroundImage, fade, 
-							skin.getSelectedTabFadeStart(), 
-							skin.getSelectedTabFadeEnd());
+				int fw = backgroundImage.getWidth();
+				int fh = backgroundImage.getHeight();
+				int factor = UIUtil.isRetina() ? 2 : 1;
+				BufferedImage fade = SubstanceCoreUtilities.getBlankImage(
+						fw / factor, fh / factor);
+				Graphics2D fadeGraphics = fade.createGraphics();
+				fadeGraphics.setColor(tabColor);
+				fadeGraphics.fillRect(0, 0, fw, fh);
+				if (skin.getWatermark() != null) {
+					fadeGraphics.translate(-x, -y);
+					skin.getWatermark().drawWatermarkImage(fadeGraphics,
+							tabPane, x, y, fw, fh);
+					fadeGraphics.translate(x, y);
 				}
+				BufferedImage background = SubstanceTabbedPaneUI
+						.getTabBackground(tabPane, width, height,
+								tabPlacement, colorScheme, borderScheme,
+								true);
+				fadeGraphics.drawImage(background, 0, 0, background.getWidth() / factor,
+						background.getHeight() / factor, null);
+
+				backgroundImage = SubstanceCoreUtilities.blendImagesVertical(
+						backgroundImage, fade, 
+						skin.getTabFadeStart(), 
+						skin.getTabFadeEnd());
 			}
 			SubstanceTabbedPaneUI.backgroundMap.put(key, backgroundImage);
 		}
@@ -1060,8 +1061,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			return null;
 
 		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height,
-				toPaintBorder, fillPainter.getDisplayName(), fillScheme
-						.getDisplayName(), markScheme.getDisplayName());
+				toPaintBorder, fillPainter.getDisplayName(), fillScheme.getDisplayName(), 
+				markScheme.getDisplayName());
 		BufferedImage result = SubstanceTabbedPaneUI.closeButtonMap.get(key);
 		if (result == null) {
 			result = SubstanceCoreUtilities.getBlankImage(width, height);
@@ -1093,7 +1094,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			int iconSize = width - delta;
 
 			Icon closeIcon = SubstanceImageCreator.getCloseIcon(iconSize,
-					markScheme, markScheme);
+					markScheme, fillScheme);
 			finalGraphics.translate(delta / 2, delta / 2);
 			closeIcon.paintIcon(tabPane, finalGraphics, 0, 0);
 
@@ -1120,8 +1121,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 
 		boolean isEnabled = this.tabPane.isEnabledAt(tabIndex);
 		ComponentState currState = this.getTabState(tabIndex, false);
-		StateTransitionTracker.ModelStateInfo modelStateInfo = this
-				.getModelStateInfo(tabIndex);
+		StateTransitionTracker.ModelStateInfo modelStateInfo = this.getModelStateInfo(tabIndex);
 		
 		boolean isRollover = (this.getRolloverTab() == tabIndex);
 		if (!isSelected && !isRollover && (modelStateInfo == null)) {
@@ -1153,12 +1153,12 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 
 			BufferedImage layer1 = SubstanceTabbedPaneUI
 					.getFinalTabBackgroundImage(this.tabPane, tabIndex, x, y,
-							w, h, isSelected, tabPlacement,
+							w, h, tabPlacement,
 							SubstanceConstants.Side.BOTTOM, colorScheme,
 							baseBorderScheme);
 			BufferedImage layer2 = SubstanceTabbedPaneUI
 					.getFinalTabBackgroundImage(this.tabPane, tabIndex, x, y,
-							w, h, isSelected, tabPlacement,
+							w, h, tabPlacement,
 							SubstanceConstants.Side.BOTTOM, colorScheme2,
 							baseBorderScheme);
 
@@ -1176,7 +1176,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		} else {
 			BufferedImage layerBase = SubstanceTabbedPaneUI
 					.getFinalTabBackgroundImage(this.tabPane, tabIndex, x, y,
-							w, h, isSelected, tabPlacement,
+							w, h, tabPlacement,
 							SubstanceConstants.Side.BOTTOM, baseColorScheme,
 							baseBorderScheme);
 
@@ -1212,7 +1212,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 										activeState);
 						BufferedImage layer = SubstanceTabbedPaneUI
 								.getFinalTabBackgroundImage(this.tabPane,
-										tabIndex, x, y, w, h, isSelected,
+										tabIndex, x, y, w, h,
 										tabPlacement,
 										SubstanceConstants.Side.BOTTOM,
 										fillScheme, borderScheme);
@@ -1227,25 +1227,28 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		// fill + border
 
 		// Special handling of selected tabs under skins that show partial visuals
-		boolean isTextOnParentBackground = 
-				isSelected && (SubstanceCoreUtilities.getSkin(tabPane).getSelectedTabFadeEnd() <= 0.5);
+		boolean isCloseMarkOnParentBackground = 
+				(SubstanceCoreUtilities.getSkin(tabPane).getTabFadeEnd() <= 0.5);
 		ComponentState markState = currState;
-		if (isTextOnParentBackground) {
+
+		if (isCloseMarkOnParentBackground) {
 			// Ignore all other "aspects" of tab's state
-			markState = this.tabPane.isEnabledAt(tabIndex) ? ComponentState.ENABLED 
-					: ComponentState.DISABLED_UNSELECTED;
+			markState = this.getTabState(tabIndex, true);
+//			this.tabPane.isEnabledAt(tabIndex) ? ComponentState.ENABLED 
+//					: ComponentState.DISABLED_UNSELECTED;
 		}
-		SubstanceColorScheme baseMarkScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this.tabPane, tabIndex,
-						ColorSchemeAssociationKind.MARK, markState);
+		SubstanceColorScheme baseMarkScheme = SubstanceColorSchemeUtilities.getColorScheme(
+				this.tabPane, tabIndex,
+				isCloseMarkOnParentBackground ? ColorSchemeAssociationKind.FILL 
+						: ColorSchemeAssociationKind.MARK, 
+				markState);
 
 		// fix for defect 138
 		graphics.clip(new Rectangle(x, y, w, h));
 
 		float finalAlpha = 0.0f;
-		StateTransitionTracker tabTracker = this.stateTransitionMultiTracker
-				.getTracker(tabIndex);
-		if (modelStateInfo != null) {
+		StateTransitionTracker tabTracker = this.stateTransitionMultiTracker.getTracker(tabIndex);
+		if (!isSelected && (modelStateInfo != null)) {
 			finalAlpha += tabTracker.getFacetStrength(ComponentStateFacet.ROLLOVER);
 		} else {
 			if (isRollover || isSelected) {
@@ -1268,8 +1271,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			float alpha = (isSelected || isRollover) ? 1.0f : 0.0f;
 			if (!isSelected) {
 				if (tabTracker != null) {
-					alpha = tabTracker
-							.getFacetStrength(ComponentStateFacet.ROLLOVER);
+					alpha = tabTracker.getFacetStrength(ComponentStateFacet.ROLLOVER);
 				}
 			}
 			if (alpha > 0.0) {
@@ -1347,14 +1349,17 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 								layerBase.getHeight() / scaleFactor, null);
 
 						// draw the other active layers
-						for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : modelStateInfo
-								.getStateContributionMap().entrySet()) {
+						Map<ComponentState, StateContributionInfo> contributionInfoMap =
+								isCloseMarkOnParentBackground
+									? modelStateInfo.getStateNoSelectionContributionMap()
+									: modelStateInfo.getStateContributionMap();
+						for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry 
+								: contributionInfoMap.entrySet()) {
 							ComponentState activeState = activeEntry.getKey();
 							if (activeState == currState)
 								continue;
 
-							float stateContribution = activeEntry.getValue()
-									.getContribution();
+							float stateContribution = activeEntry.getValue().getContribution();
 							if (stateContribution > 0.0f) {
 								g2d.setComposite(AlphaComposite.SrcOver
 										.derive(stateContribution));
@@ -1366,7 +1371,9 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 										.getColorScheme(
 												this.tabPane,
 												tabIndex,
-												ColorSchemeAssociationKind.MARK,
+												isCloseMarkOnParentBackground 
+														? ColorSchemeAssociationKind.FILL 
+														: ColorSchemeAssociationKind.MARK, 
 												activeState);
 								BufferedImage layer = SubstanceTabbedPaneUI
 										.getCloseButtonImage(this.tabPane,
@@ -1588,8 +1595,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				// which does not have the right rendering hints
 				Graphics2D g2d = (Graphics2D) g.create();
 				RenderingUtils.installDesktopHints(g2d, tabPane);
-				super.paintTab(g2d, tabPlacement, rects, tabIndex, iconRect,
-						textRect);
+				super.paintTab(g2d, tabPlacement, rects, tabIndex, iconRect, textRect);
 				g2d.dispose();
 			}
 		}
@@ -1650,6 +1656,9 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		int xs = this.tabPane.getComponentOrientation().isLeftToRight() 
 				? x + width - dimension - borderDelta : x + borderDelta;
 		int ys = y + (height - dimension) / 2 + 1;
+		if (this.tabPane.getTabPlacement() == SwingUtilities.BOTTOM) {
+			ys -= 2;
+		}
 		return new Rectangle(xs, ys, dimension, dimension);
 	}
 
@@ -2685,20 +2694,23 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 	 */
 	protected ComponentState getTabState(int tabIndex, boolean toAllowIgnoringSelectedState) {
 		boolean isEnabled = this.tabPane.isEnabledAt(tabIndex);
-		StateTransitionTracker tracker = this.stateTransitionMultiTracker
-				.getTracker(tabIndex);
+		StateTransitionTracker tracker = this.stateTransitionMultiTracker.getTracker(tabIndex);
 		boolean ignoreSelectedState = toAllowIgnoringSelectedState &&
-				(SubstanceCoreUtilities.getSkin(tabPane).getSelectedTabFadeEnd() <= 0.5);
+				(SubstanceCoreUtilities.getSkin(tabPane).getTabFadeEnd() <= 0.5);
 		if (tracker == null) {
 			boolean isRollover = this.getRolloverTabIndex() == tabIndex;
-			boolean isSelected = ignoreSelectedState ? false : this.tabPane.getSelectedIndex() == tabIndex;
+			boolean isSelected = ignoreSelectedState ? false : 
+				this.tabPane.getSelectedIndex() == tabIndex;
 			return ComponentState.getState(isEnabled, isRollover, isSelected);
 		} else {
-			ComponentState fromTracker = tracker.getModelStateInfo()
-					.getCurrModelState();
-			return ComponentState.getState(isEnabled, 
-					fromTracker.isFacetActive(ComponentStateFacet.ROLLOVER), 
-					ignoreSelectedState ? false : fromTracker.isFacetActive(ComponentStateFacet.SELECTION));
+			ComponentState fromTracker = ignoreSelectedState 
+					? tracker.getModelStateInfo().getCurrModelStateNoSelection()
+					: tracker.getModelStateInfo().getCurrModelState();
+			return fromTracker;
+//			return ComponentState.getState(isEnabled, 
+//					fromTracker.isFacetActive(ComponentStateFacet.ROLLOVER), 
+//					ignoreSelectedState ? false : 
+//						fromTracker.isFacetActive(ComponentStateFacet.SELECTION));
 		}
 	}
 
@@ -2723,9 +2735,9 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		} else {
 			// plain text
 			int mnemIndex = this.tabPane.getDisplayedMnemonicIndexAt(tabIndex);
-			// Special handling of selected tabs under skins that show partial visuals
+			// Special handling of tabs under skins that show partial visuals
 			boolean isTextOnParentBackground = 
-					isSelected && (SubstanceCoreUtilities.getSkin(tabPane).getSelectedTabFadeEnd() <= 0.5);
+					(SubstanceCoreUtilities.getSkin(tabPane).getTabFadeEnd() <= 0.5);
 			ComponentState currState = this.getTabState(tabIndex, true);
 			if (isTextOnParentBackground) {
 				// Ignore all other "aspects" of tab's state
@@ -2879,7 +2891,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		modifiedTimeline.playLoop(RepeatBehavior.REVERSE);
 		modifiedTimelines.put(tabComponent, modifiedTimeline);
 	}
-
+	
 	@Override
 	public void update(Graphics g, JComponent c) {
 		Graphics2D g2d = (Graphics2D) g.create();

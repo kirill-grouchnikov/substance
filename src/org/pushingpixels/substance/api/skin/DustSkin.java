@@ -101,7 +101,7 @@ public class DustSkin extends SubstanceSkin {
 		defaultSchemeBundle.registerColorScheme(borderActiveScheme,
 				ColorSchemeAssociationKind.BORDER, ComponentState
 						.getActiveStates());
-		defaultSchemeBundle.registerColorScheme(borderEnabledScheme,
+		defaultSchemeBundle.registerColorScheme(borderEnabledScheme.shade(0.3),
 				ColorSchemeAssociationKind.MARK);
 
 		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
@@ -149,8 +149,8 @@ public class DustSkin extends SubstanceSkin {
 				DecorationAreaType.SECONDARY_TITLE_PANE,
 				DecorationAreaType.HEADER, DecorationAreaType.FOOTER);
 
-		setSelectedTabFadeStart(0.1);
-		setSelectedTabFadeEnd(0.3);
+		setTabFadeStart(0.1);
+		setTabFadeEnd(0.3);
 
 		// add two overlay painters to create a bezel line between
 		// menu bar and toolbars

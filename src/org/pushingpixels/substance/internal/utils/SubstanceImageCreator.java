@@ -782,7 +782,6 @@ public final class SubstanceImageCreator {
 			SubstanceColorScheme markColorScheme,
 			SubstanceColorScheme borderColorScheme, float checkMarkVisibility,
 			boolean isCheckMarkFadingOut, float alpha) {
-
 		int xOffset = SubstanceSizeUtils.getAdjustedSize(
 				SubstanceSizeUtils.getComponentFontSize(button), 2, 9,
 				1, false);
@@ -1107,15 +1106,13 @@ public final class SubstanceImageCreator {
 		graphics.drawLine(start, end, end, start);
 		graphics.dispose();
 
-		int fgStrength = SubstanceColorUtilities.getColorBrightness(color.getRGB());
-		int fgNegativeStrength = SubstanceColorUtilities.getColorBrightness(
-				SubstanceColorUtilities.getNegativeColor(color.getRGB()));
-		int bgStrength = SubstanceColorUtilities.getColorBrightness(
-				backgroundScheme.getLightColor().getRGB());
-		boolean noEcho = (fgStrength > fgNegativeStrength) && (fgStrength < bgStrength);
-
 		Color echoColor = colorScheme.isDark() ? backgroundScheme.getUltraDarkColor()
 				: backgroundScheme.getUltraLightColor();
+
+		int fgStrength = SubstanceColorUtilities.getColorBrightness(color.getRGB());
+		int echoStrength = SubstanceColorUtilities.getColorBrightness(echoColor.getRGB());
+		boolean noEcho = Math.abs(fgStrength - echoStrength) < 48; 
+
 		return new HiDpiAwareIcon(SubstanceImageCreator.overlayEcho(image,
 				noEcho ? 0 : SubstanceColorUtilities.getColorStrength(color),
 				echoColor, 1, 1));
@@ -1732,7 +1729,7 @@ public final class SubstanceImageCreator {
 				(int) (0.4 * width), baseTop, mainColor));
 		graphics.fillRect(width / 2, 0, width / 2, baseTop);
 
-		graphics.setStroke(new BasicStroke((float) 1.3, BasicStroke.CAP_ROUND,
+		graphics.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_ROUND,
 				BasicStroke.JOIN_ROUND));
 
 		graphics.setClip(null);
@@ -1851,9 +1848,6 @@ public final class SubstanceImageCreator {
 					SubstanceImageCreator.crayonY(i), crayonImage.getWidth() / scaleFactor, 
 					crayonImage.getHeight() / scaleFactor, null);
 		}
-
-		graphics.setColor(new Color(190, 190, 190));
-		graphics.drawRoundRect(0, 1, iw - 1, ih - 2, 4, 4);
 
 		graphics.dispose();
 		return image;

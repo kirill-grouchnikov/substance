@@ -87,7 +87,7 @@ public class SubstanceConstants {
 			@Override
 			public void paintFocus(Component mainComp, Component focusedComp,
 					TransitionAwareUI transitionAwareUI, Graphics2D graphics,
-					Shape focusShape, Rectangle textRect, int extraPadding) {
+					Shape focusShape, Rectangle textRect, float extraPadding) {
 			}
 		},
 
@@ -98,7 +98,7 @@ public class SubstanceConstants {
 			@Override
 			public void paintFocus(Component mainComp, Component focusedComp,
 					TransitionAwareUI transitionAwareUI, Graphics2D graphics,
-					Shape focusShape, Rectangle textRect, int extraPadding) {
+					Shape focusShape, Rectangle textRect, float extraPadding) {
 				if (textRect == null)
 					return;
 				if ((textRect.width == 0) || (textRect.height == 0))
@@ -148,7 +148,7 @@ public class SubstanceConstants {
 			@Override
 			public void paintFocus(Component mainComp, Component focusedComp,
 					TransitionAwareUI transitionAwareUI, Graphics2D graphics,
-					Shape focusShape, Rectangle textRect, int extraPadding) {
+					Shape focusShape, Rectangle textRect, float extraPadding) {
 				if ((focusShape == null)
 						&& ((mainComp instanceof AbstractButton)
 								&& !(mainComp instanceof JCheckBox) && !(mainComp instanceof JRadioButton))) {
@@ -223,7 +223,7 @@ public class SubstanceConstants {
 			@Override
 			public void paintFocus(Component mainComp, Component focusedComp,
 					TransitionAwareUI transitionAwareUI, Graphics2D graphics,
-					Shape focusShape, Rectangle textRect, int extraPadding) {
+					Shape focusShape, Rectangle textRect, float extraPadding) {
 
 				if ((focusShape == null)
 						&& ((mainComp instanceof AbstractButton)
@@ -248,7 +248,7 @@ public class SubstanceConstants {
 								BasicStroke.JOIN_ROUND, 0.0f, 
 								new float[] { dashLength, dashGap }, 
 								dashPhase));
-						int insetsPix = extraPadding;
+						float insetsPix = extraPadding;
 
 						Shape contour = shaper.getButtonOutline(
 								(AbstractButton) mainComp, insetsPix, mainComp.getWidth(), 
@@ -303,7 +303,7 @@ public class SubstanceConstants {
 			@Override
 			public void paintFocus(Component mainComp, Component focusedComp,
 					TransitionAwareUI transitionAwareUI, Graphics2D graphics,
-					Shape focusShape, Rectangle textRect, int extraPadding) {
+					Shape focusShape, Rectangle textRect, float extraPadding) {
 				int fontSize = SubstanceSizeUtils.getComponentFontSize(mainComp);
 				graphics.setStroke(new BasicStroke(
 						1.5f * SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
@@ -344,7 +344,7 @@ public class SubstanceConstants {
 			@Override
 			public void paintFocus(Component mainComp, Component focusedComp,
 					TransitionAwareUI transitionAwareUI, Graphics2D graphics,
-					Shape focusShape, Rectangle textRect, int extraPadding) {
+					Shape focusShape, Rectangle textRect, float extraPadding) {
 				if (textRect == null)
 					return;
 
@@ -388,7 +388,7 @@ public class SubstanceConstants {
 			@Override
 			public void paintFocus(Component mainComp, Component focusedComp,
 					TransitionAwareUI transitionAwareUI, Graphics2D graphics,
-					Shape focusShape, Rectangle textRect, int extraPadding) {
+					Shape focusShape, Rectangle textRect, float extraPadding) {
 				if (textRect == null)
 					return;
 
@@ -427,7 +427,7 @@ public class SubstanceConstants {
 		public abstract void paintFocus(Component mainComp,
 				Component focusedComp, TransitionAwareUI transitionAwareUI,
 				Graphics2D graphics, Shape focusShape, Rectangle textRect,
-				int extraPadding);
+				float extraPadding);
 
 		/**
 		 * Returns DPI-aware dash length for dash-based focus painting.

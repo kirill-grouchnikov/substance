@@ -195,13 +195,17 @@ public class GeminiSkin extends SubstanceSkin {
 				ColorSchemeAssociationKind.MARK);
 		toolbarSchemeBundle.registerColorScheme(darkBlueColorScheme,
 				ColorSchemeAssociationKind.BORDER);
+		toolbarSchemeBundle.registerColorScheme(highlightScheme,
+				ColorSchemeAssociationKind.MARK, 
+				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED, 
+					ComponentState.PRESSED_SELECTED);
 		applyHighlightColorScheme(toolbarSchemeBundle, highlightScheme, darkBlueColorScheme);
 		applyHighlightAsFill(toolbarSchemeBundle, highlightScheme, darkBlueColorScheme);
 		this.registerDecorationAreaSchemeBundle(toolbarSchemeBundle,
 				darkBlueBackgroundColorScheme, DecorationAreaType.TOOLBAR);
 
-		this.setSelectedTabFadeStart(0.15);
-		this.setSelectedTabFadeEnd(0.25);
+		this.setTabFadeStart(0.15);
+		this.setTabFadeEnd(0.25);
 
 		// add an overlay painter to paint a bezel line along the top
 		// edge of footer

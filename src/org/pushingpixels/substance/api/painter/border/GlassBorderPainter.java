@@ -35,8 +35,8 @@ import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
 /**
- * Border painter that returns images with classic appearance. This class is
- * part of officially supported API.
+ * Border painter that returns images with glass appearance. This class is part
+ * of officially supported API.
  * 
  * @author Kirill Grouchnikov
  */
@@ -55,9 +55,8 @@ public class GlassBorderPainter extends StandardBorderPainter {
 
 	@Override
 	public Color getTopBorderColor(SubstanceColorScheme borderScheme) {
-		return SubstanceColorUtilities.getInterpolatedColor(super
-				.getTopBorderColor(borderScheme), super
-				.getMidBorderColor(borderScheme), 0.0);
+		return SubstanceColorUtilities.getInterpolatedColor(super.getTopBorderColor(borderScheme),
+				super.getMidBorderColor(borderScheme), 0.0f);
 	}
 
 	@Override

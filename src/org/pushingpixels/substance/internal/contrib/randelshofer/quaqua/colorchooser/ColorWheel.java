@@ -14,11 +14,22 @@
 
 package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
-import java.awt.image.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
+
+import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 /**
  * The ColorWheel displays a hue/saturation wheel of the HSB color model. 
  * The user can click at the wheel to pick a color on the ColorWheel. 
@@ -116,20 +127,29 @@ public class ColorWheel extends JPanel {
         int w = getWidth();
         int h = getHeight();
         
-        if (colorWheelImage == null
-        || colorWheelImage.getWidth(this) != w
-        || colorWheelImage.getHeight(this) != h) {
-            if (colorWheelImage != null) {
-                colorWheelImage.flush();
-            }
-            colorWheelProducer = new ColorWheelImageProducer(w, h);
-            colorWheelImage = createImage(colorWheelProducer);
-        }
+        int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		if (colorWheelImage == null 
+				|| (scaleFactor * colorWheelImage.getWidth(this)) != w
+				|| (scaleFactor * colorWheelImage.getHeight(this)) != h) {
+			if (colorWheelImage != null) {
+				colorWheelImage.flush();
+			}
+			colorWheelProducer = new ColorWheelImageProducer(w * scaleFactor, h * scaleFactor);
+			colorWheelImage = createImage(colorWheelProducer);
+			if (scaleFactor > 1) {
+				BufferedImage retinaWheelImage = SubstanceCoreUtilities.getBlankImage(w, h);
+				Graphics2D wheel2D = retinaWheelImage.createGraphics();
+				wheel2D.drawImage(colorWheelImage, 0, 0, w, h, null);
+				wheel2D.dispose();
+				colorWheelImage = retinaWheelImage;
+			}
+		}
         
         colorWheelProducer.setBrightness(model.getValue(2) / 100f);
         colorWheelProducer.regenerateColorWheel();
         
-        g.drawImage(colorWheelImage, 0, 0, this);
+        g.drawImage(colorWheelImage, 0, 0, colorWheelImage.getWidth(null) / scaleFactor,
+        		colorWheelImage.getHeight(null) / scaleFactor, this);
         
         int x = w / 2 + (int) (colorWheelProducer.getRadius() * model.getValue(1) / 100d * Math.cos(model.getValue(0) * Math.PI / 180d));
         int y = h / 2 - (int) (colorWheelProducer.getRadius() * model.getValue(1) / 100d * Math.sin(model.getValue(0) * Math.PI / 180d));

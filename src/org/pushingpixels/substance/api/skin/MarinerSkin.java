@@ -69,11 +69,6 @@ public class MarinerSkin extends SubstanceSkin {
 	private BottomLineOverlayPainter menuOverlayPainter;
 
 	/**
-	 * Overlay painter to paint a light line along the top edge of the toolbars.
-	 */
-	private TopLineOverlayPainter toolbarOverlayPainter;
-
-	/**
 	 * Overlay painter to paint a dark line along the bottom edge of the
 	 * toolbars.
 	 */
@@ -205,8 +200,8 @@ public class MarinerSkin extends SubstanceSkin {
 				footerWatermarkColorScheme, DecorationAreaType.FOOTER,
 				DecorationAreaType.TOOLBAR, DecorationAreaType.GENERAL);
 
-		this.setSelectedTabFadeStart(0.15);
-		this.setSelectedTabFadeEnd(0.25);
+		this.setTabFadeStart(0.15);
+		this.setTabFadeEnd(0.25);
 
 		// add an overlay painter to paint a bezel line along the top
 		// edge of footer
@@ -225,19 +220,8 @@ public class MarinerSkin extends SubstanceSkin {
 						return scheme.getUltraDarkColor().darker();
 					}
 				});
-		this.toolbarOverlayPainter = new TopLineOverlayPainter(
-				new ColorSchemeSingleColorQuery() {
-					@Override
-					public Color query(SubstanceColorScheme scheme) {
-						Color fg = scheme.getForegroundColor();
-						return new Color(fg.getRed(), fg.getGreen(), fg
-								.getBlue(), 32);
-					}
-				});
 		this.addOverlayPainter(this.menuOverlayPainter,
 				DecorationAreaType.HEADER);
-		this.addOverlayPainter(this.toolbarOverlayPainter,
-				DecorationAreaType.TOOLBAR);
 
 		// add overlay painter to paint drop shadows along the bottom
 		// edges of toolbars

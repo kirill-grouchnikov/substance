@@ -56,8 +56,8 @@ class DerivedColorsResolverDark implements SchemeDerivedColors {
 	 */
 	public DerivedColorsResolverDark(SubstanceColorScheme scheme) {
 		if (!scheme.isDark()) {
-			throw new IllegalArgumentException("The scheme must be dark: "
-					+ scheme.getDisplayName());
+			throw new IllegalArgumentException(
+					"The scheme must be dark: " + scheme.getDisplayName());
 		}
 		this.scheme = scheme;
 	}
@@ -65,18 +65,20 @@ class DerivedColorsResolverDark implements SchemeDerivedColors {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.pushingpixels.substance.api.SchemeDerivedColors#getWatermarkStampColor()
+	 * @see org.pushingpixels.substance.api.SchemeDerivedColors#
+	 * getWatermarkStampColor()
 	 */
 	@Override
 	public Color getWatermarkStampColor() {
-		return SubstanceColorUtilities.getAlphaColor(this.scheme
-				.getUltraLightColor(), 30);
+		return SubstanceColorUtilities.getAlphaColor(this.scheme.getUltraLightColor(), 30);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.pushingpixels.substance.api.SchemeDerivedColors#getWatermarkDarkColor()
+	 * @see
+	 * org.pushingpixels.substance.api.SchemeDerivedColors#getWatermarkDarkColor
+	 * ()
 	 */
 	@Override
 	public Color getWatermarkDarkColor() {
@@ -86,7 +88,8 @@ class DerivedColorsResolverDark implements SchemeDerivedColors {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.pushingpixels.substance.api.SchemeDerivedColors#getWatermarkLightColor()
+	 * @see org.pushingpixels.substance.api.SchemeDerivedColors#
+	 * getWatermarkLightColor()
 	 */
 	public Color getWatermarkLightColor() {
 		return this.scheme.getUltraLightColor();
@@ -105,8 +108,8 @@ class DerivedColorsResolverDark implements SchemeDerivedColors {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.pushingpixels.substance.api.SchemeDerivedColors#getSelectionForegroundColor()
+	 * @see org.pushingpixels.substance.api.SchemeDerivedColors#
+	 * getSelectionForegroundColor()
 	 */
 	@Override
 	public Color getSelectionForegroundColor() {
@@ -116,8 +119,8 @@ class DerivedColorsResolverDark implements SchemeDerivedColors {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.pushingpixels.substance.api.SchemeDerivedColors#getSelectionBackgroundColor()
+	 * @see org.pushingpixels.substance.api.SchemeDerivedColors#
+	 * getSelectionBackgroundColor()
 	 */
 	@Override
 	public Color getSelectionBackgroundColor() {
@@ -127,7 +130,8 @@ class DerivedColorsResolverDark implements SchemeDerivedColors {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.pushingpixels.substance.api.SchemeDerivedColors#getBackgroundFillColor()
+	 * @see org.pushingpixels.substance.api.SchemeDerivedColors#
+	 * getBackgroundFillColor()
 	 */
 	@Override
 	public Color getBackgroundFillColor() {
@@ -137,7 +141,8 @@ class DerivedColorsResolverDark implements SchemeDerivedColors {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.pushingpixels.substance.api.SchemeDerivedColors#getFocusRingColor()
+	 * @see
+	 * org.pushingpixels.substance.api.SchemeDerivedColors#getFocusRingColor()
 	 */
 	@Override
 	public Color getFocusRingColor() {
@@ -147,12 +152,12 @@ class DerivedColorsResolverDark implements SchemeDerivedColors {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.pushingpixels.substance.api.SchemeDerivedColors#getTextBackgroundFillColor()
+	 * @see org.pushingpixels.substance.api.SchemeDerivedColors#
+	 * getTextBackgroundFillColor()
 	 */
 	@Override
 	public Color getTextBackgroundFillColor() {
-		return SubstanceColorUtilities.getInterpolatedColor(this.scheme
-				.getMidColor(), this.scheme.getLightColor(), 0.4);
+		return SubstanceColorUtilities.getInterpolatedColor(this.scheme.getMidColor(),
+				this.scheme.getLightColor(), 0.4f);
 	}
 }

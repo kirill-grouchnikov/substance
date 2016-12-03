@@ -84,9 +84,9 @@ public class SubstanceToolTipUI extends BasicToolTipUI {
 		}
 
 		Insets insets = c.getInsets();
-		Rectangle paintTextR = new Rectangle(insets.left + 3, insets.top,
-				size.width - (insets.left + insets.right + 6), size.height
-						- (insets.top + insets.bottom + 2));
+		Rectangle paintTextR = new Rectangle(insets.left + 3, insets.top + 1,
+				size.width - (insets.left + insets.right + 6),
+				size.height - (insets.top + insets.bottom + 1));
 		View v = (View) c.getClientProperty(BasicHTML.propertyKey);
 		if (v != null) {
 			v.paint(g, paintTextR);

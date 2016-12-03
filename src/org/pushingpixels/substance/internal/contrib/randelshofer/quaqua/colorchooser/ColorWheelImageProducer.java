@@ -14,9 +14,9 @@
 
 package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
-import java.awt.image.*;
-import java.awt.color.*;
+import java.awt.Color;
+import java.awt.image.ColorModel;
+import java.awt.image.MemoryImageSource;
 /**
  * Produces the image of a ColorWheel.
  *

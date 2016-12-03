@@ -13,8 +13,7 @@ package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorch
  * accordance with the terms of the license agreement you entered into
  * with Werner Randelshofer.
  */
-
-import java.awt.*;
+import java.awt.Color;
 /**
  * PaletteEntry.
  *

@@ -152,6 +152,13 @@ public class OfficeBlack2007Skin extends SubstanceSkin {
 				ColorSchemeAssociationKind.MARK,
 				ComponentState.DISABLED_SELECTED,
 				ComponentState.DISABLED_UNSELECTED);
+		
+		defaultSchemeBundle.registerColorScheme(selectedScheme,
+				ColorSchemeAssociationKind.MARK, ComponentState.SELECTED);
+		defaultSchemeBundle.registerColorScheme(pressedScheme,
+				ColorSchemeAssociationKind.MARK, ComponentState.PRESSED_UNSELECTED);
+		defaultSchemeBundle.registerColorScheme(pressedSelectedScheme,
+				ColorSchemeAssociationKind.MARK, ComponentState.PRESSED_SELECTED);
 
 		registerDecorationAreaSchemeBundle(defaultSchemeBundle,
 				DecorationAreaType.NONE);
@@ -257,8 +264,8 @@ public class OfficeBlack2007Skin extends SubstanceSkin {
 		this.registerAsDecorationArea(this.watermarkScheme,
 				DecorationAreaType.GENERAL);
 
-		setSelectedTabFadeStart(0.6);
-		setSelectedTabFadeEnd(0.9);
+		setTabFadeStart(0.6);
+		setTabFadeEnd(0.9);
 
 		this.addOverlayPainter(new BottomLineOverlayPainter(
 				new ColorSchemeSingleColorQuery() {

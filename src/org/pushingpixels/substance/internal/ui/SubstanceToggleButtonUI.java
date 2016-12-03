@@ -29,6 +29,7 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -362,7 +363,7 @@ public class SubstanceToggleButtonUI extends BasicToggleButtonUI implements
 	@Override
 	protected void paintIcon(Graphics g, AbstractButton b, Rectangle iconRect) {
 		b.putClientProperty("icon.bounds", new Rectangle(iconRect));
-
+		
 		Graphics2D graphics = (Graphics2D) g.create();
 		GhostPaintingUtils.paintGhostIcon(graphics, b, iconRect);
 

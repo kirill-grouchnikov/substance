@@ -1,23 +1,6 @@
 package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser;
 
-/*
- * @(#)ICC_CMYKColorSliderModel.java  1.0  May 22, 2005
- *
- * Copyright (c) 2005 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
- * All rights reserved.
- *
- * This software is the confidential and proprietary information of
- * Werner Randelshofer. ("Confidential Information").  You shall not
- * disclose such Confidential Information and shall use it only in
- * accordance with the terms of the license agreement you entered into
- * with Werner Randelshofer.
- */
-
-import java.awt.*;
-import java.awt.color.*;
-import java.io.*;
-import javax.swing.*;
+import javax.swing.DefaultBoundedRangeModel;
 /**
  * A ColorSliderModel for CMYK color models (cyan, magenta, yellow, black) with
  * nominally converted color components from/to an RGB color model.

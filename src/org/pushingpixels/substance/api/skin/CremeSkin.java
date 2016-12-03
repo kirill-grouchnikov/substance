@@ -70,8 +70,8 @@ public class CremeSkin extends SubstanceSkin {
 				DecorationAreaType.HEADER, DecorationAreaType.FOOTER,
 				DecorationAreaType.GENERAL, DecorationAreaType.TOOLBAR);
 
-		setSelectedTabFadeStart(0.2);
-		setSelectedTabFadeEnd(0.4);
+		setTabFadeStart(0.2);
+		setTabFadeEnd(0.4);
 
 		this.buttonShaper = new ClassicButtonShaper();
 		this.fillPainter = new ClassicFillPainter();

@@ -29,9 +29,15 @@
  */
 package org.pushingpixels.substance.api.painter.decoration;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.GradientPaint;
+import java.awt.Graphics2D;
+import java.awt.Point;
 
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.painter.SubstancePainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
@@ -59,15 +65,14 @@ public class MatteDecorationPainter implements SubstanceDecorationPainter {
 
 	@Override
 	public void paintDecorationArea(Graphics2D graphics, Component comp,
-			DecorationAreaType decorationAreaType, int width, int height,
-			SubstanceSkin skin) {
+			DecorationAreaType decorationAreaType, int width, int height, SubstanceSkin skin) {
 		if ((decorationAreaType == DecorationAreaType.PRIMARY_TITLE_PANE)
 				|| (decorationAreaType == DecorationAreaType.SECONDARY_TITLE_PANE)) {
-			this.paintTitleBackground(graphics, comp, width, height, skin
-					.getBackgroundColorScheme(decorationAreaType));
+			this.paintTitleBackground(graphics, comp, width, height,
+					skin.getBackgroundColorScheme(decorationAreaType));
 		} else {
-			this.paintExtraBackground(graphics, comp, width, height, skin
-					.getBackgroundColorScheme(decorationAreaType));
+			this.paintExtraBackground(graphics, comp, width, height,
+					skin.getBackgroundColorScheme(decorationAreaType));
 		}
 	}
 
@@ -85,8 +90,8 @@ public class MatteDecorationPainter implements SubstanceDecorationPainter {
 	 * @param scheme
 	 *            Color scheme for painting the title background.
 	 */
-	private void paintTitleBackground(Graphics2D graphics, Component comp,
-			int width, int height, SubstanceColorScheme scheme) {
+	private void paintTitleBackground(Graphics2D graphics, Component comp, int width, int height,
+			SubstanceColorScheme scheme) {
 		Graphics2D g2d = (Graphics2D) graphics.create();
 		this.fill(g2d, comp, scheme, 0, 0, 0, width, height);
 		g2d.dispose();
@@ -109,8 +114,8 @@ public class MatteDecorationPainter implements SubstanceDecorationPainter {
 	 * @param scheme
 	 *            Color scheme for painting the title background.
 	 */
-	private void paintExtraBackground(Graphics2D graphics, Component comp,
-			int width, int height, SubstanceColorScheme scheme) {
+	private void paintExtraBackground(Graphics2D graphics, Component comp, int width, int height,
+			SubstanceColorScheme scheme) {
 		Point offset = SubstancePainterUtils.getOffsetInRootPaneCoords(comp);
 		Graphics2D g2d = (Graphics2D) graphics.create();
 		this.fill(g2d, comp, scheme, offset.y, 0, 0, width, height);
@@ -137,9 +142,8 @@ public class MatteDecorationPainter implements SubstanceDecorationPainter {
 	 * @param height
 	 *            Fill area height.
 	 */
-	protected void fill(Graphics2D graphics, Component comp,
-			SubstanceColorScheme scheme, int offsetY, int x, int y, int width,
-			int height) {
+	protected void fill(Graphics2D graphics, Component comp, SubstanceColorScheme scheme,
+			int offsetY, int x, int y, int width, int height) {
 		// System.out.println(comp.getClass().getName() + ":"
 		// + scheme.getDisplayName());
 
@@ -153,12 +157,13 @@ public class MatteDecorationPainter implements SubstanceDecorationPainter {
 		int endY = startY + height;
 
 		Color startColor = scheme.getLightColor();
-		Color endColor = SubstanceColorUtilities.getInterpolatedColor(startColor, scheme.getMidColor(), 0.4);
-		
+		Color endColor = SubstanceColorUtilities.getInterpolatedColor(startColor,
+				scheme.getMidColor(), 0.4f);
+
 		int currStart = 0;
 		if (flexPoint >= startY) {
-			graphics.setPaint(new GradientPaint(x, currStart - offsetY, startColor, 
-					x, flexPoint - offsetY, endColor));
+			graphics.setPaint(new GradientPaint(x, currStart - offsetY, startColor, x,
+					flexPoint - offsetY, endColor));
 			graphics.fillRect(x, currStart - offsetY, width, flexPoint);
 		}
 		currStart += flexPoint;

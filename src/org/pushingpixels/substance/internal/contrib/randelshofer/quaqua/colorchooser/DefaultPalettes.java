@@ -14,7 +14,7 @@
 
 package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
+import java.awt.Color;
 /**
  * This class provides some well known color palettes as array constants.
  *

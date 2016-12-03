@@ -123,24 +123,18 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 	protected Set<DecorationAreaType> decoratedAreaSet;
 
 	/**
-	 * The start of fade effect on the selected tabs in {@link JTabbedPane}s.
+	 * The start of fade effect on tabs in {@link JTabbedPane}s.
 	 * 
-	 * @see #selectedTabFadeEnd
+	 * @see #tabFadeEnd
 	 */
-	protected double selectedTabFadeStart;
+	protected double tabFadeStart;
 
 	/**
-	 * The end of fade effect on the selected tabs in {@link JTabbedPane}s.
+	 * The end of fade effect on tabs in {@link JTabbedPane}s.
 	 * 
-	 * @see #selectedTabFadeStart
+	 * @see #tabFadeStart
 	 */
-	protected double selectedTabFadeEnd;
-
-	/**
-	 * Contains the types of decoration areas that show a drop shadow on the few
-	 * top pixels.
-	 */
-	// protected Set<DecorationAreaType> dropShadowsSet;
+	protected double tabFadeEnd;
 
 	/**
 	 * Color scheme for watermarks.
@@ -164,47 +158,11 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 		this.decoratedAreaSet.add(DecorationAreaType.PRIMARY_TITLE_PANE);
 		this.decoratedAreaSet.add(DecorationAreaType.SECONDARY_TITLE_PANE);
 
-		// this.dropShadowsSet = EnumSet.noneOf(DecorationAreaType.class);
-
-		this.selectedTabFadeStart = 0.1;
-		this.selectedTabFadeEnd = 0.3;
+		this.tabFadeStart = 0.1;
+		this.tabFadeEnd = 0.3;
 
 		this.statesWithAlpha = new HashSet<ComponentState>();// EnumSet.noneOf(ComponentState.class);
 	}
-
-	// /**
-	// * Returns the main default color scheme for this skin. The result is the
-	// * default color scheme for controls that do not lie in any decoration
-	// area.
-	// * Custom painting code that needs to consult the colors of the specific
-	// * component should use {@link #getColorScheme(Component, ComponentState)}
-	// * method and various {@link SubstanceColorScheme} methods.
-	// *
-	// * @return The main default color scheme for this skin.
-	// * @see #getColorScheme(Component, ComponentState)
-	// * @see #getMainDefaultColorScheme(DecorationAreaType)
-	// */
-	// public final SubstanceColorScheme getMainDefaultColorScheme() {
-	// return this.colorSchemeBundleMap.get(DecorationAreaType.NONE)
-	// .getDefaultColorScheme();
-	// }
-	//
-	// /**
-	// * Returns the main disabled color scheme for this skin. The result is the
-	// * disabled color scheme for controls that do not lie in any decoration
-	// * area. Custom painting code that needs to consult the colors of the
-	// * specific component should use
-	// * {@link #getColorScheme(Component, ComponentState)} method and various
-	// * {@link SubstanceColorScheme} methods.
-	// *
-	// * @return The main disabled color scheme for this skin.
-	// * @see #getColorScheme(Component, ComponentState)
-	// * @see #getMainDisabledColorScheme(DecorationAreaType)
-	// */
-	// public final SubstanceColorScheme getMainDisabledColorScheme() {
-	// return this.colorSchemeBundleMap.get(DecorationAreaType.NONE)
-	// .getDisabledColorScheme();
-	// }
 
 	/**
 	 * Returns the watermark of this skin.
@@ -617,20 +575,20 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 	}
 
 	/**
-	 * Returns the start of fade effect on the selected tabs in
+	 * Returns the start of fade effect on tabs in
 	 * {@link JTabbedPane}s. This value can be used to create XP-like "headers"
 	 * on the selected tabs.
 	 * 
 	 * @return The start of fade effect on the selected tabs in
 	 *         {@link JTabbedPane}s.
-	 * @see #getSelectedTabFadeEnd()
+	 * @see #getTabFadeEnd()
 	 */
-	public final double getSelectedTabFadeStart() {
-		return this.selectedTabFadeStart;
+	public final double getTabFadeStart() {
+		return this.tabFadeStart;
 	}
 
 	/**
-	 * Returns the end of fade effect on the selected tabs in
+	 * Returns the end of fade effect on tabs in
 	 * {@link JTabbedPane
 	 * }s. This value can be used to create XP-like "headers"
 	 * on the selected tabs.
@@ -638,42 +596,42 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 	 * @return The end of fade effect on the selected tabs in
 	 *         {@link JTabbedPane
 	 * 	}s.
-	 * @see #getSelectedTabFadeStart()
+	 * @see #getTabFadeStart()
 	 */
-	public final double getSelectedTabFadeEnd() {
-		return this.selectedTabFadeEnd;
+	public final double getTabFadeEnd() {
+		return this.tabFadeEnd;
 	}
 
 	/**
-	 * Sets the end of fade effect on the selected tabs in {@link JTabbedPane}s.
+	 * Sets the end of fade effect on tabs in {@link JTabbedPane}s.
 	 * The value should be in 0.0-1.0 range.
 	 * 
-	 * @param selectedTabFadeEnd
-	 *            The end of fade effect on the selected tabs in
+	 * @param tabFadeEnd
+	 *            The end of fade effect on tabs in
 	 *            {@link JTabbedPane}s. Should be in 0.0-1.0 range.
 	 */
-	public void setSelectedTabFadeEnd(double selectedTabFadeEnd) {
-		if ((selectedTabFadeEnd < 0.0) || (selectedTabFadeEnd > 1.0)) {
+	public void setTabFadeEnd(double tabFadeEnd) {
+		if ((tabFadeEnd < 0.0) || (tabFadeEnd > 1.0)) {
 			throw new IllegalArgumentException(
-					"Value for selected tab fade end should be in 0.0-1.0 range");
+					"Value for tab fade end should be in 0.0-1.0 range");
 		}
-		this.selectedTabFadeEnd = selectedTabFadeEnd;
+		this.tabFadeEnd = tabFadeEnd;
 	}
 
 	/**
-	 * Sets the start of fade effect on the selected tabs in {@link JTabbedPane}
+	 * Sets the start of fade effect on selected tabs in {@link JTabbedPane}
 	 * s. The value should be in 0.0-1.0 range.
 	 * 
-	 * @param selectedTabFadeStart
-	 *            The start of fade effect on the selected tabs in
+	 * @param tabFadeStart
+	 *            The start of fade effect on tabs in
 	 *            {@link JTabbedPane} s. Should be in 0.0-1.0 range.
 	 */
-	public void setSelectedTabFadeStart(double selectedTabFadeStart) {
-		if ((selectedTabFadeStart < 0.0) || (selectedTabFadeStart > 1.0)) {
+	public void setTabFadeStart(double tabFadeStart) {
+		if ((tabFadeStart < 0.0) || (tabFadeStart > 1.0)) {
 			throw new IllegalArgumentException(
-					"Value for selected tab fade start should be in 0.0-1.0 range");
+					"Value for tab fade start should be in 0.0-1.0 range");
 		}
-		this.selectedTabFadeStart = selectedTabFadeStart;
+		this.tabFadeStart = tabFadeStart;
 	}
 
 	/**
@@ -859,8 +817,8 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 		// .transform(this.defaultColorScheme);
 
 		// same misc settings
-		result.selectedTabFadeEnd = this.selectedTabFadeEnd;
-		result.selectedTabFadeStart = this.selectedTabFadeStart;
+		result.tabFadeEnd = this.tabFadeEnd;
+		result.tabFadeStart = this.tabFadeStart;
 
 		// transform the scheme bundles
 		if (this.colorSchemeBundleMap != null) {

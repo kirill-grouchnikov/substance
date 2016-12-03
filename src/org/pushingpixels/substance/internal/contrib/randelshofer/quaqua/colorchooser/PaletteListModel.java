@@ -14,10 +14,9 @@
 
 package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
-import javax.swing.*;
-import java.util.*;
-import java.io.*;
+import java.awt.Color;
+
+import javax.swing.AbstractListModel;
 /**
  * PaletteListModel manages a list of PaletteEntry.
  *

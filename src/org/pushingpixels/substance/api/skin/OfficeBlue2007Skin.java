@@ -179,6 +179,14 @@ public class OfficeBlue2007Skin extends SubstanceSkin {
 		defaultSchemeBundle.registerColorScheme(separatorScheme,
 				ColorSchemeAssociationKind.SEPARATOR);
 
+		defaultSchemeBundle.registerColorScheme(selectedScheme,
+				ColorSchemeAssociationKind.MARK, 
+				ComponentState.SELECTED, ComponentState.ROLLOVER_UNSELECTED);
+		defaultSchemeBundle.registerColorScheme(pressedScheme,
+				ColorSchemeAssociationKind.MARK, ComponentState.PRESSED_UNSELECTED);
+		defaultSchemeBundle.registerColorScheme(pressedSelectedScheme,
+				ColorSchemeAssociationKind.MARK, ComponentState.PRESSED_SELECTED);
+
 		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
 				DecorationAreaType.NONE);
 
@@ -199,8 +207,8 @@ public class OfficeBlue2007Skin extends SubstanceSkin {
 				DecorationAreaType.PRIMARY_TITLE_PANE,
 				DecorationAreaType.SECONDARY_TITLE_PANE);
 
-		setSelectedTabFadeStart(0.7);
-		setSelectedTabFadeEnd(0.9);
+		setTabFadeStart(0.7);
+		setTabFadeEnd(0.9);
 
 		this.addOverlayPainter(new BottomLineOverlayPainter(
 				new ColorSchemeSingleColorQuery() {

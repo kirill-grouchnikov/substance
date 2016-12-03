@@ -55,9 +55,8 @@ public class ClassicBorderPainter extends StandardBorderPainter {
 
 	@Override
 	public Color getTopBorderColor(SubstanceColorScheme borderScheme) {
-		return SubstanceColorUtilities.getInterpolatedColor(super
-				.getTopBorderColor(borderScheme), super
-				.getMidBorderColor(borderScheme), 0.0);
+		return SubstanceColorUtilities.getInterpolatedColor(super.getTopBorderColor(borderScheme),
+				super.getMidBorderColor(borderScheme), 0.0f);
 	}
 
 	@Override

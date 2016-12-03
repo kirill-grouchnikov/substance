@@ -109,8 +109,7 @@ public class SkinUtilities {
 		Color lineColorDefault = new ColorUIResource(
 				mainEnabledScheme.getLineColor());
 
-		int lcb = SubstanceColorUtilities
-				.getColorBrightness(lineColor.getRGB());
+		int lcb = SubstanceColorUtilities.getColorBrightness(lineColor.getRGB());
 		Color lineBwColor = new ColorUIResource(new Color(lcb, lcb, lcb));
 
 		SubstanceColorScheme textHighlightColorScheme = skin.getColorScheme(

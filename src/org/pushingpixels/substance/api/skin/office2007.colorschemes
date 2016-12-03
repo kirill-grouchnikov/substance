@@ -248,7 +248,7 @@ Office Silver Mark Enabled {
     colorMid=#7C7C7C
     colorDark=#7C7C7C
     colorUltraDark=#7C7C7C
-    colorForeground=#7C7C7C
+    colorForeground=#4C535C
 }
 
 Office Silver Pressed {
@@ -347,7 +347,7 @@ Office Border Selected {
     colorMid=#8E8064
     colorDark=#9A7057
     colorUltraDark=#9F7559
-    colorForeground=#FCE59C
+    colorForeground=#15428B
 }
 
 Office Border Pressed {
@@ -424,7 +424,7 @@ Office Black Mark Enabled {
     colorMid=#595959
     colorDark=#595959
     colorUltraDark=#595959
-    colorForeground=#595959
+    colorForeground=#282828
 }
 
 Office Black Header Active {

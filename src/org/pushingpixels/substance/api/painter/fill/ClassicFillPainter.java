@@ -59,15 +59,13 @@ public class ClassicFillPainter extends StandardFillPainter {
 
 	@Override
 	public Color getTopFillColor(SubstanceColorScheme fillScheme) {
-		return SubstanceColorUtilities.getInterpolatedColor(super
-				.getBottomFillColor(fillScheme), super
-				.getMidFillColorTop(fillScheme), 0.5);
+		return SubstanceColorUtilities.getInterpolatedColor(super.getBottomFillColor(fillScheme),
+				super.getMidFillColorTop(fillScheme), 0.5f);
 	}
 
 	@Override
 	public Color getMidFillColorTop(SubstanceColorScheme fillScheme) {
-		return SubstanceColorUtilities.getInterpolatedColor(super
-				.getMidFillColorTop(fillScheme), super
-				.getBottomFillColor(fillScheme), 0.7);
+		return SubstanceColorUtilities.getInterpolatedColor(super.getMidFillColorTop(fillScheme),
+				super.getBottomFillColor(fillScheme), 0.7f);
 	}
 }

@@ -78,6 +78,11 @@ public class MistSilverSkin extends SubstanceSkin {
 				ComponentState.SELECTED);
 		defaultSchemeBundle.registerColorScheme(enabledScheme,
 				ColorSchemeAssociationKind.BORDER, ComponentState.SELECTED);
+
+		defaultSchemeBundle.registerColorScheme(enabledScheme.shade(0.1),
+				ColorSchemeAssociationKind.TAB,
+				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED);
+
 		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
 				DecorationAreaType.NONE);
 
@@ -90,9 +95,6 @@ public class MistSilverSkin extends SubstanceSkin {
 				DecorationAreaType.SECONDARY_TITLE_PANE,
 				DecorationAreaType.HEADER, DecorationAreaType.FOOTER,
 				DecorationAreaType.TOOLBAR);
-
-		this.setSelectedTabFadeStart(0.6);
-		this.setSelectedTabFadeEnd(1.0);
 
 		this.buttonShaper = new StandardButtonShaper();
 		this.fillPainter = new MatteFillPainter();

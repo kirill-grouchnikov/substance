@@ -143,8 +143,8 @@ public class RavenSkin extends SubstanceSkin {
 
 		this.watermarkScheme = activeScheme.shade(0.4);
 
-		this.setSelectedTabFadeStart(0.18);
-		this.setSelectedTabFadeEnd(0.18);
+		this.setTabFadeStart(0.18);
+		this.setTabFadeEnd(0.18);
 
 		this.buttonShaper = new ClassicButtonShaper();
 		this.fillPainter = new GlassFillPainter();

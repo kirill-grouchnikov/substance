@@ -49,8 +49,8 @@
 	<property name="substance.drop.dir" value="${module.substance.basedir}/drop" />
 	<property name="substance.lib.dir" value="${module.substance.basedir}/lib" />
 	<property name="substance.src.dir" value="${module.substance.basedir}/src/" />
-	<property name="substance.version" value="6.2" />
-	<property name="substance.versionKey" value="6.2dev Uruguay" />
+	<property name="substance.version" value="7.0" />
+	<property name="substance.versionKey" value="7.0dev Uruguay" />
 
 	<path id="substance.module.bootclasspath">
 		<!-- Paths to be included in compilation bootclasspath -->

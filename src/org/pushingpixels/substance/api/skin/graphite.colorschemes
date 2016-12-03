@@ -192,7 +192,7 @@ Graphite Gold {
     colorLight=#FFCB44
     colorMid=#FFB725
     colorDark=#E49700
-    colorUltraDark=#924400
+    colorUltraDark=#D89103
     colorForeground=#000000
 }
 
@@ -203,7 +203,7 @@ Graphite Gold Light Text {
     colorLight=#FFCB44
     colorMid=#FFB725
     colorDark=#E49700
-    colorUltraDark=#924400
+    colorUltraDark=#D89103
     colorForeground=#FFFFFF
 }
 

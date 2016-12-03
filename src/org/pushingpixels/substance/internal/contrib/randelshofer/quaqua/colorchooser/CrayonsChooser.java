@@ -15,15 +15,15 @@
 package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser;
 
 
-import java.awt.*;
+import java.awt.Color;
 //import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.colorchooser.*;
-import javax.swing.event.*;
-import javax.swing.plaf.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.util.*;
+import javax.swing.Icon;
+import javax.swing.UIManager;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
+import javax.swing.plaf.UIResource;
 
 
 /**

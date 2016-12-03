@@ -14,7 +14,6 @@
 
 package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser;
 
-import javax.swing.*;
 /**
  * ColorSliderModel for the HTML color model (red, green, blue, restricted
  * to values considered as web-save).

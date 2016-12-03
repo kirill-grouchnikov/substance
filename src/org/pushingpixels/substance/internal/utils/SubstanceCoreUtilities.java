@@ -1142,7 +1142,7 @@ public class SubstanceCoreUtilities {
 		if (prop instanceof Set) {
 			return (Set<Side>) prop;
 		}
-
+		
 		if (prop != null) {
 			if (prop instanceof Side) {
 				Set<Side> result = EnumSet.noneOf(Side.class);
@@ -1420,7 +1420,7 @@ public class SubstanceCoreUtilities {
 	public static void paintFocus(Graphics g, Component mainComp,
 			Component focusedComp, TransitionAwareUI transitionAwareUI,
 			Shape focusShape, Rectangle textRect, float maxAlphaCoef,
-			int extraPadding) {
+			float extraPadding) {
 		float focusStrength = transitionAwareUI.getTransitionTracker()
 				.getFocusStrength(focusedComp.hasFocus());
 		if (focusStrength == 0.0f)

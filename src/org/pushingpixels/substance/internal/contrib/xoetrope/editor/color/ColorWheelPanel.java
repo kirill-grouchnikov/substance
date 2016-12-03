@@ -12,6 +12,10 @@ import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.*;
 
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
+
 /**
  * A color wheel showing a Red, Yellow, Blue color model traditionally used by
  * graphic artists. $Revision: 2254 $
@@ -193,6 +197,7 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 		baseColorLabel.setOpaque(true);
 		baseColorLabel.setToolTipText(getLabel("Xoetrope.systemColorsTooltip",
 				"Right click for system colours"));
+		baseColorLabel.putClientProperty(SubstanceTextUtilities.ENFORCE_FG_COLOR, Boolean.TRUE);
 		fixedPanel.add(baseColorLabel);
 		baseColorLabel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -464,7 +469,8 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 		baseColorLabel.setBackground(new Color(chooserColor.R, chooserColor.G,
 				chooserColor.B));
 
-		if ((0.5 * c.getRed() + c.getGreen() + 0.3 * c.getBlue()) < 220.0)
+		if (SubstanceColorUtilities.getColorBrightness(
+				baseColorLabel.getBackground().getRGB()) < 128)
 			baseColorLabel.setForeground(Color.white);
 		else
 			baseColorLabel.setForeground(Color.black);
@@ -847,7 +853,7 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 
 	@Override
 	public Icon getLargeDisplayIcon() {
-		return UIManager.getIcon("ColorChooser.colorWheelIcon");
+		return UIManager.getIcon("ColorChooser.imagePalettesIcon");
 	}
 
 	@Override
@@ -1028,7 +1034,7 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 				gp = new GeneralPath();
 				if ((width > 200) && (i % 2 == 0)) {
 					AttributedString as = new AttributedString(""
-							+ (((i * 15) + 90) % 360) + "�");
+							+ (((i * 15) + 90) % 360) + "°");
 					as.addAttribute(TextAttribute.FAMILY, fontFamily);
 					as.addAttribute(TextAttribute.SIZE, (float) (fontHeight));
 					as.addAttribute(TextAttribute.FOREGROUND, Color.black);

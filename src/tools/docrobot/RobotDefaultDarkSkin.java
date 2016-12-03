@@ -81,8 +81,8 @@ public class RobotDefaultDarkSkin extends SubstanceSkin {
 				DecorationAreaType.SECONDARY_TITLE_PANE,
 				DecorationAreaType.HEADER);
 
-		this.selectedTabFadeStart = 1.0;
-		this.selectedTabFadeEnd = 1.0;
+		this.tabFadeStart = 1.0;
+		this.tabFadeEnd = 1.0;
 
 		BottomLineOverlayPainter bottomLineOverlayPainter = new BottomLineOverlayPainter(
 				ColorSchemeSingleColorQuery.MID);

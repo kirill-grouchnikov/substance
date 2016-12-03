@@ -29,6 +29,7 @@
  */
 package org.pushingpixels.substance.api.skin;
 
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
 import org.pushingpixels.substance.api.ColorSchemeTransform;
 import org.pushingpixels.substance.api.ComponentState;
@@ -85,6 +86,11 @@ public class BusinessSkin extends SubstanceSkin {
 				ComponentState.DISABLED_SELECTED);
 		defaultSchemeBundle.registerColorScheme(activeScheme,
 				ComponentState.SELECTED);
+		
+		defaultSchemeBundle.registerColorScheme(enabledScheme.shade(0.1),
+				ColorSchemeAssociationKind.TAB,
+				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED);
+
 		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
 				DecorationAreaType.NONE);
 
@@ -93,13 +99,8 @@ public class BusinessSkin extends SubstanceSkin {
 				DecorationAreaType.SECONDARY_TITLE_PANE,
 				DecorationAreaType.HEADER, DecorationAreaType.FOOTER);
 
-		SubstanceSkin.ColorSchemes kitchenSkinSchemes = SubstanceSkin
-				.getColorSchemes("org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes");
-		this.registerAsDecorationArea(kitchenSkinSchemes.get("LightGray General Watermark"),
+		this.registerAsDecorationArea(kitchenSinkSchemes.get("LightGray General Watermark"),
 						DecorationAreaType.GENERAL);
-
-		this.setSelectedTabFadeStart(0.6);
-		this.setSelectedTabFadeEnd(1.0);
 
 		// add an overlay painter to paint a drop shadow along the top
 		// edge of toolbars

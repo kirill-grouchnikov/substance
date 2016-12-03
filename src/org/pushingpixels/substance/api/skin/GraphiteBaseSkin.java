@@ -109,8 +109,8 @@ abstract class GraphiteBaseSkin extends SubstanceSkin {
 
 		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, backgroundScheme, DecorationAreaType.NONE);
 
-		this.setSelectedTabFadeStart(0.18);
-		this.setSelectedTabFadeEnd(0.18);
+		this.setTabFadeStart(0.18);
+		this.setTabFadeEnd(0.18);
 
 		this.buttonShaper = new ClassicButtonShaper();
 		this.watermark = null;

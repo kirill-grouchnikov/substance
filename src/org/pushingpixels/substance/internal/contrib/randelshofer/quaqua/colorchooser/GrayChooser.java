@@ -14,16 +14,23 @@
 
 package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.event.*;
-import javax.swing.border.*;
-import javax.swing.colorchooser.*;
-import javax.swing.plaf.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
 
-import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.*;
-import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.util.*;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.plaf.UIResource;
+
+import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.VisualMargin;
 
 /**
  * A color chooser with a brightness slider.
@@ -80,11 +87,6 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
         
         VisualMargin bm = new VisualMargin(false,false,true,false);
         brightnessLabel.setBorder(bm);
-        zeroPercentButton.putClientProperty("Quaqua.Button.style","colorWell");
-        twentyFivePercentButton.putClientProperty("Quaqua.Button.style","colorWell");
-        fiftyPercentButton.putClientProperty("Quaqua.Button.style","colorWell");
-        seventyFivePercentButton.putClientProperty("Quaqua.Button.style","colorWell");
-        hundredPercentButton.putClientProperty("Quaqua.Button.style","colorWell");
         Border b = new CompoundBorder(new VisualMargin(), new SmallColorWellBorder());
         zeroPercentButton.setBorder(b);
         twentyFivePercentButton.setBorder(b);

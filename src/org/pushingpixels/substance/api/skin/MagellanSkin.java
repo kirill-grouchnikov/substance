@@ -52,7 +52,9 @@ import org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter;
 import org.pushingpixels.substance.api.painter.overlay.BottomShadowOverlayPainter;
 import org.pushingpixels.substance.api.painter.overlay.TopBezelOverlayPainter;
 import org.pushingpixels.substance.api.painter.overlay.TopLineOverlayPainter;
+import org.pushingpixels.substance.api.painter.overlay.TopShadowOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
 /**
  * <code>Magellan</code> skin. This class is part of officially supported API.
@@ -78,9 +80,9 @@ public class MagellanSkin extends SubstanceSkin {
 	private TopLineOverlayPainter toolbarTopLineOverlayPainter;
 
 	/**
-	 * Overlay painter to paint a bezel line along the top edge of the footer.
+	 * Overlay painter to paint a shadowalong the top edge of the footer.
 	 */
-	private TopBezelOverlayPainter footerTopBezelOverlayPainter;
+	private TopShadowOverlayPainter footerTopShadowOverlayPainter;
 
 	@Override
 	public String getDisplayName() {
@@ -188,6 +190,10 @@ public class MagellanSkin extends SubstanceSkin {
 		defaultColorSchemeBundle.registerHighlightColorScheme(greenControls,
 				1.0f, ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
 
+		defaultColorSchemeBundle.registerColorScheme(blueControlsActive.tint(0.2),
+				ColorSchemeAssociationKind.TAB,
+				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED);
+		
 		SubstanceColorScheme lightBlueBackground = colorSchemes
 				.get("Magellan Light Blue Background");
 
@@ -255,8 +261,7 @@ public class MagellanSkin extends SubstanceSkin {
 					@Override
 					public Color query(SubstanceColorScheme scheme) {
 						Color fg = scheme.getForegroundColor();
-						return new Color(fg.getRed(), fg.getGreen(), fg
-								.getBlue(), 40);
+						return SubstanceColorUtilities.getAlphaColor(fg, 40);
 					}
 				});
 		this.addOverlayPainter(this.toolbarTopLineOverlayPainter,
@@ -264,14 +269,11 @@ public class MagellanSkin extends SubstanceSkin {
 
 		// add an overlay painter to paint a bezel line along the top
 		// edge of footer
-		this.footerTopBezelOverlayPainter = new TopBezelOverlayPainter(
-				ColorSchemeSingleColorQuery.FOREGROUND,
-				ColorSchemeSingleColorQuery.ULTRALIGHT);
-		this.addOverlayPainter(this.footerTopBezelOverlayPainter,
-				DecorationAreaType.FOOTER);
+		this.footerTopShadowOverlayPainter = TopShadowOverlayPainter.getInstance();
+		this.addOverlayPainter(this.footerTopShadowOverlayPainter, DecorationAreaType.FOOTER);
 
-		setSelectedTabFadeStart(0.2);
-		setSelectedTabFadeEnd(0.9);
+		this.setTabFadeStart(0.18);
+		this.setTabFadeEnd(0.18);
 
 		SubstanceBorderPainter outerBorderPainter = new FractionBasedBorderPainter(
 				"Magellan Outer", new float[] { 0.0f, 0.5f, 1.0f },

@@ -131,7 +131,9 @@ public class SubstanceListUI extends BasicListUI implements
 			// in a separate event
 			SwingUtilities.invokeLater(() -> {
 				handleListSelectionChange(e);
-				list.repaint();
+				if (list != null) {
+					list.repaint();
+				}
 			});
 		}
 

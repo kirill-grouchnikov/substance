@@ -48,16 +48,14 @@ public class GlassFillPainter extends StandardFillPainter {
 
 	@Override
 	public Color getTopFillColor(SubstanceColorScheme fillScheme) {
-		return SubstanceColorUtilities.getInterpolatedColor(super
-				.getBottomFillColor(fillScheme), super
-				.getMidFillColorTop(fillScheme), 0.6);
+		return SubstanceColorUtilities.getInterpolatedColor(super.getBottomFillColor(fillScheme),
+				super.getMidFillColorTop(fillScheme), 0.6f);
 	}
 
 	@Override
 	public Color getMidFillColorTop(SubstanceColorScheme fillScheme) {
-		return SubstanceColorUtilities.getInterpolatedColor(this
-				.getTopFillColor(fillScheme), super
-				.getMidFillColorTop(fillScheme), 0.8);
+		return SubstanceColorUtilities.getInterpolatedColor(this.getTopFillColor(fillScheme),
+				super.getMidFillColorTop(fillScheme), 0.8f);
 	}
 
 	@Override
@@ -67,8 +65,7 @@ public class GlassFillPainter extends StandardFillPainter {
 
 	@Override
 	public Color getBottomFillColor(SubstanceColorScheme fillScheme) {
-		return SubstanceColorUtilities.getInterpolatedColor(this
-				.getMidFillColorBottom(fillScheme), super
-				.getBottomFillColor(fillScheme), 0.7);
+		return SubstanceColorUtilities.getInterpolatedColor(this.getMidFillColorBottom(fillScheme),
+				super.getBottomFillColor(fillScheme), 0.7f);
 	}
 }

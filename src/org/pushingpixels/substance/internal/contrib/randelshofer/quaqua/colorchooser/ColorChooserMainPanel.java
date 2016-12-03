@@ -14,15 +14,26 @@
 
 package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.EnumSet;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.border.EmptyBorder;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 
-import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.util.Methods;
-
+import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 
 /**
  * The main panel of the color chooser UI.
@@ -45,10 +56,6 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
 	/** Creates new form. */
 	public ColorChooserMainPanel() {
 		initComponents();
-		toolBar
-				.putClientProperty("Quaqua.ToolBar.isDividerDrawn",
-						Boolean.TRUE);
-
 	}
 
 	public void setPreviewPanel(JComponent c) {
@@ -64,22 +71,29 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
 		if (displayName.equals("Color Picker")) {
 			northPanel.add(ccp, BorderLayout.WEST);
 		} else {
-			Icon displayIcon = ccp.getLargeDisplayIcon();
-			JToggleButton tb = new JToggleButton(null, displayIcon);
+			// Get the registered icon and wrap it as hi-dpi aware icon
+			final HiDpiAwareIcon displayIcon = new HiDpiAwareIcon(ccp.getLargeDisplayIcon());
+			JToggleButton tb = new JToggleButton();
+			// Create a transition-aware wrapper around our icon so that it is colorized
+			// based on the color scheme that matches the current state of our toggle button
+			tb.setIcon(new TransitionAwareIcon(tb, new TransitionAwareIcon.Delegate() {
+				@Override
+				public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
+					return displayIcon.colorize(SubstanceColorUtilities.getMarkColor(scheme, true));
+				}
+			}, ccp.getDisplayName()));
+			
 			tb.setToolTipText(displayName);
-			Methods.invokeIfExists(tb, "setFocusable", false);
-			tb.setHorizontalTextPosition(SwingConstants.CENTER);
-			tb.setVerticalTextPosition(SwingConstants.BOTTOM);
-			tb.setFont(UIManager.getFont("ColorChooser.font"));
-			tb.putClientProperty("Quaqua.Button.style", "toolBarTab");
+			tb.setFocusable(false);
+			tb.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
+					EnumSet.allOf(SubstanceConstants.Side.class));
 			JPanel centerView = new JPanel(new BorderLayout());
 			centerView.add(ccp);
 			chooserPanelHolder.add(centerView, displayName);
 			toolBarButtonGroup.add(tb);
 			toolBar.add(tb);
 
-			if (toolBar.getComponentCount() == 1
-					|| lastSelectedChooserName != null
+			if (toolBar.getComponentCount() == 1 || lastSelectedChooserName != null
 					&& lastSelectedChooserName.equals(displayName)) {
 				tb.setSelected(true);
 				CardLayout cl = (CardLayout) chooserPanelHolder.getLayout();
@@ -89,8 +103,7 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
 			tb.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent evt) {
 					if (evt.getStateChange() == ItemEvent.SELECTED) {
-						CardLayout cl = (CardLayout) chooserPanelHolder
-								.getLayout();
+						CardLayout cl = (CardLayout) chooserPanelHolder.getLayout();
 						cl.show(chooserPanelHolder, displayName);
 						lastSelectedChooserName = displayName;
 					}
@@ -133,11 +146,12 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
 
 		mainPanel.setLayout(new java.awt.BorderLayout());
 
-		mainPanel.setBorder(new javax.swing.border.EmptyBorder(
-				new java.awt.Insets(5, 4, 7, 4)));
+		mainPanel.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(5, 4, 7, 4)));
 		northPanel.setLayout(new java.awt.BorderLayout());
 
 		previewPanelHolder.setLayout(new java.awt.BorderLayout());
+		boolean isLtr = northPanel.getComponentOrientation().isLeftToRight();
+		previewPanelHolder.setBorder(new EmptyBorder(0, isLtr ? 4 : 0, 0, isLtr ? 0 : 4));
 
 		northPanel.add(previewPanelHolder, java.awt.BorderLayout.CENTER);
 
@@ -145,8 +159,8 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
 
 		chooserPanelHolder.setLayout(new java.awt.CardLayout());
 
-		chooserPanelHolder.setBorder(new javax.swing.border.EmptyBorder(
-				new java.awt.Insets(5, 0, 0, 0)));
+		chooserPanelHolder
+				.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(5, 0, 0, 0)));
 		mainPanel.add(chooserPanelHolder, java.awt.BorderLayout.CENTER);
 
 		add(mainPanel, java.awt.BorderLayout.CENTER);
