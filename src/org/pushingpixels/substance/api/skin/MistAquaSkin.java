@@ -59,11 +59,12 @@ public class MistAquaSkin extends SubstanceSkin {
 	 * Creates a new <code>Silver Aqua</code> skin.
 	 */
 	public MistAquaSkin() {
+		SubstanceSkin.ColorSchemes colorSchemes = SubstanceSkin
+				.getColorSchemes("org/pushingpixels/substance/api/skin/mist.colorschemes");
+
 		SubstanceColorScheme activeScheme = new AquaColorScheme();
-		SubstanceColorScheme enabledScheme = new MetallicColorScheme().shade(
-				0.05).named("Mist Aqua Enabled");
-		SubstanceColorScheme disabledScheme = new LightGrayColorScheme().tone(
-				0.2).named("Mist Aqua Disabled");
+		SubstanceColorScheme enabledScheme = colorSchemes.get("Mist Enabled");
+		SubstanceColorScheme disabledScheme = colorSchemes.get("Mist Disabled");
 
 		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
 				activeScheme, enabledScheme, disabledScheme);
@@ -72,8 +73,7 @@ public class MistAquaSkin extends SubstanceSkin {
 
 		this.registerDecorationAreaSchemeBundle(new SubstanceColorSchemeBundle(
 				activeScheme, enabledScheme, disabledScheme),
-				new SteelBlueColorScheme().saturate(-0.3).tint(0.5).named(
-						"Mist Aqua Background"), DecorationAreaType.GENERAL);
+				colorSchemes.get("Mist Aqua Background"), DecorationAreaType.GENERAL);
 
 		this.registerAsDecorationArea(enabledScheme,
 				DecorationAreaType.PRIMARY_TITLE_PANE,

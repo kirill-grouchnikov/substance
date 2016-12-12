@@ -663,8 +663,7 @@ public class SubstanceCoreUtilities {
 		}
 
 		if (UIUtil.isRetina()) {
-			return new JBHiDPIScaledImage(width, height,
-					Transparency.TRANSLUCENT);
+			return new JBHiDPIScaledImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		} else {
 			GraphicsEnvironment e = GraphicsEnvironment
 					.getLocalGraphicsEnvironment();

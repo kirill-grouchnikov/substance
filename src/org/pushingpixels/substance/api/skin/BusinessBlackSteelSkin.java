@@ -65,69 +65,65 @@ public class BusinessBlackSteelSkin extends SubstanceSkin {
 	 * Creates a new <code>Business</code> skin.
 	 */
 	public BusinessBlackSteelSkin() {
-		SubstanceColorScheme activeScheme = new SteelBlueColorScheme().tint(
-				0.15).named("Business Black Steel Active");
-		SubstanceColorScheme enabledScheme = new MetallicColorScheme().tint(
-				0.05).named("Business Black Steel Enabled");
-		SubstanceColorScheme disabledScheme = new LightGrayColorScheme().tint(
-				0.05).named("Business Black Steel Disabled");
+		SubstanceSkin.ColorSchemes businessSchemes = SubstanceSkin
+				.getColorSchemes("org/pushingpixels/substance/api/skin/business.colorschemes");
+
+		SubstanceColorScheme activeScheme = businessSchemes.get("Business Black Steel Active");
+		SubstanceColorScheme enabledScheme = businessSchemes.get("Business Black Steel Enabled");
+		SubstanceColorScheme disabledScheme = businessSchemes.get("Business Black Steel Disabled");
 
 		// the default color scheme bundle
 		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
 				activeScheme, enabledScheme, disabledScheme);
-		defaultSchemeBundle.registerColorScheme(activeScheme, 0.5f, ComponentState.DISABLED_SELECTED);
+		defaultSchemeBundle.registerColorScheme(activeScheme, 0.5f,
+				ComponentState.DISABLED_SELECTED);
 		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.6f,
 				ComponentState.ROLLOVER_UNSELECTED);
 		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f,
 				ComponentState.SELECTED);
 		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.95f,
 				ComponentState.ROLLOVER_SELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f,
-				ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
-		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
-				DecorationAreaType.NONE);
+		defaultSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f, ComponentState.ARMED,
+				ComponentState.ROLLOVER_ARMED);
+		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, DecorationAreaType.NONE);
 
 		// color scheme bundle for title panes
-		SubstanceColorScheme activeHeaderScheme = new EbonyColorScheme()
-				.shiftBackground(Color.black, 0.3).tint(0.05).named(
-						"Business Black Steel Active Header");
-		SubstanceColorScheme enabledHeaderScheme = new EbonyColorScheme().tint(
-				0.05).named("Business Black Steel Enabled Header");
+		SubstanceColorScheme activeHeaderScheme = businessSchemes
+				.get("Business Black Steel Active Header");
+		SubstanceColorScheme enabledHeaderScheme = businessSchemes
+				.get("Business Black Steel Enabled Header");
 		SubstanceColorSchemeBundle headerSchemeBundle = new SubstanceColorSchemeBundle(
 				activeHeaderScheme, enabledHeaderScheme, disabledScheme);
 		headerSchemeBundle.registerColorScheme(enabledHeaderScheme, 0.5f,
-				ComponentState.DISABLED_UNSELECTED,
-				ComponentState.DISABLED_SELECTED);
+				ComponentState.DISABLED_UNSELECTED, ComponentState.DISABLED_SELECTED);
 		headerSchemeBundle.registerHighlightColorScheme(activeScheme, 0.6f,
 				ComponentState.ROLLOVER_UNSELECTED);
 		headerSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f,
 				ComponentState.SELECTED);
 		headerSchemeBundle.registerHighlightColorScheme(activeScheme, 0.95f,
 				ComponentState.ROLLOVER_SELECTED);
-		headerSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f,
-				ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
+		headerSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f, ComponentState.ARMED,
+				ComponentState.ROLLOVER_ARMED);
 
-		this.registerDecorationAreaSchemeBundle(headerSchemeBundle,
-				activeHeaderScheme, DecorationAreaType.PRIMARY_TITLE_PANE,
-				DecorationAreaType.SECONDARY_TITLE_PANE,
+		this.registerDecorationAreaSchemeBundle(headerSchemeBundle, activeHeaderScheme,
+				DecorationAreaType.PRIMARY_TITLE_PANE, DecorationAreaType.SECONDARY_TITLE_PANE,
 				DecorationAreaType.HEADER);
 
 		// color scheme bundle for general areas
-		SubstanceColorScheme activeGeneralScheme = activeScheme.shade(0.1)
-				.saturate(-0.5).named("Business Black Steel Active General");
-		SubstanceColorScheme enabledGeneralScheme = activeScheme.tint(0.3)
-				.saturate(-0.7).named("Business Black Steel Enabled General");
+		SubstanceColorScheme activeGeneralScheme = businessSchemes
+				.get("Business Black Steel Active General");
+		SubstanceColorScheme enabledGeneralScheme = businessSchemes
+				.get("Business Black Steel Enabled General");
 		SubstanceColorSchemeBundle generalSchemeBundle = new SubstanceColorSchemeBundle(
 				activeGeneralScheme, enabledGeneralScheme, disabledScheme);
 		generalSchemeBundle.registerColorScheme(disabledScheme, 0.5f,
 				ComponentState.DISABLED_UNSELECTED);
-		this.registerDecorationAreaSchemeBundle(generalSchemeBundle,
-				DecorationAreaType.FOOTER, DecorationAreaType.GENERAL);
+		this.registerDecorationAreaSchemeBundle(generalSchemeBundle, DecorationAreaType.FOOTER,
+				DecorationAreaType.GENERAL);
 
 		// add an overlay painter to paint a drop shadow along the top
 		// edge of toolbars
-		this.addOverlayPainter(TopShadowOverlayPainter.getInstance(),
-				DecorationAreaType.TOOLBAR);
+		this.addOverlayPainter(TopShadowOverlayPainter.getInstance(), DecorationAreaType.TOOLBAR);
 
 		this.buttonShaper = new ClassicButtonShaper();
 		this.fillPainter = new ClassicFillPainter();

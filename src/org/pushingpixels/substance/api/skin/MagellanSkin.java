@@ -50,7 +50,6 @@ import org.pushingpixels.substance.api.painter.fill.FractionBasedFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
 import org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter;
 import org.pushingpixels.substance.api.painter.overlay.BottomShadowOverlayPainter;
-import org.pushingpixels.substance.api.painter.overlay.TopBezelOverlayPainter;
 import org.pushingpixels.substance.api.painter.overlay.TopLineOverlayPainter;
 import org.pushingpixels.substance.api.painter.overlay.TopShadowOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;

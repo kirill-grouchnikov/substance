@@ -661,7 +661,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	public void paintFocus(Graphics g) {
 		SubstanceCoreUtilities.paintFocus(g, this.slider, this.slider, this,
 				null, null, 1.0f, SubstanceSizeUtils.getFocusStrokeWidth(
-						SubstanceSizeUtils.getComponentFontSize(this.slider)) / 2);
+						SubstanceSizeUtils.getComponentFontSize(this.slider)));
 	}
 
 	/**

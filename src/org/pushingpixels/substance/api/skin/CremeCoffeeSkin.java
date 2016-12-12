@@ -63,11 +63,9 @@ public class CremeCoffeeSkin extends SubstanceSkin {
 	public CremeCoffeeSkin() {
 		SubstanceSkin.ColorSchemes kitchenSinkSchemes = SubstanceSkin
 				.getColorSchemes("org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes");
-		SubstanceColorScheme activeScheme = kitchenSinkSchemes
-				.get("Coffee Active");
+		SubstanceColorScheme activeScheme = kitchenSinkSchemes.get("Coffee Active");
 		SubstanceColorScheme enabledScheme = new CremeColorScheme();
-		SubstanceColorScheme disabledScheme = new LightGrayColorScheme().tint(
-				0.35).named("Creme Coffee Disabled");
+		SubstanceColorScheme disabledScheme = kitchenSinkSchemes.get("Creme Disabled");
 
 		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
 				activeScheme, enabledScheme, disabledScheme);

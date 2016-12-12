@@ -138,6 +138,11 @@ public class SubstanceColorSchemeBundle {
 	public SubstanceColorSchemeBundle(SubstanceColorScheme activeColorScheme,
 			SubstanceColorScheme enabledColorScheme,
 			SubstanceColorScheme disabledColorScheme) {
+		if ((activeColorScheme == null) || (enabledColorScheme == null) 
+				|| (disabledColorScheme == null)) {
+			throw new IllegalArgumentException("Cannot pass null schemes");
+		}
+		
 		this.activeColorScheme = activeColorScheme;
 		this.enabledColorScheme = enabledColorScheme;
 		this.disabledColorScheme = disabledColorScheme;
@@ -191,6 +196,9 @@ public class SubstanceColorSchemeBundle {
 	 */
 	public void registerColorScheme(SubstanceColorScheme stateColorScheme,
 			float alpha, ColorSchemeAssociationKind associationKind, ComponentState... states) {
+		if (stateColorScheme == null) {
+			throw new IllegalArgumentException("Cannot pass null color scheme");
+		}
 		if (states != null) {
 			for (ComponentState state : states) {
 				this.colorSchemeMap.get(associationKind).put(state, stateColorScheme);
@@ -225,6 +233,9 @@ public class SubstanceColorSchemeBundle {
 	 */
 	public void registerHighlightColorScheme(
 			SubstanceColorScheme stateHighlightScheme, ComponentState... states) {
+		if (stateHighlightScheme == null) {
+			throw new IllegalArgumentException("Cannot pass null color scheme");
+		}
 		if ((states == null) || (states.length == 0)) {
 			for (ComponentState state : ComponentState.getAllStates()) {
 				if (this.colorSchemeMap.get(ColorSchemeAssociationKind.HIGHLIGHT).containsKey(state))

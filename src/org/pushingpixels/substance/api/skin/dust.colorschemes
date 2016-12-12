@@ -75,6 +75,17 @@ Dust Header Enabled {
     colorForeground=#C1C2C2
 }
 
+Dust Header Disabled {
+    kind=Dark
+    colorUltraLight=#3C3B37
+    colorExtraLight=#3B3A36
+    colorLight=#393834
+    colorMid=#3B3A36
+    colorDark=#33322E
+    colorUltraDark=#2F2E2C
+    colorForeground=#717272
+}
+
 Dust Header Separator {
     kind=Dark
     colorUltraLight=#3F3D3A

@@ -1212,10 +1212,9 @@ public final class SubstanceImageCreator {
 		int joinKind = BasicStroke.JOIN_ROUND;
 		int capKind = BasicStroke.CAP_BUTT;
 		g2d.setStroke(new BasicStroke(borderThickness, capKind, joinKind));
-		g2d.draw(new Rectangle2D.Float((borderThickness - 1.0f) / 2.0f,
-				(borderThickness - 1.0f) / 2.0f, width - 1
-						- (borderThickness - 1.5f), height - 1
-						- (borderThickness - 1.5f)));
+		g2d.draw(new Rectangle2D.Float(borderThickness / 2.0f, borderThickness / 2.0f, 
+				width - borderThickness, 
+				height - borderThickness));
 		// g2d.drawRect(borderDelta, borderDelta, width - 1 - borderDelta2,
 		// height
 		// - 1 - borderDelta2);

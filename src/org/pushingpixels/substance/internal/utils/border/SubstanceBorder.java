@@ -174,11 +174,10 @@ public class SubstanceBorder implements Border, UIResource {
 				finalAlpha, g));
 
 		if (width * height < 100000) {
-			HashMapKey hashKey = SubstanceCoreUtilities
-					.getHashKey(SubstanceCoreUtilities.getBorderPainter(c)
-							.getDisplayName(), SubstanceSizeUtils
-							.getComponentFontSize(c), width, height, radius,
-							borderColorScheme.getDisplayName());
+			HashMapKey hashKey = SubstanceCoreUtilities.getHashKey(
+					SubstanceCoreUtilities.getBorderPainter(c).getDisplayName(),
+					SubstanceSizeUtils.getComponentFontSize(c), width, height, radius,
+					borderColorScheme.getDisplayName());
 			BufferedImage result = smallImageCache.get(hashKey);
 			if (result == null) {
 				result = SubstanceCoreUtilities.getBlankImage(width, height);

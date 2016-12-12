@@ -47,7 +47,6 @@ import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter
 import org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter;
 import org.pushingpixels.substance.api.painter.overlay.BottomShadowOverlayPainter;
 import org.pushingpixels.substance.api.painter.overlay.TopBezelOverlayPainter;
-import org.pushingpixels.substance.api.painter.overlay.TopLineOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 
 /**
@@ -139,7 +138,7 @@ public class MarinerSkin extends SubstanceSkin {
 		SubstanceColorScheme headerBorderColorScheme = schemes.get("Mariner Header Border");
 		SubstanceColorSchemeBundle headerSchemeBundle = new SubstanceColorSchemeBundle(
 				headerColorScheme, headerColorScheme, headerColorScheme);
-		headerSchemeBundle.registerColorScheme(headerColorScheme, 0.5f,
+		headerSchemeBundle.registerColorScheme(headerColorScheme, 0.4f,
 				ComponentState.DISABLED_SELECTED,
 				ComponentState.DISABLED_UNSELECTED);
 		headerSchemeBundle.registerColorScheme(headerColorScheme,

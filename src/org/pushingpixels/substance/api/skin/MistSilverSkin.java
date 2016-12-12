@@ -60,14 +60,13 @@ public class MistSilverSkin extends SubstanceSkin {
 	 * Creates a new <code>Silver</code> skin.
 	 */
 	public MistSilverSkin() {
-		SubstanceColorScheme activeScheme = new MetallicColorScheme().tint(0.1)
-				.named("Mist Silver Active");
-		SubstanceColorScheme enabledScheme = new MetallicColorScheme().shade(
-				0.05).named("Mist Silver Enabled");
-		SubstanceColorScheme disabledScheme = new LightGrayColorScheme().tone(
-				0.2).named("Mist Silver Disabled");
-		SubstanceColorScheme lightBlueScheme = new SteelBlueColorScheme()
-				.saturate(-0.3).tint(0.5).named("Mist Silver Light Blue");
+		SubstanceSkin.ColorSchemes colorSchemes = SubstanceSkin
+				.getColorSchemes("org/pushingpixels/substance/api/skin/mist.colorschemes");
+
+		SubstanceColorScheme activeScheme = colorSchemes.get("Mist Silver Active");
+		SubstanceColorScheme enabledScheme = colorSchemes.get("Mist Enabled");
+		SubstanceColorScheme disabledScheme = colorSchemes.get("Mist Disabled");
+		SubstanceColorScheme lightBlueScheme = colorSchemes.get("Mist Silver Light Blue");
 
 		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
 				activeScheme, enabledScheme, disabledScheme);

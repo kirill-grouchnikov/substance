@@ -587,9 +587,9 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 		}
 
 		if (!this.comboBox.isEditable()) {
-			Rectangle r = new Rectangle(insets.left, layoutInsets.top, width
-					- insets.left - insets.right, height - layoutInsets.top
-					- layoutInsets.bottom);
+			Rectangle r = new Rectangle(insets.left, layoutInsets.top,
+					width - insets.left - insets.right,
+					height - layoutInsets.top - layoutInsets.bottom);
 			this.paintFocus(graphics, r);
 		}
 
@@ -606,17 +606,15 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 	 */
 	protected void paintFocus(Graphics g, Rectangle bounds) {
 		int fontSize = SubstanceSizeUtils.getComponentFontSize(this.comboBox);
-		int focusRingPadding = SubstanceSizeUtils.getFocusRingPadding(fontSize) / 2;
 		int x = bounds.x;
 		int y = bounds.y;
 		Graphics2D g2d = (Graphics2D) g.create();
 		g2d.translate(x, y);
 
-		SubstanceCoreUtilities.paintFocus(g2d, this.comboBox, this.comboBox,
-				this, SubstanceOutlineUtilities.getBaseOutline(bounds.width,
-						bounds.height, SubstanceSizeUtils
-								.getClassicButtonCornerRadius(fontSize), null,
-						0), bounds, 1.0f, focusRingPadding);
+		SubstanceCoreUtilities.paintFocus(g2d, this.comboBox, this.comboBox, this,
+				SubstanceOutlineUtilities.getBaseOutline(bounds.width, bounds.height,
+						SubstanceSizeUtils.getClassicButtonCornerRadius(fontSize), null, 0),
+				bounds, 1.0f, 0.0f);
 
 		g2d.dispose();
 	}

@@ -89,64 +89,50 @@ public class DustSkin extends SubstanceSkin {
 				ComponentState.DISABLED_SELECTED);
 
 		// borders
-		SubstanceColorScheme borderEnabledScheme = schemes
-				.get("Dust Border Enabled");
-		SubstanceColorScheme borderActiveScheme = schemes
-				.get("Dust Border Active");
+		SubstanceColorScheme borderEnabledScheme = schemes.get("Dust Border Enabled");
+		SubstanceColorScheme borderActiveScheme = schemes.get("Dust Border Active");
 
 		defaultSchemeBundle.registerColorScheme(borderEnabledScheme,
 				ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED,
-				ComponentState.DISABLED_SELECTED,
-				ComponentState.DISABLED_UNSELECTED);
+				ComponentState.DISABLED_SELECTED, ComponentState.DISABLED_UNSELECTED);
 		defaultSchemeBundle.registerColorScheme(borderActiveScheme,
-				ColorSchemeAssociationKind.BORDER, ComponentState
-						.getActiveStates());
+				ColorSchemeAssociationKind.BORDER, ComponentState.getActiveStates());
 		defaultSchemeBundle.registerColorScheme(borderEnabledScheme.shade(0.3),
 				ColorSchemeAssociationKind.MARK);
 
-		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
-				DecorationAreaType.NONE);
+		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, DecorationAreaType.NONE);
 
 		// header color scheme bundle
-		SubstanceColorScheme headerActiveScheme = schemes
-				.get("Dust Header Active");
-		SubstanceColorScheme headerEnabledScheme = schemes
-				.get("Dust Header Enabled");
+		SubstanceColorScheme headerActiveScheme = schemes.get("Dust Header Active");
+		SubstanceColorScheme headerEnabledScheme = schemes.get("Dust Header Enabled");
+		SubstanceColorScheme headerDisabledScheme = schemes.get("Dust Header Disabled");
 
-		SubstanceColorScheme headerWatermarkScheme = schemes
-				.get("Dust Header Watermark");
+		SubstanceColorScheme headerWatermarkScheme = schemes.get("Dust Header Watermark");
 
-		SubstanceColorScheme headerSeparatorScheme = schemes
-				.get("Dust Header Separator");
+		SubstanceColorScheme headerSeparatorScheme = schemes.get("Dust Header Separator");
 
-		SubstanceColorScheme headerBorderScheme = schemes
-				.get("Dust Header Border");
+		SubstanceColorScheme headerBorderScheme = schemes.get("Dust Header Border");
 
 		SubstanceColorSchemeBundle headerSchemeBundle = new SubstanceColorSchemeBundle(
-				headerActiveScheme, headerEnabledScheme, headerEnabledScheme);
-		headerSchemeBundle.registerColorScheme(headerEnabledScheme, 0.7f,
-				ComponentState.DISABLED_UNSELECTED);
-		headerSchemeBundle.registerColorScheme(headerActiveScheme, 0.7f,
-				ComponentState.DISABLED_SELECTED);
+				headerActiveScheme, headerEnabledScheme, headerDisabledScheme);
+		headerSchemeBundle.registerColorScheme(headerDisabledScheme, 0.7f,
+				ComponentState.DISABLED_UNSELECTED, ComponentState.DISABLED_SELECTED);
 
 		headerSchemeBundle.registerColorScheme(headerBorderScheme,
 				ColorSchemeAssociationKind.BORDER);
 		headerSchemeBundle.registerColorScheme(headerSeparatorScheme,
 				ColorSchemeAssociationKind.SEPARATOR);
 
-		headerSchemeBundle.registerHighlightColorScheme(headerActiveScheme,
-				1.0f);
+		headerSchemeBundle.registerHighlightColorScheme(headerActiveScheme, 1.0f);
 		// the next line is to have consistent coloring during the rollover
 		// menu animations
-		headerSchemeBundle.registerHighlightColorScheme(headerActiveScheme,
-				0.0f, ComponentState.ENABLED);
+		headerSchemeBundle.registerHighlightColorScheme(headerActiveScheme, 0.0f,
+				ComponentState.ENABLED);
 
-		this.registerDecorationAreaSchemeBundle(headerSchemeBundle,
-				DecorationAreaType.TOOLBAR);
+		this.registerDecorationAreaSchemeBundle(headerSchemeBundle, DecorationAreaType.TOOLBAR);
 
-		this.registerDecorationAreaSchemeBundle(headerSchemeBundle,
-				headerWatermarkScheme, DecorationAreaType.PRIMARY_TITLE_PANE,
-				DecorationAreaType.SECONDARY_TITLE_PANE,
+		this.registerDecorationAreaSchemeBundle(headerSchemeBundle, headerWatermarkScheme,
+				DecorationAreaType.PRIMARY_TITLE_PANE, DecorationAreaType.SECONDARY_TITLE_PANE,
 				DecorationAreaType.HEADER, DecorationAreaType.FOOTER);
 
 		setTabFadeStart(0.1);
@@ -154,42 +140,34 @@ public class DustSkin extends SubstanceSkin {
 
 		// add two overlay painters to create a bezel line between
 		// menu bar and toolbars
-		this.menuOverlayPainter = new BottomLineOverlayPainter(
-				new ColorSchemeSingleColorQuery() {
-					@Override
-					public Color query(SubstanceColorScheme scheme) {
-						return scheme.getUltraDarkColor().darker();
-					}
-				});
-		this.toolbarOverlayPainter = new TopLineOverlayPainter(
-				new ColorSchemeSingleColorQuery() {
-					@Override
-					public Color query(SubstanceColorScheme scheme) {
-						Color fg = scheme.getForegroundColor();
-						return new Color(fg.getRed(), fg.getGreen(), fg
-								.getBlue(), 32);
-					}
-				});
-		this.addOverlayPainter(this.menuOverlayPainter,
-				DecorationAreaType.HEADER);
-		this.addOverlayPainter(this.toolbarOverlayPainter,
-				DecorationAreaType.TOOLBAR);
+		this.menuOverlayPainter = new BottomLineOverlayPainter(new ColorSchemeSingleColorQuery() {
+			@Override
+			public Color query(SubstanceColorScheme scheme) {
+				return scheme.getUltraDarkColor().darker();
+			}
+		});
+		this.toolbarOverlayPainter = new TopLineOverlayPainter(new ColorSchemeSingleColorQuery() {
+			@Override
+			public Color query(SubstanceColorScheme scheme) {
+				Color fg = scheme.getForegroundColor();
+				return new Color(fg.getRed(), fg.getGreen(), fg.getBlue(), 32);
+			}
+		});
+		this.addOverlayPainter(this.menuOverlayPainter, DecorationAreaType.HEADER);
+		this.addOverlayPainter(this.toolbarOverlayPainter, DecorationAreaType.TOOLBAR);
 
 		this.buttonShaper = new ClassicButtonShaper();
 		this.watermark = null;
 		this.fillPainter = new StandardFillPainter();
 		this.decorationPainter = new MatteDecorationPainter();
 		this.highlightPainter = new ClassicHighlightPainter();
-		this.borderPainter = new CompositeBorderPainter("Dust",
-				new ClassicBorderPainter(), new DelegateBorderPainter(
-						"Dust Inner", new ClassicBorderPainter(), 0x60FFFFFF,
+		this.borderPainter = new CompositeBorderPainter("Dust", new ClassicBorderPainter(),
+				new DelegateBorderPainter("Dust Inner", new ClassicBorderPainter(), 0x60FFFFFF,
 						0x30FFFFFF, 0x18FFFFFF, new ColorSchemeTransform() {
 							@Override
-							public SubstanceColorScheme transform(
-									SubstanceColorScheme scheme) {
-								return scheme.shiftBackground(
-										scheme.getUltraLightColor(), 0.8).tint(
-										0.6).saturate(0.2);
+							public SubstanceColorScheme transform(SubstanceColorScheme scheme) {
+								return scheme.shiftBackground(scheme.getUltraLightColor(), 0.8)
+										.tint(0.6).saturate(0.2);
 							}
 						}));
 	}

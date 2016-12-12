@@ -53,11 +53,11 @@ public class CremeSkin extends SubstanceSkin {
 	 * Creates a new <code>Creme</code> skin.
 	 */
 	public CremeSkin() {
-		SubstanceColorScheme activeScheme = new LightAquaColorScheme()
-				.tint(0.3).named("Creme Active");
+		SubstanceSkin.ColorSchemes kitchenSinkSchemes = SubstanceSkin
+				.getColorSchemes("org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes");
+		SubstanceColorScheme activeScheme = kitchenSinkSchemes.get("Creme Active");
 		SubstanceColorScheme enabledScheme = new CremeColorScheme();
-		SubstanceColorScheme disabledScheme = new LightGrayColorScheme().tint(
-				0.35).named("Creme Disabled");
+		SubstanceColorScheme disabledScheme = kitchenSinkSchemes.get("Creme Disabled");
 
 		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
 				activeScheme, enabledScheme, disabledScheme);

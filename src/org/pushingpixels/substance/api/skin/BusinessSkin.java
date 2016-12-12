@@ -37,7 +37,6 @@ import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
 import org.pushingpixels.substance.api.SubstanceSkin;
-import org.pushingpixels.substance.api.colorscheme.MetallicColorScheme;
 import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
 import org.pushingpixels.substance.api.painter.border.CompositeBorderPainter;
 import org.pushingpixels.substance.api.painter.border.DelegateBorderPainter;
@@ -65,47 +64,43 @@ public class BusinessSkin extends SubstanceSkin {
 	 * Creates a new <code>Business</code> skin.
 	 */
 	public BusinessSkin() {
-		SubstanceColorScheme activeScheme = new MetallicColorScheme()
-				.tint(0.15).named("Business Active");
-		SubstanceColorScheme enabledScheme = new MetallicColorScheme().shade(
-				0.1).named("Business Enabled");
+		SubstanceSkin.ColorSchemes businessSchemes = SubstanceSkin
+				.getColorSchemes("org/pushingpixels/substance/api/skin/business.colorschemes");
+
+		SubstanceColorScheme activeScheme = businessSchemes.get("Business Active");
+		SubstanceColorScheme enabledScheme = businessSchemes.get("Business Enabled");
 		SubstanceColorScheme disabledScheme = enabledScheme;
 
 		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
 				activeScheme, enabledScheme, disabledScheme);
 
-		SubstanceSkin.ColorSchemes kitchenSinkSchemes = SubstanceSkin
-				.getColorSchemes("org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes");
-		SubstanceColorScheme highlightColorScheme = kitchenSinkSchemes
-				.get("Business Highlight");
+		SubstanceColorScheme highlightColorScheme = businessSchemes.get("Business Highlight");
 		defaultSchemeBundle.registerHighlightColorScheme(highlightColorScheme);
 
-		defaultSchemeBundle.registerColorScheme(disabledScheme, 0.4f,
+		defaultSchemeBundle.registerColorScheme(disabledScheme, 0.7f,
 				ComponentState.DISABLED_UNSELECTED);
-		defaultSchemeBundle.registerColorScheme(activeScheme, 0.4f,
+		defaultSchemeBundle.registerColorScheme(activeScheme, 0.7f,
 				ComponentState.DISABLED_SELECTED);
-		defaultSchemeBundle.registerColorScheme(activeScheme,
-				ComponentState.SELECTED);
-		
+		defaultSchemeBundle.registerColorScheme(activeScheme, ComponentState.SELECTED);
+
 		defaultSchemeBundle.registerColorScheme(enabledScheme.shade(0.1),
-				ColorSchemeAssociationKind.TAB,
-				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED);
+				ColorSchemeAssociationKind.TAB, ComponentState.SELECTED,
+				ComponentState.ROLLOVER_SELECTED);
 
-		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
-				DecorationAreaType.NONE);
+		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, DecorationAreaType.NONE);
 
-		this.registerAsDecorationArea(enabledScheme,
-				DecorationAreaType.PRIMARY_TITLE_PANE,
-				DecorationAreaType.SECONDARY_TITLE_PANE,
-				DecorationAreaType.HEADER, DecorationAreaType.FOOTER);
+		this.registerAsDecorationArea(enabledScheme, DecorationAreaType.PRIMARY_TITLE_PANE,
+				DecorationAreaType.SECONDARY_TITLE_PANE, DecorationAreaType.HEADER,
+				DecorationAreaType.FOOTER);
 
+		SubstanceSkin.ColorSchemes kitchenSinkSchemes = SubstanceSkin
+				.getColorSchemes("org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes");
 		this.registerAsDecorationArea(kitchenSinkSchemes.get("LightGray General Watermark"),
-						DecorationAreaType.GENERAL);
+				DecorationAreaType.GENERAL);
 
 		// add an overlay painter to paint a drop shadow along the top
 		// edge of toolbars
-		this.addOverlayPainter(TopShadowOverlayPainter.getInstance(),
-				DecorationAreaType.TOOLBAR);
+		this.addOverlayPainter(TopShadowOverlayPainter.getInstance(), DecorationAreaType.TOOLBAR);
 
 		// add an overlay painter to paint separator lines along the bottom
 		// edges of title panes and menu bars
@@ -115,13 +110,11 @@ public class BusinessSkin extends SubstanceSkin {
 
 		this.buttonShaper = new ClassicButtonShaper();
 		this.fillPainter = new ClassicFillPainter();
-		this.borderPainter = new CompositeBorderPainter("Business",
-				new ClassicBorderPainter(), new DelegateBorderPainter(
-						"Business Inner", new ClassicBorderPainter(),
+		this.borderPainter = new CompositeBorderPainter("Business", new ClassicBorderPainter(),
+				new DelegateBorderPainter("Business Inner", new ClassicBorderPainter(),
 						new ColorSchemeTransform() {
 							@Override
-							public SubstanceColorScheme transform(
-									SubstanceColorScheme scheme) {
+							public SubstanceColorScheme transform(SubstanceColorScheme scheme) {
 								return scheme.tint(0.9f);
 							}
 						}));

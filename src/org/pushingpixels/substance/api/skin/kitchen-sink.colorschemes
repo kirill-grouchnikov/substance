@@ -20,28 +20,6 @@ LightGray General Watermark {
     colorForeground=#4C535C
 }
 
-Business Blue Steel Highlight {
-    kind=Light
-    colorUltraLight=#FDEAB9
-    colorExtraLight=#F9E3A1
-    colorLight=#F9E07D
-    colorMid=#F3C96D
-    colorDark=#AC6C4D
-    colorUltraDark=#8F5D4D
-    colorForeground=#1A1A1A
-}
-
-Business Highlight {
-    kind=Light
-    colorUltraLight=#FDEAB9
-    colorExtraLight=#F9E3A1
-    colorLight=#F9E07D
-    colorMid=#F3C96D
-    colorDark=#AC6C4D
-    colorUltraDark=#8F5D4D
-    colorForeground=#1A1A1A
-}
-
 Moderate Highlight {
     kind=Light
     colorUltraLight=#FDE5A7
@@ -64,3 +42,24 @@ Gray Disabled {
     colorForeground=#70757A
 }
 
+Creme Active {
+    kind=Light
+    colorUltraLight=#E4F3FC
+    colorExtraLight=#D7EAF3
+    colorLight=#C5ECF7
+    colorMid=#ACDEF4
+    colorDark=#97CEEB
+    colorUltraDark=#9999B9
+    colorForeground=#32220F
+}
+
+Creme Disabled {
+    kind=Light
+    colorUltraLight=#FCFCFD
+    colorExtraLight=#F5F7F8
+    colorLight=#ECEEF0
+    colorMid=#E3E5E8
+    colorDark=#D2D5D8
+    colorUltraDark=#B0B2B4
+    colorForeground=#9B9EA2
+}

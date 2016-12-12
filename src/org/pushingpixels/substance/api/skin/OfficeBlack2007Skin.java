@@ -197,8 +197,10 @@ public class OfficeBlack2007Skin extends SubstanceSkin {
 				.get("Office Black Header Active");
 		SubstanceColorScheme enabledHeaderScheme = colorSchemes
 				.get("Office Black Header Enabled");
+		SubstanceColorScheme disabledHeaderScheme = colorSchemes
+				.get("Office Black Header Disabled");
 		SubstanceColorSchemeBundle headerSchemeBundle = new SubstanceColorSchemeBundle(
-				activeHeaderScheme, enabledHeaderScheme, disabledScheme);
+				activeHeaderScheme, enabledHeaderScheme, disabledHeaderScheme);
 
 		SubstanceColorScheme headerMarkEnabledScheme = colorSchemes
 				.get("Office Black Header Mark Enabled");
@@ -209,7 +211,7 @@ public class OfficeBlack2007Skin extends SubstanceSkin {
 				ComponentState.DISABLED_SELECTED,
 				ComponentState.DISABLED_UNSELECTED);
 
-		headerSchemeBundle.registerColorScheme(enabledHeaderScheme, 0.5f,
+		headerSchemeBundle.registerColorScheme(disabledHeaderScheme, 0.5f,
 				ComponentState.DISABLED_UNSELECTED,
 				ComponentState.DISABLED_SELECTED);
 		headerSchemeBundle.registerHighlightColorScheme(activeScheme, 0.6f,

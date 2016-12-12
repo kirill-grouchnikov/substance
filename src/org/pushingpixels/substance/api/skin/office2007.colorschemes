@@ -449,6 +449,17 @@ Office Black Header Enabled {
     colorForeground=#FFFFFF
 }
 
+Office Black Header Disabled {
+    kind=Dark
+    colorUltraLight=#5E5E5E
+    colorExtraLight=#545454
+    colorLight=#464646
+    colorMid=#333333
+    colorDark=#202020
+    colorUltraDark=#161616
+    colorForeground=#A0A0A0
+}
+
 Office Black Header Mark Enabled {
     kind=Light
     colorUltraLight=#B4BBC5

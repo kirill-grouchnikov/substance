@@ -29,19 +29,19 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import org.pushingpixels.substance.api.*;
-import org.pushingpixels.substance.api.colorscheme.BaseColorScheme;
-import org.pushingpixels.substance.api.colorscheme.SteelBlueColorScheme;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.ComponentStateFacet;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.painter.border.GlassBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.ArcDecorationPainter;
 import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.GlassHighlightPainter;
-import org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter;
 import org.pushingpixels.substance.api.painter.overlay.TopShadowOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
-import org.pushingpixels.substance.internal.colorscheme.BlendBiColorScheme;
-
-import java.awt.Color;
 
 /**
  * <code>Cerulean</code> skin. This class is part of officially supported API.
@@ -50,237 +50,124 @@ import java.awt.Color;
  * @since version 6.2
  */
 public class CeruleanSkin extends SubstanceSkin {
-    /**
-     * Display name for <code>this</code> skin.
-     */
-    public static final String NAME = "Cerulean";
+	/**
+	 * Display name for <code>this</code> skin.
+	 */
+	public static final String NAME = "Cerulean";
 
-    /**
-     * Creates a new <code>Nebulous</code> skin.
-     */
-    public CeruleanSkin() {
-        super();
+	/**
+	 * Creates a new <code>Nebulous</code> skin.
+	 */
+	public CeruleanSkin() {
+		super();
 
-        ColorSchemes schemes = SubstanceSkin
-                .getColorSchemes("org/pushingpixels/substance/api/skin/nebula.colorschemes");
+		SubstanceSkin.ColorSchemes ceruleanSchemes = SubstanceSkin
+				.getColorSchemes("org/pushingpixels/substance/api/skin/cerulean.colorschemes");
 
-        SubstanceColorScheme activeScheme = schemes.get("Nebula Active");
-        SubstanceColorScheme enabledScheme = schemes.get("Nebula Enabled").saturate(-0.9);
-        final SubstanceColorScheme pressedScheme = schemes.get("Nebula Pressed");
-        SubstanceColorScheme rolloverSelectedScheme = schemes
-                .get("Nebula Rollover Selected");
-        SubstanceColorScheme disabledScheme = schemes.get("Nebula Disabled").saturate(-0.9);
+		SubstanceColorScheme activeScheme = ceruleanSchemes.get("Cerulean Active");
+		SubstanceColorScheme enabledScheme = ceruleanSchemes.get("Cerulean Enabled");
+		SubstanceColorScheme rolloverSelectedScheme = ceruleanSchemes
+				.get("Cerulean Rollover Selected");
+		SubstanceColorScheme disabledScheme = ceruleanSchemes.get("Cerulean Disabled");
 
-        SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
-                activeScheme, enabledScheme, disabledScheme);
+		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
+				activeScheme, enabledScheme, disabledScheme);
 
-        CopyMutableColorScheme steelBlue= new CopyMutableColorScheme("Cerulean Hover", new SteelBlueColorScheme().tint(0.4));
-        steelBlue.setForegroundColor(enabledScheme.getForegroundColor());
+		defaultSchemeBundle.registerColorScheme(ceruleanSchemes.get("Cerulean Pressed"),
+				ComponentState.PRESSED_SELECTED, ComponentState.PRESSED_UNSELECTED);
+		defaultSchemeBundle.registerColorScheme(ceruleanSchemes.get("Cerulean Disabled Selected"),
+				ComponentState.DISABLED_SELECTED);
+		defaultSchemeBundle.registerColorScheme(ceruleanSchemes.get("Cerulean Selected"),
+				ComponentState.SELECTED);
+		defaultSchemeBundle.registerColorScheme(ceruleanSchemes.get("Cerulean Rollover Selected"),
+				ComponentState.ROLLOVER_SELECTED);
+		defaultSchemeBundle.registerColorScheme(ceruleanSchemes.get("Cerulean Rollover Unselected"),
+				ComponentState.ROLLOVER_UNSELECTED);
 
-        double saturate = 0.1;
-        double tint = 0.4;
-        double shade = tint/4;
-        CopyMutableColorScheme pressed = new CopyMutableColorScheme("Cerulean Pressed", steelBlue.saturate(saturate).shade(shade));
-        defaultSchemeBundle.registerColorScheme(pressed,
-                ComponentState.PRESSED_SELECTED, ComponentState.PRESSED_UNSELECTED);
-        defaultSchemeBundle.registerColorScheme(new BlendBiColorScheme(
-                        steelBlue, disabledScheme, 0.25),
-                ComponentState.DISABLED_SELECTED);
-        defaultSchemeBundle.registerColorScheme(
-                steelBlue.tint(tint).saturate(saturate),
-                ComponentState.SELECTED);
-        defaultSchemeBundle.registerColorScheme(
-                steelBlue.shade(shade / 2).saturate(saturate/2),
-                ComponentState.ROLLOVER_SELECTED);
-        defaultSchemeBundle.registerColorScheme(
-                steelBlue.tint(tint / 2).saturate(saturate/2),
-                ComponentState.ROLLOVER_UNSELECTED);
-        defaultSchemeBundle.registerColorScheme(steelBlue.shade(0.5),
-                ColorSchemeAssociationKind.MARK, ComponentState.getActiveStates());
-        defaultSchemeBundle.registerColorScheme(steelBlue,
-                ColorSchemeAssociationKind.BORDER, ComponentState.getActiveStates());
+		defaultSchemeBundle.registerColorScheme(ceruleanSchemes.get("Cerulean Mark"),
+				ColorSchemeAssociationKind.MARK, ComponentState.getActiveStates());
+		defaultSchemeBundle.registerColorScheme(ceruleanSchemes.get("Cerulean Border"),
+				ColorSchemeAssociationKind.BORDER, ComponentState.getActiveStates());
 
-        // for progress bars
-        ComponentState determinateState = new ComponentState(
-                "determinate enabled", new ComponentStateFacet[] {
-                        ComponentStateFacet.ENABLE,
-                        ComponentStateFacet.DETERMINATE,
-                        ComponentStateFacet.SELECTION }, null);
-        ComponentState determinateDisabledState = new ComponentState(
-                "determinate disabled", new ComponentStateFacet[] {
-                        ComponentStateFacet.DETERMINATE,
-                        ComponentStateFacet.SELECTION },
-                new ComponentStateFacet[] { ComponentStateFacet.ENABLE });
-        ComponentState indeterminateState = new ComponentState(
-                "indeterminate enabled",
-                new ComponentStateFacet[] { ComponentStateFacet.ENABLE,
-                        ComponentStateFacet.SELECTION },
-                new ComponentStateFacet[] { ComponentStateFacet.DETERMINATE });
-        ComponentState indeterminateDisabledState = new ComponentState(
-                "indeterminate disabled", null, new ComponentStateFacet[] {
-                        ComponentStateFacet.DETERMINATE,
-                        ComponentStateFacet.ENABLE, ComponentStateFacet.SELECTION });
-        defaultSchemeBundle.registerColorScheme(rolloverSelectedScheme,
-                determinateState, indeterminateState);
-        defaultSchemeBundle.registerColorScheme(rolloverSelectedScheme,
-                ColorSchemeAssociationKind.BORDER,
-                determinateState, indeterminateState);
-        defaultSchemeBundle.registerColorScheme(disabledScheme,
-                determinateDisabledState, indeterminateDisabledState);
-        defaultSchemeBundle.registerColorScheme(disabledScheme,
-                ColorSchemeAssociationKind.BORDER,
-                determinateDisabledState, indeterminateDisabledState);
+		// for progress bars
+		ComponentState determinateState = new ComponentState("determinate enabled",
+				new ComponentStateFacet[] { ComponentStateFacet.ENABLE,
+						ComponentStateFacet.DETERMINATE, ComponentStateFacet.SELECTION },
+				null);
+		ComponentState determinateDisabledState = new ComponentState("determinate disabled",
+				new ComponentStateFacet[] { ComponentStateFacet.DETERMINATE,
+						ComponentStateFacet.SELECTION },
+				new ComponentStateFacet[] { ComponentStateFacet.ENABLE });
+		ComponentState indeterminateState = new ComponentState("indeterminate enabled",
+				new ComponentStateFacet[] { ComponentStateFacet.ENABLE,
+						ComponentStateFacet.SELECTION },
+				new ComponentStateFacet[] { ComponentStateFacet.DETERMINATE });
+		ComponentState indeterminateDisabledState = new ComponentState("indeterminate disabled",
+				null, new ComponentStateFacet[] { ComponentStateFacet.DETERMINATE,
+						ComponentStateFacet.ENABLE, ComponentStateFacet.SELECTION });
+		defaultSchemeBundle.registerColorScheme(rolloverSelectedScheme, determinateState,
+				indeterminateState);
+		defaultSchemeBundle.registerColorScheme(rolloverSelectedScheme,
+				ColorSchemeAssociationKind.BORDER, determinateState, indeterminateState);
+		defaultSchemeBundle.registerColorScheme(disabledScheme, determinateDisabledState,
+				indeterminateDisabledState);
+		defaultSchemeBundle.registerColorScheme(disabledScheme, ColorSchemeAssociationKind.BORDER,
+				determinateDisabledState, indeterminateDisabledState);
 
-        // for uneditable fields
-        ComponentState editable = new ComponentState("editable",
-                new ComponentStateFacet[] {ComponentStateFacet.ENABLE, ComponentStateFacet.EDITABLE},
-                null);
-        ComponentState uneditable = new ComponentState("uneditable",
-                editable, new ComponentStateFacet[] {ComponentStateFacet.ENABLE},
-                new ComponentStateFacet[] {ComponentStateFacet.EDITABLE});
-        defaultSchemeBundle.registerColorScheme(
-                defaultSchemeBundle.getColorScheme(editable),
-                ColorSchemeAssociationKind.FILL, uneditable
-        );
+		// for uneditable fields
+		ComponentState editable = new ComponentState("editable", new ComponentStateFacet[] {
+				ComponentStateFacet.ENABLE, ComponentStateFacet.EDITABLE }, null);
+		ComponentState uneditable = new ComponentState("uneditable", editable,
+				new ComponentStateFacet[] { ComponentStateFacet.ENABLE },
+				new ComponentStateFacet[] { ComponentStateFacet.EDITABLE });
+		defaultSchemeBundle.registerColorScheme(defaultSchemeBundle.getColorScheme(editable),
+				ColorSchemeAssociationKind.FILL, uneditable);
 
-        // for text highlight
-        ColorSchemes kitchenSinkSchemes = SubstanceSkin
-                .getColorSchemes("org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes");
-        SubstanceColorScheme highlightColorScheme = kitchenSinkSchemes
-                .get("Moderate Highlight");
-        defaultSchemeBundle.registerHighlightColorScheme(highlightColorScheme);
+		// for text highlight
+		ColorSchemes kitchenSinkSchemes = SubstanceSkin
+				.getColorSchemes("org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes");
+		SubstanceColorScheme highlightColorScheme = kitchenSinkSchemes.get("Moderate Highlight");
+		defaultSchemeBundle.registerHighlightColorScheme(highlightColorScheme);
 
-        registerDecorationAreaSchemeBundle(defaultSchemeBundle,
-                DecorationAreaType.NONE);
+		registerDecorationAreaSchemeBundle(defaultSchemeBundle, DecorationAreaType.NONE);
 
-        CopyMutableColorScheme chrome = new CopyMutableColorScheme("Cerulean Chrome", pressedScheme);
-        chrome.setUltraDarkColor(chrome.getExtraLightColor());
-        SubstanceColorSchemeBundle headerSchemeBundle = 
-        		new SubstanceColorSchemeBundle(pressedScheme, pressedScheme, 
-        				pressedScheme.tone(0.2));
-		headerSchemeBundle.registerColorScheme(pressedScheme, 0.6f,
+		SubstanceColorScheme activeHeaderScheme = ceruleanSchemes.get("Cerulean Active Header");
+		SubstanceColorScheme headerScheme = ceruleanSchemes.get("Cerulean Header");
+		SubstanceColorScheme disabledHeaderScheme = ceruleanSchemes.get("Cerulean Header Disabled");
+		SubstanceColorSchemeBundle headerSchemeBundle = new SubstanceColorSchemeBundle(
+				activeHeaderScheme, headerScheme, disabledHeaderScheme);
+		headerSchemeBundle.registerColorScheme(activeHeaderScheme, 0.6f,
 				ComponentState.DISABLED_SELECTED, ComponentState.DISABLED_UNSELECTED);
-		headerSchemeBundle.registerColorScheme(pressedScheme, 0.6f,
-				ColorSchemeAssociationKind.MARK, 
-				ComponentState.DISABLED_SELECTED, ComponentState.DISABLED_UNSELECTED);
-        registerDecorationAreaSchemeBundle(headerSchemeBundle, chrome,
-                DecorationAreaType.PRIMARY_TITLE_PANE,
-                DecorationAreaType.SECONDARY_TITLE_PANE,
+		headerSchemeBundle.registerColorScheme(activeHeaderScheme, 0.6f,
+				ColorSchemeAssociationKind.MARK, ComponentState.DISABLED_SELECTED,
+				ComponentState.DISABLED_UNSELECTED);
+		registerDecorationAreaSchemeBundle(headerSchemeBundle, headerScheme,
+				DecorationAreaType.PRIMARY_TITLE_PANE, DecorationAreaType.SECONDARY_TITLE_PANE,
 				DecorationAreaType.HEADER);
 
-        registerAsDecorationArea(activeScheme.saturate(-0.75), DecorationAreaType.FOOTER,
-                DecorationAreaType.GENERAL);
+		registerAsDecorationArea(ceruleanSchemes.get("Cerulean Footer"), DecorationAreaType.FOOTER,
+				DecorationAreaType.GENERAL);
 
-        // add an overlay painter to paint a drop shadow along the top
+		// add an overlay painter to paint a drop shadow along the top
 		// edge of toolbars
-		this.addOverlayPainter(TopShadowOverlayPainter.getInstance(),
-				DecorationAreaType.TOOLBAR);
+		this.addOverlayPainter(TopShadowOverlayPainter.getInstance(), DecorationAreaType.TOOLBAR);
 
-        this.buttonShaper = new ClassicButtonShaper();
-        this.fillPainter = new ClassicFillPainter();
+		this.buttonShaper = new ClassicButtonShaper();
+		this.fillPainter = new ClassicFillPainter();
 
-        this.decorationPainter = new ArcDecorationPainter();
+		this.decorationPainter = new ArcDecorationPainter();
 
-        this.highlightPainter = new GlassHighlightPainter();
-        this.borderPainter = new GlassBorderPainter();
-    }
+		this.highlightPainter = new GlassHighlightPainter();
+		this.borderPainter = new GlassBorderPainter();
+	}
 
-    /*
-      * (non-Javadoc)
-      *
-      * @see org.pushingpixels.substance.skin.SubstanceSkin#getDisplayName()
-      */
-    @Override
-    public String getDisplayName() {
-        return NAME;
-    }
-}
-
-class CopyMutableColorScheme extends BaseColorScheme {
-
-    Color foregroundColor;
-    Color ultraLightColor;
-    Color extraLightColor;
-    Color lightColor;
-    Color midColor;
-    Color darkColor;
-    Color ultraDarkColor;
-
-    public CopyMutableColorScheme(String name, SubstanceColorScheme copy) {
-        super(name, copy.isDark());
-        foregroundColor = copy.getForegroundColor();
-        ultraLightColor = copy.getUltraLightColor();
-        extraLightColor = copy.getExtraLightColor();
-        lightColor = copy.getLightColor();
-        midColor = copy.getMidColor();
-        darkColor = copy.getDarkColor();
-        ultraDarkColor = copy.getUltraDarkColor();
-    }
-
-    public void setDark(boolean isDark) {
-        this.isDark = isDark;
-    }
-
-    @Override
-    public Color getDarkColor() {
-        return darkColor;
-    }
-
-    public void setDarkColor(Color darkColor) {
-        this.darkColor = darkColor;
-    }
-
-    @Override
-    public Color getExtraLightColor() {
-        return extraLightColor;
-    }
-
-    public void setExtraLightColor(Color extraLightColor) {
-        this.extraLightColor = extraLightColor;
-    }
-
-    @Override
-    public Color getForegroundColor() {
-        return foregroundColor;
-    }
-
-    public void setForegroundColor(Color foregroundColor) {
-        this.foregroundColor = foregroundColor;
-    }
-
-    @Override
-    public Color getLightColor() {
-        return lightColor;
-    }
-
-    public void setLightColor(Color lightColor) {
-        this.lightColor = lightColor;
-    }
-
-    @Override
-    public Color getMidColor() {
-        return midColor;
-    }
-
-    public void setMidColor(Color midColor) {
-        this.midColor = midColor;
-    }
-
-    @Override
-    public Color getUltraDarkColor() {
-        return ultraDarkColor;
-    }
-
-    public void setUltraDarkColor(Color ultraDarkColor) {
-        this.ultraDarkColor = ultraDarkColor;
-    }
-
-    @Override
-    public Color getUltraLightColor() {
-        return ultraLightColor;
-    }
-
-    public void setUltraLightColor(Color ultraLightColor) {
-        this.ultraLightColor = ultraLightColor;
-    }
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.pushingpixels.substance.skin.SubstanceSkin#getDisplayName()
+	 */
+	@Override
+	public String getDisplayName() {
+		return NAME;
+	}
 }
