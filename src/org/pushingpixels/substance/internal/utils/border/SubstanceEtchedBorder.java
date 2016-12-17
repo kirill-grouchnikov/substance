@@ -90,9 +90,7 @@ public class SubstanceEtchedBorder implements Border {
 		int h = height;
 
 		Graphics2D g2d = (Graphics2D) g.create();
-		float strokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(c));
+		float strokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 		g2d.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_BUTT,
 				BasicStroke.JOIN_ROUND));
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -140,9 +138,7 @@ public class SubstanceEtchedBorder implements Border {
 	 * @see javax.swing.border.Border#getBorderInsets(java.awt.Component)
 	 */
 	public Insets getBorderInsets(Component c) {
-		float borderStrokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(c));
+		float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 		int prefSize = (int) (Math.ceil(2.0 * borderStrokeWidth));
 		return new Insets(prefSize, prefSize, prefSize, prefSize);
 	}

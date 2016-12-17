@@ -41,41 +41,33 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.border.Border;
 import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
-import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 public class SubstancePopupMenuBorder implements Border, UIResource {
 	@Override
 	public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-		boolean isRetina = UIUtil.isRetina();
 		SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities.getColorScheme(c,
 				ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED);
 
 		Graphics2D g2d = (Graphics2D) g.create();
-		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(c);
-		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
 		float borderDelta = borderThickness / 2.0f;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 		g2d.setStroke(
 				new BasicStroke(borderThickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
 		g2d.translate(x, y);
-		Color outline1 = borderScheme.getDarkColor();
-		g2d.setColor(outline1);
+		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(c);
+		Color outline = borderPainter.getRepresentativeColor(borderScheme);
+		g2d.setColor(outline);
 		g2d.draw(new Rectangle2D.Float(borderDelta, borderDelta, width - borderThickness,
 				height - borderThickness));
-		if (isRetina) {
-			Color outline2 = SubstanceColorUtilities.getAlphaColor(borderScheme.getMidColor(), 128);
-			g2d.setColor(outline2);
-			g2d.draw(new Rectangle2D.Float(borderDelta + borderThickness,
-					borderDelta + borderThickness, width - 3 * borderThickness,
-					height - 3 * borderThickness));
-		}
 		g2d.dispose();
 	}
 

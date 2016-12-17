@@ -31,7 +31,9 @@ package org.pushingpixels.substance.internal.ui;
 
 import java.lang.reflect.Method;
 import java.security.AccessControlException;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.swing.JComponent;
 import javax.swing.UIManager;

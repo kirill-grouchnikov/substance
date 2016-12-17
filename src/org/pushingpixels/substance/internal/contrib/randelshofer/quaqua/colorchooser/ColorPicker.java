@@ -17,7 +17,6 @@ package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorch
 import java.awt.AWTException;
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.Graphics2D;
@@ -77,11 +76,6 @@ public class ColorPicker extends AbstractColorChooserPanel {
 	 * Graphics object used for drawing on the cursorImage.
 	 */
 	private Graphics2D cursorGraphics;
-
-	/**
-	 * The picker cursor.
-	 */
-	private Cursor pickerCursor;
 
 	/**
 	 * The hot spot of the cursor.
@@ -261,9 +255,6 @@ public class ColorPicker extends AbstractColorChooserPanel {
 
 						// We need to create a new subImage. This forces that
 						// the color picker uses the new imagery.
-						BufferedImage subImage = cursorImage
-								.getSubimage(0, 0, cursorImage.getWidth(),
-										cursorImage.getHeight());
 						pickerFrame.setCursor(getToolkit().createCustomCursor(
 								cursorImage, hotSpot, "ColorPicker"));
 					}

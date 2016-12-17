@@ -29,11 +29,8 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import java.awt.Color;
-
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
-import org.pushingpixels.substance.api.ColorSchemeTransform;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -52,6 +49,7 @@ import org.pushingpixels.substance.api.painter.overlay.BottomShadowOverlayPainte
 import org.pushingpixels.substance.api.painter.overlay.TopBezelOverlayPainter;
 import org.pushingpixels.substance.api.painter.overlay.TopLineOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
 /**
  * <code>Gemini</code> skin. This class is part of officially supported API.
@@ -196,19 +194,11 @@ public class GeminiSkin extends SubstanceSkin {
 
 		// add two overlay painters to create a bezel line between
 		// menu bar and toolbars
-		this.menuOverlayPainter = new BottomLineOverlayPainter(new ColorSchemeSingleColorQuery() {
-			@Override
-			public Color query(SubstanceColorScheme scheme) {
-				return scheme.getUltraDarkColor().darker();
-			}
-		});
-		this.toolbarOverlayPainter = new TopLineOverlayPainter(new ColorSchemeSingleColorQuery() {
-			@Override
-			public Color query(SubstanceColorScheme scheme) {
-				Color fg = scheme.getForegroundColor();
-				return new Color(fg.getRed(), fg.getGreen(), fg.getBlue(), 32);
-			}
-		});
+		this.menuOverlayPainter = new BottomLineOverlayPainter(
+				(SubstanceColorScheme scheme) -> scheme.getUltraDarkColor().darker());
+		this.toolbarOverlayPainter = new TopLineOverlayPainter(
+				(SubstanceColorScheme scheme) -> SubstanceColorUtilities.getAlphaColor(
+						scheme.getForegroundColor(), 32));
 		this.addOverlayPainter(this.menuOverlayPainter, DecorationAreaType.HEADER);
 		this.addOverlayPainter(this.toolbarOverlayPainter, DecorationAreaType.TOOLBAR);
 
@@ -239,12 +229,8 @@ public class GeminiSkin extends SubstanceSkin {
 						ColorSchemeSingleColorQuery.ULTRADARK });
 		SubstanceBorderPainter innerBorderPainter = new DelegateFractionBasedBorderPainter(
 				"Gemini Inner", outerBorderPainter,
-				new int[] { 0x60FFFFFF, 0x40FFFFFF, 0x20FFFFFF }, new ColorSchemeTransform() {
-					@Override
-					public SubstanceColorScheme transform(SubstanceColorScheme scheme) {
-						return scheme.tint(0.7f);
-					}
-				});
+				new int[] { 0x60FFFFFF, 0x40FFFFFF, 0x20FFFFFF }, 
+				(SubstanceColorScheme scheme) -> scheme.tint(0.7f));
 
 		this.borderPainter = new CompositeBorderPainter("Gemini", outerBorderPainter,
 				innerBorderPainter);

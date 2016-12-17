@@ -75,30 +75,28 @@ public class StandardButtonShaper implements SubstanceButtonShaper, RectangularB
 	}
 
 	@Override
-	public GeneralPath getButtonOutline(AbstractButton button, float extraInsets,
-			float width, float height, boolean isInner) {
-		Set<SubstanceConstants.Side> straightSides = SubstanceCoreUtilities
-				.getSides(button, SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
+	public GeneralPath getButtonOutline(AbstractButton button, float extraInsets, float width,
+			float height, boolean isInner) {
+		Set<SubstanceConstants.Side> straightSides = SubstanceCoreUtilities.getSides(button,
+				SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
 
 		float radius = this.getCornerRadius(button, extraInsets);
 		if (isInner) {
-			radius -= (int) SubstanceSizeUtils
-					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(button));
+			radius -= SubstanceSizeUtils.getBorderStrokeWidth();
 			if (radius < 0.0f)
 				radius = 0.0f;
 		}
 
-		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height,
-				straightSides, radius, extraInsets);
+		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height, straightSides, radius,
+				extraInsets);
 
 		GeneralPath result = contours.get(key);
 		if (result != null) {
 			return result;
 		}
 
-		result = SubstanceOutlineUtilities.getBaseOutline(width, height,
-				radius, straightSides, extraInsets);
+		result = SubstanceOutlineUtilities.getBaseOutline(width, height, radius, straightSides,
+				extraInsets);
 		contours.put(key, result);
 		return result;
 	}
@@ -114,39 +112,28 @@ public class StandardButtonShaper implements SubstanceButtonShaper, RectangularB
 		return new SubstanceButtonBorder(StandardButtonShaper.class) {
 			public Insets getBorderInsets(Component c) {
 				int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
-				Insets buttonInsets = SubstanceSizeUtils
-						.getButtonInsets(fontSize);
-				int focusPadding = SubstanceSizeUtils
-						.getFocusRingPadding(fontSize);
-				int lrPadding = SubstanceCoreUtilities.hasText(button) ? SubstanceSizeUtils
-						.getTextButtonLRPadding(fontSize)
+				Insets buttonInsets = SubstanceSizeUtils.getButtonInsets(fontSize);
+				int focusPadding = SubstanceSizeUtils.getFocusRingPadding(fontSize);
+				int lrPadding = SubstanceCoreUtilities.hasText(button)
+						? SubstanceSizeUtils.getTextButtonLRPadding(fontSize)
 						: 0;
-				Set<SubstanceConstants.Side> openSides = SubstanceCoreUtilities
-						.getSides(button,
-								SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY);
-				int left = lrPadding
-						+ buttonInsets.left
-						+ focusPadding
-						+ ((openSides != null)
-								&& openSides
-										.contains(SubstanceConstants.Side.LEFT) ? -1
+				Set<SubstanceConstants.Side> openSides = SubstanceCoreUtilities.getSides(button,
+						SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY);
+				int left = lrPadding + buttonInsets.left + focusPadding
+						+ ((openSides != null) && openSides.contains(SubstanceConstants.Side.LEFT)
+								? -1
 								: 0);
-				int right = lrPadding
-						+ buttonInsets.right
-						+ focusPadding
-						+ ((openSides != null)
-								&& openSides
-										.contains(SubstanceConstants.Side.RIGHT) ? -1
+				int right = lrPadding + buttonInsets.right + focusPadding
+						+ ((openSides != null) && openSides.contains(SubstanceConstants.Side.RIGHT)
+								? -1
 								: 0);
 				int top = buttonInsets.top
-						+ ((openSides != null)
-								&& openSides
-										.contains(SubstanceConstants.Side.TOP) ? -1
+						+ ((openSides != null) && openSides.contains(SubstanceConstants.Side.TOP)
+								? -1
 								: 0);
 				int bottom = buttonInsets.bottom
-						+ ((openSides != null)
-								&& openSides
-										.contains(SubstanceConstants.Side.BOTTOM) ? -1
+						+ ((openSides != null) && openSides.contains(SubstanceConstants.Side.BOTTOM)
+								? -1
 								: 0);
 				return new Insets(top, left, bottom, right);
 			}
@@ -160,8 +147,7 @@ public class StandardButtonShaper implements SubstanceButtonShaper, RectangularB
 	 * org.pushingpixels.substance.button.SubstanceButtonShaper#getPreferredSize
 	 * (javax .swing.AbstractButton, java.awt.Dimension)
 	 */
-	public Dimension getPreferredSize(AbstractButton button,
-			Dimension uiPreferredSize) {
+	public Dimension getPreferredSize(AbstractButton button, Dimension uiPreferredSize) {
 		Dimension result;
 		boolean toTweakWidth = false;
 		boolean toTweakHeight = false;
@@ -173,13 +159,11 @@ public class StandardButtonShaper implements SubstanceButtonShaper, RectangularB
 
 		result = uiPreferredSize;
 
-		boolean hasNoMinSizeProperty = SubstanceCoreUtilities
-				.hasNoMinSizeProperty(button);
+		boolean hasNoMinSizeProperty = SubstanceCoreUtilities.hasNoMinSizeProperty(button);
 		if ((!hasNoMinSizeProperty) && hasText) {
 			int baseWidth = uiPreferredSize.width;
-			baseWidth = Math.max(baseWidth + uiPreferredSize.height,
-					SubstanceSizeUtils.getMinButtonWidth(SubstanceSizeUtils
-							.getComponentFontSize(button)));
+			baseWidth = Math.max(baseWidth + uiPreferredSize.height, SubstanceSizeUtils
+					.getMinButtonWidth(SubstanceSizeUtils.getComponentFontSize(button)));
 			// if (baseWidth < DEFAULT_WIDTH) {
 			// baseWidth = DEFAULT_WIDTH;
 			// }
@@ -192,23 +176,19 @@ public class StandardButtonShaper implements SubstanceButtonShaper, RectangularB
 		} else {
 			if (hasNoMinSizeProperty) {
 				if (margin != null) {
-					result = new Dimension(result.width + margin.left
-							+ margin.right, result.height + margin.top
-							+ margin.bottom);
+					result = new Dimension(result.width + margin.left + margin.right,
+							result.height + margin.top + margin.bottom);
 				}
 			}
 		}
 
 		int extraPadding = SubstanceSizeUtils
-				.getExtraPadding(SubstanceSizeUtils
-						.getComponentFontSize(button));
+				.getExtraPadding(SubstanceSizeUtils.getComponentFontSize(button));
 		int iconPaddingWidth = 6 + 2 * extraPadding;
 		int iconPaddingHeight = 6 + 2 * extraPadding;
 		if (margin != null) {
-			iconPaddingWidth = Math.max(iconPaddingWidth, margin.left
-					+ margin.right);
-			iconPaddingHeight = Math.max(iconPaddingHeight, margin.top
-					+ margin.bottom);
+			iconPaddingWidth = Math.max(iconPaddingWidth, margin.left + margin.right);
+			iconPaddingHeight = Math.max(iconPaddingHeight, margin.top + margin.bottom);
 		}
 		if (hasIcon) {
 			// check the icon height
@@ -230,12 +210,10 @@ public class StandardButtonShaper implements SubstanceButtonShaper, RectangularB
 		}
 
 		if (toTweakWidth) {
-			result = new Dimension(result.width + iconPaddingWidth,
-					result.height);
+			result = new Dimension(result.width + iconPaddingWidth, result.height);
 		}
 		if (toTweakHeight) {
-			result = new Dimension(result.width, result.height
-					+ iconPaddingHeight);
+			result = new Dimension(result.width, result.height + iconPaddingHeight);
 		}
 
 		if (result.height % 2 != 0)
@@ -273,9 +251,8 @@ public class StandardButtonShaper implements SubstanceButtonShaper, RectangularB
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.pushingpixels.substance.shaper.RectangularButtonShaper#getCornerRadius
-	 * (javax .swing.JComponent, java.awt.Insets)
+	 * @see org.pushingpixels.substance.shaper.RectangularButtonShaper#
+	 * getCornerRadius (javax .swing.JComponent, java.awt.Insets)
 	 */
 	@Override
 	public float getCornerRadius(AbstractButton button, float insets) {
@@ -284,13 +261,11 @@ public class StandardButtonShaper implements SubstanceButtonShaper, RectangularB
 
 		boolean isRoundCorners = isRoundButton(button);
 		float radius = SubstanceSizeUtils
-				.getClassicButtonCornerRadius(SubstanceSizeUtils
-						.getComponentFontSize(button));
+				.getClassicButtonCornerRadius(SubstanceSizeUtils.getComponentFontSize(button));
 		if (button.getClass().isAnnotationPresent(SubstanceInternalArrowButton.class)) {
 			Border parentBorder = ((JComponent) button.getParent()).getBorder();
 			if (parentBorder instanceof SubstanceBorder) {
-				radius *= ((SubstanceBorder) parentBorder)
-						.getRadiusScaleFactor();
+				radius *= ((SubstanceBorder) parentBorder).getRadiusScaleFactor();
 			}
 		}
 
@@ -303,8 +278,7 @@ public class StandardButtonShaper implements SubstanceButtonShaper, RectangularB
 		}
 
 		if (SubstanceCoreUtilities.isToolBarButton(button)) {
-			radius = SubstanceCoreUtilities.getToolbarButtonCornerRadius(
-					button, insets);
+			radius = SubstanceCoreUtilities.getToolbarButtonCornerRadius(button, insets);
 		}
 		return radius;
 	}

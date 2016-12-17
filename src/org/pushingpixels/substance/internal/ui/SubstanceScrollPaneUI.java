@@ -29,17 +29,33 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.LayoutManager;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.JViewport;
+import javax.swing.ScrollPaneLayout;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.*;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.TableHeaderUI;
+import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicScrollPaneUI;
 import javax.swing.table.JTableHeader;
 
@@ -452,12 +468,8 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 				JScrollBar vertical = scrollPane.getVerticalScrollBar();
 				JScrollBar horizontal = scrollPane.getHorizontalScrollBar();
 
-				int borderDelta = (int) Math.floor(SubstanceSizeUtils
-						.getBorderStrokeWidth(SubstanceSizeUtils
-								.getComponentFontSize(scrollPane)) / 2.0);
-				int borderWidth = (int) SubstanceSizeUtils
-						.getBorderStrokeWidth(SubstanceSizeUtils
-								.getComponentFontSize(scrollPane));
+				int borderDelta = (int) Math.floor(SubstanceSizeUtils.getBorderStrokeWidth() / 2.0);
+				int borderWidth = (int) SubstanceSizeUtils.getBorderStrokeWidth();
 				int dx = 0, dy = 0, dw = 0, dh = 0;
 				if (scrollPane.getComponentOrientation().isLeftToRight()) {
 					if ((vertical != null) && vertical.isVisible()) {

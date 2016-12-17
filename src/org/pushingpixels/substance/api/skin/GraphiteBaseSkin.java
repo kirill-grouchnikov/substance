@@ -30,7 +30,6 @@
 package org.pushingpixels.substance.api.skin;
 
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
-import org.pushingpixels.substance.api.ColorSchemeTransform;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -117,20 +116,10 @@ abstract class GraphiteBaseSkin extends SubstanceSkin {
 		this.borderPainter = new CompositeBorderPainter("Graphite", 
 				new DelegateBorderPainter("Graphite Outer", new ClassicBorderPainter(),
 						0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 
-						new ColorSchemeTransform() {
-							@Override
-							public SubstanceColorScheme transform(SubstanceColorScheme scheme) {
-								return scheme.shade(0.4f);
-							}
-						}),
+						(SubstanceColorScheme scheme) -> scheme.shade(0.4f)),
 				new DelegateBorderPainter("Graphite Inner", new ClassicBorderPainter(),
 						0xA0FFFFFF, 0x90FFFFFF, 0xA0FFFFFF, 
-						new ColorSchemeTransform() {
-							@Override
-							public SubstanceColorScheme transform(SubstanceColorScheme scheme) {
-								return scheme.tint(0.25f);
-							}
-						}));
+						(SubstanceColorScheme scheme) -> scheme.tint(0.25f)));
 		this.highlightBorderPainter = new ClassicBorderPainter();
 	}
 }

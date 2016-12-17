@@ -56,11 +56,11 @@ import org.pushingpixels.lafwidget.LafWidget;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
-import test.Check;
-import test.check.svg.flags.se;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
+
+import test.Check;
+import test.check.svg.flags.se;
 
 /**
  * Test application panel for testing {@link JTree} component.

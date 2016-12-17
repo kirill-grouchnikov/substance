@@ -39,7 +39,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.UIManager;
 
 import org.fest.swing.core.BasicRobot;
 import org.fest.swing.core.Robot;

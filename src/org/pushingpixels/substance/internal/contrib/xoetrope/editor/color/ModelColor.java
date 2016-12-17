@@ -395,13 +395,10 @@ public class ModelColor {
 		if (baseColors == null) {
 			baseColors = new ModelColor[24][NUM_COLOR_RINGS];
 
-			int idx = 0;
 			for (int i = 0; i < NUM_COLOR_RINGS; i++) {
 				for (int j = 0; j < 24; j++) {
 					baseColors[j][i] = new ModelColor(15.0 * j,
-							SATURATION_BANDS[i], BRIGHTNESS_BANDS[i + 1
-									- (j % 2)]);
-					idx++;
+							SATURATION_BANDS[i], BRIGHTNESS_BANDS[i + 1 - (j % 2)]);
 				}
 			}
 		}

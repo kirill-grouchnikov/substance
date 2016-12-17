@@ -29,13 +29,11 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import org.pushingpixels.substance.api.ColorSchemeTransform;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.colorscheme.CremeColorScheme;
-import org.pushingpixels.substance.api.colorscheme.LightGrayColorScheme;
 import org.pushingpixels.substance.api.painter.border.CompositeBorderPainter;
 import org.pushingpixels.substance.api.painter.border.DelegateBorderPainter;
 import org.pushingpixels.substance.api.painter.border.GlassBorderPainter;
@@ -85,13 +83,7 @@ public class CremeCoffeeSkin extends SubstanceSkin {
 		this.borderPainter = new CompositeBorderPainter("Creme Coffee",
 				new GlassBorderPainter(), new DelegateBorderPainter(
 						"Creme Coffee Inner", new GlassBorderPainter(),
-						new ColorSchemeTransform() {
-							@Override
-							public SubstanceColorScheme transform(
-									SubstanceColorScheme scheme) {
-								return scheme.tint(0.8f);
-							}
-						}));
+						(SubstanceColorScheme scheme) -> scheme.tint(0.8f)));
 	}
 
 	/*

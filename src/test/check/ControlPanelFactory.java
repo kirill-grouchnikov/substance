@@ -93,15 +93,15 @@ import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.NebulaBrickWallSkin;
 import org.pushingpixels.substance.internal.svg.Dialog_information;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
+
 import test.Check;
 import test.Check.MyMainTabPreviewPainter;
 import test.SubstanceLogo;
 import test.check.svg.Dialog_error;
 import test.check.svg.Dialog_warning;
 import test.check.svg.Help_browser;
-
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
 
 /**
  * Factory for creating the global control panels (for global settings and

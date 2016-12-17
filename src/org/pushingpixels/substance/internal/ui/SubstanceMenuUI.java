@@ -29,12 +29,31 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.LookAndFeel;
+import javax.swing.MenuElement;
+import javax.swing.MenuSelectionManager;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicMenuUI;
 
@@ -47,8 +66,8 @@ import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.icon.MenuArrowIcon;
 import org.pushingpixels.substance.internal.utils.menu.MenuUtilities;
-import org.pushingpixels.substance.internal.utils.menu.SubstanceMenu;
 import org.pushingpixels.substance.internal.utils.menu.MenuUtilities.MenuPropertyListener;
+import org.pushingpixels.substance.internal.utils.menu.SubstanceMenu;
 
 /**
  * UI for menus in <b>Substance</b> look and feel.

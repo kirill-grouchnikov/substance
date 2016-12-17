@@ -2102,7 +2102,7 @@ public class SubstanceCoreUtilities {
 		return new SwingRepaintCallback(textComponent);
 	}
 
-	public static boolean isOpaque(Component c) {
+	public static boolean isOpaque(JComponent c) {
 		return c.isOpaque();
 	}
 }

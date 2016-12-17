@@ -29,22 +29,70 @@
  */
 package test.check;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Rectangle;
 import java.text.DecimalFormat;
 import java.util.Enumeration;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
+import javax.swing.JEditorPane;
+import javax.swing.JFormattedTextField;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JProgressBar;
+import javax.swing.JRadioButton;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JSlider;
+import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.JToggleButton;
+import javax.swing.JTree;
+import javax.swing.SpinnerListModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 
-import test.Check;
-import test.check.command.*;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
+
+import test.Check;
+import test.check.command.BackgroundColorCommand;
+import test.check.command.ChainCommand;
+import test.check.command.ClientPropertyCommand;
+import test.check.command.ConfigurationCommand;
+import test.check.command.CreationCommand;
+import test.check.command.DisableCommand;
+import test.check.command.DisableViewportCommand;
+import test.check.command.ForegroundColorCommand;
+import test.check.command.MinimizeInternalFrameCommand;
+import test.check.command.SelectCommand;
+import test.check.command.SetBoundsCommand;
 
 /**
  * Test application panel for testing colorized components.

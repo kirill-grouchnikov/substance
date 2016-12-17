@@ -34,7 +34,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 
 /**
  * @author kirillg

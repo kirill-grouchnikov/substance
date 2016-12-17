@@ -67,7 +67,6 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
-import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
 import org.pushingpixels.substance.api.painter.fill.FractionBasedFillPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
@@ -247,10 +246,7 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 		this.speed = (20.0f * UIManager.getInt("ProgressBar.repaintInterval"))
 				/ UIManager.getInt("ProgressBar.cycleTime");
 
-		float borderThickness = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(this.progressBar));
-		this.margin = 0;//progressBar.getBorder().getBorderInsets(progressBar).bottom;//(int) Math.ceil(1.5f * borderThickness);
+		this.margin = 0;
 	}
 
 	@Override
@@ -641,8 +637,8 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 	@Override
 	protected void startAnimationTimer() {
 		this.indeterminateLoopTimeline = new Timeline(this);
-		Integer cycleDuration = UIManager.getInt("ProgressBar.cycleTime");
-		if (cycleDuration == null)
+		int cycleDuration = UIManager.getInt("ProgressBar.cycleTime");
+		if (cycleDuration == 0)
 			cycleDuration = 1000;
 		this.indeterminateLoopTimeline.setDuration(cycleDuration);
 		this.indeterminateLoopTimeline.addCallback(new TimelineCallback() {

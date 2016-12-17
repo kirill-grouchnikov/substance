@@ -29,7 +29,6 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 

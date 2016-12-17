@@ -32,7 +32,6 @@ package org.pushingpixels.substance.internal.utils;
 import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Insets;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.util.Map;
@@ -48,8 +47,8 @@ import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.RectangularButtonShaper;
@@ -75,8 +74,8 @@ public class ButtonBackgroundDelegate {
 	 * is called, it checks <code>this</code> map to see if it already contains
 	 * such background. If so, the background from the map is returned.
 	 */
-	private static LazyResettableHashMap<BufferedImage> regularBackgrounds = 
-			new LazyResettableHashMap<BufferedImage>("ButtonBackgroundDelegate");
+	private static LazyResettableHashMap<BufferedImage> regularBackgrounds = new LazyResettableHashMap<BufferedImage>(
+			"ButtonBackgroundDelegate");
 
 	/**
 	 * Retrieves the background for the specified button.
@@ -97,9 +96,8 @@ public class ButtonBackgroundDelegate {
 	 *            Button height.
 	 * @return Button background.
 	 */
-	public static BufferedImage getFullAlphaBackground(AbstractButton button,
-			ButtonModel model, SubstanceButtonShaper shaper,
-			SubstanceFillPainter fillPainter,
+	public static BufferedImage getFullAlphaBackground(AbstractButton button, ButtonModel model,
+			SubstanceButtonShaper shaper, SubstanceFillPainter fillPainter,
 			SubstanceBorderPainter borderPainter, int width, int height) {
 		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) button.getUI();
 		StateTransitionTracker.ModelStateInfo modelStateInfo = transitionAwareUI
@@ -128,8 +126,8 @@ public class ButtonBackgroundDelegate {
 		}
 
 		// compute the straight sides
-		Set<SubstanceConstants.Side> straightSides = SubstanceCoreUtilities
-				.getSides(button, SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
+		Set<SubstanceConstants.Side> straightSides = SubstanceCoreUtilities.getSides(button,
+				SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
 
 		boolean isRoundButton = StandardButtonShaper.isRoundButton(button);
 		float radius = 0.0f;
@@ -152,17 +150,14 @@ public class ButtonBackgroundDelegate {
 		int factor = UIUtil.isRetina() ? 2 : 1;
 
 		// compute color scheme
-		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(button, ColorSchemeAssociationKind.BORDER,
-						currState);
+		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities.getColorScheme(button,
+				ColorSchemeAssociationKind.BORDER, currState);
 
 		// see if need to use attention-drawing animation
 		// boolean isWindowModified = false;
 		if (button.getUI() instanceof ModificationAwareUI) {
-			ModificationAwareUI modificationAwareUI = (ModificationAwareUI) button
-					.getUI();
-			Timeline modificationTimeline = modificationAwareUI
-					.getModificationTimeline();
+			ModificationAwareUI modificationAwareUI = (ModificationAwareUI) button.getUI();
+			Timeline modificationTimeline = modificationAwareUI.getModificationTimeline();
 			if (modificationTimeline != null) {
 				if (modificationTimeline.getState() != TimelineState.IDLE) {
 					// isWindowModified = true;
@@ -170,54 +165,44 @@ public class ButtonBackgroundDelegate {
 					SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities.ORANGE;
 					cyclePos = modificationTimeline.getTimelinePosition();
 
-					HashMapKey key1 = SubstanceCoreUtilities.getHashKey(width,
-							height, colorScheme.getDisplayName(),
-							baseBorderScheme.getDisplayName(), shaper
-									.getDisplayName(), fillPainter
-									.getDisplayName(), borderPainter
-									.getDisplayName(), straightSides,
-							openSides, button.getClass().getName(),
-							isRoundButton, radius, isContentAreaFilled,
-							isBorderPainted, SubstanceSizeUtils
-									.getComponentFontSize(button));
+					HashMapKey key1 = SubstanceCoreUtilities.getHashKey(width, height,
+							colorScheme.getDisplayName(), baseBorderScheme.getDisplayName(),
+							shaper.getDisplayName(), fillPainter.getDisplayName(),
+							borderPainter.getDisplayName(), straightSides, openSides,
+							button.getClass().getName(), isRoundButton, radius, isContentAreaFilled,
+							isBorderPainted, SubstanceSizeUtils.getComponentFontSize(button));
 					BufferedImage layer1 = regularBackgrounds.get(key1);
 					if (layer1 == null) {
-						layer1 = createBackgroundImage(button, shaper,
-								fillPainter, borderPainter, width, height,
-								colorScheme, baseBorderScheme, openSides,
+						layer1 = createBackgroundImage(button, shaper, fillPainter, borderPainter,
+								width, height, colorScheme, baseBorderScheme, openSides,
 								isContentAreaFilled, isBorderPainted);
 
 						regularBackgrounds.put(key1, layer1);
 					}
-					HashMapKey key2 = SubstanceCoreUtilities.getHashKey(width,
-							height, colorScheme2.getDisplayName(),
-							baseBorderScheme.getDisplayName(), shaper
-									.getDisplayName(), fillPainter
-									.getDisplayName(), borderPainter
-									.getDisplayName(), straightSides,
-							openSides, button.getClass().getName(),
-							isRoundButton, radius, isContentAreaFilled,
-							isBorderPainted, SubstanceSizeUtils
-									.getComponentFontSize(button));
+					HashMapKey key2 = SubstanceCoreUtilities.getHashKey(width, height,
+							colorScheme2.getDisplayName(), baseBorderScheme.getDisplayName(),
+							shaper.getDisplayName(), fillPainter.getDisplayName(),
+							borderPainter.getDisplayName(), straightSides, openSides,
+							button.getClass().getName(), isRoundButton, radius, isContentAreaFilled,
+							isBorderPainted, SubstanceSizeUtils.getComponentFontSize(button));
 					BufferedImage layer2 = regularBackgrounds.get(key2);
 					if (layer2 == null) {
-						layer2 = createBackgroundImage(button, shaper,
-								fillPainter, borderPainter, width, height,
-								colorScheme2, baseBorderScheme, openSides,
+						layer2 = createBackgroundImage(button, shaper, fillPainter, borderPainter,
+								width, height, colorScheme2, baseBorderScheme, openSides,
 								isContentAreaFilled, isBorderPainted);
 
 						regularBackgrounds.put(key2, layer2);
 					}
 
-					BufferedImage result = SubstanceCoreUtilities
-							.getBlankImage(width, height);
+					BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
 					Graphics2D g2d = result.createGraphics();
 					if (cyclePos < 1.0f)
-						g2d.drawImage(layer1, 0, 0, layer1.getWidth() / factor, layer1.getHeight() / factor, null);
+						g2d.drawImage(layer1, 0, 0, layer1.getWidth() / factor,
+								layer1.getHeight() / factor, null);
 					if (cyclePos > 0.0f) {
-						g2d.setComposite(AlphaComposite.SrcOver
-								.derive(cyclePos));
-						g2d.drawImage(layer2, 0, 0, layer2.getWidth() / factor, layer2.getHeight() / factor, null);
+						g2d.setComposite(AlphaComposite.SrcOver.derive(cyclePos));
+						g2d.drawImage(layer2, 0, 0, layer2.getWidth() / factor,
+								layer2.getHeight() / factor, null);
 					}
 					g2d.dispose();
 					return result;
@@ -232,21 +217,19 @@ public class ButtonBackgroundDelegate {
 		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
 				.getStateContributionMap();
 
-		SubstanceColorScheme baseFillScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(button, currState);
+		SubstanceColorScheme baseFillScheme = SubstanceColorSchemeUtilities.getColorScheme(button,
+				currState);
 		HashMapKey keyBase = SubstanceCoreUtilities.getHashKey(width, height,
-				baseFillScheme.getDisplayName(), baseBorderScheme
-						.getDisplayName(), shaper.getDisplayName(), fillPainter
-						.getDisplayName(), borderPainter.getDisplayName(),
-				straightSides, openSides, button.getClass().getName(),
-				isRoundButton, (int) (1000 * radius), isContentAreaFilled,
-				isBorderPainted, SubstanceSizeUtils
-						.getComponentFontSize(button));
+				baseFillScheme.getDisplayName(), baseBorderScheme.getDisplayName(),
+				shaper.getDisplayName(), fillPainter.getDisplayName(),
+				borderPainter.getDisplayName(), straightSides, openSides,
+				button.getClass().getName(), isRoundButton, (int) (1000 * radius),
+				isContentAreaFilled, isBorderPainted,
+				SubstanceSizeUtils.getComponentFontSize(button));
 		BufferedImage layerBase = regularBackgrounds.get(keyBase);
 		if (layerBase == null) {
-			layerBase = createBackgroundImage(button, shaper, fillPainter,
-					borderPainter, width, height, baseFillScheme,
-					baseBorderScheme, openSides, isContentAreaFilled,
+			layerBase = createBackgroundImage(button, shaper, fillPainter, borderPainter, width,
+					height, baseFillScheme, baseBorderScheme, openSides, isContentAreaFilled,
 					isBorderPainted);
 			regularBackgrounds.put(keyBase, layerBase);
 		}
@@ -254,13 +237,13 @@ public class ButtonBackgroundDelegate {
 			return layerBase;
 		}
 
-		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width,
-				height);
+		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
 		Graphics2D g2d = result.createGraphics();
 		// draw the base layer
-		g2d.drawImage(layerBase, 0, 0, layerBase.getWidth() / factor, layerBase.getHeight() / factor, null);
+		g2d.drawImage(layerBase, 0, 0, layerBase.getWidth() / factor,
+				layerBase.getHeight() / factor, null);
 		// System.out.println("\nPainting base state " + currState);
-		
+
 		// draw the other active layers
 		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
 				.entrySet()) {
@@ -272,32 +255,28 @@ public class ButtonBackgroundDelegate {
 
 			float stateContribution = activeEntry.getValue().getContribution();
 			if (stateContribution > 0.0f) {
-				g2d.setComposite(AlphaComposite.SrcOver
-						.derive(stateContribution));
+				g2d.setComposite(AlphaComposite.SrcOver.derive(stateContribution));
 
 				SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
 						.getColorScheme(button, activeState);
 				SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-						.getColorScheme(button,
-								ColorSchemeAssociationKind.BORDER, activeState);
-				HashMapKey key = SubstanceCoreUtilities.getHashKey(width,
-						height, fillScheme.getDisplayName(), borderScheme
-								.getDisplayName(), shaper.getDisplayName(),
-						fillPainter.getDisplayName(), borderPainter
-								.getDisplayName(), straightSides, openSides,
-						button.getClass().getName(), isRoundButton,
-						(int) (1000 * radius), isContentAreaFilled,
-						isBorderPainted, SubstanceSizeUtils
-								.getComponentFontSize(button));
+						.getColorScheme(button, ColorSchemeAssociationKind.BORDER, activeState);
+				HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height,
+						fillScheme.getDisplayName(), borderScheme.getDisplayName(),
+						shaper.getDisplayName(), fillPainter.getDisplayName(),
+						borderPainter.getDisplayName(), straightSides, openSides,
+						button.getClass().getName(), isRoundButton, (int) (1000 * radius),
+						isContentAreaFilled, isBorderPainted,
+						SubstanceSizeUtils.getComponentFontSize(button));
 				BufferedImage layer = regularBackgrounds.get(key);
 				if (layer == null) {
-					layer = createBackgroundImage(button, shaper, fillPainter,
-							borderPainter, width, height, fillScheme,
-							borderScheme, openSides, isContentAreaFilled,
+					layer = createBackgroundImage(button, shaper, fillPainter, borderPainter, width,
+							height, fillScheme, borderScheme, openSides, isContentAreaFilled,
 							isBorderPainted);
 					regularBackgrounds.put(key, layer);
 				}
-				g2d.drawImage(layer, 0, 0, layer.getWidth() / factor, layer.getHeight() / factor, null);
+				g2d.drawImage(layer, 0, 0, layer.getWidth() / factor, layer.getHeight() / factor,
+						null);
 			}
 		}
 		g2d.dispose();
@@ -307,12 +286,9 @@ public class ButtonBackgroundDelegate {
 	private static BufferedImage createBackgroundImage(AbstractButton button,
 			SubstanceButtonShaper shaper, SubstanceFillPainter fillPainter,
 			SubstanceBorderPainter borderPainter, int width, int height,
-			SubstanceColorScheme colorScheme,
-			SubstanceColorScheme borderScheme, Set<Side> openSides,
-			boolean isContentAreaFilled, boolean isBorderPainted) {
-		int openDelta = (int) (Math.ceil(3.0 * SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(button))));
+			SubstanceColorScheme colorScheme, SubstanceColorScheme borderScheme,
+			Set<Side> openSides, boolean isContentAreaFilled, boolean isBorderPainted) {
+		int openDelta = (int) (Math.ceil(3.0 * SubstanceSizeUtils.getBorderStrokeWidth()));
 		if (UIUtil.isRetina()) {
 			openDelta *= 2;
 		}
@@ -322,33 +298,27 @@ public class ButtonBackgroundDelegate {
 		int deltaBottom = ((openSides != null) && openSides.contains(Side.BOTTOM)) ? openDelta : 0;
 
 		// System.err.println(key);
-		float borderDelta = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(button)) / 2.0f;
-		Shape contour = shaper.getButtonOutline(button, borderDelta, width + deltaLeft
-				+ deltaRight, height + deltaTop + deltaBottom, false);
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
+		Shape contour = shaper.getButtonOutline(button, borderDelta, width + deltaLeft + deltaRight,
+				height + deltaTop + deltaBottom, false);
 
-		BufferedImage newBackground = SubstanceCoreUtilities.getBlankImage(
-				width, height);
+		BufferedImage newBackground = SubstanceCoreUtilities.getBlankImage(width, height);
 		Graphics2D finalGraphics = (Graphics2D) newBackground.getGraphics();
 		finalGraphics.translate(-deltaLeft, -deltaTop);
 		if (isContentAreaFilled) {
-			fillPainter.paintContourBackground(finalGraphics, button, width
-					+ deltaLeft + deltaRight, height + deltaTop + deltaBottom,
-					contour, false, colorScheme, true);
+			fillPainter.paintContourBackground(finalGraphics, button,
+					width + deltaLeft + deltaRight, height + deltaTop + deltaBottom, contour, false,
+					colorScheme, true);
 		}
 
 		if (isBorderPainted) {
-			float borderThickness = SubstanceSizeUtils
-					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(button));
-			Shape contourInner = borderPainter.isPaintingInnerContour() ? shaper
-					.getButtonOutline(button, borderDelta + borderThickness, width + deltaLeft
-							+ deltaRight, height + deltaTop + deltaBottom, true)
+			float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
+			Shape contourInner = borderPainter.isPaintingInnerContour()
+					? shaper.getButtonOutline(button, borderDelta + borderThickness,
+							width + deltaLeft + deltaRight, height + deltaTop + deltaBottom, true)
 					: null;
-			borderPainter.paintBorder(finalGraphics, button, width + deltaLeft
-					+ deltaRight, height + deltaTop + deltaBottom, contour,
-					contourInner, borderScheme);
+			borderPainter.paintBorder(finalGraphics, button, width + deltaLeft + deltaRight,
+					height + deltaTop + deltaBottom, contour, contourInner, borderScheme);
 		}
 		return newBackground;
 	}
@@ -381,25 +351,20 @@ public class ButtonBackgroundDelegate {
 		int y = 0;
 		if (SubstanceCoreUtilities.isScrollButton(button)
 				|| SubstanceCoreUtilities.isSpinnerButton(button)) {
-			PairwiseButtonBackgroundDelegate.updatePairwiseBackground(g,
-					button, width, height, false);
+			PairwiseButtonBackgroundDelegate.updatePairwiseBackground(g, button, width, height,
+					false);
 			return;
 		}
 
-		SubstanceFillPainter fillPainter = SubstanceCoreUtilities
-				.getFillPainter(button);
-		SubstanceButtonShaper shaper = SubstanceCoreUtilities
-				.getButtonShaper(button);
-		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
-				.getBorderPainter(button);
+		SubstanceFillPainter fillPainter = SubstanceCoreUtilities.getFillPainter(button);
+		SubstanceButtonShaper shaper = SubstanceCoreUtilities.getButtonShaper(button);
+		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(button);
 
-		BufferedImage bgImage = getFullAlphaBackground(button, button
-				.getModel(), shaper, fillPainter, borderPainter, width, height);
+		BufferedImage bgImage = getFullAlphaBackground(button, button.getModel(), shaper,
+				fillPainter, borderPainter, width, height);
 
-		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) button
-				.getUI();
-		StateTransitionTracker stateTransitionTracker = transitionAwareUI
-				.getTransitionTracker();
+		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) button.getUI();
+		StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
 		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
 				.getModelStateInfo();
 		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
@@ -434,10 +399,10 @@ public class ButtonBackgroundDelegate {
 		}
 		if (extraAlpha > 0.0f) {
 			Graphics2D graphics = (Graphics2D) g.create();
-			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(button,
-					extraAlpha, g));
+			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(button, extraAlpha, g));
 			int factor = UIUtil.isRetina() ? 2 : 1;
-			graphics.drawImage(bgImage, 0, y, bgImage.getWidth() / factor, bgImage.getHeight() / factor, null);
+			graphics.drawImage(bgImage, 0, y, bgImage.getWidth() / factor,
+					bgImage.getHeight() / factor, null);
 			graphics.dispose();
 		}
 	}
@@ -477,12 +442,11 @@ public class ButtonBackgroundDelegate {
 		if (!SubstanceLookAndFeel.isCurrentLookAndFeel()) {
 			return false;
 		}
-		SubstanceButtonShaper shaper = SubstanceCoreUtilities
-				.getButtonShaper(button);
+		SubstanceButtonShaper shaper = SubstanceCoreUtilities.getButtonShaper(button);
 		if (shaper == null)
 			return false;
-		Shape contour = shaper.getButtonOutline(button, 0.0f,
-				button.getWidth(), button.getHeight(), false);
+		Shape contour = shaper.getButtonOutline(button, 0.0f, button.getWidth(), button.getHeight(),
+				false);
 		return contour.contains(x, y);
 	}
 

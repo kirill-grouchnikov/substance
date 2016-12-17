@@ -56,7 +56,7 @@ public class BackgroundPaintingUtils {
 	 * @param c
 	 *            Component.
 	 */
-	public static void updateIfOpaque(Graphics g, Component c) {
+	public static void updateIfOpaque(Graphics g, JComponent c) {
 		if (SubstanceCoreUtilities.isOpaque(c))
 			update(g, c, false);
 	}
@@ -79,7 +79,7 @@ public class BackgroundPaintingUtils {
 	 * @param force
 	 *            If <code>true</code>, the painting of background is enforced.
 	 */
-	public static void update(Graphics g, Component c, boolean force) {
+	public static void update(Graphics g, JComponent c, boolean force) {
 		// failsafe for LAF change
 		if (!SubstanceLookAndFeel.isCurrentLookAndFeel()) {
 			return;
@@ -87,11 +87,8 @@ public class BackgroundPaintingUtils {
 
 		boolean isInCellRenderer = (SwingUtilities.getAncestorOfClass(
 				CellRendererPane.class, c) != null);
-		boolean isPreviewMode = false;
-		if (c instanceof JComponent) {
-			isPreviewMode = (Boolean.TRUE.equals(((JComponent) c)
-					.getClientProperty(LafWidgetUtilities.PREVIEW_MODE)));
-		}
+		boolean isPreviewMode = Boolean.TRUE.equals(
+				c.getClientProperty(LafWidgetUtilities.PREVIEW_MODE));
 
 		Graphics2D graphics = (Graphics2D) g.create();
 		// optimization - do not call fillRect on graphics
@@ -100,8 +97,7 @@ public class BackgroundPaintingUtils {
 				RenderingHints.VALUE_ANTIALIAS_OFF);
 		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c, g));
 
-		DecorationAreaType decorationType = SubstanceLookAndFeel
-				.getDecorationType(c);
+		DecorationAreaType decorationType = SubstanceLookAndFeel.getDecorationType(c);
 		SubstanceSkin skin = SubstanceCoreUtilities.getSkin(c);
 		boolean isShowing = c.isShowing();
 		if (isShowing && (decorationType != DecorationAreaType.NONE)
@@ -109,7 +105,7 @@ public class BackgroundPaintingUtils {
 			// use the decoration painter
 			DecorationPainterUtils.paintDecorationBackground(graphics, c, force);
 			// and add overlays unless it's not a top-level menu
-			boolean showOverlays = true;
+			boolean showOverlays = false;
 			if (c.getParent() instanceof JPopupMenu) {
 				showOverlays = false;
 			} else {
@@ -118,6 +114,8 @@ public class BackgroundPaintingUtils {
 					if (c instanceof JMenu) {
 						showOverlays = ((JMenu) c).isTopLevelMenu();
 					}
+//				} else if (c.getParent().getClientProperty(DecorationPainterUtils.POPUP_INVOKER_LINK) != null) {
+//					showOverlays = false;
 				}
 			}
 			if (showOverlays) {

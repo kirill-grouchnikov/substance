@@ -29,10 +29,22 @@
  */
 package test.check;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.text.DecimalFormat;
 
-import javax.swing.*;
+import javax.swing.JEditorPane;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 
 import org.pushingpixels.lafwidget.LafWidget;
 import org.pushingpixels.lafwidget.text.PasswordStrengthChecker;

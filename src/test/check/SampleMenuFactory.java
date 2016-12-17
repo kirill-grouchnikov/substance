@@ -335,75 +335,43 @@ public class SampleMenuFactory {
 		JMenu jmTransform = new JMenu("Transforms");
 
 		JMenuItem itemShade = new JMenuItem("Shade 10%");
-		itemShade.addActionListener(new SkinChanger(new ColorSchemeTransform() {
-			@Override
-			public SubstanceColorScheme transform(SubstanceColorScheme scheme) {
-				return scheme.shade(0.1);
-			};
-		}, "Shaded current"));
+		itemShade.addActionListener(new SkinChanger(
+				(SubstanceColorScheme scheme) -> scheme.shade(0.1), "Shaded current"));
 		jmTransform.add(itemShade);
 
 		JMenuItem itemTone = new JMenuItem("Tone 10%");
-		itemTone.addActionListener(new SkinChanger(new ColorSchemeTransform() {
-			@Override
-			public SubstanceColorScheme transform(SubstanceColorScheme scheme) {
-				return scheme.tone(0.1);
-			};
-		}, "Toned current"));
+		itemTone.addActionListener(new SkinChanger(
+				(SubstanceColorScheme scheme) -> scheme.tone(0.1), "Toned current"));
 		jmTransform.add(itemTone);
 
 		JMenuItem itemTint = new JMenuItem("Tint 10%");
-		itemTint.addActionListener(new SkinChanger(new ColorSchemeTransform() {
-			@Override
-			public SubstanceColorScheme transform(SubstanceColorScheme scheme) {
-				return scheme.tint(0.1);
-			};
-		}, "Tinted current"));
+		itemTint.addActionListener(new SkinChanger(
+				(SubstanceColorScheme scheme) -> scheme.tint(0.1), "Tinted current"));
 		jmTransform.add(itemTint);
 
 		JMenuItem itemHueShift = new JMenuItem("Hue shift 10%");
-		itemHueShift.addActionListener(new SkinChanger(new ColorSchemeTransform() {
-			@Override
-			public SubstanceColorScheme transform(SubstanceColorScheme scheme) {
-				return scheme.hueShift(0.1);
-			};
-		}, "Hue shifted current"));
+		itemHueShift.addActionListener(new SkinChanger(
+				(SubstanceColorScheme scheme) -> scheme.hueShift(0.1), "Hue shifted current"));
 		jmTransform.add(itemHueShift);
 
 		JMenuItem itemSaturate = new JMenuItem("Saturate 10%");
-		itemSaturate.addActionListener(new SkinChanger(new ColorSchemeTransform() {
-			@Override
-			public SubstanceColorScheme transform(SubstanceColorScheme scheme) {
-				return scheme.saturate(0.1);
-			};
-		}, "Saturated current"));
+		itemSaturate.addActionListener(new SkinChanger(
+				(SubstanceColorScheme scheme) -> scheme.saturate(0.1), "Saturated current"));
 		jmTransform.add(itemSaturate);
 
 		JMenuItem itemDesaturate = new JMenuItem("Desaturate 10%");
-		itemDesaturate.addActionListener(new SkinChanger(new ColorSchemeTransform() {
-			@Override
-			public SubstanceColorScheme transform(SubstanceColorScheme scheme) {
-				return scheme.saturate(-0.1);
-			};
-		}, "Desaturated current"));
+		itemDesaturate.addActionListener(new SkinChanger(
+				(SubstanceColorScheme scheme) -> scheme.saturate(-0.1), "Desaturated current"));
 		jmTransform.add(itemDesaturate);
 
 		JMenuItem itemNegate = new JMenuItem("Negate");
-		itemNegate.addActionListener(new SkinChanger(new ColorSchemeTransform() {
-			@Override
-			public SubstanceColorScheme transform(SubstanceColorScheme scheme) {
-				return scheme.negate();
-			};
-		}, "Negated current"));
+		itemNegate.addActionListener(new SkinChanger(
+				(SubstanceColorScheme scheme) -> scheme.negate(), "Negated current"));
 		jmTransform.add(itemNegate);
 
 		JMenuItem itemInvert = new JMenuItem("Invert");
-		itemInvert.addActionListener(new SkinChanger(new ColorSchemeTransform() {
-			@Override
-			public SubstanceColorScheme transform(SubstanceColorScheme scheme) {
-				return scheme.invert();
-			};
-		}, "Inverted current"));
+		itemInvert.addActionListener(new SkinChanger(
+				(SubstanceColorScheme scheme) -> scheme.invert(), "Inverted current"));
 		jmTransform.add(itemInvert);
 
 		return jmTransform;

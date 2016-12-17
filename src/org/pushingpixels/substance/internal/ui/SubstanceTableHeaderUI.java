@@ -29,31 +29,57 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JViewport;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.*;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.TableUI;
+import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicTableHeaderUI;
-import javax.swing.table.*;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.ComponentStateFacet;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
-import org.pushingpixels.substance.internal.animation.StateTransitionTracker.RepaintCallback;
 import org.pushingpixels.substance.internal.painter.HighlightPainterUtils;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.trident.Timeline.TimelineState;
-import org.pushingpixels.trident.callback.TimelineCallback;
 import org.pushingpixels.trident.callback.UIThreadTimelineCallbackAdapter;
 
 /**
@@ -476,9 +502,7 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 		Point left = clip.getLocation();
 		// tweak the points for issue 378 - making sure that the
 		// grid lines are repainted correctly on scroll.
-		int lineWeight = (int) Math.ceil(SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(c)));
+		int lineWeight = (int) Math.ceil(SubstanceSizeUtils.getBorderStrokeWidth());
 		left = new Point(left.x - 2 * lineWeight, left.y);
 		Point right = new Point(clip.x + clip.width + 2 * lineWeight, clip.y);
 
@@ -497,9 +521,7 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 
 		Color gridColor = getGridColor(this.header);
 
-		float strokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(this.header));
+		float strokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 		g2d.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND,
 				BasicStroke.JOIN_BEVEL));
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -922,9 +944,7 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 					0.0f, null, fillScheme, borderScheme);
 
 			g2d.setColor(getGridColor(this.header));
-			float strokeWidth = SubstanceSizeUtils
-					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(header));
+			float strokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 			g2d.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND,
 					BasicStroke.JOIN_BEVEL));
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,

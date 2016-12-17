@@ -29,11 +29,8 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import java.awt.Color;
-
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
-import org.pushingpixels.substance.api.ColorSchemeTransform;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -202,44 +199,24 @@ public class TwilightSkin extends SubstanceSkin {
 		// add an overlay painter to paint a dark line along the bottom
 		// edge of toolbars
 		this.toolbarBottomLineOverlayPainter = new BottomLineOverlayPainter(
-				new ColorSchemeSingleColorQuery() {
-					@Override
-					public Color query(SubstanceColorScheme scheme) {
-						return scheme.getUltraDarkColor().darker();
-					}
-				});
+				(SubstanceColorScheme scheme) -> scheme.getUltraDarkColor().darker());
 		this.addOverlayPainter(this.toolbarBottomLineOverlayPainter,
 				DecorationAreaType.TOOLBAR);
 
 		// add an overlay painter to paint a dark line along the bottom
 		// edge of toolbars
 		this.toolbarTopLineOverlayPainter = new TopLineOverlayPainter(
-				new ColorSchemeSingleColorQuery() {
-					@Override
-					public Color query(SubstanceColorScheme scheme) {
-						Color fg = scheme.getForegroundColor();
-						return new Color(fg.getRed(), fg.getGreen(), fg
-								.getBlue(), 32);
-					}
-				});
+				(SubstanceColorScheme scheme) -> SubstanceColorUtilities.getAlphaColor(
+						scheme.getForegroundColor(), 32));
 		this.addOverlayPainter(this.toolbarTopLineOverlayPainter,
 				DecorationAreaType.TOOLBAR);
 
 		// add an overlay painter to paint a bezel line along the top
 		// edge of footer
 		this.footerTopBezelOverlayPainter = new TopBezelOverlayPainter(
-				new ColorSchemeSingleColorQuery() {
-					@Override
-					public Color query(SubstanceColorScheme scheme) {
-						return scheme.getUltraDarkColor().darker();
-					}
-				}, new ColorSchemeSingleColorQuery() {
-					@Override
-					public Color query(SubstanceColorScheme scheme) {
-						Color fg = scheme.getForegroundColor();
-						return SubstanceColorUtilities.getAlphaColor(fg, 32);
-					}
-				});
+				(SubstanceColorScheme scheme) -> scheme.getUltraDarkColor().darker(),
+				(SubstanceColorScheme scheme) -> SubstanceColorUtilities.getAlphaColor(
+						scheme.getForegroundColor(), 32));
 		this.addOverlayPainter(this.footerTopBezelOverlayPainter,
 				DecorationAreaType.FOOTER);
 
@@ -257,13 +234,7 @@ public class TwilightSkin extends SubstanceSkin {
 				new ClassicBorderPainter(), new DelegateBorderPainter(
 						"Twilight Inner", new ClassicBorderPainter(),
 						0x40FFFFFF, 0x20FFFFFF, 0x00FFFFFF,
-						new ColorSchemeTransform() {
-							@Override
-							public SubstanceColorScheme transform(
-									SubstanceColorScheme scheme) {
-								return scheme.tint(0.2);
-							}
-						}));
+						(SubstanceColorScheme scheme) -> scheme.tint(0.2f)));
 	}
 
 	public String getDisplayName() {

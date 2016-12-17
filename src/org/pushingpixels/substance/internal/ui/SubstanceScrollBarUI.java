@@ -31,7 +31,6 @@ package org.pushingpixels.substance.internal.ui;
 
 import java.awt.Adjustable;
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -89,8 +88,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
  * 
  * @author Kirill Grouchnikov
  */
-public class SubstanceScrollBarUI extends BasicScrollBarUI implements
-		TransitionAwareUI {
+public class SubstanceScrollBarUI extends BasicScrollBarUI implements TransitionAwareUI {
 	/**
 	 * Surrogate button model for tracking the thumb transitions.
 	 */
@@ -136,7 +134,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 	protected AdjustmentListener substanceAdjustmentListener;
 
 	private Set<LafWidget> lafWidgets;
-	
+
 	private static int THUMB_DELTA = 2;
 
 	/*
@@ -171,12 +169,12 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
 
 		super.installUI(c);
-		
+
 		for (LafWidget lafWidget : this.lafWidgets) {
 			lafWidget.installUI();
 		}
 	}
-	
+
 	@Override
 	public void uninstallUI(JComponent c) {
 		for (LafWidget lafWidget : this.lafWidgets) {
@@ -219,7 +217,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			delta--;
 		}
 		width -= delta;
-		
+
 		int height = Math.max(1, thumbBounds.height);
 
 		StateTransitionTracker.ModelStateInfo modelStateInfo = this.compositeStateTransitionTracker
@@ -227,15 +225,13 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		ComponentState currState = modelStateInfo.getCurrModelState();
 
 		// enabled scroll bar is always painted as active
-		SubstanceColorScheme baseFillScheme = (currState != ComponentState.ENABLED) ? SubstanceColorSchemeUtilities
-				.getColorScheme(this.scrollbar, currState)
-				: SubstanceColorSchemeUtilities.getActiveColorScheme(
-						this.scrollbar, currState);
+		SubstanceColorScheme baseFillScheme = (currState != ComponentState.ENABLED)
+				? SubstanceColorSchemeUtilities.getColorScheme(this.scrollbar, currState)
+				: SubstanceColorSchemeUtilities.getActiveColorScheme(this.scrollbar, currState);
 		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this.scrollbar,
-						ColorSchemeAssociationKind.BORDER, currState);
-		BufferedImage baseLayer = getThumbVertical(this.scrollbar, width,
-				height, baseFillScheme, baseBorderScheme);
+				.getColorScheme(this.scrollbar, ColorSchemeAssociationKind.BORDER, currState);
+		BufferedImage baseLayer = getThumbVertical(this.scrollbar, width, height, baseFillScheme,
+				baseBorderScheme);
 
 		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
 				.getStateContributionMap();
@@ -262,15 +258,14 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 
 			g2d.setComposite(AlphaComposite.SrcOver.derive(contribution));
 
-			SubstanceColorScheme fillScheme = (activeState != ComponentState.ENABLED) ? SubstanceColorSchemeUtilities
-					.getColorScheme(this.scrollbar, activeState)
-					: SubstanceColorSchemeUtilities.getActiveColorScheme(
-							this.scrollbar, activeState);
+			SubstanceColorScheme fillScheme = (activeState != ComponentState.ENABLED)
+					? SubstanceColorSchemeUtilities.getColorScheme(this.scrollbar, activeState)
+					: SubstanceColorSchemeUtilities.getActiveColorScheme(this.scrollbar,
+							activeState);
 			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(this.scrollbar,
-							ColorSchemeAssociationKind.BORDER, activeState);
-			BufferedImage layer = getThumbVertical(this.scrollbar, width,
-					height, fillScheme, borderScheme);
+					.getColorScheme(this.scrollbar, ColorSchemeAssociationKind.BORDER, activeState);
+			BufferedImage layer = getThumbVertical(this.scrollbar, width, height, fillScheme,
+					borderScheme);
 			g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor,
 					layer.getHeight() / scaleFactor, null);
 		}
@@ -302,18 +297,13 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 	 *            The second border color scheme.
 	 * @return Image for vertical thumb.
 	 */
-	private static BufferedImage getThumbVertical(JScrollBar scrollBar,
-			int width, int height, SubstanceColorScheme scheme,
-			SubstanceColorScheme borderScheme) {
-		SubstanceFillPainter painter = SubstanceCoreUtilities
-				.getFillPainter(scrollBar);
-		SubstanceButtonShaper shaper = SubstanceCoreUtilities
-				.getButtonShaper(scrollBar);
-		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
-				.getBorderPainter(scrollBar);
-		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height,
-				scheme.getDisplayName(), borderScheme.getDisplayName(), painter
-						.getDisplayName(), shaper.getDisplayName(),
+	private static BufferedImage getThumbVertical(JScrollBar scrollBar, int width, int height,
+			SubstanceColorScheme scheme, SubstanceColorScheme borderScheme) {
+		SubstanceFillPainter painter = SubstanceCoreUtilities.getFillPainter(scrollBar);
+		SubstanceButtonShaper shaper = SubstanceCoreUtilities.getButtonShaper(scrollBar);
+		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(scrollBar);
+		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height, scheme.getDisplayName(),
+				borderScheme.getDisplayName(), painter.getDisplayName(), shaper.getDisplayName(),
 				borderPainter.getDisplayName());
 		BufferedImage result = SubstanceScrollBarUI.thumbVerticalMap.get(key);
 		if (result == null) {
@@ -321,18 +311,16 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			// System.out.println("New image for vertical thumb");
 			float radius = width / 2;
 
-			float borderDelta = SubstanceSizeUtils
-					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(scrollBar)) / 2.0f;
-			GeneralPath contour = SubstanceOutlineUtilities.getBaseOutline(
-					height, width, radius, null, borderDelta);
+			float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
+			GeneralPath contour = SubstanceOutlineUtilities.getBaseOutline(height, width, radius,
+					null, borderDelta);
 
 			result = SubstanceCoreUtilities.getBlankImage(height, width);
-			painter.paintContourBackground(result.createGraphics(), scrollBar,
-					height, width, contour, false, scheme, true);
+			painter.paintContourBackground(result.createGraphics(), scrollBar, height, width,
+					contour, false, scheme, true);
 
-			borderPainter.paintBorder(result.getGraphics(), scrollBar, height,
-					width, contour, null, borderScheme);
+			borderPainter.paintBorder(result.getGraphics(), scrollBar, height, width, contour, null,
+					borderScheme);
 			result = SubstanceImageCreator.getRotated(result, 3, false);
 			// System.out.println(key);
 			SubstanceScrollBarUI.thumbVerticalMap.put(key, result);
@@ -361,15 +349,13 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 				.getModelStateInfo();
 		ComponentState currState = modelStateInfo.getCurrModelState();
 
-		SubstanceColorScheme baseFillScheme = (currState != ComponentState.ENABLED) ? SubstanceColorSchemeUtilities
-				.getColorScheme(this.scrollbar, currState)
-				: SubstanceColorSchemeUtilities.getActiveColorScheme(
-						this.scrollbar, currState);
+		SubstanceColorScheme baseFillScheme = (currState != ComponentState.ENABLED)
+				? SubstanceColorSchemeUtilities.getColorScheme(this.scrollbar, currState)
+				: SubstanceColorSchemeUtilities.getActiveColorScheme(this.scrollbar, currState);
 		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this.scrollbar,
-						ColorSchemeAssociationKind.BORDER, currState);
-		BufferedImage baseLayer = getThumbHorizontal(this.scrollbar, width,
-				height, baseFillScheme, baseBorderScheme);
+				.getColorScheme(this.scrollbar, ColorSchemeAssociationKind.BORDER, currState);
+		BufferedImage baseLayer = getThumbHorizontal(this.scrollbar, width, height, baseFillScheme,
+				baseBorderScheme);
 
 		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
 				.getStateContributionMap();
@@ -398,15 +384,14 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 
 			g2d.setComposite(AlphaComposite.SrcOver.derive(contribution));
 
-			SubstanceColorScheme fillScheme = (activeState != ComponentState.ENABLED) ? SubstanceColorSchemeUtilities
-					.getColorScheme(this.scrollbar, activeState)
-					: SubstanceColorSchemeUtilities.getActiveColorScheme(
-							this.scrollbar, activeState);
+			SubstanceColorScheme fillScheme = (activeState != ComponentState.ENABLED)
+					? SubstanceColorSchemeUtilities.getColorScheme(this.scrollbar, activeState)
+					: SubstanceColorSchemeUtilities.getActiveColorScheme(this.scrollbar,
+							activeState);
 			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(this.scrollbar,
-							ColorSchemeAssociationKind.BORDER, activeState);
-			BufferedImage layer = getThumbHorizontal(this.scrollbar, width,
-					height, fillScheme, borderScheme);
+					.getColorScheme(this.scrollbar, ColorSchemeAssociationKind.BORDER, activeState);
+			BufferedImage layer = getThumbHorizontal(this.scrollbar, width, height, fillScheme,
+					borderScheme);
 			g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor,
 					layer.getHeight() / scaleFactor, null);
 		}
@@ -438,36 +423,29 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 	 *            The second border color scheme.
 	 * @return Image for horizontal thumb.
 	 */
-	private static BufferedImage getThumbHorizontal(JScrollBar scrollBar,
-			int width, int height, SubstanceColorScheme scheme,
-			SubstanceColorScheme borderScheme) {
-		SubstanceFillPainter painter = SubstanceCoreUtilities
-				.getFillPainter(scrollBar);
-		SubstanceButtonShaper shaper = SubstanceCoreUtilities
-				.getButtonShaper(scrollBar);
-		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
-				.getBorderPainter(scrollBar);
-		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height,
-				scheme.getDisplayName(), borderScheme.getDisplayName(), painter
-						.getDisplayName(), shaper.getDisplayName(),
+	private static BufferedImage getThumbHorizontal(JScrollBar scrollBar, int width, int height,
+			SubstanceColorScheme scheme, SubstanceColorScheme borderScheme) {
+		SubstanceFillPainter painter = SubstanceCoreUtilities.getFillPainter(scrollBar);
+		SubstanceButtonShaper shaper = SubstanceCoreUtilities.getButtonShaper(scrollBar);
+		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(scrollBar);
+		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height, scheme.getDisplayName(),
+				borderScheme.getDisplayName(), painter.getDisplayName(), shaper.getDisplayName(),
 				borderPainter.getDisplayName());
 
 		float radius = height / 2;
-		float borderDelta = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(scrollBar)) / 2.0f;
-		GeneralPath contour = SubstanceOutlineUtilities.getBaseOutline(width,
-				height, radius, null, borderDelta);
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
+		GeneralPath contour = SubstanceOutlineUtilities.getBaseOutline(width, height, radius, null,
+				borderDelta);
 		BufferedImage opaque = SubstanceScrollBarUI.thumbHorizontalMap.get(key);
 		if (opaque == null) {
 			// System.out.println("New image for horizontal thumb");
 
 			opaque = SubstanceCoreUtilities.getBlankImage(width, height);
-			painter.paintContourBackground(opaque.createGraphics(), scrollBar,
-					width, height, contour, false, scheme, true);
+			painter.paintContourBackground(opaque.createGraphics(), scrollBar, width, height,
+					contour, false, scheme, true);
 
-			borderPainter.paintBorder(opaque.getGraphics(), scrollBar, width,
-					height, contour, null, borderScheme);
+			borderPainter.paintBorder(opaque.getGraphics(), scrollBar, width, height, contour, null,
+					borderScheme);
 			SubstanceScrollBarUI.thumbHorizontalMap.put(key, opaque);
 		}
 
@@ -485,11 +463,10 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		if (scrollButton == null)
 			return null;
 
-		ComponentState result = ((TransitionAwareUI) scrollButton.getUI())
-				.getTransitionTracker().getModelStateInfo().getCurrModelState();
+		ComponentState result = ((TransitionAwareUI) scrollButton.getUI()).getTransitionTracker()
+				.getModelStateInfo().getCurrModelState();
 		if ((result == ComponentState.ENABLED)
-				&& SubstanceCoreUtilities.hasFlatAppearance(this.scrollbar,
-						false)) {
+				&& SubstanceCoreUtilities.hasFlatAppearance(this.scrollbar, false)) {
 			result = null;
 		}
 		if (SubstanceCoreUtilities.isButtonNeverPainted(scrollButton)) {
@@ -515,7 +492,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			graphics.translate(trackBounds.x - THUMB_DELTA, trackBounds.y);
 		}
 		graphics.setColor(SubstanceColorUtilities.getBackgroundFillColorScrollBar(this.scrollbar));
-		//graphics.setColor(Color.red);
+		// graphics.setColor(Color.red);
 		graphics.fillRect(0, 0, this.scrollbar.getWidth(), this.scrollbar.getHeight());
 		GhostPaintingUtils.paintGhostImages(this.scrollbar, g);
 
@@ -534,22 +511,21 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		// System.out.println("Thumb");
 		Graphics2D graphics = (Graphics2D) g.create();
 
-		this.thumbModel.setSelected(this.thumbModel.isSelected()
-				|| this.isDragging);
+		this.thumbModel.setSelected(this.thumbModel.isSelected() || this.isDragging);
 		this.thumbModel.setEnabled(c.isEnabled());
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		boolean isVertical = (this.scrollbar.getOrientation() == Adjustable.VERTICAL);
 		if (isVertical) {
-			Rectangle adjustedBounds = new Rectangle(thumbBounds.x,
-					thumbBounds.y, thumbBounds.width, thumbBounds.height);
+			Rectangle adjustedBounds = new Rectangle(thumbBounds.x, thumbBounds.y,
+					thumbBounds.width, thumbBounds.height);
 			BufferedImage thumbImage = this.getThumbVertical(adjustedBounds);
 			int xdelta = (thumbBounds.width - thumbImage.getWidth() / scaleFactor) / 2;
 			graphics.drawImage(thumbImage, adjustedBounds.x + xdelta, adjustedBounds.y,
 					thumbImage.getWidth() / scaleFactor, thumbImage.getHeight() / scaleFactor,
 					null);
 		} else {
-			Rectangle adjustedBounds = new Rectangle(thumbBounds.x,
-					thumbBounds.y, thumbBounds.width, thumbBounds.height);
+			Rectangle adjustedBounds = new Rectangle(thumbBounds.x, thumbBounds.y,
+					thumbBounds.width, thumbBounds.height);
 			BufferedImage thumbImage = this.getThumbHorizontal(adjustedBounds);
 			int ydelta = (thumbBounds.height - thumbImage.getHeight() / scaleFactor) / 2;
 			graphics.drawImage(thumbImage, adjustedBounds.x, adjustedBounds.y + ydelta,
@@ -565,8 +541,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		BackgroundPaintingUtils.update(graphics, c, false);
 		float alpha = SubstanceColorSchemeUtilities.getAlpha(this.scrollbar,
 				ComponentState.getState(this.thumbModel, this.scrollbar));
-		graphics
-				.setComposite(LafWidgetUtilities.getAlphaComposite(c, alpha, g));
+		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c, alpha, g));
 		super.paint(graphics, c);
 		graphics.dispose();
 	}
@@ -580,14 +555,13 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 	protected void installDefaults() {
 		super.installDefaults();
 		this.scrollBarWidth = SubstanceSizeUtils
-				.getScrollBarWidth(SubstanceSizeUtils
-						.getComponentFontSize(this.scrollbar));
+				.getScrollBarWidth(SubstanceSizeUtils.getComponentFontSize(this.scrollbar));
 
 		for (LafWidget lafWidget : this.lafWidgets) {
 			lafWidget.installDefaults();
 		}
 	}
-	
+
 	@Override
 	protected void uninstallDefaults() {
 		for (LafWidget lafWidget : this.lafWidgets) {
@@ -604,8 +578,8 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 	 */
 	@Override
 	protected void installComponents() {
-		this.compositeStateTransitionTracker = new StateTransitionTracker(
-				this.scrollbar, this.thumbModel);
+		this.compositeStateTransitionTracker = new StateTransitionTracker(this.scrollbar,
+				this.thumbModel);
 		this.compositeStateTransitionTracker.registerModelListeners();
 
 		for (LafWidget lafWidget : this.lafWidgets) {
@@ -636,11 +610,9 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 	protected void installListeners() {
 		super.installListeners();
 
-		this.substanceThumbRolloverListener = new RolloverControlListener(this,
-				this.thumbModel);
+		this.substanceThumbRolloverListener = new RolloverControlListener(this, this.thumbModel);
 		this.scrollbar.addMouseListener(this.substanceThumbRolloverListener);
-		this.scrollbar
-				.addMouseMotionListener(this.substanceThumbRolloverListener);
+		this.scrollbar.addMouseMotionListener(this.substanceThumbRolloverListener);
 
 		this.substancePropertyListener = (PropertyChangeEvent evt) -> {
 			if ("font".equals(evt.getPropertyName())) {
@@ -650,10 +622,8 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		this.scrollbar.addPropertyChangeListener(this.substancePropertyListener);
 
 		this.substanceAdjustmentListener = (AdjustmentEvent e) -> {
-			SubstanceCoreUtilities
-					.testComponentStateChangeThreadingViolation(scrollbar);
-			Component parent = SubstanceScrollBarUI.this.scrollbar
-					.getParent();
+			SubstanceCoreUtilities.testComponentStateChangeThreadingViolation(scrollbar);
+			Component parent = SubstanceScrollBarUI.this.scrollbar.getParent();
 			if (parent instanceof JScrollPane) {
 				JScrollPane jsp = (JScrollPane) parent;
 				JScrollBar hor = jsp.getHorizontalScrollBar();
@@ -687,16 +657,13 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 	@Override
 	protected void uninstallListeners() {
 		this.scrollbar.removeMouseListener(this.substanceThumbRolloverListener);
-		this.scrollbar
-				.removeMouseMotionListener(this.substanceThumbRolloverListener);
+		this.scrollbar.removeMouseMotionListener(this.substanceThumbRolloverListener);
 		this.substanceThumbRolloverListener = null;
 
-		this.scrollbar
-				.removePropertyChangeListener(this.substancePropertyListener);
+		this.scrollbar.removePropertyChangeListener(this.substancePropertyListener);
 		this.substancePropertyListener = null;
 
-		this.scrollbar
-				.removeAdjustmentListener(this.substanceAdjustmentListener);
+		this.scrollbar.removeAdjustmentListener(this.substanceAdjustmentListener);
 		this.substanceAdjustmentListener = null;
 
 		for (LafWidget lafWidget : this.lafWidgets) {
@@ -921,10 +888,12 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		if (value < (max - sb.getVisibleAmount())) {
 			float thumbRange = trackW - thumbW;
 			if (ltr) {
-				thumbX = THUMB_DELTA + (int) (0.5f + (thumbRange * ((value - min) / (range - extent))));
+				thumbX = THUMB_DELTA
+						+ (int) (0.5f + (thumbRange * ((value - min) / (range - extent))));
 			} else {
-				thumbX = THUMB_DELTA + (int) (0.5f + (thumbRange * ((max - extent - value) / (range - extent))));
-//				thumbX += decrButton2X + decrButton2W;
+				thumbX = THUMB_DELTA
+						+ (int) (0.5f + (thumbRange * ((max - extent - value) / (range - extent))));
+				// thumbX += decrButton2X + decrButton2W;
 			}
 		}
 
@@ -959,9 +928,9 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 				if (thumbX + thumbW > (sbSize.width - sbInsets.left)) {
 					thumbX = sbSize.width - sbInsets.left - thumbW;
 				}
-//				if (thumbX < (incrButtonX + decrButton2W)) {
-//					thumbX = incrButtonX + decrButton2W + 1;
-//				}
+				// if (thumbX < (incrButtonX + decrButton2W)) {
+				// thumbX = incrButtonX + decrButton2W + 1;
+				// }
 			}
 			this.setThumbBounds(thumbX, itemY, thumbW, itemH);
 		}
@@ -975,8 +944,8 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 	public static String getMemoryUsage() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("SubstanceScrollBarUI: \n");
-		sb.append("\t" + thumbHorizontalMap.size() + " thumb horizontal, "
-				+ thumbVerticalMap.size() + " thumb vertical");
+		sb.append("\t" + thumbHorizontalMap.size() + " thumb horizontal, " + thumbVerticalMap.size()
+				+ " thumb vertical");
 		return sb.toString();
 	}
 
@@ -1013,16 +982,14 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 				SubstanceScrollBarUI.this.updateThumbState(e.getX(), e.getY());
 			}
 			if (SwingUtilities.isRightMouseButton(e)
-					|| (!SubstanceScrollBarUI.this
-							.getSupportsAbsolutePositioning() && SwingUtilities
-							.isMiddleMouseButton(e)))
+					|| (!SubstanceScrollBarUI.this.getSupportsAbsolutePositioning()
+							&& SwingUtilities.isMiddleMouseButton(e)))
 				return;
 			if (!SubstanceScrollBarUI.this.scrollbar.isEnabled())
 				return;
 
 			Rectangle r = SubstanceScrollBarUI.this.getTrackBounds();
-			SubstanceScrollBarUI.this.scrollbar.repaint(r.x, r.y, r.width,
-					r.height);
+			SubstanceScrollBarUI.this.scrollbar.repaint(r.x, r.y, r.width, r.height);
 
 			SubstanceScrollBarUI.this.trackHighlight = NO_HIGHLIGHT;
 			SubstanceScrollBarUI.this.isDragging = false;
@@ -1045,16 +1012,14 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			// it by one page. If there is no thumb then page up if the mouse is
 			// in the upper half of the track.
 			if (SwingUtilities.isRightMouseButton(e)
-					|| (!SubstanceScrollBarUI.this
-							.getSupportsAbsolutePositioning() && SwingUtilities
-							.isMiddleMouseButton(e)))
+					|| (!SubstanceScrollBarUI.this.getSupportsAbsolutePositioning()
+							&& SwingUtilities.isMiddleMouseButton(e)))
 				return;
 			if (!SubstanceScrollBarUI.this.scrollbar.isEnabled())
 				return;
 
 			if (!SubstanceScrollBarUI.this.scrollbar.hasFocus()
-					&& SubstanceScrollBarUI.this.scrollbar
-							.isRequestFocusEnabled()) {
+					&& SubstanceScrollBarUI.this.scrollbar.isRequestFocusEnabled()) {
 				SubstanceScrollBarUI.this.scrollbar.requestFocus();
 			}
 
@@ -1064,22 +1029,19 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			this.currentMouseY = e.getY();
 
 			// Clicked in the Thumb area?
-			if (SubstanceScrollBarUI.this.getThumbBounds().contains(
-					this.currentMouseX, this.currentMouseY)) {
+			if (SubstanceScrollBarUI.this.getThumbBounds().contains(this.currentMouseX,
+					this.currentMouseY)) {
 				switch (SubstanceScrollBarUI.this.scrollbar.getOrientation()) {
 				case JScrollBar.VERTICAL:
-					this.offset = this.currentMouseY
-							- SubstanceScrollBarUI.this.getThumbBounds().y;
+					this.offset = this.currentMouseY - SubstanceScrollBarUI.this.getThumbBounds().y;
 					break;
 				case JScrollBar.HORIZONTAL:
-					this.offset = this.currentMouseX
-							- SubstanceScrollBarUI.this.getThumbBounds().x;
+					this.offset = this.currentMouseX - SubstanceScrollBarUI.this.getThumbBounds().x;
 					break;
 				}
 				SubstanceScrollBarUI.this.isDragging = true;
 				return;
-			} else if (SubstanceScrollBarUI.this
-					.getSupportsAbsolutePositioning()
+			} else if (SubstanceScrollBarUI.this.getSupportsAbsolutePositioning()
 					&& SwingUtilities.isMiddleMouseButton(e)) {
 				switch (SubstanceScrollBarUI.this.scrollbar.getOrientation()) {
 				case JScrollBar.VERTICAL:
@@ -1102,8 +1064,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			case JScrollBar.VERTICAL:
 				if (SubstanceScrollBarUI.this.getThumbBounds().isEmpty()) {
 					int scrollbarCenter = sbSize.height / 2;
-					this.direction = (this.currentMouseY < scrollbarCenter) ? -1
-							: +1;
+					this.direction = (this.currentMouseY < scrollbarCenter) ? -1 : +1;
 				} else {
 					int thumbY = SubstanceScrollBarUI.this.getThumbBounds().y;
 					this.direction = (this.currentMouseY < thumbY) ? -1 : +1;
@@ -1112,14 +1073,13 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			case JScrollBar.HORIZONTAL:
 				if (SubstanceScrollBarUI.this.getThumbBounds().isEmpty()) {
 					int scrollbarCenter = sbSize.width / 2;
-					this.direction = (this.currentMouseX < scrollbarCenter) ? -1
-							: +1;
+					this.direction = (this.currentMouseX < scrollbarCenter) ? -1 : +1;
 				} else {
 					int thumbX = SubstanceScrollBarUI.this.getThumbBounds().x;
 					this.direction = (this.currentMouseX < thumbX) ? -1 : +1;
 				}
-				if (!SubstanceScrollBarUI.this.scrollbar
-						.getComponentOrientation().isLeftToRight()) {
+				if (!SubstanceScrollBarUI.this.scrollbar.getComponentOrientation()
+						.isLeftToRight()) {
 					this.direction = -this.direction;
 				}
 				break;
@@ -1127,8 +1087,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			SubstanceScrollBarUI.this.scrollByBlock(this.direction);
 
 			SubstanceScrollBarUI.this.scrollTimer.stop();
-			SubstanceScrollBarUI.this.scrollListener
-					.setDirection(this.direction);
+			SubstanceScrollBarUI.this.scrollListener.setDirection(this.direction);
 			SubstanceScrollBarUI.this.scrollListener.setScrollByBlock(true);
 			this.startScrollTimerIfNecessary();
 		}
@@ -1147,9 +1106,8 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			// LTR / RTL scrollbar relative to the origin of
 			// the track.
 			if (SwingUtilities.isRightMouseButton(e)
-					|| (!SubstanceScrollBarUI.this
-							.getSupportsAbsolutePositioning() && SwingUtilities
-							.isMiddleMouseButton(e)))
+					|| (!SubstanceScrollBarUI.this.getSupportsAbsolutePositioning()
+							&& SwingUtilities.isMiddleMouseButton(e)))
 				return;
 			if (!SubstanceScrollBarUI.this.scrollbar.isEnabled()
 					|| SubstanceScrollBarUI.this.getThumbBounds().isEmpty()) {
@@ -1160,8 +1118,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			} else {
 				this.currentMouseX = e.getX();
 				this.currentMouseY = e.getY();
-				SubstanceScrollBarUI.this.updateThumbState(this.currentMouseX,
-						this.currentMouseY);
+				SubstanceScrollBarUI.this.updateThumbState(this.currentMouseX, this.currentMouseY);
 				this.startScrollTimerIfNecessary();
 			}
 		}
@@ -1174,32 +1131,29 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 		 */
 		private void setValueFrom(MouseEvent e) {
 			boolean active = SubstanceScrollBarUI.this.isThumbRollover();
-			BoundedRangeModel model = SubstanceScrollBarUI.this.scrollbar
-					.getModel();
+			BoundedRangeModel model = SubstanceScrollBarUI.this.scrollbar.getModel();
 			Rectangle thumbR = SubstanceScrollBarUI.this.getThumbBounds();
 			int thumbMin = 0, thumbMax = 0, thumbPos;
 
 			if (SubstanceScrollBarUI.this.scrollbar.getOrientation() == JScrollBar.VERTICAL) {
 				thumbMin = THUMB_DELTA;
 				thumbMax = SubstanceScrollBarUI.this.scrollbar.getSize().height
-						- SubstanceScrollBarUI.this.scrollbar.getInsets().bottom
-						- thumbR.height - THUMB_DELTA;
+						- SubstanceScrollBarUI.this.scrollbar.getInsets().bottom - thumbR.height
+						- THUMB_DELTA;
 
-				thumbPos = Math.min(thumbMax, Math.max(thumbMin,
-						(e.getY() - this.offset)));
-				SubstanceScrollBarUI.this.setThumbBounds(thumbR.x, thumbPos,
-						thumbR.width, thumbR.height);
+				thumbPos = Math.min(thumbMax, Math.max(thumbMin, (e.getY() - this.offset)));
+				SubstanceScrollBarUI.this.setThumbBounds(thumbR.x, thumbPos, thumbR.width,
+						thumbR.height);
 			} else {
 				thumbMin = THUMB_DELTA;
 				thumbMax = SubstanceScrollBarUI.this.scrollbar.getSize().width
-						- SubstanceScrollBarUI.this.scrollbar.getInsets().right 
-						- thumbR.width - THUMB_DELTA;
+						- SubstanceScrollBarUI.this.scrollbar.getInsets().right - thumbR.width
+						- THUMB_DELTA;
 				// System.out.println(thumbMin + " : " + thumbMax + " : "
 				// + (e.getX() - offset));
-				thumbPos = Math.min(thumbMax, Math.max(thumbMin,
-						(e.getX() - this.offset)));
-				SubstanceScrollBarUI.this.setThumbBounds(thumbPos, thumbR.y,
-						thumbR.width, thumbR.height);
+				thumbPos = Math.min(thumbMax, Math.max(thumbMin, (e.getX() - this.offset)));
+				SubstanceScrollBarUI.this.setThumbBounds(thumbPos, thumbR.y, thumbR.width,
+						thumbR.height);
 			}
 
 			/*
@@ -1209,14 +1163,12 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			 */
 			if (thumbPos == thumbMax) {
 				if (SubstanceScrollBarUI.this.scrollbar.getOrientation() == JScrollBar.VERTICAL
-						|| SubstanceScrollBarUI.this.scrollbar
-								.getComponentOrientation().isLeftToRight()) {
-					SubstanceScrollBarUI.this.scrollbar.setValue(model
-							.getMaximum()
-							- model.getExtent());
+						|| SubstanceScrollBarUI.this.scrollbar.getComponentOrientation()
+								.isLeftToRight()) {
+					SubstanceScrollBarUI.this.scrollbar
+							.setValue(model.getMaximum() - model.getExtent());
 				} else {
-					SubstanceScrollBarUI.this.scrollbar.setValue(model
-							.getMinimum());
+					SubstanceScrollBarUI.this.scrollbar.setValue(model.getMinimum());
 				}
 			} else {
 				float valueMax = model.getMaximum() - model.getExtent();
@@ -1225,15 +1177,14 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 				float thumbRange = thumbMax - thumbMin;
 				int value;
 				if (SubstanceScrollBarUI.this.scrollbar.getOrientation() == JScrollBar.VERTICAL
-						|| SubstanceScrollBarUI.this.scrollbar
-								.getComponentOrientation().isLeftToRight()) {
+						|| SubstanceScrollBarUI.this.scrollbar.getComponentOrientation()
+								.isLeftToRight()) {
 					value = (int) (0.5 + ((thumbValue / thumbRange) * valueRange));
 				} else {
 					value = (int) (0.5 + (((thumbMax - thumbPos) / thumbRange) * valueRange));
 				}
 
-				SubstanceScrollBarUI.this.scrollbar.setValue(value
-						+ model.getMinimum());
+				SubstanceScrollBarUI.this.scrollbar.setValue(value + model.getMinimum());
 			}
 			SubstanceScrollBarUI.this.setThumbRollover(active);
 		}
@@ -1248,21 +1199,23 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 			switch (SubstanceScrollBarUI.this.scrollbar.getOrientation()) {
 			case JScrollBar.VERTICAL:
 				if (this.direction > 0) {
-					if (SubstanceScrollBarUI.this.getThumbBounds().y
-							+ SubstanceScrollBarUI.this.getThumbBounds().height < ((SubstanceTrackListener) SubstanceScrollBarUI.this.trackListener).currentMouseY) {
+					if (SubstanceScrollBarUI.this.getThumbBounds().y + SubstanceScrollBarUI.this
+							.getThumbBounds().height < ((SubstanceTrackListener) SubstanceScrollBarUI.this.trackListener).currentMouseY) {
 						SubstanceScrollBarUI.this.scrollTimer.start();
 					}
-				} else if (SubstanceScrollBarUI.this.getThumbBounds().y > ((SubstanceTrackListener) SubstanceScrollBarUI.this.trackListener).currentMouseY) {
+				} else if (SubstanceScrollBarUI.this
+						.getThumbBounds().y > ((SubstanceTrackListener) SubstanceScrollBarUI.this.trackListener).currentMouseY) {
 					SubstanceScrollBarUI.this.scrollTimer.start();
 				}
 				break;
 			case JScrollBar.HORIZONTAL:
 				if (this.direction > 0) {
-					if (SubstanceScrollBarUI.this.getThumbBounds().x
-							+ SubstanceScrollBarUI.this.getThumbBounds().width < ((SubstanceTrackListener) SubstanceScrollBarUI.this.trackListener).currentMouseX) {
+					if (SubstanceScrollBarUI.this.getThumbBounds().x + SubstanceScrollBarUI.this
+							.getThumbBounds().width < ((SubstanceTrackListener) SubstanceScrollBarUI.this.trackListener).currentMouseX) {
 						SubstanceScrollBarUI.this.scrollTimer.start();
 					}
-				} else if (SubstanceScrollBarUI.this.getThumbBounds().x > ((SubstanceTrackListener) SubstanceScrollBarUI.this.trackListener).currentMouseX) {
+				} else if (SubstanceScrollBarUI.this
+						.getThumbBounds().x > ((SubstanceTrackListener) SubstanceScrollBarUI.this.trackListener).currentMouseX) {
 					SubstanceScrollBarUI.this.scrollTimer.start();
 				}
 				break;
@@ -1332,14 +1285,12 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements
 	@Override
 	public Dimension getPreferredSize(JComponent c) {
 		if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
-			return new Dimension(scrollBarWidth, Math.max(48,
-					5 * scrollBarWidth));
+			return new Dimension(scrollBarWidth, Math.max(48, 5 * scrollBarWidth));
 		} else {
-			return new Dimension(Math.max(48, 5 * scrollBarWidth),
-					scrollBarWidth);
+			return new Dimension(Math.max(48, 5 * scrollBarWidth), scrollBarWidth);
 		}
 	}
-	
+
 	@Override
 	public void update(Graphics g, JComponent c) {
 		super.update(g, c);

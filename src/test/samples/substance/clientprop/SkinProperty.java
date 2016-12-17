@@ -33,11 +33,15 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
-import org.pushingpixels.substance.api.skin.*;
+import org.pushingpixels.substance.api.skin.AutumnSkin;
+import org.pushingpixels.substance.api.skin.BusinessBlackSteelSkin;
+import org.pushingpixels.substance.api.skin.GraphiteSkin;
 
 /**
  * Test application that shows the use of the

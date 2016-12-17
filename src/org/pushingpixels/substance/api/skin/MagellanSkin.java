@@ -29,11 +29,8 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import java.awt.Color;
-
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
-import org.pushingpixels.substance.api.ColorSchemeTransform;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
 import org.pushingpixels.substance.api.DecorationAreaType;
@@ -244,27 +241,16 @@ public class MagellanSkin extends SubstanceSkin {
 		// add an overlay painter to paint a dark line along the bottom
 		// edge of toolbars
 		this.toolbarBottomLineOverlayPainter = new BottomLineOverlayPainter(
-				new ColorSchemeSingleColorQuery() {
-					@Override
-					public Color query(SubstanceColorScheme scheme) {
-						return scheme.getUltraDarkColor();
-					}
-				});
+				(SubstanceColorScheme scheme) -> scheme.getUltraDarkColor());
 		this.addOverlayPainter(this.toolbarBottomLineOverlayPainter,
 				DecorationAreaType.TOOLBAR);
 
 		// add an overlay painter to paint a light line along the top
 		// edge of toolbars
 		this.toolbarTopLineOverlayPainter = new TopLineOverlayPainter(
-				new ColorSchemeSingleColorQuery() {
-					@Override
-					public Color query(SubstanceColorScheme scheme) {
-						Color fg = scheme.getForegroundColor();
-						return SubstanceColorUtilities.getAlphaColor(fg, 40);
-					}
-				});
-		this.addOverlayPainter(this.toolbarTopLineOverlayPainter,
-				DecorationAreaType.TOOLBAR);
+				(SubstanceColorScheme scheme) -> SubstanceColorUtilities.getAlphaColor(
+						scheme.getForegroundColor(), 40));
+		this.addOverlayPainter(this.toolbarTopLineOverlayPainter, DecorationAreaType.TOOLBAR);
 
 		// add an overlay painter to paint a bezel line along the top
 		// edge of footer
@@ -281,14 +267,9 @@ public class MagellanSkin extends SubstanceSkin {
 						ColorSchemeSingleColorQuery.DARK,
 						ColorSchemeSingleColorQuery.DARK });
 		SubstanceBorderPainter innerBorderPainter = new DelegateBorderPainter(
-				"Magellan Inner", new ClassicBorderPainter(), 0xA0FFFFFF,
-				0x60FFFFFF, 0x40FFFFFF, new ColorSchemeTransform() {
-					@Override
-					public SubstanceColorScheme transform(
-							SubstanceColorScheme scheme) {
-						return scheme.tint(0.5);
-					}
-				});
+				"Magellan Inner", new ClassicBorderPainter(), 
+				0xA0FFFFFF, 0x60FFFFFF, 0x40FFFFFF, 
+				(SubstanceColorScheme scheme) -> scheme.tint(0.5f));
 		this.borderPainter = new CompositeBorderPainter("Magellan",
 				outerBorderPainter, innerBorderPainter);
 		this.fillPainter = new FractionBasedFillPainter("Magellan",

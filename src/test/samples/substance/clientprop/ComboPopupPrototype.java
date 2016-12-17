@@ -32,7 +32,11 @@ package test.samples.substance.clientprop;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
-import javax.swing.*;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.combo.ComboPopupPrototypeCallback;

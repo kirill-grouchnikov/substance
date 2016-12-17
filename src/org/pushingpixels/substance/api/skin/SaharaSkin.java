@@ -35,7 +35,6 @@ import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.colorscheme.DesertSandColorScheme;
-import org.pushingpixels.substance.api.colorscheme.LightGrayColorScheme;
 import org.pushingpixels.substance.api.colorscheme.MetallicColorScheme;
 import org.pushingpixels.substance.api.colorscheme.OliveColorScheme;
 import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;

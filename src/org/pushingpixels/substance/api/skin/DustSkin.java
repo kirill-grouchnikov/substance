@@ -29,11 +29,7 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import java.awt.Color;
-
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
-import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
-import org.pushingpixels.substance.api.ColorSchemeTransform;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -48,6 +44,7 @@ import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter
 import org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter;
 import org.pushingpixels.substance.api.painter.overlay.TopLineOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
 /**
  * <code>Dust</code> skin. This class is part of officially supported API.
@@ -140,19 +137,11 @@ public class DustSkin extends SubstanceSkin {
 
 		// add two overlay painters to create a bezel line between
 		// menu bar and toolbars
-		this.menuOverlayPainter = new BottomLineOverlayPainter(new ColorSchemeSingleColorQuery() {
-			@Override
-			public Color query(SubstanceColorScheme scheme) {
-				return scheme.getUltraDarkColor().darker();
-			}
-		});
-		this.toolbarOverlayPainter = new TopLineOverlayPainter(new ColorSchemeSingleColorQuery() {
-			@Override
-			public Color query(SubstanceColorScheme scheme) {
-				Color fg = scheme.getForegroundColor();
-				return new Color(fg.getRed(), fg.getGreen(), fg.getBlue(), 32);
-			}
-		});
+		this.menuOverlayPainter = new BottomLineOverlayPainter(
+				(SubstanceColorScheme scheme) -> scheme.getUltraDarkColor().darker());
+		this.toolbarOverlayPainter = new TopLineOverlayPainter(
+				(SubstanceColorScheme scheme) -> SubstanceColorUtilities.getAlphaColor(
+						scheme.getForegroundColor(), 32));
 		this.addOverlayPainter(this.menuOverlayPainter, DecorationAreaType.HEADER);
 		this.addOverlayPainter(this.toolbarOverlayPainter, DecorationAreaType.TOOLBAR);
 
@@ -162,14 +151,10 @@ public class DustSkin extends SubstanceSkin {
 		this.decorationPainter = new MatteDecorationPainter();
 		this.highlightPainter = new ClassicHighlightPainter();
 		this.borderPainter = new CompositeBorderPainter("Dust", new ClassicBorderPainter(),
-				new DelegateBorderPainter("Dust Inner", new ClassicBorderPainter(), 0x60FFFFFF,
-						0x30FFFFFF, 0x18FFFFFF, new ColorSchemeTransform() {
-							@Override
-							public SubstanceColorScheme transform(SubstanceColorScheme scheme) {
-								return scheme.shiftBackground(scheme.getUltraLightColor(), 0.8)
-										.tint(0.6).saturate(0.2);
-							}
-						}));
+				new DelegateBorderPainter("Dust Inner", new ClassicBorderPainter(),
+						0x60FFFFFF, 0x30FFFFFF, 0x18FFFFFF, 
+						(SubstanceColorScheme scheme) -> scheme.shiftBackground(
+								scheme.getUltraLightColor(), 0.8).tint(0.6).saturate(0.2)));
 	}
 
 	public String getDisplayName() {

@@ -75,9 +75,7 @@ public final class TopLineOverlayPainter implements SubstanceOverlayPainter {
 				topMostWithSameDecorationAreaType);
 		int dy = inTopMost.y;
 
-		int fontSize = SubstanceSizeUtils.getComponentFontSize(comp);
-		float borderStrokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(fontSize);
+		float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 		graphics.setStroke(new BasicStroke(borderStrokeWidth));
 
 		SubstanceColorScheme colorScheme = skin

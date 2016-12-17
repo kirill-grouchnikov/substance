@@ -29,17 +29,30 @@
  */
 package test.check;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import javax.swing.SpinnerListModel;
+import javax.swing.SpinnerNumberModel;
 
 import org.pushingpixels.lafwidget.LafWidget;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 
-import test.check.command.*;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
+
+import test.check.command.BackgroundColorCommand;
+import test.check.command.ChainCommand;
+import test.check.command.ClientPropertyCommand;
+import test.check.command.ConfigurationCommand;
+import test.check.command.CreationCommand;
+import test.check.command.DisableCommand;
 
 /**
  * Test application panel for testing {@link JSpinner} component.

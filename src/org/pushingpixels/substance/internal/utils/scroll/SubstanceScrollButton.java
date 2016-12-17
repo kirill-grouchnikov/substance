@@ -32,7 +32,6 @@ package org.pushingpixels.substance.internal.utils.scroll;
 import java.awt.Insets;
 
 import javax.swing.JButton;
-import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;

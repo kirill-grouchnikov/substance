@@ -70,8 +70,6 @@ public class TabbedPanePreviewPainter extends JFrame {
 		this.setLayout(new BorderLayout());
 
 		final JTabbedPane jtp = new JTabbedPane();
-		String packageName = TabbedPanePreviewPainter.class.getPackage()
-				.getName();
 		jtp.addTab("First", Check.configure(new mx(), 21, 16),
 				new JPanel() {
 					@Override

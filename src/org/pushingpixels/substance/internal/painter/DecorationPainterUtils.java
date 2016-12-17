@@ -50,7 +50,15 @@ public class DecorationPainterUtils {
 	 * Client property for marking a component with an instance of
 	 * {@link DecorationAreaType} enum.
 	 */
-	private static final String DECORATION_AREA_TYPE = "substancelaf.internal.painter.decorationAreaType";
+	private static final String DECORATION_AREA_TYPE = 
+			"substancelaf.internal.painter.decorationAreaType";
+	
+	public static final String POPUP_INVOKER_LINK =
+			"substancelaf.internal.popupInvokerLink";
+	
+	public static interface PopupInvokerLink {
+		public JComponent getPopupInvoker();
+	}
 
 	/**
 	 * Sets the decoration type of the specified component.
@@ -96,6 +104,7 @@ public class DecorationPainterUtils {
 	 */
 	public static DecorationAreaType getDecorationType(Component comp) {
 		JPopupMenu popupMenu = null;
+		JComponent popupInvoker = null;
 		Component c = comp;
 		while (c != null) {
 			if (c instanceof JComponent) {
@@ -103,6 +112,10 @@ public class DecorationPainterUtils {
 				Object prop = jc.getClientProperty(DECORATION_AREA_TYPE);
 				if (prop instanceof DecorationAreaType) {
 					return (DecorationAreaType) prop;
+				}
+				Object invokerProp = jc.getClientProperty(POPUP_INVOKER_LINK);
+				if (invokerProp instanceof PopupInvokerLink) {
+					popupInvoker = ((PopupInvokerLink) invokerProp).getPopupInvoker();
 				}
 			}
 			if (c instanceof JPopupMenu) {
@@ -115,6 +128,9 @@ public class DecorationPainterUtils {
 			if (popupMenu != invoker) {
 				return getDecorationType(popupMenu.getInvoker());
 			}
+		}
+		if (popupInvoker != null) {
+			return getDecorationType(popupInvoker);
 		}
 		return DecorationAreaType.NONE;
 	}

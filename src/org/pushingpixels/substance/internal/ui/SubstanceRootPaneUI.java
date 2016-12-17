@@ -1168,7 +1168,6 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 		 * PrivilegedExceptionAction needed by mouseDragged method to obtain new
 		 * location of window on screen during the drag.
 		 */
-		@SuppressWarnings("unchecked")
 		private final PrivilegedExceptionAction getLocationAction = new PrivilegedExceptionAction() {
 			public Object run() throws HeadlessException {
 				return MouseInfo.getPointerInfo().getLocation();

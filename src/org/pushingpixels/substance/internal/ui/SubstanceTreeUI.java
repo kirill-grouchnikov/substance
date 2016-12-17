@@ -64,7 +64,6 @@ import org.pushingpixels.lafwidget.LafWidget;
 import org.pushingpixels.lafwidget.LafWidgetRepository;
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.icon.HiDpiAwareIconUiResource;
-import org.pushingpixels.lafwidget.utils.LookUtils;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
@@ -627,7 +626,6 @@ public class SubstanceTreeUI extends BasicTreeUI {
 	 * 
 	 * @author Kirill Grouchnikov
 	 */
-	@SuppressWarnings("unchecked")
 	public static class TreePathId implements Comparable {
 		/**
 		 * Tree path.
@@ -1029,8 +1027,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 	 */
 	public ComponentState getPathState(TreePathId pathId) {
 		boolean isEnabled = this.tree.isEnabled();
-		StateTransitionTracker tracker = this.stateTransitionMultiTracker
-				.getTracker(pathId);
+		StateTransitionTracker tracker = this.stateTransitionMultiTracker.getTracker(pathId);
 		if (tracker == null) {
 			int rowIndex = this.tree.getRowForPath(pathId.path);
 			boolean isRollover = (this.currRolloverPathId != null)
@@ -1050,8 +1047,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 			TreePathId pathId) {
 		if (this.stateTransitionMultiTracker.size() == 0)
 			return null;
-		StateTransitionTracker tracker = this.stateTransitionMultiTracker
-				.getTracker(pathId);
+		StateTransitionTracker tracker = this.stateTransitionMultiTracker.getTracker(pathId);
 		if (tracker == null) {
 			return null;
 		} else {

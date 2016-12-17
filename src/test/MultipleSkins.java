@@ -29,14 +29,34 @@
  */
 package test;
 
-import java.awt.*;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
-import org.pushingpixels.substance.api.skin.*;
+import org.pushingpixels.substance.api.skin.AutumnSkin;
+import org.pushingpixels.substance.api.skin.BusinessBlackSteelSkin;
+import org.pushingpixels.substance.api.skin.BusinessBlueSteelSkin;
+import org.pushingpixels.substance.api.skin.BusinessSkin;
+import org.pushingpixels.substance.api.skin.CremeCoffeeSkin;
+import org.pushingpixels.substance.api.skin.CremeSkin;
+import org.pushingpixels.substance.api.skin.GraphiteGlassSkin;
+import org.pushingpixels.substance.api.skin.GraphiteSkin;
+import org.pushingpixels.substance.api.skin.MagellanSkin;
+import org.pushingpixels.substance.api.skin.MistAquaSkin;
+import org.pushingpixels.substance.api.skin.ModerateSkin;
+import org.pushingpixels.substance.api.skin.NebulaBrickWallSkin;
+import org.pushingpixels.substance.api.skin.NebulaSkin;
+import org.pushingpixels.substance.api.skin.OfficeSilver2007Skin;
+import org.pushingpixels.substance.api.skin.RavenSkin;
+import org.pushingpixels.substance.api.skin.SaharaSkin;
 
 import test.check.SampleFrame;
 

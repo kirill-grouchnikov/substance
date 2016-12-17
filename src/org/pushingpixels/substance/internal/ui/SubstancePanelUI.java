@@ -34,7 +34,9 @@ import java.awt.Graphics;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.plaf.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicPanelUI;
 
 import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;

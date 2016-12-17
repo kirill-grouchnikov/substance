@@ -41,8 +41,7 @@ import org.pushingpixels.substance.internal.utils.*;
  * 
  * @author Kirill Grouchnikov
  */
-public class DelegateFractionBasedBorderPainter implements
-		SubstanceBorderPainter {
+public class DelegateFractionBasedBorderPainter implements SubstanceBorderPainter {
 	/**
 	 * Display name of this border painter.
 	 */
@@ -82,8 +81,7 @@ public class DelegateFractionBasedBorderPainter implements
 	 *            compute the colors to be used for border painting.
 	 */
 	public DelegateFractionBasedBorderPainter(String displayName,
-			FractionBasedBorderPainter delegate, int[] masks,
-			ColorSchemeTransform transform) {
+			FractionBasedBorderPainter delegate, int[] masks, ColorSchemeTransform transform) {
 		this.displayName = displayName;
 		this.delegate = delegate;
 		this.masks = new int[masks.length];
@@ -103,8 +101,8 @@ public class DelegateFractionBasedBorderPainter implements
 	}
 
 	@Override
-	public void paintBorder(Graphics g, Component c, float width, float height,
-			Shape contour, Shape innerContour, SubstanceColorScheme borderScheme) {
+	public void paintBorder(Graphics g, Component c, float width, float height, Shape contour,
+			Shape innerContour, SubstanceColorScheme borderScheme) {
 		Graphics2D graphics = (Graphics2D) g.create();
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
@@ -125,21 +123,18 @@ public class DelegateFractionBasedBorderPainter implements
 			fillColors[i] = color;
 		}
 
-		float strokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(c));
+		float strokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 		// issue 433 - the "c" can be null when painting
 		// the border of a tree icon used outside the
 		// JTree context.
-		boolean isSpecialButton = c.getClass().isAnnotationPresent(SubstanceInternalArrowButton.class);
-		int joinKind = isSpecialButton ? BasicStroke.JOIN_MITER
-				: BasicStroke.JOIN_ROUND;
-		int capKind = isSpecialButton ? BasicStroke.CAP_SQUARE
-				: BasicStroke.CAP_BUTT;
+		boolean isSpecialButton = c.getClass()
+				.isAnnotationPresent(SubstanceInternalArrowButton.class);
+		int joinKind = isSpecialButton ? BasicStroke.JOIN_MITER : BasicStroke.JOIN_ROUND;
+		int capKind = isSpecialButton ? BasicStroke.CAP_SQUARE : BasicStroke.CAP_BUTT;
 		graphics.setStroke(new BasicStroke(strokeWidth, capKind, joinKind));
 
-		MultipleGradientPaint gradient = new LinearGradientPaint(0, 0, 0,
-				height, fractions, fillColors, CycleMethod.REPEAT);
+		MultipleGradientPaint gradient = new LinearGradientPaint(0, 0, 0, height, fractions,
+				fillColors, CycleMethod.REPEAT);
 		graphics.setPaint(gradient);
 		graphics.draw(contour);
 		graphics.dispose();
@@ -158,8 +153,8 @@ public class DelegateFractionBasedBorderPainter implements
 	 * @return Transformed color scheme.
 	 */
 	private SubstanceColorScheme getShiftScheme(SubstanceColorScheme orig) {
-		HashMapKey key = SubstanceCoreUtilities.getHashKey(orig
-				.getDisplayName(), this.getDisplayName(), this.transform);
+		HashMapKey key = SubstanceCoreUtilities.getHashKey(orig.getDisplayName(),
+				this.getDisplayName(), this.transform);
 		SubstanceColorScheme result = transformMap.get(key);
 		if (result == null) {
 			result = this.transform.transform(orig);
@@ -168,4 +163,34 @@ public class DelegateFractionBasedBorderPainter implements
 		return result;
 	}
 
+	@Override
+	public Color getRepresentativeColor(SubstanceColorScheme borderScheme) {
+		float[] fractions = delegate.getFractions();
+		ColorSchemeSingleColorQuery[] colorQueries = delegate.getColorQueries();
+
+		for (int i = 0; i < fractions.length - 1; i++) {
+			float fractionLow = fractions[i];
+			float fractionHigh = fractions[i + 1];
+			if (fractionLow == 0.5f) {
+				return new Color(this.masks[i] & colorQueries[i].query(borderScheme).getRGB(),
+						true);
+			}
+			if (fractionHigh == 0.5f) {
+				return new Color(
+						this.masks[i + 1] & colorQueries[i + 1].query(borderScheme).getRGB(), true);
+			}
+			if ((fractionLow < 0.5f) || (fractionHigh > 0.5f)) {
+				continue;
+			}
+			// current range contains 0.5f
+			Color colorLow = new Color(this.masks[i] & colorQueries[i].query(borderScheme).getRGB(),
+					true);
+			Color colorHigh = new Color(
+					this.masks[i + 1] & colorQueries[i + 1].query(borderScheme).getRGB(), true);
+			float colorLowLikeness = (0.5f - fractionLow) / (fractionHigh - fractionLow);
+			return SubstanceColorUtilities.getInterpolatedColor(colorLow, colorHigh,
+					colorLowLikeness);
+		}
+		throw new IllegalStateException("Could not find representative color");
+	}
 }

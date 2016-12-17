@@ -51,7 +51,6 @@ import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
@@ -69,15 +68,12 @@ import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
 public class SubstanceSpinnerButton extends JButton {
 	static {
 		AnimationConfigurationManager.getInstance().disallowAnimations(
-				AnimationFacet.GHOSTING_BUTTON_PRESS,
-				SubstanceSpinnerButton.class);
+				AnimationFacet.GHOSTING_BUTTON_PRESS, SubstanceSpinnerButton.class);
 		AnimationConfigurationManager.getInstance().disallowAnimations(
-				AnimationFacet.GHOSTING_ICON_ROLLOVER,
-				SubstanceSpinnerButton.class);
+				AnimationFacet.GHOSTING_ICON_ROLLOVER, SubstanceSpinnerButton.class);
 	}
 
-	private abstract static class SpinnerButtonBorder extends
-			SubstanceButtonBorder {
+	private abstract static class SpinnerButtonBorder extends SubstanceButtonBorder {
 		public SpinnerButtonBorder(Class<?> buttonShaperClass) {
 			super(buttonShaperClass);
 		}
@@ -99,19 +95,15 @@ public class SubstanceSpinnerButton extends JButton {
 		this.setBorder(new SpinnerButtonBorder(ClassicButtonShaper.class) {
 			public Insets getBorderInsets(Component c) {
 				int extraPadding = SubstanceSizeUtils
-						.getExtraPadding(SubstanceSizeUtils
-								.getComponentFontSize(c));
+						.getExtraPadding(SubstanceSizeUtils.getComponentFontSize(c));
 				// Bring the icons closer together instead of
 				// having them centered in the spinner buttons
 				int delta = SubstanceSizeUtils.getAdjustedSize(
-						SubstanceSizeUtils.getComponentFontSize(c), 3, 3, 1,
-						false);
-				int deltaTop = (orientation == SwingConstants.NORTH) ? delta
-						: 0;
-				int deltaBottom = (orientation == SwingConstants.NORTH) ? 0
-						: delta;
-				return new Insets(extraPadding + deltaTop, extraPadding,
-						extraPadding + deltaBottom, extraPadding);
+						SubstanceSizeUtils.getComponentFontSize(c), 3, 3, 1, false);
+				int deltaTop = (orientation == SwingConstants.NORTH) ? delta : 0;
+				int deltaBottom = (orientation == SwingConstants.NORTH) ? 0 : delta;
+				return new Insets(extraPadding + deltaTop, extraPadding, extraPadding + deltaBottom,
+						extraPadding);
 			}
 		});
 
@@ -120,7 +112,8 @@ public class SubstanceSpinnerButton extends JButton {
 		this.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
 		Set<Side> straightSides = new HashSet<>();
 		straightSides.add(orientation == SwingConstants.NORTH ? Side.BOTTOM : Side.TOP);
-		straightSides.add(spinner.getComponentOrientation().isLeftToRight() ? Side.LEFT : Side.RIGHT);
+		straightSides
+				.add(spinner.getComponentOrientation().isLeftToRight() ? Side.LEFT : Side.RIGHT);
 		this.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, straightSides);
 	}
 
@@ -148,8 +141,7 @@ public class SubstanceSpinnerButton extends JButton {
 		}
 
 		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) this.getUI();
-		StateTransitionTracker stateTransitionTracker = transitionAwareUI
-				.getTransitionTracker();
+		StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
 		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
 				.getModelStateInfo();
 		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
@@ -167,32 +159,27 @@ public class SubstanceSpinnerButton extends JButton {
 		boolean isNextButton = "Spinner.nextButton".equals(this.getName());
 
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(this);
-		float borderDelta = 1.5f * SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize);
-		float radius = Math.max(0, SubstanceSizeUtils
-						.getClassicButtonCornerRadius(componentFontSize)
-				- borderDelta);
+		float borderDelta = 1.5f * SubstanceSizeUtils.getBorderStrokeWidth();
+		float radius = Math.max(0,
+				SubstanceSizeUtils.getClassicButtonCornerRadius(componentFontSize) - borderDelta);
 
 		int width = getWidth();
 		int height = getHeight();
 
 		JSpinner parent = (JSpinner) this.getParent();
-		BufferedImage offscreen = SubstanceCoreUtilities.getBlankImage(width,
-				height);
+		BufferedImage offscreen = SubstanceCoreUtilities.getBlankImage(width, height);
 		Graphics2D g2offscreen = offscreen.createGraphics();
 		int offsetX = this.getX();
 		int offsetY = this.getY();
-		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this, ColorSchemeAssociationKind.BORDER,
-						currState);
+		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities.getColorScheme(this,
+				ColorSchemeAssociationKind.BORDER, currState);
 
 		if (isNextButton) {
-			SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen,
-					0, 0, width, 1 * height, radius, baseBorderScheme);
+			SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen, 0, 0, width,
+					1 * height, radius, baseBorderScheme);
 			g2offscreen.translate(-offsetX, -offsetY);
-			SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen,
-					0, 0, parent.getWidth(), parent.getHeight(), radius,
-					baseBorderScheme);
+			SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen, 0, 0,
+					parent.getWidth(), parent.getHeight(), radius, baseBorderScheme);
 			g2offscreen.translate(offsetX, offsetY);
 
 			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
@@ -205,28 +192,23 @@ public class SubstanceSpinnerButton extends JButton {
 				if (contribution == 0.0f)
 					continue;
 
-				g2offscreen.setComposite(AlphaComposite.SrcOver
-						.derive(contribution));
+				g2offscreen.setComposite(AlphaComposite.SrcOver.derive(contribution));
 				SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-						.getColorScheme(this,
-								ColorSchemeAssociationKind.BORDER, activeState);
+						.getColorScheme(this, ColorSchemeAssociationKind.BORDER, activeState);
 
-				SubstanceImageCreator.paintTextComponentBorder(this,
-						g2offscreen, 0, 0, width, 1 * height, radius,
-						borderScheme);
+				SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen, 0, 0, width,
+						1 * height, radius, borderScheme);
 				g2offscreen.translate(-offsetX, -offsetY);
-				SubstanceImageCreator.paintTextComponentBorder(parent,
-						g2offscreen, 0, 0, parent.getWidth(), parent
-								.getHeight(), radius, borderScheme);
+				SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen, 0, 0,
+						parent.getWidth(), parent.getHeight(), radius, borderScheme);
 				g2offscreen.translate(offsetX, offsetY);
 			}
 		} else {
-			SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen,
-					0, 0, width, 1 * height, radius, baseBorderScheme);
+			SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen, 0, 0, width,
+					1 * height, radius, baseBorderScheme);
 			g2offscreen.translate(-offsetX, -offsetY);
-			SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen,
-					0, 0, parent.getWidth(), parent.getHeight(), radius,
-					baseBorderScheme);
+			SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen, 0, 0,
+					parent.getWidth(), parent.getHeight(), radius, baseBorderScheme);
 			g2offscreen.translate(offsetX, offsetY);
 
 			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
@@ -239,19 +221,15 @@ public class SubstanceSpinnerButton extends JButton {
 				if (contribution == 0.0f)
 					continue;
 
-				g2offscreen.setComposite(AlphaComposite.SrcOver
-						.derive(contribution));
+				g2offscreen.setComposite(AlphaComposite.SrcOver.derive(contribution));
 				SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-						.getColorScheme(this,
-								ColorSchemeAssociationKind.BORDER, activeState);
+						.getColorScheme(this, ColorSchemeAssociationKind.BORDER, activeState);
 
-				SubstanceImageCreator.paintTextComponentBorder(this,
-						g2offscreen, 0, 0, width, 1 * height, radius,
-						borderScheme);
+				SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen, 0, 0, width,
+						1 * height, radius, borderScheme);
 				g2offscreen.translate(-offsetX, -offsetY);
-				SubstanceImageCreator.paintTextComponentBorder(parent,
-						g2offscreen, 0, 0, parent.getWidth(), parent
-								.getHeight(), radius, borderScheme);
+				SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen, 0, 0,
+						parent.getWidth(), parent.getHeight(), radius, borderScheme);
 				g2offscreen.translate(offsetX, offsetY);
 			}
 		}
@@ -270,11 +248,9 @@ public class SubstanceSpinnerButton extends JButton {
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g.create();
 
-		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(this);
 		int width = getWidth();
 		int height = getHeight();
-		int clipDelta = (int) SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize);
+		int clipDelta = (int) SubstanceSizeUtils.getBorderStrokeWidth();
 
 		if (this.getComponentOrientation().isLeftToRight()) {
 			g2d.clipRect(clipDelta, 0, width - clipDelta, height);

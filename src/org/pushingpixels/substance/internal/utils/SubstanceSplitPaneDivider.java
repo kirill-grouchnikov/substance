@@ -50,7 +50,6 @@ import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -67,8 +66,7 @@ import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
  * 
  * @author Kirill Grouchnikov
  */
-public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
-		TransitionAwareUI {
+public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements TransitionAwareUI {
 	/**
 	 * Listener for transition animations.
 	 */
@@ -80,7 +78,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 	 * Listener on property change events.
 	 */
 	private PropertyChangeListener substancePropertyChangeListener;
-	
+
 	/**
 	 * Surrogate button model for tracking the thumb transitions.
 	 */
@@ -116,12 +114,11 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 			this.gripModel.setRollover(false);
 			this.gripModel.setEnabled(this.splitPane.isEnabled());
 
-			this.stateTransitionTracker = new StateTransitionTracker(
-					this.splitPane, this.gripModel);
+			this.stateTransitionTracker = new StateTransitionTracker(this.splitPane,
+					this.gripModel);
 
 			// fix for defect 109 - memory leak on changing skin
-			this.substanceRolloverListener = new RolloverControlListener(this,
-					this.gripModel);
+			this.substanceRolloverListener = new RolloverControlListener(this, this.gripModel);
 			this.addMouseListener(this.substanceRolloverListener);
 			this.addMouseMotionListener(this.substanceRolloverListener);
 
@@ -136,8 +133,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 					setEnabled(isEnabled);
 				}
 			};
-			this.splitPane
-					.addPropertyChangeListener(this.substancePropertyChangeListener);
+			this.splitPane.addPropertyChangeListener(this.substancePropertyChangeListener);
 
 			this.stateTransitionTracker.registerModelListeners();
 		} else {
@@ -160,8 +156,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 			// System.out.println("Unregistering " + this.hashCode() + ":"
 			// + this.substancePropertyChangeListener.hashCode()
 			// + " from " + this.splitPane.hashCode());
-			this.splitPane
-					.removePropertyChangeListener(this.substancePropertyChangeListener);
+			this.splitPane.removePropertyChangeListener(this.substancePropertyChangeListener);
 			this.substancePropertyChangeListener = null;
 		}
 
@@ -181,20 +176,18 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 
 		Graphics2D graphics = (Graphics2D) g.create();
 
-		ModelStateInfo modelStateInfo = this.stateTransitionTracker
-				.getModelStateInfo();
+		ModelStateInfo modelStateInfo = this.stateTransitionTracker.getModelStateInfo();
 		ComponentState currState = modelStateInfo.getCurrModelState();
 		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
 				.getStateContributionMap();
 
-		float alpha = SubstanceColorSchemeUtilities.getAlpha(this.splitPane,
-				currState);
+		float alpha = SubstanceColorSchemeUtilities.getAlpha(this.splitPane, currState);
 
 		// compute the grip handle dimension
-		int minSizeForGripPresence = SubstanceSizeUtils.getAdjustedSize(
-				SubstanceSizeUtils.getComponentFontSize(this), 30, 1, 2, false);
-		int maxGripSize = SubstanceSizeUtils.getAdjustedSize(SubstanceSizeUtils
-				.getComponentFontSize(this), 40, 1, 3, false);
+		int minSizeForGripPresence = SubstanceSizeUtils
+				.getAdjustedSize(SubstanceSizeUtils.getComponentFontSize(this), 30, 1, 2, false);
+		int maxGripSize = SubstanceSizeUtils
+				.getAdjustedSize(SubstanceSizeUtils.getComponentFontSize(this), 40, 1, 3, false);
 		if (this.splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
 			int thumbHeight = this.getHeight();
 			if (thumbHeight >= minSizeForGripPresence) {
@@ -210,19 +203,17 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 				// draw the grip bumps
 				for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
 						.entrySet()) {
-					float contribution = activeEntry.getValue()
-							.getContribution();
+					float contribution = activeEntry.getValue().getContribution();
 					if (contribution == 0.0f)
 						continue;
 
 					ComponentState activeState = activeEntry.getKey();
-					graphics.setComposite(LafWidgetUtilities.getAlphaComposite(
-							this.splitPane, alpha * contribution, g));
-					SubstanceImageCreator.paintSplitDividerBumpImage(graphics,
-							this, gripX, gripY, thumbWidth, gripHeight, false,
+					graphics.setComposite(LafWidgetUtilities.getAlphaComposite(this.splitPane,
+							alpha * contribution, g));
+					SubstanceImageCreator.paintSplitDividerBumpImage(graphics, this, gripX, gripY,
+							thumbWidth, gripHeight, false,
 							SubstanceColorSchemeUtilities.getColorScheme(this,
-									ColorSchemeAssociationKind.MARK,
-									activeState));
+									ColorSchemeAssociationKind.MARK, activeState));
 				}
 			}
 		} else {
@@ -241,19 +232,17 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 				// draw the grip bumps
 				for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
 						.entrySet()) {
-					float contribution = activeEntry.getValue()
-							.getContribution();
+					float contribution = activeEntry.getValue().getContribution();
 					if (contribution == 0.0f)
 						continue;
 
 					ComponentState activeState = activeEntry.getKey();
-					graphics.setComposite(LafWidgetUtilities.getAlphaComposite(
-							this.splitPane, alpha * contribution, g));
-					SubstanceImageCreator.paintSplitDividerBumpImage(graphics,
-							this, gripX, gripY, gripWidth, thumbHeight, true,
+					graphics.setComposite(LafWidgetUtilities.getAlphaComposite(this.splitPane,
+							alpha * contribution, g));
+					SubstanceImageCreator.paintSplitDividerBumpImage(graphics, this, gripX, gripY,
+							gripWidth, thumbHeight, true,
 							SubstanceColorSchemeUtilities.getColorScheme(this,
-									ColorSchemeAssociationKind.MARK,
-									activeState));
+									ColorSchemeAssociationKind.MARK, activeState));
 				}
 			}
 		}
@@ -279,41 +268,35 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 			}
 		};
 		Icon verticalSplit = new TransitionAwareIcon(oneTouchButton,
-				new TransitionAwareIcon.Delegate() {
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
-						int fontSize = SubstanceSizeUtils
-								.getComponentFontSize(splitPane);
-						return SubstanceImageCreator.getArrowIcon(
-								SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
-								SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
-								SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
-								SwingConstants.NORTH, scheme);
-					}
+				(SubstanceColorScheme scheme) -> {
+					int fontSize = SubstanceSizeUtils.getComponentFontSize(splitPane);
+					return SubstanceImageCreator.getArrowIcon(
+							SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
+							SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
+							SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
+							SwingConstants.NORTH, scheme);
 				}, "substance.splitPane.left.vertical");
 		Icon horizontalSplit = new TransitionAwareIcon(oneTouchButton,
-				new TransitionAwareIcon.Delegate() {
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
-						int fontSize = SubstanceSizeUtils
-								.getComponentFontSize(splitPane);
-						return SubstanceImageCreator.getArrowIcon(
-								SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
-								SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
-								SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
-								SwingConstants.WEST, scheme);
-					}
+				(SubstanceColorScheme scheme) -> {
+					int fontSize = SubstanceSizeUtils.getComponentFontSize(splitPane);
+					return SubstanceImageCreator.getArrowIcon(
+							SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
+							SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
+							SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
+							SwingConstants.WEST, scheme);
 				}, "substance.splitPane.left.horizontal");
-		oneTouchButton.setIcon(this.splitPane.getOrientation() == JSplitPane.VERTICAL_SPLIT 
-				? verticalSplit : horizontalSplit);
+		oneTouchButton.setIcon(
+				this.splitPane.getOrientation() == JSplitPane.VERTICAL_SPLIT ? verticalSplit
+						: horizontalSplit);
 
-		oneTouchButton.putClientProperty(
-				SubstanceLookAndFeel.BUTTON_PAINT_NEVER_PROPERTY, Boolean.TRUE);
+		oneTouchButton.putClientProperty(SubstanceLookAndFeel.BUTTON_PAINT_NEVER_PROPERTY,
+				Boolean.TRUE);
 		// fix for issue 281 - set empty border so that the arrow
 		// icon is not cropped
 		oneTouchButton.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		oneTouchButton.setRequestFocusEnabled(false);
-		oneTouchButton
-				.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		oneTouchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		oneTouchButton.setFocusPainted(false);
 		oneTouchButton.setBorderPainted(false);
 		return oneTouchButton;
@@ -335,40 +318,34 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 			}
 		};
 		Icon verticalSplit = new TransitionAwareIcon(oneTouchButton,
-				new TransitionAwareIcon.Delegate() {
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
-						int fontSize = SubstanceSizeUtils
-								.getComponentFontSize(splitPane);
-						return SubstanceImageCreator.getArrowIcon(
-								SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
-								SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
-								SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
-								SwingConstants.SOUTH, scheme);
-					}
+				(SubstanceColorScheme scheme) -> {
+					int fontSize = SubstanceSizeUtils.getComponentFontSize(splitPane);
+					return SubstanceImageCreator.getArrowIcon(
+							SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
+							SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
+							SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
+							SwingConstants.SOUTH, scheme);
 				}, "substance.splitPane.right.vertical");
 		Icon horizontalSplit = new TransitionAwareIcon(oneTouchButton,
-				new TransitionAwareIcon.Delegate() {
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
-						int fontSize = SubstanceSizeUtils
-								.getComponentFontSize(splitPane);
-						return SubstanceImageCreator.getArrowIcon(
-								SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
-								SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
-								SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
-								SwingConstants.EAST, scheme);
-					}
+				(SubstanceColorScheme scheme) -> {
+					int fontSize = SubstanceSizeUtils.getComponentFontSize(splitPane);
+					return SubstanceImageCreator.getArrowIcon(
+							SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
+							SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
+							SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
+							SwingConstants.EAST, scheme);
 				}, "substance.splitPane.right.horizontal");
-		oneTouchButton.setIcon(this.splitPane.getOrientation() == JSplitPane.VERTICAL_SPLIT 
-				? verticalSplit : horizontalSplit);
+		oneTouchButton.setIcon(
+				this.splitPane.getOrientation() == JSplitPane.VERTICAL_SPLIT ? verticalSplit
+						: horizontalSplit);
 
-		oneTouchButton.putClientProperty(
-				SubstanceLookAndFeel.BUTTON_PAINT_NEVER_PROPERTY, Boolean.TRUE);
+		oneTouchButton.putClientProperty(SubstanceLookAndFeel.BUTTON_PAINT_NEVER_PROPERTY,
+				Boolean.TRUE);
 		// fix for issue 281 - set empty border so that the arrow
 		// icon is not cropped
 		oneTouchButton.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-		oneTouchButton
-				.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		oneTouchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		oneTouchButton.setFocusPainted(false);
 		oneTouchButton.setBorderPainted(false);
 		oneTouchButton.setRequestFocusEnabled(false);
@@ -385,80 +362,48 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 	public void updateOneTouchButtons(int orientation) {
 		if (orientation == JSplitPane.VERTICAL_SPLIT) {
 			if (this.leftButton != null) {
-				this.leftButton.setIcon(new TransitionAwareIcon(
-						this.leftButton, new TransitionAwareIcon.Delegate() {
-							public HiDpiAwareIcon getColorSchemeIcon(
-									SubstanceColorScheme scheme) {
-								int fontSize = SubstanceSizeUtils
-										.getComponentFontSize(splitPane);
-								return SubstanceImageCreator
-										.getArrowIcon(
-												SubstanceSizeUtils
-														.getSplitPaneArrowIconWidth(fontSize),
-												SubstanceSizeUtils
-														.getSplitPaneArrowIconHeight(fontSize),
-												SubstanceSizeUtils
-														.getArrowStrokeWidth(fontSize) / 1.5f,
-												SwingConstants.NORTH, scheme);
-							}
+				this.leftButton.setIcon(
+						new TransitionAwareIcon(this.leftButton, (SubstanceColorScheme scheme) -> {
+							int fontSize = SubstanceSizeUtils.getComponentFontSize(splitPane);
+							return SubstanceImageCreator.getArrowIcon(
+									SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
+									SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
+									SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
+									SwingConstants.NORTH, scheme);
 						}, "substance.splitPane.left.vertical"));
 			}
 			if (this.rightButton != null) {
-				this.rightButton.setIcon(new TransitionAwareIcon(
-						this.rightButton, new TransitionAwareIcon.Delegate() {
-							public HiDpiAwareIcon getColorSchemeIcon(
-									SubstanceColorScheme scheme) {
-								int fontSize = SubstanceSizeUtils
-										.getComponentFontSize(splitPane);
-								return SubstanceImageCreator
-										.getArrowIcon(
-												SubstanceSizeUtils
-														.getSplitPaneArrowIconWidth(fontSize),
-												SubstanceSizeUtils
-														.getSplitPaneArrowIconHeight(fontSize),
-												SubstanceSizeUtils
-														.getArrowStrokeWidth(fontSize) / 1.5f,
-												SwingConstants.SOUTH, scheme);
-							}
+				this.rightButton.setIcon(
+						new TransitionAwareIcon(this.rightButton, (SubstanceColorScheme scheme) -> {
+							int fontSize = SubstanceSizeUtils.getComponentFontSize(splitPane);
+							return SubstanceImageCreator.getArrowIcon(
+									SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
+									SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
+									SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
+									SwingConstants.SOUTH, scheme);
 						}, "substance.splitPane.right.vertical"));
 			}
 		} else {
 			if (this.leftButton != null) {
-				this.leftButton.setIcon(new TransitionAwareIcon(
-						this.leftButton, new TransitionAwareIcon.Delegate() {
-							public HiDpiAwareIcon getColorSchemeIcon(
-									SubstanceColorScheme scheme) {
-								int fontSize = SubstanceSizeUtils
-										.getComponentFontSize(splitPane);
-								return SubstanceImageCreator
-										.getArrowIcon(
-												SubstanceSizeUtils
-														.getSplitPaneArrowIconWidth(fontSize),
-												SubstanceSizeUtils
-														.getSplitPaneArrowIconHeight(fontSize),
-												SubstanceSizeUtils
-														.getArrowStrokeWidth(fontSize) / 1.5f,
-												SwingConstants.WEST, scheme);
-							}
+				this.leftButton.setIcon(
+						new TransitionAwareIcon(this.leftButton, (SubstanceColorScheme scheme) -> {
+							int fontSize = SubstanceSizeUtils.getComponentFontSize(splitPane);
+							return SubstanceImageCreator.getArrowIcon(
+									SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
+									SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
+									SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
+									SwingConstants.WEST, scheme);
 						}, "substance.splitPane.left.horizontal"));
 			}
 			if (this.rightButton != null) {
-				this.rightButton.setIcon(new TransitionAwareIcon(
-						this.rightButton, new TransitionAwareIcon.Delegate() {
-							public HiDpiAwareIcon getColorSchemeIcon(
-									SubstanceColorScheme scheme) {
-								int fontSize = SubstanceSizeUtils
-										.getComponentFontSize(splitPane);
-								return SubstanceImageCreator
-										.getArrowIcon(
-												SubstanceSizeUtils
-														.getSplitPaneArrowIconWidth(fontSize),
-												SubstanceSizeUtils
-														.getSplitPaneArrowIconHeight(fontSize),
-												SubstanceSizeUtils
-														.getArrowStrokeWidth(fontSize) / 1.5f,
-												SwingConstants.EAST, scheme);
-							}
+				this.rightButton.setIcon(
+						new TransitionAwareIcon(this.rightButton, (SubstanceColorScheme scheme) -> {
+							int fontSize = SubstanceSizeUtils.getComponentFontSize(splitPane);
+							return SubstanceImageCreator.getArrowIcon(
+									SubstanceSizeUtils.getSplitPaneArrowIconWidth(fontSize),
+									SubstanceSizeUtils.getSplitPaneArrowIconHeight(fontSize),
+									SubstanceSizeUtils.getArrowStrokeWidth(fontSize) / 1.5f,
+									SwingConstants.EAST, scheme);
 						}, "substance.splitPane.right.horizontal"));
 			}
 		}
@@ -488,8 +433,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 	protected class SubstanceDividerLayout extends DividerLayout {
 		@Override
 		public void layoutContainer(Container c) {
-			if (leftButton != null && rightButton != null
-					&& c == SubstanceSplitPaneDivider.this) {
+			if (leftButton != null && rightButton != null && c == SubstanceSplitPaneDivider.this) {
 				if (splitPane.isOneTouchExpandable()) {
 					Insets insets = getInsets();
 
@@ -504,14 +448,12 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 
 						int y = (c.getSize().height - blockSize) / 2;
 
-						int offset = SubstanceSizeUtils
-								.getSplitPaneButtonOffset(SubstanceSizeUtils
-										.getComponentFontSize(splitPane));
-						leftButton.setBounds(extraX + offset, y, leftButton
-								.getPreferredSize().width * 2 / 3, blockSize);
-						rightButton.setBounds(leftButton.getX()
-								+ leftButton.getWidth(), y, rightButton
-								.getPreferredSize().width * 2 / 3, blockSize);
+						int offset = SubstanceSizeUtils.getSplitPaneButtonOffset(
+								SubstanceSizeUtils.getComponentFontSize(splitPane));
+						leftButton.setBounds(extraX + offset, y,
+								leftButton.getPreferredSize().width * 2 / 3, blockSize);
+						rightButton.setBounds(leftButton.getX() + leftButton.getWidth(), y,
+								rightButton.getPreferredSize().width * 2 / 3, blockSize);
 					} else {
 						int extraY = (insets != null) ? insets.top : 0;
 						int blockSize = getWidth();
@@ -523,14 +465,12 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements
 
 						int x = (c.getSize().width - blockSize) / 2;
 
-						int offset = SubstanceSizeUtils
-								.getSplitPaneButtonOffset(SubstanceSizeUtils
-										.getComponentFontSize(splitPane));
+						int offset = SubstanceSizeUtils.getSplitPaneButtonOffset(
+								SubstanceSizeUtils.getComponentFontSize(splitPane));
 						leftButton.setBounds(x, extraY + offset, blockSize,
 								leftButton.getPreferredSize().height * 2 / 3);
-						rightButton.setBounds(x, leftButton.getY()
-								+ leftButton.getHeight(), blockSize, leftButton
-								.getPreferredSize().height * 2 / 3);
+						rightButton.setBounds(x, leftButton.getY() + leftButton.getHeight(),
+								blockSize, leftButton.getPreferredSize().height * 2 / 3);
 					}
 				} else {
 					leftButton.setBounds(-5, -5, 1, 1);

@@ -173,16 +173,13 @@ public class HighlightPainterUtils {
 		if (borderAlpha <= 0.0f)
 			return;
 
-		int openDelta = 3 + (int) (Math.ceil(3.0 * SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(comp))));
+		int openDelta = 3 + (int) (Math.ceil(3.0 * SubstanceSizeUtils.getBorderStrokeWidth()));
 		int deltaLeft = openSides.contains(Side.LEFT) ? openDelta : 0;
 		int deltaRight = openSides.contains(Side.RIGHT) ? openDelta : 0;
 		int deltaTop = openSides.contains(Side.TOP) ? openDelta : 0;
 		int deltaBottom = openSides.contains(Side.BOTTOM) ? openDelta : 0;
 
-		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(comp));
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth();
 		Shape contour = new Rectangle2D.Float(borderDelta / 2.0f, borderDelta / 2.0f, width
 				+ deltaLeft + deltaRight - borderDelta, height
 				+ deltaTop + deltaBottom - borderDelta);

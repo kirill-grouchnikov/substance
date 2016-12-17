@@ -29,17 +29,11 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import java.awt.Color;
-
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
 import org.pushingpixels.substance.api.SubstanceSkin;
-import org.pushingpixels.substance.api.colorscheme.EbonyColorScheme;
-import org.pushingpixels.substance.api.colorscheme.LightGrayColorScheme;
-import org.pushingpixels.substance.api.colorscheme.MetallicColorScheme;
-import org.pushingpixels.substance.api.colorscheme.SteelBlueColorScheme;
 import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.ArcDecorationPainter;
 import org.pushingpixels.substance.api.painter.decoration.BrushedMetalDecorationPainter;

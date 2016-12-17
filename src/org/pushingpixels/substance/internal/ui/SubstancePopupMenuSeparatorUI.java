@@ -29,7 +29,9 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 import javax.swing.JSeparator;
@@ -79,8 +81,8 @@ public class SubstancePopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI {
 		}
 		graphics.translate(startX, 0);
 		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(sep));
-		SeparatorPainterUtils.paintSeparator(sep, graphics, width, s.height,
-				sep.getOrientation(), true, 2);
+		SeparatorPainterUtils.paintSeparator(sep, graphics, width, s.height, sep.getOrientation(),
+				true, 2);
 
 		graphics.dispose();
 	}
@@ -94,9 +96,7 @@ public class SubstancePopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI {
 	 */
 	@Override
 	public Dimension getPreferredSize(JComponent c) {
-		float borderStrokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(c));
+		float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 		int prefSize = (int) (Math.ceil(2.0 * borderStrokeWidth));
 		return new Dimension(0, prefSize);
 	}

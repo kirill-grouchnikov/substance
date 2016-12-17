@@ -31,15 +31,32 @@ package test.check;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.ListCellRenderer;
+import javax.swing.SwingUtilities;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities2;
 import org.pushingpixels.lafwidget.utils.LafConstants.TabOverviewKind;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceConstants.TabContentPaneBorderKind;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.layout.CellConstraints;

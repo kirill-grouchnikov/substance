@@ -14,17 +14,20 @@
 
 package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.colorchooser.*;
-import javax.swing.event.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+import java.awt.ComponentOrientation;
+import java.awt.Container;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser.*;
+import javax.swing.JColorChooser;
+import javax.swing.JComponent;
+import javax.swing.TransferHandler;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
 
 /**
  * QuaquaColorChooserUI with enhancements for Java 1.4.

@@ -46,7 +46,6 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -87,7 +86,6 @@ import javax.swing.UIManager;
 import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.lafwidget.utils.TrackableThread;
 import org.pushingpixels.substance.api.DecorationAreaType;
@@ -324,6 +322,7 @@ public class SubstanceTitlePane extends JComponent {
 			longFormatter.format("%.1fMB / %.1fMB",
 					this.currTakenHeapSizeKB / 1024.f,
 					this.currHeapSizeKB / 1024.f);
+			longFormatter.close();
 			int strW = fm.stringWidth(longFormat.toString());
 			int strH = fm.getAscent() + fm.getDescent();
 
@@ -862,23 +861,13 @@ public class SubstanceTitlePane extends JComponent {
 		this.closeButton.setAction(this.closeAction);
 		this.closeButton.setText(null);
 		this.closeButton.setBorder(null);
-		// this.closeButton.setToolTipText(SubstanceLookAndFeel
-		// .getLabelBundle().getString(
-		// "SystemMenu.close"));
 
 		Icon closeIcon = new TransitionAwareIcon(closeButton,
-				new TransitionAwareIcon.Delegate() {
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
-						return SubstanceIconFactory
-								.getTitlePaneIcon(
-										SubstanceIconFactory.IconKind.CLOSE,
-										scheme,
-										SubstanceCoreUtilities
-												.getSkin(rootPane)
-												.getBackgroundColorScheme(
-														DecorationAreaType.PRIMARY_TITLE_PANE));
-					}
-				}, "substance.titlePane.closeIcon");
+				(SubstanceColorScheme scheme) -> SubstanceIconFactory.getTitlePaneIcon(
+						SubstanceIconFactory.IconKind.CLOSE, scheme,
+						SubstanceCoreUtilities.getSkin(rootPane)
+								.getBackgroundColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE)),
+				"substance.titlePane.closeIcon");
 		this.closeButton.setIcon(closeIcon);
 
 		this.closeButton.setFocusable(false);
@@ -895,19 +884,11 @@ public class SubstanceTitlePane extends JComponent {
 			this.minimizeButton.setBorder(null);
 
 			Icon minIcon = new TransitionAwareIcon(this.minimizeButton,
-					new TransitionAwareIcon.Delegate() {
-						public HiDpiAwareIcon getColorSchemeIcon(
-								SubstanceColorScheme scheme) {
-							return SubstanceIconFactory
-									.getTitlePaneIcon(
-											SubstanceIconFactory.IconKind.MINIMIZE,
-											scheme,
-											SubstanceCoreUtilities
-													.getSkin(rootPane)
-													.getBackgroundColorScheme(
-															DecorationAreaType.PRIMARY_TITLE_PANE));
-						}
-					}, "substance.titlePane.minIcon");
+					(SubstanceColorScheme scheme) -> SubstanceIconFactory.getTitlePaneIcon(
+							SubstanceIconFactory.IconKind.MINIMIZE, scheme,
+							SubstanceCoreUtilities.getSkin(rootPane).getBackgroundColorScheme(
+									DecorationAreaType.PRIMARY_TITLE_PANE)),
+					"substance.titlePane.minIcon");
 			this.minimizeButton.setIcon(minIcon);
 
 			this.minimizeButton.setFocusable(false);
@@ -923,19 +904,11 @@ public class SubstanceTitlePane extends JComponent {
 			this.toggleButton.setText(null);
 
 			Icon maxIcon = new TransitionAwareIcon(this.toggleButton,
-					new TransitionAwareIcon.Delegate() {
-						public HiDpiAwareIcon getColorSchemeIcon(
-								SubstanceColorScheme scheme) {
-							return SubstanceIconFactory
-									.getTitlePaneIcon(
-											SubstanceIconFactory.IconKind.MAXIMIZE,
-											scheme,
-											SubstanceCoreUtilities
-													.getSkin(rootPane)
-													.getBackgroundColorScheme(
-															DecorationAreaType.PRIMARY_TITLE_PANE));
-						}
-					}, "substance.titlePane.maxIcon");
+					(SubstanceColorScheme scheme) -> SubstanceIconFactory.getTitlePaneIcon(
+							SubstanceIconFactory.IconKind.MAXIMIZE, scheme,
+							SubstanceCoreUtilities.getSkin(rootPane).getBackgroundColorScheme(
+									DecorationAreaType.PRIMARY_TITLE_PANE)),
+					"substance.titlePane.maxIcon");
 			this.toggleButton.setIcon(maxIcon);
 
 			this.toggleButton.setToolTipText(SubstanceCoreUtilities
@@ -1014,47 +987,29 @@ public class SubstanceTitlePane extends JComponent {
 				}
 				if (frame.isResizable()) {
 					if ((state & Frame.MAXIMIZED_BOTH) != 0) {
-						Icon restoreIcon = new TransitionAwareIcon(
-								this.toggleButton,
-								new TransitionAwareIcon.Delegate() {
-									public HiDpiAwareIcon getColorSchemeIcon(
-											SubstanceColorScheme scheme) {
-										return SubstanceIconFactory
-												.getTitlePaneIcon(
-														SubstanceIconFactory.IconKind.RESTORE,
-														scheme,
-														SubstanceCoreUtilities
-																.getSkin(
-																		rootPane)
-																.getBackgroundColorScheme(
-																		DecorationAreaType.PRIMARY_TITLE_PANE));
-									}
-								}, "substance.titlePane.restoreIcon");
-						this
-								.updateToggleButton(this.restoreAction,
-										restoreIcon);
+						Icon restoreIcon = new TransitionAwareIcon(this.toggleButton,
+								(SubstanceColorScheme scheme) -> SubstanceIconFactory
+										.getTitlePaneIcon(SubstanceIconFactory.IconKind.RESTORE,
+												scheme,
+												SubstanceCoreUtilities.getSkin(rootPane)
+														.getBackgroundColorScheme(
+																DecorationAreaType.PRIMARY_TITLE_PANE)),
+								"substance.titlePane.restoreIcon");
+						this.updateToggleButton(this.restoreAction, restoreIcon);
 						this.toggleButton.setToolTipText(SubstanceCoreUtilities
 								.getResourceBundle(rootPane).getString(
 										"SystemMenu.restore"));
 						this.maximizeAction.setEnabled(false);
 						this.restoreAction.setEnabled(true);
 					} else {
-						Icon maxIcon = new TransitionAwareIcon(
-								this.toggleButton,
-								new TransitionAwareIcon.Delegate() {
-									public HiDpiAwareIcon getColorSchemeIcon(
-											SubstanceColorScheme scheme) {
-										return SubstanceIconFactory
-												.getTitlePaneIcon(
-														SubstanceIconFactory.IconKind.MAXIMIZE,
-														scheme,
-														SubstanceCoreUtilities
-																.getSkin(
-																		rootPane)
-																.getBackgroundColorScheme(
-																		DecorationAreaType.PRIMARY_TITLE_PANE));
-									}
-								}, "substance.titlePane.maxIcon");
+						Icon maxIcon = new TransitionAwareIcon(this.toggleButton,
+								(SubstanceColorScheme scheme) -> SubstanceIconFactory
+										.getTitlePaneIcon(SubstanceIconFactory.IconKind.MAXIMIZE,
+												scheme,
+												SubstanceCoreUtilities.getSkin(rootPane)
+														.getBackgroundColorScheme(
+																DecorationAreaType.PRIMARY_TITLE_PANE)),
+								"substance.titlePane.maxIcon");
 						this.updateToggleButton(this.maximizeAction, maxIcon);
 						this.toggleButton.setToolTipText(SubstanceCoreUtilities
 								.getResourceBundle(rootPane).getString(

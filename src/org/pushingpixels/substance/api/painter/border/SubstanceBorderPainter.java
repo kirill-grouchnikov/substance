@@ -81,4 +81,6 @@ public interface SubstanceBorderPainter extends SubstanceTrait {
 	 *         contours, <code>false</code> otherwise.
 	 */
 	public boolean isPaintingInnerContour();
+	
+	public Color getRepresentativeColor(SubstanceColorScheme borderScheme);
 }

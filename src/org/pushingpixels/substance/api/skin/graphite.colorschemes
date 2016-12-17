@@ -94,7 +94,7 @@ Graphite Tab Highlight {
     colorMid=#BCC0C5
     colorDark=#62666B
     colorUltraDark=#363B3F
-    colorForeground=#1B2025
+    colorForeground=#FFFFFF
 }
 
 Graphite Highlight Mark {

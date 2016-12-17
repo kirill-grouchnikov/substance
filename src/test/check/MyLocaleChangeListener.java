@@ -29,12 +29,18 @@
  */
 package test.check;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;

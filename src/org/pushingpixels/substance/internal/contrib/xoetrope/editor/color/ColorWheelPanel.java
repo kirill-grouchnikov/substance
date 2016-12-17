@@ -1,18 +1,55 @@
 package org.pushingpixels.substance.internal.contrib.xoetrope.editor.color;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.LayoutManager;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.font.TextAttribute;
-import java.awt.geom.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 import java.text.AttributedString;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
-import javax.swing.event.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 
@@ -438,8 +475,7 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 		// else
 		c = new Color(chooserColor.R, chooserColor.G, chooserColor.B);
 
-		float[] oldValues = values;
-		values = c.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), values);
+		values = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), values);
 		if (values[1] == 0.0F) {
 			s = values[1];
 			b = values[2];

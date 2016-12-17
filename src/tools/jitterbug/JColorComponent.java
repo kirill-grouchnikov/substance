@@ -29,11 +29,23 @@
  */
 package tools.jitterbug;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.LayoutManager;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.*;
+import javax.swing.JColorChooser;
+import javax.swing.JComponent;
+import javax.swing.JRadioButton;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
 
@@ -41,8 +53,6 @@ public class JColorComponent extends JComponent {
 	private JRadioButton radio;
 
 	private Color selectedColor;
-
-	private String name;
 
 	private ColorVisualizer visualizer;
 

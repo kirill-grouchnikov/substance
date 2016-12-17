@@ -302,17 +302,13 @@ public class BasePlugin implements LafComponentPlugin {
 				labelDefaults[start + i] = labelsList.get(i);
 			mainDefaults = labelDefaults;
 
-			if (colorDefaults != null) {
-				Object[] defaults = new Object[mainDefaults.length
-						+ colorDefaults.length];
-				for (int i = 0; i < mainDefaults.length; i++)
-					defaults[i] = mainDefaults[i];
-				start = mainDefaults.length;
-				for (int i = 0; i < colorDefaults.length; i++)
-					defaults[start + i] = colorDefaults[i];
-				return defaults;
-			}
-			return mainDefaults;
+			Object[] defaults = new Object[mainDefaults.length + colorDefaults.length];
+			for (int i = 0; i < mainDefaults.length; i++)
+				defaults[i] = mainDefaults[i];
+			start = mainDefaults.length;
+			for (int i = 0; i < colorDefaults.length; i++)
+				defaults[start + i] = colorDefaults[i];
+			return defaults;
 		} else {
 			// Object[] defaults = new Object[labelsList.size()];
 			// for (int i = 0; i < labelsList.size(); i++)

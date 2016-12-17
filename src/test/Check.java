@@ -77,7 +77,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.FontUIResource;
 
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.JXStatusBar;
@@ -93,11 +92,7 @@ import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.SubstanceConstants.TabCloseKind;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.fonts.FontSet;
-import org.pushingpixels.substance.api.skin.SkinChangeListener;
 import org.pushingpixels.substance.api.skin.SubstanceGeminiLookAndFeel;
-import org.pushingpixels.substance.api.skin.SubstanceMarinerLookAndFeel;
-import org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel;
 import org.pushingpixels.substance.api.tabbed.TabCloseCallback;
 import org.pushingpixels.substance.api.tabbed.TabCloseListener;
 import org.pushingpixels.substance.api.tabbed.VetoableMultipleTabCloseListener;
@@ -147,47 +142,6 @@ public class Check extends JFrame {
 	private JTabbedPane jtp;
 
 	private MyMainTabPreviewPainter mainTabPreviewPainter;
-
-	private static class WrapperFontSet implements FontSet {
-		private int extra;
-
-		private FontSet delegate;
-
-		public WrapperFontSet(FontSet delegate, int extra) {
-			super();
-			this.delegate = delegate;
-			this.extra = extra;
-		}
-
-		private FontUIResource getWrappedFont(FontUIResource systemFont) {
-			return new FontUIResource(systemFont.getFontName(), systemFont
-					.getStyle(), systemFont.getSize() + extra);
-		}
-
-		public FontUIResource getControlFont() {
-			return getWrappedFont(delegate.getControlFont());
-		}
-
-		public FontUIResource getMenuFont() {
-			return getWrappedFont(delegate.getMenuFont());
-		}
-
-		public FontUIResource getMessageFont() {
-			return getWrappedFont(delegate.getMessageFont());
-		}
-
-		public FontUIResource getSmallFont() {
-			return getWrappedFont(delegate.getSmallFont());
-		}
-
-		public FontUIResource getTitleFont() {
-			return getWrappedFont(delegate.getTitleFont());
-		}
-
-		public FontUIResource getWindowTitleFont() {
-			return getWrappedFont(delegate.getWindowTitleFont());
-		}
-	}
 
 	private JXTaskPaneContainer taskPaneContainer;
 

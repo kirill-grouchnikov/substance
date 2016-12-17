@@ -1,18 +1,33 @@
 package test.check;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.util.Enumeration;
 
-import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 
-import test.check.command.*;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
+
+import test.check.command.ClientPropertyCommand;
+import test.check.command.ConfigurationCommand;
+import test.check.command.CreationCommand;
+import test.check.command.DisableCommand;
+import test.check.command.DisableViewportCommand;
 
 public class CellsPanel extends JPanel implements Deferrable {
 	private boolean isInitialized;

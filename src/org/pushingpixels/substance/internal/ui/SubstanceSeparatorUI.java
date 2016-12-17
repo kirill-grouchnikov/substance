@@ -29,9 +29,15 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicSeparatorUI;
 
@@ -64,8 +70,8 @@ public class SubstanceSeparatorUI extends BasicSeparatorUI {
 
 		Component parent = c.getParent();
 		if (!(parent instanceof JPopupMenu)) {
-			SeparatorPainterUtils.paintSeparator(c, g, c.getWidth(), c
-					.getHeight(), ((JSeparator) c).getOrientation());
+			SeparatorPainterUtils.paintSeparator(c, g, c.getWidth(), c.getHeight(),
+					((JSeparator) c).getOrientation());
 			return;
 		}
 
@@ -100,9 +106,7 @@ public class SubstanceSeparatorUI extends BasicSeparatorUI {
 	 */
 	@Override
 	public Dimension getPreferredSize(JComponent c) {
-		float borderStrokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(c));
+		float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 		int prefSize = (int) (Math.ceil(2.0 * borderStrokeWidth));
 		if (((JSeparator) c).getOrientation() == SwingConstants.VERTICAL)
 			return new Dimension(prefSize, 0);

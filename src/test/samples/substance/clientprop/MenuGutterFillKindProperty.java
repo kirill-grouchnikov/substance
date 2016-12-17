@@ -74,8 +74,6 @@ public class MenuGutterFillKindProperty extends JFrame {
 		// create sample menu bar with one menu and a few menu items
 		JMenuBar jmb = new JMenuBar();
 		JMenu menu = new JMenu("menu");
-		String packageName = MenuGutterFillKindProperty.class.getPackage()
-				.getName();
 		menu.add(new JMenuItem("test item 1", Check.configure(new mx(), 21, 16)));
 		menu.add(new JMenuItem("test item 2"));
 		menu.add(new JMenuItem("test item 3"));

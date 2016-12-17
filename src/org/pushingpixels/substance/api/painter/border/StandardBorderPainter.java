@@ -39,10 +39,6 @@ import java.awt.MultipleGradientPaint;
 import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.RenderingHints;
 import java.awt.Shape;
-import java.awt.Toolkit;
-import java.awt.geom.AffineTransform;
-
-import javax.swing.JButton;
 
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
@@ -95,9 +91,7 @@ public class StandardBorderPainter implements SubstanceBorderPainter {
 
 		if ((topBorderColor != null) && (midBorderColor != null)
 				&& (bottomBorderColor != null)) {
-			float strokeWidth = SubstanceSizeUtils
-					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(c));
+			float strokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 			// issue 433 - the "c" can be null when painting
 			// the border of a tree icon used outside the
 			// JTree context.
@@ -155,5 +149,9 @@ public class StandardBorderPainter implements SubstanceBorderPainter {
 	public Color getBottomBorderColor(SubstanceColorScheme borderScheme) {
 		return SubstanceColorUtilities.getBottomBorderColor(borderScheme);
 	}
-
+	
+	@Override
+	public Color getRepresentativeColor(SubstanceColorScheme borderScheme) {
+		return this.getMidBorderColor(borderScheme);
+	}
 }

@@ -30,10 +30,8 @@
 package test.check;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Insets;
 import java.util.EnumSet;
 
@@ -52,6 +50,9 @@ import org.pushingpixels.substance.api.SubstanceConstants.FocusKind;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
+
 import test.Check;
 import test.check.command.ChainCommand;
 import test.check.command.ClientPropertyCommand;
@@ -64,9 +65,6 @@ import test.check.svg.flags.il;
 import test.check.svg.flags.it;
 import test.check.svg.flags.ru;
 import test.check.svg.flags.se;
-
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
 
 /**
  * Test application panel for testing {@link JButton}, {@link JToggleButton},
@@ -462,18 +460,6 @@ public class ButtonsPanel extends JPanel {
 			}
 		}
 
-		class MyLabel extends JLabel {
-			public MyLabel(String text) {
-				super(text);
-			}
-
-			@Override
-			protected void paintComponent(Graphics g) {
-				g.setColor(Color.red);
-				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-				super.paintComponent(g);
-			}
-		}
 		JLabel jl = new JLabel(label);
 		if (icon != null)
 			jl.setIcon(icon);

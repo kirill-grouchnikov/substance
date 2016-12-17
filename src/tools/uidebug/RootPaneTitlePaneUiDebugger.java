@@ -105,17 +105,17 @@ public class RootPaneTitlePaneUiDebugger extends LafWidgetAdapter<JRootPane> {
 						JMenu cbMenu = new JMenu("Color blindness");
 						JMenuItem protanopiaCurrent = new JMenuItem("Protanopia current");
 						protanopiaCurrent.addActionListener(new SkinChanger(
-								(final SubstanceColorScheme scheme) -> new ProtanopiaColorScheme(scheme),
+								(SubstanceColorScheme scheme) -> new ProtanopiaColorScheme(scheme),
 								"Protanopia current"));
 						cbMenu.add(protanopiaCurrent);
 						JMenuItem deuteranopiaCurrent = new JMenuItem("Deuteranopia current");
 						deuteranopiaCurrent.addActionListener(new SkinChanger(
-								(final SubstanceColorScheme scheme) -> new DeuteranopiaColorScheme(scheme),
+								(SubstanceColorScheme scheme) -> new DeuteranopiaColorScheme(scheme),
 								"Deuteranopia current"));
 						cbMenu.add(deuteranopiaCurrent);
 						JMenuItem tritanopiaCurrent = new JMenuItem("Tritanopia current");
 						tritanopiaCurrent.addActionListener(new SkinChanger(
-								(final SubstanceColorScheme scheme) -> new TritanopiaColorScheme(scheme),
+								(SubstanceColorScheme scheme) -> new TritanopiaColorScheme(scheme),
 								"Tritanopia current"));
 						cbMenu.add(tritanopiaCurrent);
 
@@ -124,7 +124,7 @@ public class RootPaneTitlePaneUiDebugger extends LafWidgetAdapter<JRootPane> {
 						JMenuItem restoreOriginal = new JMenuItem("Restore original");
 						if (SubstanceLookAndFeel.getCurrentSkin(null).getColorScheme(null,
 								ComponentState.ENABLED) instanceof ColorBlindColorScheme) {
-							restoreOriginal.addActionListener(new SkinChanger((final SubstanceColorScheme scheme) -> {
+							restoreOriginal.addActionListener(new SkinChanger((SubstanceColorScheme scheme) -> {
 								if (scheme instanceof ColorBlindColorScheme)
 									return ((ColorBlindColorScheme) scheme).getOrigScheme();
 								return scheme;

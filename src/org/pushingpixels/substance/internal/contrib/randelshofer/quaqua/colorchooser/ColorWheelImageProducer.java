@@ -108,7 +108,6 @@ public class ColorWheelImageProducer extends MemoryImageSource {
     }
     
     public void generateColorWheel() {
-        float radius = (float) Math.min(w, h);
         for (int index=0; index < pixels.length; index++) {
             if (alphas[index] != 0) {
                 pixels[index] = alphas[index]

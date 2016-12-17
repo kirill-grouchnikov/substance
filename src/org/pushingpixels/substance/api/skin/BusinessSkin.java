@@ -31,7 +31,6 @@ package org.pushingpixels.substance.api.skin;
 
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
-import org.pushingpixels.substance.api.ColorSchemeTransform;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -112,12 +111,7 @@ public class BusinessSkin extends SubstanceSkin {
 		this.fillPainter = new ClassicFillPainter();
 		this.borderPainter = new CompositeBorderPainter("Business", new ClassicBorderPainter(),
 				new DelegateBorderPainter("Business Inner", new ClassicBorderPainter(),
-						new ColorSchemeTransform() {
-							@Override
-							public SubstanceColorScheme transform(SubstanceColorScheme scheme) {
-								return scheme.tint(0.9f);
-							}
-						}));
+						(SubstanceColorScheme scheme) -> scheme.tint(0.9f)));
 
 		BrushedMetalDecorationPainter decorationPainter = new BrushedMetalDecorationPainter();
 		decorationPainter.setBaseDecorationPainter(new ArcDecorationPainter());

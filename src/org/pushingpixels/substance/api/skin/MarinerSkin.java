@@ -29,8 +29,6 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import java.awt.Color;
-
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
 import org.pushingpixels.substance.api.ComponentState;
@@ -98,40 +96,31 @@ public class MarinerSkin extends SubstanceSkin {
 				ComponentState.DISABLED_UNSELECTED);
 
 		// borders
-		SubstanceColorScheme activeBorderScheme = schemes
-				.get("Mariner Active Border");
-		SubstanceColorScheme enabledBorderScheme = schemes
-				.get("Mariner Enabled Border");
+		SubstanceColorScheme activeBorderScheme = schemes.get("Mariner Active Border");
+		SubstanceColorScheme enabledBorderScheme = schemes.get("Mariner Enabled Border");
 		defaultSchemeBundle.registerColorScheme(activeBorderScheme,
-				ColorSchemeAssociationKind.BORDER, ComponentState
-						.getActiveStates());
+				ColorSchemeAssociationKind.BORDER, ComponentState.getActiveStates());
 		defaultSchemeBundle.registerColorScheme(activeBorderScheme,
-				ColorSchemeAssociationKind.BORDER,
-				ComponentState.DISABLED_SELECTED);
+				ColorSchemeAssociationKind.BORDER, ComponentState.DISABLED_SELECTED);
 		defaultSchemeBundle.registerColorScheme(enabledBorderScheme,
 				ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED);
 
 		// marks
-		SubstanceColorScheme activeMarkScheme = schemes
-				.get("Mariner Active Mark");
-		SubstanceColorScheme enabledMarkScheme = schemes
-				.get("Mariner Enabled Mark");
-		defaultSchemeBundle.registerColorScheme(activeMarkScheme,
-				ColorSchemeAssociationKind.MARK, ComponentState
-						.getActiveStates());
-		defaultSchemeBundle.registerColorScheme(enabledMarkScheme,
-				ColorSchemeAssociationKind.MARK, ComponentState.ENABLED);
+		SubstanceColorScheme activeMarkScheme = schemes.get("Mariner Active Mark");
+		SubstanceColorScheme enabledMarkScheme = schemes.get("Mariner Enabled Mark");
+		defaultSchemeBundle.registerColorScheme(activeMarkScheme, ColorSchemeAssociationKind.MARK,
+				ComponentState.getActiveStates());
+		defaultSchemeBundle.registerColorScheme(enabledMarkScheme, ColorSchemeAssociationKind.MARK,
+				ComponentState.ENABLED);
 
 		ComponentState uneditable = new ComponentState("uneditable",
 				new ComponentStateFacet[] { ComponentStateFacet.ENABLE },
 				new ComponentStateFacet[] { ComponentStateFacet.EDITABLE });
-		SubstanceColorScheme uneditableControls = schemes
-				.get("Mariner Uneditable");
-		defaultSchemeBundle.registerColorScheme(uneditableControls,
-				ColorSchemeAssociationKind.FILL, uneditable);
+		SubstanceColorScheme uneditableControls = schemes.get("Mariner Uneditable");
+		defaultSchemeBundle.registerColorScheme(uneditableControls, ColorSchemeAssociationKind.FILL,
+				uneditable);
 
-		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
-				DecorationAreaType.NONE);
+		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, DecorationAreaType.NONE);
 
 		// header color scheme bundle
 		SubstanceColorScheme headerColorScheme = schemes.get("Mariner Header");
@@ -139,27 +128,22 @@ public class MarinerSkin extends SubstanceSkin {
 		SubstanceColorSchemeBundle headerSchemeBundle = new SubstanceColorSchemeBundle(
 				headerColorScheme, headerColorScheme, headerColorScheme);
 		headerSchemeBundle.registerColorScheme(headerColorScheme, 0.4f,
-				ComponentState.DISABLED_SELECTED,
-				ComponentState.DISABLED_UNSELECTED);
+				ComponentState.DISABLED_SELECTED, ComponentState.DISABLED_UNSELECTED);
 		headerSchemeBundle.registerColorScheme(headerColorScheme,
 				ComponentState.ROLLOVER_UNSELECTED);
-		headerSchemeBundle.registerColorScheme(headerColorScheme,
-				ColorSchemeAssociationKind.MARK);
+		headerSchemeBundle.registerColorScheme(headerColorScheme, ColorSchemeAssociationKind.MARK);
 		headerSchemeBundle.registerColorScheme(headerBorderColorScheme,
 				ColorSchemeAssociationKind.BORDER);
-		this.registerDecorationAreaSchemeBundle(headerSchemeBundle,
-				headerColorScheme, DecorationAreaType.PRIMARY_TITLE_PANE,
-				DecorationAreaType.SECONDARY_TITLE_PANE,
+		this.registerDecorationAreaSchemeBundle(headerSchemeBundle, headerColorScheme,
+				DecorationAreaType.PRIMARY_TITLE_PANE, DecorationAreaType.SECONDARY_TITLE_PANE,
 				DecorationAreaType.HEADER);
 
 		// footer color scheme bundle
-		SubstanceColorScheme enabledFooterScheme = schemes
-				.get("Mariner Footer Enabled");
-		SubstanceColorScheme disabledFooterScheme = schemes
-				.get("Mariner Footer Disabled");
+		SubstanceColorScheme enabledFooterScheme = schemes.get("Mariner Footer Enabled");
+		SubstanceColorScheme disabledFooterScheme = schemes.get("Mariner Footer Disabled");
 
-		SubstanceColorSchemeBundle footerSchemeBundle = new SubstanceColorSchemeBundle(
-				activeScheme, enabledFooterScheme, disabledFooterScheme);
+		SubstanceColorSchemeBundle footerSchemeBundle = new SubstanceColorSchemeBundle(activeScheme,
+				enabledFooterScheme, disabledFooterScheme);
 
 		footerSchemeBundle.registerColorScheme(activeScheme, 0.5f,
 				ComponentState.DISABLED_SELECTED);
@@ -170,34 +154,27 @@ public class MarinerSkin extends SubstanceSkin {
 		SubstanceColorScheme footerEnabledBorderScheme = schemes
 				.get("Mariner Footer Enabled Border");
 		footerSchemeBundle.registerColorScheme(activeBorderScheme,
-				ColorSchemeAssociationKind.BORDER, ComponentState
-						.getActiveStates());
+				ColorSchemeAssociationKind.BORDER, ComponentState.getActiveStates());
 		footerSchemeBundle.registerColorScheme(activeBorderScheme,
-				ColorSchemeAssociationKind.BORDER,
-				ComponentState.DISABLED_SELECTED);
+				ColorSchemeAssociationKind.BORDER, ComponentState.DISABLED_SELECTED);
 		footerSchemeBundle.registerColorScheme(footerEnabledBorderScheme,
 				ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED);
 
 		// marks
-		SubstanceColorScheme footerEnabledMarkScheme = schemes
-				.get("Mariner Footer Enabled Mark");
-		footerSchemeBundle.registerColorScheme(activeMarkScheme,
-				ColorSchemeAssociationKind.MARK, ComponentState
-						.getActiveStates());
+		SubstanceColorScheme footerEnabledMarkScheme = schemes.get("Mariner Footer Enabled Mark");
+		footerSchemeBundle.registerColorScheme(activeMarkScheme, ColorSchemeAssociationKind.MARK,
+				ComponentState.getActiveStates());
 		footerSchemeBundle.registerColorScheme(footerEnabledMarkScheme,
 				ColorSchemeAssociationKind.MARK, ComponentState.ENABLED);
 
 		// separators
-		SubstanceColorScheme footerSeparatorScheme = schemes
-				.get("Mariner Footer Separator");
+		SubstanceColorScheme footerSeparatorScheme = schemes.get("Mariner Footer Separator");
 		footerSchemeBundle.registerColorScheme(footerSeparatorScheme,
 				ColorSchemeAssociationKind.SEPARATOR);
 
-		SubstanceColorScheme footerWatermarkColorScheme = schemes
-				.get("Mariner Footer Watermark");
-		this.registerDecorationAreaSchemeBundle(footerSchemeBundle,
-				footerWatermarkColorScheme, DecorationAreaType.FOOTER,
-				DecorationAreaType.TOOLBAR, DecorationAreaType.GENERAL);
+		SubstanceColorScheme footerWatermarkColorScheme = schemes.get("Mariner Footer Watermark");
+		this.registerDecorationAreaSchemeBundle(footerSchemeBundle, footerWatermarkColorScheme,
+				DecorationAreaType.FOOTER, DecorationAreaType.TOOLBAR, DecorationAreaType.GENERAL);
 
 		this.setTabFadeStart(0.15);
 		this.setTabFadeEnd(0.25);
@@ -205,22 +182,14 @@ public class MarinerSkin extends SubstanceSkin {
 		// add an overlay painter to paint a bezel line along the top
 		// edge of footer
 		this.footerTopBezelOverlayPainter = new TopBezelOverlayPainter(
-				ColorSchemeSingleColorQuery.ULTRADARK,
-				ColorSchemeSingleColorQuery.LIGHT);
-		this.addOverlayPainter(this.footerTopBezelOverlayPainter,
-				DecorationAreaType.FOOTER);
+				ColorSchemeSingleColorQuery.ULTRADARK, ColorSchemeSingleColorQuery.LIGHT);
+		this.addOverlayPainter(this.footerTopBezelOverlayPainter, DecorationAreaType.FOOTER);
 
 		// add two overlay painters to create a bezel line between
 		// menu bar and toolbars
 		this.menuOverlayPainter = new BottomLineOverlayPainter(
-				new ColorSchemeSingleColorQuery() {
-					@Override
-					public Color query(SubstanceColorScheme scheme) {
-						return scheme.getUltraDarkColor().darker();
-					}
-				});
-		this.addOverlayPainter(this.menuOverlayPainter,
-				DecorationAreaType.HEADER);
+				(SubstanceColorScheme scheme) -> scheme.getUltraDarkColor().darker());
+		this.addOverlayPainter(this.menuOverlayPainter, DecorationAreaType.HEADER);
 
 		// add overlay painter to paint drop shadows along the bottom
 		// edges of toolbars
@@ -231,25 +200,20 @@ public class MarinerSkin extends SubstanceSkin {
 		// edge of toolbars
 		this.toolbarBottomLineOverlayPainter = new BottomLineOverlayPainter(
 				ColorSchemeSingleColorQuery.ULTRADARK);
-		this.addOverlayPainter(this.toolbarBottomLineOverlayPainter,
-				DecorationAreaType.TOOLBAR);
+		this.addOverlayPainter(this.toolbarBottomLineOverlayPainter, DecorationAreaType.TOOLBAR);
 
 		this.buttonShaper = new ClassicButtonShaper();
-		this.fillPainter = new FractionBasedFillPainter("Mariner", new float[] {
-				0.0f, 0.5f, 1.0f }, new ColorSchemeSingleColorQuery[] {
-				ColorSchemeSingleColorQuery.EXTRALIGHT,
-				ColorSchemeSingleColorQuery.LIGHT,
-				ColorSchemeSingleColorQuery.MID });
+		this.fillPainter = new FractionBasedFillPainter("Mariner", new float[] { 0.0f, 0.5f, 1.0f },
+				new ColorSchemeSingleColorQuery[] { ColorSchemeSingleColorQuery.EXTRALIGHT,
+						ColorSchemeSingleColorQuery.LIGHT, ColorSchemeSingleColorQuery.MID });
 
 		this.decorationPainter = new MatteDecorationPainter();
 		this.highlightPainter = new ClassicHighlightPainter();
 
 		this.borderPainter = new FractionBasedBorderPainter("Mariner",
 				new float[] { 0.0f, 0.5f, 1.0f },
-				new ColorSchemeSingleColorQuery[] {
-						ColorSchemeSingleColorQuery.ULTRADARK,
-						ColorSchemeSingleColorQuery.DARK,
-						ColorSchemeSingleColorQuery.MID });
+				new ColorSchemeSingleColorQuery[] { ColorSchemeSingleColorQuery.ULTRADARK,
+						ColorSchemeSingleColorQuery.DARK, ColorSchemeSingleColorQuery.MID });
 		this.highlightBorderPainter = new ClassicBorderPainter();
 	}
 

@@ -154,11 +154,10 @@ public final class SubstanceImageCreator {
 		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
 				.getBorderPainter(c);
 		graphics.translate(x, y);
-		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(c);
-		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize) / 2.0f;
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
 		Shape contour = SubstanceOutlineUtilities.getBaseOutline(width, height,
 				radius, null, borderDelta);
-		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
 		boolean skipInnerBorder = (c instanceof JTextComponent)
 				|| ((SwingUtilities.getAncestorOfClass(CellRendererPane.class,
 						c) != null) && (SwingUtilities.getAncestorOfClass(
@@ -195,14 +194,12 @@ public final class SubstanceImageCreator {
 			Graphics graphics, int x, int y, int width, int height,
 			float radius, SubstanceColorScheme borderScheme) {
 
-		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(c);
-		float borderDelta = SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize) / 2.0f;
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
 		Set<Side> sides = SubstanceCoreUtilities.getSides(c, 
 				SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
 		Shape contour = SubstanceOutlineUtilities.getBaseOutline(
 				width, height, radius, sides, borderDelta);
-		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
 		GeneralPath contourInner = SubstanceOutlineUtilities.getBaseOutline(
 				width, height, radius - borderThickness, sides, 
 				borderThickness + borderDelta);
@@ -253,9 +250,7 @@ public final class SubstanceImageCreator {
 		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
 				RenderingHints.VALUE_STROKE_PURE);
 
-		float strokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(c));
+		float strokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 		g2d.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_BUTT,
 				BasicStroke.JOIN_ROUND));
 
@@ -695,7 +690,7 @@ public final class SubstanceImageCreator {
 			fillPainter = SimplisticSoftBorderReverseFillPainter.INSTANCE;
 		}
 
-		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(dimension);
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth();
 
 		// float fDelta = borderThickness / 2.0f;
 		Shape contourBorder = new Ellipse2D.Float(borderDelta / 2.0f, borderDelta / 2.0f, 
@@ -797,9 +792,7 @@ public final class SubstanceImageCreator {
 		}
 
 		int contourDim = dimension - delta;
-		float borderDelta = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(button)) / 2.0f;
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
 		GeneralPath contour = SubstanceOutlineUtilities.getBaseOutline(
 				contourDim, contourDim, cornerRadius, null, borderDelta);
 
@@ -817,7 +810,7 @@ public final class SubstanceImageCreator {
 		fillPainter.paintContourBackground(graphics, button, contourDim,
 				contourDim, contour, false, fillColorScheme, true);
 
-		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth(dimension);
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
 		GeneralPath contourInner = SubstanceOutlineUtilities.getBaseOutline(
 				contourDim, contourDim, cornerRadius - borderThickness, null,
 				borderThickness + borderDelta);
@@ -1196,15 +1189,10 @@ public final class SubstanceImageCreator {
 	 */
 	public static void paintSimpleBorder(Component c, Graphics2D g2d,
 			float width, float height, SubstanceColorScheme borderColorScheme) {
-		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(c);
-		// int borderDelta = (int) Math.floor(SubstanceSizeUtils
-		// .getBorderStrokeWidth(componentFontSize) / 2.0);
-		// int borderDelta2 = (int) Math.floor(SubstanceSizeUtils
-		// .getBorderStrokeWidth(componentFontSize));
-		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
 
-		g2d.setColor(SubstanceColorUtilities
-				.getMidBorderColor(borderColorScheme));
+		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(c);
+		g2d.setColor(borderPainter.getRepresentativeColor(borderColorScheme));
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
@@ -1213,22 +1201,12 @@ public final class SubstanceImageCreator {
 		int capKind = BasicStroke.CAP_BUTT;
 		g2d.setStroke(new BasicStroke(borderThickness, capKind, joinKind));
 		g2d.draw(new Rectangle2D.Float(borderThickness / 2.0f, borderThickness / 2.0f, 
-				width - borderThickness, 
-				height - borderThickness));
-		// g2d.drawRect(borderDelta, borderDelta, width - 1 - borderDelta2,
-		// height
-		// - 1 - borderDelta2);
+				width - borderThickness, height - borderThickness));
 	}
 
 	public static void paintSimpleBorderAliased(Component c, Graphics2D g2d,
 			int width, int height, SubstanceColorScheme colorScheme) {
-		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(c);
-		// int borderDelta = (int) Math.floor(SubstanceSizeUtils
-		// .getBorderStrokeWidth(componentFontSize) / 2.0);
-		// int borderDelta2 = (int) Math.floor(SubstanceSizeUtils
-		// .getBorderStrokeWidth(componentFontSize));
-		float borderThickness = (float) Math.floor(SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize));
+		float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
 
 		g2d.setColor(SubstanceColorUtilities.getMidBorderColor(colorScheme));
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -1238,9 +1216,8 @@ public final class SubstanceImageCreator {
 		int joinKind = BasicStroke.JOIN_MITER;
 		int capKind = BasicStroke.CAP_SQUARE;
 		g2d.setStroke(new BasicStroke(borderThickness, capKind, joinKind));
-		g2d.draw(new Rectangle2D.Float(borderThickness / 2.0f,
-				borderThickness / 2.0f, width - borderThickness, height
-						- borderThickness));
+		g2d.draw(new Rectangle2D.Float(borderThickness / 2.0f, borderThickness / 2.0f,
+				width - borderThickness, height - borderThickness));
 	}
 
 	/**
@@ -1382,11 +1359,9 @@ public final class SubstanceImageCreator {
 	 *            The maximum number of bump stripes (rows or columns).
 	 * @return Drag bumps image.
 	 */
-	public static BufferedImage getDragImage(Component c,
-			SubstanceColorScheme colorScheme, int width, int height,
-			int maxNumberOfStripes) {
-		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width,
-				height);
+	public static BufferedImage getDragImage(Component c, SubstanceColorScheme colorScheme,
+			int width, int height, int maxNumberOfStripes) {
+		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
 		Graphics2D graphics = (Graphics2D) result.getGraphics();
 
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -1394,19 +1369,15 @@ public final class SubstanceImageCreator {
 
 		boolean isDark = colorScheme.isDark();
 		Color back1 = isDark ? colorScheme.getLightColor()
-				: SubstanceColorUtilities.getInterpolatedColor(
-						colorScheme.getLightColor(),
+				: SubstanceColorUtilities.getInterpolatedColor(colorScheme.getLightColor(),
 						colorScheme.getDarkColor(), 0.8);
 		Color back2 = isDark ? colorScheme.getExtraLightColor()
-				: SubstanceColorUtilities.getInterpolatedColor(
-						colorScheme.getMidColor(), colorScheme.getDarkColor(),
-						0.4);
-		Color fore = isDark ? colorScheme.getDarkColor() : colorScheme
-				.getUltraLightColor();
+				: SubstanceColorUtilities.getInterpolatedColor(colorScheme.getMidColor(),
+						colorScheme.getDarkColor(), 0.4);
+		Color fore = isDark ? colorScheme.getDarkColor() : colorScheme.getUltraLightColor();
 
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(c);
-		int bumpDotDiameter = SubstanceSizeUtils
-				.getDragBumpDiameter(componentFontSize);
+		int bumpDotDiameter = SubstanceSizeUtils.getDragBumpDiameter(componentFontSize);
 		int bumpCellSize = (int) (1.5 * bumpDotDiameter + 1);
 		int bumpRows = Math.max(1, height / bumpCellSize - 1);
 		int bumpColumns = Math.max(1, (width - 2) / bumpCellSize);
@@ -1427,11 +1398,10 @@ public final class SubstanceImageCreator {
 			for (int row = 0; row < bumpRows; row++) {
 				int cy = offsetY + bumpRowOffset + row * bumpCellSize;
 				graphics.setColor(fore);
-				graphics.fillOval(cx + 1, cy + 1, bumpDotDiameter,
-						bumpDotDiameter);
+				graphics.fillOval(cx + 1, cy + 1, bumpDotDiameter, bumpDotDiameter);
 				// graphics.setColor(back1);
-				graphics.setPaint(new GradientPaint(cx, cy, back1, cx
-						+ bumpDotDiameter - 1, cy + bumpDotDiameter - 1, back2));
+				graphics.setPaint(new GradientPaint(cx, cy, back1, cx + bumpDotDiameter - 1,
+						cy + bumpDotDiameter - 1, back2));
 				graphics.fillOval(cx, cy, bumpDotDiameter, bumpDotDiameter);
 			}
 		}
@@ -1605,7 +1575,7 @@ public final class SubstanceImageCreator {
 		SimplisticFillPainter gradPainter = new SimplisticSoftBorderReverseFillPainter();
 		FlatBorderPainter fbp = new FlatBorderPainter();
 
-		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(fontSize) / 2.0f;
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
 		Shape contour = SubstanceOutlineUtilities.getBaseOutline(dim, dim, 
 				SubstanceSizeUtils.getClassicButtonCornerRadius(dim) / 1.5f,
 				null, borderDelta);

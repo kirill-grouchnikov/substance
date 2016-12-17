@@ -63,15 +63,11 @@ public final class BottomLineOverlayPainter implements SubstanceOverlayPainter {
 
 	@Override
 	public void paintOverlay(Graphics2D graphics, Component comp,
-			DecorationAreaType decorationAreaType, int width, int height,
-			SubstanceSkin skin) {
+			DecorationAreaType decorationAreaType, int width, int height, SubstanceSkin skin) {
 		Component topMostWithSameDecorationAreaType = SubstancePainterUtils
-				.getTopMostParentWithDecorationAreaType(comp,
-						decorationAreaType);
+				.getTopMostParentWithDecorationAreaType(comp, decorationAreaType);
 
-		int fontSize = SubstanceSizeUtils.getComponentFontSize(comp);
-		float borderStrokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(fontSize);
+		float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 		graphics.setStroke(new BasicStroke(borderStrokeWidth));
 
 		SubstanceColorScheme colorScheme = skin.getBackgroundColorScheme(decorationAreaType);

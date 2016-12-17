@@ -209,24 +209,22 @@ public class SubstanceColorSchemeUtilities {
 		// it is in the default state, or it is a button
 		// that is never painting its background - get the color scheme of the
 		// parent
-		boolean isButtonThatIsNeverPainted = ((component instanceof AbstractButton) && SubstanceCoreUtilities
-				.isButtonNeverPainted((AbstractButton) component));
+		boolean isButtonThatIsNeverPainted = ((component instanceof AbstractButton) 
+				&& SubstanceCoreUtilities.isButtonNeverPainted((AbstractButton) component));
 		if (isButtonThatIsNeverPainted
-				|| (SubstanceCoreUtilities.hasFlatAppearance(component, false) && (componentState == ComponentState.ENABLED))) {
+				|| (SubstanceCoreUtilities.hasFlatAppearance(component, false) 
+						&& (componentState == ComponentState.ENABLED))) {
 			component = component.getParent();
 		}
 
 		SubstanceSkin skin = SubstanceCoreUtilities.getSkin(component);
 		if (skin == null) {
-			SubstanceCoreUtilities
-					.traceSubstanceApiUsage(component,
-							"Substance delegate used when Substance is not the current LAF");
+			SubstanceCoreUtilities.traceSubstanceApiUsage(component,
+					"Substance delegate used when Substance is not the current LAF");
 		}
-		SubstanceColorScheme nonColorized = skin.getColorScheme(component,
-				componentState);
+		SubstanceColorScheme nonColorized = skin.getColorScheme(component, componentState);
 
-		return getColorizedScheme(orig, nonColorized, !componentState
-				.isDisabled());
+		return getColorizedScheme(orig, nonColorized, !componentState.isDisabled());
 	}
 
 	/**

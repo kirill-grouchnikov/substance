@@ -29,12 +29,25 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.Shape;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EnumSet;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ComponentUI;
@@ -43,10 +56,17 @@ import javax.swing.plaf.basic.BasicSpinnerUI;
 import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.internal.utils.SubstanceColorResource;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities.TextComponentAware;
+import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
+import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.utils.SubstanceSpinnerButton;
+import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 import org.pushingpixels.substance.internal.utils.border.SubstanceTextComponentBorder;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 
@@ -90,10 +110,8 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 					@Override
 					public JTextComponent getTextComponent(JSpinner t) {
 						JComponent editor = t.getEditor();
-						if ((editor != null)
-								&& (editor instanceof JSpinner.DefaultEditor)) {
-							return ((JSpinner.DefaultEditor) editor)
-									.getTextField();
+						if ((editor != null) && (editor instanceof JSpinner.DefaultEditor)) {
+							return ((JSpinner.DefaultEditor) editor).getTextField();
 						}
 						return null;
 					}
@@ -114,37 +132,26 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 	 */
 	@Override
 	protected Component createNextButton() {
-		this.nextButton = new SubstanceSpinnerButton(this.spinner,
-				SwingConstants.NORTH);
+		this.nextButton = new SubstanceSpinnerButton(this.spinner, SwingConstants.NORTH);
 		this.nextButton.setFont(this.spinner.getFont());
 		this.nextButton.setName("Spinner.nextButton");
 
-		Icon icon = new TransitionAwareIcon(this.nextButton,
-				new TransitionAwareIcon.Delegate() {
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
-						int fontSize = SubstanceSizeUtils
-								.getComponentFontSize(nextButton);
-						return SubstanceImageCreator.getArrowIcon(
-								SubstanceSizeUtils
-										.getSpinnerArrowIconWidth(fontSize),
-								SubstanceSizeUtils
-										.getSpinnerArrowIconHeight(fontSize),
-								SubstanceSizeUtils
-										.getArrowStrokeWidth(fontSize),
-								SwingConstants.NORTH, scheme);
-					}
-				}, "substance.spinner.nextButton");
+		Icon icon = new TransitionAwareIcon(this.nextButton, (SubstanceColorScheme scheme) -> {
+			int fontSize = SubstanceSizeUtils.getComponentFontSize(nextButton);
+			return SubstanceImageCreator.getArrowIcon(
+					SubstanceSizeUtils.getSpinnerArrowIconWidth(fontSize),
+					SubstanceSizeUtils.getSpinnerArrowIconHeight(fontSize),
+					SubstanceSizeUtils.getArrowStrokeWidth(fontSize), SwingConstants.NORTH, scheme);
+		}, "substance.spinner.nextButton");
 		this.nextButton.setIcon(icon);
 
 		int spinnerButtonSize = SubstanceSizeUtils
-				.getScrollBarWidth(SubstanceSizeUtils
-						.getComponentFontSize(spinner));
-		this.nextButton.setPreferredSize(new Dimension(spinnerButtonSize,
-				spinnerButtonSize));
+				.getScrollBarWidth(SubstanceSizeUtils.getComponentFontSize(spinner));
+		this.nextButton.setPreferredSize(new Dimension(spinnerButtonSize, spinnerButtonSize));
 		this.nextButton.setMinimumSize(new Dimension(5, 5));
 
-		this.nextButton.putClientProperty(
-				SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY, EnumSet.of(Side.BOTTOM));
+		this.nextButton.putClientProperty(SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY,
+				EnumSet.of(Side.BOTTOM));
 
 		this.installNextButtonListeners(this.nextButton);
 
@@ -163,37 +170,26 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 	 */
 	@Override
 	protected Component createPreviousButton() {
-		this.prevButton = new SubstanceSpinnerButton(this.spinner,
-				SwingConstants.SOUTH);
+		this.prevButton = new SubstanceSpinnerButton(this.spinner, SwingConstants.SOUTH);
 		this.prevButton.setFont(this.spinner.getFont());
 		this.prevButton.setName("Spinner.previousButton");
 
-		Icon icon = new TransitionAwareIcon(this.prevButton,
-				new TransitionAwareIcon.Delegate() {
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
-						int fontSize = SubstanceSizeUtils
-								.getComponentFontSize(prevButton);
-						float spinnerArrowIconHeight = SubstanceSizeUtils
-								.getSpinnerArrowIconHeight(fontSize);
-						return SubstanceImageCreator.getArrowIcon(
-								SubstanceSizeUtils
-										.getSpinnerArrowIconWidth(fontSize),
-								spinnerArrowIconHeight, SubstanceSizeUtils
-										.getArrowStrokeWidth(fontSize),
-								SwingConstants.SOUTH, scheme);
-					}
-				}, "substance.spinner.prevButton");
+		Icon icon = new TransitionAwareIcon(this.prevButton, (SubstanceColorScheme scheme) -> {
+			int fontSize = SubstanceSizeUtils.getComponentFontSize(prevButton);
+			float spinnerArrowIconHeight = SubstanceSizeUtils.getSpinnerArrowIconHeight(fontSize);
+			return SubstanceImageCreator.getArrowIcon(
+					SubstanceSizeUtils.getSpinnerArrowIconWidth(fontSize), spinnerArrowIconHeight,
+					SubstanceSizeUtils.getArrowStrokeWidth(fontSize), SwingConstants.SOUTH, scheme);
+		}, "substance.spinner.prevButton");
 		this.prevButton.setIcon(icon);
 
 		int spinnerButtonSize = SubstanceSizeUtils
-				.getScrollBarWidth(SubstanceSizeUtils
-						.getComponentFontSize(this.prevButton));
-		this.prevButton.setPreferredSize(new Dimension(spinnerButtonSize,
-				spinnerButtonSize));
+				.getScrollBarWidth(SubstanceSizeUtils.getComponentFontSize(this.prevButton));
+		this.prevButton.setPreferredSize(new Dimension(spinnerButtonSize, spinnerButtonSize));
 		this.prevButton.setMinimumSize(new Dimension(5, 5));
 
-		this.prevButton.putClientProperty(
-				SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY, EnumSet.of(Side.TOP));
+		this.prevButton.putClientProperty(SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY,
+				EnumSet.of(Side.TOP));
 
 		this.installPreviousButtonListeners(this.prevButton);
 
@@ -217,12 +213,9 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 		if ((editor != null) && (editor instanceof JSpinner.DefaultEditor)) {
 			JTextField tf = ((JSpinner.DefaultEditor) editor).getTextField();
 			if (tf != null) {
-				int fontSize = SubstanceSizeUtils
-						.getComponentFontSize(this.spinner);
-				Insets ins = SubstanceSizeUtils
-						.getSpinnerTextBorderInsets(fontSize);
-				tf.setBorder(new EmptyBorder(ins.top, ins.left, ins.bottom,
-						ins.right));
+				int fontSize = SubstanceSizeUtils.getComponentFontSize(this.spinner);
+				Insets ins = SubstanceSizeUtils.getSpinnerTextBorderInsets(fontSize);
+				tf.setBorder(new EmptyBorder(ins.top, ins.left, ins.bottom, ins.right));
 				tf.setFont(spinner.getFont());
 				tf.setOpaque(false);
 			}
@@ -233,10 +226,9 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 
 		Border b = this.spinner.getBorder();
 		if (b == null || b instanceof UIResource) {
-			SubstanceTextComponentBorder border = 
-					new SubstanceTextComponentBorder(SubstanceSizeUtils
-							.getSpinnerBorderInsets(SubstanceSizeUtils
-									.getComponentFontSize(this.spinner)));
+			SubstanceTextComponentBorder border = new SubstanceTextComponentBorder(
+					SubstanceSizeUtils.getSpinnerBorderInsets(
+							SubstanceSizeUtils.getComponentFontSize(this.spinner)));
 			// remain with consistent corner radius across components
 			border.setCornerRadiusFactor(1.0f);
 			this.spinner.setBorder(border);
@@ -257,16 +249,12 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 					if (spinner == null)
 						return;
 					JComponent editor = spinner.getEditor();
-					if ((editor != null)
-							&& (editor instanceof JSpinner.DefaultEditor)) {
-						JTextField tf = ((JSpinner.DefaultEditor) editor)
-								.getTextField();
+					if ((editor != null) && (editor instanceof JSpinner.DefaultEditor)) {
+						JTextField tf = ((JSpinner.DefaultEditor) editor).getTextField();
 						if (tf != null) {
-							Insets ins = SubstanceSizeUtils
-									.getSpinnerTextBorderInsets(SubstanceSizeUtils
-											.getComponentFontSize(spinner));
-							tf.setBorder(new EmptyBorder(ins.top,
-									ins.left, ins.bottom, ins.right));
+							Insets ins = SubstanceSizeUtils.getSpinnerTextBorderInsets(
+									SubstanceSizeUtils.getComponentFontSize(spinner));
+							tf.setBorder(new EmptyBorder(ins.top, ins.left, ins.bottom, ins.right));
 							tf.revalidate();
 						}
 					}
@@ -283,10 +271,8 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 
 			if ("background".equals(evt.getPropertyName())) {
 				JComponent editor = spinner.getEditor();
-				if ((editor != null)
-						&& (editor instanceof JSpinner.DefaultEditor)) {
-					JTextField tf = ((JSpinner.DefaultEditor) editor)
-							.getTextField();
+				if ((editor != null) && (editor instanceof JSpinner.DefaultEditor)) {
+					JTextField tf = ((JSpinner.DefaultEditor) editor).getTextField();
 					if (tf != null) {
 						// Use SubstanceColorResource to distingish between
 						// color set by application and color set
@@ -301,8 +287,7 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 						if (spinner.getBackground() == null)
 							canReplace = false;
 						if (canReplace) {
-							tf.setBackground(new SubstanceColorResource(
-									spinner.getBackground()));
+							tf.setBackground(new SubstanceColorResource(spinner.getBackground()));
 						}
 					}
 				}
@@ -310,8 +295,7 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 				prevButton.setBackground(spinner.getBackground());
 			}
 		};
-		this.spinner
-				.addPropertyChangeListener(this.substancePropertyChangeListener);
+		this.spinner.addPropertyChangeListener(this.substancePropertyChangeListener);
 	}
 
 	/*
@@ -321,8 +305,7 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 	 */
 	@Override
 	protected void uninstallListeners() {
-		this.spinner
-				.removePropertyChangeListener(this.substancePropertyChangeListener);
+		this.spinner.removePropertyChangeListener(this.substancePropertyChangeListener);
 		this.substancePropertyChangeListener = null;
 
 		super.uninstallListeners();
@@ -342,10 +325,10 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 		int width = this.spinner.getWidth();
 		int height = this.spinner.getHeight();
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(this.spinner);
-		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
-		Shape contour = SubstanceOutlineUtilities.getBaseOutline(width, height,
-				Math.max(0, SubstanceSizeUtils.getClassicButtonCornerRadius(componentFontSize)
-						- borderDelta), null, borderDelta);
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth();
+		Shape contour = SubstanceOutlineUtilities.getBaseOutline(width, height, Math.max(0,
+				SubstanceSizeUtils.getClassicButtonCornerRadius(componentFontSize) - borderDelta),
+				null, borderDelta);
 
 		graphics.setColor(SubstanceTextUtilities.getTextBackgroundFillColor(this.spinner));
 		graphics.fill(contour);
@@ -423,8 +406,7 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 			size.height += insets.top + insets.bottom;
 
 			Insets buttonInsets = SubstanceSizeUtils
-					.getSpinnerArrowButtonInsets(SubstanceSizeUtils
-							.getComponentFontSize(spinner));
+					.getSpinnerArrowButtonInsets(SubstanceSizeUtils.getComponentFontSize(spinner));
 			size.width += (buttonInsets.left + buttonInsets.right);
 
 			return size;
@@ -441,8 +423,7 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 			int editorHeight = height - (insets.top + insets.bottom);
 
 			Insets buttonInsets = SubstanceSizeUtils
-					.getSpinnerArrowButtonInsets(SubstanceSizeUtils
-							.getComponentFontSize(spinner));
+					.getSpinnerArrowButtonInsets(SubstanceSizeUtils.getComponentFontSize(spinner));
 
 			/*
 			 * Deal with the spinner's componentOrientation property.
@@ -463,11 +444,9 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 			int previousY = 0 * buttonInsets.top + nextHeight;
 			int previousHeight = height - previousY;// - buttonInsets.bottom;
 
-			spinner.getEditor().setBounds(editorX, insets.top, editorWidth,
-					editorHeight);
+			spinner.getEditor().setBounds(editorX, insets.top, editorWidth, editorHeight);
 			nextButton.setBounds(buttonsX, nextY, buttonsWidth, nextHeight);
-			prevButton.setBounds(buttonsX, previousY, buttonsWidth,
-					previousHeight);
+			prevButton.setBounds(buttonsX, previousY, buttonsWidth, previousHeight);
 			// System.out.println("next : " + nextButton.getBounds());
 			// System.out.println("prev : " + prevButton.getBounds());
 		}

@@ -35,7 +35,6 @@ import javax.swing.plaf.basic.BasicSliderUI;
 
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
-import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.QuaquaUtilities;
 import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.VisualMargin;
 import org.pushingpixels.substance.internal.ui.SubstanceSliderUI;
 import org.pushingpixels.substance.internal.utils.RolloverControlListener;
@@ -226,15 +225,6 @@ public class ColorSliderUI extends SubstanceSliderUI implements TransitionAwareU
 	@Override
 	public void paintTicks(Graphics g) {
 		Rectangle tickBounds = tickRect;
-		int i;
-		int maj, min, max;
-		int w = tickBounds.width;
-		int h = tickBounds.height;
-		int centerEffect, tickHeight;
-		/*
-		 * g.setColor(slider.getBackground()); g.fillRect(tickBounds.x,
-		 * tickBounds.y, tickBounds.width, tickBounds.height);
-		 */
 		g.setColor(foreground);
 
 		if (slider.getOrientation() == JSlider.HORIZONTAL) {
@@ -270,7 +260,7 @@ public class ColorSliderUI extends SubstanceSliderUI implements TransitionAwareU
 
 			if (slider.getMinorTickSpacing() > 0) {
 				int offset = 0;
-				if (!QuaquaUtilities.isLeftToRight(slider)) {
+				if (!slider.getComponentOrientation().isLeftToRight()) {
 					offset = tickBounds.width - tickBounds.width / 2;
 					g.translate(offset, 0);
 				}
@@ -281,14 +271,14 @@ public class ColorSliderUI extends SubstanceSliderUI implements TransitionAwareU
 					value += slider.getMinorTickSpacing();
 				}
 
-				if (!QuaquaUtilities.isLeftToRight(slider)) {
+				if (!slider.getComponentOrientation().isLeftToRight()) {
 					g.translate(-offset, 0);
 				}
 			}
 
 			if (slider.getMajorTickSpacing() > 0) {
 				value = slider.getMinimum();
-				if (!QuaquaUtilities.isLeftToRight(slider)) {
+				if (!slider.getComponentOrientation().isLeftToRight()) {
 					g.translate(2, 0);
 				}
 
@@ -298,7 +288,7 @@ public class ColorSliderUI extends SubstanceSliderUI implements TransitionAwareU
 					value += slider.getMajorTickSpacing();
 				}
 
-				if (!QuaquaUtilities.isLeftToRight(slider)) {
+				if (!slider.getComponentOrientation().isLeftToRight()) {
 					g.translate(-2, 0);
 				}
 			}
@@ -361,31 +351,13 @@ public class ColorSliderUI extends SubstanceSliderUI implements TransitionAwareU
 
 	@Override
 	protected void calculateTrackRect() {
-		int centerSpacing; // used to center sliders added using
 		// BorderLayout.CENTER (bug 4275631)
 		if (slider.getOrientation() == JSlider.HORIZONTAL) {
-			centerSpacing = thumbRect.height;
-			if (slider.getPaintTicks())
-				centerSpacing += getTickLength();
-			if (slider.getPaintLabels())
-				centerSpacing += getHeightOfTallestLabel();
 			trackRect.x = contentRect.x + trackBuffer + 1;
-			// trackRect.y = contentRect.y + (contentRect.height - centerSpacing
-			// - 1)/2;
 			trackRect.height = 13;
 			trackRect.y = contentRect.y + contentRect.height - trackRect.height;
 			trackRect.width = contentRect.width - (trackBuffer * 2) - 1;
 		} else {
-			/*
-			 * centerSpacing = thumbRect.width; if (!
-			 * QuaquaUtilities.isLeftToRight(slider)) { if (
-			 * slider.getPaintTicks() ) centerSpacing += getTickLength(); if (
-			 * slider.getPaintLabels() ) centerSpacing +=
-			 * getWidthOfWidestLabel(); } else { if ( slider.getPaintTicks() )
-			 * centerSpacing -= getTickLength(); if ( slider.getPaintLabels() )
-			 * centerSpacing -= getWidthOfWidestLabel(); } trackRect.x =
-			 * contentRect.x + (contentRect.width - centerSpacing - 1)/2 + 2;
-			 */
 			trackRect.width = 14;
 			trackRect.x = contentRect.x + contentRect.width - trackRect.width;
 			trackRect.y = contentRect.y + trackBuffer;

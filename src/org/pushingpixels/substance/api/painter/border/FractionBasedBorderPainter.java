@@ -43,6 +43,7 @@ import java.awt.Shape;
 import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.painter.FractionBasedPainter;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceInternalArrowButton;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
@@ -53,8 +54,8 @@ import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
  * 
  * @author Kirill Grouchnikov
  */
-public class FractionBasedBorderPainter extends FractionBasedPainter implements
-		SubstanceBorderPainter {
+public class FractionBasedBorderPainter extends FractionBasedPainter
+		implements SubstanceBorderPainter {
 	/**
 	 * Creates a new fraction-based border painter.
 	 * 
@@ -74,8 +75,8 @@ public class FractionBasedBorderPainter extends FractionBasedPainter implements
 	}
 
 	@Override
-	public void paintBorder(Graphics g, Component c, float width, float height,
-			Shape contour, Shape innerContour, SubstanceColorScheme borderScheme) {
+	public void paintBorder(Graphics g, Component c, float width, float height, Shape contour,
+			Shape innerContour, SubstanceColorScheme borderScheme) {
 		if (contour == null)
 			return;
 
@@ -95,21 +96,18 @@ public class FractionBasedBorderPainter extends FractionBasedPainter implements
 		// + " -> [" + cyclePos + "] "
 		// + interpolationScheme2.getDisplayName());
 
-		float strokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(c));
+		float strokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 		// issue 433 - the "c" can be null when painting
 		// the border of a tree icon used outside the
 		// JTree context.
-		boolean isSpecialButton = c.getClass().isAnnotationPresent(SubstanceInternalArrowButton.class);
-		int joinKind = isSpecialButton ? BasicStroke.JOIN_MITER
-				: BasicStroke.JOIN_ROUND;
-		int capKind = isSpecialButton ? BasicStroke.CAP_SQUARE
-				: BasicStroke.CAP_BUTT;
+		boolean isSpecialButton = c.getClass()
+				.isAnnotationPresent(SubstanceInternalArrowButton.class);
+		int joinKind = isSpecialButton ? BasicStroke.JOIN_MITER : BasicStroke.JOIN_ROUND;
+		int capKind = isSpecialButton ? BasicStroke.CAP_SQUARE : BasicStroke.CAP_BUTT;
 		graphics.setStroke(new BasicStroke(strokeWidth, capKind, joinKind));
 
-		MultipleGradientPaint gradient = new LinearGradientPaint(0, 0, 0,
-				height, this.fractions, drawColors, CycleMethod.REPEAT);
+		MultipleGradientPaint gradient = new LinearGradientPaint(0, 0, 0, height, this.fractions,
+				drawColors, CycleMethod.REPEAT);
 		graphics.setPaint(gradient);
 		graphics.draw(contour);
 		graphics.dispose();
@@ -118,5 +116,29 @@ public class FractionBasedBorderPainter extends FractionBasedPainter implements
 	@Override
 	public boolean isPaintingInnerContour() {
 		return false;
+	}
+
+	@Override
+	public Color getRepresentativeColor(SubstanceColorScheme borderScheme) {
+		for (int i = 0; i < this.fractions.length - 1; i++) {
+			float fractionLow = this.fractions[i];
+			float fractionHigh = this.fractions[i + 1];
+			if (fractionLow == 0.5f) {
+				return this.colorQueries[i].query(borderScheme);
+			}
+			if (fractionHigh == 0.5f) {
+				return this.colorQueries[i + 1].query(borderScheme);
+			}
+			if ((fractionLow < 0.5f) || (fractionHigh > 0.5f)) {
+				continue;
+			}
+			// current range contains 0.5f
+			Color colorLow = this.colorQueries[i].query(borderScheme);
+			Color colorHigh = this.colorQueries[i + 1].query(borderScheme);
+			float colorLowLikeness = (0.5f - fractionLow) / (fractionHigh - fractionLow);
+			return SubstanceColorUtilities.getInterpolatedColor(colorLow, colorHigh,
+					colorLowLikeness);
+		}
+		throw new IllegalStateException("Could not find representative color");
 	}
 }

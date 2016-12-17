@@ -29,9 +29,13 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import java.awt.Color;
-
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.colorscheme.LightGrayColorScheme;
 import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.FractionBasedDecorationPainter;
@@ -270,13 +274,8 @@ public class OfficeBlack2007Skin extends SubstanceSkin {
 		setTabFadeEnd(0.9);
 
 		this.addOverlayPainter(new BottomLineOverlayPainter(
-				new ColorSchemeSingleColorQuery() {
-					@Override
-					public Color query(SubstanceColorScheme scheme) {
-						Color fg = scheme.getUltraDarkColor();
-						return SubstanceColorUtilities.getAlphaColor(fg, 192);
-					}
-				}), DecorationAreaType.PRIMARY_TITLE_PANE);
+				(SubstanceColorScheme scheme) -> SubstanceColorUtilities.getAlphaColor(
+						scheme.getUltraDarkColor(), 192)), DecorationAreaType.PRIMARY_TITLE_PANE);
 
 		this.buttonShaper = new ClassicButtonShaper();
 		this.watermark = null;

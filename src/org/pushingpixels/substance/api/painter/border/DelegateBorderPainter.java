@@ -133,8 +133,8 @@ public class DelegateBorderPainter extends StandardBorderPainter {
 	/**
 	 * Map of transformed color schemes (to speed up the subsequent lookups).
 	 */
-	protected final static LazyResettableHashMap<SubstanceColorScheme> transformMap = new LazyResettableHashMap<SubstanceColorScheme>(
-			"DelegateBorderPainter");
+	protected final static LazyResettableHashMap<SubstanceColorScheme> transformMap =
+			new LazyResettableHashMap<SubstanceColorScheme>("DelegateBorderPainter");
 
 	@Override
 	public Color getTopBorderColor(SubstanceColorScheme borderScheme) {
@@ -185,4 +185,8 @@ public class DelegateBorderPainter extends StandardBorderPainter {
 		return result;
 	}
 
+	@Override
+	public Color getRepresentativeColor(SubstanceColorScheme borderScheme) {
+		return super.getRepresentativeColor(getShiftScheme(borderScheme));
+	}
 }

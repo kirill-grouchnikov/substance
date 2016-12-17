@@ -31,7 +31,9 @@ package test.samples.substance.clientprop;
 
 import java.awt.FlowLayout;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.shaper.StandardButtonShaper;

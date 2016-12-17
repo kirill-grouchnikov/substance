@@ -29,8 +29,6 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import java.awt.Color;
-
 import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -40,6 +38,7 @@ import org.pushingpixels.substance.api.painter.fill.GlassFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.GlassHighlightPainter;
 import org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter;
 import org.pushingpixels.substance.api.painter.overlay.TopLineOverlayPainter;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
 /**
  * <code>Graphite Glass</code> skin. This class is part of officially supported
@@ -69,14 +68,11 @@ public class GraphiteGlassSkin extends GraphiteBaseSkin {
 
 		// add two overlay painters to create a bezel line between
 		// menu bar and toolbars
-		BottomLineOverlayPainter menuOverlayPainter = new BottomLineOverlayPainter(ColorSchemeSingleColorQuery.MID);
-		TopLineOverlayPainter toolbarOverlayPainter = new TopLineOverlayPainter(new ColorSchemeSingleColorQuery() {
-			@Override
-			public Color query(SubstanceColorScheme scheme) {
-				Color origFg = scheme.getForegroundColor();
-				return new Color(origFg.getRed(), origFg.getGreen(), origFg.getBlue(), 32);
-			}
-		});
+		BottomLineOverlayPainter menuOverlayPainter = new BottomLineOverlayPainter(
+				ColorSchemeSingleColorQuery.MID);
+		TopLineOverlayPainter toolbarOverlayPainter = new TopLineOverlayPainter(
+				(SubstanceColorScheme scheme) -> SubstanceColorUtilities.getAlphaColor(
+						scheme.getForegroundColor(), 32));
 		this.addOverlayPainter(menuOverlayPainter, DecorationAreaType.HEADER);
 		this.addOverlayPainter(toolbarOverlayPainter, DecorationAreaType.TOOLBAR);
 

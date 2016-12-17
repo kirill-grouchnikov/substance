@@ -57,7 +57,6 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JPasswordField;
 import javax.swing.JRootPane;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingConstants;

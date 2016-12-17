@@ -30,7 +30,6 @@
 package org.pushingpixels.substance.internal.utils;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -547,7 +546,7 @@ public class SubstanceTextUtilities {
 		Graphics2D g2d = (Graphics2D) g.create();
 
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(comp);
-		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth();
 		Border compBorder = comp.getBorder();
 
 		if (compBorder instanceof BorderWrapper) {

@@ -40,6 +40,7 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 
+import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -151,10 +152,13 @@ public class SeparatorPainterUtils {
 			int orientation, boolean hasShadow, int maxGradLengthStart, int maxGradLengthEnd,
 			boolean toEnforceAlphaColors) {
 		SubstanceColorScheme compScheme = null;
-		if (c.getParent() instanceof JPopupMenu) {
-			// For separators in popup menus, first see if we have a color
-			// scheme
-			// explicitly registered for the SEPARATOR association kind.
+		Component parent = c.getParent();
+		boolean isParentAPopup = (parent instanceof JPopupMenu) ||
+				((parent instanceof JComponent) && ((JComponent) parent).getClientProperty(
+						DecorationPainterUtils.POPUP_INVOKER_LINK) != null);
+		if (isParentAPopup) {
+			// For separators in popups, first see if we have a color
+			// scheme explicitly registered for the SEPARATOR association kind.
 			compScheme = SubstanceColorSchemeUtilities.getDirectColorScheme(c,
 					ColorSchemeAssociationKind.SEPARATOR, ComponentState.ENABLED);
 			if (compScheme == null) {
@@ -167,10 +171,8 @@ public class SeparatorPainterUtils {
 		}
 		if (compScheme == null) {
 			// And finally, get the separator's color scheme via the regular
-			// route that
-			// includes fall back in case there is no explicitly registered
-			// color scheme
-			// for the SEPARATOR association kind.
+			// route that includes fall back in case there is no explicitly registered
+			// color scheme for the SEPARATOR association kind.
 			compScheme = SubstanceColorSchemeUtilities.getColorScheme(c,
 					ColorSchemeAssociationKind.SEPARATOR, ComponentState.ENABLED);
 		}
@@ -227,7 +229,7 @@ public class SeparatorPainterUtils {
 
 		Color backgrFill = SubstanceColorUtilities.getBackgroundFillColor(c);
 		int fontSize = SubstanceSizeUtils.getComponentFontSize(c);
-		float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth(fontSize);
+		float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 		if ((orientation == JSeparator.HORIZONTAL) && (height == 0)) {
 			height = (int) Math.ceil(2.0 * borderStrokeWidth);
 		}
@@ -364,7 +366,7 @@ public class SeparatorPainterUtils {
 				scheme.getDisplayName(), 0, height, SwingConstants.VERTICAL, true, 0.0,
 				fadeStartFraction, backgrFill.getRGB());
 
-		float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
+		float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 		BufferedImage singleLine = cached.get(key);
 		if (singleLine == null) {
 			singleLine = SubstanceCoreUtilities
@@ -443,7 +445,7 @@ public class SeparatorPainterUtils {
 				scheme.getDisplayName(), width, 0, SwingConstants.VERTICAL, true, 0.0,
 				fadeStartFraction, isLtr, backgrFill.getRGB());
 
-		float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
+		float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 		BufferedImage singleLine = cached.get(key);
 		if (singleLine == null) {
 			singleLine = SubstanceCoreUtilities.getBlankImage(width,

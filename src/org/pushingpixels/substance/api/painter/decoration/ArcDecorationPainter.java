@@ -60,16 +60,14 @@ public class ArcDecorationPainter implements SubstanceDecorationPainter {
 
 	@Override
 	public void paintDecorationArea(Graphics2D graphics, Component comp,
-			DecorationAreaType decorationAreaType, int width, int height,
-			SubstanceSkin skin) {
+			DecorationAreaType decorationAreaType, int width, int height, SubstanceSkin skin) {
 		if ((decorationAreaType == DecorationAreaType.PRIMARY_TITLE_PANE)
 				|| (decorationAreaType == DecorationAreaType.SECONDARY_TITLE_PANE)) {
-			this.paintTitleBackground(graphics, comp, width, height, skin
-					.getBackgroundColorScheme(decorationAreaType));
+			this.paintTitleBackground(graphics, comp, width, height,
+					skin.getBackgroundColorScheme(decorationAreaType));
 		} else {
-			this.paintExtraBackground(graphics, SubstanceCoreUtilities
-					.getHeaderParent(comp), comp, width, height, skin
-					.getBackgroundColorScheme(decorationAreaType));
+			this.paintExtraBackground(graphics, SubstanceCoreUtilities.getHeaderParent(comp), comp,
+					width, height, skin.getBackgroundColorScheme(decorationAreaType));
 		}
 	}
 
@@ -87,13 +85,12 @@ public class ArcDecorationPainter implements SubstanceDecorationPainter {
 	 * @param scheme
 	 *            Color scheme for painting the title background.
 	 */
-	private void paintTitleBackground(Graphics2D graphics, Component comp,
-			int width, int height, SubstanceColorScheme scheme) {
+	private void paintTitleBackground(Graphics2D graphics, Component comp, int width, int height,
+			SubstanceColorScheme scheme) {
 		// System.out.println(scheme.getDisplayName());
 		// create rectangular background and later draw it on
 		// result image with contour clip.
-		BufferedImage rectangular = SubstanceCoreUtilities.getBlankImage(width,
-				height);
+		BufferedImage rectangular = SubstanceCoreUtilities.getBlankImage(width, height);
 		Graphics2D rgraphics = (Graphics2D) rectangular.getGraphics();
 
 		// Fill background
@@ -105,10 +102,10 @@ public class ArcDecorationPainter implements SubstanceDecorationPainter {
 		clipTop.lineTo(0, 0);
 
 		rgraphics.setClip(clipTop);
-		LinearGradientPaint gradientTop = new LinearGradientPaint(0, 0, width,
-				0, new float[] { 0.0f, 0.5f, 1.0f }, new Color[] {
-						scheme.getLightColor(), scheme.getUltraLightColor(),
-						scheme.getLightColor() }, CycleMethod.REPEAT);
+		LinearGradientPaint gradientTop = new LinearGradientPaint(0, 0, width, 0,
+				new float[] { 0.0f, 0.5f, 1.0f }, new Color[] { scheme.getLightColor(),
+						scheme.getUltraLightColor(), scheme.getLightColor() },
+				CycleMethod.REPEAT);
 		rgraphics.setPaint(gradientTop);
 		rgraphics.fillRect(0, 0, width, height);
 
@@ -120,10 +117,10 @@ public class ArcDecorationPainter implements SubstanceDecorationPainter {
 		clipBottom.lineTo(0, height);
 
 		rgraphics.setClip(clipBottom);
-		LinearGradientPaint gradientBottom = new LinearGradientPaint(0, 0,
-				width, 0, new float[] { 0.0f, 0.5f, 1.0f }, new Color[] {
-						scheme.getMidColor(), scheme.getLightColor(),
-						scheme.getMidColor() }, CycleMethod.REPEAT);
+		LinearGradientPaint gradientBottom = new LinearGradientPaint(0, 0, width, 0,
+				new float[] { 0.0f, 0.5f, 1.0f },
+				new Color[] { scheme.getMidColor(), scheme.getLightColor(), scheme.getMidColor() },
+				CycleMethod.REPEAT);
 		rgraphics.setPaint(gradientBottom);
 		rgraphics.fillRect(0, 0, width, height);
 
@@ -160,8 +157,8 @@ public class ArcDecorationPainter implements SubstanceDecorationPainter {
 	 * @param scheme
 	 *            Color scheme for painting the title background.
 	 */
-	private void paintExtraBackground(Graphics2D graphics, Container parent,
-			Component comp, int width, int height, SubstanceColorScheme scheme) {
+	private void paintExtraBackground(Graphics2D graphics, Container parent, Component comp,
+			int width, int height, SubstanceColorScheme scheme) {
 		Point offset = SubstancePainterUtils.getOffsetInRootPaneCoords(comp);
 		JRootPane rootPane = SwingUtilities.getRootPane(parent);
 		// fix for bug 234 - Window doesn't have a root pane.
@@ -170,14 +167,14 @@ public class ArcDecorationPainter implements SubstanceDecorationPainter {
 			titlePane = SubstanceCoreUtilities.getTitlePane(rootPane);
 		}
 
-		int pWidth = (titlePane == null) ? parent.getWidth() : titlePane
-				.getWidth();
+		int pWidth = (titlePane == null) ? parent.getWidth() : titlePane.getWidth();
 
 		if (pWidth != 0) {
-			LinearGradientPaint gradientBottom = new LinearGradientPaint(
-					-offset.x, 0, -offset.x + pWidth, 0, new float[] { 0.0f,
-							0.5f, 1.0f }, new Color[] { scheme.getMidColor(),
-							scheme.getLightColor(), scheme.getMidColor() },
+			LinearGradientPaint gradientBottom = new LinearGradientPaint(-offset.x, 0,
+					-offset.x + pWidth, 0, 
+					new float[] { 0.0f, 0.5f, 1.0f }, 
+					new Color[] { scheme.getMidColor(), scheme.getLightColor(), 
+							scheme.getMidColor() },
 					CycleMethod.REPEAT);
 			Graphics2D g2d = (Graphics2D) graphics.create();
 			g2d.setPaint(gradientBottom);

@@ -29,37 +29,94 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Window;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
+import javax.swing.DefaultCellEditor;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JViewport;
+import javax.swing.ListSelectionModel;
+import javax.swing.RowSorter;
 import javax.swing.RowSorter.SortKey;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
-import javax.swing.event.*;
-import javax.swing.plaf.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.TableHeaderUI;
+import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicTableUI;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.ComponentStateFacet;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceConstants;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableCellRenderer;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
-import org.pushingpixels.substance.internal.animation.StateTransitionTracker.RepaintCallback;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.HighlightPainterUtils;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.SubstanceColorResource;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.utils.SubstanceStripingUtils;
+import org.pushingpixels.substance.internal.utils.UpdateOptimizationAware;
+import org.pushingpixels.substance.internal.utils.UpdateOptimizationInfo;
 import org.pushingpixels.trident.Timeline.TimelineState;
-import org.pushingpixels.trident.callback.TimelineCallback;
 import org.pushingpixels.trident.callback.UIThreadTimelineCallbackAdapter;
 
 /**
@@ -769,9 +826,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 		Rectangle maxCell = this.table.getCellRect(rMax, cMax, true);
 		Rectangle damagedArea = minCell.union(maxCell);
 
-		float strokeWidth = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(this.table));
+		float strokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
 		g2d.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND,
 				BasicStroke.JOIN_BEVEL));
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -1119,10 +1174,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 					.getComponentOrientation());
 
 			if (hasHighlights) {
-				float extra = SubstanceSizeUtils
-						.getBorderStrokeWidth(SubstanceSizeUtils
-								.getComponentFontSize(this.table
-										.getTableHeader()));
+				float extra = SubstanceSizeUtils.getBorderStrokeWidth();
 				float extraWidth = highlightOpenSides
 						.contains(SubstanceConstants.Side.LEFT) ? 0.0f : extra;
 				float extraHeight = highlightOpenSides
@@ -1212,10 +1264,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 							.getColorScheme(table,
 									ColorSchemeAssociationKind.BORDER,
 									currState);
-					float extra = SubstanceSizeUtils
-							.getBorderStrokeWidth(SubstanceSizeUtils
-									.getComponentFontSize(this.table
-											.getTableHeader()));
+					float extra = SubstanceSizeUtils.getBorderStrokeWidth();
 					HighlightPainterUtils.paintHighlight(g2d,
 							this.rendererPane, rendererComponent,
 							new Rectangle(highlightCellRect.x - (int) extra,
@@ -1224,10 +1273,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 									highlightCellRect.height + (int) extra),
 							0.8f, null, scheme, borderScheme);
 				} else {
-					float extra = SubstanceSizeUtils
-							.getBorderStrokeWidth(SubstanceSizeUtils
-									.getComponentFontSize(this.table
-											.getTableHeader()));
+					float extra = SubstanceSizeUtils.getBorderStrokeWidth();
 					float extraWidth = highlightOpenSides
 							.contains(SubstanceConstants.Side.LEFT) ? 0.0f
 							: extra;
@@ -1597,10 +1643,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 						}
 						if (!table.getShowHorizontalLines()
 								&& !table.getShowVerticalLines()) {
-							float extra = SubstanceSizeUtils
-									.getBorderStrokeWidth(SubstanceSizeUtils
-											.getComponentFontSize(table
-													.getTableHeader()));
+							float extra = SubstanceSizeUtils.getBorderStrokeWidth();
 							rect.y -= (int) extra;
 							rect.height += 2 * (int) extra;
 						}
@@ -1687,10 +1730,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 						}
 						if (!table.getShowHorizontalLines()
 								&& !table.getShowVerticalLines()) {
-							float extra = SubstanceSizeUtils
-									.getBorderStrokeWidth(SubstanceSizeUtils
-											.getComponentFontSize(table
-													.getTableHeader()));
+							float extra = SubstanceSizeUtils.getBorderStrokeWidth();
 							rect.x -= (int) extra;
 							rect.width += 2 * (int) extra;
 						}
@@ -1819,7 +1859,6 @@ public class SubstanceTableUI extends BasicTableUI implements
 		 * javax.swing.event.ListSelectionListener#valueChanged(javax.swing.
 		 * event.ListSelectionEvent)
 		 */
-		@SuppressWarnings("unchecked")
 		public void valueChanged(final ListSelectionEvent e) {
 			// fix for issue 478 - no animations when sorter has changed
 			List<? extends SortKey> sortKeys = (table.getRowSorter() == null) ? null
@@ -2545,9 +2584,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 		Rectangle rect = this.table.getCellRect(row, column, true);
 
 		if (!table.getShowHorizontalLines() && !table.getShowVerticalLines()) {
-			float extra = SubstanceSizeUtils
-					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(table.getTableHeader()));
+			float extra = SubstanceSizeUtils.getBorderStrokeWidth();
 			rect.x -= (int) extra;
 			rect.width += 2 * (int) extra;
 			rect.y -= (int) extra;

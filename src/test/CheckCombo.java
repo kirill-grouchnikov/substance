@@ -2,7 +2,6 @@ package test;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;

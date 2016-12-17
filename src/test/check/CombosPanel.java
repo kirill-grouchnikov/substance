@@ -41,7 +41,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -67,14 +66,14 @@ import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.combo.ComboPopupPrototypeCallback;
 import org.pushingpixels.substance.api.combo.WidestComboPopupPrototype;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
+
 import test.Check;
 import test.check.command.ConfigurationCommand;
 import test.check.command.DisableCommand;
 import test.check.command.EnableCommand;
 import test.check.svg.flags.il;
-
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
 
 /**
  * Test application panel for testing {@link JComboBox} component.

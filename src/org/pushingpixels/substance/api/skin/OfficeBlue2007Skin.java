@@ -29,11 +29,8 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import java.awt.Color;
-
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
-import org.pushingpixels.substance.api.ColorSchemeTransform;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -48,6 +45,7 @@ import org.pushingpixels.substance.api.painter.fill.FractionBasedFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
 import org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
 /**
  * <code>Office Blue 2007</code> skin. This class is part of officially
@@ -211,14 +209,9 @@ public class OfficeBlue2007Skin extends SubstanceSkin {
 		setTabFadeEnd(0.9);
 
 		this.addOverlayPainter(new BottomLineOverlayPainter(
-				new ColorSchemeSingleColorQuery() {
-					@Override
-					public Color query(SubstanceColorScheme scheme) {
-						Color fg = scheme.getForegroundColor();
-						return new Color(fg.getRed(), fg.getGreen(), fg
-								.getBlue(), 72);
-					}
-				}), DecorationAreaType.PRIMARY_TITLE_PANE,
+				(SubstanceColorScheme scheme) -> SubstanceColorUtilities.getAlphaColor(
+						scheme.getForegroundColor(), 72)),
+				DecorationAreaType.PRIMARY_TITLE_PANE,
 				DecorationAreaType.SECONDARY_TITLE_PANE);
 
 		this.buttonShaper = new ClassicButtonShaper();
@@ -239,15 +232,9 @@ public class OfficeBlue2007Skin extends SubstanceSkin {
 						ColorSchemeSingleColorQuery.DARK,
 						ColorSchemeSingleColorQuery.MID });
 		SubstanceBorderPainter innerBorderPainter = new DelegateFractionBasedBorderPainter(
-				"Office Blue 2007 Inner", outerBorderPainter, new int[] {
-						0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF },
-				new ColorSchemeTransform() {
-					@Override
-					public SubstanceColorScheme transform(
-							SubstanceColorScheme scheme) {
-						return scheme.tint(0.8f);
-					}
-				});
+				"Office Blue 2007 Inner", outerBorderPainter, 
+				new int[] { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF },
+				(SubstanceColorScheme scheme) -> scheme.tint(0.8f));
 		this.borderPainter = new CompositeBorderPainter("Office Blue 2007",
 				outerBorderPainter, innerBorderPainter);
 

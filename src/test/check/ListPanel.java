@@ -38,8 +38,25 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.AbstractListModel;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DropMode;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSlider;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.combo.WidestComboPopupPrototype;
@@ -130,17 +147,6 @@ public class ListPanel extends ControllablePanel {
 		public void delete(int index) {
 			model.remove(index);
 			fireIntervalRemoved(this, index, index);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.pushingpixels.lafwidget.list.MutableListModel#move(int, int)
-		 */
-		public void move(int fromIndex, int toIndex) {
-			String from = model.remove(fromIndex);
-			model.add(toIndex, from);
-			fireContentsChanged(this, fromIndex, toIndex);
 		}
 	}
 

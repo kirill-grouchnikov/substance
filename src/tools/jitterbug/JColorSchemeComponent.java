@@ -29,21 +29,27 @@
  */
 package tools.jitterbug;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.event.ChangeListener;
 
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 
-import tools.jitterbug.StateChangeEvent.StateChangeType;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
+
+import tools.jitterbug.StateChangeEvent.StateChangeType;
 
 public class JColorSchemeComponent extends JPanel {
 	private JCheckBox isLight;

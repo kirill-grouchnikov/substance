@@ -30,7 +30,6 @@
 package org.pushingpixels.substance.internal.utils.icon;
 
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -169,8 +168,8 @@ public class SubstanceIconFactory {
 		/**
 		 * Icon hash.
 		 */
-		private static LazyResettableHashMap<HiDpiAwareIcon> icons =
-				new LazyResettableHashMap<HiDpiAwareIcon>("SubstanceIconFactory.SliderHorizontalIcon");
+		private static LazyResettableHashMap<HiDpiAwareIcon> icons = new LazyResettableHashMap<HiDpiAwareIcon>(
+				"SubstanceIconFactory.SliderHorizontalIcon");
 
 		/**
 		 * The size of <code>this</code> icon.
@@ -201,40 +200,36 @@ public class SubstanceIconFactory {
 					.getModelStateInfo();
 			Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
 					.getStateContributionMap();
-			ComponentState currState = stateTransitionTracker
-					.getModelStateInfo().getCurrModelState();
+			ComponentState currState = stateTransitionTracker.getModelStateInfo()
+					.getCurrModelState();
 
 			float activeStrength = stateTransitionTracker.getActiveStrength();
 			float width = this.size * (2.0f + activeStrength) / 3.0f;
 
-			SubstanceFillPainter fillPainter = SubstanceCoreUtilities
-					.getFillPainter(slider);
-			SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
-					.getBorderPainter(slider);
+			SubstanceFillPainter fillPainter = SubstanceCoreUtilities.getFillPainter(slider);
+			SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(slider);
 
 			SubstanceColorScheme baseFillScheme = SubstanceColorSchemeUtilities
 					.getColorScheme(slider, currState);
 			SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(slider, ColorSchemeAssociationKind.BORDER,
-							currState);
+					.getColorScheme(slider, ColorSchemeAssociationKind.BORDER, currState);
 
-			HashMapKey baseKey = SubstanceCoreUtilities.getHashKey(this.size,
-					width, baseFillScheme.getDisplayName(), baseBorderScheme
-							.getDisplayName(), fillPainter.getDisplayName(),
-					borderPainter.getDisplayName(), this.isMirrorred);
+			HashMapKey baseKey = SubstanceCoreUtilities.getHashKey(this.size, width,
+					baseFillScheme.getDisplayName(), baseBorderScheme.getDisplayName(),
+					fillPainter.getDisplayName(), borderPainter.getDisplayName(), this.isMirrorred);
 
 			HiDpiAwareIcon baseLayer = SliderHorizontalIcon.icons.get(baseKey);
 			if (baseLayer == null) {
-				baseLayer = getSingleLayer(slider, width, fillPainter,
-						borderPainter, baseFillScheme, baseBorderScheme);
+				baseLayer = getSingleLayer(slider, width, fillPainter, borderPainter,
+						baseFillScheme, baseBorderScheme);
 				SliderHorizontalIcon.icons.put(baseKey, baseLayer);
 			}
 
 			if (currState.isDisabled() || (activeStates.size() == 1))
 				return baseLayer;
 
-			BufferedImage result = SubstanceCoreUtilities.getBlankImage(
-					baseLayer.getIconWidth(), baseLayer.getIconHeight());
+			BufferedImage result = SubstanceCoreUtilities.getBlankImage(baseLayer.getIconWidth(),
+					baseLayer.getIconHeight());
 			Graphics2D g2d = result.createGraphics();
 			baseLayer.paintIcon(slider, g2d, 0, 0);
 			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
@@ -250,19 +245,17 @@ public class SubstanceIconFactory {
 				SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
 						.getColorScheme(slider, activeState);
 				SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-						.getColorScheme(slider,
-								ColorSchemeAssociationKind.BORDER, activeState);
+						.getColorScheme(slider, ColorSchemeAssociationKind.BORDER, activeState);
 
-				HashMapKey key = SubstanceCoreUtilities.getHashKey(this.size,
-						width, fillScheme.getDisplayName(), borderScheme
-								.getDisplayName(),
-						fillPainter.getDisplayName(), borderPainter
-								.getDisplayName(), this.isMirrorred);
+				HashMapKey key = SubstanceCoreUtilities.getHashKey(this.size, width,
+						fillScheme.getDisplayName(), borderScheme.getDisplayName(),
+						fillPainter.getDisplayName(), borderPainter.getDisplayName(),
+						this.isMirrorred);
 
 				HiDpiAwareIcon layer = SliderHorizontalIcon.icons.get(key);
 				if (layer == null) {
-					layer = getSingleLayer(slider, width, fillPainter,
-							borderPainter, fillScheme, borderScheme);
+					layer = getSingleLayer(slider, width, fillPainter, borderPainter, fillScheme,
+							borderScheme);
 					SliderHorizontalIcon.icons.put(key, layer);
 				}
 
@@ -275,33 +268,25 @@ public class SubstanceIconFactory {
 		}
 
 		private HiDpiAwareIcon getSingleLayer(JSlider slider, float width,
-				SubstanceFillPainter fillPainter,
-				SubstanceBorderPainter borderPainter,
-				SubstanceColorScheme fillScheme,
-				SubstanceColorScheme borderScheme) {
-			float borderDelta = SubstanceSizeUtils
-					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(slider)) / 2.0f;
-			Shape contour = SubstanceOutlineUtilities.getTriangleButtonOutline(
-					width, this.size - 1, 2, borderDelta);
+				SubstanceFillPainter fillPainter, SubstanceBorderPainter borderPainter,
+				SubstanceColorScheme fillScheme, SubstanceColorScheme borderScheme) {
+			float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
+			Shape contour = SubstanceOutlineUtilities.getTriangleButtonOutline(width, this.size - 1,
+					2, borderDelta);
 
-			BufferedImage stateImage = SubstanceCoreUtilities.getBlankImage(
-					this.size, this.size);
+			BufferedImage stateImage = SubstanceCoreUtilities.getBlankImage(this.size, this.size);
 			Graphics2D g2d = stateImage.createGraphics();
 			g2d.translate((this.size - width) / 2.0f, 0);
 
-			fillPainter.paintContourBackground(g2d, slider, width,
-					this.size, contour, false, fillScheme, true);
+			fillPainter.paintContourBackground(g2d, slider, width, this.size, contour, false,
+					fillScheme, true);
 
-			float borderThickness = SubstanceSizeUtils
-					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(slider));
-			GeneralPath contourInner = SubstanceOutlineUtilities
-					.getTriangleButtonOutline(width, this.size - 1, 2,
-							borderThickness + borderDelta);
+			float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
+			GeneralPath contourInner = SubstanceOutlineUtilities.getTriangleButtonOutline(width,
+					this.size - 1, 2, borderThickness + borderDelta);
 
-			borderPainter.paintBorder(g2d, slider, width, this.size,
-					contour, contourInner, borderScheme);
+			borderPainter.paintBorder(g2d, slider, width, this.size, contour, contourInner,
+					borderScheme);
 			g2d.dispose();
 
 			if (this.isMirrorred)
@@ -323,7 +308,8 @@ public class SubstanceIconFactory {
 
 			JSlider slider = (JSlider) c;
 			TransitionAwareUI transitionAwareUI = (TransitionAwareUI) slider.getUI();
-			StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
+			StateTransitionTracker stateTransitionTracker = transitionAwareUI
+					.getTransitionTracker();
 			Icon iconToDraw = getIcon(slider, stateTransitionTracker);
 			Graphics2D g2d = (Graphics2D) g.create();
 			g2d.translate(x, y);
@@ -359,8 +345,8 @@ public class SubstanceIconFactory {
 		/**
 		 * Icon hash.
 		 */
-		private static LazyResettableHashMap<HiDpiAwareIcon> icons =
-				new LazyResettableHashMap<HiDpiAwareIcon>("SubstanceIconFactory.SliderRoundIcon");
+		private static LazyResettableHashMap<HiDpiAwareIcon> icons = new LazyResettableHashMap<HiDpiAwareIcon>(
+				"SubstanceIconFactory.SliderRoundIcon");
 
 		/**
 		 * The size of <code>this</code> icon.
@@ -396,40 +382,36 @@ public class SubstanceIconFactory {
 					.getModelStateInfo();
 			Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
 					.getStateContributionMap();
-			ComponentState currState = stateTransitionTracker
-					.getModelStateInfo().getCurrModelState();
+			ComponentState currState = stateTransitionTracker.getModelStateInfo()
+					.getCurrModelState();
 
 			float activeStrength = stateTransitionTracker.getActiveStrength();
 			float width = this.size * (2.0f + activeStrength) / 3.0f;
 
-			SubstanceFillPainter fillPainter = SubstanceCoreUtilities
-					.getFillPainter(slider);
-			SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
-					.getBorderPainter(slider);
+			SubstanceFillPainter fillPainter = SubstanceCoreUtilities.getFillPainter(slider);
+			SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(slider);
 
 			SubstanceColorScheme baseFillScheme = SubstanceColorSchemeUtilities
 					.getColorScheme(slider, currState);
 			SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(slider, ColorSchemeAssociationKind.BORDER,
-							currState);
+					.getColorScheme(slider, ColorSchemeAssociationKind.BORDER, currState);
 
-			HashMapKey baseKey = SubstanceCoreUtilities.getHashKey(this.size,
-					width, baseFillScheme.getDisplayName(), baseBorderScheme
-							.getDisplayName(), fillPainter.getDisplayName(),
-					borderPainter.getDisplayName());
+			HashMapKey baseKey = SubstanceCoreUtilities.getHashKey(this.size, width,
+					baseFillScheme.getDisplayName(), baseBorderScheme.getDisplayName(),
+					fillPainter.getDisplayName(), borderPainter.getDisplayName());
 
 			HiDpiAwareIcon baseLayer = SliderRoundIcon.icons.get(baseKey);
 			if (baseLayer == null) {
-				baseLayer = getSingleLayer(slider, width, fillPainter,
-						borderPainter, baseFillScheme, baseBorderScheme);
+				baseLayer = getSingleLayer(slider, width, fillPainter, borderPainter,
+						baseFillScheme, baseBorderScheme);
 				SliderRoundIcon.icons.put(baseKey, baseLayer);
 			}
 
 			if (currState.isDisabled() || (activeStates.size() == 1))
 				return baseLayer;
 
-			BufferedImage result = SubstanceCoreUtilities.getBlankImage(
-					baseLayer.getIconWidth(), baseLayer.getIconHeight());
+			BufferedImage result = SubstanceCoreUtilities.getBlankImage(baseLayer.getIconWidth(),
+					baseLayer.getIconHeight());
 			Graphics2D g2d = result.createGraphics();
 			baseLayer.paintIcon(slider, g2d, 0, 0);
 
@@ -446,19 +428,16 @@ public class SubstanceIconFactory {
 				SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
 						.getColorScheme(slider, activeState);
 				SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-						.getColorScheme(slider,
-								ColorSchemeAssociationKind.BORDER, activeState);
+						.getColorScheme(slider, ColorSchemeAssociationKind.BORDER, activeState);
 
-				HashMapKey key = SubstanceCoreUtilities.getHashKey(this.size,
-						width, fillScheme.getDisplayName(), borderScheme
-								.getDisplayName(),
-						fillPainter.getDisplayName(), borderPainter
-								.getDisplayName());
+				HashMapKey key = SubstanceCoreUtilities.getHashKey(this.size, width,
+						fillScheme.getDisplayName(), borderScheme.getDisplayName(),
+						fillPainter.getDisplayName(), borderPainter.getDisplayName());
 
 				HiDpiAwareIcon layer = SliderRoundIcon.icons.get(key);
 				if (layer == null) {
-					layer = getSingleLayer(slider, width, fillPainter,
-							borderPainter, fillScheme, borderScheme);
+					layer = getSingleLayer(slider, width, fillPainter, borderPainter, fillScheme,
+							borderScheme);
 					SliderRoundIcon.icons.put(key, layer);
 				}
 
@@ -471,36 +450,29 @@ public class SubstanceIconFactory {
 		}
 
 		private HiDpiAwareIcon getSingleLayer(JSlider slider, float width,
-				SubstanceFillPainter fillPainter,
-				SubstanceBorderPainter borderPainter,
-				SubstanceColorScheme fillScheme,
-				SubstanceColorScheme borderScheme) {
-			float borderDelta = SubstanceSizeUtils
-					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(slider)) / 2.0f;
-			Shape contour = new Ellipse2D.Float(borderDelta, borderDelta, width
-					- 2 * borderDelta - 1, width - 2 * borderDelta - 1);
+				SubstanceFillPainter fillPainter, SubstanceBorderPainter borderPainter,
+				SubstanceColorScheme fillScheme, SubstanceColorScheme borderScheme) {
+			float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
+			Shape contour = new Ellipse2D.Float(borderDelta, borderDelta,
+					width - 2 * borderDelta - 1, width - 2 * borderDelta - 1);
 
 			BufferedImage stateImage = SubstanceCoreUtilities.getBlankImage(this.size, this.size);
 			Graphics2D g2d = stateImage.createGraphics();
-			
+
 			float delta = (this.size - width) / 2.0f;
 			g2d.translate(delta, delta);
 
-			fillPainter.paintContourBackground(g2d, slider, width,
-					this.size, contour, false, fillScheme, true);
+			fillPainter.paintContourBackground(g2d, slider, width, this.size, contour, false,
+					fillScheme, true);
 
-			float borderThickness = SubstanceSizeUtils
-					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(slider));
-			Shape contourInner = new Ellipse2D.Float(
-					borderDelta + borderThickness, 
-					borderDelta + borderThickness, 
-					width - 2 * borderDelta - 2 * borderThickness - 1, 
+			float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
+			Shape contourInner = new Ellipse2D.Float(borderDelta + borderThickness,
+					borderDelta + borderThickness,
+					width - 2 * borderDelta - 2 * borderThickness - 1,
 					width - 2 * borderDelta - 2 * borderThickness - 1);
 
-			borderPainter.paintBorder(g2d, slider, width, this.size,
-					contour, contourInner, borderScheme);
+			borderPainter.paintBorder(g2d, slider, width, this.size, contour, contourInner,
+					borderScheme);
 
 			return new HiDpiAwareIcon(stateImage);
 		}
@@ -518,7 +490,8 @@ public class SubstanceIconFactory {
 
 			JSlider slider = (JSlider) c;
 			TransitionAwareUI transitionAwareUI = (TransitionAwareUI) slider.getUI();
-			StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
+			StateTransitionTracker stateTransitionTracker = transitionAwareUI
+					.getTransitionTracker();
 			Icon iconToDraw = getIcon(slider, stateTransitionTracker);
 			Graphics2D g2d = (Graphics2D) g.create();
 			g2d.translate(x, y);
@@ -554,8 +527,8 @@ public class SubstanceIconFactory {
 		/**
 		 * Icon hash.
 		 */
-		private static LazyResettableHashMap<HiDpiAwareIcon> icons = 
-				new LazyResettableHashMap<HiDpiAwareIcon>("SubstanceIconFactory.SliderVerticalIcon");
+		private static LazyResettableHashMap<HiDpiAwareIcon> icons = new LazyResettableHashMap<HiDpiAwareIcon>(
+				"SubstanceIconFactory.SliderVerticalIcon");
 
 		/**
 		 * The size of <code>this</code> icon.
@@ -599,43 +572,39 @@ public class SubstanceIconFactory {
 					.getModelStateInfo();
 			Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
 					.getStateContributionMap();
-			ComponentState currState = stateTransitionTracker
-					.getModelStateInfo().getCurrModelState();
+			ComponentState currState = stateTransitionTracker.getModelStateInfo()
+					.getCurrModelState();
 
 			float activeStrength = stateTransitionTracker.getActiveStrength();
 			int height = (int) (this.size * (2.0 + activeStrength) / 3.0);
 			height = Math.min(height, this.size - 2);
 			int delta = (this.size - height) / 2 - 1;
 
-			SubstanceFillPainter fillPainter = SubstanceCoreUtilities
-					.getFillPainter(slider);
-			SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
-					.getBorderPainter(slider);
+			SubstanceFillPainter fillPainter = SubstanceCoreUtilities.getFillPainter(slider);
+			SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(slider);
 
 			SubstanceColorScheme baseFillScheme = SubstanceColorSchemeUtilities
 					.getColorScheme(slider, currState);
 			SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(slider, ColorSchemeAssociationKind.BORDER,
-							currState);
+					.getColorScheme(slider, ColorSchemeAssociationKind.BORDER, currState);
 
-			HashMapKey baseKey = SubstanceCoreUtilities.getHashKey(this.size,
-					height, slider.getComponentOrientation(), baseFillScheme
-							.getDisplayName(), baseBorderScheme
-							.getDisplayName(), fillPainter.getDisplayName(),
+			HashMapKey baseKey = SubstanceCoreUtilities.getHashKey(this.size, height,
+					slider.getComponentOrientation(), baseFillScheme.getDisplayName(),
+					baseBorderScheme.getDisplayName(), fillPainter.getDisplayName(),
 					borderPainter.getDisplayName(), this.isMirrorred);
 
 			HiDpiAwareIcon baseLayer = SliderVerticalIcon.icons.get(baseKey);
 			if (baseLayer == null) {
-				baseLayer = getSingleLayer(slider, height, delta, fillPainter,
-						borderPainter, baseFillScheme, baseBorderScheme);
+				baseLayer = getSingleLayer(slider, height, delta, fillPainter, borderPainter,
+						baseFillScheme, baseBorderScheme);
 				SliderVerticalIcon.icons.put(baseKey, baseLayer);
 			}
 
 			if (currState.isDisabled() || (activeStates.size() == 1))
 				return baseLayer;
 
-			BufferedImage result = SubstanceCoreUtilities.getBlankImage(
-					baseLayer.getIconWidth(), baseLayer.getIconHeight());
+			BufferedImage result = SubstanceCoreUtilities.getBlankImage(baseLayer.getIconWidth(),
+					baseLayer.getIconHeight());
 			Graphics2D g2d = result.createGraphics();
 			baseLayer.paintIcon(slider, g2d, 0, 0);
 
@@ -652,20 +621,17 @@ public class SubstanceIconFactory {
 				SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
 						.getColorScheme(slider, activeState);
 				SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-						.getColorScheme(slider,
-								ColorSchemeAssociationKind.BORDER, activeState);
+						.getColorScheme(slider, ColorSchemeAssociationKind.BORDER, activeState);
 
-				HashMapKey key = SubstanceCoreUtilities.getHashKey(this.size,
-						height, slider.getComponentOrientation(), fillScheme
-								.getDisplayName(), borderScheme
-								.getDisplayName(),
-						fillPainter.getDisplayName(), borderPainter
-								.getDisplayName(), this.isMirrorred);
+				HashMapKey key = SubstanceCoreUtilities.getHashKey(this.size, height,
+						slider.getComponentOrientation(), fillScheme.getDisplayName(),
+						borderScheme.getDisplayName(), fillPainter.getDisplayName(),
+						borderPainter.getDisplayName(), this.isMirrorred);
 
 				HiDpiAwareIcon layer = SliderVerticalIcon.icons.get(key);
 				if (layer == null) {
-					layer = getSingleLayer(slider, height, delta, fillPainter,
-							borderPainter, fillScheme, borderScheme);
+					layer = getSingleLayer(slider, height, delta, fillPainter, borderPainter,
+							fillScheme, borderScheme);
 					SliderVerticalIcon.icons.put(key, layer);
 				}
 
@@ -678,33 +644,26 @@ public class SubstanceIconFactory {
 		}
 
 		private HiDpiAwareIcon getSingleLayer(JSlider slider, int height, int delta,
-				SubstanceFillPainter fillPainter,
-				SubstanceBorderPainter borderPainter,
-				SubstanceColorScheme fillScheme,
-				SubstanceColorScheme borderScheme) {
-			float borderDelta = SubstanceSizeUtils
-					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(slider)) / 2.0f;
-			Shape contour = SubstanceOutlineUtilities.getTriangleButtonOutline(
-					height, this.size - 1, 2, borderDelta);
+				SubstanceFillPainter fillPainter, SubstanceBorderPainter borderPainter,
+				SubstanceColorScheme fillScheme, SubstanceColorScheme borderScheme) {
+			float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
+			Shape contour = SubstanceOutlineUtilities.getTriangleButtonOutline(height,
+					this.size - 1, 2, borderDelta);
 
-			BufferedImage stateImage = SubstanceCoreUtilities.getBlankImage(
-					this.size - 1, this.size - 1);
+			BufferedImage stateImage = SubstanceCoreUtilities.getBlankImage(this.size - 1,
+					this.size - 1);
 			Graphics2D g2d = stateImage.createGraphics();
 			g2d.translate(delta, 0);
 
-			fillPainter.paintContourBackground(g2d, slider, height, this.size,
-					contour, false, fillScheme, true);
+			fillPainter.paintContourBackground(g2d, slider, height, this.size, contour, false,
+					fillScheme, true);
 
-			float borderThickness = SubstanceSizeUtils
-					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(slider));
-			GeneralPath contourInner = SubstanceOutlineUtilities
-					.getTriangleButtonOutline(height, this.size - 1, 2,
-							borderThickness + borderDelta);
+			float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
+			GeneralPath contourInner = SubstanceOutlineUtilities.getTriangleButtonOutline(height,
+					this.size - 1, 2, borderThickness + borderDelta);
 
-			borderPainter.paintBorder(g2d, slider, height, this.size - 1,
-					contour, contourInner, borderScheme);
+			borderPainter.paintBorder(g2d, slider, height, this.size - 1, contour, contourInner,
+					borderScheme);
 
 			if (this.isMirrorred)
 				stateImage = SubstanceImageCreator.getRotated(stateImage, 1, false);
@@ -731,7 +690,8 @@ public class SubstanceIconFactory {
 
 			JSlider slider = (JSlider) c;
 			TransitionAwareUI transitionAwareUI = (TransitionAwareUI) slider.getUI();
-			StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
+			StateTransitionTracker stateTransitionTracker = transitionAwareUI
+					.getTransitionTracker();
 			Icon iconToDraw = getIcon(slider, stateTransitionTracker);
 			Graphics2D g2d = (Graphics2D) g.create();
 			g2d.translate(x, y);
@@ -787,7 +747,7 @@ public class SubstanceIconFactory {
 			this.isCollapsed = isCollapsed;
 			this.size = size;
 		}
-		
+
 		@Override
 		public boolean isHiDpiAware() {
 			return true;
@@ -809,24 +769,22 @@ public class SubstanceIconFactory {
 		private static HiDpiAwareIcon getIcon(JTree tree, boolean isCollapsed) {
 			ComponentState state = ((tree == null) || tree.isEnabled()) ? ComponentState.ENABLED
 					: ComponentState.DISABLED_UNSELECTED;
-			SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(tree, state);
-			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(tree, ColorSchemeAssociationKind.BORDER,
-							state);
+			SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities.getColorScheme(tree,
+					state);
+			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities.getColorScheme(tree,
+					ColorSchemeAssociationKind.BORDER, state);
 
 			int fontSize = SubstanceSizeUtils.getComponentFontSize(tree);
 
 			HashMapKey key = SubstanceCoreUtilities.getHashKey(fontSize,
-					fillScheme.getDisplayName(), borderScheme.getDisplayName(),
-					isCollapsed);
+					fillScheme.getDisplayName(), borderScheme.getDisplayName(), isCollapsed);
 
 			HiDpiAwareIcon result = TreeIcon.icons.get(key);
 			if (result != null)
 				return result;
 
-			result = new HiDpiAwareIcon(SubstanceImageCreator.getTreeIcon(tree,
-					fillScheme, borderScheme, isCollapsed));
+			result = new HiDpiAwareIcon(
+					SubstanceImageCreator.getTreeIcon(tree, fillScheme, borderScheme, isCollapsed));
 			TreeIcon.icons.put(key, result);
 
 			return result;
@@ -904,8 +862,8 @@ public class SubstanceIconFactory {
 	/**
 	 * Cache of title pane icons.
 	 */
-	private static final Map<IconKind, LazyResettableHashMap<HiDpiAwareIcon>> titlePaneIcons =
-			SubstanceIconFactory.createTitlePaneIcons();
+	private static final Map<IconKind, LazyResettableHashMap<HiDpiAwareIcon>> titlePaneIcons = SubstanceIconFactory
+			.createTitlePaneIcons();
 
 	/**
 	 * Creates an empty map of title pane icons.
@@ -915,14 +873,14 @@ public class SubstanceIconFactory {
 	private static Map<IconKind, LazyResettableHashMap<HiDpiAwareIcon>> createTitlePaneIcons() {
 		Map<IconKind, LazyResettableHashMap<HiDpiAwareIcon>> result = new HashMap<IconKind, LazyResettableHashMap<HiDpiAwareIcon>>();
 
-		result.put(IconKind.CLOSE, new LazyResettableHashMap<HiDpiAwareIcon>(
-				"Close title pane icons"));
-		result.put(IconKind.MINIMIZE, new LazyResettableHashMap<HiDpiAwareIcon>(
-				"Minimize title pane icons"));
-		result.put(IconKind.MAXIMIZE, new LazyResettableHashMap<HiDpiAwareIcon>(
-				"Maximize title pane icons"));
-		result.put(IconKind.RESTORE, new LazyResettableHashMap<HiDpiAwareIcon>(
-				"Restore title pane icons"));
+		result.put(IconKind.CLOSE,
+				new LazyResettableHashMap<HiDpiAwareIcon>("Close title pane icons"));
+		result.put(IconKind.MINIMIZE,
+				new LazyResettableHashMap<HiDpiAwareIcon>("Minimize title pane icons"));
+		result.put(IconKind.MAXIMIZE,
+				new LazyResettableHashMap<HiDpiAwareIcon>("Maximize title pane icons"));
+		result.put(IconKind.RESTORE,
+				new LazyResettableHashMap<HiDpiAwareIcon>("Restore title pane icons"));
 		return result;
 	}
 
@@ -935,12 +893,12 @@ public class SubstanceIconFactory {
 	 *            Color scheme.
 	 * @return Title pane icon of the specified kind.
 	 */
-	public static HiDpiAwareIcon getTitlePaneIcon(IconKind iconKind,
-			SubstanceColorScheme scheme, SubstanceColorScheme backgroundScheme) {
+	public static HiDpiAwareIcon getTitlePaneIcon(IconKind iconKind, SubstanceColorScheme scheme,
+			SubstanceColorScheme backgroundScheme) {
 
 		LazyResettableHashMap<HiDpiAwareIcon> kindMap = SubstanceIconFactory.titlePaneIcons
 				.get(iconKind);
-		HashMapKey key = SubstanceCoreUtilities.getHashKey(scheme.getDisplayName(), 
+		HashMapKey key = SubstanceCoreUtilities.getHashKey(scheme.getDisplayName(),
 				backgroundScheme.getDisplayName());
 		HiDpiAwareIcon result = kindMap.get(key);
 		if (result != null)
@@ -948,20 +906,16 @@ public class SubstanceIconFactory {
 
 		switch (iconKind) {
 		case CLOSE:
-			result = SubstanceImageCreator.getCloseIcon(scheme,
-					backgroundScheme);
+			result = SubstanceImageCreator.getCloseIcon(scheme, backgroundScheme);
 			break;
 		case MINIMIZE:
-			result = SubstanceImageCreator.getMinimizeIcon(scheme,
-					backgroundScheme);
+			result = SubstanceImageCreator.getMinimizeIcon(scheme, backgroundScheme);
 			break;
 		case MAXIMIZE:
-			result = SubstanceImageCreator.getMaximizeIcon(scheme,
-					backgroundScheme);
+			result = SubstanceImageCreator.getMaximizeIcon(scheme, backgroundScheme);
 			break;
 		case RESTORE:
-			result = SubstanceImageCreator.getRestoreIcon(scheme,
-					backgroundScheme);
+			result = SubstanceImageCreator.getRestoreIcon(scheme, backgroundScheme);
 			break;
 		}
 		kindMap.put(key, result);

@@ -29,7 +29,13 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
@@ -39,13 +45,24 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Map;
 
-import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultButtonModel;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JSlider;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicSliderUI;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
@@ -53,7 +70,13 @@ import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
+import org.pushingpixels.substance.internal.utils.RolloverControlListener;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.icon.SubstanceIconFactory;
 
 /**
@@ -61,8 +84,7 @@ import org.pushingpixels.substance.internal.utils.icon.SubstanceIconFactory;
  * 
  * @author Kirill Grouchnikov
  */
-public class SubstanceSliderUI extends BasicSliderUI implements
-		TransitionAwareUI {
+public class SubstanceSliderUI extends BasicSliderUI implements TransitionAwareUI {
 	/**
 	 * Surrogate button model for tracking the thumb transitions.
 	 */
@@ -98,8 +120,8 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	/**
 	 * Cache of track images.
 	 */
-	protected static final LazyResettableHashMap<BufferedImage> trackCache = 
-			new LazyResettableHashMap<BufferedImage>("SubstanceSliderUI.track");
+	protected static final LazyResettableHashMap<BufferedImage> trackCache = new LazyResettableHashMap<BufferedImage>(
+			"SubstanceSliderUI.track");
 
 	/*
 	 * (non-Javadoc)
@@ -126,8 +148,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 		this.thumbModel.setRollover(false);
 		this.thumbModel.setEnabled(slider.isEnabled());
 
-		this.stateTransitionTracker = new StateTransitionTracker(slider,
-				this.thumbModel);
+		this.stateTransitionTracker = new StateTransitionTracker(slider, this.thumbModel);
 	}
 
 	/*
@@ -139,11 +160,11 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	protected void calculateTrackRect() {
 		super.calculateTrackRect();
 		if (this.slider.getOrientation() == SwingConstants.HORIZONTAL) {
-//			this.trackRect.y = 3
-//					+ (int) Math.ceil(SubstanceSizeUtils
-//							.getFocusStrokeWidth(SubstanceSizeUtils
-//									.getComponentFontSize(this.slider)))
-//					+ this.insetCache.top;
+			// this.trackRect.y = 3
+			// + (int) Math.ceil(SubstanceSizeUtils
+			// .getFocusStrokeWidth(SubstanceSizeUtils
+			// .getComponentFontSize(this.slider)))
+			// + this.insetCache.top;
 		} else {
 			if (this.slider.getComponentOrientation().isLeftToRight()) {
 				this.trackRect.x += 2;
@@ -173,17 +194,16 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 						- trackWidth / 2;
 			}
 			trackBottom = trackTop + trackWidth - 1;
-			return new Rectangle(this.trackRect.x + trackLeft, trackTop,
-					trackRight - trackLeft, trackBottom - trackTop);
+			return new Rectangle(this.trackRect.x + trackLeft, trackTop, trackRight - trackLeft,
+					trackBottom - trackTop);
 		} else {
 			if (this.slider.getPaintLabels() || this.slider.getPaintTicks()) {
 				if (this.slider.getComponentOrientation().isLeftToRight()) {
-					trackLeft = trackRect.x + this.insetCache.left
-							+ this.focusInsets.left;
+					trackLeft = trackRect.x + this.insetCache.left + this.focusInsets.left;
 					trackRight = trackLeft + trackWidth - 1;
 				} else {
-					trackRight = trackRect.x + trackRect.width
-							- this.insetCache.right - this.focusInsets.right;
+					trackRight = trackRect.x + trackRect.width - this.insetCache.right
+							- this.focusInsets.right;
 					trackLeft = trackRight - trackWidth - 1;
 				}
 			} else {
@@ -195,8 +215,8 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 				trackRight = trackLeft + trackWidth - 1;
 			}
 			trackBottom = this.trackRect.height - 1;
-			return new Rectangle(trackLeft, this.trackRect.y + trackTop,
-					trackRight - trackLeft, trackBottom - trackTop);
+			return new Rectangle(trackLeft, this.trackRect.y + trackTop, trackRight - trackLeft,
+					trackBottom - trackTop);
 		}
 	}
 
@@ -235,9 +255,8 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 				.getModelStateInfo();
 
 		SubstanceColorScheme trackSchemeUnselected = SubstanceColorSchemeUtilities
-				.getColorScheme(this.slider,
-						this.slider.isEnabled() ? ComponentState.ENABLED
-								: ComponentState.DISABLED_UNSELECTED);
+				.getColorScheme(this.slider, this.slider.isEnabled() ? ComponentState.ENABLED
+						: ComponentState.DISABLED_UNSELECTED);
 		SubstanceColorScheme trackBorderSchemeUnselected = SubstanceColorSchemeUtilities
 				.getColorScheme(this.slider, ColorSchemeAssociationKind.BORDER,
 						this.slider.isEnabled() ? ComponentState.ENABLED
@@ -257,16 +276,15 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 			if (contribution == 0.0f)
 				continue;
 
-			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(
-					this.slider, contribution, g));
+			graphics.setComposite(
+					LafWidgetUtilities.getAlphaComposite(this.slider, contribution, g));
 
 			SubstanceColorScheme activeFillScheme = SubstanceColorSchemeUtilities
 					.getColorScheme(this.slider, activeState);
 			SubstanceColorScheme activeBorderScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(this.slider,
-							ColorSchemeAssociationKind.BORDER, activeState);
-			this.paintSliderTrackSelected(graphics, drawInverted, paintRect,
-					activeFillScheme, activeBorderScheme, width, height);
+					.getColorScheme(this.slider, ColorSchemeAssociationKind.BORDER, activeState);
+			this.paintSliderTrackSelected(graphics, drawInverted, paintRect, activeFillScheme,
+					activeBorderScheme, width, height);
 		}
 
 		graphics.dispose();
@@ -290,48 +308,44 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	 *            Track height.
 	 */
 	private void paintSliderTrack(Graphics2D graphics, boolean drawInverted,
-			SubstanceColorScheme fillColorScheme,
-			SubstanceColorScheme borderScheme, int width, int height) {
+			SubstanceColorScheme fillColorScheme, SubstanceColorScheme borderScheme, int width,
+			int height) {
 		Graphics2D g2d = (Graphics2D) graphics.create();
 
 		SubstanceFillPainter fillPainter = ClassicFillPainter.INSTANCE;
-		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
-				.getBorderPainter(this.slider);
+		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(this.slider);
 
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(this.slider);
-		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize) / 2.0f;
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
 		float radius = SubstanceSizeUtils.getClassicButtonCornerRadius(componentFontSize) / 2.0f;
-		float borderThickness = (int) SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
+		float borderThickness = (int) SubstanceSizeUtils.getBorderStrokeWidth();
 
-		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height,
-				radius, borderDelta, borderThickness, fillColorScheme
-						.getDisplayName(), borderScheme.getDisplayName());
+		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height, radius, borderDelta,
+				borderThickness, fillColorScheme.getDisplayName(), borderScheme.getDisplayName());
 
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 		BufferedImage trackImage = trackCache.get(key);
 		if (trackImage == null) {
-			trackImage = SubstanceCoreUtilities.getBlankImage(width + 1,
-					height + 1);
+			trackImage = SubstanceCoreUtilities.getBlankImage(width + 1, height + 1);
 			Graphics2D cacheGraphics = trackImage.createGraphics();
 
-			Shape contour = SubstanceOutlineUtilities.getBaseOutline(width + 1,
-					height + 1, radius, null, borderDelta);
+			Shape contour = SubstanceOutlineUtilities.getBaseOutline(width + 1, height + 1, radius,
+					null, borderDelta);
 
-			fillPainter.paintContourBackground(cacheGraphics, slider, width,
-					height, contour, false, fillColorScheme, false);
+			fillPainter.paintContourBackground(cacheGraphics, slider, width, height, contour, false,
+					fillColorScheme, false);
 
-			GeneralPath contourInner = SubstanceOutlineUtilities
-					.getBaseOutline(width + 1, height + 1, radius
-							- borderThickness, null, borderThickness
-							+ borderDelta);
-			borderPainter.paintBorder(cacheGraphics, slider, width + 1,
-					height + 1, contour, contourInner, borderScheme);
+			GeneralPath contourInner = SubstanceOutlineUtilities.getBaseOutline(width + 1,
+					height + 1, radius - borderThickness, null, borderThickness + borderDelta);
+			borderPainter.paintBorder(cacheGraphics, slider, width + 1, height + 1, contour,
+					contourInner, borderScheme);
 
 			trackCache.put(key, trackImage);
 			cacheGraphics.dispose();
 		}
 
-		g2d.drawImage(trackImage, 0, 0, trackImage.getWidth() / scaleFactor, trackImage.getHeight() / scaleFactor, null);
+		g2d.drawImage(trackImage, 0, 0, trackImage.getWidth() / scaleFactor,
+				trackImage.getHeight() / scaleFactor, null);
 
 		g2d.dispose();
 	}
@@ -355,9 +369,8 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	 * @param height
 	 *            Track height.
 	 */
-	private void paintSliderTrackSelected(Graphics2D graphics,
-			boolean drawInverted, Rectangle paintRect,
-			SubstanceColorScheme fillScheme, SubstanceColorScheme borderScheme,
+	private void paintSliderTrackSelected(Graphics2D graphics, boolean drawInverted,
+			Rectangle paintRect, SubstanceColorScheme fillScheme, SubstanceColorScheme borderScheme,
 			int width, int height) {
 
 		Graphics2D g2d = (Graphics2D) graphics.create();
@@ -367,22 +380,16 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 		insets.bottom /= 2;
 		insets.right /= 2;
 
-		SubstanceFillPainter fillPainter = SubstanceCoreUtilities
-				.getFillPainter(this.slider);
-		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
-				.getBorderPainter(this.slider);
-		float radius = SubstanceSizeUtils
-				.getClassicButtonCornerRadius(SubstanceSizeUtils
-						.getComponentFontSize(slider)) / 2.0f;
-		float borderDelta = SubstanceSizeUtils
-				.getBorderStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(slider)) / 2.0f;
+		SubstanceFillPainter fillPainter = SubstanceCoreUtilities.getFillPainter(this.slider);
+		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(this.slider);
+		float radius = SubstanceSizeUtils.getClassicButtonCornerRadius(
+				SubstanceSizeUtils.getComponentFontSize(slider)) / 2.0f;
+		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
 
 		// fill selected portion
 		if (this.slider.isEnabled()) {
 			if (this.slider.getOrientation() == SwingConstants.HORIZONTAL) {
-				int middleOfThumb = this.thumbRect.x
-						+ (this.thumbRect.width / 2) - paintRect.x;
+				int middleOfThumb = this.thumbRect.x + (this.thumbRect.width / 2) - paintRect.x;
 				int fillMinX;
 				int fillMaxX;
 
@@ -397,18 +404,16 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 				int fillWidth = fillMaxX - fillMinX;
 				int fillHeight = height + 1;
 				if ((fillWidth > 0) && (fillHeight > 0)) {
-					Shape contour = SubstanceOutlineUtilities.getBaseOutline(
-							fillWidth, fillHeight, radius, null, borderDelta);
+					Shape contour = SubstanceOutlineUtilities.getBaseOutline(fillWidth, fillHeight,
+							radius, null, borderDelta);
 					g2d.translate(fillMinX, 0);
-					fillPainter.paintContourBackground(g2d, this.slider,
-							fillWidth, fillHeight, contour, false, fillScheme,
-							false);
-					borderPainter.paintBorder(g2d, this.slider, fillWidth,
-							fillHeight, contour, null, borderScheme);
+					fillPainter.paintContourBackground(g2d, this.slider, fillWidth, fillHeight,
+							contour, false, fillScheme, false);
+					borderPainter.paintBorder(g2d, this.slider, fillWidth, fillHeight, contour,
+							null, borderScheme);
 				}
 			} else {
-				int middleOfThumb = this.thumbRect.y
-						+ (this.thumbRect.height / 2) - paintRect.y;
+				int middleOfThumb = this.thumbRect.y + (this.thumbRect.height / 2) - paintRect.y;
 				int fillMin;
 				int fillMax;
 
@@ -425,14 +430,13 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 				int fillWidth = fillMax - fillMin;
 				int fillHeight = height + 1;
 				if ((fillWidth > 0) && (fillHeight > 0)) {
-					Shape contour = SubstanceOutlineUtilities.getBaseOutline(
-							fillWidth, fillHeight, radius, null, borderDelta);
+					Shape contour = SubstanceOutlineUtilities.getBaseOutline(fillWidth, fillHeight,
+							radius, null, borderDelta);
 
-					fillPainter.paintContourBackground(g2d, this.slider,
-							fillWidth, fillHeight, contour, false, fillScheme,
-							false);
-					borderPainter.paintBorder(g2d, this.slider, fillWidth,
-							fillHeight, contour, null, borderScheme);
+					fillPainter.paintContourBackground(g2d, this.slider, fillWidth, fillHeight,
+							contour, false, fillScheme, false);
+					borderPainter.paintBorder(g2d, this.slider, fillWidth, fillHeight, contour,
+							null, borderScheme);
 				}
 			}
 		}
@@ -514,10 +518,8 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	public void paint(Graphics g, final JComponent c) {
 		Graphics2D graphics = (Graphics2D) g.create();
 
-		ComponentState currState = ComponentState.getState(this.thumbModel,
-				this.slider);
-		float alpha = SubstanceColorSchemeUtilities.getAlpha(this.slider,
-				currState);
+		ComponentState currState = ComponentState.getState(this.thumbModel, this.slider);
+		float alpha = SubstanceColorSchemeUtilities.getAlpha(this.slider, currState);
 
 		BackgroundPaintingUtils.updateIfOpaque(graphics, c);
 
@@ -528,8 +530,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 		if (!clip.intersects(trackRect) && slider.getPaintTrack())
 			calculateGeometry();
 
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(this.slider,
-				alpha, g));
+		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(this.slider, alpha, g));
 		if (slider.getPaintTrack() && clip.intersects(trackRect)) {
 			paintTrack(graphics);
 		}
@@ -540,8 +541,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 		if (clip.intersects(thumbRect)) {
 			paintThumb(graphics);
 		}
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(this.slider,
-				1.0f, g));
+		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(this.slider, 1.0f, g));
 		if (slider.getPaintLabels() && clip.intersects(labelRect)) {
 			paintLabels(graphics);
 		}
@@ -578,22 +578,18 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 		super.installDefaults(slider);
 		Font f = slider.getFont();
 		if (f == null || f instanceof UIResource) {
-			slider.setFont(new FontUIResource(SubstanceLookAndFeel
-					.getFontPolicy().getFontSet("Substance", null)
-					.getControlFont()));
+			slider.setFont(new FontUIResource(SubstanceLookAndFeel.getFontPolicy()
+					.getFontSet("Substance", null).getControlFont()));
 		}
-		int size = SubstanceSizeUtils.getSliderIconSize(SubstanceSizeUtils
-				.getComponentFontSize(slider));
+		int size = SubstanceSizeUtils
+				.getSliderIconSize(SubstanceSizeUtils.getComponentFontSize(slider));
 		// System.out.println("Slider size : " + size);
-		this.horizontalIcon = SubstanceIconFactory.getSliderHorizontalIcon(
-				size, false);
+		this.horizontalIcon = SubstanceIconFactory.getSliderHorizontalIcon(size, false);
 		this.roundIcon = SubstanceIconFactory.getSliderRoundIcon(size);
-		this.verticalIcon = SubstanceIconFactory.getSliderVerticalIcon(size,
-				false);
+		this.verticalIcon = SubstanceIconFactory.getSliderVerticalIcon(size, false);
 
 		int focusIns = (int) Math.ceil(2.0 * SubstanceSizeUtils
-				.getFocusStrokeWidth(SubstanceSizeUtils
-						.getComponentFontSize(slider)));
+				.getFocusStrokeWidth(SubstanceSizeUtils.getComponentFontSize(slider)));
 		this.focusInsets = new Insets(focusIns, focusIns, focusIns, focusIns);
 	}
 
@@ -609,8 +605,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 		super.installListeners(slider);
 
 		// fix for defect 109 - memory leak on changing skin
-		this.substanceRolloverListener = new RolloverControlListener(this,
-				this.thumbModel);
+		this.substanceRolloverListener = new RolloverControlListener(this, this.thumbModel);
 		slider.addMouseListener(this.substanceRolloverListener);
 		slider.addMouseMotionListener(this.substanceRolloverListener);
 
@@ -631,9 +626,8 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicSliderUI#uninstallListeners(javax.swing.JSlider
-	 * )
+	 * @see javax.swing.plaf.basic.BasicSliderUI#uninstallListeners(javax.swing.
+	 * JSlider )
 	 */
 	@Override
 	protected void uninstallListeners(JSlider slider) {
@@ -644,8 +638,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 		slider.removeMouseMotionListener(this.substanceRolloverListener);
 		this.substanceRolloverListener = null;
 
-		slider
-				.removePropertyChangeListener(this.substancePropertyChangeListener);
+		slider.removePropertyChangeListener(this.substancePropertyChangeListener);
 		this.substancePropertyChangeListener = null;
 
 		this.stateTransitionTracker.unregisterModelListeners();
@@ -659,9 +652,9 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	 */
 	@Override
 	public void paintFocus(Graphics g) {
-		SubstanceCoreUtilities.paintFocus(g, this.slider, this.slider, this,
-				null, null, 1.0f, SubstanceSizeUtils.getFocusStrokeWidth(
-						SubstanceSizeUtils.getComponentFontSize(this.slider)));
+		SubstanceCoreUtilities.paintFocus(g, this.slider, this.slider, this, null, null, 1.0f,
+				SubstanceSizeUtils
+						.getFocusStrokeWidth(SubstanceSizeUtils.getComponentFontSize(this.slider)));
 	}
 
 	/**
@@ -670,8 +663,8 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	 * @return Shorter dimension of the track.
 	 */
 	protected int getTrackWidth() {
-		return SubstanceSizeUtils.getSliderTrackSize(SubstanceSizeUtils
-				.getComponentFontSize(this.slider));
+		return SubstanceSizeUtils
+				.getSliderTrackSize(SubstanceSizeUtils.getComponentFontSize(this.slider));
 	}
 
 	/*
@@ -681,8 +674,8 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	 */
 	@Override
 	protected int getTickLength() {
-		return SubstanceSizeUtils.getSliderTickSize(SubstanceSizeUtils
-				.getComponentFontSize(this.slider));
+		return SubstanceSizeUtils
+				.getSliderTickSize(SubstanceSizeUtils.getComponentFontSize(this.slider));
 	}
 
 	/*
@@ -693,14 +686,12 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	@Override
 	public void paintTicks(Graphics g) {
 		Rectangle tickBounds = this.tickRect;
-		SubstanceColorScheme tickScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this.slider,
-						ColorSchemeAssociationKind.SEPARATOR, this.slider
-								.isEnabled() ? ComponentState.ENABLED
-								: ComponentState.DISABLED_UNSELECTED);
+		SubstanceColorScheme tickScheme = SubstanceColorSchemeUtilities.getColorScheme(this.slider,
+				ColorSchemeAssociationKind.SEPARATOR,
+				this.slider.isEnabled() ? ComponentState.ENABLED
+						: ComponentState.DISABLED_UNSELECTED);
 		if (this.slider.getOrientation() == JSlider.HORIZONTAL) {
-			int value = this.slider.getMinimum()
-					+ this.slider.getMinorTickSpacing();
+			int value = this.slider.getMinimum() + this.slider.getMinorTickSpacing();
 			int xPos = 0;
 
 			if ((this.slider.getMinorTickSpacing() > 0)
@@ -716,31 +707,27 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 					value += this.slider.getMinorTickSpacing();
 				}
 				// and paint them in one call
-				SeparatorPainterUtils.paintVerticalLines(g, this.slider,
-						tickScheme, tickBounds.y, minorXs,
-						tickBounds.height / 2, 0.75f);
+				SeparatorPainterUtils.paintVerticalLines(g, this.slider, tickScheme, tickBounds.y,
+						minorXs, tickBounds.height / 2, 0.75f);
 			}
 
 			if (this.slider.getMajorTickSpacing() > 0) {
 				// collect x's of the major ticks
 				java.util.List<Integer> majorXs = new ArrayList<Integer>();
-				value = this.slider.getMinimum()
-						+ this.slider.getMajorTickSpacing();
+				value = this.slider.getMinimum() + this.slider.getMajorTickSpacing();
 				while (value < this.slider.getMaximum()) {
 					xPos = this.xPositionForValue(value);
 					majorXs.add(xPos - 1);
 					value += this.slider.getMajorTickSpacing();
 				}
 				// and paint them in one call
-				SeparatorPainterUtils.paintVerticalLines(g, this.slider,
-						tickScheme, tickBounds.y, majorXs, tickBounds.height,
-						0.75f);
+				SeparatorPainterUtils.paintVerticalLines(g, this.slider, tickScheme, tickBounds.y,
+						majorXs, tickBounds.height, 0.75f);
 			}
 		} else {
 			g.translate(tickBounds.x, 0);
 
-			int value = this.slider.getMinimum()
-					+ this.slider.getMinorTickSpacing();
+			int value = this.slider.getMinimum() + this.slider.getMinorTickSpacing();
 			int yPos = 0;
 
 			boolean ltr = this.slider.getComponentOrientation().isLeftToRight();
@@ -759,16 +746,14 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 				}
 
 				// and paint them in one call
-				SeparatorPainterUtils.paintHorizontalLines(g, this.slider,
-						tickScheme, offset, minorYs, tickBounds.width / 2,
-						ltr ? 0.75f : 0.25f, ltr);
+				SeparatorPainterUtils.paintHorizontalLines(g, this.slider, tickScheme, offset,
+						minorYs, tickBounds.width / 2, ltr ? 0.75f : 0.25f, ltr);
 			}
 
 			if (this.slider.getMajorTickSpacing() > 0) {
 				// collect y's of the major ticks
 				java.util.List<Integer> majorYs = new ArrayList<Integer>();
-				value = this.slider.getMinimum()
-						+ this.slider.getMajorTickSpacing();
+				value = this.slider.getMinimum() + this.slider.getMajorTickSpacing();
 
 				while (value < this.slider.getMaximum()) {
 					yPos = this.yPositionForValue(value);
@@ -777,9 +762,8 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 				}
 
 				// and paint them in one call
-				SeparatorPainterUtils.paintHorizontalLines(g, this.slider,
-						tickScheme, 0, majorYs, tickBounds.width, ltr ? 0.75f
-								: 0.25f, ltr);
+				SeparatorPainterUtils.paintHorizontalLines(g, this.slider, tickScheme, 0, majorYs,
+						tickBounds.width, ltr ? 0.75f : 0.25f, ltr);
 			}
 			g.translate(-tickBounds.x, 0);
 		}
@@ -796,11 +780,9 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 			this.tickRect.x = this.trackRect.x;
 			this.tickRect.y = this.trackRect.y + this.trackRect.height;
 			this.tickRect.width = this.trackRect.width;
-			this.tickRect.height = (this.slider.getPaintTicks()) ? this
-					.getTickLength() : 0;
+			this.tickRect.height = (this.slider.getPaintTicks()) ? this.getTickLength() : 0;
 		} else {
-			this.tickRect.width = (this.slider.getPaintTicks()) ? this
-					.getTickLength() : 0;
+			this.tickRect.width = (this.slider.getPaintTicks()) ? this.getTickLength() : 0;
 			if (this.slider.getComponentOrientation().isLeftToRight()) {
 				this.tickRect.x = this.trackRect.x + this.trackRect.width;
 			} else {
@@ -831,8 +813,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	@Override
 	protected void calculateLabelRect() {
 		super.calculateLabelRect();
-		if ((this.slider.getOrientation() == JSlider.VERTICAL)
-				&& !this.slider.getPaintTicks()
+		if ((this.slider.getOrientation() == JSlider.VERTICAL) && !this.slider.getPaintTicks()
 				&& this.slider.getComponentOrientation().isLeftToRight()) {
 			this.labelRect.x += 3;
 		}
@@ -870,9 +851,8 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicSliderUI#getPreferredSize(javax.swing.JComponent
-	 * )
+	 * @see javax.swing.plaf.basic.BasicSliderUI#getPreferredSize(javax.swing.
+	 * JComponent )
 	 */
 	@Override
 	public Dimension getPreferredSize(JComponent c) {
@@ -921,9 +901,10 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	 */
 	@Override
 	public Dimension getPreferredHorizontalSize() {
-		return new Dimension(SubstanceSizeUtils.getAdjustedSize(
-				SubstanceSizeUtils.getComponentFontSize(this.slider), 200, 1,
-				20, false), 21);
+		return new Dimension(
+				SubstanceSizeUtils.getAdjustedSize(
+						SubstanceSizeUtils.getComponentFontSize(this.slider), 200, 1, 20, false),
+				21);
 	}
 
 	/*
@@ -934,7 +915,6 @@ public class SubstanceSliderUI extends BasicSliderUI implements
 	@Override
 	public Dimension getPreferredVerticalSize() {
 		return new Dimension(21, SubstanceSizeUtils.getAdjustedSize(
-				SubstanceSizeUtils.getComponentFontSize(this.slider), 200, 1,
-				20, false));
+				SubstanceSizeUtils.getComponentFontSize(this.slider), 200, 1, 20, false));
 	}
 }

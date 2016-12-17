@@ -29,10 +29,7 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import java.awt.Color;
-
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
-import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
 import org.pushingpixels.substance.api.DecorationAreaType;
@@ -47,6 +44,7 @@ import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter
 import org.pushingpixels.substance.api.painter.overlay.BottomLineOverlayPainter;
 import org.pushingpixels.substance.api.painter.overlay.TopShadowOverlayPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
 /**
  * <code>Nebula</code> skin. This class is part of officially supported API.
@@ -157,14 +155,8 @@ public class NebulaSkin extends SubstanceSkin {
 		// add an overlay painter to paint separator lines along the bottom
 		// edges of title panes and menu bars
 		this.bottomLineOverlayPainter = new BottomLineOverlayPainter(
-				new ColorSchemeSingleColorQuery() {
-					@Override
-					public Color query(SubstanceColorScheme scheme) {
-						Color dark = scheme.getDarkColor();
-						return new Color(dark.getRed(), dark.getGreen(), dark
-								.getBlue(), 160);
-					}
-				});
+				(SubstanceColorScheme scheme) -> SubstanceColorUtilities.getAlphaColor(
+						scheme.getDarkColor(), 160));
 		this.addOverlayPainter(this.bottomLineOverlayPainter,
 				DecorationAreaType.PRIMARY_TITLE_PANE,
 				DecorationAreaType.SECONDARY_TITLE_PANE,

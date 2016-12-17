@@ -30,12 +30,10 @@
 package org.pushingpixels.substance.internal.utils;
 
 import java.awt.Component;
-import java.awt.Insets;
 import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
 import java.util.Set;
 
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 
 /**

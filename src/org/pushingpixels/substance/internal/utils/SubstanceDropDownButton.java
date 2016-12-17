@@ -63,11 +63,9 @@ import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 public final class SubstanceDropDownButton extends JButton {
 	static {
 		AnimationConfigurationManager.getInstance().disallowAnimations(
-				AnimationFacet.GHOSTING_BUTTON_PRESS,
-				SubstanceDropDownButton.class);
+				AnimationFacet.GHOSTING_BUTTON_PRESS, SubstanceDropDownButton.class);
 		AnimationConfigurationManager.getInstance().disallowAnimations(
-				AnimationFacet.GHOSTING_ICON_ROLLOVER,
-				SubstanceDropDownButton.class);
+				AnimationFacet.GHOSTING_ICON_ROLLOVER, SubstanceDropDownButton.class);
 	}
 
 	/**
@@ -94,7 +92,7 @@ public final class SubstanceDropDownButton extends JButton {
 
 		this.setBorderPainted(false);
 		this.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
-		this.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
+		this.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
 				parent.getComponentOrientation().isLeftToRight() ? Side.LEFT : Side.RIGHT);
 		this.setOpaque(false);
 	}
@@ -110,8 +108,7 @@ public final class SubstanceDropDownButton extends JButton {
 		}
 
 		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) this.getUI();
-		StateTransitionTracker stateTransitionTracker = transitionAwareUI
-				.getTransitionTracker();
+		StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
 		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
 				.getModelStateInfo();
 		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
@@ -127,11 +124,9 @@ public final class SubstanceDropDownButton extends JButton {
 			return;
 
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(this);
-		float borderDelta = 1.5f * SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize);
-		float radius = Math.max(0, SubstanceSizeUtils
-						.getClassicButtonCornerRadius(componentFontSize)
-				- borderDelta);
+		float borderDelta = 1.5f * SubstanceSizeUtils.getBorderStrokeWidth();
+		float radius = Math.max(0,
+				SubstanceSizeUtils.getClassicButtonCornerRadius(componentFontSize) - borderDelta);
 		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
 
 		int width = getWidth();
@@ -140,20 +135,17 @@ public final class SubstanceDropDownButton extends JButton {
 		int offsetX = this.getX();
 		int offsetY = this.getY();
 		JComponent parent = (JComponent) this.getParent();
-		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this, ColorSchemeAssociationKind.BORDER,
-						currState);
+		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities.getColorScheme(this,
+				ColorSchemeAssociationKind.BORDER, currState);
 
-		BufferedImage offscreen = SubstanceCoreUtilities.getBlankImage(width,
-				height);
+		BufferedImage offscreen = SubstanceCoreUtilities.getBlankImage(width, height);
 		Graphics2D g2offscreen = offscreen.createGraphics();
 
-		SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen, 0, 0,
-				width, height, radius, baseBorderScheme);
+		SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen, 0, 0, width, height,
+				radius, baseBorderScheme);
 		g2offscreen.translate(-offsetX, -offsetY);
-		SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen, 0,
-				0, parent.getWidth(), parent.getHeight(), radius,
-				baseBorderScheme);
+		SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen, 0, 0, parent.getWidth(),
+				parent.getHeight(), radius, baseBorderScheme);
 		g2offscreen.translate(offsetX, offsetY);
 
 		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
@@ -166,25 +158,21 @@ public final class SubstanceDropDownButton extends JButton {
 			if (contribution == 0.0f)
 				continue;
 
-			g2offscreen.setComposite(AlphaComposite.SrcOver
-					.derive(contribution));
-			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(this, ColorSchemeAssociationKind.BORDER,
-							activeState);
+			g2offscreen.setComposite(AlphaComposite.SrcOver.derive(contribution));
+			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities.getColorScheme(this,
+					ColorSchemeAssociationKind.BORDER, activeState);
 
-			SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen,
-					0, 0, width, height, radius, borderScheme);
+			SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen, 0, 0, width, height,
+					radius, borderScheme);
 			g2offscreen.translate(-offsetX, -offsetY);
-			SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen,
-					0, 0, parent.getWidth(), parent.getHeight(), radius,
-					borderScheme);
+			SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen, 0, 0,
+					parent.getWidth(), parent.getHeight(), radius, borderScheme);
 			g2offscreen.translate(offsetX, offsetY);
 		}
 		g2offscreen.dispose();
 
 		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this, extraAlpha,
-				g));
+		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this, extraAlpha, g));
 
 		g2d.drawImage(offscreen, 0, 0, offscreen.getWidth() / scaleFactor,
 				offscreen.getHeight() / scaleFactor, null);
@@ -195,11 +183,9 @@ public final class SubstanceDropDownButton extends JButton {
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g.create();
 
-		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(this);
 		int width = getWidth();
 		int height = getHeight();
-		int clipDelta = (int) SubstanceSizeUtils
-				.getBorderStrokeWidth(componentFontSize);
+		int clipDelta = (int) SubstanceSizeUtils.getBorderStrokeWidth();
 
 		if (this.getComponentOrientation().isLeftToRight()) {
 			g2d.clipRect(clipDelta, 0, width - clipDelta, height);

@@ -37,7 +37,6 @@ import java.awt.image.BufferedImage;
 import java.util.Map;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 import javax.swing.plaf.UIResource;

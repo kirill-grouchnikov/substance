@@ -224,7 +224,7 @@ public class SubstanceSizeUtils {
 	 *            Font size.
 	 * @return Stroke width of borders under the specified font size.
 	 */
-	public static float getBorderStrokeWidth(int fontSize) {
+	public static float getBorderStrokeWidth() {
 		return UIUtil.isRetina() ? 0.5f : 1.0f;
 	}
 
@@ -242,7 +242,7 @@ public class SubstanceSizeUtils {
 		// text component border appearance has a lighter "halo"
 		// around the darker inner border.
 		Insets textInsets = getTextBorderInsets(fontSize);
-		int borderStroke = (int) getBorderStrokeWidth(fontSize);
+		int borderStroke = (int) getBorderStrokeWidth();
 		int topDelta = textInsets.top - borderStroke;
 		int bottomDelta = textInsets.bottom - borderStroke;
 
@@ -484,7 +484,7 @@ public class SubstanceSizeUtils {
 		// around the darker inner border.
 		Insets textInsets = getTextBorderInsets(fontSize);
 		Insets comboInsets = getComboBorderInsets(fontSize);
-		int borderStroke = (int) getBorderStrokeWidth(fontSize);
+		int borderStroke = (int) getBorderStrokeWidth();
 		int topDelta = textInsets.top - comboInsets.top - borderStroke;
 		int bottomDelta = textInsets.bottom - comboInsets.bottom - borderStroke;
 
@@ -722,8 +722,7 @@ public class SubstanceSizeUtils {
 	 * @return Spinner arrow button insets under the specified font size.
 	 */
 	public static Insets getSpinnerArrowButtonInsets(int fontSize) {
-		int borderStrokeWidth = (int) Math
-				.floor(getBorderStrokeWidth(fontSize));
+		int borderStrokeWidth = (int) Math.floor(getBorderStrokeWidth());
 		return new Insets(borderStrokeWidth, borderStrokeWidth,
 				borderStrokeWidth, borderStrokeWidth);
 	}
@@ -806,8 +805,8 @@ public class SubstanceSizeUtils {
 	 *            Font size.
 	 * @return Tabbed pane content insets under the specified size.
 	 */
-	public static Insets getTabbedPaneContentInsets(int fontSize) {
-		float borderStrokeWidth = getBorderStrokeWidth(fontSize);
+	public static Insets getTabbedPaneContentInsets() {
+		float borderStrokeWidth = getBorderStrokeWidth();
 		int inset = (int) Math.ceil(borderStrokeWidth + 0.5f);
 		return new Insets(inset, inset, inset, inset);
 	}
@@ -819,8 +818,8 @@ public class SubstanceSizeUtils {
 	 *            Font size.
 	 * @return Stroke width of tab close buttons under the specified size.
 	 */
-	public static float getTabCloseButtonStrokeWidth(int fontSize) {
-		return getBorderStrokeWidth(fontSize);
+	public static float getTabCloseButtonStrokeWidth() {
+		return getBorderStrokeWidth();
 	}
 
 	/**

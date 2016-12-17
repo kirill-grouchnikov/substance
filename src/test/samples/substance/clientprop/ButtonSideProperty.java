@@ -32,7 +32,9 @@ package test.samples.substance.clientprop;
 import java.awt.FlowLayout;
 import java.util.EnumSet;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import org.pushingpixels.substance.api.SubstanceConstants;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;

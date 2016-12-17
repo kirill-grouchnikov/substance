@@ -29,8 +29,16 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import org.pushingpixels.substance.api.*;
-import org.pushingpixels.substance.api.painter.border.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
+import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
+import org.pushingpixels.substance.api.painter.border.CompositeBorderPainter;
+import org.pushingpixels.substance.api.painter.border.DelegateBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.MarbleNoiseDecorationPainter;
 import org.pushingpixels.substance.api.painter.fill.MatteFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
@@ -116,22 +124,10 @@ public class AutumnSkin extends SubstanceSkin {
 		this.borderPainter = new CompositeBorderPainter("Autumn",
 				new DelegateBorderPainter(
 						"Autumn Outer", new ClassicBorderPainter(),
-						new ColorSchemeTransform() {
-							@Override
-							public SubstanceColorScheme transform(
-									SubstanceColorScheme scheme) {
-								return scheme.shade(0.1f);
-							}
-						}), 
+						(SubstanceColorScheme scheme) -> scheme.shade(0.1f)),
 				new DelegateBorderPainter(
 						"Autumn Inner", new ClassicBorderPainter(),
-						new ColorSchemeTransform() {
-							@Override
-							public SubstanceColorScheme transform(
-									SubstanceColorScheme scheme) {
-								return scheme.tint(0.8f);
-							}
-						}));
+						(SubstanceColorScheme scheme) -> scheme.tint(0.8f)));
 
 		this.highlightPainter = new ClassicHighlightPainter();
 

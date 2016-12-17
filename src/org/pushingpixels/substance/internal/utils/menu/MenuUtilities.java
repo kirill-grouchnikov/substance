@@ -29,7 +29,6 @@
  */
 package org.pushingpixels.substance.internal.utils.menu;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -47,6 +46,7 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
@@ -337,7 +337,7 @@ public class MenuUtilities {
 				textIconGap);
 
 		/*
-		 * Initialize the acceelratorText bounds rectangle textRect. If a null
+		 * Initialize the acceleratorText bounds rectangle textRect. If a null
 		 * or and empty String was specified we substitute "" here and use
 		 * 0,0,0,0 for acceleratorTextRect.
 		 */
@@ -407,7 +407,7 @@ public class MenuUtilities {
 			}
 		}
 
-		// Align the accelertor text and the check and arrow icons vertically
+		// Align the accelerator text and the check and arrow icons vertically
 		// with the center of the label rect.
 		acceleratorRect.y = labelRect.y + (labelRect.height / 2)
 				- (acceleratorRect.height / 2);
@@ -680,20 +680,22 @@ public class MenuUtilities {
 		// paint menu background
 		paintBackground(g2d, menuItem);
 		// paint menu highlight
-		SubstanceMenuBackgroundDelegate.paintHighlights(g, menuItem, 0.5f);
+		SubstanceMenuBackgroundDelegate.paintHighlights(g2d, menuItem, 0.5f);
 
 		Graphics2D graphics = (Graphics2D) g2d.create();
+		if (menuItem.getParent() instanceof JMenuBar) {
+			graphics.translate(popupMetrics.maxIconTextGap / 2, 0);
+		}
 		if (mli.text != null) {
 			View v = (View) menuItem.getClientProperty(BasicHTML.propertyKey);
 			if (v != null) {
 				v.paint(graphics, mli.textRect);
 			} else {
 				SubstanceTextUtilities.paintText(graphics, menuItem,
-						mli.textRect, mli.text, menuItem
-								.getDisplayedMnemonicIndex());
+						mli.textRect, mli.text, menuItem.getDisplayedMnemonicIndex());
 			}
 		}
-		// Draw the Accelerator Text
+		// draw the accelerator text
 		if (acceleratorText != null && !acceleratorText.equals("")) {
 			SubstanceTextUtilities.paintText(graphics, menuItem,
 					mli.acceleratorRect, acceleratorText, -1);
@@ -704,7 +706,7 @@ public class MenuUtilities {
 
 		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(menuItem,
 				textAlpha, g2d));
-		// Paint the Check
+		// draw the check icon
 		if (checkIcon != null) {
 			if (useCheckAndArrow(menuItem)) {
 				graphics.translate(mli.checkIconRect.x, mli.checkIconRect.y);
@@ -713,7 +715,7 @@ public class MenuUtilities {
 			}
 		}
 
-		// Paint the Icon
+		// draw the icon
 		if (icon != null) {
 			if (!model.isEnabled()) {
 				icon = menuItem.getDisabledIcon();
@@ -767,7 +769,7 @@ public class MenuUtilities {
 			}
 		}
 
-		// Paint the Arrow
+		// draw the arrow
 		if ((arrowIcon != null) && useCheckAndArrow(menuItem)) {
 			graphics.translate(mli.arrowIconRect.x, mli.arrowIconRect.y);
 			arrowIcon.paintIcon(menuItem, graphics, 0, 0);
@@ -969,6 +971,11 @@ public class MenuUtilities {
 				&& (gutterFillKind != MenuGutterFillKind.NONE);
 		if (needExtraIconTextGap)
 			width += gap;
+		
+		if (menuItem.getParent() instanceof JMenuBar) {
+			// Give more space to top-level menus
+			width += gap;
+		}
 
 		return width;
 	}

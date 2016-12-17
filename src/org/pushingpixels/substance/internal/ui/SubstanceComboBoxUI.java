@@ -29,32 +29,57 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 
-import javax.swing.*;
+import javax.swing.ButtonModel;
+import javax.swing.ComboBoxEditor;
+import javax.swing.DefaultButtonModel;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.*;
+import javax.swing.plaf.BorderUIResource;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.text.JTextComponent;
 
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultComboBoxRenderer;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.RolloverTextControlListener;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities.TextComponentAware;
+import org.pushingpixels.substance.internal.utils.SubstanceDropDownButton;
+import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 import org.pushingpixels.substance.internal.utils.border.SubstanceTextComponentBorder;
-import org.pushingpixels.substance.internal.utils.combo.*;
-import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
+import org.pushingpixels.substance.internal.utils.combo.ComboBoxBackgroundDelegate;
+import org.pushingpixels.substance.internal.utils.combo.SubstanceComboBoxEditor;
+import org.pushingpixels.substance.internal.utils.combo.SubstanceComboPopup;
 
 /**
  * UI for combo boxes in <b>Substance </b> look and feel.
@@ -510,10 +535,9 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 		int height = this.comboBox.getHeight();
 		Insets insets = this.comboBox.getInsets();
 
-		int componentFontSize = SubstanceSizeUtils
-				.getComponentFontSize(this.comboBox);
+		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(this.comboBox);
 		if (this.comboBox.isEditable()) {
-			float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth(componentFontSize);
+			float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth();
 			Shape contour = SubstanceOutlineUtilities
 					.getBaseOutline(
 							width,

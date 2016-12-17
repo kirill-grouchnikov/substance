@@ -35,8 +35,8 @@ import java.awt.Font;
 import java.util.Set;
 
 import javax.swing.JComponent;
-import javax.swing.UIManager;
 import javax.swing.JInternalFrame.JDesktopIcon;
+import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;

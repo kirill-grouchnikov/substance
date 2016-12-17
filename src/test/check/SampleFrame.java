@@ -29,25 +29,54 @@
  */
 package test.check;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.AbstractListModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.JTree;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.GeminiSkin;
 import org.pushingpixels.substance.api.skin.SkinChangeListener;
-
-import test.Check;
-import test.SubstanceLogo;
 
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+
+import test.Check;
+import test.SubstanceLogo;
 
 public class SampleFrame extends JFrame {
 	protected JButton prev;
@@ -345,13 +374,7 @@ public class SampleFrame extends JFrame {
 		this.setResizable(true);
 
 		this.synchronize();
-		SubstanceLookAndFeel
-				.registerSkinChangeListener(new SkinChangeListener() {
-					@Override
-					public void skinChanged() {
-						SampleFrame.this.synchronize();
-					}
-				});
+		SubstanceLookAndFeel.registerSkinChangeListener(() -> SampleFrame.this.synchronize());
 		this.getRootPane().setDefaultButton(ok);
 	}
 

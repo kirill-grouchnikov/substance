@@ -34,7 +34,9 @@ import java.awt.Graphics;
 
 import javax.swing.JComponent;
 import javax.swing.JViewport;
-import javax.swing.plaf.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicViewportUI;
 
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;

@@ -30,7 +30,6 @@
 package org.pushingpixels.substance.internal.utils;
 
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -277,9 +276,7 @@ public class PairwiseButtonBackgroundDelegate {
 			SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
 					.getBorderPainter(button);
 
-			float borderDelta = SubstanceSizeUtils
-					.getBorderStrokeWidth(SubstanceSizeUtils
-							.getComponentFontSize(button)) / 2.0f;
+			float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth() / 2.0f;
 			finalBackground = SubstanceCoreUtilities.getBlankImage(width, height);
 			Graphics2D finalGraphics = (Graphics2D) finalBackground.getGraphics();
 			finalGraphics.translate(-deltaLeft, -deltaTop);

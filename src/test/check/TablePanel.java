@@ -68,6 +68,9 @@ import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableCellRender
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.Timeline.RepeatBehavior;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
+
 import test.Check;
 import test.check.svg.flags.bg;
 import test.check.svg.flags.br;
@@ -85,9 +88,6 @@ import test.check.svg.flags.jp;
 import test.check.svg.flags.mx;
 import test.check.svg.flags.nl;
 import test.check.svg.flags.no;
-
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
 
 /**
  * Test application panel for testing {@link JTable} component.

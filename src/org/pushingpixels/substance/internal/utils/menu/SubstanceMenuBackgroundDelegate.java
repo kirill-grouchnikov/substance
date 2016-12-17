@@ -30,15 +30,15 @@
 package org.pushingpixels.substance.internal.utils.menu;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.LinearGradientPaint;
+import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.MultipleGradientPaint.CycleMethod;
 import java.util.Map;
 
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -48,8 +48,8 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.MenuGutterFillKind;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
-import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker.ModelStateInfo;
+import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.HighlightPainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
@@ -89,7 +89,7 @@ public class SubstanceMenuBackgroundDelegate {
 	 * @param textOffset
 	 *            The offset of the menu item text.
 	 */
-	public static void paintBackground(Graphics g, Component menuItem,
+	public static void paintBackground(Graphics g, JComponent menuItem,
 			int textOffset) {
 		if (!menuItem.isShowing())
 			return;

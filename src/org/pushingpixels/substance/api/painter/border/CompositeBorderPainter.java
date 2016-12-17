@@ -29,11 +29,10 @@
  */
 package org.pushingpixels.substance.api.painter.border;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Shape;
-
-import javax.swing.JButton;
 
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 
@@ -99,5 +98,9 @@ public class CompositeBorderPainter implements SubstanceBorderPainter {
 	public String getDisplayName() {
 		return this.displayName;
 	}
-
+	
+	@Override
+	public Color getRepresentativeColor(SubstanceColorScheme borderScheme) {
+		return this.outer.getRepresentativeColor(borderScheme);
+	}
 }

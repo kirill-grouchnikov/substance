@@ -35,7 +35,6 @@ public class SwatchPanel extends javax.swing.JPanel {
     protected Dimension defaultSwatchSize;
     protected Dimension numSwatches;
     protected Dimension gap;
-    private final static Color gridColor = new Color(0xaaaaaa);
     
     /** Creates new form. */
     public SwatchPanel() {
