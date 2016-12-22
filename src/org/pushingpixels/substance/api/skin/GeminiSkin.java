@@ -277,7 +277,7 @@ public class GeminiSkin extends SubstanceSkin {
 				ColorSchemeAssociationKind.HIGHLIGHT_BORDER, ComponentState.getActiveStates());
 
 		// use for text highlight
-		schemeBundle.registerColorScheme(highlightScheme, ColorSchemeAssociationKind.TEXT_HIGHLIGHT,
+		schemeBundle.registerColorScheme(highlightScheme, ColorSchemeAssociationKind.HIGHLIGHT_TEXT,
 				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED);
 
 		// use for armed controls

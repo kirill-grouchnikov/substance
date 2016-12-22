@@ -46,6 +46,7 @@ import org.fest.swing.timing.Pause;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 
 import test.check.SampleFrame;
@@ -154,8 +155,7 @@ public abstract class BaseRobot {
 	 * Creates the screenshot and saves it on the disk.
 	 */
 	public void makeScreenshot() {
-		BufferedImage bi = new BufferedImage(sf.getWidth(), sf.getHeight(),
-				BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bi = SubstanceCoreUtilities.getBlankImage(sf.getWidth(), sf.getHeight());
 		Graphics g = bi.getGraphics();
 		sf.paint(g);
 		try {

@@ -269,12 +269,10 @@ public class SubstanceTitlePane extends JComponent {
 		 * @param currTakenHeapSizeKB
 		 *            The current used portion of heap in kilobytes.
 		 */
-		public synchronized void updateStatus(int currHeapSizeKB,
-				int currTakenHeapSizeKB) {
+		public synchronized void updateStatus(int currHeapSizeKB, int currTakenHeapSizeKB) {
 			this.currHeapSizeKB = currHeapSizeKB;
 			this.currTakenHeapSizeKB = currTakenHeapSizeKB;
-			double newGraphValue = (double) currTakenHeapSizeKB
-					/ (double) currHeapSizeKB;
+			double newGraphValue = (double) currTakenHeapSizeKB / (double) currHeapSizeKB;
 			this.graphValues.addLast(newGraphValue);
 			this.repaint();
 		}
@@ -289,8 +287,7 @@ public class SubstanceTitlePane extends JComponent {
 			Graphics2D graphics = (Graphics2D) g.create();
 
 			SubstanceColorScheme scheme = SubstanceCoreUtilities.getSkin(this)
-					.getActiveColorScheme(
-							DecorationAreaType.PRIMARY_TITLE_PANE);
+					.getActiveColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE);
 
 			graphics.setColor(scheme.getDarkColor());
 			int w = this.getWidth();
@@ -309,8 +306,7 @@ public class SubstanceTitlePane extends JComponent {
 			int count = 0;
 			for (double value : this.graphValues) {
 				int valueH = (int) (value * (h - 2));
-				graphics.drawLine(xOff + count, h - 1 - valueH, xOff + count,
-						h - 2);
+				graphics.drawLine(xOff + count, h - 1 - valueH, xOff + count, h - 2);
 				count++;
 			}
 
@@ -319,8 +315,7 @@ public class SubstanceTitlePane extends JComponent {
 
 			StringBuffer longFormat = new StringBuffer();
 			Formatter longFormatter = new Formatter(longFormat);
-			longFormatter.format("%.1fMB / %.1fMB",
-					this.currTakenHeapSizeKB / 1024.f,
+			longFormatter.format("%.1fMB / %.1fMB", this.currTakenHeapSizeKB / 1024.f,
 					this.currHeapSizeKB / 1024.f);
 			longFormatter.close();
 			int strW = fm.stringWidth(longFormat.toString());
@@ -329,14 +324,12 @@ public class SubstanceTitlePane extends JComponent {
 			graphics.setColor(scheme.getForegroundColor());
 			RenderingUtils.installDesktopHints(graphics, this);
 			if (strW < (w - 5)) {
-				graphics.drawString(longFormat.toString(), (w - strW) / 2,
-						(h + strH) / 2 - 2);
+				graphics.drawString(longFormat.toString(), (w - strW) / 2, (h + strH) / 2 - 2);
 			} else {
-				String shortFormat = (this.currTakenHeapSizeKB / 1024)
-						+ "MB / " + (this.currHeapSizeKB / 1024) + "MB";
+				String shortFormat = (this.currTakenHeapSizeKB / 1024) + "MB / "
+						+ (this.currHeapSizeKB / 1024) + "MB";
 				strW = fm.stringWidth(shortFormat);
-				graphics.drawString(shortFormat, (w - strW) / 2,
-						(h + strH) / 2 - 2);
+				graphics.drawString(shortFormat, (w - strW) / 2, (h + strH) / 2 - 2);
 			}
 
 			graphics.dispose();
@@ -348,8 +341,7 @@ public class SubstanceTitlePane extends JComponent {
 		 * @return Preferred width of this panel.
 		 */
 		public int getPreferredWidth() {
-			BufferedImage dummy = new BufferedImage(1, 1,
-					BufferedImage.TYPE_INT_ARGB);
+			BufferedImage dummy = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = dummy.createGraphics();
 			RenderingUtils.installDesktopHints(g2d, this);
 			g2d.setFont(UIManager.getFont("Panel.font"));
@@ -436,8 +428,7 @@ public class SubstanceTitlePane extends JComponent {
 		 *            Heap statuc panel.
 		 */
 		public static synchronized void unregisterPanel(HeapStatusPanel panel) {
-			for (Iterator<WeakReference<HeapStatusPanel>> it = panels
-					.iterator(); it.hasNext();) {
+			for (Iterator<WeakReference<HeapStatusPanel>> it = panels.iterator(); it.hasNext();) {
 				WeakReference<HeapStatusPanel> ref = it.next();
 				HeapStatusPanel currPanel = ref.get();
 				if (panel == currPanel) {
@@ -471,12 +462,12 @@ public class SubstanceTitlePane extends JComponent {
 					Thread.sleep(500);
 				} catch (InterruptedException ie) {
 				}
-				if (!SubstanceWidgetManager.getInstance().isAllowedAnywhere(
-						SubstanceWidgetType.TITLE_PANE_HEAP_STATUS))
+				if (!SubstanceWidgetManager.getInstance()
+						.isAllowedAnywhere(SubstanceWidgetType.TITLE_PANE_HEAP_STATUS))
 					continue;
 				this.updateHeapCounts();
-				for (Iterator<WeakReference<HeapStatusPanel>> it = panels
-						.iterator(); it.hasNext();) {
+				for (Iterator<WeakReference<HeapStatusPanel>> it = panels.iterator(); it
+						.hasNext();) {
 					WeakReference<HeapStatusPanel> refPanel = it.next();
 					HeapStatusPanel panel = refPanel.get();
 					if (panel == null) {
@@ -489,11 +480,10 @@ public class SubstanceTitlePane extends JComponent {
 				}
 				// see if need to put info in log file
 				if (SubstanceTitlePane.heapStatusLogfileName != null) {
-					try (PrintWriter pw = new PrintWriter(new FileWriter(
-								SubstanceTitlePane.heapStatusLogfileName, true))) {
-						pw.println(this.format.format(new Date()) + " "
-								+ this.takenHeapSizeKB + "KB / "
-								+ this.heapSizeKB + "KB");
+					try (PrintWriter pw = new PrintWriter(
+							new FileWriter(SubstanceTitlePane.heapStatusLogfileName, true))) {
+						pw.println(this.format.format(new Date()) + " " + this.takenHeapSizeKB
+								+ "KB / " + this.heapSizeKB + "KB");
 					} catch (IOException ioe) {
 					}
 				}
@@ -528,12 +518,9 @@ public class SubstanceTitlePane extends JComponent {
 
 		this.setToolTipText(this.getTitle());
 
-		SubstanceLookAndFeel.setDecorationType(this,
-				DecorationAreaType.PRIMARY_TITLE_PANE);
-		this.setForeground(SubstanceColorUtilities
-				.getForegroundColor(SubstanceCoreUtilities.getSkin(this)
-						.getBackgroundColorScheme(
-								DecorationAreaType.PRIMARY_TITLE_PANE)));
+		SubstanceLookAndFeel.setDecorationType(this, DecorationAreaType.PRIMARY_TITLE_PANE);
+		this.setForeground(SubstanceColorUtilities.getForegroundColor(SubstanceCoreUtilities
+				.getSkin(this).getBackgroundColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE)));
 		// SubstanceColorSchemeUtilities
 		// .getColorScheme(this, ComponentState.ACTIVE)));
 	}
@@ -557,8 +544,7 @@ public class SubstanceTitlePane extends JComponent {
 		}
 
 		if (this.heapStatusPanel != null) {
-			for (MouseListener listener : this.heapStatusPanel
-					.getMouseListeners())
+			for (MouseListener listener : this.heapStatusPanel.getMouseListeners())
 				this.heapStatusPanel.removeMouseListener(listener);
 			HeapStatusThread.unregisterPanel(this.heapStatusPanel);
 			this.remove(this.heapStatusPanel);
@@ -591,9 +577,8 @@ public class SubstanceTitlePane extends JComponent {
 			if ("componentOrientation".equals(evt.getPropertyName())) {
 				SwingUtilities.invokeLater(() -> {
 					if (SubstanceTitlePane.this.menuBar != null) {
-						SubstanceTitlePane.this.menuBar
-								.applyComponentOrientation((ComponentOrientation) evt
-										.getNewValue());
+						SubstanceTitlePane.this.menuBar.applyComponentOrientation(
+								(ComponentOrientation) evt.getNewValue());
 					}
 				});
 			}
@@ -611,8 +596,7 @@ public class SubstanceTitlePane extends JComponent {
 		if (this.window != null) {
 			this.window.removeWindowListener(this.windowListener);
 			this.windowListener = null;
-			this.window
-					.removePropertyChangeListener(this.propertyChangeListener);
+			this.window.removePropertyChangeListener(this.propertyChangeListener);
 			this.propertyChangeListener = null;
 		}
 
@@ -702,18 +686,15 @@ public class SubstanceTitlePane extends JComponent {
 			this.add(this.closeButton);
 
 			this.heapStatusPanel = new HeapStatusPanel();
-			this.markExtraComponent(this.heapStatusPanel,
-					ExtraComponentKind.TRAILING);
+			this.markExtraComponent(this.heapStatusPanel, ExtraComponentKind.TRAILING);
 			this.add(this.heapStatusPanel);
-			boolean isHeapStatusPanelShowing = SubstanceWidgetManager
-					.getInstance().isAllowed(rootPane,
-							SubstanceWidgetType.TITLE_PANE_HEAP_STATUS);
+			boolean isHeapStatusPanelShowing = SubstanceWidgetManager.getInstance()
+					.isAllowed(rootPane, SubstanceWidgetType.TITLE_PANE_HEAP_STATUS);
 			this.heapStatusPanel.setVisible(isHeapStatusPanelShowing);
-			this.heapStatusPanel.setPreferredSize(new Dimension(80, this
-					.getPreferredSize().height));
-			this.heapStatusPanel.setToolTipText(SubstanceCoreUtilities
-					.getResourceBundle(rootPane).getString(
-							"Tooltip.heapStatusPanel"));
+			this.heapStatusPanel
+					.setPreferredSize(new Dimension(80, this.getPreferredSize().height));
+			this.heapStatusPanel.setToolTipText(SubstanceCoreUtilities.getResourceBundle(rootPane)
+					.getString("Tooltip.heapStatusPanel"));
 			this.heapStatusPanel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -741,8 +722,7 @@ public class SubstanceTitlePane extends JComponent {
 	 * Installs the fonts and necessary properties.
 	 */
 	private void installDefaults() {
-		this.setFont(UIManager.getFont("InternalFrame.titleFont", this
-				.getLocale()));
+		this.setFont(UIManager.getFont("InternalFrame.titleFont", this.getLocale()));
 	}
 
 	/**
@@ -759,8 +739,7 @@ public class SubstanceTitlePane extends JComponent {
 		this.menuBar.add(this.createMenu());
 		this.menuBar.setOpaque(false);
 		// support for RTL
-		this.menuBar.applyComponentOrientation(this.rootPane
-				.getComponentOrientation());
+		this.menuBar.applyComponentOrientation(this.rootPane.getComponentOrientation());
 
 		this.markExtraComponent(this.menuBar, ExtraComponentKind.LEADING);
 
@@ -808,22 +787,20 @@ public class SubstanceTitlePane extends JComponent {
 
 		menu.add(this.iconifyAction);
 
-		if (Toolkit.getDefaultToolkit().isFrameStateSupported(
-				Frame.MAXIMIZED_BOTH)) {
+		if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
 			menu.add(this.maximizeAction);
 		}
 
 		if (SubstanceCoreUtilities.toShowExtraWidgets(rootPane)) {
 			menu.addSeparator();
-			JMenu skinMenu = new JMenu(SubstanceCoreUtilities
-					.getResourceBundle(rootPane).getString("SystemMenu.skins"));
+			JMenu skinMenu = new JMenu(SubstanceCoreUtilities.getResourceBundle(rootPane)
+					.getString("SystemMenu.skins"));
 			Map<String, SkinInfo> allSkins = SubstanceLookAndFeel.getAllSkins();
 			for (Map.Entry<String, SkinInfo> skinEntry : allSkins.entrySet()) {
-				final String skinClassName = skinEntry.getValue()
-						.getClassName();
+				final String skinClassName = skinEntry.getValue().getClassName();
 				JMenuItem jmiSkin = new JMenuItem(skinEntry.getKey());
-				jmiSkin.addActionListener((ActionEvent e) ->
-						SwingUtilities.invokeLater(() ->  SubstanceLookAndFeel.setSkin(skinClassName)));
+				jmiSkin.addActionListener((ActionEvent e) -> SwingUtilities
+						.invokeLater(() -> SubstanceLookAndFeel.setSkin(skinClassName)));
 
 				skinMenu.add(jmiSkin);
 			}
@@ -871,11 +848,9 @@ public class SubstanceTitlePane extends JComponent {
 		this.closeButton.setIcon(closeIcon);
 
 		this.closeButton.setFocusable(false);
-		this.closeButton.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY,
-				Boolean.TRUE);
+		this.closeButton.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
 
-		this.closeButton.putClientProperty(
-				SubstanceButtonUI.IS_TITLE_CLOSE_BUTTON, Boolean.TRUE);
+		this.closeButton.putClientProperty(SubstanceButtonUI.IS_TITLE_CLOSE_BUTTON, Boolean.TRUE);
 
 		if (this.getWindowDecorationStyle() == JRootPane.FRAME) {
 			this.minimizeButton = this.createTitleButton();
@@ -892,10 +867,8 @@ public class SubstanceTitlePane extends JComponent {
 			this.minimizeButton.setIcon(minIcon);
 
 			this.minimizeButton.setFocusable(false);
-			this.minimizeButton.putClientProperty(
-					SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
-			this.minimizeButton.setToolTipText(SubstanceCoreUtilities
-					.getResourceBundle(rootPane)
+			this.minimizeButton.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
+			this.minimizeButton.setToolTipText(SubstanceCoreUtilities.getResourceBundle(rootPane)
 					.getString("SystemMenu.iconify"));
 
 			this.toggleButton = this.createTitleButton();
@@ -911,12 +884,10 @@ public class SubstanceTitlePane extends JComponent {
 					"substance.titlePane.maxIcon");
 			this.toggleButton.setIcon(maxIcon);
 
-			this.toggleButton.setToolTipText(SubstanceCoreUtilities
-					.getResourceBundle(rootPane).getString(
-							"SystemMenu.maximize"));
+			this.toggleButton.setToolTipText(SubstanceCoreUtilities.getResourceBundle(rootPane)
+					.getString("SystemMenu.maximize"));
 			this.toggleButton.setFocusable(false);
-			this.toggleButton.putClientProperty(
-					SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
+			this.toggleButton.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
 
 		}
 		syncCloseButtonTooltip();
@@ -974,8 +945,8 @@ public class SubstanceTitlePane extends JComponent {
 				final JRootPane rootPane = this.getRootPane();
 
 				if (((state & Frame.MAXIMIZED_BOTH) != 0)
-						&& ((rootPane.getBorder() == null) || (rootPane
-								.getBorder() instanceof UIResource))
+						&& ((rootPane.getBorder() == null)
+								|| (rootPane.getBorder() instanceof UIResource))
 						&& frame.isShowing()) {
 					rootPane.setBorder(null);
 				} else {
@@ -997,8 +968,7 @@ public class SubstanceTitlePane extends JComponent {
 								"substance.titlePane.restoreIcon");
 						this.updateToggleButton(this.restoreAction, restoreIcon);
 						this.toggleButton.setToolTipText(SubstanceCoreUtilities
-								.getResourceBundle(rootPane).getString(
-										"SystemMenu.restore"));
+								.getResourceBundle(rootPane).getString("SystemMenu.restore"));
 						this.maximizeAction.setEnabled(false);
 						this.restoreAction.setEnabled(true);
 					} else {
@@ -1012,8 +982,7 @@ public class SubstanceTitlePane extends JComponent {
 								"substance.titlePane.maxIcon");
 						this.updateToggleButton(this.maximizeAction, maxIcon);
 						this.toggleButton.setToolTipText(SubstanceCoreUtilities
-								.getResourceBundle(rootPane).getString(
-										"SystemMenu.maximize"));
+								.getResourceBundle(rootPane).getString("SystemMenu.maximize"));
 						this.maximizeAction.setEnabled(true);
 						this.restoreAction.setEnabled(false);
 					}
@@ -1122,17 +1091,15 @@ public class SubstanceTitlePane extends JComponent {
 		}
 		final JRootPane rootPane = this.getRootPane();
 		Window window = this.getWindow();
-		boolean leftToRight = (window == null) ? rootPane
-				.getComponentOrientation().isLeftToRight() : window
-				.getComponentOrientation().isLeftToRight();
+		boolean leftToRight = (window == null) ? rootPane.getComponentOrientation().isLeftToRight()
+				: window.getComponentOrientation().isLeftToRight();
 		int width = this.getWidth();
 		int height = this.getHeight();
 
 		SubstanceSkin skin = SubstanceCoreUtilities.getSkin(rootPane);
 		if (skin == null) {
-			SubstanceCoreUtilities
-					.traceSubstanceApiUsage(this,
-							"Substance delegate used when Substance is not the current LAF");
+			SubstanceCoreUtilities.traceSubstanceApiUsage(this,
+					"Substance delegate used when Substance is not the current LAF");
 		}
 		SubstanceColorScheme scheme = skin
 				.getEnabledColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE);
@@ -1144,8 +1111,7 @@ public class SubstanceTitlePane extends JComponent {
 			Rectangle titleTextRect = this.getTitleTextRectangle();
 			FontMetrics fm = rootPane.getFontMetrics(g.getFont());
 			int titleWidth = titleTextRect.width - 20;
-			String clippedTitle = SubstanceCoreUtilities.clipString(fm,
-					titleWidth, theTitle);
+			String clippedTitle = SubstanceCoreUtilities.clipString(fm, titleWidth, theTitle);
 			// show tooltip with full title only if necessary
 			if (theTitle.equals(clippedTitle)) {
 				this.setToolTipText(null);
@@ -1156,17 +1122,15 @@ public class SubstanceTitlePane extends JComponent {
 			if (leftToRight)
 				xOffset = titleTextRect.x;
 			else
-				xOffset = titleTextRect.x + titleTextRect.width
-						- fm.stringWidth(theTitle);
+				xOffset = titleTextRect.x + titleTextRect.width - fm.stringWidth(theTitle);
 		}
 
 		Graphics2D graphics = (Graphics2D) g.create();
-		Font font = SubstanceLookAndFeel.getFontPolicy().getFontSet(
-				"Substance", null).getWindowTitleFont();
+		Font font = SubstanceLookAndFeel.getFontPolicy().getFontSet("Substance", null)
+				.getWindowTitleFont();
 		graphics.setFont(font);
 
-		BackgroundPaintingUtils
-				.update(graphics, SubstanceTitlePane.this, false);
+		BackgroundPaintingUtils.update(graphics, SubstanceTitlePane.this, false);
 		// DecorationPainterUtils.paintDecorationBackground(graphics,
 		// SubstanceTitlePane.this, false);
 
@@ -1175,13 +1139,13 @@ public class SubstanceTitlePane extends JComponent {
 			FontMetrics fm = rootPane.getFontMetrics(graphics.getFont());
 			int yOffset = ((height - fm.getHeight()) / 2) + fm.getAscent();
 
-			SubstanceColorScheme fillScheme = skin.getBackgroundColorScheme(
-					DecorationAreaType.PRIMARY_TITLE_PANE);
-			Color echoColor = !fillScheme.isDark() ? fillScheme.getUltraDarkColor() 
+			SubstanceColorScheme fillScheme = skin
+					.getBackgroundColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE);
+			Color echoColor = !fillScheme.isDark() ? fillScheme.getUltraDarkColor()
 					: fillScheme.getUltraLightColor();
 			SubstanceTextUtilities.paintTextWithDropShadow(this, graphics,
-					SubstanceColorUtilities.getForegroundColor(scheme),
-					echoColor, theTitle, width, height, xOffset, yOffset);
+					SubstanceColorUtilities.getForegroundColor(scheme), echoColor, theTitle, width,
+					height, xOffset, yOffset);
 		}
 
 		GhostPaintingUtils.paintGhostImages(this, graphics);
@@ -1209,9 +1173,8 @@ public class SubstanceTitlePane extends JComponent {
 	protected Rectangle getTitleTextRectangle() {
 		JRootPane rootPane = this.getRootPane();
 		Window window = this.getWindow();
-		boolean leftToRight = (window == null) ? rootPane
-				.getComponentOrientation().isLeftToRight() : window
-				.getComponentOrientation().isLeftToRight();
+		boolean leftToRight = (window == null) ? rootPane.getComponentOrientation().isLeftToRight()
+				: window.getComponentOrientation().isLeftToRight();
 
 		if (leftToRight) {
 			int maxLeadingX = 0;
@@ -1225,9 +1188,9 @@ public class SubstanceTitlePane extends JComponent {
 					ExtraComponentKind kind = (ExtraComponentKind) ((JComponent) child)
 							.getClientProperty(EXTRA_COMPONENT_KIND);
 					if (kind == null) {
-						throw new IllegalStateException("Title pane child "
-								+ child.getClass().getName()
-								+ " is not marked as leading or trailing");
+						throw new IllegalStateException(
+								"Title pane child " + child.getClass().getName()
+										+ " is not marked as leading or trailing");
 					}
 					if (kind == ExtraComponentKind.LEADING) {
 						int cx = child.getX() + child.getWidth();
@@ -1256,9 +1219,9 @@ public class SubstanceTitlePane extends JComponent {
 					ExtraComponentKind kind = (ExtraComponentKind) ((JComponent) child)
 							.getClientProperty(EXTRA_COMPONENT_KIND);
 					if (kind == null) {
-						throw new IllegalStateException("Title pane child "
-								+ child.getClass().getName()
-								+ " is not marked as leading or trailing");
+						throw new IllegalStateException(
+								"Title pane child " + child.getClass().getName()
+										+ " is not marked as leading or trailing");
 					}
 					if (kind == ExtraComponentKind.LEADING) {
 						int cx = child.getX();
@@ -1286,13 +1249,11 @@ public class SubstanceTitlePane extends JComponent {
 		 * Creates a new close action.
 		 */
 		public CloseAction() {
-			super(SubstanceCoreUtilities.getResourceBundle(rootPane).getString(
-					"SystemMenu.close"), SubstanceImageCreator.getCloseIcon(
-					SubstanceCoreUtilities.getSkin(rootPane)
-							.getActiveColorScheme(
-									DecorationAreaType.PRIMARY_TITLE_PANE),
-					SubstanceCoreUtilities.getSkin(rootPane)
-							.getBackgroundColorScheme(
+			super(SubstanceCoreUtilities.getResourceBundle(rootPane).getString("SystemMenu.close"),
+					SubstanceImageCreator.getCloseIcon(
+							SubstanceCoreUtilities.getSkin(rootPane)
+									.getActiveColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE),
+							SubstanceCoreUtilities.getSkin(rootPane).getBackgroundColorScheme(
 									DecorationAreaType.PRIMARY_TITLE_PANE)));
 		}
 
@@ -1300,8 +1261,7 @@ public class SubstanceTitlePane extends JComponent {
 			Window window = SubstanceTitlePane.this.getWindow();
 
 			if (window != null) {
-				window.dispatchEvent(new WindowEvent(window,
-						WindowEvent.WINDOW_CLOSING));
+				window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
 			}
 		}
 	}
@@ -1314,26 +1274,19 @@ public class SubstanceTitlePane extends JComponent {
 		 * Creates a new iconify action.
 		 */
 		public IconifyAction() {
-			super(
-					SubstanceCoreUtilities.getResourceBundle(rootPane)
-							.getString("SystemMenu.iconify"),
-					SubstanceImageCreator
-							.getMinimizeIcon(
-									SubstanceCoreUtilities
-											.getSkin(rootPane)
-											.getActiveColorScheme(
-													DecorationAreaType.PRIMARY_TITLE_PANE),
-									SubstanceCoreUtilities
-											.getSkin(rootPane)
-											.getBackgroundColorScheme(
-													DecorationAreaType.PRIMARY_TITLE_PANE)));
+			super(SubstanceCoreUtilities.getResourceBundle(rootPane)
+					.getString("SystemMenu.iconify"),
+					SubstanceImageCreator.getMinimizeIcon(
+							SubstanceCoreUtilities.getSkin(rootPane)
+									.getActiveColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE),
+							SubstanceCoreUtilities.getSkin(rootPane).getBackgroundColorScheme(
+									DecorationAreaType.PRIMARY_TITLE_PANE)));
 		}
 
 		public void actionPerformed(ActionEvent e) {
 			Frame frame = SubstanceTitlePane.this.getFrame();
 			if (frame != null) {
-				frame.setExtendedState(SubstanceTitlePane.this.state
-						| Frame.ICONIFIED);
+				frame.setExtendedState(SubstanceTitlePane.this.state | Frame.ICONIFIED);
 			}
 		}
 	}
@@ -1346,19 +1299,13 @@ public class SubstanceTitlePane extends JComponent {
 		 * Creates a new restore action.
 		 */
 		public RestoreAction() {
-			super(
-					SubstanceCoreUtilities.getResourceBundle(rootPane)
-							.getString("SystemMenu.restore"),
-					SubstanceImageCreator
-							.getRestoreIcon(
-									SubstanceCoreUtilities
-											.getSkin(rootPane)
-											.getActiveColorScheme(
-													DecorationAreaType.PRIMARY_TITLE_PANE),
-									SubstanceCoreUtilities
-											.getSkin(rootPane)
-											.getBackgroundColorScheme(
-													DecorationAreaType.PRIMARY_TITLE_PANE)));
+			super(SubstanceCoreUtilities.getResourceBundle(rootPane)
+					.getString("SystemMenu.restore"),
+					SubstanceImageCreator.getRestoreIcon(
+							SubstanceCoreUtilities.getSkin(rootPane)
+									.getActiveColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE),
+							SubstanceCoreUtilities.getSkin(rootPane).getBackgroundColorScheme(
+									DecorationAreaType.PRIMARY_TITLE_PANE)));
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -1369,11 +1316,9 @@ public class SubstanceTitlePane extends JComponent {
 			}
 
 			if ((SubstanceTitlePane.this.state & Frame.ICONIFIED) != 0) {
-				frame.setExtendedState(SubstanceTitlePane.this.state
-						& ~Frame.ICONIFIED);
+				frame.setExtendedState(SubstanceTitlePane.this.state & ~Frame.ICONIFIED);
 			} else {
-				frame.setExtendedState(SubstanceTitlePane.this.state
-						& ~Frame.MAXIMIZED_BOTH);
+				frame.setExtendedState(SubstanceTitlePane.this.state & ~Frame.MAXIMIZED_BOTH);
 			}
 		}
 	}
@@ -1386,31 +1331,24 @@ public class SubstanceTitlePane extends JComponent {
 		 * Creates a new maximize action.
 		 */
 		public MaximizeAction() {
-			super(
-					SubstanceCoreUtilities.getResourceBundle(rootPane)
-							.getString("SystemMenu.maximize"),
-					SubstanceImageCreator
-							.getMaximizeIcon(
-									SubstanceCoreUtilities
-											.getSkin(rootPane)
-											.getActiveColorScheme(
-													DecorationAreaType.PRIMARY_TITLE_PANE),
-									SubstanceCoreUtilities
-											.getSkin(rootPane)
-											.getEnabledColorScheme(
-													DecorationAreaType.PRIMARY_TITLE_PANE)));
+			super(SubstanceCoreUtilities.getResourceBundle(rootPane)
+					.getString("SystemMenu.maximize"),
+					SubstanceImageCreator.getMaximizeIcon(
+							SubstanceCoreUtilities.getSkin(rootPane)
+									.getActiveColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE),
+							SubstanceCoreUtilities.getSkin(rootPane)
+									.getEnabledColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE)));
 		}
 
 		public void actionPerformed(ActionEvent e) {
 			Frame frame = SubstanceTitlePane.this.getFrame();
 			if (frame != null) {
 				if (frame instanceof JFrame) {
-					SubstanceRootPaneUI rpUI = (SubstanceRootPaneUI) ((JFrame) frame)
-							.getRootPane().getUI();
+					SubstanceRootPaneUI rpUI = (SubstanceRootPaneUI) ((JFrame) frame).getRootPane()
+							.getUI();
 					rpUI.setMaximized();
 				}
-				frame.setExtendedState(SubstanceTitlePane.this.state
-						| Frame.MAXIMIZED_BOTH);
+				frame.setExtendedState(SubstanceTitlePane.this.state | Frame.MAXIMIZED_BOTH);
 			}
 		}
 	}
@@ -1444,8 +1382,7 @@ public class SubstanceTitlePane extends JComponent {
 			Dimension size = super.getPreferredSize();
 
 			int iSize = SubstanceSizeUtils.getTitlePaneIconSize();
-			return new Dimension(Math.max(iSize, size.width), Math.max(
-					size.height, iSize));
+			return new Dimension(Math.max(iSize, size.width), Math.max(size.height, iSize));
 		}
 	}
 
@@ -1516,10 +1453,10 @@ public class SubstanceTitlePane extends JComponent {
 		 * @see java.awt.LayoutManager#layoutContainer(java.awt.Container)
 		 */
 		public void layoutContainer(Container c) {
-			boolean leftToRight = (SubstanceTitlePane.this.window == null) ? SubstanceTitlePane.this
-					.getRootPane().getComponentOrientation().isLeftToRight()
-					: SubstanceTitlePane.this.window.getComponentOrientation()
-							.isLeftToRight();
+			boolean leftToRight = (SubstanceTitlePane.this.window == null)
+					? SubstanceTitlePane.this.getRootPane().getComponentOrientation()
+							.isLeftToRight()
+					: SubstanceTitlePane.this.window.getComponentOrientation().isLeftToRight();
 
 			int w = SubstanceTitlePane.this.getWidth();
 			int x;
@@ -1530,10 +1467,8 @@ public class SubstanceTitlePane extends JComponent {
 
 			if ((SubstanceTitlePane.this.closeButton != null)
 					&& (SubstanceTitlePane.this.closeButton.getIcon() != null)) {
-				buttonHeight = SubstanceTitlePane.this.closeButton.getIcon()
-						.getIconHeight();
-				buttonWidth = SubstanceTitlePane.this.closeButton.getIcon()
-						.getIconWidth();
+				buttonHeight = SubstanceTitlePane.this.closeButton.getIcon().getIconHeight();
+				buttonWidth = SubstanceTitlePane.this.closeButton.getIcon().getIconWidth();
 			} else {
 				buttonHeight = SubstanceSizeUtils.getTitlePaneIconSize();
 				buttonWidth = SubstanceSizeUtils.getTitlePaneIconSize();
@@ -1549,8 +1484,7 @@ public class SubstanceTitlePane extends JComponent {
 			spacing = 5;
 			x = leftToRight ? spacing : w - buttonWidth - spacing;
 			if (SubstanceTitlePane.this.menuBar != null) {
-				SubstanceTitlePane.this.menuBar.setBounds(x, y, buttonWidth,
-						buttonHeight);
+				SubstanceTitlePane.this.menuBar.setBounds(x, y, buttonWidth, buttonHeight);
 				// System.out.println(menuBar.getBounds());
 			}
 
@@ -1558,21 +1492,19 @@ public class SubstanceTitlePane extends JComponent {
 			spacing = 3;
 			x += leftToRight ? -spacing - buttonWidth : spacing;
 			if (SubstanceTitlePane.this.closeButton != null) {
-				SubstanceTitlePane.this.closeButton.setBounds(x, y,
-						buttonWidth, buttonHeight);
+				SubstanceTitlePane.this.closeButton.setBounds(x, y, buttonWidth, buttonHeight);
 			}
 
 			if (!leftToRight)
 				x += buttonWidth;
 
 			if (SubstanceTitlePane.this.getWindowDecorationStyle() == JRootPane.FRAME) {
-				if (Toolkit.getDefaultToolkit().isFrameStateSupported(
-						Frame.MAXIMIZED_BOTH)) {
+				if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
 					if (SubstanceTitlePane.this.toggleButton.getParent() != null) {
 						spacing = 10;
 						x += leftToRight ? -spacing - buttonWidth : spacing;
-						SubstanceTitlePane.this.toggleButton.setBounds(x, y,
-								buttonWidth, buttonHeight);
+						SubstanceTitlePane.this.toggleButton.setBounds(x, y, buttonWidth,
+								buttonHeight);
 						if (!leftToRight) {
 							x += buttonWidth;
 						}
@@ -1583,8 +1515,8 @@ public class SubstanceTitlePane extends JComponent {
 						&& (SubstanceTitlePane.this.minimizeButton.getParent() != null)) {
 					spacing = 2;
 					x += leftToRight ? -spacing - buttonWidth : spacing;
-					SubstanceTitlePane.this.minimizeButton.setBounds(x, y,
-							buttonWidth, buttonHeight);
+					SubstanceTitlePane.this.minimizeButton.setBounds(x, y, buttonWidth,
+							buttonHeight);
 					if (!leftToRight) {
 						x += buttonWidth;
 					}
@@ -1593,12 +1525,12 @@ public class SubstanceTitlePane extends JComponent {
 				if ((SubstanceTitlePane.this.heapStatusPanel != null)
 						&& SubstanceTitlePane.this.heapStatusPanel.isVisible()) {
 					spacing = 5;
-					x += leftToRight ? (-spacing - SubstanceTitlePane.this.heapStatusPanel
-							.getPreferredWidth())
+					x += leftToRight
+							? (-spacing
+									- SubstanceTitlePane.this.heapStatusPanel.getPreferredWidth())
 							: spacing;
 					SubstanceTitlePane.this.heapStatusPanel.setBounds(x, 1,
-							SubstanceTitlePane.this.heapStatusPanel
-									.getPreferredWidth(),
+							SubstanceTitlePane.this.heapStatusPanel.getPreferredWidth(),
 							SubstanceTitlePane.this.getHeight() - 3);
 				}
 			}
@@ -1620,8 +1552,7 @@ public class SubstanceTitlePane extends JComponent {
 				Frame frame = SubstanceTitlePane.this.getFrame();
 
 				if (frame != null) {
-					SubstanceTitlePane.this.setState(frame.getExtendedState(),
-							true);
+					SubstanceTitlePane.this.setState(frame.getExtendedState(), true);
 				}
 				if ("resizable".equals(name)) {
 					SubstanceTitlePane.this.getRootPane().repaint();
@@ -1629,8 +1560,7 @@ public class SubstanceTitlePane extends JComponent {
 			} else {
 				if ("title".equals(name)) {
 					SubstanceTitlePane.this.repaint();
-					SubstanceTitlePane.this.setToolTipText((String) pce
-							.getNewValue());
+					SubstanceTitlePane.this.setToolTipText((String) pce.getNewValue());
 				} else if ("componentOrientation" == name) {
 					revalidate();
 					repaint();
@@ -1675,14 +1605,14 @@ public class SubstanceTitlePane extends JComponent {
 	 */
 	protected void syncCloseButtonTooltip() {
 		if (SubstanceCoreUtilities.isRootPaneModified(this.getRootPane())) {
-			this.closeButton.setToolTipText(SubstanceCoreUtilities
-					.getResourceBundle(rootPane).getString("SystemMenu.close")
-					+ " ["
-					+ SubstanceCoreUtilities.getResourceBundle(rootPane)
-							.getString("Tooltip.contentsNotSaved") + "]");
+			this.closeButton.setToolTipText(
+					SubstanceCoreUtilities.getResourceBundle(rootPane).getString("SystemMenu.close")
+							+ " [" + SubstanceCoreUtilities.getResourceBundle(rootPane)
+									.getString("Tooltip.contentsNotSaved")
+							+ "]");
 		} else {
-			this.closeButton.setToolTipText(SubstanceCoreUtilities
-					.getResourceBundle(rootPane).getString("SystemMenu.close"));
+			this.closeButton.setToolTipText(SubstanceCoreUtilities.getResourceBundle(rootPane)
+					.getString("SystemMenu.close"));
 		}
 		this.closeButton.repaint();
 	}
@@ -1717,8 +1647,8 @@ public class SubstanceTitlePane extends JComponent {
 			this.appIcon = null;
 		} else {
 			int prefSize = SubstanceSizeUtils.getTitlePaneIconSize();
-			this.appIcon = SubstanceCoreUtilities.getScaledIconImage(iconImages,
-					prefSize, prefSize);
+			this.appIcon = SubstanceCoreUtilities.getScaledIconImage(iconImages, prefSize,
+					prefSize);
 		}
 	}
 

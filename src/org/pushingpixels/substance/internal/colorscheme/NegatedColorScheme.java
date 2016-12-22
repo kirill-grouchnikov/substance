@@ -92,21 +92,18 @@ public class NegatedColorScheme extends BaseColorScheme {
 		super("Negated " + origScheme.getDisplayName(), !origScheme.isDark());
 		this.origScheme = origScheme;
 
-		this.foregroundColor = SubstanceColorUtilities.invertColor(origScheme
-				.getForegroundColor());
+		this.foregroundColor = SubstanceColorUtilities.invertColor(origScheme.getForegroundColor());
 
 		this.mainUltraDarkColor = SubstanceColorUtilities
 				.invertColor(origScheme.getUltraDarkColor());
-		this.mainDarkColor = SubstanceColorUtilities.invertColor(origScheme
-				.getDarkColor());
-		this.mainMidColor = SubstanceColorUtilities.invertColor(origScheme
-				.getMidColor());
-		this.mainLightColor = SubstanceColorUtilities.invertColor(origScheme
-				.getLightColor());
+		this.mainDarkColor = SubstanceColorUtilities.invertColor(origScheme.getDarkColor());
+		this.mainMidColor = SubstanceColorUtilities.invertColor(origScheme.getMidColor());
+		this.mainLightColor = SubstanceColorUtilities.invertColor(origScheme.getLightColor());
 		this.mainExtraLightColor = SubstanceColorUtilities
 				.invertColor(origScheme.getExtraLightColor());
 		this.mainUltraLightColor = SubstanceColorUtilities
 				.invertColor(origScheme.getUltraLightColor());
+		this.isDark = !origScheme.isDark();
 	}
 
 	/*

@@ -42,6 +42,17 @@ Twilight Border {
     colorForeground=#B9B49E
 }
 
+Twilight Tab Border {
+    kind=Light
+    colorUltraLight=#969280
+    colorExtraLight=#969280
+    colorLight=#969280
+    colorMid=#969280
+    colorDark=#969280
+    colorUltraDark=#969280
+    colorForeground=#969280
+}
+
 Twilight Mark Active {
     kind=Dark
     colorUltraLight=#292823

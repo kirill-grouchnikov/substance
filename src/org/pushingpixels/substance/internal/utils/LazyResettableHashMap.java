@@ -29,7 +29,10 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.SwingUtilities;
 

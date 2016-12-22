@@ -148,8 +148,8 @@ public class ColorSchemeAssociationKind {
 	/**
 	 * Highlight visual areas for text components.
 	 */
-	public static final ColorSchemeAssociationKind TEXT_HIGHLIGHT = new ColorSchemeAssociationKind(
-			"textHighlight", HIGHLIGHT);
+	public static final ColorSchemeAssociationKind HIGHLIGHT_TEXT = new ColorSchemeAssociationKind(
+			"highlightText", HIGHLIGHT);
 
 	/**
 	 * Border visual areas for highlighted regions of lists, tables, trees and

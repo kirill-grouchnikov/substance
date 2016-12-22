@@ -31,7 +31,10 @@ package org.pushingpixels.substance.internal.utils;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ConvolveOp;
+import java.awt.image.DataBufferInt;
+import java.awt.image.Kernel;
 
 import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.SubstanceColorScheme;

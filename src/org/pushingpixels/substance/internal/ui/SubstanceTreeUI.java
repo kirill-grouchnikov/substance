@@ -163,12 +163,12 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
 
 		super.installUI(c);
-		
+
 		for (LafWidget lafWidget : this.lafWidgets) {
 			lafWidget.installUI();
 		}
 	}
-	
+
 	@Override
 	public void uninstallUI(JComponent c) {
 		for (LafWidget lafWidget : this.lafWidgets) {
@@ -204,8 +204,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		// every cell rendering, compute it once and expose to the
 		// SubstanceDefaultTreeCellRenderer
 		this.cellRendererInsets = SubstanceSizeUtils
-				.getTreeCellRendererInsets(SubstanceSizeUtils
-						.getComponentFontSize(tree));
+				.getTreeCellRendererInsets(SubstanceSizeUtils.getComponentFontSize(tree));
 
 		for (LafWidget lafWidget : this.lafWidgets) {
 			lafWidget.installDefaults();
@@ -234,17 +233,15 @@ public class SubstanceTreeUI extends BasicTreeUI {
 	 * javax.swing.tree.TreePath, int, boolean, boolean, boolean)
 	 */
 	@Override
-	protected void paintRow(Graphics g, Rectangle clipBounds, Insets insets,
-			Rectangle bounds, TreePath path, int row, boolean isExpanded,
-			boolean hasBeenExpanded, boolean isLeaf) {
+	protected void paintRow(Graphics g, Rectangle clipBounds, Insets insets, Rectangle bounds,
+			TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) {
 		// Don't paint the renderer if editing this row.
 		if ((this.editingComponent != null) && (this.editingRow == row)) {
 			// fix for issue 446 - paint the expand control
 			// on the editing row
-			if (shouldPaintExpandControl(path, row, isExpanded,
-					hasBeenExpanded, isLeaf)) {
-				paintExpandControlEnforce(g, clipBounds, insets, bounds, path,
-						row, isExpanded, hasBeenExpanded, isLeaf);
+			if (shouldPaintExpandControl(path, row, isExpanded, hasBeenExpanded, isLeaf)) {
+				paintExpandControlEnforce(g, clipBounds, insets, bounds, path, row, isExpanded,
+						hasBeenExpanded, isLeaf);
 			}
 		}
 
@@ -257,20 +254,18 @@ public class SubstanceTreeUI extends BasicTreeUI {
 			leadIndex = -1;
 		}
 
-		Component renderer = this.currentCellRenderer
-				.getTreeCellRendererComponent(this.tree, path
-						.getLastPathComponent(), this.tree.isRowSelected(row),
-						isExpanded, isLeaf, row, (leadIndex == row));
+		Component renderer = this.currentCellRenderer.getTreeCellRendererComponent(this.tree,
+				path.getLastPathComponent(), this.tree.isRowSelected(row), isExpanded, isLeaf, row,
+				(leadIndex == row));
 
 		if (!(renderer instanceof SubstanceDefaultTreeCellRenderer)) {
 			// if it's not Substance renderer - ask the Basic delegate to paint
 			// it.
-			super.paintRow(g, clipBounds, insets, bounds, path, row,
-					isExpanded, hasBeenExpanded, isLeaf);
-			if (shouldPaintExpandControl(path, row, isExpanded,
-					hasBeenExpanded, isLeaf)) {
-				paintExpandControlEnforce(g, clipBounds, insets, bounds, path,
-						row, isExpanded, hasBeenExpanded, isLeaf);
+			super.paintRow(g, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded,
+					isLeaf);
+			if (shouldPaintExpandControl(path, row, isExpanded, hasBeenExpanded, isLeaf)) {
+				paintExpandControlEnforce(g, clipBounds, insets, bounds, path, row, isExpanded,
+						hasBeenExpanded, isLeaf);
 			}
 			return;
 		}
@@ -285,7 +280,8 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		// background = tree.getBackground();
 
 		StateTransitionTracker.ModelStateInfo modelStateInfo = getModelStateInfo(pathId);
-		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = ((modelStateInfo == null) ? null
+		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = ((modelStateInfo == null)
+				? null
 				: modelStateInfo.getStateContributionMap());
 		ComponentState currState = ((modelStateInfo == null) ? getPathState(pathId)
 				: modelStateInfo.getCurrModelState());
@@ -296,15 +292,14 @@ public class SubstanceTreeUI extends BasicTreeUI {
 			if (activeStates != null) {
 				for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> stateEntry : activeStates
 						.entrySet()) {
-					hasHighlights = (SubstanceColorSchemeUtilities
-							.getHighlightAlpha(this.tree, stateEntry.getKey())
-							* stateEntry.getValue().getContribution() > 0.0f);
+					hasHighlights = (SubstanceColorSchemeUtilities.getHighlightAlpha(this.tree,
+							stateEntry.getKey()) * stateEntry.getValue().getContribution() > 0.0f);
 					if (hasHighlights)
 						break;
 				}
 			} else {
-				hasHighlights = (SubstanceColorSchemeUtilities
-						.getHighlightAlpha(this.tree, currState) > 0.0f);
+				hasHighlights = (SubstanceColorSchemeUtilities.getHighlightAlpha(this.tree,
+						currState) > 0.0f);
 			}
 		}
 
@@ -315,71 +310,57 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		// At this point the renderer is an instance of
 		// SubstanceDefaultTreeCellRenderer
 		JTree.DropLocation dropLocation = tree.getDropLocation();
-		Rectangle rowRectangle = new Rectangle(this.tree.getInsets().left,
-				bounds.y, this.tree.getWidth() - this.tree.getInsets().right
-						- this.tree.getInsets().left, bounds.height);
+		Rectangle rowRectangle = new Rectangle(this.tree.getInsets().left, bounds.y,
+				this.tree.getWidth() - this.tree.getInsets().right - this.tree.getInsets().left,
+				bounds.height);
 		if (dropLocation != null && dropLocation.getChildIndex() == -1
 				&& tree.getRowForPath(dropLocation.getPath()) == row) {
 			// mark drop location
-			SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
-					.getColorScheme(tree,
-							ColorSchemeAssociationKind.TEXT_HIGHLIGHT,
-							currState);
-			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(tree, ColorSchemeAssociationKind.BORDER,
-							currState);
-			HighlightPainterUtils.paintHighlight(g2d, this.rendererPane,
-					renderer, rowRectangle, 0.8f, null, scheme, borderScheme);
+			SubstanceColorScheme scheme = SubstanceColorSchemeUtilities.getColorScheme(tree,
+					ColorSchemeAssociationKind.HIGHLIGHT_TEXT, currState);
+			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities.getColorScheme(tree,
+					ColorSchemeAssociationKind.HIGHLIGHT_BORDER, currState);
+			HighlightPainterUtils.paintHighlight(g2d, this.rendererPane, renderer, rowRectangle,
+					0.8f, null, scheme, borderScheme);
 		} else {
 			if (hasHighlights) {
 				if (activeStates == null) {
-					float alpha = SubstanceColorSchemeUtilities
-							.getHighlightAlpha(this.tree, currState);
+					float alpha = SubstanceColorSchemeUtilities.getHighlightAlpha(this.tree,
+							currState);
 					if (alpha > 0.0f) {
 						SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
 								.getColorScheme(this.tree,
-										ColorSchemeAssociationKind.HIGHLIGHT,
-										currState);
+										ColorSchemeAssociationKind.HIGHLIGHT_TEXT, currState);
 						SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
 								.getColorScheme(this.tree,
-										ColorSchemeAssociationKind.HIGHLIGHT,
-										currState);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
-								this.tree, alpha, g));
+										ColorSchemeAssociationKind.HIGHLIGHT_BORDER, currState);
+						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.tree, alpha, g));
 						// Fix for defect 180 - painting the
 						// highlight beneath the entire row
-						HighlightPainterUtils.paintHighlight(g2d,
-								this.rendererPane, renderer, rowRectangle,
-								0.8f, null, fillScheme, borderScheme);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
-								this.tree, g));
+						HighlightPainterUtils.paintHighlight(g2d, this.rendererPane, renderer,
+								rowRectangle, 0.8f, null, fillScheme, borderScheme);
+						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.tree, g));
 					}
 				} else {
 					for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> stateEntry : activeStates
 							.entrySet()) {
 						ComponentState activeState = stateEntry.getKey();
-						float alpha = SubstanceColorSchemeUtilities
-								.getHighlightAlpha(this.tree, activeState)
-								* stateEntry.getValue().getContribution();
+						float alpha = SubstanceColorSchemeUtilities.getHighlightAlpha(this.tree,
+								activeState) * stateEntry.getValue().getContribution();
 						if (alpha == 0.0f)
 							continue;
 						SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
 								.getColorScheme(this.tree,
-										ColorSchemeAssociationKind.HIGHLIGHT,
-										activeState);
+										ColorSchemeAssociationKind.HIGHLIGHT_TEXT, activeState);
 						SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
 								.getColorScheme(this.tree,
-										ColorSchemeAssociationKind.HIGHLIGHT,
-										activeState);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
-								this.tree, alpha, g));
+										ColorSchemeAssociationKind.HIGHLIGHT_BORDER, activeState);
+						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.tree, alpha, g));
 						// Fix for defect 180 - painting the
 						// highlight beneath the entire row
-						HighlightPainterUtils.paintHighlight(g2d,
-								this.rendererPane, renderer, rowRectangle,
-								0.8f, null, fillScheme, borderScheme);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
-								this.tree, g));
+						HighlightPainterUtils.paintHighlight(g2d, this.rendererPane, renderer,
+								rowRectangle, 0.8f, null, fillScheme, borderScheme);
+						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.tree, g));
 					}
 				}
 			}
@@ -398,9 +379,8 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		Map<Component, Boolean> opacity = new HashMap<Component, Boolean>();
 		if (!newOpaque)
 			SubstanceCoreUtilities.makeNonOpaque(jRenderer, opacity);
-		this.rendererPane.paintComponent(g2d, renderer, this.tree, bounds.x,
-				bounds.y, Math.max(this.tree.getWidth()
-						- this.tree.getInsets().right
+		this.rendererPane.paintComponent(g2d, renderer, this.tree, bounds.x, bounds.y,
+				Math.max(this.tree.getWidth() - this.tree.getInsets().right
 						- this.tree.getInsets().left - bounds.x, bounds.width),
 				bounds.height, true);
 		if (!newOpaque)
@@ -409,10 +389,9 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		// Paint the expand control now after the row background has been
 		// overlayed by the highlight background on selected and rolled over
 		// rows. See comments on paintExpandControl().
-		if (shouldPaintExpandControl(path, row, isExpanded, hasBeenExpanded,
-				isLeaf)) {
-			paintExpandControlEnforce(g2d, clipBounds, insets, bounds, path,
-					row, isExpanded, hasBeenExpanded, isLeaf);
+		if (shouldPaintExpandControl(path, row, isExpanded, hasBeenExpanded, isLeaf)) {
+			paintExpandControlEnforce(g2d, clipBounds, insets, bounds, path, row, isExpanded,
+					hasBeenExpanded, isLeaf);
 		}
 
 		g2d.dispose();
@@ -427,9 +406,9 @@ public class SubstanceTreeUI extends BasicTreeUI {
 	 * javax.swing.tree.TreePath, int, boolean, boolean, boolean)
 	 */
 	@Override
-	protected void paintExpandControl(Graphics g, Rectangle clipBounds,
-			Insets insets, Rectangle bounds, TreePath path, int row,
-			boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) {
+	protected void paintExpandControl(Graphics g, Rectangle clipBounds, Insets insets,
+			Rectangle bounds, TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded,
+			boolean isLeaf) {
 		// This does nothing. The base implementation of paint() paints
 		// the tree lines and tree expand controls *before* painting the
 		// renderer. In Substance, the highlights are painted in the
@@ -464,22 +443,18 @@ public class SubstanceTreeUI extends BasicTreeUI {
 	 * @param isLeaf
 	 *            Indication whether this row is a leaf.
 	 */
-	protected void paintExpandControlEnforce(Graphics g, Rectangle clipBounds,
-			Insets insets, Rectangle bounds, TreePath path, int row,
-			boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) {
-		// boolean toPaint = (!this.tree.isEnabled()) || this.isInside;
+	protected void paintExpandControlEnforce(Graphics g, Rectangle clipBounds, Insets insets,
+			Rectangle bounds, TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded,
+			boolean isLeaf) {
 
 		float alpha = SubstanceColorSchemeUtilities.getAlpha(this.tree,
 				this.tree.isEnabled() ? ComponentState.ENABLED
 						: ComponentState.DISABLED_UNSELECTED);
 
 		Graphics2D graphics = (Graphics2D) g.create();
-		// if (toPaint) {
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(this.tree,
-				alpha, g));
-		super.paintExpandControl(graphics, clipBounds, insets, bounds, path,
-				row, isExpanded, hasBeenExpanded, isLeaf);
-		// }
+		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(this.tree, alpha, g));
+		super.paintExpandControl(graphics, clipBounds, insets, bounds, path, row, isExpanded,
+				hasBeenExpanded, isLeaf);
 		graphics.dispose();
 	}
 
@@ -492,21 +467,21 @@ public class SubstanceTreeUI extends BasicTreeUI {
 	 * javax.swing.tree.TreePath, int, boolean, boolean, boolean)
 	 */
 	@Override
-	protected void paintHorizontalPartOfLeg(Graphics g, Rectangle clipBounds,
-			Insets insets, Rectangle bounds, TreePath path, int row,
-			boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) {
+	protected void paintHorizontalPartOfLeg(Graphics g, Rectangle clipBounds, Insets insets,
+			Rectangle bounds, TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded,
+			boolean isLeaf) {
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicTreeUI#paintVerticalPartOfLeg(java.awt.Graphics
-	 * , java.awt.Rectangle, java.awt.Insets, javax.swing.tree.TreePath)
+	 * @see javax.swing.plaf.basic.BasicTreeUI#paintVerticalPartOfLeg(java.awt.
+	 * Graphics , java.awt.Rectangle, java.awt.Insets,
+	 * javax.swing.tree.TreePath)
 	 */
 	@Override
-	protected void paintVerticalPartOfLeg(Graphics g, Rectangle clipBounds,
-			Insets insets, TreePath path) {
+	protected void paintVerticalPartOfLeg(Graphics g, Rectangle clipBounds, Insets insets,
+			TreePath path) {
 	}
 
 	/*
@@ -539,26 +514,22 @@ public class SubstanceTreeUI extends BasicTreeUI {
 				if (oldValue != null) {
 					TreePath oldDrop = oldValue.getPath();
 					Rectangle oldBounds = getPathBounds(tree, oldDrop);
-					tree.repaint(0, oldBounds.y, tree.getWidth(),
-							oldBounds.height);
+					tree.repaint(0, oldBounds.y, tree.getWidth(), oldBounds.height);
 				}
 				JTree.DropLocation currLocation = tree.getDropLocation();
 				if (currLocation != null) {
 					TreePath newDrop = currLocation.getPath();
 					if (newDrop != null) {
 						Rectangle newBounds = getPathBounds(tree, newDrop);
-						tree.repaint(0, newBounds.y, tree.getWidth(),
-								newBounds.height);
+						tree.repaint(0, newBounds.y, tree.getWidth(), newBounds.height);
 					}
 				}
 			}
 		};
-		this.tree
-				.addPropertyChangeListener(this.substancePropertyChangeListener);
+		this.tree.addPropertyChangeListener(this.substancePropertyChangeListener);
 
 		this.substanceSelectionFadeListener = new MyTreeSelectionListener();
-		this.tree.getSelectionModel().addTreeSelectionListener(
-				this.substanceSelectionFadeListener);
+		this.tree.getSelectionModel().addTreeSelectionListener(this.substanceSelectionFadeListener);
 
 		this.substanceRowSelectionListener = new RowSelectionListener();
 		this.tree.addMouseListener(this.substanceRowSelectionListener);
@@ -583,12 +554,11 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		this.tree.removeMouseListener(this.substanceRowSelectionListener);
 		this.substanceRowSelectionListener = null;
 
-		this.tree.getSelectionModel().removeTreeSelectionListener(
-				this.substanceSelectionFadeListener);
+		this.tree.getSelectionModel()
+				.removeTreeSelectionListener(this.substanceSelectionFadeListener);
 		this.substanceSelectionFadeListener = null;
 
-		this.tree
-				.removePropertyChangeListener(this.substancePropertyChangeListener);
+		this.tree.removePropertyChangeListener(this.substancePropertyChangeListener);
 		this.substancePropertyChangeListener = null;
 
 		// Remove listener for the fade animation
@@ -602,7 +572,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 
 		super.uninstallListeners();
 	}
-	
+
 	@Override
 	protected void installComponents() {
 		super.installComponents();
@@ -611,7 +581,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 			lafWidget.installComponents();
 		}
 	}
-	
+
 	@Override
 	protected void uninstallComponents() {
 		for (LafWidget lafWidget : this.lafWidgets) {
@@ -718,27 +688,23 @@ public class SubstanceTreeUI extends BasicTreeUI {
 					if (!selectedPaths.containsKey(pathId)) {
 						// start fading in
 						StateTransitionTracker tracker = getTracker(pathId,
-								(currRolloverPathId != null)
-										&& pathId.equals(currRolloverPathId),
+								(currRolloverPathId != null) && pathId.equals(currRolloverPathId),
 								false);
 						tracker.getModel().setSelected(true);
-						selectedPaths.put(pathId, selectionPath
-								.getLastPathComponent());
+						selectedPaths.put(pathId, selectionPath.getLastPathComponent());
 					}
 				}
 			}
 
-			for (Iterator<Map.Entry<TreePathId, Object>> it = selectedPaths
-					.entrySet().iterator(); it.hasNext();) {
+			for (Iterator<Map.Entry<TreePathId, Object>> it = selectedPaths.entrySet()
+					.iterator(); it.hasNext();) {
 				Map.Entry<TreePathId, Object> entry = it.next();
-				if (tree.getSelectionModel()
-						.isPathSelected(entry.getKey().path))
+				if (tree.getSelectionModel().isPathSelected(entry.getKey().path))
 					continue;
 				// fade out for deselected path
 				TreePathId pathId = entry.getKey();
 				StateTransitionTracker tracker = getTracker(pathId,
-						(currRolloverPathId != null)
-								&& pathId.equals(currRolloverPathId), true);
+						(currRolloverPathId != null) && pathId.equals(currRolloverPathId), true);
 				tracker.getModel().setSelected(false);
 				it.remove();
 			}
@@ -776,15 +742,13 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		}
 
 		@Override
-		public void onTimelinePulse(float durationFraction,
-				float timelinePosition) {
+		public void onTimelinePulse(float durationFraction, float timelinePosition) {
 			this.repaintPath();
 		}
 
 		@Override
-		public void onTimelineStateChanged(TimelineState oldState,
-				TimelineState newState, float durationFraction,
-				float timelinePosition) {
+		public void onTimelineStateChanged(TimelineState oldState, TimelineState newState,
+				float durationFraction, float timelinePosition) {
 			this.repaintPath();
 		}
 
@@ -799,8 +763,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 				}
 
 				Rectangle boundsBuffer = new Rectangle();
-				Rectangle bounds = treeState.getBounds(treePath,
-						boundsBuffer);
+				Rectangle bounds = treeState.getBounds(treePath, boundsBuffer);
 
 				if (bounds != null) {
 					// still visible
@@ -826,8 +789,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 	 * 
 	 * @author Kirill Grouchnikov
 	 */
-	private class RolloverFadeListener implements MouseListener,
-			MouseMotionListener {
+	private class RolloverFadeListener implements MouseListener, MouseMotionListener {
 
 		public void mouseClicked(MouseEvent e) {
 		}
@@ -874,24 +836,21 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		 *            Mouse event.
 		 */
 		private void handleMove(MouseEvent e) {
-			TreePath closestPath = tree.getClosestPathForLocation(e.getX(), e
-					.getY());
+			TreePath closestPath = tree.getClosestPathForLocation(e.getX(), e.getY());
 			Rectangle bounds = tree.getPathBounds(closestPath);
 			if (bounds == null) {
 				this.fadeOut();
 				currRolloverPathId = null;
 				return;
 			}
-			if ((e.getY() < bounds.y)
-					|| (e.getY() > (bounds.y + bounds.height))) {
+			if ((e.getY() < bounds.y) || (e.getY() > (bounds.y + bounds.height))) {
 				this.fadeOut();
 				currRolloverPathId = null;
 				return;
 			}
 			// check if this is the same index
 			TreePathId newPathId = new TreePathId(closestPath);
-			if ((currRolloverPathId != null)
-					&& newPathId.equals(currRolloverPathId)) {
+			if ((currRolloverPathId != null) && newPathId.equals(currRolloverPathId)) {
 				// System.out.println("Same location " +
 				// System.currentTimeMillis());
 				// System.out.print("Current : ");
@@ -923,8 +882,8 @@ public class SubstanceTreeUI extends BasicTreeUI {
 			if (currRolloverPathId == null)
 				return;
 
-			StateTransitionTracker tracker = getTracker(currRolloverPathId,
-					true, selectedPaths.containsKey(currRolloverPathId));
+			StateTransitionTracker tracker = getTracker(currRolloverPathId, true,
+					selectedPaths.containsKey(currRolloverPathId));
 			tracker.getModel().setRollover(false);
 		}
 	}
@@ -945,16 +904,14 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		public void mousePressed(MouseEvent e) {
 			if (!tree.isEnabled())
 				return;
-			TreePath closestPath = tree.getClosestPathForLocation(e.getX(), e
-					.getY());
+			TreePath closestPath = tree.getClosestPathForLocation(e.getX(), e.getY());
 			if (closestPath == null)
 				return;
 			Rectangle bounds = tree.getPathBounds(closestPath);
 			// Process events outside the immediate bounds - fix for defect
 			// 19 on substance-netbeans. This properly handles Ctrl and Shift
 			// selections on trees.
-			if ((e.getY() >= bounds.y)
-					&& (e.getY() < (bounds.y + bounds.height))
+			if ((e.getY() >= bounds.y) && (e.getY() < (bounds.y + bounds.height))
 					&& ((e.getX() < bounds.x) || (e.getX() > (bounds.x + bounds.width)))) {
 				// tree.setSelectionPath(closestPath);
 
@@ -978,8 +935,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 	 */
 	public int getPivotRendererX(Rectangle paintBounds) {
 		TreePath initialPath = getClosestPathForLocation(tree, 0, paintBounds.y);
-		Enumeration<?> paintingEnumerator = treeState
-				.getVisiblePathsFrom(initialPath);
+		Enumeration<?> paintingEnumerator = treeState.getVisiblePathsFrom(initialPath);
 		int endY = paintBounds.y + paintBounds.height;
 
 		int totalY = 0;
@@ -1011,11 +967,8 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		}
 		if (count == 0)
 			return -1;
-		return totalY
-				/ count
-				- 2
-				* SubstanceSizeUtils.getTreeIconSize(SubstanceSizeUtils
-						.getComponentFontSize(tree));
+		return totalY / count - 2
+				* SubstanceSizeUtils.getTreeIconSize(SubstanceSizeUtils.getComponentFontSize(tree));
 	}
 
 	/**
@@ -1035,16 +988,14 @@ public class SubstanceTreeUI extends BasicTreeUI {
 			boolean isSelected = this.tree.isRowSelected(rowIndex);
 			return ComponentState.getState(isEnabled, isRollover, isSelected);
 		} else {
-			ComponentState fromTracker = tracker.getModelStateInfo()
-					.getCurrModelState();
-			return ComponentState.getState(isEnabled, fromTracker
-					.isFacetActive(ComponentStateFacet.ROLLOVER), fromTracker
-					.isFacetActive(ComponentStateFacet.SELECTION));
+			ComponentState fromTracker = tracker.getModelStateInfo().getCurrModelState();
+			return ComponentState.getState(isEnabled,
+					fromTracker.isFacetActive(ComponentStateFacet.ROLLOVER),
+					fromTracker.isFacetActive(ComponentStateFacet.SELECTION));
 		}
 	}
 
-	public StateTransitionTracker.ModelStateInfo getModelStateInfo(
-			TreePathId pathId) {
+	public StateTransitionTracker.ModelStateInfo getModelStateInfo(TreePathId pathId) {
 		if (this.stateTransitionMultiTracker.size() == 0)
 			return null;
 		StateTransitionTracker tracker = this.stateTransitionMultiTracker.getTracker(pathId);
@@ -1076,22 +1027,20 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		// this.tree.isEnabled() ? ComponentState.DEFAULT
 		// : ComponentState.DISABLED_UNSELECTED);
 		// this.currHashColor = scheme.getLineColor();
-		this.currDefaultColorScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(tree, ComponentState.ENABLED);
+		this.currDefaultColorScheme = SubstanceColorSchemeUtilities.getColorScheme(tree,
+				ComponentState.ENABLED);
 
 		Rectangle paintBounds = g.getClipBounds();
 		Insets insets = tree.getInsets();
 
 		TreePath initialPath = getClosestPathForLocation(tree, 0, paintBounds.y);
-		Enumeration<?> paintingEnumerator = treeState
-				.getVisiblePathsFrom(initialPath);
+		Enumeration<?> paintingEnumerator = treeState.getVisiblePathsFrom(initialPath);
 		int row = treeState.getRowForPath(initialPath);
 		int endY = paintBounds.y + paintBounds.height;
 
 		// second part - fix for defect 214 (rollover effects on non-opaque
 		// trees resulted in inconsistent behaviour)
-		boolean isWatermarkBleed = SubstanceCoreUtilities.toDrawWatermark(tree)
-				|| !tree.isOpaque();
+		boolean isWatermarkBleed = SubstanceCoreUtilities.toDrawWatermark(tree) || !tree.isOpaque();
 
 		Graphics2D g2d = (Graphics2D) g.create();
 		RenderingUtils.installDesktopHints(g2d, c);
@@ -1107,17 +1056,12 @@ public class SubstanceTreeUI extends BasicTreeUI {
 				path = (TreePath) paintingEnumerator.nextElement();
 				if (path != null) {
 					// respect the background color of the renderer.
-					boolean isLeaf = treeModel.isLeaf(path
-							.getLastPathComponent());
-					boolean isExpanded = isLeaf ? false : treeState
-							.getExpandedState(path);
-					Component renderer = this.currentCellRenderer
-							.getTreeCellRendererComponent(this.tree, path
-									.getLastPathComponent(), this.tree
-									.isRowSelected(row), isExpanded, isLeaf,
-									row, tree.hasFocus() ? (tree
-											.getLeadSelectionRow() == row)
-											: false);
+					boolean isLeaf = treeModel.isLeaf(path.getLastPathComponent());
+					boolean isExpanded = isLeaf ? false : treeState.getExpandedState(path);
+					Component renderer = this.currentCellRenderer.getTreeCellRendererComponent(
+							this.tree, path.getLastPathComponent(), this.tree.isRowSelected(row),
+							isExpanded, isLeaf, row,
+							tree.hasFocus() ? (tree.getLeadSelectionRow() == row) : false);
 					Color background = renderer.getBackground();
 					if (background == null)
 						background = tree.getBackground();
@@ -1126,19 +1070,16 @@ public class SubstanceTreeUI extends BasicTreeUI {
 					bounds.y += insets.top;
 					if (!isWatermarkBleed) {
 						g2d.setColor(background);
-						g2d.fillRect(paintBounds.x, bounds.y,
-								paintBounds.width, bounds.height);
+						g2d.fillRect(paintBounds.x, bounds.y, paintBounds.width, bounds.height);
 					} else {
 						if (this.tree.getComponentOrientation().isLeftToRight()) {
-							BackgroundPaintingUtils.fillAndWatermark(g2d,
-									this.tree, background, new Rectangle(
-											paintBounds.x, bounds.y,
-											paintBounds.width, bounds.height));
+							BackgroundPaintingUtils.fillAndWatermark(g2d, this.tree, background,
+									new Rectangle(paintBounds.x, bounds.y, paintBounds.width,
+											bounds.height));
 						} else {
-							BackgroundPaintingUtils.fillAndWatermark(g2d,
-									this.tree, background, new Rectangle(
-											paintBounds.x, bounds.y,
-											paintBounds.width, bounds.height));
+							BackgroundPaintingUtils.fillAndWatermark(g2d, this.tree, background,
+									new Rectangle(paintBounds.x, bounds.y, paintBounds.width,
+											bounds.height));
 						}
 					}
 					if ((bounds.y + bounds.height) >= endY)
@@ -1188,8 +1129,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		Rectangle result = super.getPathBounds(tree, path);
 		if (result != null) {
 			if (tree.getComponentOrientation().isLeftToRight()) {
-				result.width = tree.getWidth() - tree.getInsets().right
-						- result.x;
+				result.width = tree.getWidth() - tree.getInsets().right - result.x;
 			} else {
 				int delta = result.x - tree.getInsets().left;
 				result.x -= delta;
@@ -1199,8 +1139,8 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		return result;
 	}
 
-	private StateTransitionTracker getTracker(final TreePathId pathId,
-			boolean initialRollover, boolean initialSelected) {
+	private StateTransitionTracker getTracker(final TreePathId pathId, boolean initialRollover,
+			boolean initialSelected) {
 		StateTransitionTracker tracker = stateTransitionMultiTracker.getTracker(pathId);
 		if (tracker == null) {
 			ButtonModel model = new DefaultButtonModel();

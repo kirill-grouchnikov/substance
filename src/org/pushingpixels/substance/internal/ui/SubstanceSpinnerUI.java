@@ -34,13 +34,10 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.LayoutManager;
-import java.awt.Shape;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.EnumSet;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -55,15 +52,11 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicSpinnerUI;
 import javax.swing.text.JTextComponent;
 
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants.Side;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceColorResource;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities.TextComponentAware;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
-import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceSpinnerButton;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
@@ -150,9 +143,6 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 		this.nextButton.setPreferredSize(new Dimension(spinnerButtonSize, spinnerButtonSize));
 		this.nextButton.setMinimumSize(new Dimension(5, 5));
 
-		this.nextButton.putClientProperty(SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY,
-				EnumSet.of(Side.BOTTOM));
-
 		this.installNextButtonListeners(this.nextButton);
 
 		Color spinnerBg = this.spinner.getBackground();
@@ -187,9 +177,6 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 				.getScrollBarWidth(SubstanceSizeUtils.getComponentFontSize(this.prevButton));
 		this.prevButton.setPreferredSize(new Dimension(spinnerButtonSize, spinnerButtonSize));
 		this.prevButton.setMinimumSize(new Dimension(5, 5));
-
-		this.prevButton.putClientProperty(SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY,
-				EnumSet.of(Side.TOP));
 
 		this.installPreviousButtonListeners(this.prevButton);
 
@@ -229,8 +216,6 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 			SubstanceTextComponentBorder border = new SubstanceTextComponentBorder(
 					SubstanceSizeUtils.getSpinnerBorderInsets(
 							SubstanceSizeUtils.getComponentFontSize(this.spinner)));
-			// remain with consistent corner radius across components
-			border.setCornerRadiusFactor(1.0f);
 			this.spinner.setBorder(border);
 		}
 	}
@@ -320,20 +305,7 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 	@Override
 	public void paint(Graphics g, JComponent c) {
 		super.paint(g, c);
-
-		Graphics2D graphics = (Graphics2D) g.create();
-		int width = this.spinner.getWidth();
-		int height = this.spinner.getHeight();
-		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(this.spinner);
-		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth();
-		Shape contour = SubstanceOutlineUtilities.getBaseOutline(width, height, Math.max(0,
-				SubstanceSizeUtils.getClassicButtonCornerRadius(componentFontSize) - borderDelta),
-				null, borderDelta);
-
-		graphics.setColor(SubstanceTextUtilities.getTextBackgroundFillColor(this.spinner));
-		graphics.fill(contour);
-
-		graphics.dispose();
+		SubstanceTextUtilities.paintTextCompBackground(g, c);
 	}
 
 	/*
@@ -354,18 +326,6 @@ public class SubstanceSpinnerUI extends BasicSpinnerUI {
 		size.width += insets.left + insets.right;
 		size.height += insets.top + insets.bottom;
 		return size;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
-	 * javax.swing.JComponent)
-	 */
-	@Override
-	public void update(Graphics g, JComponent c) {
-		SubstanceTextUtilities.paintTextCompBackground(g, c);
-		this.paint(g, c);
 	}
 
 	@Override

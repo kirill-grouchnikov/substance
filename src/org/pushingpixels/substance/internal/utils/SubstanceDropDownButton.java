@@ -29,29 +29,19 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
-import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.util.Map;
+import java.util.EnumSet;
 
 import javax.swing.DefaultButtonModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
-import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
-import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 
 /**
  * Drop down button in <b>Substance</b> look and feel.
@@ -88,95 +78,12 @@ public final class SubstanceDropDownButton extends JButton {
 
 		int fontSize = SubstanceSizeUtils.getComponentFontSize(parent);
 		int tbInset = SubstanceSizeUtils.getAdjustedSize(fontSize, 1, 2, 1, false);
-		super.setBorder(new EmptyBorder(tbInset + 1, 0, tbInset - 1, 0));
+		setBorder(new EmptyBorder(tbInset + 1, 0, tbInset - 1, 0));
 
-		this.setBorderPainted(false);
 		this.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
 		this.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
-				parent.getComponentOrientation().isLeftToRight() ? Side.LEFT : Side.RIGHT);
+				EnumSet.allOf(Side.class));
 		this.setOpaque(false);
-	}
-
-	@Override
-	public void setBorder(Border border) {
-	}
-
-	@Override
-	protected void paintBorder(Graphics g) {
-		if (SubstanceCoreUtilities.isButtonNeverPainted(this)) {
-			return;
-		}
-
-		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) this.getUI();
-		StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
-		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
-				.getModelStateInfo();
-		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
-				.getStateContributionMap();
-
-		ComponentState currState = modelStateInfo.getCurrModelState();
-		float extraAlpha = stateTransitionTracker.getActiveStrength();
-
-		if (currState == ComponentState.DISABLED_UNSELECTED)
-			extraAlpha = 0.0f;
-
-		if (extraAlpha == 0.0f)
-			return;
-
-		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(this);
-		float borderDelta = 1.5f * SubstanceSizeUtils.getBorderStrokeWidth();
-		float radius = Math.max(0,
-				SubstanceSizeUtils.getClassicButtonCornerRadius(componentFontSize) - borderDelta);
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
-
-		int width = getWidth();
-		int height = getHeight();
-
-		int offsetX = this.getX();
-		int offsetY = this.getY();
-		JComponent parent = (JComponent) this.getParent();
-		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities.getColorScheme(this,
-				ColorSchemeAssociationKind.BORDER, currState);
-
-		BufferedImage offscreen = SubstanceCoreUtilities.getBlankImage(width, height);
-		Graphics2D g2offscreen = offscreen.createGraphics();
-
-		SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen, 0, 0, width, height,
-				radius, baseBorderScheme);
-		g2offscreen.translate(-offsetX, -offsetY);
-		SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen, 0, 0, parent.getWidth(),
-				parent.getHeight(), radius, baseBorderScheme);
-		g2offscreen.translate(offsetX, offsetY);
-
-		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
-				.entrySet()) {
-			ComponentState activeState = activeEntry.getKey();
-			if (activeState == currState)
-				continue;
-
-			float contribution = activeEntry.getValue().getContribution();
-			if (contribution == 0.0f)
-				continue;
-
-			g2offscreen.setComposite(AlphaComposite.SrcOver.derive(contribution));
-			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities.getColorScheme(this,
-					ColorSchemeAssociationKind.BORDER, activeState);
-
-			SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen, 0, 0, width, height,
-					radius, borderScheme);
-			g2offscreen.translate(-offsetX, -offsetY);
-			SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen, 0, 0,
-					parent.getWidth(), parent.getHeight(), radius, borderScheme);
-			g2offscreen.translate(offsetX, offsetY);
-		}
-		g2offscreen.dispose();
-
-		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this, extraAlpha, g));
-
-		g2d.drawImage(offscreen, 0, 0, offscreen.getWidth() / scaleFactor,
-				offscreen.getHeight() / scaleFactor, null);
-		g2d.dispose();
 	}
 
 	@Override

@@ -30,7 +30,11 @@
 package org.pushingpixels.substance.internal.utils;
 
 import java.awt.Component;
-import java.awt.event.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.ButtonModel;
 import javax.swing.JComponent;

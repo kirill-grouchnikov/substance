@@ -1258,11 +1258,11 @@ public class SubstanceTableUI extends BasicTableUI implements
 					// mark drop location
 					SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
 							.getColorScheme(table,
-									ColorSchemeAssociationKind.TEXT_HIGHLIGHT,
+									ColorSchemeAssociationKind.HIGHLIGHT_TEXT,
 									currState);
 					SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
 							.getColorScheme(table,
-									ColorSchemeAssociationKind.BORDER,
+									ColorSchemeAssociationKind.HIGHLIGHT_BORDER,
 									currState);
 					float extra = SubstanceSizeUtils.getBorderStrokeWidth();
 					HighlightPainterUtils.paintHighlight(g2d,

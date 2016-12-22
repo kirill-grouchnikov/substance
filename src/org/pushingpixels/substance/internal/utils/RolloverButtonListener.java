@@ -31,7 +31,9 @@ package org.pushingpixels.substance.internal.utils;
 
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
-import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseEvent;
 import java.security.AccessControlException;
 
 import javax.swing.AbstractButton;

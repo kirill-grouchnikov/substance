@@ -29,13 +29,23 @@
  */
 package org.pushingpixels.substance.internal.utils.border;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
 
 import javax.swing.SwingUtilities;
 import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**

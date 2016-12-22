@@ -33,7 +33,6 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -60,7 +59,6 @@ import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.RolloverTextControlListener;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
-import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 import org.pushingpixels.substance.internal.utils.border.SubstanceTextComponentBorder;
@@ -268,14 +266,7 @@ public class SubstanceFormattedTextFieldUI extends BasicFormattedTextFieldUI
 
 	@Override
 	public boolean isInside(MouseEvent me) {
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel()) {
-			return false;
-		}
-		Shape contour = SubstanceOutlineUtilities.getBaseOutline(
-				this.textField, 2.0f * SubstanceSizeUtils
-						.getClassicButtonCornerRadius(SubstanceSizeUtils
-								.getComponentFontSize(this.textField)), null);
-		return contour.contains(me.getPoint());
+		return true;
 	}
 
 	@Override

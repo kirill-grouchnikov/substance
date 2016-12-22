@@ -38,16 +38,17 @@ import org.pushingpixels.substance.api.SubstanceLookAndFeel;
  * <li>-Dswing.defaultlaf=org.pushingpixels.substance.api.skin.
  * SubstanceGraphiteGoldLookAndFeel</li>
  * <li>UIManager.setLookAndFeel(
- * "org.pushingpixels.substance.api.skin.SubstanceGraphiteGoldLookAndFeel" );</li>
+ * "org.pushingpixels.substance.api.skin.SubstanceGraphiteGoldLookAndFeel"
+ * );</li>
  * <li>UIManager.setLookAndFeel(new SubstanceGraphiteGoldLookAndFeel());</li>
  * </ul>
  * 
  * @author Kirill Grouchnikov
- * @since version 6.2
+ * @since version 7.0
  */
 public class SubstanceGraphiteGoldLookAndFeel extends SubstanceLookAndFeel {
 	/**
-	 * Creates a new <code>Raven Graphite Gold</code> look-and-feel.
+	 * Creates a new <code>Graphite Gold</code> look-and-feel.
 	 */
 	public SubstanceGraphiteGoldLookAndFeel() {
 		super(new GraphiteGoldSkin());

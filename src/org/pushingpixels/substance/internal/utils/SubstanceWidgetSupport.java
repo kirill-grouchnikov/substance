@@ -251,8 +251,7 @@ public class SubstanceWidgetSupport extends LafWidgetSupport {
 	@Override
 	public Icon getLockIcon(Component c) {
 		return SubstanceImageCreator.getSmallLockIcon(
-						SubstanceColorSchemeUtilities.getColorScheme(c,
-								ComponentState.ENABLED), c);
+				SubstanceColorSchemeUtilities.getColorScheme(c, ComponentState.ENABLED), c);
 	}
 
 	/*

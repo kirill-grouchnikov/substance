@@ -38,6 +38,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.geom.Line2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
@@ -240,10 +241,8 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 							// System.out.println("Fade in on index " + i);
 
 							if (!fadeCanceled) {
-								StateTransitionTracker tracker = getTracker(i,
-										getColumnState(i).isFacetActive(
-												ComponentStateFacet.ROLLOVER),
-										false);
+								StateTransitionTracker tracker = getTracker(i, getColumnState(i)
+										.isFacetActive(ComponentStateFacet.ROLLOVER), false);
 								tracker.getModel().setSelected(true);
 								initiatedTrackers.add(tracker);
 								if (initiatedTrackers.size() > 15) {
@@ -259,18 +258,13 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 						// check if was selected before and still points to the
 						// same element
 						if (selectedIndices.containsKey(i)) {
-							if (selectedIndices.get(i) == columnModel
-									.getColumn(i)) {
+							if (selectedIndices.get(i) == columnModel.getColumn(i)) {
 								// start fading out
 								// System.out.println("Fade out on index " + i);
 
 								if (!fadeCanceled) {
-									StateTransitionTracker tracker = getTracker(
-											i,
-											getColumnState(i)
-													.isFacetActive(
-															ComponentStateFacet.ROLLOVER),
-											true);
+									StateTransitionTracker tracker = getTracker(i, getColumnState(i)
+											.isFacetActive(ComponentStateFacet.ROLLOVER), true);
 									tracker.getModel().setSelected(false);
 									initiatedTrackers.add(tracker);
 									if (initiatedTrackers.size() > 15) {
@@ -294,23 +288,20 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 			}
 		}
 
-		this.substancePropertyChangeListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ("table".equals(evt.getPropertyName())) {
-					// track changes to the table and re-register the
-					// column model listener to the new table.
-					TableColumnModel oldModel = (evt.getOldValue() instanceof JTable) ? ((JTable) evt
-							.getOldValue()).getColumnModel()
-							: null;
-					TableColumnModel newModel = (evt.getNewValue() instanceof JTable) ? ((JTable) evt
-							.getNewValue()).getColumnModel()
-							: null;
-					processColumnModelChangeEvent(oldModel, newModel);
-				}
+		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+			if ("table".equals(evt.getPropertyName())) {
+				// track changes to the table and re-register the
+				// column model listener to the new table.
+				TableColumnModel oldModel = (evt.getOldValue() instanceof JTable)
+						? ((JTable) evt.getOldValue()).getColumnModel()
+						: null;
+				TableColumnModel newModel = (evt.getNewValue() instanceof JTable)
+						? ((JTable) evt.getNewValue()).getColumnModel()
+						: null;
+				processColumnModelChangeEvent(oldModel, newModel);
 			}
 		};
-		this.header
-				.addPropertyChangeListener(this.substancePropertyChangeListener);
+		this.header.addPropertyChangeListener(this.substancePropertyChangeListener);
 	}
 
 	/*
@@ -324,8 +315,7 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 
 		defaultHeaderRenderer = header.getDefaultRenderer();
 		if (defaultHeaderRenderer instanceof UIResource) {
-			header
-					.setDefaultRenderer(new SubstanceDefaultTableHeaderCellRenderer());
+			header.setDefaultRenderer(new SubstanceDefaultTableHeaderCellRenderer());
 		}
 
 		for (int i = 0; i < header.getColumnModel().getColumnCount(); i++) {
@@ -352,8 +342,7 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 			}
 		}
 
-		this.header
-				.removePropertyChangeListener(this.substancePropertyChangeListener);
+		this.header.removePropertyChangeListener(this.substancePropertyChangeListener);
 		this.substancePropertyChangeListener = null;
 
 		super.uninstallListeners();
@@ -373,8 +362,7 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 		if (header.getDefaultRenderer() instanceof SubstanceDefaultTableHeaderCellRenderer) {
 			header.setDefaultRenderer(defaultHeaderRenderer);
 			if (defaultHeaderRenderer instanceof Component)
-				SwingUtilities
-						.updateComponentTreeUI((Component) defaultHeaderRenderer);
+				SwingUtilities.updateComponentTreeUI((Component) defaultHeaderRenderer);
 		}
 	}
 
@@ -424,8 +412,7 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 				columnWidth = aColumn.getWidth();
 				cellRect.width = columnWidth;
 				if (aColumn != draggedColumn) {
-					this.paintCell(g, cellRect, column, selected
-							.contains(column));
+					this.paintCell(g, cellRect, column, selected.contains(column));
 				}
 				cellRect.x += columnWidth;
 			}
@@ -435,8 +422,7 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 				columnWidth = aColumn.getWidth();
 				cellRect.width = columnWidth;
 				if (aColumn != draggedColumn) {
-					this.paintCell(g, cellRect, column, selected
-							.contains(column));
+					this.paintCell(g, cellRect, column, selected.contains(column));
 				}
 				cellRect.x += columnWidth;
 			}
@@ -447,23 +433,22 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 		// Paint the dragged column if we are dragging.
 		if (draggedColumn != null) {
 			int draggedColumnIndex = viewIndexForColumn(draggedColumn);
-			Rectangle draggedCellRect = header
-					.getHeaderRect(draggedColumnIndex);
+			Rectangle draggedCellRect = header.getHeaderRect(draggedColumnIndex);
 
 			// Draw a gray well in place of the moving column.
 			g.setColor(header.getParent().getBackground());
-			g.fillRect(draggedCellRect.x, draggedCellRect.y,
-					draggedCellRect.width, draggedCellRect.height);
+			g.fillRect(draggedCellRect.x, draggedCellRect.y, draggedCellRect.width,
+					draggedCellRect.height);
 
 			draggedCellRect.x += header.getDraggedDistance();
 
 			// Fill the background.
 			g.setColor(header.getBackground());
-			g.fillRect(draggedCellRect.x, draggedCellRect.y,
-					draggedCellRect.width, draggedCellRect.height);
+			g.fillRect(draggedCellRect.x, draggedCellRect.y, draggedCellRect.width,
+					draggedCellRect.height);
 
-			this.paintCell(g, draggedCellRect, draggedColumnIndex, selected
-					.contains(draggedColumnIndex));
+			this.paintCell(g, draggedCellRect, draggedColumnIndex,
+					selected.contains(draggedColumnIndex));
 		}
 
 		// Remove all components in the rendererPane.
@@ -483,8 +468,8 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 		if (renderer == null) {
 			renderer = header.getDefaultRenderer();
 		}
-		return renderer.getTableCellRendererComponent(header.getTable(),
-				aColumn.getHeaderValue(), false, false, -1, columnIndex);
+		return renderer.getTableCellRendererComponent(header.getTable(), aColumn.getHeaderValue(),
+				false, false, -1, columnIndex);
 	}
 
 	/**
@@ -522,16 +507,14 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 		Color gridColor = getGridColor(this.header);
 
 		float strokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
-		g2d.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND,
-				BasicStroke.JOIN_BEVEL));
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setColor(gridColor);
-		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.header,
-				0.7f, g));
+		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.header, 0.7f, g));
 
-		g2d.drawLine((int) left.getX(), (int) (bottom - strokeWidth / 2),
-				(int) right.getX(), (int) (bottom - strokeWidth / 2));
+		float bottomLineY = bottom - strokeWidth / 2;
+		g2d.draw(new Line2D.Float((float) left.getX(), bottomLineY, (float) right.getX(), 
+				bottomLineY));
 		// If the table does not have enough columns to fill the view we'll
 		// get -1. Replace this with the index of the last column.
 		if (cMax == -1) {
@@ -550,14 +533,11 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 
 				if (aColumn != draggedColumn) {
 					if (hasLeadingVerticalGridLine(header, cellRect, column)) {
-						g2d
-								.drawLine(cellRect.x, cellRect.y, cellRect.x,
-										bottom);
+						g2d.drawLine(cellRect.x, cellRect.y, cellRect.x, bottom);
 					}
 					if (hasTrailingVerticalGridLine(header, cellRect, column)) {
-						g2d.drawLine(cellRect.x + cellRect.width - 1,
-								cellRect.y, cellRect.x + cellRect.width - 1,
-								bottom);
+						g2d.drawLine(cellRect.x + cellRect.width - 1, cellRect.y,
+								cellRect.x + cellRect.width - 1, bottom);
 					}
 				}
 
@@ -571,14 +551,11 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 
 				if (aColumn != draggedColumn) {
 					if (hasLeadingVerticalGridLine(header, cellRect, column)) {
-						g2d.drawLine(cellRect.x + cellRect.width - 1,
-								cellRect.y, cellRect.x + cellRect.width - 1,
-								bottom);
+						g2d.drawLine(cellRect.x + cellRect.width - 1, cellRect.y,
+								cellRect.x + cellRect.width - 1, bottom);
 					}
 					if (hasTrailingVerticalGridLine(header, cellRect, column)) {
-						g2d
-								.drawLine(cellRect.x, cellRect.y, cellRect.x,
-										bottom);
+						g2d.drawLine(cellRect.x, cellRect.y, cellRect.x, bottom);
 					}
 				}
 				cellRect.x += columnWidth;
@@ -588,10 +565,9 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 		g2d.dispose();
 	}
 
-	private boolean hasTrailingVerticalGridLine(JTableHeader tableHeader,
-			Rectangle cellRect, int column) {
-		boolean toDrawLine = (column != (tableHeader.getColumnModel()
-				.getColumnCount() - 1));
+	private boolean hasTrailingVerticalGridLine(JTableHeader tableHeader, Rectangle cellRect,
+			int column) {
+		boolean toDrawLine = (column != (tableHeader.getColumnModel().getColumnCount() - 1));
 		if (!toDrawLine) {
 			Container parent = this.header.getParent();
 			if (tableHeader.getComponentOrientation().isLeftToRight()) {
@@ -604,8 +580,8 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 		return toDrawLine;
 	}
 
-	private boolean hasLeadingVerticalGridLine(JTableHeader tableHeader,
-			Rectangle cellRect, int column) {
+	private boolean hasLeadingVerticalGridLine(JTableHeader tableHeader, Rectangle cellRect,
+			int column) {
 		if (column != 0) {
 			return false;
 		}
@@ -634,8 +610,9 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 		}
 		ComponentState currState = isEnabled ? ComponentState.ENABLED
 				: ComponentState.DISABLED_UNSELECTED;
-		Color gridColor = SubstanceColorSchemeUtilities.getColorScheme(header,
-				ColorSchemeAssociationKind.BORDER, currState).getLineColor();
+		Color gridColor = SubstanceColorSchemeUtilities
+				.getColorScheme(header, ColorSchemeAssociationKind.BORDER, currState)
+				.getLineColor();
 		return gridColor;
 	}
 
@@ -651,8 +628,7 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 	 * @param isSelected
 	 *            Selection indication.
 	 */
-	private void paintCell(Graphics g, Rectangle cellRect, int columnIndex,
-			boolean isSelected) {
+	private void paintCell(Graphics g, Rectangle cellRect, int columnIndex, boolean isSelected) {
 		Graphics2D g2d = (Graphics2D) g.create();
 		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(header, g));
 
@@ -660,7 +636,8 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 		Component component = getHeaderRenderer(columnIndex);
 
 		StateTransitionTracker.ModelStateInfo modelStateInfo = getModelStateInfo(columnIndex);
-		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = ((modelStateInfo == null) ? null
+		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = ((modelStateInfo == null)
+				? null
 				: modelStateInfo.getStateContributionMap());
 		ComponentState currState = ((modelStateInfo == null) ? getColumnState(columnIndex)
 				: modelStateInfo.getCurrModelState());
@@ -669,15 +646,14 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 		if (activeStates != null) {
 			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> stateEntry : activeStates
 					.entrySet()) {
-				hasHighlights = (SubstanceColorSchemeUtilities
-						.getHighlightAlpha(this.header, stateEntry.getKey())
-						* stateEntry.getValue().getContribution() > 0.0f);
+				hasHighlights = (SubstanceColorSchemeUtilities.getHighlightAlpha(this.header,
+						stateEntry.getKey()) * stateEntry.getValue().getContribution() > 0.0f);
 				if (hasHighlights)
 					break;
 			}
 		} else {
-			hasHighlights = (SubstanceColorSchemeUtilities.getHighlightAlpha(
-					this.header, currState) > 0.0f);
+			hasHighlights = (SubstanceColorSchemeUtilities.getHighlightAlpha(this.header,
+					currState) > 0.0f);
 		}
 
 		// System.out.println(row + ":" + prevTheme.getDisplayName() + "["
@@ -686,55 +662,42 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 
 		if (hasHighlights) {
 			if (activeStates == null) {
-				float alpha = SubstanceColorSchemeUtilities.getHighlightAlpha(
-						this.header, currState);
+				float alpha = SubstanceColorSchemeUtilities.getHighlightAlpha(this.header,
+						currState);
 				if (alpha > 0.0f) {
-					SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
-							.getColorScheme(this.header,
-									ColorSchemeAssociationKind.HIGHLIGHT,
-									currState);
+					SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities.getColorScheme(
+							this.header, ColorSchemeAssociationKind.HIGHLIGHT_TEXT, currState);
 					SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
 							.getColorScheme(this.header,
-									ColorSchemeAssociationKind.HIGHLIGHT,
-									currState);
-					g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
-							this.header, alpha, g));
-					HighlightPainterUtils.paintHighlight(g2d,
-							this.rendererPane, rendererPane, cellRect, 0.8f,
-							null, fillScheme, borderScheme);
-					g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
-							this.header, g));
+									ColorSchemeAssociationKind.HIGHLIGHT_BORDER, currState);
+					g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.header, alpha, g));
+					HighlightPainterUtils.paintHighlight(g2d, this.rendererPane, rendererPane,
+							cellRect, 0.8f, null, fillScheme, borderScheme);
+					g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.header, g));
 				}
 			} else {
 				for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> stateEntry : activeStates
 						.entrySet()) {
 					ComponentState activeState = stateEntry.getKey();
-					float alpha = SubstanceColorSchemeUtilities
-							.getHighlightAlpha(this.header, activeState)
-							* stateEntry.getValue().getContribution();
+					float alpha = SubstanceColorSchemeUtilities.getHighlightAlpha(this.header,
+							activeState) * stateEntry.getValue().getContribution();
 					if (alpha == 0.0f)
 						continue;
-					SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
-							.getColorScheme(this.header,
-									ColorSchemeAssociationKind.HIGHLIGHT,
-									activeState);
+					SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities.getColorScheme(
+							this.header, ColorSchemeAssociationKind.HIGHLIGHT_TEXT, activeState);
 					SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
 							.getColorScheme(this.header,
-									ColorSchemeAssociationKind.HIGHLIGHT,
-									activeState);
-					g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
-							this.header, alpha, g));
-					HighlightPainterUtils.paintHighlight(g2d,
-							this.rendererPane, rendererPane, cellRect, 0.8f,
-							null, fillScheme, borderScheme);
-					g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
-							this.header, g));
+									ColorSchemeAssociationKind.HIGHLIGHT_BORDER, activeState);
+					g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.header, alpha, g));
+					HighlightPainterUtils.paintHighlight(g2d, this.rendererPane, rendererPane,
+							cellRect, 0.8f, null, fillScheme, borderScheme);
+					g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.header, g));
 				}
 			}
 		}
 
-		rendererPane.paintComponent(g2d, component, header, cellRect.x,
-				cellRect.y, cellRect.width, cellRect.height, true);
+		rendererPane.paintComponent(g2d, component, header, cellRect.x, cellRect.y, cellRect.width,
+				cellRect.height, true);
 
 		g2d.dispose();
 	}
@@ -782,14 +745,13 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 
 		// do not use the highlight scheme for painting the
 		// table header background
-		SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(c, backgroundState);
-		SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(c, ColorSchemeAssociationKind.BORDER,
-						backgroundState);
+		SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities.getColorScheme(c,
+				backgroundState);
+		SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities.getColorScheme(c,
+				ColorSchemeAssociationKind.HIGHLIGHT_BORDER, backgroundState);
 
-		HighlightPainterUtils.paintHighlight(g, null, c, clip, 0.0f, null,
-				fillScheme, borderScheme);
+		HighlightPainterUtils.paintHighlight(g, null, c, clip, 0.0f, null, fillScheme,
+				borderScheme);
 		Graphics2D g2d = (Graphics2D) g.create();
 		RenderingUtils.installDesktopHints(g2d, c);
 		paint(g2d, c);
@@ -799,9 +761,8 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicTableHeaderUI#uninstallUI(javax.swing.JComponent
-	 * )
+	 * @see javax.swing.plaf.basic.BasicTableHeaderUI#uninstallUI(javax.swing.
+	 * JComponent )
 	 */
 	@Override
 	public void uninstallUI(JComponent c) {
@@ -811,8 +772,8 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 			if (renderer == null) {
 				renderer = header.getDefaultRenderer();
 			}
-			Component rendComp = renderer.getTableCellRendererComponent(header
-					.getTable(), aColumn.getHeaderValue(), false, false, -1, i);
+			Component rendComp = renderer.getTableCellRendererComponent(header.getTable(),
+					aColumn.getHeaderValue(), false, false, -1, i);
 			SwingUtilities.updateComponentTreeUI(rendComp);
 		}
 		super.uninstallUI(c);
@@ -835,47 +796,36 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 			toEnable = toEnable && table.isEnabled();
 		}
 
-		StateTransitionTracker tracker = this.stateTransitionMultiTracker
-				.getTracker(columnIndex);
+		StateTransitionTracker tracker = this.stateTransitionMultiTracker.getTracker(columnIndex);
 		if (tracker == null) {
 			boolean isRollover = false;
 			TableColumnModel columnModel = header.getColumnModel();
 			boolean isSelected = false;
 			if (columnModel.getColumnSelectionAllowed()) {
-				isSelected = columnModel.getSelectionModel().isSelectedIndex(
-						columnIndex);
-				if ((table != null)
-						&& (table.getUI() instanceof SubstanceTableUI)) {
+				isSelected = columnModel.getSelectionModel().isSelectedIndex(columnIndex);
+				if ((table != null) && (table.getUI() instanceof SubstanceTableUI)) {
 					SubstanceTableUI tableUI = (SubstanceTableUI) table.getUI();
 					int rolledOverIndex = tableUI.getRolloverColumnIndex();
-					isRollover = (rolledOverIndex >= 0)
-							&& (rolledOverIndex == columnIndex);
-					boolean hasSelectionAnimations = tableUI
-							.hasSelectionAnimations();
-					if (hasSelectionAnimations
-							&& AnimationConfigurationManager.getInstance()
-									.isAnimationAllowed(
-											AnimationFacet.SELECTION, table))
-						isSelected = this.selectedIndices
-								.containsKey(columnIndex);
+					isRollover = (rolledOverIndex >= 0) && (rolledOverIndex == columnIndex);
+					boolean hasSelectionAnimations = tableUI.hasSelectionAnimations();
+					if (hasSelectionAnimations && AnimationConfigurationManager.getInstance()
+							.isAnimationAllowed(AnimationFacet.SELECTION, table))
+						isSelected = this.selectedIndices.containsKey(columnIndex);
 				}
 			}
 			return ComponentState.getState(toEnable, isRollover, isSelected);
 		} else {
-			ComponentState fromTracker = tracker.getModelStateInfo()
-					.getCurrModelState();
-			return ComponentState.getState(toEnable, fromTracker
-					.isFacetActive(ComponentStateFacet.ROLLOVER), fromTracker
-					.isFacetActive(ComponentStateFacet.SELECTION));
+			ComponentState fromTracker = tracker.getModelStateInfo().getCurrModelState();
+			return ComponentState.getState(toEnable,
+					fromTracker.isFacetActive(ComponentStateFacet.ROLLOVER),
+					fromTracker.isFacetActive(ComponentStateFacet.SELECTION));
 		}
 	}
 
-	public StateTransitionTracker.ModelStateInfo getModelStateInfo(
-			int columnIndex) {
+	public StateTransitionTracker.ModelStateInfo getModelStateInfo(int columnIndex) {
 		if (this.stateTransitionMultiTracker.size() == 0)
 			return null;
-		StateTransitionTracker tracker = this.stateTransitionMultiTracker
-				.getTracker(columnIndex);
+		StateTransitionTracker tracker = this.stateTransitionMultiTracker.getTracker(columnIndex);
 		if (tracker == null) {
 			return null;
 		} else {
@@ -902,8 +852,7 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 	 * 
 	 * @author Kirill Grouchnikov
 	 */
-	protected static class ScrollPaneCornerFiller extends JComponent implements
-			UIResource {
+	protected static class ScrollPaneCornerFiller extends JComponent implements UIResource {
 		/**
 		 * Associated table header.
 		 */
@@ -926,34 +875,28 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 			// + ((header == null) ? "null" : header.hashCode()));
 
 			boolean ltr = header.getComponentOrientation().isLeftToRight();
-			final ComponentState backgroundState = (header.isEnabled() && header
-					.getTable().isEnabled()) ? ComponentState.ENABLED
-					: ComponentState.DISABLED_UNSELECTED;
+			final ComponentState backgroundState = (header.isEnabled()
+					&& header.getTable().isEnabled()) ? ComponentState.ENABLED
+							: ComponentState.DISABLED_UNSELECTED;
 
-			SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(this.header,
-							ColorSchemeAssociationKind.HIGHLIGHT,
-							backgroundState);
-			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(this.header,
-							ColorSchemeAssociationKind.HIGHLIGHT_BORDER,
-							backgroundState);
+			SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities.getColorScheme(
+					this.header, ColorSchemeAssociationKind.HIGHLIGHT_TEXT, backgroundState);
+			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities.getColorScheme(
+					this.header, ColorSchemeAssociationKind.HIGHLIGHT_BORDER, backgroundState);
 
 			HighlightPainterUtils.paintHighlight(g2d, null, this.header,
-					new Rectangle(0, 0, this.getWidth(), this.getHeight()),
-					0.0f, null, fillScheme, borderScheme);
+					new Rectangle(0, 0, this.getWidth(), this.getHeight()), 0.0f, null, fillScheme,
+					borderScheme);
 
 			g2d.setColor(getGridColor(this.header));
 			float strokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
-			g2d.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND,
-					BasicStroke.JOIN_BEVEL));
+			g2d.setStroke(
+					new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
-			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.header,
-					0.7f, g));
+			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.header, 0.7f, g));
 
-			int x = ltr ? (int) strokeWidth / 2 : getWidth() - 1
-					- (int) strokeWidth / 2;
+			int x = ltr ? (int) strokeWidth / 2 : getWidth() - 1 - (int) strokeWidth / 2;
 			g2d.drawLine(x, 0, x, getHeight());
 
 			g2d.dispose();
@@ -971,12 +914,11 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 	public void processColumnModelChangeEvent(TableColumnModel oldModel,
 			TableColumnModel newModel) {
 		if (oldModel != null) {
-			oldModel.getSelectionModel().removeListSelectionListener(
-					substanceFadeSelectionListener);
+			oldModel.getSelectionModel()
+					.removeListSelectionListener(substanceFadeSelectionListener);
 		}
 		if (newModel != null) {
-			newModel.getSelectionModel().addListSelectionListener(
-					substanceFadeSelectionListener);
+			newModel.getSelectionModel().addListSelectionListener(substanceFadeSelectionListener);
 		}
 		selectedIndices.clear();
 		stateTransitionMultiTracker.clear();
@@ -987,8 +929,7 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 	 * 
 	 * @author Kirill Grouchnikov
 	 */
-	protected class ColumnHeaderRepaintCallback extends
-			UIThreadTimelineCallbackAdapter {
+	protected class ColumnHeaderRepaintCallback extends UIThreadTimelineCallbackAdapter {
 		/**
 		 * Associated table header.
 		 */
@@ -1013,15 +954,13 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 		}
 
 		@Override
-		public void onTimelinePulse(float durationFraction,
-				float timelinePosition) {
+		public void onTimelinePulse(float durationFraction, float timelinePosition) {
 			repaintColumnHeader();
 		}
 
 		@Override
-		public void onTimelineStateChanged(TimelineState oldState,
-				TimelineState newState, float durationFraction,
-				float timelinePosition) {
+		public void onTimelineStateChanged(TimelineState oldState, TimelineState newState,
+				float durationFraction, float timelinePosition) {
 			repaintColumnHeader();
 		}
 
@@ -1036,14 +975,13 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 				}
 				try {
 					// maybeUpdateLayoutState();
-					int cellCount = header.getColumnModel()
-							.getColumnCount();
+					int cellCount = header.getColumnModel().getColumnCount();
 					if ((cellCount > 0) && (columnIndex < cellCount)) {
 						// need to retrieve the cell rectangle since the
 						// cells can be moved while animating
 						Rectangle rect = header.getHeaderRect(columnIndex);
-						Rectangle damaged = new Rectangle(rect.x - 5,
-								rect.y, rect.width + 10, rect.height);
+						Rectangle damaged = new Rectangle(rect.x - 5, rect.y, rect.width + 10,
+								rect.height);
 						header.repaint(damaged);
 					}
 				} catch (RuntimeException re) {
@@ -1053,10 +991,9 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 		}
 	}
 
-	public StateTransitionTracker getTracker(final int columnIndex,
-			boolean initialRollover, boolean initialSelected) {
-		StateTransitionTracker tracker = stateTransitionMultiTracker
-				.getTracker(columnIndex);
+	public StateTransitionTracker getTracker(final int columnIndex, boolean initialRollover,
+			boolean initialSelected) {
+		StateTransitionTracker tracker = stateTransitionMultiTracker.getTracker(columnIndex);
 		if (tracker == null) {
 			ButtonModel model = new DefaultButtonModel();
 			model.setSelected(initialSelected);

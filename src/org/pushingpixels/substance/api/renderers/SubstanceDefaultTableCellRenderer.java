@@ -348,7 +348,7 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 					currState);
 			if (isDropLocation) {
 				scheme = SubstanceColorSchemeUtilities.getColorScheme(table,
-						ColorSchemeAssociationKind.TEXT_HIGHLIGHT, currState);
+						ColorSchemeAssociationKind.HIGHLIGHT_TEXT, currState);
 			}
 			super
 					.setForeground(new ColorUIResource(scheme

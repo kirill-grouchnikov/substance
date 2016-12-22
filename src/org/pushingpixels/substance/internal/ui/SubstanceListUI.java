@@ -624,10 +624,10 @@ public class SubstanceListUI extends BasicListUI implements
 			// mark drop location
 			SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
 					.getColorScheme(list,
-							ColorSchemeAssociationKind.TEXT_HIGHLIGHT,
+							ColorSchemeAssociationKind.HIGHLIGHT_TEXT,
 							currState);
 			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(list, ColorSchemeAssociationKind.BORDER,
+					.getColorScheme(list, ColorSchemeAssociationKind.HIGHLIGHT_BORDER,
 							currState);
 			Rectangle cellRect = new Rectangle(cx, cy, cw, ch);
 			HighlightPainterUtils.paintHighlight(g2d, this.rendererPane,

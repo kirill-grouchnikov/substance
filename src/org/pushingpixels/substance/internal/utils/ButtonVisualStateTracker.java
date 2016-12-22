@@ -32,7 +32,10 @@ package org.pushingpixels.substance.internal.utils;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.JScrollBar;
+import javax.swing.SwingUtilities;
 
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;

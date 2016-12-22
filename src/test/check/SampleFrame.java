@@ -69,7 +69,6 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.GeminiSkin;
-import org.pushingpixels.substance.api.skin.SkinChangeListener;
 
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.layout.CellConstraints;

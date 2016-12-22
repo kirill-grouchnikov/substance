@@ -114,8 +114,8 @@ public class BackgroundPaintingUtils {
 					if (c instanceof JMenu) {
 						showOverlays = ((JMenu) c).isTopLevelMenu();
 					}
-//				} else if (c.getParent().getClientProperty(DecorationPainterUtils.POPUP_INVOKER_LINK) != null) {
-//					showOverlays = false;
+				} else if (c instanceof JMenuBar) {
+					showOverlays = true;
 				}
 			}
 			if (showOverlays) {

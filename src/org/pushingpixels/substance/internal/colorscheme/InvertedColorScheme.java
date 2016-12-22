@@ -92,20 +92,16 @@ public class InvertedColorScheme extends BaseColorScheme {
 	public InvertedColorScheme(SubstanceColorScheme origScheme) {
 		super("Inverted " + origScheme.getDisplayName(), !origScheme.isDark());
 		this.origScheme = origScheme;
-		this.foregroundColor = SubstanceColorUtilities.invertColor(origScheme
-				.getForegroundColor());
+		this.foregroundColor = SubstanceColorUtilities.invertColor(origScheme.getForegroundColor());
 		this.mainUltraDarkColor = SubstanceColorUtilities
 				.invertColor(origScheme.getUltraLightColor());
-		this.mainDarkColor = SubstanceColorUtilities.invertColor(origScheme
-				.getExtraLightColor());
-		this.mainMidColor = SubstanceColorUtilities.invertColor(origScheme
-				.getLightColor());
-		this.mainLightColor = SubstanceColorUtilities.invertColor(origScheme
-				.getMidColor());
-		this.mainExtraLightColor = SubstanceColorUtilities
-				.invertColor(origScheme.getDarkColor());
+		this.mainDarkColor = SubstanceColorUtilities.invertColor(origScheme.getExtraLightColor());
+		this.mainMidColor = SubstanceColorUtilities.invertColor(origScheme.getLightColor());
+		this.mainLightColor = SubstanceColorUtilities.invertColor(origScheme.getMidColor());
+		this.mainExtraLightColor = SubstanceColorUtilities.invertColor(origScheme.getDarkColor());
 		this.mainUltraLightColor = SubstanceColorUtilities
 				.invertColor(origScheme.getUltraDarkColor());
+		this.isDark = !origScheme.isDark();
 	}
 
 	/*

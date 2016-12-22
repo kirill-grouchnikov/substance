@@ -33,12 +33,25 @@ import java.awt.Color;
 import java.awt.Component;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.CellRendererPane;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JMenuItem;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollBar;
+import javax.swing.JSlider;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.UIResource;
 import javax.swing.text.JTextComponent;
 
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 
@@ -318,18 +331,6 @@ public class SubstanceColorUtilities {
 	/**
 	 * Returns a negative of the specified color.
 	 * 
-	 * @param color
-	 *            Color.
-	 * @return Negative of the specified color.
-	 */
-	public static Color getNegativeColor(Color color) {
-		return new Color(255 - color.getRed(), 255 - color.getGreen(),
-				255 - color.getBlue(), color.getAlpha());
-	}
-
-	/**
-	 * Returns a negative of the specified color.
-	 * 
 	 * @param rgb
 	 *            Color RGB.
 	 * @return Negative of the specified color.
@@ -340,8 +341,7 @@ public class SubstanceColorUtilities {
 		int g = (rgb >>> 8) & 0xFF;
 		int b = (rgb >>> 0) & 0xFF;
 
-		return (transp << 24) | ((255 - r) << 16) | ((255 - g) << 8)
-				| (255 - b);
+		return (transp << 24) | ((255 - r) << 16) | ((255 - g) << 8) | (255 - b);
 	}
 
 	/**
@@ -355,8 +355,7 @@ public class SubstanceColorUtilities {
 	 *         alpha channel value.
 	 */
 	public static Color getAlphaColor(Color color, int alpha) {
-		return new Color(color.getRed(), color.getGreen(), color.getBlue(),
-				alpha);
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
 	}
 
 	/**
@@ -425,11 +424,9 @@ public class SubstanceColorUtilities {
 	 *         original color, but its brightness is shifted towards the
 	 *         brightness of the brightness source.
 	 */
-	public static Color deriveByBrightness(Color original,
-			Color brightnessSource) {
+	public static Color deriveByBrightness(Color original, Color brightnessSource) {
 		float[] hsbvalsOrig = new float[3];
-		Color.RGBtoHSB(original.getRed(), original.getGreen(), original
-				.getBlue(), hsbvalsOrig);
+		Color.RGBtoHSB(original.getRed(), original.getGreen(), original.getBlue(), hsbvalsOrig);
 		float[] hsbvalsBrightnessSrc = new float[3];
 		Color.RGBtoHSB(brightnessSource.getRed(), brightnessSource.getGreen(),
 				brightnessSource.getBlue(), hsbvalsBrightnessSrc);
@@ -460,10 +457,7 @@ public class SubstanceColorUtilities {
 	 * @return Lighter version of the specified color.
 	 */
 	public static Color getLighterColor(Color color, double diff) {
-		int r = color.getRed() + (int) (diff * (255 - color.getRed()));
-		int g = color.getGreen() + (int) (diff * (255 - color.getGreen()));
-		int b = color.getBlue() + (int) (diff * (255 - color.getBlue()));
-		return new Color(r, g, b);
+		return SubstanceColorUtilities.getInterpolatedColor(color, Color.white, 1.0 - diff);
 	}
 
 	/**
@@ -477,10 +471,7 @@ public class SubstanceColorUtilities {
 	 * @return Darker version of the specified color.
 	 */
 	public static Color getDarkerColor(Color color, double diff) {
-		int r = (int) ((1.0 - diff) * color.getRed());
-		int g = (int) ((1.0 - diff) * color.getGreen());
-		int b = (int) ((1.0 - diff) * color.getBlue());
-		return new Color(r, g, b);
+		return SubstanceColorUtilities.getInterpolatedColor(color, Color.black, 1.0 - diff);
 	}
 
 	/**
@@ -700,8 +691,10 @@ public class SubstanceColorUtilities {
 		} else {
 			// Fix for 325 - respect the opacity setting of the text
 			// component
-			if (component instanceof JTextComponent && !component.isOpaque())
+			if (component instanceof JTextComponent && 
+					(!component.isOpaque() || !((JTextComponent) component).isEditable())) {
 				component = component.getParent();
+			}
 		}
 
 		Color backgr = component.getBackground();
@@ -720,10 +713,9 @@ public class SubstanceColorUtilities {
 				return backgr;
 			}
 
-			SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
-					.getColorScheme(component,
-							component.isEnabled() ? ComponentState.ENABLED
-									: ComponentState.DISABLED_UNSELECTED);
+			SubstanceColorScheme scheme = SubstanceColorSchemeUtilities.getColorScheme(component,
+					component.isEnabled() ? ComponentState.ENABLED 
+							: ComponentState.DISABLED_UNSELECTED);
 			backgr = scheme.getBackgroundFillColor();
 		} else {
 			ComponentState state = component.isEnabled() ? ComponentState.ENABLED
@@ -733,12 +725,8 @@ public class SubstanceColorUtilities {
 			if (matchingTextComp != null) {
 				component = matchingTextComp;
 				boolean isEditable = matchingTextComp.isEditable();
-				if (isEditable) {
-					state = component.isEnabled() ? EDITABLE
-							: EDITABLE_DISABLED;
-				} else {
-					state = component.isEnabled() ? UNEDITABLE
-							: UNEDITABLE_DISABLED;
+				if (!isEditable) {
+					return getBackgroundFillColor(component.getParent());
 				}
 			}
 			// menu items always use the same background color so that the
@@ -746,19 +734,15 @@ public class SubstanceColorUtilities {
 			if (component instanceof JMenuItem) {
 				state = ComponentState.ENABLED;
 			}
-			backgr = SubstanceColorUtilities.getDefaultBackgroundColor(
-					component, state);
+			backgr = SubstanceColorUtilities.getDefaultBackgroundColor(component, state);
 
-			if (state.isDisabled()) {
-				float alpha = SubstanceColorSchemeUtilities.getAlpha(component,
-						state);
-				if (alpha < 1.0f) {
-					Color defaultColor = SubstanceColorUtilities
-							.getDefaultBackgroundColor(component,
-									ComponentState.ENABLED);
-					backgr = SubstanceColorUtilities.getInterpolatedColor(
-							backgr, defaultColor, 1.0f - (1.0f - alpha) / 2.0f);
-				}
+			float alpha = SubstanceColorSchemeUtilities.getAlpha(component, state);
+			if (alpha < 1.0f) {
+				Color defaultColor = SubstanceColorUtilities
+						.getDefaultBackgroundColor(component,
+								ComponentState.ENABLED);
+				backgr = SubstanceColorUtilities.getInterpolatedColor(
+						backgr, defaultColor, 1.0f - (1.0f - alpha) / 2.0f);
 			}
 		}
 		return backgr;
@@ -785,48 +769,12 @@ public class SubstanceColorUtilities {
 		SubstanceColorScheme colorScheme = 
 				SubstanceColorSchemeUtilities.getColorScheme(scrollbar, state);
 		backgr = SubstanceColorUtilities.getInterpolatedColor(backgr, 
-				SubstanceColorUtilities.getAlphaColor(colorScheme.getForegroundColor(), backgr.getAlpha()),
+				SubstanceColorUtilities.getAlphaColor(colorScheme.getForegroundColor(), 
+						backgr.getAlpha()),
 				0.9);
 		return backgr;
 	}
 	
-	private static final ComponentState EDITABLE = new ComponentState(
-			"editable", ComponentState.ENABLED, new ComponentStateFacet[] {
-					ComponentStateFacet.ENABLE, ComponentStateFacet.EDITABLE },
-			null);
-
-	private static final ComponentState UNEDITABLE = new ComponentState(
-			"uneditable", ComponentState.DISABLED_SELECTED,
-			new ComponentStateFacet[] { ComponentStateFacet.ENABLE },
-			new ComponentStateFacet[] { ComponentStateFacet.EDITABLE });
-
-	private static final ComponentState EDITABLE_DISABLED = new ComponentState(
-			"editable disabled", ComponentState.DISABLED_UNSELECTED,
-			new ComponentStateFacet[] { ComponentStateFacet.EDITABLE },
-			new ComponentStateFacet[] { ComponentStateFacet.ENABLE });
-
-	private static final ComponentState UNEDITABLE_DISABLED = new ComponentState(
-			"uneditable disabled", ComponentState.DISABLED_UNSELECTED, null,
-			new ComponentStateFacet[] { ComponentStateFacet.ENABLE,
-					ComponentStateFacet.EDITABLE });
-
-	public static Color getOuterTextComponentBorderColor(
-			Color fillBackgroundColor) {
-		float[] hsb = Color.RGBtoHSB(fillBackgroundColor.getRed(),
-				fillBackgroundColor.getGreen(), fillBackgroundColor.getBlue(),
-				null);
-		if (hsb[2] < 0.3f) {
-			hsb[2] = 1.0f - (float) Math.pow((1.0f - hsb[2]), 1.4);
-		} else if (hsb[2] < 0.5f) {
-			hsb[2] = 1.0f - (float) Math.pow((1.0f - hsb[2]), 1.2);
-		} else if (hsb[2] < 0.75f) {
-			hsb[2] = 1.0f - (float) Math.pow((1.0f - hsb[2]), 1.7);
-		} else {
-			hsb[2] = 1.0f - (float) Math.pow((1.0f - hsb[2]), 2.0);
-		}
-		return new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]));
-	}
-
 	/**
 	 * Returns the default background color for the components of the specified
 	 * class.
@@ -888,21 +836,18 @@ public class SubstanceColorUtilities {
 	 */
 	public static Color getStripedBackground(JComponent component, int rowIndex) {
 		Color backgr = getBackgroundFillColor(component);
-		if (backgr == null)
+		if (backgr == null) {
 			return null;
+		}
 
-		if (rowIndex % 2 == 0)
+		if (rowIndex % 2 == 0) {
 			return backgr;
-		int r = backgr.getRed();
-		int g = backgr.getGreen();
-		int b = backgr.getBlue();
-		double coef = 0.96;
-		if (!component.isEnabled())
+		}
+		double coef = 0.92;
+		if (!component.isEnabled()) {
 			coef = 1.0 - (1.0 - coef) / 2.0;
-		Color darkerColor = new ColorUIResource((int) (coef * r),
-				(int) (coef * g), (int) (coef * b));
-
-		return darkerColor;
+		}
+		return SubstanceColorUtilities.getDarkerColor(backgr, 1.0f - coef);
 	}
 
 	public static String encode(int number) {

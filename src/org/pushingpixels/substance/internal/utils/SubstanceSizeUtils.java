@@ -29,7 +29,9 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Insets;
+import java.awt.Toolkit;
 
 import javax.swing.border.Border;
 import javax.swing.plaf.BorderUIResource;

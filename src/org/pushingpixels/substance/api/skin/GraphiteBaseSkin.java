@@ -42,7 +42,8 @@ import org.pushingpixels.substance.api.painter.border.DelegateBorderPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 
 /**
- * Base class for Graphite skins. This class is not part of officially supported API.
+ * Base class for Graphite skins. This class is not part of officially supported
+ * API.
  * 
  * @author Kirill Grouchnikov
  */
@@ -66,36 +67,46 @@ abstract class GraphiteBaseSkin extends SubstanceSkin {
 
 		// highlight fill scheme + custom alpha for rollover unselected state
 		SubstanceColorScheme highlightScheme = schemes.get("Graphite Highlight");
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 0.6f, ComponentState.ROLLOVER_UNSELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 0.8f, ComponentState.SELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1.0f, ComponentState.ROLLOVER_SELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 0.75f, ComponentState.ARMED,
-				ComponentState.ROLLOVER_ARMED);
+		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 0.6f,
+				ComponentState.ROLLOVER_UNSELECTED);
+		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 0.8f,
+				ComponentState.SELECTED);
+		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1.0f,
+				ComponentState.ROLLOVER_SELECTED);
+		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 0.75f,
+				ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
 
 		// highlight border scheme
 		SubstanceColorScheme borderScheme = schemes.get("Graphite Border");
 		SubstanceColorScheme separatorScheme = schemes.get("Graphite Separator");
-		defaultSchemeBundle.registerColorScheme(new EbonyColorScheme(), ColorSchemeAssociationKind.HIGHLIGHT_BORDER,
-				ComponentState.getActiveStates());
+		defaultSchemeBundle.registerColorScheme(new EbonyColorScheme(),
+				ColorSchemeAssociationKind.HIGHLIGHT_BORDER, ComponentState.getActiveStates());
 		defaultSchemeBundle.registerColorScheme(borderScheme, ColorSchemeAssociationKind.BORDER);
-		defaultSchemeBundle.registerColorScheme(separatorScheme, ColorSchemeAssociationKind.SEPARATOR);
+		defaultSchemeBundle.registerColorScheme(separatorScheme,
+				ColorSchemeAssociationKind.SEPARATOR);
 
 		// text highlight scheme
 		SubstanceColorScheme textHighlightScheme = schemes.get("Graphite Text Highlight");
-		defaultSchemeBundle.registerColorScheme(textHighlightScheme, ColorSchemeAssociationKind.TEXT_HIGHLIGHT,
-				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED);
+		defaultSchemeBundle.registerColorScheme(textHighlightScheme,
+				ColorSchemeAssociationKind.HIGHLIGHT_TEXT, ComponentState.SELECTED,
+				ComponentState.ROLLOVER_SELECTED);
 
-		defaultSchemeBundle.registerColorScheme(highlightScheme, ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
+		defaultSchemeBundle.registerColorScheme(highlightScheme, ComponentState.ARMED,
+				ComponentState.ROLLOVER_ARMED);
 
 		SubstanceColorScheme highlightMarkScheme = schemes.get("Graphite Highlight Mark");
-		defaultSchemeBundle.registerColorScheme(highlightMarkScheme, ColorSchemeAssociationKind.HIGHLIGHT_MARK,
-				ComponentState.getActiveStates());
-		defaultSchemeBundle.registerColorScheme(highlightMarkScheme, ColorSchemeAssociationKind.MARK,
-				ComponentState.ROLLOVER_SELECTED, ComponentState.ROLLOVER_UNSELECTED);
-		defaultSchemeBundle.registerColorScheme(borderScheme, ColorSchemeAssociationKind.MARK, ComponentState.SELECTED);
+		defaultSchemeBundle.registerColorScheme(highlightMarkScheme,
+				ColorSchemeAssociationKind.HIGHLIGHT_MARK, ComponentState.getActiveStates());
+		defaultSchemeBundle.registerColorScheme(highlightMarkScheme,
+				ColorSchemeAssociationKind.MARK, ComponentState.ROLLOVER_SELECTED,
+				ComponentState.ROLLOVER_UNSELECTED);
+		defaultSchemeBundle.registerColorScheme(borderScheme, ColorSchemeAssociationKind.MARK,
+				ComponentState.SELECTED);
 
-		defaultSchemeBundle.registerColorScheme(disabledScheme, 0.5f, ComponentState.DISABLED_UNSELECTED);
-		defaultSchemeBundle.registerColorScheme(selectedDisabledScheme, 0.65f, ComponentState.DISABLED_SELECTED);
+		defaultSchemeBundle.registerColorScheme(disabledScheme, 0.5f,
+				ComponentState.DISABLED_UNSELECTED);
+		defaultSchemeBundle.registerColorScheme(selectedDisabledScheme, 0.65f,
+				ComponentState.DISABLED_SELECTED);
 		defaultSchemeBundle.registerColorScheme(disabledScheme, ColorSchemeAssociationKind.MARK,
 				ComponentState.DISABLED_UNSELECTED, ComponentState.DISABLED_SELECTED);
 
@@ -106,19 +117,20 @@ abstract class GraphiteBaseSkin extends SubstanceSkin {
 		defaultSchemeBundle.registerColorScheme(tabHighlightScheme, ColorSchemeAssociationKind.TAB,
 				ComponentState.ROLLOVER_SELECTED);
 
-		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, backgroundScheme, DecorationAreaType.NONE);
+		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, backgroundScheme,
+				DecorationAreaType.NONE);
 
 		this.setTabFadeStart(0.18);
 		this.setTabFadeEnd(0.18);
 
 		this.buttonShaper = new ClassicButtonShaper();
 		this.watermark = null;
-		this.borderPainter = new CompositeBorderPainter("Graphite", 
-				new DelegateBorderPainter("Graphite Outer", new ClassicBorderPainter(),
-						0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 
+		this.borderPainter = new CompositeBorderPainter("Graphite",
+				new DelegateBorderPainter("Graphite Outer", new ClassicBorderPainter(), 0xFFFFFFFF,
+						0xFFFFFFFF, 0xFFFFFFFF,
 						(SubstanceColorScheme scheme) -> scheme.shade(0.4f)),
-				new DelegateBorderPainter("Graphite Inner", new ClassicBorderPainter(),
-						0xA0FFFFFF, 0x90FFFFFF, 0xA0FFFFFF, 
+				new DelegateBorderPainter("Graphite Inner", new ClassicBorderPainter(), 0xA0FFFFFF,
+						0x90FFFFFF, 0xA0FFFFFF,
 						(SubstanceColorScheme scheme) -> scheme.tint(0.25f)));
 		this.highlightBorderPainter = new ClassicBorderPainter();
 	}

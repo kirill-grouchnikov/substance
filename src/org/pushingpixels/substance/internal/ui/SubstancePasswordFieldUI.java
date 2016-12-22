@@ -71,7 +71,6 @@ import org.pushingpixels.substance.internal.utils.RolloverTextControlListener;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
-import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 import org.pushingpixels.substance.internal.utils.border.SubstanceTextComponentBorder;
@@ -538,15 +537,7 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 
 	@Override
 	public boolean isInside(MouseEvent me) {
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel()) {
-			return false;
-		}
-		Shape contour = SubstanceOutlineUtilities.getBaseOutline(
-				this.passwordField, 2.0f * SubstanceSizeUtils
-						.getClassicButtonCornerRadius(SubstanceSizeUtils
-								.getComponentFontSize(this.passwordField)),
-				null);
-		return contour.contains(me.getPoint());
+		return true;
 	}
 
 	@Override

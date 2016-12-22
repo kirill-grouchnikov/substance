@@ -29,7 +29,11 @@
  */
 package org.pushingpixels.substance.internal.utils.border;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 
@@ -37,10 +41,18 @@ import javax.swing.JComponent;
 import javax.swing.border.Border;
 import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.ui.SubstanceTableUI;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
  * Table cell border for the <b>Substance</b> look and feel.

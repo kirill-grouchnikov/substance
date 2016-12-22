@@ -29,15 +29,25 @@
  */
 package org.pushingpixels.substance.internal.utils.border;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.border.Border;
 
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
-import org.pushingpixels.substance.api.*;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
  * Custom implementation of etched border.

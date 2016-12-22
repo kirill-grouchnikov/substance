@@ -68,7 +68,7 @@ public class MistSilverSkin extends SubstanceSkin {
 		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
 				activeScheme, enabledScheme, disabledScheme);
 		defaultSchemeBundle.registerColorScheme(enabledScheme.tone(0.4),
-				ColorSchemeAssociationKind.TEXT_HIGHLIGHT,
+				ColorSchemeAssociationKind.HIGHLIGHT_TEXT,
 				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED);
 		defaultSchemeBundle.registerColorScheme(lightBlueScheme,
 				ComponentState.SELECTED);

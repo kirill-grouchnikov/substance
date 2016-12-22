@@ -321,44 +321,45 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 	 *            Component state.
 	 * @return Highlight color scheme alpha channel.
 	 */
-	public final float getHighlightAlpha(Component comp,
-			ComponentState componentState) {
+	public final float getHighlightAlpha(Component comp, ComponentState componentState) {
 		// small optimization - lookup the decoration area only if there
 		// are decoration-specific scheme bundles.
 		if (this.colorSchemeBundleMap.size() > 1) {
-			DecorationAreaType decorationAreaType = SubstanceLookAndFeel
-					.getDecorationType(comp);
+			DecorationAreaType decorationAreaType = SubstanceLookAndFeel.getDecorationType(comp);
 			if (this.colorSchemeBundleMap.containsKey(decorationAreaType)) {
-				Float registered = this.colorSchemeBundleMap.get(
-						decorationAreaType).getHighlightAlpha(comp,
-						componentState);
-				if (registered >= 0.0)
+				Float registered = this.colorSchemeBundleMap.get(decorationAreaType)
+						.getHighlightAlpha(comp, componentState);
+				if (registered >= 0.0) {
 					return registered;
+				}
 			}
 		}
 
-		Float registered = this.colorSchemeBundleMap.get(
-				DecorationAreaType.NONE)
+		Float registered = this.colorSchemeBundleMap.get(DecorationAreaType.NONE)
 				.getHighlightAlpha(comp, componentState);
-		if (registered >= 0.0)
+		if (registered >= 0.0) {
 			return registered;
+		}
 
-		boolean isRollover = componentState
-				.isFacetActive(ComponentStateFacet.ROLLOVER);
-		boolean isSelected = componentState
-				.isFacetActive(ComponentStateFacet.SELECTION);
+		boolean isRollover = componentState.isFacetActive(ComponentStateFacet.ROLLOVER);
+		boolean isSelected = componentState.isFacetActive(ComponentStateFacet.SELECTION);
 		boolean isArmed = componentState.isFacetActive(ComponentStateFacet.ARM);
 
-		if (isRollover && isSelected)
+		if (isRollover && isSelected) {
 			return 0.9f;
-		if (isRollover && isArmed)
+		}
+		if (isRollover && isArmed) {
 			return 0.8f;
-		if (isSelected)
+		}
+		if (isSelected) {
 			return 0.7f;
-		if (isArmed)
+		}
+		if (isArmed) {
 			return 0.6f;
-		if (isRollover)
+		}
+		if (isRollover) {
 			return 0.4f;
+		}
 		return 0.0f;
 	}
 
@@ -372,10 +373,12 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 	 * @return Color scheme alpha channel.
 	 */
 	public final float getAlpha(Component comp, ComponentState componentState) {
-		// optimization - if the state is not registered in any
+		// optimization - if the state does not have hard fallback, and it is not registered in any
 		// scheme bundle with custom alpha, return 1.0
-		if (!this.statesWithAlpha.contains(componentState))
+		ComponentState fallback = componentState.getHardFallback();
+		if ((fallback == null) && !this.statesWithAlpha.contains(componentState)) {
 			return 1.0f;
+		}
 
 		// small optimization - lookup the decoration area only if there
 		// are decoration-specific scheme bundles.
@@ -385,17 +388,23 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 			if (this.colorSchemeBundleMap.containsKey(decorationAreaType)) {
 				Float registered = this.colorSchemeBundleMap.get(
 						decorationAreaType).getAlpha(comp, componentState);
-				if (registered >= 0.0)
+				if (registered >= 0.0) {
 					return registered;
+				}
 			}
 		}
 
 		Float registered = this.colorSchemeBundleMap.get(
 				DecorationAreaType.NONE).getAlpha(comp, componentState);
-		if (registered >= 0.0)
+		if (registered >= 0.0) {
 			return registered;
+		}
 
-		return 1.0f;
+		if (fallback == null) {
+			return 1.0f;
+		}
+
+		return getAlpha(comp, fallback);
 	}
 
 	/**

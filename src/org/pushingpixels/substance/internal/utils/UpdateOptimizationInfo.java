@@ -87,7 +87,7 @@ public class UpdateOptimizationInfo {
 		if (result == null) {
 			result = SubstanceColorSchemeUtilities
 					.getColorScheme(this.component,
-							ColorSchemeAssociationKind.HIGHLIGHT, state);
+							ColorSchemeAssociationKind.HIGHLIGHT_TEXT, state);
 			this.highlightSchemeMap.put(state, result);
 		}
 		return result;

@@ -90,7 +90,7 @@ public class DustCoffeeSkin extends DustSkin {
 		SubstanceColorScheme textHighlightScheme = schemes
 				.get("Dust Coffee Text Highlight");
 		defaultSchemeBundle.registerColorScheme(textHighlightScheme,
-				ColorSchemeAssociationKind.TEXT_HIGHLIGHT,
+				ColorSchemeAssociationKind.HIGHLIGHT_TEXT,
 				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED);
 
 		// custom highlight alphas

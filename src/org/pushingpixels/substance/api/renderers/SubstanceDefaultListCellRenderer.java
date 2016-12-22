@@ -123,7 +123,7 @@ public class SubstanceDefaultListCellRenderer extends DefaultListCellRenderer {
 				SubstanceColorScheme scheme = getColorSchemeForState(list, ui, currState);
 				if (isDropLocation) {
 					scheme = SubstanceColorSchemeUtilities.getColorScheme(list,
-							ColorSchemeAssociationKind.TEXT_HIGHLIGHT, currState);
+							ColorSchemeAssociationKind.HIGHLIGHT_TEXT, currState);
 				}
 				super.setForeground(new ColorUIResource(scheme.getForegroundColor()));
 			}

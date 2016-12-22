@@ -29,7 +29,11 @@
  */
 package org.pushingpixels.substance.internal.utils.border;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 
@@ -40,10 +44,18 @@ import javax.swing.plaf.UIResource;
 import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 
 /**
  * Text component border for the <b>Substance</b> look and feel.
@@ -55,14 +67,12 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
 	 * Insets of <code>this</code> border.
 	 */
 	protected Insets myInsets;
-	
-	private float cornerRadiusFactor;
 
 	/**
 	 * Cache of small border images.
 	 */
-	private static LazyResettableHashMap<BufferedImage> smallImageCache = new LazyResettableHashMap<BufferedImage>(
-			"SubstanceTextComponentBorder");
+	private static LazyResettableHashMap<BufferedImage> smallImageCache = 
+			new LazyResettableHashMap<BufferedImage>("SubstanceTextComponentBorder");
 
 	/**
 	 * Creates a new border with the specified insets.
@@ -71,13 +81,7 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
 	 *            Insets.
 	 */
 	public SubstanceTextComponentBorder(Insets insets) {
-		this.myInsets = new Insets(insets.top, insets.left, insets.bottom,
-				insets.right);
-		this.cornerRadiusFactor = 2.0f;
-	}
-	
-	public void setCornerRadiusFactor(float factor) {
-		this.cornerRadiusFactor = factor;
+		this.myInsets = new Insets(insets.top, insets.left, insets.bottom, insets.right);
 	}
 
 	/**
@@ -102,8 +106,8 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
 	 * @param alpha
 	 *            Alpha value.
 	 */
-	private void paintBorder(JComponent c, Graphics g, int x, int y, int width,
-			int height, boolean isEnabled, boolean hasFocus) {
+	private void paintBorder(JComponent c, Graphics g, int x, int y, int width, int height,
+			boolean isEnabled, boolean hasFocus) {
 		// failsafe for LAF change
 		if (!SubstanceLookAndFeel.isCurrentLookAndFeel()) {
 			return;
@@ -113,140 +117,95 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
 			return;
 
 		Graphics2D graphics = (Graphics2D) g.create();
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
-
-		// float cyclePos = 1.0f;
-
-		float radius = this.cornerRadiusFactor * SubstanceSizeUtils
-				.getClassicButtonCornerRadius(SubstanceSizeUtils
-						.getComponentFontSize(c));
-
 		JTextComponent componentForTransitions = SubstanceCoreUtilities
 				.getTextComponentForTransitions(c);
-
+		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		boolean useCache = (width * height < 100000);
+		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(c);
 		if (componentForTransitions != null) {
 			ComponentUI ui = componentForTransitions.getUI();
 			if (ui instanceof TransitionAwareUI) {
 				TransitionAwareUI trackable = (TransitionAwareUI) ui;
-				StateTransitionTracker stateTransitionTracker = trackable
-						.getTransitionTracker();
+				StateTransitionTracker stateTransitionTracker = trackable.getTransitionTracker();
 				StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
 						.getModelStateInfo();
-				Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
-						.getStateContributionMap();
+				Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = 
+						modelStateInfo.getStateContributionMap();
 				ComponentState currState = modelStateInfo.getCurrModelState();
-				if (currState.isDisabled())
+				if (currState.isDisabled()) {
 					currState = ComponentState.DISABLED_SELECTED;
+				}
 
-				if (width * height < 100000) {
-					SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities
-							.getColorScheme(componentForTransitions,
-									ColorSchemeAssociationKind.BORDER,
-									currState);
+				graphics.translate(x, y);
 
-					HashMapKey baseKey = SubstanceCoreUtilities.getHashKey(
-							SubstanceSizeUtils.getComponentFontSize(c), width,
-							height, radius, baseBorderScheme.getDisplayName());
-					BufferedImage baseLayer = smallImageCache.get(baseKey);
-					float baseAlpha = SubstanceColorSchemeUtilities.getAlpha(c,
-							currState);
-
+				SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities
+						.getColorScheme(componentForTransitions, ColorSchemeAssociationKind.BORDER,
+								currState);
+				float baseAlpha = SubstanceColorSchemeUtilities.getAlpha(c, currState);
+				graphics.setComposite(AlphaComposite.SrcOver.derive(baseAlpha));
+				if (useCache) {
+					HashMapKey baseHashKey = SubstanceCoreUtilities.getHashKey(
+							borderPainter.getDisplayName(), width, height,
+							baseBorderScheme.getDisplayName());
+					BufferedImage baseLayer = smallImageCache.get(baseHashKey);
 					if (baseLayer == null) {
-						baseLayer = SubstanceCoreUtilities.getBlankImage(width,
-								height);
-						Graphics2D g2d = baseLayer.createGraphics();
-						SubstanceImageCreator.paintTextComponentBorder(c, g2d,
-								0, 0, width, height, radius, baseBorderScheme);
-						g2d.dispose();
-						smallImageCache.put(baseKey, baseLayer);
+						baseLayer = SubstanceCoreUtilities.getBlankImage(width, height);
+						Graphics2D g2base = baseLayer.createGraphics();
+						SubstanceImageCreator.paintSimpleBorder(c, g2base, width, height,
+								baseBorderScheme);
+						g2base.dispose();
+						smallImageCache.put(baseHashKey, baseLayer);
 					}
-
-					graphics.setComposite(AlphaComposite.SrcOver
-							.derive(baseAlpha));
-					graphics.drawImage(baseLayer, x, y, baseLayer.getWidth() / scaleFactor,
+					graphics.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor,
 							baseLayer.getHeight() / scaleFactor, null);
+				} else {
+					SubstanceImageCreator.paintSimpleBorder(c, graphics, width, height,
+							baseBorderScheme);
+				}
 
-					if (!currState.isDisabled() && (activeStates.size() > 1)) {
-						for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
-								.entrySet()) {
-							ComponentState activeState = activeEntry.getKey();
-							if (activeState == currState)
-								continue;
+				if (!currState.isDisabled() && (activeStates.size() > 1)) {
+					for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : 
+							activeStates.entrySet()) {
+						ComponentState activeState = activeEntry.getKey();
+						if (activeState == currState) {
+							continue;
+						}
 
-							float contribution = activeEntry.getValue()
-									.getContribution();
-							if (contribution == 0.0f)
-								continue;
+						float contribution = activeEntry.getValue().getContribution();
+						if (contribution == 0.0f) {
+							continue;
+						}
 
-							SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-									.getColorScheme(componentForTransitions,
-											ColorSchemeAssociationKind.BORDER,
-											activeState);
+						float alpha = SubstanceColorSchemeUtilities.getAlpha(c, activeState);
+						if (alpha == 0.0f) {
+							continue;
+						}
 
-							HashMapKey key = SubstanceCoreUtilities.getHashKey(
-									SubstanceSizeUtils.getComponentFontSize(c),
-									width, height, radius, borderScheme
-											.getDisplayName());
-							BufferedImage layer = smallImageCache.get(key);
-							float alpha = SubstanceColorSchemeUtilities
-									.getAlpha(c, activeState);
+						SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
+								.getColorScheme(componentForTransitions,
+										ColorSchemeAssociationKind.BORDER, activeState);
+						graphics.setComposite(AlphaComposite.SrcOver.derive(alpha * contribution));
 
-							if (layer == null) {
-								layer = SubstanceCoreUtilities.getBlankImage(
-										width, height);
-								Graphics2D g2d = layer.createGraphics();
-								SubstanceImageCreator.paintTextComponentBorder(
-										c, g2d, 0, 0, width, height, radius,
-										borderScheme);
-								g2d.dispose();
-								smallImageCache.put(key, layer);
+						if (useCache) {
+							HashMapKey extraHashKey = SubstanceCoreUtilities.getHashKey(
+									borderPainter.getDisplayName(), width, height,
+									borderScheme.getDisplayName());
+							BufferedImage extraLayer = smallImageCache.get(extraHashKey);
+							if (extraLayer == null) {
+								extraLayer = SubstanceCoreUtilities.getBlankImage(width, height);
+								Graphics2D g2extra = extraLayer.createGraphics();
+								SubstanceImageCreator.paintSimpleBorder(c, g2extra, width, height,
+										baseBorderScheme);
+								g2extra.dispose();
+								smallImageCache.put(extraHashKey, extraLayer);
 							}
 
-							graphics.setComposite(AlphaComposite.SrcOver
-									.derive(alpha * contribution));
-							graphics.drawImage(layer, x, y,  layer.getWidth() / scaleFactor,
-									layer.getHeight() / scaleFactor,null);
-						}
-					}
-
-				} else {
-					// for borders larger than 100000 pixels, use simple
-					// painting
-					graphics.translate(x, y);
-
-					SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities
-							.getColorScheme(componentForTransitions,
-									ColorSchemeAssociationKind.BORDER,
-									currState);
-					float baseAlpha = SubstanceColorSchemeUtilities.getAlpha(c,
-							currState);
-					graphics.setComposite(AlphaComposite.SrcOver
-							.derive(baseAlpha));
-					SubstanceImageCreator.paintSimpleBorder(c, graphics, width,
-							height, baseBorderScheme);
-
-					if (!currState.isDisabled() && (activeStates.size() > 1)) {
-						for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
-								.entrySet()) {
-							ComponentState activeState = activeEntry.getKey();
-							if (activeState == currState)
-								continue;
-
-							float contribution = activeEntry.getValue()
-									.getContribution();
-							if (contribution == 0.0f)
-								continue;
-
-							SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-									.getColorScheme(componentForTransitions,
-											ColorSchemeAssociationKind.BORDER,
-											activeState);
-							float alpha = SubstanceColorSchemeUtilities
-									.getAlpha(c, activeState);
-							graphics.setComposite(AlphaComposite.SrcOver
-									.derive(alpha * contribution));
-							SubstanceImageCreator.paintSimpleBorder(c,
-									graphics, width, height, borderScheme);
+							graphics.drawImage(extraLayer, 0, 0,
+									extraLayer.getWidth() / scaleFactor,
+									extraLayer.getHeight() / scaleFactor, null);
+						} else {
+							SubstanceImageCreator.paintSimpleBorder(c, graphics, width, height,
+									borderScheme);
 						}
 					}
 				}
@@ -254,31 +213,29 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
 		} else {
 			ComponentState currState = isEnabled ? ComponentState.ENABLED
 					: ComponentState.DISABLED_UNSELECTED;
-			SubstanceColorScheme borderColorScheme = SubstanceColorSchemeUtilities
-					.getColorScheme(c, ColorSchemeAssociationKind.BORDER,
-							currState);
-			if (width * height < 100000) {
-				HashMapKey hashKey = SubstanceCoreUtilities.getHashKey(
-						SubstanceSizeUtils.getComponentFontSize(c), width,
-						height, radius, borderColorScheme.getDisplayName());
-				BufferedImage result = smallImageCache.get(hashKey);
-				if (result == null) {
-					result = SubstanceCoreUtilities
-							.getBlankImage(width, height);
-					Graphics2D g2d = result.createGraphics();
-					SubstanceImageCreator.paintTextComponentBorder(c, g2d, 0,
-							0, width, height, radius, borderColorScheme);
-					g2d.dispose();
-					smallImageCache.put(hashKey, result);
+			SubstanceColorScheme borderColorScheme = SubstanceColorSchemeUtilities.getColorScheme(c,
+					ColorSchemeAssociationKind.BORDER, currState);
+			graphics.translate(x, y);
+
+			if (useCache) {
+				HashMapKey baseHashKey = SubstanceCoreUtilities.getHashKey(
+						borderPainter.getDisplayName(), width, height,
+						borderColorScheme.getDisplayName());
+				BufferedImage baseLayer = smallImageCache.get(baseHashKey);
+				if (baseLayer == null) {
+					baseLayer = SubstanceCoreUtilities.getBlankImage(width, height);
+					Graphics2D g2base = baseLayer.createGraphics();
+					SubstanceImageCreator.paintSimpleBorder(c, g2base, width, height,
+							borderColorScheme);
+					g2base.dispose();
+					smallImageCache.put(baseHashKey, baseLayer);
 				}
-				graphics.drawImage(result, x, y, result.getWidth() / scaleFactor,
-						result.getHeight() / scaleFactor, null);
+
+				graphics.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor,
+						baseLayer.getHeight() / scaleFactor, null);
 			} else {
-				// for borders larger than 100000 pixels, use simple
-				// painting
-				graphics.translate(x, y);
-				SubstanceImageCreator.paintSimpleBorder(c, graphics, width,
-						height, borderColorScheme);
+				SubstanceImageCreator.paintSimpleBorder(c, graphics, width, height,
+						borderColorScheme);
 			}
 		}
 
@@ -291,10 +248,8 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
 	 * @see javax.swing.border.Border#paintBorder(java.awt.Component,
 	 * java.awt.Graphics, int, int, int, int)
 	 */
-	public void paintBorder(Component c, Graphics g, int x, int y, int width,
-			int height) {
-		paintBorder((JComponent) c, g, x, y, width, height, c.isEnabled(), c
-				.hasFocus());
+	public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+		paintBorder((JComponent) c, g, x, y, width, height, c.isEnabled(), c.hasFocus());
 	}
 
 	/*

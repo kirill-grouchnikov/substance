@@ -70,7 +70,7 @@ public class SubstanceMenuBackgroundDelegate {
 	
 	public static Color getGutterHardFillColor(SubstanceColorScheme colorScheme) {
 		return colorScheme.isDark() 
-				? SubstanceColorUtilities.getLighterColor(colorScheme.getUltraLightColor(), 0.1) 
+				? SubstanceColorUtilities.getLighterColor(colorScheme.getUltraLightColor(), 0.05) 
 				: colorScheme.getUltraLightColor();
 	}
 	

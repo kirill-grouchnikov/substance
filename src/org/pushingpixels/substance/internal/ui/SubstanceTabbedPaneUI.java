@@ -84,7 +84,6 @@ import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;

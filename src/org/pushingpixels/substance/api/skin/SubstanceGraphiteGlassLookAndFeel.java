@@ -38,17 +38,18 @@ import org.pushingpixels.substance.api.SubstanceLookAndFeel;
  * <li>-Dswing.defaultlaf=org.pushingpixels.substance.api.skin.
  * SubstanceRavenGraphiteGlassLookAndFeel</li>
  * <li>UIManager.setLookAndFeel(
- * "org.pushingpixels.substance.api.skin.SubstanceRavenGraphiteGlassLookAndFeel" );</li>
- * <li>UIManager.setLookAndFeel(new SubstanceRavenGraphiteGlassLookAndFeel());</li>
+ * "org.pushingpixels.substance.api.skin.SubstanceRavenGraphiteGlassLookAndFeel"
+ * );</li>
+ * <li>UIManager.setLookAndFeel(new
+ * SubstanceRavenGraphiteGlassLookAndFeel());</li>
  * </ul>
  * 
  * @author Kirill Grouchnikov
  * @since version 3.3
  */
-public class SubstanceGraphiteGlassLookAndFeel extends
-		SubstanceLookAndFeel {
+public class SubstanceGraphiteGlassLookAndFeel extends SubstanceLookAndFeel {
 	/**
-	 * Creates a new <code>Raven Graphite Glass</code> look-and-feel.
+	 * Creates a new <code>Graphite Glass</code> look-and-feel.
 	 */
 	public SubstanceGraphiteGlassLookAndFeel() {
 		super(new GraphiteGlassSkin());

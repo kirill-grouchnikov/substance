@@ -343,8 +343,7 @@ public class SubstanceColorSchemeUtilities {
 	 *            Component state.
 	 * @return Color scheme alpha channel.
 	 */
-	public static float getAlpha(Component component,
-			ComponentState componentState) {
+	public static float getAlpha(Component component, ComponentState componentState) {
 		return SubstanceCoreUtilities.getSkin(component).getAlpha(component,
 				componentState);
 	}

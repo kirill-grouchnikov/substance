@@ -32,25 +32,24 @@ package org.pushingpixels.substance.api.skin;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 
 /**
- * Standalone look-and-feel that uses the <code>Graphite Aqua</code> skin from
- * {@link GraphiteAquaSkin}. You can set this look-and-feel by:
+ * Standalone look-and-feel that uses the <code>Graphite AlChalkabaster</code> skin from
+ * {@link GraphiteChalkSkin}. You can set this look-and-feel by:
  * <ul>
  * <li>-Dswing.defaultlaf=org.pushingpixels.substance.api.skin.
- * SubstanceGraphiteAquaLookAndFeel</li>
+ * SubstanceGraphiteChalkLookAndFeel</li>
  * <li>UIManager.setLookAndFeel(
- * "org.pushingpixels.substance.api.skin.SubstanceGraphiteAquaLookAndFeel"
- * );</li>
- * <li>UIManager.setLookAndFeel(new SubstanceGraphiteAquaLookAndFeel());</li>
+ * "org.pushingpixels.substance.api.skin.SubstanceGraphiteChalkLookAndFeel" );</li>
+ * <li>UIManager.setLookAndFeel(new SubstanceGraphiteChalkLookAndFeel());</li>
  * </ul>
  * 
  * @author Kirill Grouchnikov
- * @since version 5.3
+ * @since version 7.0
  */
-public class SubstanceGraphiteAquaLookAndFeel extends SubstanceLookAndFeel {
+public class SubstanceGraphiteChalkLookAndFeel extends SubstanceLookAndFeel {
 	/**
-	 * Creates a new <code>Graphite Aqua</code> look-and-feel.
+	 * Creates a new <code>Graphite Chalk</code> look-and-feel.
 	 */
-	public SubstanceGraphiteAquaLookAndFeel() {
-		super(new GraphiteAquaSkin());
+	public SubstanceGraphiteChalkLookAndFeel() {
+		super(new GraphiteChalkSkin());
 	}
 }

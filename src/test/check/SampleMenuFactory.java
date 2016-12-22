@@ -444,6 +444,8 @@ public class SampleMenuFactory {
 				"org.pushingpixels.substance.api.skin.SubstanceGraphiteAquaLookAndFeel"));
 		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Graphite Gold",
 				"org.pushingpixels.substance.api.skin.SubstanceGraphiteGoldLookAndFeel"));
+		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Graphite Alabaster",
+				"org.pushingpixels.substance.api.skin.SubstanceGraphiteAlabasterLookAndFeel"));
 		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Twilight",
 				"org.pushingpixels.substance.api.skin.SubstanceTwilightLookAndFeel"));
 		lafMenu.add(substanceMenus);

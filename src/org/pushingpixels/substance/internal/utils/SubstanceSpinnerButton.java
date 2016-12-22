@@ -29,33 +29,22 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
-import java.awt.AlphaComposite;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
-import java.awt.image.BufferedImage;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.EnumSet;
 
 import javax.swing.JButton;
 import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
-import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
-import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
-import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
 
 /**
@@ -91,8 +80,7 @@ public class SubstanceSpinnerButton extends JButton {
 		this.setEnabled(spinner.isEnabled());
 		this.setFocusable(false);
 		this.setRequestFocusEnabled(false);
-		this.setMargin(new Insets(0, 0, 0, 2));
-		this.setBorder(new SpinnerButtonBorder(ClassicButtonShaper.class) {
+		super.setBorder(new SpinnerButtonBorder(ClassicButtonShaper.class) {
 			public Insets getBorderInsets(Component c) {
 				int extraPadding = SubstanceSizeUtils
 						.getExtraPadding(SubstanceSizeUtils.getComponentFontSize(c));
@@ -108,20 +96,13 @@ public class SubstanceSpinnerButton extends JButton {
 		});
 
 		this.setOpaque(false);
-		this.setBorderPainted(false);
 		this.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
-		Set<Side> straightSides = new HashSet<>();
-		straightSides.add(orientation == SwingConstants.NORTH ? Side.BOTTOM : Side.TOP);
-		straightSides
-				.add(spinner.getComponentOrientation().isLeftToRight() ? Side.LEFT : Side.RIGHT);
-		this.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, straightSides);
+		this.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
+				EnumSet.allOf(Side.class));
 	}
-
+	
 	@Override
 	public void setBorder(Border border) {
-		if (border instanceof SpinnerButtonBorder) {
-			super.setBorder(border);
-		}
 	}
 
 	/*
@@ -132,116 +113,6 @@ public class SubstanceSpinnerButton extends JButton {
 	@Override
 	public boolean isFocusable() {
 		return false;
-	}
-
-	@Override
-	protected void paintBorder(Graphics g) {
-		if (SubstanceCoreUtilities.isButtonNeverPainted(this)) {
-			return;
-		}
-
-		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) this.getUI();
-		StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
-		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
-				.getModelStateInfo();
-		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
-				.getStateContributionMap();
-
-		ComponentState currState = modelStateInfo.getCurrModelState();
-		float extraAlpha = stateTransitionTracker.getActiveStrength();
-
-		if (currState == ComponentState.DISABLED_UNSELECTED)
-			extraAlpha = 0.0f;
-
-		if (extraAlpha == 0.0f)
-			return;
-
-		boolean isNextButton = "Spinner.nextButton".equals(this.getName());
-
-		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(this);
-		float borderDelta = 1.5f * SubstanceSizeUtils.getBorderStrokeWidth();
-		float radius = Math.max(0,
-				SubstanceSizeUtils.getClassicButtonCornerRadius(componentFontSize) - borderDelta);
-
-		int width = getWidth();
-		int height = getHeight();
-
-		JSpinner parent = (JSpinner) this.getParent();
-		BufferedImage offscreen = SubstanceCoreUtilities.getBlankImage(width, height);
-		Graphics2D g2offscreen = offscreen.createGraphics();
-		int offsetX = this.getX();
-		int offsetY = this.getY();
-		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities.getColorScheme(this,
-				ColorSchemeAssociationKind.BORDER, currState);
-
-		if (isNextButton) {
-			SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen, 0, 0, width,
-					1 * height, radius, baseBorderScheme);
-			g2offscreen.translate(-offsetX, -offsetY);
-			SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen, 0, 0,
-					parent.getWidth(), parent.getHeight(), radius, baseBorderScheme);
-			g2offscreen.translate(offsetX, offsetY);
-
-			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
-					.entrySet()) {
-				ComponentState activeState = activeEntry.getKey();
-				if (activeState == currState)
-					continue;
-
-				float contribution = activeEntry.getValue().getContribution();
-				if (contribution == 0.0f)
-					continue;
-
-				g2offscreen.setComposite(AlphaComposite.SrcOver.derive(contribution));
-				SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-						.getColorScheme(this, ColorSchemeAssociationKind.BORDER, activeState);
-
-				SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen, 0, 0, width,
-						1 * height, radius, borderScheme);
-				g2offscreen.translate(-offsetX, -offsetY);
-				SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen, 0, 0,
-						parent.getWidth(), parent.getHeight(), radius, borderScheme);
-				g2offscreen.translate(offsetX, offsetY);
-			}
-		} else {
-			SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen, 0, 0, width,
-					1 * height, radius, baseBorderScheme);
-			g2offscreen.translate(-offsetX, -offsetY);
-			SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen, 0, 0,
-					parent.getWidth(), parent.getHeight(), radius, baseBorderScheme);
-			g2offscreen.translate(offsetX, offsetY);
-
-			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
-					.entrySet()) {
-				ComponentState activeState = activeEntry.getKey();
-				if (activeState == currState)
-					continue;
-
-				float contribution = activeEntry.getValue().getContribution();
-				if (contribution == 0.0f)
-					continue;
-
-				g2offscreen.setComposite(AlphaComposite.SrcOver.derive(contribution));
-				SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
-						.getColorScheme(this, ColorSchemeAssociationKind.BORDER, activeState);
-
-				SubstanceImageCreator.paintTextComponentBorder(this, g2offscreen, 0, 0, width,
-						1 * height, radius, borderScheme);
-				g2offscreen.translate(-offsetX, -offsetY);
-				SubstanceImageCreator.paintTextComponentBorder(parent, g2offscreen, 0, 0,
-						parent.getWidth(), parent.getHeight(), radius, borderScheme);
-				g2offscreen.translate(offsetX, offsetY);
-			}
-		}
-		g2offscreen.dispose();
-
-		// System.out.println(prevState + ":" + currState + ":" + extraAlpha);
-		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this, extraAlpha, g));
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
-		g2d.drawImage(offscreen, 0, 0, offscreen.getWidth() / scaleFactor,
-				offscreen.getHeight() / scaleFactor, null);
-		g2d.dispose();
 	}
 
 	@Override

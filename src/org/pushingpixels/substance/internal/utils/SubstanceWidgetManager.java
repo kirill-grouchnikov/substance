@@ -29,7 +29,9 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
-import java.util.*;
+import java.util.EnumSet;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 import javax.swing.JRootPane;
 

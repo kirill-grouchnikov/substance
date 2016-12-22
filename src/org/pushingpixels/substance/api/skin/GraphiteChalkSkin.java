@@ -33,72 +33,50 @@ import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
 
 /**
- * <code>Graphite Aqua</code> skin. This class is part of officially supported
- * API.
+ * <code>Graphite Chalk</code> skin. This class is part of officially
+ * supported API.
  * 
  * @author Kirill Grouchnikov
- * @since version 5.3
+ * @since version 7.0
  */
-public class GraphiteAquaSkin extends GraphiteSkin {
+public class GraphiteChalkSkin extends GraphiteSkin {
 	/**
 	 * Display name for <code>this</code> skin.
 	 */
-	public static final String NAME = "Graphite Aqua";
+	public static final String NAME = "Graphite Chalk";
 
 	/**
-	 * Creates a new <code>Graphite Aqua</code> skin.
+	 * Creates a new <code>Graphite Chalk</code> skin.
 	 */
-	public GraphiteAquaSkin() {
-		super();
-		
+	public GraphiteChalkSkin() {
 		SubstanceSkin.ColorSchemes schemes = SubstanceSkin
 				.getColorSchemes("org/pushingpixels/substance/api/skin/graphite.colorschemes");
 
-		// highlight fill scheme + custom alpha for rollover unselected state
-		SubstanceColorScheme highlightScheme = schemes.get("Graphite Aqua");
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme,
-				0.8f, ComponentState.ROLLOVER_UNSELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 0.9f,
-				ComponentState.SELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1.0f,
-				ComponentState.ROLLOVER_SELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1.0f,
-				ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
+		SubstanceColorScheme chalkScheme = schemes.get("Chalk");
+		defaultSchemeBundle.registerColorScheme(chalkScheme,
+				ColorSchemeAssociationKind.TAB_BORDER, ComponentState.getActiveStates());
+		defaultSchemeBundle.registerColorScheme(chalkScheme, ColorSchemeAssociationKind.BORDER,
+				ComponentState.ENABLED);
+		defaultSchemeBundle.registerColorScheme(chalkScheme, ColorSchemeAssociationKind.BORDER,
+				ComponentState.getActiveStates());
+		defaultSchemeBundle.registerColorScheme(chalkScheme, 0.5f,
+				ColorSchemeAssociationKind.BORDER, ComponentState.DISABLED_UNSELECTED,
+				ComponentState.DISABLED_SELECTED, ComponentState.DISABLED_DEFAULT);
+		defaultSchemeBundle.registerColorScheme(chalkScheme,
+				ColorSchemeAssociationKind.HIGHLIGHT_BORDER, ComponentState.getActiveStates());
 
-		defaultSchemeBundle.registerColorScheme(highlightScheme, 0.5f, 
-				ComponentState.DISABLED_SELECTED);
-		defaultSchemeBundle.registerColorScheme(highlightScheme,
-				ColorSchemeAssociationKind.BORDER,
-				ComponentState.ROLLOVER_ARMED,
-				ComponentState.ROLLOVER_SELECTED,
-				ComponentState.ROLLOVER_UNSELECTED);
-		defaultSchemeBundle.registerColorScheme(highlightScheme,
-				ColorSchemeAssociationKind.FILL, 
-				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED);
-		defaultSchemeBundle.registerColorScheme(highlightScheme.shade(0.2),
-				ColorSchemeAssociationKind.FILL, 
-				ComponentState.PRESSED_SELECTED, ComponentState.PRESSED_UNSELECTED);
-		defaultSchemeBundle.registerColorScheme(highlightScheme,
-				ColorSchemeAssociationKind.TAB,
-				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED);
+		SubstanceColorScheme markScheme = schemes.get("Graphite Mark");
+		defaultSchemeBundle.registerColorScheme(markScheme, ColorSchemeAssociationKind.MARK);
 
-		// border schemes
-		defaultSchemeBundle.registerColorScheme(highlightScheme,
-				ColorSchemeAssociationKind.HIGHLIGHT_BORDER, ComponentState
-						.getActiveStates());
+		SubstanceColorScheme separatorScheme = schemes.get("Chalk Separator");
+		defaultSchemeBundle.registerColorScheme(separatorScheme,
+				ColorSchemeAssociationKind.SEPARATOR, ComponentState.ENABLED);
 
-		// text highlight scheme
-		defaultSchemeBundle.registerColorScheme(highlightScheme,
-				ColorSchemeAssociationKind.HIGHLIGHT_TEXT,
-				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED);
+		this.borderPainter = new ClassicBorderPainter();
 
-		defaultSchemeBundle.registerColorScheme(highlightScheme,
-				ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
-
-		defaultSchemeBundle.registerColorScheme(highlightScheme,
-				ComponentState.ROLLOVER_SELECTED);
 	}
 
 	/*

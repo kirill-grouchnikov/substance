@@ -31,15 +31,17 @@ package org.pushingpixels.substance.internal.utils;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+import java.util.Map;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
@@ -47,19 +49,19 @@ import javax.swing.CellRendererPane;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
 import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.lafwidget.utils.BorderWrapper;
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
+import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
@@ -488,7 +490,7 @@ public class SubstanceTextUtilities {
 	 */
 	public static void paintTextCompBackground(Graphics g, JComponent comp) {
 		Color backgroundFillColor = getTextBackgroundFillColor(comp);
-
+		
 		boolean toPaintWatermark = (SubstanceLookAndFeel.getCurrentSkin(comp)
 				.getWatermark() != null)
 				&& (SubstanceCoreUtilities.toDrawWatermark(comp) || !comp
@@ -497,8 +499,8 @@ public class SubstanceTextUtilities {
 	}
 
 	public static Color getTextBackgroundFillColor(JComponent comp) {
-		Color backgroundFillColor = SubstanceColorUtilities
-				.getBackgroundFillColor(comp);
+		Color backgroundFillColor = SubstanceColorUtilities.getBackgroundFillColor(comp);
+		
 		JTextComponent componentForTransitions = SubstanceCoreUtilities
 				.getTextComponentForTransitions(comp);
 
@@ -509,20 +511,17 @@ public class SubstanceTextUtilities {
 				StateTransitionTracker stateTransitionTracker = trackable
 						.getTransitionTracker();
 
-				Color outerTextComponentBorderColor = SubstanceColorUtilities
-						.getOuterTextComponentBorderColor(backgroundFillColor);
-				outerTextComponentBorderColor = SubstanceColorUtilities
-						.getInterpolatedColor(outerTextComponentBorderColor,
-								backgroundFillColor, 0.6);
+				Color lighterFill = SubstanceColorUtilities.getLighterColor(
+						backgroundFillColor, 0.4f);
+				lighterFill = SubstanceColorUtilities.getInterpolatedColor(lighterFill,
+						backgroundFillColor, 0.6);
 
 				float selectionStrength = stateTransitionTracker
 						.getFacetStrength(ComponentStateFacet.SELECTION);
 				float rolloverStrength = stateTransitionTracker
 						.getFacetStrength(ComponentStateFacet.ROLLOVER);
-				backgroundFillColor = SubstanceColorUtilities
-						.getInterpolatedColor(outerTextComponentBorderColor,
-								backgroundFillColor, Math.max(
-										selectionStrength, rolloverStrength));
+				backgroundFillColor = SubstanceColorUtilities.getInterpolatedColor(lighterFill,
+						backgroundFillColor, Math.max(selectionStrength, rolloverStrength) / 4.0f);
 			}
 		}
 		return backgroundFillColor;
@@ -545,60 +544,89 @@ public class SubstanceTextUtilities {
 			Color backgr, boolean toOverlayWatermark) {
 		Graphics2D g2d = (Graphics2D) g.create();
 
-		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(comp);
-		float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth();
-		Border compBorder = comp.getBorder();
-
-		if (compBorder instanceof BorderWrapper) {
-			compBorder = ((BorderWrapper) compBorder).getOriginalBorder();
-		}
-		boolean isSubstanceBorder = compBorder instanceof SubstanceTextComponentBorder;
-
-		if (!isSubstanceBorder) {
-			Border border = compBorder;
-			while (border instanceof CompoundBorder) {
-				Border outer = ((CompoundBorder) border).getOutsideBorder();
-				if (outer instanceof SubstanceTextComponentBorder) {
-					isSubstanceBorder = true;
-					break;
-				}
-				Border inner = ((CompoundBorder) border).getInsideBorder();
-				if (inner instanceof SubstanceTextComponentBorder) {
-					isSubstanceBorder = true;
-					break;
-				}
-				border = inner;
-			}
-		}
-
-		Shape contour = isSubstanceBorder 
-				? SubstanceOutlineUtilities.getBaseOutline(
-						comp.getWidth(),
-						comp.getHeight(),
-						Math.max(0, 2.0f* SubstanceSizeUtils.getClassicButtonCornerRadius(
-								componentFontSize) - borderDelta), 
-						null,
-						borderDelta)
-				: new Rectangle(0, 0, comp.getWidth(), comp.getHeight());
-
 		BackgroundPaintingUtils.update(g, comp, false);
-		SubstanceWatermark watermark = SubstanceCoreUtilities.getSkin(comp)
-				.getWatermark();
+		SubstanceWatermark watermark = SubstanceCoreUtilities.getSkin(comp).getWatermark();
 		if (watermark != null) {
-			watermark.drawWatermarkImage(g2d, comp, 0, 0, comp.getWidth(), comp
-					.getHeight());
+			watermark.drawWatermarkImage(g2d, comp, 0, 0, comp.getWidth(), comp.getHeight());
 		}
 		g2d.setColor(backgr);
-		g2d.fill(contour);
+		g2d.fillRect(0, 0, comp.getWidth(), comp.getHeight());
 
 		if (toOverlayWatermark) {
 			if (watermark != null) {
-				g2d.clip(contour);
+				g2d.clipRect(0, 0, comp.getWidth(), comp.getHeight());
 				watermark.drawWatermarkImage(g2d, comp, 0, 0, comp.getWidth(),
 						comp.getHeight());
 			}
 		}
+		
+		ComponentState state = comp.isEnabled() ? ComponentState.ENABLED :
+				ComponentState.DISABLED_UNSELECTED;
+		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = null;
+		JTextComponent componentForTransitions = SubstanceCoreUtilities
+				.getTextComponentForTransitions(comp);
+		if (componentForTransitions != null) {
+			ComponentUI ui = componentForTransitions.getUI();
+			if (ui instanceof TransitionAwareUI) {
+				TransitionAwareUI trackable = (TransitionAwareUI) ui;
+				StateTransitionTracker stateTransitionTracker = trackable
+						.getTransitionTracker();
+				StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
+						.getModelStateInfo();
+				state = modelStateInfo.getCurrModelState();
+				activeStates = modelStateInfo.getStateContributionMap();
+			}
+		}
 
+		if ((componentForTransitions != null) && !componentForTransitions.isEditable()) {
+			// don't paint top shadow on non-editable text fields
+			return;
+		}
+		
+		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(comp);
+		// Get the base border color
+		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities.getColorScheme(comp,
+				ColorSchemeAssociationKind.BORDER, state);
+		Color borderColor = borderPainter.getRepresentativeColor(baseBorderScheme);
+		
+		if (!state.isDisabled() && (activeStates != null) && (activeStates.size() > 1)) {
+			// If we have more than one active state, compute the composite color from all
+			// the contributions
+			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : 
+					activeStates.entrySet()) {
+				ComponentState activeState = activeEntry.getKey();
+				if (activeState == state) {
+					continue;
+				}
+
+				float contribution = activeEntry.getValue().getContribution();
+				if (contribution == 0.0f) {
+					continue;
+				}
+				
+				float alpha = SubstanceColorSchemeUtilities.getAlpha(componentForTransitions, 
+						activeState);
+				if (alpha == 0.0f) {
+					continue;
+				}
+
+				SubstanceColorScheme activeBorderScheme = SubstanceColorSchemeUtilities
+						.getColorScheme(componentForTransitions,
+								ColorSchemeAssociationKind.BORDER, activeState);
+				Color activeBorderColor = borderPainter.getRepresentativeColor(activeBorderScheme); 
+				borderColor = SubstanceColorUtilities.getInterpolatedColor(borderColor,
+						activeBorderColor, 1.0f - contribution * alpha);
+			}
+		}
+		// At this point we should have the color that matches the border color. Use that to
+		// paint emulated drop shadow along the top edge of the component.
+		int shadowHeight = 6;
+		g2d.setPaint(new GradientPaint(
+				0, 0, SubstanceColorUtilities.getAlphaColor(borderColor, 48), 
+				0, shadowHeight, SubstanceColorUtilities.getAlphaColor(borderColor, 0)));
+		float yTop = (comp.getBorder() instanceof SubstanceTextComponentBorder) ? 
+				SubstanceSizeUtils.getBorderStrokeWidth() : 0;
+		g2d.fill(new Rectangle2D.Float(0, yTop, comp.getWidth(), shadowHeight));
 		g2d.dispose();
 	}
 }

@@ -36,6 +36,8 @@ import java.awt.Graphics2D;
 import javax.swing.JComponent;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicDesktopPaneUI;
@@ -44,7 +46,6 @@ import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
-import org.pushingpixels.substance.internal.utils.border.SubstanceBorder;
 
 /**
  * UI for desktop panes in <b>Substance</b> look and feel.
@@ -72,7 +73,7 @@ public class SubstanceDesktopPaneUI extends BasicDesktopPaneUI {
 		super.installDefaults();
 		Border curr = this.desktop.getBorder();
 		if ((curr == null) || (curr instanceof UIResource)) {
-			this.desktop.setBorder(new SubstanceBorder());
+			this.desktop.setBorder(new BorderUIResource(new EmptyBorder(0, 0, 0, 0)));
 		}
 	}
 
@@ -97,10 +98,8 @@ public class SubstanceDesktopPaneUI extends BasicDesktopPaneUI {
 				graphics.fillRect(0, 0, c.getWidth(), c.getHeight());
 			}
 			BackgroundPaintingUtils.updateIfOpaque(graphics, c);
-			super.paint(graphics, c);
-		} else {
-			super.paint(graphics, c);
 		}
+		super.paint(graphics, c);
 		GhostPaintingUtils.paintGhostImages(c, graphics);
 		graphics.dispose();
 	}

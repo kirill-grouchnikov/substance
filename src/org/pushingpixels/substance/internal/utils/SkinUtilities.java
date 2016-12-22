@@ -8,6 +8,7 @@ import java.awt.Insets;
 import java.util.Locale;
 
 import javax.swing.Icon;
+import javax.swing.SwingConstants;
 import javax.swing.UIDefaults;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.BorderUIResource;
@@ -112,7 +113,7 @@ public class SkinUtilities {
 		Color lineBwColor = new ColorUIResource(new Color(lcb, lcb, lcb));
 
 		SubstanceColorScheme textHighlightColorScheme = skin.getColorScheme(
-				(Component) null, ColorSchemeAssociationKind.TEXT_HIGHLIGHT,
+				(Component) null, ColorSchemeAssociationKind.HIGHLIGHT_TEXT,
 				ComponentState.SELECTED);
 		if (textHighlightColorScheme == null) {
 			textHighlightColorScheme = skin.getColorScheme(null,
@@ -614,6 +615,19 @@ public class SkinUtilities {
 
 				"OptionPane.warningIcon",
 				new Dialog_warning(),
+				
+				"OptionPane.buttonPadding",
+				8,
+				
+				"OptionPane.sameSizeButtons",
+				true,
+				
+				"OptionPane.buttonOrientation",
+				ComponentOrientation.getOrientation(Locale.getDefault()).isLeftToRight()
+						? SwingConstants.RIGHT : SwingConstants.LEFT,
+				
+				"OptionPane.isYesLast",
+				true,
 
 				"Panel.background",
 				SubstanceColorUtilities.getDefaultBackgroundColor(false, skin,

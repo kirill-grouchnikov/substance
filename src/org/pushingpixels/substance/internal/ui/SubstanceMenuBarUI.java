@@ -92,8 +92,7 @@ public class SubstanceMenuBarUI extends BasicMenuBarUI {
 	protected void installDefaults() {
 		super.installDefaults();
 
-		SubstanceLookAndFeel.setDecorationType(this.menuBar,
-				DecorationAreaType.HEADER);
+		SubstanceLookAndFeel.setDecorationType(this.menuBar, DecorationAreaType.HEADER);
 		for (LafWidget lafWidget : this.lafWidgets) {
 			lafWidget.installDefaults();
 		}

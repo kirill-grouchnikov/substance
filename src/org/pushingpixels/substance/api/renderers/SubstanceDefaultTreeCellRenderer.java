@@ -211,7 +211,7 @@ public class SubstanceDefaultTreeCellRenderer extends JLabel implements TreeCell
 				SubstanceColorScheme scheme = getColorSchemeForState(tree, ui, currState);
 				if (isDropLocation) {
 					scheme = SubstanceColorSchemeUtilities.getColorScheme(tree,
-							ColorSchemeAssociationKind.TEXT_HIGHLIGHT,
+							ColorSchemeAssociationKind.HIGHLIGHT_TEXT,
 							currState);
 				}
 				if (scheme != null) {

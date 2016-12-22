@@ -62,7 +62,6 @@ import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.lafwidget.utils.RenderingUtils;
-import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultComboBoxRenderer;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
@@ -442,8 +441,6 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 					}
 					if (SubstanceComboBoxUI.this.comboBox != null)
 						SubstanceComboBoxUI.this.comboBox.repaint();
-
-					configureArrowButtonStraightSide();
 				});
 			}
 
@@ -537,19 +534,7 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 
 		int componentFontSize = SubstanceSizeUtils.getComponentFontSize(this.comboBox);
 		if (this.comboBox.isEditable()) {
-			float borderDelta = SubstanceSizeUtils.getBorderStrokeWidth();
-			Shape contour = SubstanceOutlineUtilities
-					.getBaseOutline(
-							width,
-							height,
-							Math.max(0, SubstanceSizeUtils.getClassicButtonCornerRadius(
-									componentFontSize) - borderDelta), 
-							null,
-							borderDelta);
-
-			graphics.setColor(SubstanceTextUtilities
-					.getTextBackgroundFillColor(this.comboBox));
-			graphics.fill(contour);
+			SubstanceTextUtilities.paintTextCompBackground(g, c);
 		} else {
 			this.delegate.updateBackground(graphics, this.comboBox, this.transitionModel);
 
@@ -663,30 +648,6 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 		// Mustang decided to make the arrow button focusable on
 		// focusable comboboxes
 		this.arrowButton.setFocusable(false);
-
-		this.configureArrowButtonStraightSide();
-	}
-
-	/**
-	 * Configures the straight side of the arrow button.
-	 */
-	protected void configureArrowButtonStraightSide() {
-		this.arrowButton.putClientProperty(
-				SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, this.comboBox
-						.getComponentOrientation().isLeftToRight() ? Side.LEFT
-						: Side.RIGHT);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicComboBoxUI#unconfigureArrowButton()
-	 */
-	@Override
-	public void unconfigureArrowButton() {
-		// this.comboBox.removeFocusListener(this.substanceFocusListener);
-		// this.substanceFocusListener = null;
-		super.unconfigureArrowButton();
 	}
 
 	/*
@@ -728,8 +689,6 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements
 			if (this.comboBox.isEditable()) {
 				SubstanceTextComponentBorder border = 
 						new SubstanceTextComponentBorder(comboBorderInsets);
-				// remain with consistent corner radius across combos
-				border.setCornerRadiusFactor(1.0f);
 				this.comboBox.setBorder(border);
 			} else {
 				this.comboBox

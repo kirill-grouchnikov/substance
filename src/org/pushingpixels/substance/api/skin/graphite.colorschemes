@@ -20,6 +20,17 @@ Graphite Border {
     colorForeground=#EDEDED
 }
 
+Graphite Mark {
+    kind=Dark
+    colorUltraLight=#616161
+    colorExtraLight=#5A5A5A
+    colorLight=#4F4F4F
+    colorMid=#414141
+    colorDark=#323232
+    colorUltraDark=#2B2B2B
+    colorForeground=#EDEDED
+}
+
 Graphite Background {
     kind=Dark
     colorUltraLight=#5F5F5F
@@ -165,13 +176,13 @@ Raven Highlight Mark {
 
 Raven Disabled {
     kind=Dark
-    colorUltraLight=#2B2B2B
-    colorExtraLight=#262626
-    colorLight=#1E1E1E
-    colorMid=#141414
-    colorDark=#0A0A0A
-    colorUltraDark=#050505
-    colorForeground=#505050
+    colorUltraLight=#645A55
+    colorExtraLight=#5A5550
+    colorLight=#4B4641
+    colorMid=#372D23
+    colorDark=#0F0A05
+    colorUltraDark=#050300
+    colorForeground=#A0A0A0
 }
 
 Raven Selected Disabled {
@@ -205,5 +216,27 @@ Graphite Gold Light Text {
     colorDark=#E49700
     colorUltraDark=#D89103
     colorForeground=#FFFFFF
+}
+
+Chalk {
+    kind=Light
+    colorUltraLight=#959595
+    colorExtraLight=#959595
+    colorLight=#959595
+    colorMid=#959595
+    colorDark=#959595
+    colorUltraDark=#959595
+    colorForeground=#959595
+}
+
+Chalk Separator {
+    kind=Dark
+    colorUltraLight=#868686
+    colorExtraLight=#828282
+    colorLight=#6F6F6F
+    colorMid=#383838
+    colorDark=#353535
+    colorUltraDark=#333333
+    colorForeground=#B4B4B4
 }
 

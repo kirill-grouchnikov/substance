@@ -773,18 +773,22 @@ public class SubstanceIconFactory {
 					state);
 			SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities.getColorScheme(tree,
 					ColorSchemeAssociationKind.BORDER, state);
+			SubstanceColorScheme markScheme = SubstanceColorSchemeUtilities.getColorScheme(tree,
+					ColorSchemeAssociationKind.MARK, state);
 
 			int fontSize = SubstanceSizeUtils.getComponentFontSize(tree);
 
 			HashMapKey key = SubstanceCoreUtilities.getHashKey(fontSize,
-					fillScheme.getDisplayName(), borderScheme.getDisplayName(), isCollapsed);
+					fillScheme.getDisplayName(), borderScheme.getDisplayName(),
+					markScheme.getDisplayName(), isCollapsed);
 
 			HiDpiAwareIcon result = TreeIcon.icons.get(key);
 			if (result != null)
 				return result;
 
 			result = new HiDpiAwareIcon(
-					SubstanceImageCreator.getTreeIcon(tree, fillScheme, borderScheme, isCollapsed));
+					SubstanceImageCreator.getTreeIcon(tree, fillScheme, borderScheme, markScheme,
+							isCollapsed));
 			TreeIcon.icons.put(key, result);
 
 			return result;

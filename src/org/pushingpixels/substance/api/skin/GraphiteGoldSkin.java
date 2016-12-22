@@ -39,7 +39,7 @@ import org.pushingpixels.substance.api.SubstanceSkin;
  * API.
  * 
  * @author Kirill Grouchnikov
- * @since version 6.3
+ * @since version 7.0
  */
 public class GraphiteGoldSkin extends GraphiteSkin {
 	/**
@@ -97,7 +97,7 @@ public class GraphiteGoldSkin extends GraphiteSkin {
 
 		// text highlight scheme
 		defaultSchemeBundle.registerColorScheme(highlightScheme,
-				ColorSchemeAssociationKind.TEXT_HIGHLIGHT,
+				ColorSchemeAssociationKind.HIGHLIGHT_TEXT,
 				ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED);
 
 		defaultSchemeBundle.registerColorScheme(highlightScheme,

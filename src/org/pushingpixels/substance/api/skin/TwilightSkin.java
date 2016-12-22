@@ -88,9 +88,9 @@ public class TwilightSkin extends SubstanceSkin {
 
 		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
 				activeScheme, enabledScheme, enabledScheme);
-		defaultSchemeBundle.registerColorScheme(enabledScheme, 0.6f, 
+		defaultSchemeBundle.registerColorScheme(enabledScheme, 0.6f,
 				ComponentState.DISABLED_UNSELECTED);
-		defaultSchemeBundle.registerColorScheme(activeScheme, 0.6f, 
+		defaultSchemeBundle.registerColorScheme(activeScheme, 0.6f,
 				ComponentState.DISABLED_SELECTED);
 
 		// borders
@@ -98,28 +98,30 @@ public class TwilightSkin extends SubstanceSkin {
 				.get("Twilight Selected Disabled Border");
 		SubstanceColorScheme borderScheme = schemes.get("Twilight Border");
 		defaultSchemeBundle.registerColorScheme(borderDisabledSelectedScheme,
-				ColorSchemeAssociationKind.BORDER,
-				ComponentState.DISABLED_SELECTED);
-		defaultSchemeBundle.registerColorScheme(borderScheme,
-				ColorSchemeAssociationKind.BORDER);
+				ColorSchemeAssociationKind.BORDER, ComponentState.DISABLED_SELECTED);
+		defaultSchemeBundle.registerColorScheme(borderScheme, ColorSchemeAssociationKind.BORDER);
 
 		// marks
 		SubstanceColorScheme markActiveScheme = schemes.get("Twilight Mark Active");
-		defaultSchemeBundle.registerColorScheme(markActiveScheme,
-				ColorSchemeAssociationKind.MARK, ComponentState
-						.getActiveStates());
+		defaultSchemeBundle.registerColorScheme(markActiveScheme, ColorSchemeAssociationKind.MARK,
+				ComponentState.getActiveStates());
 		defaultSchemeBundle.registerColorScheme(markActiveScheme, 0.6f,
-				ColorSchemeAssociationKind.MARK, 
-				ComponentState.DISABLED_SELECTED, ComponentState.DISABLED_UNSELECTED);
+				ColorSchemeAssociationKind.MARK, ComponentState.DISABLED_SELECTED,
+				ComponentState.DISABLED_UNSELECTED);
 
 		// separators
 		SubstanceColorScheme separatorScheme = schemes.get("Twilight Separator");
-		defaultSchemeBundle.registerColorScheme(separatorScheme, ColorSchemeAssociationKind.SEPARATOR);
+		defaultSchemeBundle.registerColorScheme(separatorScheme,
+				ColorSchemeAssociationKind.SEPARATOR);
+
+		// tab borders
+		defaultSchemeBundle.registerColorScheme(schemes.get("Twilight Tab Border"),
+				ColorSchemeAssociationKind.TAB_BORDER, ComponentState.getActiveStates());
 
 		SubstanceColorScheme watermarkScheme = schemes.get("Twilight Watermark");
 
-		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
-				watermarkScheme, DecorationAreaType.NONE);
+		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, watermarkScheme,
+				DecorationAreaType.NONE);
 
 		SubstanceColorSchemeBundle decorationsSchemeBundle = new SubstanceColorSchemeBundle(
 				activeScheme, enabledScheme, enabledScheme);
@@ -127,17 +129,14 @@ public class TwilightSkin extends SubstanceSkin {
 				ComponentState.DISABLED_UNSELECTED);
 
 		// borders
-		decorationsSchemeBundle.registerColorScheme(
-				borderDisabledSelectedScheme,
-				ColorSchemeAssociationKind.BORDER,
-				ComponentState.DISABLED_SELECTED);
+		decorationsSchemeBundle.registerColorScheme(borderDisabledSelectedScheme,
+				ColorSchemeAssociationKind.BORDER, ComponentState.DISABLED_SELECTED);
 		decorationsSchemeBundle.registerColorScheme(borderScheme,
 				ColorSchemeAssociationKind.BORDER);
 
 		// marks
 		decorationsSchemeBundle.registerColorScheme(markActiveScheme,
-				ColorSchemeAssociationKind.MARK, ComponentState
-						.getActiveStates());
+				ColorSchemeAssociationKind.MARK, ComponentState.getActiveStates());
 
 		// separators
 		SubstanceColorScheme separatorDecorationsScheme = schemes
@@ -148,42 +147,36 @@ public class TwilightSkin extends SubstanceSkin {
 		SubstanceColorScheme decorationsWatermarkScheme = schemes
 				.get("Twilight Decorations Watermark");
 
-		this.registerDecorationAreaSchemeBundle(decorationsSchemeBundle,
-				decorationsWatermarkScheme, DecorationAreaType.TOOLBAR,
-				DecorationAreaType.GENERAL, DecorationAreaType.FOOTER);
+		this.registerDecorationAreaSchemeBundle(decorationsSchemeBundle, decorationsWatermarkScheme,
+				DecorationAreaType.TOOLBAR, DecorationAreaType.GENERAL, DecorationAreaType.FOOTER);
 
-		SubstanceColorSchemeBundle headerSchemeBundle = new SubstanceColorSchemeBundle(
-				activeScheme, enabledScheme, enabledScheme);
+		SubstanceColorSchemeBundle headerSchemeBundle = new SubstanceColorSchemeBundle(activeScheme,
+				enabledScheme, enabledScheme);
 		headerSchemeBundle.registerColorScheme(enabledScheme, 0.5f,
 				ComponentState.DISABLED_UNSELECTED);
 
 		// borders
-		SubstanceColorScheme headerBorderScheme = schemes
-				.get("Twilight Header Border");
+		SubstanceColorScheme headerBorderScheme = schemes.get("Twilight Header Border");
 		headerSchemeBundle.registerColorScheme(borderDisabledSelectedScheme,
-				ColorSchemeAssociationKind.BORDER,
-				ComponentState.DISABLED_SELECTED);
+				ColorSchemeAssociationKind.BORDER, ComponentState.DISABLED_SELECTED);
 		headerSchemeBundle.registerColorScheme(headerBorderScheme,
 				ColorSchemeAssociationKind.BORDER);
 		// marks
-		headerSchemeBundle.registerColorScheme(markActiveScheme,
-				ColorSchemeAssociationKind.MARK, ComponentState
-						.getActiveStates());
+		headerSchemeBundle.registerColorScheme(markActiveScheme, ColorSchemeAssociationKind.MARK,
+				ComponentState.getActiveStates());
 
 		headerSchemeBundle.registerHighlightColorScheme(activeScheme, 0.7f,
-				ComponentState.ROLLOVER_UNSELECTED,
-				ComponentState.ROLLOVER_ARMED, ComponentState.ARMED);
+				ComponentState.ROLLOVER_UNSELECTED, ComponentState.ROLLOVER_ARMED,
+				ComponentState.ARMED);
 		headerSchemeBundle.registerHighlightColorScheme(activeScheme, 0.8f,
 				ComponentState.SELECTED);
 		headerSchemeBundle.registerHighlightColorScheme(activeScheme, 1.0f,
 				ComponentState.ROLLOVER_SELECTED);
 
-		SubstanceColorScheme headerWatermarkScheme = schemes
-				.get("Twilight Header Watermark");
+		SubstanceColorScheme headerWatermarkScheme = schemes.get("Twilight Header Watermark");
 
-		this.registerDecorationAreaSchemeBundle(headerSchemeBundle,
-				headerWatermarkScheme, DecorationAreaType.PRIMARY_TITLE_PANE,
-				DecorationAreaType.SECONDARY_TITLE_PANE,
+		this.registerDecorationAreaSchemeBundle(headerSchemeBundle, headerWatermarkScheme,
+				DecorationAreaType.PRIMARY_TITLE_PANE, DecorationAreaType.SECONDARY_TITLE_PANE,
 				DecorationAreaType.HEADER);
 
 		setTabFadeStart(0.2);
@@ -193,47 +186,43 @@ public class TwilightSkin extends SubstanceSkin {
 		// edges of toolbars and footers
 		this.addOverlayPainter(BottomShadowOverlayPainter.getInstance(),
 				DecorationAreaType.TOOLBAR);
-		this.addOverlayPainter(BottomShadowOverlayPainter.getInstance(),
-				DecorationAreaType.FOOTER);
+		this.addOverlayPainter(BottomShadowOverlayPainter.getInstance(), DecorationAreaType.FOOTER);
 
 		// add an overlay painter to paint a dark line along the bottom
 		// edge of toolbars
 		this.toolbarBottomLineOverlayPainter = new BottomLineOverlayPainter(
 				(SubstanceColorScheme scheme) -> scheme.getUltraDarkColor().darker());
-		this.addOverlayPainter(this.toolbarBottomLineOverlayPainter,
-				DecorationAreaType.TOOLBAR);
+		this.addOverlayPainter(this.toolbarBottomLineOverlayPainter, DecorationAreaType.TOOLBAR);
 
 		// add an overlay painter to paint a dark line along the bottom
 		// edge of toolbars
 		this.toolbarTopLineOverlayPainter = new TopLineOverlayPainter(
-				(SubstanceColorScheme scheme) -> SubstanceColorUtilities.getAlphaColor(
-						scheme.getForegroundColor(), 32));
-		this.addOverlayPainter(this.toolbarTopLineOverlayPainter,
-				DecorationAreaType.TOOLBAR);
+				(SubstanceColorScheme scheme) -> SubstanceColorUtilities
+						.getAlphaColor(scheme.getForegroundColor(), 32));
+		this.addOverlayPainter(this.toolbarTopLineOverlayPainter, DecorationAreaType.TOOLBAR);
 
 		// add an overlay painter to paint a bezel line along the top
 		// edge of footer
 		this.footerTopBezelOverlayPainter = new TopBezelOverlayPainter(
 				(SubstanceColorScheme scheme) -> scheme.getUltraDarkColor().darker(),
-				(SubstanceColorScheme scheme) -> SubstanceColorUtilities.getAlphaColor(
-						scheme.getForegroundColor(), 32));
-		this.addOverlayPainter(this.footerTopBezelOverlayPainter,
-				DecorationAreaType.FOOTER);
+				(SubstanceColorScheme scheme) -> SubstanceColorUtilities
+						.getAlphaColor(scheme.getForegroundColor(), 32));
+		this.addOverlayPainter(this.footerTopBezelOverlayPainter, DecorationAreaType.FOOTER);
 
 		this.setTabFadeStart(0.18);
 		this.setTabFadeEnd(0.18);
 
 		this.buttonShaper = new ClassicButtonShaper();
 		this.watermark = null;
-		this.fillPainter = new FractionBasedFillPainter("Twilight", new float[] { 0.0f, 0.5f, 1.0f },
+		this.fillPainter = new FractionBasedFillPainter("Twilight",
+				new float[] { 0.0f, 0.5f, 1.0f },
 				new ColorSchemeSingleColorQuery[] { ColorSchemeSingleColorQuery.ULTRALIGHT,
 						ColorSchemeSingleColorQuery.LIGHT, ColorSchemeSingleColorQuery.LIGHT });
 		this.decorationPainter = new MatteDecorationPainter();
 		this.highlightPainter = new ClassicHighlightPainter();
-		this.borderPainter = new CompositeBorderPainter("Twilight",
-				new ClassicBorderPainter(), new DelegateBorderPainter(
-						"Twilight Inner", new ClassicBorderPainter(),
-						0x40FFFFFF, 0x20FFFFFF, 0x00FFFFFF,
+		this.borderPainter = new CompositeBorderPainter("Twilight", new ClassicBorderPainter(),
+				new DelegateBorderPainter("Twilight Inner", new ClassicBorderPainter(), 0x40FFFFFF,
+						0x20FFFFFF, 0x00FFFFFF,
 						(SubstanceColorScheme scheme) -> scheme.tint(0.2f)));
 	}
 
