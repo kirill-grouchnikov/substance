@@ -50,8 +50,8 @@ public class DefaultMacFontPolicy implements FontPolicy {
 	 * javax.swing.UIDefaults)
 	 */
 	public FontSet getFontSet(String lafName, UIDefaults table) {
-		String fontFamily = LookUtils.IS_OS_MAC_EL_CAPITAN ? "San Francisco"
-			: (LookUtils.IS_OS_MAC_YOSEMITE ? "Helvetica Neue" : "Lucida Grande"); 
+		String fontFamily = LookUtils.IS_OS_MAC_EL_CAPITAN_OR_LATER ? "System Font"
+			: (LookUtils.IS_OS_MAC_YOSEMITE ? "Helvetica Neue" : "Lucida Grande");
 		Font controlFont = new Font(fontFamily, Font.PLAIN, 13);
 		Font menuFont = table == null ? new Font(fontFamily, Font.PLAIN,
 				14) : table.getFont("Menu.font");

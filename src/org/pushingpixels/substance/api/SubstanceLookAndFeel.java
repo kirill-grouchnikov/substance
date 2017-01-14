@@ -135,7 +135,7 @@ import org.pushingpixels.substance.internal.utils.TabCloseListenerManager;
 public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	/**
 	 * The name of plugin configuration XML resource name. This is used for the
-	 * <a href="https://laf-plugin.dev.java.net">laf-plugin</a> support layer of
+	 * <a href="https://github.com/kirill-grouchnikov/laf-plugin">laf-plugin</a> support layer of
 	 * third-party components.
 	 */
 	public static final String PLUGIN_XML = "META-INF/substance-plugin.xml";

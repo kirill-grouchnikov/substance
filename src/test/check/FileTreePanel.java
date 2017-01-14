@@ -285,7 +285,7 @@ public class FileTreePanel extends ControllablePanel implements Deferrable {
 		 * 
 		 * @see javax.swing.tree.TreeNode#children()
 		 */
-		public Enumeration<?> children() {
+		public Enumeration children() {
 			final int elementCount = this.children.size();
 			return new Enumeration<File>() {
 				int count = 0;

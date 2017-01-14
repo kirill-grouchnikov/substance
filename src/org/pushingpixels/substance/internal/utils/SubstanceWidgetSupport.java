@@ -54,7 +54,7 @@ import org.pushingpixels.substance.internal.ui.SubstanceDesktopIconUI;
 import org.pushingpixels.substance.internal.ui.SubstanceTabbedPaneUI;
 
 /**
- * Support for <a href="https://laf-widget.dev.java.net">laf-widget</a> layer.
+ * Support for <a href="https://github.com/kirill-grouchnikov/laf-widget">laf-widget</a> layer.
  * This class is <b>for internal use only</b>.
  * 
  * @author Kirill Grouchnikov

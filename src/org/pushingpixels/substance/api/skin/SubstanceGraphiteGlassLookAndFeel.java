@@ -32,16 +32,15 @@ package org.pushingpixels.substance.api.skin;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 
 /**
- * Standalone look-and-feel that uses the <code>Raven Graphite Glass</code> skin
+ * Standalone look-and-feel that uses the <code>Graphite Glass</code> skin
  * from {@link GraphiteGlassSkin}. You can set this look-and-feel by:
  * <ul>
  * <li>-Dswing.defaultlaf=org.pushingpixels.substance.api.skin.
- * SubstanceRavenGraphiteGlassLookAndFeel</li>
+ * SubstanceGraphiteGlassLookAndFeel</li>
  * <li>UIManager.setLookAndFeel(
- * "org.pushingpixels.substance.api.skin.SubstanceRavenGraphiteGlassLookAndFeel"
+ * "org.pushingpixels.substance.api.skin.SubstanceGraphiteGlassLookAndFeel"
  * );</li>
- * <li>UIManager.setLookAndFeel(new
- * SubstanceRavenGraphiteGlassLookAndFeel());</li>
+ * <li>UIManager.setLookAndFeel(new SubstanceGraphiteGlassLookAndFeel());</li>
  * </ul>
  * 
  * @author Kirill Grouchnikov

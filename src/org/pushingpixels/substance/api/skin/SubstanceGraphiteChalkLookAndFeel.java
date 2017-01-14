@@ -32,7 +32,7 @@ package org.pushingpixels.substance.api.skin;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 
 /**
- * Standalone look-and-feel that uses the <code>Graphite AlChalkabaster</code> skin from
+ * Standalone look-and-feel that uses the <code>Graphite Chalk</code> skin from
  * {@link GraphiteChalkSkin}. You can set this look-and-feel by:
  * <ul>
  * <li>-Dswing.defaultlaf=org.pushingpixels.substance.api.skin.

@@ -539,8 +539,10 @@ public class SampleMenuFactory {
 
 		customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "A03", "a03.swing.plaf.A03LookAndFeel"));
 		customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "Alloy", "com.incors.plaf.alloy.AlloyLookAndFeel"));
-		customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "Cezanne Textile",
-				"de.centigrade.laf.textile.TextileLookAndFeel"));
+        customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "Cezanne Textile",
+                        "de.centigrade.laf.textile.TextileLookAndFeel"));
+        customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "Darcula",
+                        "com.bulenkov.darcula.DarculaLaf"));
 		customLafMenus
 				.add(SubstanceLafChanger.getMenuItem(frame, "EaSynth", "com.easynth.lookandfeel.EaSynthLookAndFeel"));
 		customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "FH", "com.shfarr.ui.plaf.fh.FhLookAndFeel"));

@@ -214,7 +214,7 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 
 		useWebColors = new JCheckBox(getLabel("Xoetrope.webSafeColors",
 				"Use web safe colors"));
-		useWebColors.setBounds(8, 248, 160, 18);
+		useWebColors.setBounds(8, 248, 140, 18);
 		useWebColors.addActionListener(this);
 		useWebColors.setOpaque(false);
 		useWebColors.setFont(font9pt);
@@ -222,7 +222,7 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 
 		decimalRGB = new JCheckBox(getLabel("Xoetrope.decimalRGB",
 				"Decimal RGB"));
-		decimalRGB.setBounds(173, 248, 88, 18);
+		decimalRGB.setBounds(143, 248, 118, 18);
 		decimalRGB.addActionListener(this);
 		decimalRGB.setOpaque(false);
 		decimalRGB.setFont(font9pt);
@@ -1263,33 +1263,28 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 				_hasAllValues = false;
 
 			final boolean hasAllValues = _hasAllValues;
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					useWebColors.setEnabled(hasAllValues);
-					decimalRGB.setEnabled(hasAllValues);
-				}
-			});
+            SwingUtilities.invokeLater(() -> {
+                useWebColors.setEnabled(hasAllValues);
+                decimalRGB.setEnabled(hasAllValues);
+            });
 
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					// the below use of client property is to prevent
-					// infinite event loop (resetColor evetually changes
-					// the text boxes)
-					if (hasAllValues && originator.hasFocus()) {
-						if (Boolean.TRUE.equals(originator
-								.getClientProperty(MARKER))) {
-							originator.putClientProperty(MARKER, null);
-						} else {
-							originator.putClientProperty(MARKER, Boolean.TRUE);
-							resetColor();
-						}
-					}
-					// repaint for synchronizing the hue marker
-					if (displayScheme)
-						imagePicker.repaint();
-				}
-			});
-		}
+            SwingUtilities.invokeLater(() -> {
+                // the below use of client property is to prevent
+                // infinite event loop (resetColor evetually changes
+                // the text boxes)
+                if (hasAllValues && originator.hasFocus()) {
+                    if (Boolean.TRUE.equals(originator.getClientProperty(MARKER))) {
+                        originator.putClientProperty(MARKER, null);
+                    } else {
+                        originator.putClientProperty(MARKER, Boolean.TRUE);
+                        resetColor();
+                    }
+                }
+                // repaint for synchronizing the hue marker
+                if (displayScheme)
+                    imagePicker.repaint();
+            });
+        }
 	}
 
 	// ----------------------------------------------------------------------------
