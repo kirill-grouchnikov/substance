@@ -105,7 +105,7 @@ public class BackgroundPaintingUtils {
 			// use the decoration painter
 			DecorationPainterUtils.paintDecorationBackground(graphics, c, force);
 			// and add overlays unless it's not a top-level menu
-			boolean showOverlays = false;
+			boolean showOverlays = true;
 			if (c.getParent() instanceof JPopupMenu) {
 				showOverlays = false;
 			} else {

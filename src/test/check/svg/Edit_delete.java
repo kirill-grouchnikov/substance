@@ -11,7 +11,7 @@ import org.pushingpixels.lafwidget.icon.IsResizable;
 
 /**
  * This class has been automatically generated using <a
- * href="https://flamingo.dev.java.net">Flamingo SVG transcoder</a>.
+ * href="https://github.com/kirill-grouchnikov/flamingo">Flamingo SVG transcoder</a>.
  */
 public class Edit_delete implements Icon, UIResource, IsResizable, IsHiDpiAware {
 	/**
@@ -212,12 +212,12 @@ g.setTransform(defaultTransform_);
 	/**
 	 * The current width of this resizable icon.
 	 */
-	int width;
+	private int width;
 
 	/**
 	 * The current height of this resizable icon.
 	 */
-	int height;
+	private int height;
 
 	/**
 	 * Creates a new transcoded SVG image.
@@ -274,9 +274,27 @@ g.setTransform(defaultTransform_);
 		double coef1 = (double) this.width / (double) getOrigWidth();
 		double coef2 = (double) this.height / (double) getOrigHeight();
 		double coef = Math.min(coef1, coef2);
+        g2d.clipRect(0, 0, this.width, this.height);
 		g2d.scale(coef, coef);
+        g2d.translate(-getOrigX(), -getOrigY());
+        if (coef1 != coef2) {
+            if (coef1 < coef2) {
+               int extraDy = (int) ((getOrigWidth() - getOrigHeight()) / 2.0);
+               g2d.translate(0, extraDy);
+            } else {
+               int extraDx = (int) ((getOrigHeight() - getOrigWidth()) / 2.0);
+               g2d.translate(extraDx, 0);
+            }
+        }
 		paint(g2d);
 		g2d.dispose();
+	}
+	
+	public static Edit_delete of(int width, int height) {
+	   Edit_delete result = new Edit_delete();
+	   result.width = width;
+	   result.height = height;
+	   return result;
 	}
 }
 

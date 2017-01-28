@@ -116,7 +116,7 @@ public class FontSizePanel {
 		builder.append(fontSizeLabel);
 		// fontSizeLabel.add(Box.createHorizontalStrut(5));
 
-		Icon zoomOutIcon = Check.configure(new View_zoom_out(), 16);
+		Icon zoomOutIcon = View_zoom_out.of(16, 16);
 		JLabel zoomOutLabel = new JLabel(zoomOutIcon);
 		builder.append(zoomOutLabel);
 
@@ -158,7 +158,7 @@ public class FontSizePanel {
 		});
 		builder.append(fontSizeSlider);
 
-		Icon zoomInIcon = Check.configure(new View_zoom_in(), 16);
+		Icon zoomInIcon = View_zoom_in.of(16, 16);
 		JLabel zoomInLabel = new JLabel(zoomInIcon);
 		builder.append(zoomInLabel);
 

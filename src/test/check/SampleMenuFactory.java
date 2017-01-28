@@ -408,8 +408,12 @@ public class SampleMenuFactory {
 				"org.pushingpixels.substance.api.skin.SubstanceDustCoffeeLookAndFeel"));
 		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Gemini",
 				"org.pushingpixels.substance.api.skin.SubstanceGeminiLookAndFeel"));
-		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Mariner",
-				"org.pushingpixels.substance.api.skin.SubstanceMarinerLookAndFeel"));
+        substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Mariner",
+                "org.pushingpixels.substance.api.skin.SubstanceMarinerLookAndFeel"));
+        substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Mist Aqua",
+                "org.pushingpixels.substance.api.skin.SubstanceMistAquaLookAndFeel"));
+        substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Mist Silver",
+                "org.pushingpixels.substance.api.skin.SubstanceMistSilverLookAndFeel"));
 		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Moderate",
 				"org.pushingpixels.substance.api.skin.SubstanceModerateLookAndFeel"));
 		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Nebula",
@@ -444,8 +448,8 @@ public class SampleMenuFactory {
 				"org.pushingpixels.substance.api.skin.SubstanceGraphiteAquaLookAndFeel"));
 		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Graphite Gold",
 				"org.pushingpixels.substance.api.skin.SubstanceGraphiteGoldLookAndFeel"));
-		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Graphite Alabaster",
-				"org.pushingpixels.substance.api.skin.SubstanceGraphiteAlabasterLookAndFeel"));
+		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Graphite Chalk",
+				"org.pushingpixels.substance.api.skin.SubstanceGraphiteChalkLookAndFeel"));
 		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Twilight",
 				"org.pushingpixels.substance.api.skin.SubstanceTwilightLookAndFeel"));
 		lafMenu.add(substanceMenus);

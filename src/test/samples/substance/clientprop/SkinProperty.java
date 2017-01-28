@@ -32,6 +32,7 @@ package test.samples.substance.clientprop;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -114,6 +115,7 @@ public class SkinProperty extends JFrame {
 		sampleFrame.pack();
 		sampleFrame.setLocationRelativeTo(null);
 		sampleFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		sampleFrame.setIconImage(new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR));
 
 		sampleFrame.getRootPane().putClientProperty(
 				SubstanceLookAndFeel.SKIN_PROPERTY, skin);

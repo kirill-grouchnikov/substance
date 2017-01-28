@@ -106,6 +106,6 @@ public final class TopBezelOverlayPainter implements SubstanceOverlayPainter {
 
 	@Override
 	public String getDisplayName() {
-		return "Top Bezel Shadow";
+		return "Top Bezel";
 	}
 }

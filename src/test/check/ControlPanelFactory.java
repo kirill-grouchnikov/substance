@@ -548,7 +548,7 @@ public class ControlPanelFactory {
 		});
 		builder.append("Plain", bop);
 
-		JButton bopi = new JButton("Show", Check.configure(new Dialog_information(), 22));
+		JButton bopi = new JButton("Show", Dialog_information.of(22, 22));
 		bopi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -562,7 +562,7 @@ public class ControlPanelFactory {
 		});
 		builder.append("Info", bopi);
 
-		JButton bope = new JButton("Show", Check.configure(new Dialog_error(), 22));
+		JButton bope = new JButton("Show", Dialog_error.of(22, 22));
 		bope.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -576,7 +576,7 @@ public class ControlPanelFactory {
 		});
 		builder.append("Error", bope);
 
-		JButton bopw = new JButton("Show", Check.configure(new Dialog_warning(), 22));
+		JButton bopw = new JButton("Show", Dialog_warning.of(22, 22));
 		bopw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -590,7 +590,7 @@ public class ControlPanelFactory {
 		});
 		builder.append("Warning", bopw);
 
-		JButton bopq = new JButton("Show", Check.configure(new Help_browser(), 22));
+		JButton bopq = new JButton("Show", Help_browser.of(22, 22));
 		bopq.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {

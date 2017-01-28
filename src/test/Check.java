@@ -730,31 +730,24 @@ public class Check extends JFrame {
 		((IsResizable) icon).setDimension(new Dimension(width, height));
 		return icon;
 	}
-	
-	public static Icon configure(Icon icon, int size) {
-		((IsResizable) icon).setDimension(new Dimension(size, size));
-		return icon;
-	}
 
 	public static JToolBar getToolbar(String label, int size, boolean hasStrings) {
 		JToolBar toolBar = new JToolBar();
 
-		JButton buttonCut = new JButton(hasStrings ? "cut" : null, 
-				configure(new Edit_cut(), size));
+		JButton buttonCut = new JButton(hasStrings ? "cut" : null, Edit_cut.of(size, size)); 
 		buttonCut.putClientProperty(
 				SubstanceLookAndFeel.BUTTON_NO_MIN_SIZE_PROPERTY, Boolean.TRUE);
 		toolBar.add(buttonCut);
-		JButton buttonCopy = new JButton(hasStrings ? "copy" : null,
-				configure(new Edit_copy(), size));
+		JButton buttonCopy = new JButton(hasStrings ? "copy" : null, Edit_copy.of(size, size));
 		buttonCopy.putClientProperty(
 				SubstanceLookAndFeel.BUTTON_NO_MIN_SIZE_PROPERTY, Boolean.TRUE);
 		buttonCopy.setEnabled(false);
 		toolBar.add(buttonCopy);
-		JButton buttonPaste = new JButton(configure(new Edit_paste(), size));
+		JButton buttonPaste = new JButton(Edit_paste.of(size, size));
 		toolBar.add(buttonPaste);
-		JButton buttonSelectAll = new JButton(configure(new Edit_select_all(), size));
+		JButton buttonSelectAll = new JButton(Edit_select_all.of(size, size));
 		toolBar.add(buttonSelectAll);
-		JButton buttonDelete = new JButton(configure(new Edit_delete(), size));
+		JButton buttonDelete = new JButton(Edit_delete.of(size, size));
 		toolBar.add(buttonDelete);
 		toolBar.addSeparator();
 
@@ -763,18 +756,18 @@ public class Check extends JFrame {
 		JToolBar innerToolbar = new JToolBar(JToolBar.HORIZONTAL);
 		innerToolbar.setFloatable(false);
 		JToggleButton buttonFormatCenter = new JToggleButton(
-				configure(new Format_justify_center(), size));
+				Format_justify_center.of(size, size));
 		buttonFormatCenter.putClientProperty(
 				SubstanceLookAndFeel.CORNER_RADIUS, Float.valueOf(5.0f));
 		innerToolbar.add(buttonFormatCenter);
 		JToggleButton buttonFormatLeft = new JToggleButton(
-				configure(new Format_justify_left(), size));
+				Format_justify_left.of(size, size));
 		innerToolbar.add(buttonFormatLeft);
 		JToggleButton buttonFormatRight = new JToggleButton(
-				configure(new Format_justify_right(), size));
+				Format_justify_right.of(size, size));
 		innerToolbar.add(buttonFormatRight);
 		JToggleButton buttonFormatFill = new JToggleButton(
-				configure(new Format_justify_fill(), size));
+				Format_justify_fill.of(size, size));
 		buttonFormatFill.putClientProperty(SubstanceLookAndFeel.CORNER_RADIUS,
 				Float.valueOf(0.0f));
 		innerToolbar.add(buttonFormatFill);
@@ -791,7 +784,7 @@ public class Check extends JFrame {
 			innerToolbar2.add(innerPanel, BorderLayout.CENTER);
 
 			final JToggleButton buttonStyleBold = new JToggleButton(
-					configure(new Format_text_bold(), size));
+					Format_text_bold.of(size, size));
 			Set<Side> rightSide = EnumSet.of(Side.RIGHT);
 			buttonStyleBold.putClientProperty(
 					SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY, rightSide);
@@ -799,21 +792,21 @@ public class Check extends JFrame {
 					SubstanceLookAndFeel.CORNER_RADIUS, Float.valueOf(3.0f));
 
 			final JToggleButton buttonStyleItalic = new JToggleButton(
-					configure(new Format_text_italic(), size));
+					Format_text_italic.of(size, size));
 			buttonStyleItalic.putClientProperty(
 					SubstanceLookAndFeel.CORNER_RADIUS, Float.valueOf(0.0f));
 			buttonStyleItalic.putClientProperty(
 					SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY, rightSide);
 
 			final JToggleButton buttonStyleUnderline = new JToggleButton(
-					configure(new Format_text_underline(), size));
+					Format_text_underline.of(size, size));
 			buttonStyleUnderline.putClientProperty(
 					SubstanceLookAndFeel.CORNER_RADIUS, Float.valueOf(0.0f));
 			buttonStyleUnderline.putClientProperty(
 					SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY, rightSide);
 
 			final JToggleButton buttonStyleStrikethrough = new JToggleButton(
-					configure(new Format_text_strikethrough(), size));
+					Format_text_strikethrough.of(size, size));
 			buttonStyleStrikethrough.putClientProperty(
 					SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, EnumSet
 							.of(Side.LEFT));
@@ -830,7 +823,7 @@ public class Check extends JFrame {
 		}
 
 		toolBar.add(Box.createGlue());
-		JButton buttonExit = new JButton(configure(new Process_stop(), size));
+		JButton buttonExit = new JButton(Process_stop.of(size, size));
 		buttonExit.setToolTipText("Closes the test application");
 		buttonExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
