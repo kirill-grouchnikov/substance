@@ -41,26 +41,29 @@ Substance Extras pack provides additional watermarks, color schemes and skins an
 
 ### A little bit of history
 
-<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/skins/creme1.png" width="340" height="254" border=0 align="left">
+<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/skins/creme1.png" width="340" height="254" border=0 align="right">
 
 Substance is a stable library with a long history. While it is highly recommended to use the latest stable release and its accompanying documentation, you can read the release notes of earlier releases to see how Substance has evolved. Note that release notes for older releases are only available in HTML format under the [release-info](https://github.com/kirill-grouchnikov/substance/tree/master/www/release-info) folder.
 
-Version 2.0	| | 10.2005
-Version 2.1	| Dakota | 12.2005
-Version 2.2 | El Paso	| 02.2006
-Version 2.3 | Firenze	| 05.2006
-Version 3.0 | Grenada	| 09.2006
-Version 3.1 | Honolulu | 11.2006
-Version 3.2 | Iowa | 02.2007
-Version 3.3 | Japan | 04.2007
-Version 4.0 | Key Largo	| 09.2007
-Version 4.1 | Lima | 11.2007
-Version 4.2 | Memphis | 02.2008
-Version 4.3 | Nairobi	| 04.2008
-Version 5.0	| | 09.2008
-Version 5.1 | Panama | 02.2009
-Version 5.2 | Quebec | 05.2009
-Version 5.3 | Reykjavik | 09.2009
-Version 6.0 | Sonoma | 04.2010
-Version 6.1 | Trinidad |
-Version 7.0 | Uruguay | 02.2017
+| Version | Codename | Release date |
+| ------------- | ------------- | ------------- |
+| Version 2.0 |   | 10.2005  |
+| Version 2.1 | Dakota  | 12.2005  |
+| Version 2.2 | El Paso  | 02.2006  |
+| Version 2.3 | Firenze  | 05.2006  |
+| Version 3.0 | Grenada  | 09.2006  |
+| Version 3.1 | Honolulu | 11.2006 |
+| Version 3.2 | Iowa | 02.2007 |
+| Version 3.3 | Japan | 04.2007 |
+| Version 4.0 | Key Largo	| 09.2007 |
+| Version 4.1 | Lima | 11.2007 |
+| Version 4.2 | Memphis | 02.2008 |
+| Version 4.3 | Nairobi	| 04.2008 |
+| Version 5.0	| | 09.2008 |
+| Version 5.1 | Panama | 02.2009 |
+| Version 5.2 | Quebec | 05.2009 |
+| Version 5.3 | Reykjavik | 09.2009 |
+| Version 6.0 | Sonoma | 04.2010 |
+| Version 6.1 | Trinidad | |
+| Version 7.0 | Uruguay | 02.2017 |
+
