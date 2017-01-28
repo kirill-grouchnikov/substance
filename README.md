@@ -4,11 +4,11 @@
 
 <img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/walkthrough/all.png" width="279" height="324" border=0 align="right">
 
-If you are new to Swing, start with the general [Swing tutorial](http://java.sun.com/docs/books/tutorial/uiswing/). If you are new to look-and-feels, read the [getting started first](docs/getting-started.md).
+If you are new to Swing, start with the general [Swing tutorial](http://java.sun.com/docs/books/tutorial/uiswing/). If you are new to look-and-feels, read the [getting started first](www/docs/getting-started.md).
 
 To use Substance in your applications, choose one of the following options:
 
-* Use one of the skin-based look-and-feel classes ([light](docs/skins/toneddown.md) or [dark](docs/skins/dark.md)).
+* Use one of the skin-based look-and-feel classes ([light](www/docs/skins/toneddown.md) or [dark](www/docs/skins/dark.md)).
 * Extend the `SubstanceLookAndFeel` class and pass a `SubstanceSkin` instance to the super constructor.
 * Use the static `setSkin(SubstanceSkin)` or `setSkin(String)` APIs to set the specific skin.
 
