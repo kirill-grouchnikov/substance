@@ -16,14 +16,14 @@ In any case, add the latest `substance.jar` to your classpath.
 
 If you wish to build Substance from the sources, you will need to also get [laf-plugin](https://github.com/kirill-grouchnikov/laf-plugin) and [laf-widget](https://github.com/kirill-grouchnikov/laf-widgetn) (binaries or sources). The best way is to sync to the latest and use the `build.xml` script. The main test application uses the FormLayout and components from SwingLabs.
 
-Have a question? See the [FAQ](docs/faq.md) and the list of [known issues](docs/known_issues.md), and if you don't see an answer there, [file a bug](https://github.com/kirill-grouchnikov/substance/issues) or [get in touch](http://www.pushing-pixels.org/about-me).
+Have a question? See the [FAQ](www/docs/faq.md) and the list of [known issues](www/docs/known_issues.md), and if you don't see an answer there, [file a bug](https://github.com/kirill-grouchnikov/substance/issues) or [get in touch](http://www.pushing-pixels.org/about-me).
 
 ### Configure and customize
 
 <img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/skins/nebulabrickwall1.png" width="340" height="254" border=0 align="left">
 You can use Substance-specific settings and APIs to add custom functionality to your components. See detailed examples of using API calls, client properties and VM flags for more information. To control the animations, consult the animation overview.
 
-Substance can be customized to fit your visual needs. The overall visuals are controlled by [skins](docs/skins/overview.md), with each skin defined by [color scheme bundles](docs/skins/colorschemebundles.md) and [painters](docs/painters/overview.md). The [skinning primer](docs/painters/custom-skinning.md) has a few tips on how to use the different Substance painters in applications that wish to paint custom components in a way that is consistent with other Substance visuals. The Substance samples project provides a detailed walktrough that analyzes a complex UI mockup and uses different Substance APIs to implement it.
+Substance can be customized to fit your visual needs. The overall visuals are controlled by [skins](www/docs/skins/overview.md), with each skin defined by [color scheme bundles](www/docs/skins/colorschemebundles.md) and [painters](www/docs/painters/overview.md). The [skinning primer](www/docs/painters/custom-skinning.md) has a few tips on how to use the different Substance painters in applications that wish to paint custom components in a way that is consistent with other Substance visuals. The Substance samples project provides a detailed walktrough that analyzes a complex UI mockup and uses different Substance APIs to implement it.
 
 ### Plugins
 
