@@ -151,10 +151,10 @@ You can run the application the same way as before. Here is how it looks like:
 
 Where to go from here?
 
-* Read the FAQ
+* Read the [FAQ](docs/faq.md)
 * Read about the VM flags
 * Read about the client properties
 * Read about the API
-* Read about using skins
+* Read about [using skins](docs/skins/overview.md)
 * Download the sources and study the test application in `test/Check.java`
 * Read the Javadocs of `SubstanceLookAndFeel` class.
