@@ -2,7 +2,7 @@
 
 ### Getting started
 
-<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/walkthrough/all.png" width="279" height="324" border=0 style="margin-left: 40px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; float: right;">
+<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/walkthrough/all.png" width="279" height="324" border=0 align="right">
 
 If you are new to Swing, start with the general [Swing tutorial](http://java.sun.com/docs/books/tutorial/uiswing/). If you are new to look-and-feels, read the [getting started first](docs/getting-started.md).
 
@@ -20,14 +20,14 @@ Have a question? See the [FAQ](docs/faq.md) and the list of [known issues](docs/
 
 ### Configure and customize
 
-<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/skins/nebulabrickwall1.png" width="340" height="254" border=0 style="margin-left: 10px; margin-top: 10px; margin-right: 40px; margin-bottom: 10px; float: left;">
+<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/skins/nebulabrickwall1.png" width="340" height="254" border=0 align="left">
 You can use Substance-specific settings and APIs to add custom functionality to your components. See detailed examples of using API calls, client properties and VM flags for more information. To control the animations, consult the animation overview.
 
 Substance can be customized to fit your visual needs. The overall visuals are controlled by [skins](docs/skins/overview.md), with each skin defined by [color scheme bundles](docs/skins/colorschemebundles.md) and [painters](docs/painters/overview.md). The [skinning primer](docs/painters/custom-skinning.md) has a few tips on how to use the different Substance painters in applications that wish to paint custom components in a way that is consistent with other Substance visuals. The Substance samples project provides a detailed walktrough that analyzes a complex UI mockup and uses different Substance APIs to implement it.
 
 ### Plugins
 
-<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/learn/ribbon.png" width="340" height="210" border=0 style="margin-left: 40px; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; float: right;">
+<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/learn/ribbon.png" width="340" height="210" border=0 align="right">
 
 While the core Swing components cover the basic UI functionality found in most applications, modern UIs need modern UI components. To address this need, Substance comes with a built-in support to allow defining and seamlessly loading plugins that provide consistent appearance and interaction for third-party components.
 
@@ -41,7 +41,7 @@ Substance Extras pack provides additional watermarks, color schemes and skins an
 
 ### A little bit of history
 
-<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/skins/creme1.png" width="340" height="254" border=0 style="margin-left: 10px; margin-top: 10px; margin-right: 40px; margin-bottom: 10px; float: left;">
+<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/skins/creme1.png" width="340" height="254" border=0 align="left">
 
 Substance is a stable library with a long history. While it is highly recommended to use the latest stable release and its accompanying documentation, you can read the release notes of earlier releases to see how Substance has evolved. Note that release notes for older releases are only available in HTML format under the [release-info](https://github.com/kirill-grouchnikov/substance/tree/master/www/release-info) folder.
 
