@@ -53,15 +53,13 @@ public class DefaultMacFontPolicy implements FontPolicy {
 		String fontFamily = LookUtils.IS_OS_MAC_EL_CAPITAN_OR_LATER ? "System Font"
 			: (LookUtils.IS_OS_MAC_YOSEMITE ? "Helvetica Neue" : "Lucida Grande");
 		Font controlFont = new Font(fontFamily, Font.PLAIN, 13);
-		Font menuFont = table == null ? new Font(fontFamily, Font.PLAIN,
-				14) : table.getFont("Menu.font");
+		Font menuFont = table == null ? new Font(fontFamily, Font.PLAIN, 14) 
+		        : table.getFont("Menu.font");
 		Font titleFont = menuFont;
-		Font messageFont = table == null ? controlFont : table
-				.getFont("OptionPane.font");
-		Font smallFont = table == null ? controlFont.deriveFont(controlFont
-				.getSize2D() - 2f) : table.getFont("ToolTip.font");
-		Font windowTitleFont = table == null ? titleFont : table
-				.getFont("InternalFrame.titleFont");
+		Font messageFont = table == null ? controlFont : table.getFont("OptionPane.font");
+		Font smallFont = table == null ? controlFont.deriveFont(controlFont .getSize2D() - 2f) 
+		        : table.getFont("ToolTip.font");
+		Font windowTitleFont = table == null ? titleFont : table.getFont("InternalFrame.titleFont");
 		return FontSets.createDefaultFontSet(controlFont, menuFont, titleFont,
 				messageFont, smallFont, windowTitleFont);
 	}
