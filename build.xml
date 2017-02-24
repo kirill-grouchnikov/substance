@@ -166,9 +166,9 @@
 
 	<target name="jar-bin" description="create runtime jar">
 		<mkdir dir="${substance.drop.dir}" />
-		<delete file="${substance.drop.dir}/substance-${substance.version}.jar" />
+		<delete file="${substance.drop.dir}/${substance.version}/substance-${substance.version}.jar" />
 
-		<jar compress="true" destfile="${substance.drop.dir}/substance-${substance.version}.jar">
+		<jar compress="true" destfile="${substance.drop.dir}/${substance.version}/substance-${substance.version}.jar">
 			<fileset dir="${substance.output.dir}/" excludes="tools/** test/** **/*.svg" />
 			<fileset dir="${module.substance.basedir}/" includes="resources/**" />
 			<manifest>
@@ -177,11 +177,13 @@
 				<attribute name="Substance-BuildStamp" value="${build.time}" />
 			</manifest>
 		</jar>
-	</target>
+
+	    <copy file="${substance.lib.dir}/trident-${trident.version}.jar" todir="${substance.drop.dir}/${substance.version}" />
+    </target>
 
 	<target name="jar-bin-lite" description="create runtime jar with no custom color choosers">
-		<delete file="${substance.drop.dir}/substance-lite-${substance.version}.jar" />
-		<jar compress="true" destfile="${substance.drop.dir}/substance-lite-${substance.version}.jar">
+		<delete file="${substance.drop.dir}/${substance.version}/substance-lite-${substance.version}.jar" />
+		<jar compress="true" destfile="${substance.drop.dir}/${substance.version}/substance-lite-${substance.version}.jar">
 			<fileset dir="${substance.output.dir}/" excludes="tools/** test/** **/*.svg org/pushingpixels/substance/internal/contrib/randelshofer/** org/pushingpixels/substance/internal/contrib/xoetrope/** org/pushingpixels/substance/internal/ui/SubstanceColorChooserUI* org/pushingpixels/lafwidget/ant/**" />
 			<fileset dir="${module.substance.basedir}/" includes="resources/**" />
 			<manifest>
@@ -193,8 +195,8 @@
 	</target>
 
 	<target name="jar-bin-tst" description="create test runtime jar">
-		<delete file="${substance.drop.dir}/substance-tst-${substance.version}.jar" />
-		<jar destfile="${substance.drop.dir}/substance-tst-${substance.version}.jar">
+		<delete file="${substance.drop.dir}/${substance.version}/substance-tst-${substance.version}.jar" />
+		<jar destfile="${substance.drop.dir}/${substance.version}/substance-tst-${substance.version}.jar">
 			<fileset dir="${substance.output.dir}/" includes="test/**" />
 			<manifest>
 				<attribute name="Substance-Version" value="${substance.versionKey}" />
@@ -206,8 +208,8 @@
 	</target>
 
 	<target name="jar-bin-tools" description="create tools runtime jar">
-		<delete file="${substance.drop.dir}/substance-tools-${substance.version}.jar" />
-		<jar destfile="${substance.drop.dir}/substance-tools-${substance.version}.jar">
+		<delete file="${substance.drop.dir}/${substance.version}/substance-tools-${substance.version}.jar" />
+		<jar destfile="${substance.drop.dir}/${substance.version}/substance-tools-${substance.version}.jar">
 			<fileset dir="${substance.output.dir}/" includes="tools/**/*.class tools/**/*.jpg tools/**/*.png" />
 			<fileset dir="${substance.src.dir}/tools/uidebug/" includes="META-INF/**" />
 			<manifest>
@@ -222,8 +224,8 @@
 	</target>
 
 	<target name="jar-bin-tst-lite" description="create test runtime jar">
-		<delete file="${substance.drop.dir}/substance-tst-lite-${substance.version}.jar" />
-		<jar destfile="${substance.drop.dir}/substance-tst-lite-${substance.version}.jar">
+		<delete file="${substance.drop.dir}/${substance.version}/substance-tst-lite-${substance.version}.jar" />
+		<jar destfile="${substance.drop.dir}/${substance.version}/substance-tst-lite-${substance.version}.jar">
 			<fileset dir="${substance.output.dir}/" includes="test/**" />
 			<fileset dir="${substance.src.dir}/" includes="test/resource/**" />
 			<manifest>

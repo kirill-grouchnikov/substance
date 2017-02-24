@@ -4,7 +4,7 @@
 
 <img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/walkthrough/all.png" width="279" height="324" border=0 align="right">
 
-If you are new to Swing, start with the general [Swing tutorial](http://java.sun.com/docs/books/tutorial/uiswing/). If you are new to look-and-feels, read the [getting started first](www/docs/getting-started.md).
+If you are new to Swing, start with the general [Swing tutorial](http://java.sun.com/docs/books/tutorial/uiswing/). If you are new to look-and-feels, read the [getting started](www/docs/getting-started.md) first.
 
 To use Substance in your applications, choose one of the following options:
 
@@ -17,6 +17,15 @@ In any case, add the latest `substance.jar` to your classpath.
 If you wish to build Substance from the sources, you will need to also get [laf-plugin](https://github.com/kirill-grouchnikov/laf-plugin) and [laf-widget](https://github.com/kirill-grouchnikov/laf-widgetn) (binaries or sources). The best way is to sync to the latest and use the `build.xml` script. The main test application uses the FormLayout and components from SwingLabs.
 
 Have a question? See the [FAQ](www/docs/faq.md) and the list of [known issues](www/docs/known_issues.md), and if you don't see an answer there, [file a bug](https://github.com/kirill-grouchnikov/substance/issues) or [get in touch](http://www.pushing-pixels.org/about-me).
+
+### Adding Substance to your application
+
+If you've skipped [getting started](www/docs/getting-started.md) page, to add Substance to your app follow these steps:
+* Go to the [main project page](https://github.com/kirill-grouchnikov/substance).
+* Navigate to the **drop** folder. This should take you to the sub-folder that contains the downloads for the latest stable release.
+* Click on the specific *X.Y.ZZ* row. It's highly recommended to always use the latest stable release.
+* Download *substance-X.Y.ZZ.jar* file from there.
+* Also download *trident-L.M.NN.jar* file from there - this is the [Trident animation library](https://github.com/kirill-grouchnikov/trident) that is a required runtime dependency.
 
 ### Configure and customize
 
