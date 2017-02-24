@@ -4,11 +4,10 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/laf-plugin"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/laf-widget"/>
-	<classpathentry kind="lib" path="lib/trident.jar" sourcepath="/trident"/>
-	<classpathentry kind="lib" path="lib/build/asm-all-2.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/trident-1.4.jar" sourcepath="/trident"/>
 	<classpathentry kind="lib" path="lib/build/forms-1.2.0.jar"/>
-	<classpathentry kind="lib" path="lib/build/substance-swingx.jar"/>
-	<classpathentry kind="lib" path="lib/build/swingx.jar"/>
+	<classpathentry kind="lib" path="lib/build/substance-swingx-7.0.jar" sourcepath="/substance-swingx/src"/>
+	<classpathentry kind="lib" path="lib/build/swingx-all-1.6.4.jar"/>
 	<classpathentry kind="lib" path="lib/test/fest-assert-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/test/fest-reflect-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/test/fest-swing-1.2.jar"/>
