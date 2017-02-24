@@ -151,7 +151,9 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 						public void set(Object obj, String fieldName,
 								Integer value) {
 							displayedValue = value;
-							progressBar.repaint();
+							if (progressBar != null) {
+							    progressBar.repaint();
+							}
 						}
 					}));
 			displayTimeline.setEase(new Spline(0.4f));

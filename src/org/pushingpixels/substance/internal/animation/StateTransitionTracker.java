@@ -202,7 +202,7 @@ public class StateTransitionTracker {
 			public void onTimelineStateChanged(TimelineState oldState,
 					TimelineState newState, float durationFraction,
 					float timelinePosition) {
-				fireFocusStateTransitionEvent(oldState, newState);
+			    SwingUtilities.invokeLater(() -> fireFocusStateTransitionEvent(oldState, newState));
 			}
 		});
 
