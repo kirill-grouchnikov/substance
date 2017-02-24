@@ -602,8 +602,7 @@ public final class SubstanceImageCreator {
 		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
                 RenderingHints.VALUE_STROKE_PURE);
 		
-		graphics.setComposite(AlphaComposite.getInstance(
-				AlphaComposite.SRC_OVER, alpha));
+		graphics.setComposite(getAlphaComposite(alpha));
 
 		graphics.translate(offsetX, 0);
 		fillPainter.paintContourBackground(graphics, component, dimension,
@@ -623,15 +622,13 @@ public final class SubstanceImageCreator {
 				2 * radius, 2 * radius);
 		if (checkMarkVisibility > 0.0) {
 			// mark
-			graphics.setComposite(AlphaComposite.getInstance(
-					AlphaComposite.SRC_OVER, alpha * checkMarkVisibility));
+			graphics.setComposite(getAlphaComposite(alpha * checkMarkVisibility));
 			graphics.setColor(SubstanceColorUtilities.getMarkColor(
 					markColorScheme, !componentState.isDisabled()));
 			graphics.fill(markOval);
 		} else {
 			// draw ghost mark holder
-			graphics.setComposite(AlphaComposite.getInstance(
-					AlphaComposite.SRC_OVER, alpha * 0.3f));
+			graphics.setComposite(getAlphaComposite(alpha * 0.3f));
 			graphics.setPaint(new GradientPaint(rc + radius, rc - radius,
 					fillColorScheme.getDarkColor(), rc - radius, rc + radius,
 					fillColorScheme.getLightColor()));
@@ -640,6 +637,16 @@ public final class SubstanceImageCreator {
 		graphics.dispose();
 
 		return offBackground;
+	}
+
+	private static AlphaComposite getAlphaComposite(float alpha) {
+		// Fix for "alpha value out of range"
+		float finalAlpha = alpha;
+		if (finalAlpha < 0.0f)
+			finalAlpha = 0.0f;
+		else if (finalAlpha > 1.0f)
+			finalAlpha = 1.0f;
+		return AlphaComposite.getInstance(AlphaComposite.SRC_OVER, finalAlpha);
 	}
 
 	/**
@@ -701,8 +708,7 @@ public final class SubstanceImageCreator {
 		BufferedImage offBackground = SubstanceCoreUtilities.getBlankImage(
 				dimension, dimension);
 		Graphics2D graphics = (Graphics2D) offBackground.getGraphics();
-		graphics.setComposite(AlphaComposite.getInstance(
-				AlphaComposite.SRC_OVER, alpha));
+		graphics.setComposite(getAlphaComposite(alpha));
 
 		graphics.translate(delta - 1, delta - 1);
 		fillPainter.paintContourBackground(graphics, button, contourDim,
@@ -717,8 +723,7 @@ public final class SubstanceImageCreator {
 		graphics.translate(-delta, 1 - delta);
 		if (checkMarkVisibility > 0.0) {
 			if (isCheckMarkFadingOut) {
-				graphics.setComposite(AlphaComposite.getInstance(
-						AlphaComposite.SRC_OVER, alpha * checkMarkVisibility));
+				graphics.setComposite(getAlphaComposite(alpha * checkMarkVisibility));
 				checkMarkVisibility = 1.0f;
 			}
 
@@ -760,23 +765,18 @@ public final class SubstanceImageCreator {
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(tweakedWidth,
 				tweakedHeight);
 		Graphics2D graphics = (Graphics2D) result.getGraphics().create();
-		graphics.setComposite(AlphaComposite.getInstance(
-				AlphaComposite.SRC_OVER, 0.2f * echoAlpha * echoAlpha
-						* echoAlpha));
+		graphics.setComposite(getAlphaComposite(0.2f * echoAlpha * echoAlpha * echoAlpha));
 		graphics.drawImage(echo, offsetX - 1, offsetY - 1, tweakedWidth, tweakedHeight, null);
 		graphics.drawImage(echo, offsetX + 1, offsetY - 1, tweakedWidth, tweakedHeight, null);
 		graphics.drawImage(echo, offsetX - 1, offsetY + 1, tweakedWidth, tweakedHeight, null);
 		graphics.drawImage(echo, offsetX + 1, offsetY + 1, tweakedWidth, tweakedHeight, null);
-		graphics.setComposite(AlphaComposite.getInstance(
-				AlphaComposite.SRC_OVER, 0.7f * echoAlpha * echoAlpha
-						* echoAlpha));
+		graphics.setComposite(getAlphaComposite(0.7f * echoAlpha * echoAlpha * echoAlpha));
 		graphics.drawImage(echo, offsetX, offsetY - 1, tweakedWidth, tweakedHeight, null);
 		graphics.drawImage(echo, offsetX, offsetY + 1, tweakedWidth, tweakedHeight, null);
 		graphics.drawImage(echo, offsetX - 1, offsetY, tweakedWidth, tweakedHeight, null);
 		graphics.drawImage(echo, offsetX + 1, offsetY, tweakedWidth, tweakedHeight, null);
 
-		graphics.setComposite(AlphaComposite.getInstance(
-				AlphaComposite.SRC_OVER, 1.0f));
+		graphics.setComposite(getAlphaComposite(1.0f));
 		graphics.drawImage(image, 0, 0, tweakedWidth, tweakedHeight, null);
 
 		graphics.dispose();
@@ -1345,8 +1345,7 @@ public final class SubstanceImageCreator {
 		dotGraphics.setColor(markColor);
 		dotGraphics.fillOval(0, 0, bumpDotDiameter, bumpDotDiameter);
 
-		dotGraphics.setComposite(AlphaComposite.getInstance(
-				AlphaComposite.SRC_OVER, 0.4f));
+		dotGraphics.setComposite(getAlphaComposite(0.4f));
 		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
 				.getBorderPainter(divider);
 		borderPainter.paintBorder(dotGraphics, divider, bumpDotDiameter, bumpDotDiameter,
