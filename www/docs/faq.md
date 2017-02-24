@@ -99,7 +99,7 @@ By design, Substance provides default renderers for trees, tables and lists that
 
 This functionality is **only** available on default Substance renderers in the `org.pushingpixels.substance.api.renderers`. If you use custom renderers that extend core Swing classes, you will not have it.
 
-If you want to change the default animation settings on your lists, tables and trees (for example, to disable core Substance animations on custom application renderers) please consult the animation primer.
+If you want to change the default animation settings on your lists, tables and trees (for example, to disable core Substance animations on custom application renderers) please consult the [animation primer](animations.md).
 
 **Is there support for custom tab components?**
 

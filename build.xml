@@ -52,6 +52,8 @@
 	<property name="substance.version" value="7.0" />
 	<property name="substance.versionKey" value="7.0final Uruguay" />
 
+    <property name="trident.version" value="1.4" />
+
 	<path id="substance.module.bootclasspath">
 		<!-- Paths to be included in compilation bootclasspath -->
 	</path>
@@ -61,7 +63,7 @@
 
 	<path id="substance.module.classpath">
 		<path refid="${module.jdk.classpath.substance}" />
-		<pathelement location="${substance.lib.dir}/trident.jar" />
+		<pathelement location="${substance.lib.dir}/trident-${trident.version}.jar" />
 		<pathelement location="${substance.lib.dir}/build/laf-plugin.jar" />
 		<pathelement location="${substance.lib.dir}/build/laf-widget.jar" />
 		<pathelement location="${substance.lib.dir}/build/forms-1.2.0.jar" />
@@ -164,9 +166,9 @@
 
 	<target name="jar-bin" description="create runtime jar">
 		<mkdir dir="${substance.drop.dir}" />
-		<delete file="${substance.drop.dir}/substance.jar" />
+		<delete file="${substance.drop.dir}/substance-${substance.version}.jar" />
 
-		<jar compress="true" destfile="${substance.drop.dir}/substance.jar">
+		<jar compress="true" destfile="${substance.drop.dir}/substance-${substance.version}.jar">
 			<fileset dir="${substance.output.dir}/" excludes="tools/** test/** **/*.svg" />
 			<fileset dir="${module.substance.basedir}/" includes="resources/**" />
 			<manifest>
@@ -175,12 +177,11 @@
 				<attribute name="Substance-BuildStamp" value="${build.time}" />
 			</manifest>
 		</jar>
-		<copy file="${substance.drop.dir}/substance.jar" todir="${module.substance.basedir}/www/webstart" />
 	</target>
 
 	<target name="jar-bin-lite" description="create runtime jar with no custom color choosers">
-		<delete file="${substance.drop.dir}/substance-lite.jar" />
-		<jar compress="true" destfile="${substance.drop.dir}/substance-lite.jar">
+		<delete file="${substance.drop.dir}/substance-lite-${substance.version}.jar" />
+		<jar compress="true" destfile="${substance.drop.dir}/substance-lite-${substance.version}.jar">
 			<fileset dir="${substance.output.dir}/" excludes="tools/** test/** **/*.svg org/pushingpixels/substance/internal/contrib/randelshofer/** org/pushingpixels/substance/internal/contrib/xoetrope/** org/pushingpixels/substance/internal/ui/SubstanceColorChooserUI* org/pushingpixels/lafwidget/ant/**" />
 			<fileset dir="${module.substance.basedir}/" includes="resources/**" />
 			<manifest>
@@ -192,22 +193,21 @@
 	</target>
 
 	<target name="jar-bin-tst" description="create test runtime jar">
-		<delete file="${substance.drop.dir}/substance-tst.jar" />
-		<jar destfile="${substance.drop.dir}/substance-tst.jar">
+		<delete file="${substance.drop.dir}/substance-tst-${substance.version}.jar" />
+		<jar destfile="${substance.drop.dir}/substance-tst-${substance.version}.jar">
 			<fileset dir="${substance.output.dir}/" includes="test/**" />
 			<manifest>
 				<attribute name="Substance-Version" value="${substance.versionKey}" />
 				<attribute name="Substance-BuildStamp" value="${build.time}" />
 				<attribute name="Main-Class" value="test.Check" />
-				<attribute name="Class-Path" value="substance.jar ../lib/trident.jar ../lib/build/forms-1.2.0.jar ../lib/build/swingx-all-1.6.4.jar ../lib/build/substance-swingx.jar" />
+				<attribute name="Class-Path" value="substance-${substance.version}.jar ../lib/trident-${trident.version}.jar ../lib/build/forms-1.2.0.jar ../lib/build/swingx-all-1.6.4.jar ../lib/build/substance-swingx-${substance.version}.jar" />
 			</manifest>
 		</jar>
-		<copy file="${substance.drop.dir}/substance-tst.jar" todir="${module.substance.basedir}/www/webstart" />
 	</target>
 
 	<target name="jar-bin-tools" description="create tools runtime jar">
-		<delete file="${substance.drop.dir}/substance-tools.jar" />
-		<jar destfile="${substance.drop.dir}/substance-tools.jar">
+		<delete file="${substance.drop.dir}/substance-tools-${substance.version}.jar" />
+		<jar destfile="${substance.drop.dir}/substance-tools-${substance.version}.jar">
 			<fileset dir="${substance.output.dir}/" includes="tools/**/*.class tools/**/*.jpg tools/**/*.png" />
 			<fileset dir="${substance.src.dir}/tools/uidebug/" includes="META-INF/**" />
 			<manifest>
@@ -215,7 +215,6 @@
 				<attribute name="Substance-BuildStamp" value="${build.time}" />
 			</manifest>
 		</jar>
-		<copy file="${substance.drop.dir}/substance-tools.jar" todir="${module.substance.basedir}/www/webstart" />
 	</target>
 
 	<target name="apt" depends="jar-bin-tools">
@@ -223,15 +222,15 @@
 	</target>
 
 	<target name="jar-bin-tst-lite" description="create test runtime jar">
-		<delete file="${substance.drop.dir}/substance-tst-lite.jar" />
-		<jar destfile="${substance.drop.dir}/substance-tst-lite.jar">
+		<delete file="${substance.drop.dir}/substance-tst-lite-${substance.version}.jar" />
+		<jar destfile="${substance.drop.dir}/substance-tst-lite-${substance.version}.jar">
 			<fileset dir="${substance.output.dir}/" includes="test/**" />
 			<fileset dir="${substance.src.dir}/" includes="test/resource/**" />
 			<manifest>
 				<attribute name="Substance-Version" value="${substance.versionKey}" />
 				<attribute name="Substance-BuildStamp" value="${build.time}" />
 				<attribute name="Main-Class" value="test.Check" />
-				<attribute name="Class-Path" value="substance-lite.jar ../lib/trident.jar ../lib/build/forms-1.2.0.jar ../lib/build/swingx-all-1.6.4.jar ../lib/build/substance-swingx.jar" />
+				<attribute name="Class-Path" value="substance-lite-${substance.version}.jar ../lib/trident-${trident.version}.jar ../lib/build/forms-1.2.0.jar ../lib/build/swingx-all-1.6.4.jar ../lib/build/substance-swingx-${substance.version}.jar" />
 			</manifest>
 		</jar>
 	</target>
