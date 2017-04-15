@@ -147,7 +147,7 @@ public class ButtonBackgroundDelegate {
 		// }
 		boolean isContentAreaFilled = button.isContentAreaFilled();
 		boolean isBorderPainted = button.isBorderPainted();
-		int factor = UIUtil.isRetina() ? 2 : 1;
+		int factor = UIUtil.getScaleFactor();
 
 		// compute color scheme
 		SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities.getColorScheme(button,
@@ -289,9 +289,7 @@ public class ButtonBackgroundDelegate {
 			SubstanceColorScheme colorScheme, SubstanceColorScheme borderScheme,
 			Set<Side> openSides, boolean isContentAreaFilled, boolean isBorderPainted) {
 		int openDelta = (int) (Math.ceil(3.0 * SubstanceSizeUtils.getBorderStrokeWidth()));
-		if (UIUtil.isRetina()) {
-			openDelta *= 2;
-		}
+		openDelta *= UIUtil.getScaleFactor();
 		int deltaLeft = ((openSides != null) && openSides.contains(Side.LEFT)) ? openDelta : 0;
 		int deltaRight = ((openSides != null) && openSides.contains(Side.RIGHT)) ? openDelta : 0;
 		int deltaTop = ((openSides != null) && openSides.contains(Side.TOP)) ? openDelta : 0;
@@ -400,7 +398,7 @@ public class ButtonBackgroundDelegate {
 		if (extraAlpha > 0.0f) {
 			Graphics2D graphics = (Graphics2D) g.create();
 			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(button, extraAlpha, g));
-			int factor = UIUtil.isRetina() ? 2 : 1;
+			int factor = UIUtil.getScaleFactor();
 			graphics.drawImage(bgImage, 0, y, bgImage.getWidth() / factor,
 					bgImage.getHeight() / factor, null);
 			graphics.dispose();

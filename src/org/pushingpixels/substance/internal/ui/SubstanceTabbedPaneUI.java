@@ -992,7 +992,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 						colorScheme, borderScheme, false);
 				int fw = backgroundImage.getWidth();
 				int fh = backgroundImage.getHeight();
-				int factor = UIUtil.isRetina() ? 2 : 1;
+				int factor = UIUtil.getScaleFactor();
 				BufferedImage fade = SubstanceCoreUtilities.getBlankImage(
 						fw / factor, fh / factor);
 				Graphics2D fadeGraphics = fade.createGraphics();
@@ -1125,7 +1125,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				.getColorScheme(this.tabPane, tabIndex,
 						ColorSchemeAssociationKind.TAB, currState);
 		BufferedImage fullOpacity = null;
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		// Slightly reduce the tab width to create "gaps" between tab visuals
 		w -= 1;
 

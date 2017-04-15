@@ -135,7 +135,7 @@ public class ComboBoxBackgroundDelegate {
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(width,
 				height);
 		Graphics2D g2d = result.createGraphics();
-		int factor = UIUtil.isRetina() ? 2 : 1;
+		int factor = UIUtil.getScaleFactor();
 		// draw the base layer
 		g2d.drawImage(layerBase, 0, 0, layerBase.getWidth() / factor, layerBase.getHeight() / factor, null);
 		// System.out.println("\nPainting base state " + currState);
@@ -275,7 +275,7 @@ public class ComboBoxBackgroundDelegate {
 			Graphics2D graphics = (Graphics2D) g.create();
 			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(combo,
 					extraAlpha, g));
-			int factor = UIUtil.isRetina() ? 2 : 1;
+			int factor = UIUtil.getScaleFactor();
 			graphics.drawImage(bgImage, 0, y, bgImage.getWidth() / factor, 
 					bgImage.getHeight() / factor, null);
 			graphics.dispose();

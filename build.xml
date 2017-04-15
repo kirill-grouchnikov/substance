@@ -49,8 +49,8 @@
 	<property name="substance.drop.dir" value="${module.substance.basedir}/drop" />
 	<property name="substance.lib.dir" value="${module.substance.basedir}/lib" />
 	<property name="substance.src.dir" value="${module.substance.basedir}/src/" />
-	<property name="substance.version" value="7.0.01" />
-	<property name="substance.versionKey" value="7.0final Uruguay" />
+	<property name="substance.version" value="7.1.00" />
+	<property name="substance.versionKey" value="7.1dev Vermont" />
 
     <property name="trident.version" value="1.4" />
 
@@ -202,7 +202,7 @@
 				<attribute name="Substance-Version" value="${substance.versionKey}" />
 				<attribute name="Substance-BuildStamp" value="${build.time}" />
 				<attribute name="Main-Class" value="test.Check" />
-				<attribute name="Class-Path" value="substance-${substance.version}.jar ../lib/trident-${trident.version}.jar ../lib/build/forms-1.2.0.jar ../lib/build/swingx-all-1.6.4.jar ../lib/build/substance-swingx-${substance.version}.jar" />
+				<attribute name="Class-Path" value="substance-${substance.version}.jar ../../lib/trident-${trident.version}.jar ../../lib/build/forms-1.2.0.jar ../../lib/build/swingx-all-1.6.4.jar ../../lib/build/substance-swingx-${substance.version}.jar" />
 			</manifest>
 		</jar>
 	</target>
@@ -232,7 +232,7 @@
 				<attribute name="Substance-Version" value="${substance.versionKey}" />
 				<attribute name="Substance-BuildStamp" value="${build.time}" />
 				<attribute name="Main-Class" value="test.Check" />
-				<attribute name="Class-Path" value="substance-lite-${substance.version}.jar ../lib/trident-${trident.version}.jar ../lib/build/forms-1.2.0.jar ../lib/build/swingx-all-1.6.4.jar ../lib/build/substance-swingx-${substance.version}.jar" />
+				<attribute name="Class-Path" value="substance-lite-${substance.version}.jar ../../lib/trident-${trident.version}.jar ../../lib/build/forms-1.2.0.jar ../../lib/build/swingx-all-1.6.4.jar ../../lib/build/substance-swingx-${substance.version}.jar" />
 			</manifest>
 		</jar>
 	</target>

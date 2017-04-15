@@ -447,13 +447,9 @@ public class SubstanceSizeUtils {
 	}
 
 	/**
-	 * Returns the stroke width of focus rings under the specified font size.
-	 * 
-	 * @param fontSize
-	 *            Font size.
-	 * @return Stroke width of focus rings under the specified font size.
+	 * Returns the stroke width of focus rings.
 	 */
-	public static float getFocusStrokeWidth(int fontSize) {
+	public static float getFocusStrokeWidth() {
 		return UIUtil.isRetina() ? 0.5f : 1.0f;
 	}
 

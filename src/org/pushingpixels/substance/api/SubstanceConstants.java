@@ -112,7 +112,7 @@ public class SubstanceConstants {
 								.getFocusLoopPosition());
 
 				graphics.setStroke(new BasicStroke(
-						SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+						SubstanceSizeUtils.getFocusStrokeWidth(), 
 						BasicStroke.CAP_BUTT,
 						BasicStroke.JOIN_ROUND, 0.0f, 
 						new float[] { dashLength, dashGap }, 
@@ -164,7 +164,7 @@ public class SubstanceConstants {
 							* (1.0f - transitionAwareUI.getTransitionTracker()
 									.getFocusLoopPosition());
 					graphics.setStroke(new BasicStroke(
-							SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+							SubstanceSizeUtils.getFocusStrokeWidth(), 
 							BasicStroke.CAP_BUTT,
 							BasicStroke.JOIN_ROUND, 0.0f, 
 							new float[] { dashLength, dashGap }, 
@@ -193,7 +193,7 @@ public class SubstanceConstants {
 							* (1.0f - transitionAwareUI.getTransitionTracker()
 									.getFocusLoopPosition());
 					graphics.setStroke(new BasicStroke(
-							SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+							SubstanceSizeUtils.getFocusStrokeWidth(), 
 							BasicStroke.CAP_BUTT,
 							BasicStroke.JOIN_ROUND, 0.0f, 
 							new float[] { dashLength, dashGap }, 
@@ -243,7 +243,7 @@ public class SubstanceConstants {
 										.getTransitionTracker()
 										.getFocusLoopPosition());
 						graphics.setStroke(new BasicStroke(
-								SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+								SubstanceSizeUtils.getFocusStrokeWidth(), 
 								BasicStroke.CAP_BUTT,
 								BasicStroke.JOIN_ROUND, 0.0f, 
 								new float[] { dashLength, dashGap }, 
@@ -273,7 +273,7 @@ public class SubstanceConstants {
 									.getFocusLoopPosition());
 
 					graphics.setStroke(new BasicStroke(
-							SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+							SubstanceSizeUtils.getFocusStrokeWidth(), 
 							BasicStroke.CAP_BUTT,
 							BasicStroke.JOIN_ROUND, 0.0f, 
 							new float[] { dashLength, dashGap }, 
@@ -306,7 +306,7 @@ public class SubstanceConstants {
 					Shape focusShape, Rectangle textRect, float extraPadding) {
 				int fontSize = SubstanceSizeUtils.getComponentFontSize(mainComp);
 				graphics.setStroke(new BasicStroke(
-						1.5f * SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+						1.5f * SubstanceSizeUtils.getFocusStrokeWidth(), 
 						BasicStroke.CAP_BUTT,
 						BasicStroke.JOIN_ROUND));
 				if ((focusShape == null)
@@ -356,7 +356,7 @@ public class SubstanceConstants {
 								.getFocusLoopPosition());
 
 				graphics.setStroke(new BasicStroke(
-						SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+						SubstanceSizeUtils.getFocusStrokeWidth(), 
 						BasicStroke.CAP_BUTT,
 						BasicStroke.JOIN_ROUND, 0.0f, 
 						new float[] { dashLength, dashGap }, 
@@ -392,9 +392,8 @@ public class SubstanceConstants {
 				if (textRect == null)
 					return;
 
-				int fontSize = SubstanceSizeUtils.getComponentFontSize(mainComp);
 				graphics.setStroke(new BasicStroke(
-						1.5f * SubstanceSizeUtils.getFocusStrokeWidth(fontSize), 
+						1.5f * SubstanceSizeUtils.getFocusStrokeWidth(), 
 						BasicStroke.CAP_BUTT,
 						BasicStroke.JOIN_ROUND));
 				graphics.translate(textRect.x - 1, textRect.y);

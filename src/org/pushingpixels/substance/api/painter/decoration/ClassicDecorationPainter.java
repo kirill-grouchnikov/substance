@@ -102,8 +102,9 @@ public class ClassicDecorationPainter implements SubstanceDecorationPainter {
 						width, height, scheme);
 				smallImageCache.put(key, result);
 			}
-			int imageScale = UIUtil.isRetina() ? 2 : 1;
-			graphics.drawImage(result, 0, 0, result.getWidth() / imageScale, result.getHeight() / imageScale, null);
+			int imageScale = UIUtil.getScaleFactor();
+			graphics.drawImage(result, 0, 0, result.getWidth() / imageScale, 
+			        result.getHeight() / imageScale, null);
 			return;
 		}
 

@@ -174,7 +174,7 @@ public class Crayons extends javax.swing.JPanel {
 	public void paintComponent(Graphics gr) {
 		Graphics2D g2d = (Graphics2D) gr.create();
 		RenderingUtils.installDesktopHints(g2d, this);
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		g2d.drawImage(crayonsImage, 0, 0, crayonsImage.getWidth() / scaleFactor,
 				crayonsImage.getHeight() / scaleFactor, this);
 

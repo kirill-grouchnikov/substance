@@ -111,7 +111,7 @@ public class StandardFillPainter implements SubstanceFillPainter {
 
 			// millis003 = System.nanoTime();
 
-			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+			int scaleFactor = UIUtil.getScaleFactor();
 
 			BufferedImage reverseGhostContour = SubstanceCoreUtilities
 					.getBlankImage(iWidth + 2 * kernelSize, iHeight + 2

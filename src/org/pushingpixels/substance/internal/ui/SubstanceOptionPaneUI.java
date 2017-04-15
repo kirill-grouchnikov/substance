@@ -50,6 +50,10 @@ import org.pushingpixels.lafwidget.icon.IsResizable;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.animation.IconGlowTracker;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
+import org.pushingpixels.substance.internal.svg.Dialog_error;
+import org.pushingpixels.substance.internal.svg.Dialog_information;
+import org.pushingpixels.substance.internal.svg.Dialog_warning;
+import org.pushingpixels.substance.internal.svg.Help_browser;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.icon.GlowingIcon;
 
@@ -59,127 +63,123 @@ import org.pushingpixels.substance.internal.utils.icon.GlowingIcon;
  * @author Kirill Grouchnikov
  */
 public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
-	static {
-		AnimationConfigurationManager.getInstance().allowAnimations(
-				AnimationFacet.ICON_GLOW, OptionPaneLabel.class);
-	}
+    static {
+        AnimationConfigurationManager.getInstance().allowAnimations(AnimationFacet.ICON_GLOW,
+                OptionPaneLabel.class);
+    }
 
-	/**
-	 * Label extension class. Due to defect 250, the option pane icon animation
-	 * (glowing icon) should repaint only the icon itself and not the entire
-	 * option pane. While the {@link AnimationConfigurationManager} API provides
-	 * an option to enable animations on the specific component, it's better to
-	 * enable it on the component class (to make the lookups faster). So, when
-	 * the option pane icon label is created (in addIcon method), we use this
-	 * class.
-	 * 
-	 * @author Kirill Grouchnikov
-	 */
-	protected static class OptionPaneLabel extends JLabel {
-	}
+    /**
+     * Label extension class. Due to defect 250, the option pane icon animation
+     * (glowing icon) should repaint only the icon itself and not the entire
+     * option pane. While the {@link AnimationConfigurationManager} API provides
+     * an option to enable animations on the specific component, it's better to
+     * enable it on the component class (to make the lookups faster). So, when
+     * the option pane icon label is created (in addIcon method), we use this
+     * class.
+     * 
+     * @author Kirill Grouchnikov
+     */
+    protected static class OptionPaneLabel extends JLabel {
+    }
 
-	/**
-	 * Icon label.
-	 */
-	private OptionPaneLabel substanceIconLabel;
+    /**
+     * Icon label.
+     */
+    private OptionPaneLabel substanceIconLabel;
 
-	private IconGlowTracker iconGlowTracker;
+    private IconGlowTracker iconGlowTracker;
 
-	/**
-	 * Creates a new SubstanceOptionPaneUI instance.
-	 */
-	public static ComponentUI createUI(JComponent comp) {
-		SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
-		return new SubstanceOptionPaneUI();
-	}
+    /**
+     * Creates a new SubstanceOptionPaneUI instance.
+     */
+    public static ComponentUI createUI(JComponent comp) {
+        SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
+        return new SubstanceOptionPaneUI();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#paint(java.awt.Graphics,
-	 * javax.swing.JComponent)
-	 */
-	@Override
-	public void paint(Graphics g, JComponent c) {
-		BackgroundPaintingUtils.updateIfOpaque(g, c);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#paint(java.awt.Graphics,
+     * javax.swing.JComponent)
+     */
+    @Override
+    public void paint(Graphics g, JComponent c) {
+        BackgroundPaintingUtils.updateIfOpaque(g, c);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicOptionPaneUI#addIcon(java.awt.Container)
-	 */
-	@Override
-	protected void addIcon(Container top) {
-		Icon sideIcon = (optionPane == null ? null : optionPane.getIcon());
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicOptionPaneUI#addIcon(java.awt.Container)
+     */
+    @Override
+    protected void addIcon(Container top) {
+        Icon sideIcon = (optionPane == null ? null : optionPane.getIcon());
 
-		if (sideIcon == null && optionPane != null)
-			sideIcon = super.getIconForType(optionPane.getMessageType());
+        if (sideIcon == null && optionPane != null) {
+            sideIcon = this.getIconForType(optionPane.getMessageType());
+        }
 
-		if (sideIcon != null) {
-			if (sideIcon instanceof IsResizable) {
-				int dimension = 32 * (UIUtil.isRetina() ? 2 : 1);
-				((IsResizable) sideIcon).setDimension(new Dimension(dimension, dimension));
-			}
-			if (!SubstanceLookAndFeel.isToUseConstantThemesOnDialogs()) {
-				sideIcon = SubstanceCoreUtilities.getThemedIcon(null, sideIcon);
-			}
+        if (sideIcon != null) {
+            if (sideIcon instanceof IsResizable) {
+                int dimension = 32 * UIUtil.getScaleFactor();
+                ((IsResizable) sideIcon).setDimension(new Dimension(dimension, dimension));
+            }
+            if (!SubstanceLookAndFeel.isToUseConstantThemesOnDialogs()) {
+                sideIcon = SubstanceCoreUtilities.getThemedIcon(null, sideIcon);
+            }
 
-			this.substanceIconLabel = new OptionPaneLabel();
-			this.iconGlowTracker = new IconGlowTracker(substanceIconLabel);
-			GlowingIcon glowingIcon = new GlowingIcon(sideIcon,
-					this.iconGlowTracker);
-			this.substanceIconLabel.setIcon(glowingIcon);
-			this.substanceIconLabel.setBorder(new EmptyBorder(0, 8, 0, 8));
+            this.substanceIconLabel = new OptionPaneLabel();
+            this.iconGlowTracker = new IconGlowTracker(substanceIconLabel);
+            GlowingIcon glowingIcon = new GlowingIcon(sideIcon, this.iconGlowTracker);
+            this.substanceIconLabel.setIcon(glowingIcon);
+            this.substanceIconLabel.setBorder(new EmptyBorder(0, 8, 0, 8));
 
-			this.substanceIconLabel.setName("OptionPane.iconLabel");
-			this.substanceIconLabel.setVerticalAlignment(SwingConstants.TOP);
-			top.add(this.substanceIconLabel, BorderLayout.BEFORE_LINE_BEGINS);
-		}
-	}
+            this.substanceIconLabel.setName("OptionPane.iconLabel");
+            this.substanceIconLabel.setVerticalAlignment(SwingConstants.TOP);
+            top.add(this.substanceIconLabel, BorderLayout.BEFORE_LINE_BEGINS);
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicOptionPaneUI#getIconForType(int)
-	 */
-	@Override
-	protected Icon getIconForType(int messageType) {
-		switch (messageType) {
-		case JOptionPane.ERROR_MESSAGE:
-			return SubstanceCoreUtilities
-					.getIcon("resource/32/dialog-error.png");
-		case JOptionPane.INFORMATION_MESSAGE:
-			return SubstanceCoreUtilities
-					.getIcon("resource/32/dialog-information.png");
-		case JOptionPane.WARNING_MESSAGE:
-			return SubstanceCoreUtilities
-					.getIcon("resource/32/dialog-warning.png");
-		case JOptionPane.QUESTION_MESSAGE:
-			return SubstanceCoreUtilities
-					.getIcon("resource/32/help-browser.png");
-		}
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicOptionPaneUI#getIconForType(int)
+     */
+    @Override
+    protected Icon getIconForType(int messageType) {
+        switch (messageType) {
+        case JOptionPane.ERROR_MESSAGE:
+            return Dialog_error.of(32, 32);
+        case JOptionPane.INFORMATION_MESSAGE:
+            return Dialog_information.of(32, 32);
+        case JOptionPane.WARNING_MESSAGE:
+            return Dialog_warning.of(32, 32);
+        case JOptionPane.QUESTION_MESSAGE:
+            return Help_browser.of(32, 32);
+        }
+        return null;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicOptionPaneUI#installComponents()
-	 */
-	@Override
-	protected void installComponents() {
-		super.installComponents();
-		// fix for defect 265 - check that the label is not null
-		// before activating the loop.
-		if (this.substanceIconLabel != null) {
-			// Make the icon glow for three cycles. There's no need to
-			// explicitly cancel the animation when the option pane is closed
-			// before the animation is over - when the three cycles are up,
-			// the animation will be removed by the tracker.
-			if (!this.iconGlowTracker.isPlaying()) {
-				this.iconGlowTracker.play(3);
-			}
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicOptionPaneUI#installComponents()
+     */
+    @Override
+    protected void installComponents() {
+        super.installComponents();
+        // fix for defect 265 - check that the label is not null
+        // before activating the loop.
+        if (this.substanceIconLabel != null) {
+            // Make the icon glow for three cycles. There's no need to
+            // explicitly cancel the animation when the option pane is closed
+            // before the animation is over - when the three cycles are up,
+            // the animation will be removed by the tracker.
+            if (!this.iconGlowTracker.isPlaying()) {
+                this.iconGlowTracker.play(3);
+            }
+        }
+    }
 }

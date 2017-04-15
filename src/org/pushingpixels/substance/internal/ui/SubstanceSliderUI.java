@@ -323,7 +323,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements TransitionAwareU
 		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height, radius, borderDelta,
 				borderThickness, fillColorScheme.getDisplayName(), borderScheme.getDisplayName());
 
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		BufferedImage trackImage = trackCache.get(key);
 		if (trackImage == null) {
 			trackImage = SubstanceCoreUtilities.getBlankImage(width + 1, height + 1);
@@ -588,8 +588,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements TransitionAwareU
 		this.roundIcon = SubstanceIconFactory.getSliderRoundIcon(size);
 		this.verticalIcon = SubstanceIconFactory.getSliderVerticalIcon(size, false);
 
-		int focusIns = (int) Math.ceil(2.0 * SubstanceSizeUtils
-				.getFocusStrokeWidth(SubstanceSizeUtils.getComponentFontSize(slider)));
+		int focusIns = (int) Math.ceil(2.0 * SubstanceSizeUtils.getFocusStrokeWidth());
 		this.focusInsets = new Insets(focusIns, focusIns, focusIns, focusIns);
 	}
 
@@ -653,8 +652,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements TransitionAwareU
 	@Override
 	public void paintFocus(Graphics g) {
 		SubstanceCoreUtilities.paintFocus(g, this.slider, this.slider, this, null, null, 1.0f,
-				SubstanceSizeUtils
-						.getFocusStrokeWidth(SubstanceSizeUtils.getComponentFontSize(this.slider)));
+				SubstanceSizeUtils.getFocusStrokeWidth());
 	}
 
 	/**

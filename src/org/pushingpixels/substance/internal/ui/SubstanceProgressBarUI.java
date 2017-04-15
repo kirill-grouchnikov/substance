@@ -447,7 +447,7 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 
 		SubstanceFillPainter fillPainter = SubstanceCoreUtilities
 				.getFillPainter(progressBar);
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		if (progressBar.getOrientation() == SwingConstants.HORIZONTAL) {
 			BufferedImage back = getDeterminateBackground(progressBar,
 					barRectWidth, barRectHeight, fillScheme,

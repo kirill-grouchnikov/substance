@@ -2294,7 +2294,7 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 					icon.getIconWidth(), icon.getIconHeight());
 			Graphics2D g2d = intermediate.createGraphics();
 			g2d.setComposite(AlphaComposite.SrcOver.derive(alpha));
-			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+			int scaleFactor = UIUtil.getScaleFactor();
 			g2d.drawImage(result, 0, 0, result.getWidth() / scaleFactor, 
 					result.getHeight() / scaleFactor, null);
 			g2d.dispose();

@@ -119,7 +119,7 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
 		Graphics2D graphics = (Graphics2D) g.create();
 		JTextComponent componentForTransitions = SubstanceCoreUtilities
 				.getTextComponentForTransitions(c);
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		boolean useCache = (width * height < 100000);
 		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(c);
 		if (componentForTransitions != null) {

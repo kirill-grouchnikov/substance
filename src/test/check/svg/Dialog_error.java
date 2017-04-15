@@ -171,8 +171,8 @@ g.setTransform(defaultTransform_);
      * 
      * @return The X of the bounding box of the original SVG image.
      */
-    public static int getOrigX() {
-        return 3;
+    public static double getOrigX() {
+        return 2.0000298023223877;
     }
 
     /**
@@ -180,8 +180,8 @@ g.setTransform(defaultTransform_);
      * 
      * @return The Y of the bounding box of the original SVG image.
      */
-    public static int getOrigY() {
-        return 2;
+    public static double getOrigY() {
+        return 1.0000730752944946;
     }
 
 	/**
@@ -189,8 +189,8 @@ g.setTransform(defaultTransform_);
 	 * 
 	 * @return The width of the bounding box of the original SVG image.
 	 */
-	public static int getOrigWidth() {
-		return 44;
+	public static double getOrigWidth() {
+		return 43.99993896484375;
 	}
 
 	/**
@@ -198,8 +198,8 @@ g.setTransform(defaultTransform_);
 	 * 
 	 * @return The height of the bounding box of the original SVG image.
 	 */
-	public static int getOrigHeight() {
-		return 47;
+	public static double getOrigHeight() {
+		return 46.99992370605469;
 	}
 
 	/**
@@ -216,8 +216,8 @@ g.setTransform(defaultTransform_);
 	 * Creates a new transcoded SVG image.
 	 */
 	public Dialog_error() {
-        this.width = getOrigWidth();
-        this.height = getOrigHeight();
+        this.width = (int) getOrigWidth();
+        this.height = (int) getOrigHeight();
 	}
 
 	/*

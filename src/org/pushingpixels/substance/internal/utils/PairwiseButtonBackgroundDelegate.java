@@ -132,7 +132,7 @@ public class PairwiseButtonBackgroundDelegate {
 		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = 
 				modelStateInfo.getStateContributionMap();
 
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		if (currState.isDisabled() || (activeStates.size() == 1)) {
 			fullOpacity = baseLayer;
 		} else {
@@ -294,7 +294,7 @@ public class PairwiseButtonBackgroundDelegate {
 				AffineTransform at = AffineTransform.getTranslateInstance(0, translateY);
 				at.rotate(-Math.PI / 2);
 
-				int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+				int scaleFactor = UIUtil.getScaleFactor();
 				finalGraphics.scale(1, 1);
 				finalGraphics.setTransform(at);
 				finalGraphics.scale(scaleFactor, scaleFactor);

@@ -198,7 +198,7 @@ public class SubstanceBorder implements Border, UIResource {
 				g2d.dispose();
 				smallImageCache.put(hashKey, result);
 			}
-			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+			int scaleFactor = UIUtil.getScaleFactor();
 			graphics.drawImage(result, x, y, result.getWidth() / scaleFactor,
 					result.getHeight() / scaleFactor, null);
 		} else {

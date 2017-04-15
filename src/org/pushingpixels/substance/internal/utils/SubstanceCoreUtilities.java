@@ -964,10 +964,8 @@ public class SubstanceCoreUtilities {
 
 		BufferedImage result = getBlankImage(width, height);
 		Graphics2D graphics = (Graphics2D) result.createGraphics();
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		graphics.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
-//		graphics.setPaint(new GradientPaint(0, 0, Color.red, 0, height / scaleFactor, Color.blue));
-//		graphics.fillRect(0, 0, width / scaleFactor, height / 1);
 
 		int startY = (int) (start * height);
 		int endY = (int) (end * height);
@@ -1028,7 +1026,7 @@ public class SubstanceCoreUtilities {
 
 		BufferedImage result = getBlankImage(width, height);
 		Graphics2D graphics = (Graphics2D) result.getGraphics().create();
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		graphics.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
 
 		int startX = (int) (start * width);
@@ -1497,21 +1495,6 @@ public class SubstanceCoreUtilities {
 	 *            Resource location string.
 	 * @return Icon.
 	 */
-	public static Icon getIcon(String iconResource) {
-		ClassLoader cl = getClassLoaderForResources();
-		URL iconUrl = cl.getResource(iconResource);
-		if (iconUrl == null)
-			return null;
-		return new IconUIResource(new ImageIcon(iconUrl));
-	}
-
-	/**
-	 * Returns an icon pointed to by the specified string.
-	 * 
-	 * @param iconResource
-	 *            Resource location string.
-	 * @return Icon.
-	 */
 	public static Icon getHiDpiAwareIcon(String iconResource) {
 		ClassLoader cl = getClassLoaderForResources();
 		URL iconUrl = cl.getResource(iconResource);
@@ -1944,9 +1927,10 @@ public class SubstanceCoreUtilities {
 		if (w instanceof Dialog) {
 			wTitle = ((Dialog) w).getTitle();
 		}
+		String wClassName = (w != null) ? w.getClass().getName() : null;
 		throw new IllegalArgumentException(message + " [component "
 				+ comp.getClass().getSimpleName() + " in window "
-				+ w.getClass().getSimpleName() + ":'" + wTitle + "' under "
+				+ wClassName + ":'" + wTitle + "' under "
 				+ UIManager.getLookAndFeel().getName() + "]");
 	}
 

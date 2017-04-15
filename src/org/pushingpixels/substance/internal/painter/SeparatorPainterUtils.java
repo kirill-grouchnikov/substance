@@ -317,7 +317,7 @@ public class SeparatorPainterUtils {
 		}
 
 		Graphics2D g2d = (Graphics2D) g.create();
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		g2d.drawImage(singleLine, 0, 0, singleLine.getWidth() / scaleFactor,
 				singleLine.getHeight() / scaleFactor, null);
 		g2d.dispose();
@@ -406,7 +406,7 @@ public class SeparatorPainterUtils {
 		}
 
 		Graphics2D g2d = (Graphics2D) g.create();
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		for (int lineX : x) {
 			g2d.drawImage(singleLine, lineX, y, singleLine.getWidth() / scaleFactor,
 					singleLine.getHeight() / scaleFactor, null);
@@ -484,7 +484,7 @@ public class SeparatorPainterUtils {
 		}
 
 		Graphics2D g2d = (Graphics2D) g.create();
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		for (int lineY : y) {
 			g2d.drawImage(singleLine, x, lineY, singleLine.getWidth() / scaleFactor,
 					singleLine.getHeight() / scaleFactor, null);

@@ -11,7 +11,7 @@ import org.pushingpixels.lafwidget.icon.IsResizable;
 
 /**
  * This class has been automatically generated using <a
- * href="https://flamingo.dev.java.net">Flamingo SVG transcoder</a>.
+ * href="https://github.com/kirill-grouchnikov/flamingo">Flamingo SVG transcoder</a>.
  */
 public class ic_mode_edit_black_24px implements Icon, UIResource, IsResizable, IsHiDpiAware {
 	/**
@@ -82,8 +82,8 @@ g.setTransform(defaultTransform_);
      * 
      * @return The X of the bounding box of the original SVG image.
      */
-    public static int getOrigX() {
-        return 3;
+    public static double getOrigX() {
+        return 3.0;
     }
 
     /**
@@ -91,8 +91,8 @@ g.setTransform(defaultTransform_);
      * 
      * @return The Y of the bounding box of the original SVG image.
      */
-    public static int getOrigY() {
-        return 3;
+    public static double getOrigY() {
+        return 2.9000000953674316;
     }
 
 	/**
@@ -100,8 +100,8 @@ g.setTransform(defaultTransform_);
 	 * 
 	 * @return The width of the bounding box of the original SVG image.
 	 */
-	public static int getOrigWidth() {
-		return 19;
+	public static double getOrigWidth() {
+		return 18.099998474121094;
 	}
 
 	/**
@@ -109,8 +109,8 @@ g.setTransform(defaultTransform_);
 	 * 
 	 * @return The height of the bounding box of the original SVG image.
 	 */
-	public static int getOrigHeight() {
-		return 19;
+	public static double getOrigHeight() {
+		return 18.100000381469727;
 	}
 
 	/**
@@ -127,8 +127,8 @@ g.setTransform(defaultTransform_);
 	 * Creates a new transcoded SVG image.
 	 */
 	public ic_mode_edit_black_24px() {
-        this.width = getOrigWidth();
-        this.height = getOrigHeight();
+        this.width = (int) getOrigWidth();
+        this.height = (int) getOrigHeight();
 	}
 
 	/*

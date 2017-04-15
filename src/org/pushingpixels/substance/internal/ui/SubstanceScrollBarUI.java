@@ -239,7 +239,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements Transition
 			return baseLayer;
 		}
 
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(
 				baseLayer.getWidth() / scaleFactor, baseLayer.getHeight() / scaleFactor);
 		Graphics2D g2d = result.createGraphics();
@@ -363,7 +363,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements Transition
 			return baseLayer;
 		}
 
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(
 				baseLayer.getWidth() / scaleFactor, baseLayer.getHeight() / scaleFactor);
 		Graphics2D g2d = result.createGraphics();
@@ -513,7 +513,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements Transition
 
 		this.thumbModel.setSelected(this.thumbModel.isSelected() || this.isDragging);
 		this.thumbModel.setEnabled(c.isEnabled());
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		boolean isVertical = (this.scrollbar.getOrientation() == Adjustable.VERTICAL);
 		if (isVertical) {
 			Rectangle adjustedBounds = new Rectangle(thumbBounds.x, thumbBounds.y,

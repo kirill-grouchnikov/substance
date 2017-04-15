@@ -135,7 +135,7 @@ public class ArcDecorationPainter implements SubstanceDecorationPainter {
 		rgraphics.setClip(new Rectangle(0, 0, width, height));
 		rgraphics.draw(mid);
 
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		graphics.drawImage(rectangular, 0, 0, rectangular.getWidth() / scaleFactor,
 				rectangular.getHeight() / scaleFactor, null);
 	}

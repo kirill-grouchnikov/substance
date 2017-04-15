@@ -127,7 +127,7 @@ public class ColorWheel extends JPanel {
         int w = getWidth();
         int h = getHeight();
         
-        int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+        int scaleFactor = UIUtil.getScaleFactor();
 		if (colorWheelImage == null 
 				|| (scaleFactor * colorWheelImage.getWidth(this)) != w
 				|| (scaleFactor * colorWheelImage.getHeight(this)) != h) {

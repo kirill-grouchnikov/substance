@@ -57,7 +57,7 @@ public class DefaultMacFontPolicy implements FontPolicy {
 		        : table.getFont("Menu.font");
 		Font titleFont = menuFont;
 		Font messageFont = table == null ? controlFont : table.getFont("OptionPane.font");
-		Font smallFont = table == null ? controlFont.deriveFont(controlFont .getSize2D() - 2f) 
+		Font smallFont = table == null ? controlFont.deriveFont(controlFont.getSize2D() - 2f) 
 		        : table.getFont("ToolTip.font");
 		Font windowTitleFont = table == null ? titleFont : table.getFont("InternalFrame.titleFont");
 		return FontSets.createDefaultFontSet(controlFont, menuFont, titleFont,

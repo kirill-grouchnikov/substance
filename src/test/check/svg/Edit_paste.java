@@ -341,8 +341,8 @@ g.setTransform(defaultTransform_);
      * 
      * @return The X of the bounding box of the original SVG image.
      */
-    public static int getOrigX() {
-        return 4;
+    public static double getOrigX() {
+        return 3.9643173217773438;
     }
 
     /**
@@ -350,8 +350,8 @@ g.setTransform(defaultTransform_);
      * 
      * @return The Y of the bounding box of the original SVG image.
      */
-    public static int getOrigY() {
-        return 0;
+    public static double getOrigY() {
+        return 0.0;
     }
 
 	/**
@@ -359,8 +359,8 @@ g.setTransform(defaultTransform_);
 	 * 
 	 * @return The width of the bounding box of the original SVG image.
 	 */
-	public static int getOrigWidth() {
-		return 41;
+	public static double getOrigWidth() {
+		return 40.035682678222656;
 	}
 
 	/**
@@ -368,8 +368,8 @@ g.setTransform(defaultTransform_);
 	 * 
 	 * @return The height of the bounding box of the original SVG image.
 	 */
-	public static int getOrigHeight() {
-		return 48;
+	public static double getOrigHeight() {
+		return 48.0;
 	}
 
 	/**
@@ -386,8 +386,8 @@ g.setTransform(defaultTransform_);
 	 * Creates a new transcoded SVG image.
 	 */
 	public Edit_paste() {
-        this.width = getOrigWidth();
-        this.height = getOrigHeight();
+        this.width = (int) getOrigWidth();
+        this.height = (int) getOrigHeight();
 	}
 
 	/*

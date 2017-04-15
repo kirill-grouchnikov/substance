@@ -11,7 +11,7 @@ import org.pushingpixels.lafwidget.icon.IsResizable;
 
 /**
  * This class has been automatically generated using <a
- * href="https://flamingo.dev.java.net">Flamingo SVG transcoder</a>.
+ * href="https://github.com/kirill-grouchnikov/flamingo">Flamingo SVG transcoder</a>.
  */
 public class Dialog_information implements Icon, UIResource, IsResizable, IsHiDpiAware {
 	/**
@@ -517,8 +517,8 @@ g.setTransform(defaultTransform_);
      * 
      * @return The X of the bounding box of the original SVG image.
      */
-    public static int getOrigX() {
-        return 1;
+    public static double getOrigX() {
+        return 0.1775825172662735;
     }
 
     /**
@@ -526,8 +526,8 @@ g.setTransform(defaultTransform_);
      * 
      * @return The Y of the bounding box of the original SVG image.
      */
-    public static int getOrigY() {
-        return 1;
+    public static double getOrigY() {
+        return 0.04224810749292374;
     }
 
 	/**
@@ -535,8 +535,8 @@ g.setTransform(defaultTransform_);
 	 * 
 	 * @return The width of the bounding box of the original SVG image.
 	 */
-	public static int getOrigWidth() {
-		return 1;
+	public static double getOrigWidth() {
+		return 0.6883900165557861;
 	}
 
 	/**
@@ -544,8 +544,8 @@ g.setTransform(defaultTransform_);
 	 * 
 	 * @return The height of the bounding box of the original SVG image.
 	 */
-	public static int getOrigHeight() {
-		return 1;
+	public static double getOrigHeight() {
+		return 0.9551560878753662;
 	}
 
 	/**
@@ -562,8 +562,8 @@ g.setTransform(defaultTransform_);
 	 * Creates a new transcoded SVG image.
 	 */
 	public Dialog_information() {
-        this.width = getOrigWidth();
-        this.height = getOrigHeight();
+        this.width = (int) getOrigWidth();
+        this.height = (int) getOrigHeight();
 	}
 
 	/*
@@ -615,6 +615,16 @@ g.setTransform(defaultTransform_);
 		double coef = Math.min(coef1, coef2);
         g2d.clipRect(0, 0, this.width, this.height);
 		g2d.scale(coef, coef);
+        g2d.translate(-getOrigX(), -getOrigY());
+        if (coef1 != coef2) {
+            if (coef1 < coef2) {
+               int extraDy = (int) ((getOrigWidth() - getOrigHeight()) / 2.0);
+               g2d.translate(0, extraDy);
+            } else {
+               int extraDx = (int) ((getOrigHeight() - getOrigWidth()) / 2.0);
+               g2d.translate(extraDx, 0);
+            }
+        }
 		paint(g2d);
 		g2d.dispose();
 	}

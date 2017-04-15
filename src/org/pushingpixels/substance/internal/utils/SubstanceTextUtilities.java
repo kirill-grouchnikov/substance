@@ -118,7 +118,7 @@ public class SubstanceTextUtilities {
 		
 		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c,
 				luminFactor, g));
-		int scaleFactor = UIUtil.isRetina() ? 2 : 1;
+		int scaleFactor = UIUtil.getScaleFactor();
 		graphics.drawImage(blurred, 0, 0, blurred.getWidth() / scaleFactor,
 				blurred.getHeight() / scaleFactor, null);
 		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c, g));

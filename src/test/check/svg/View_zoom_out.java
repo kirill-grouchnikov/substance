@@ -347,8 +347,8 @@ g.setTransform(defaultTransform_);
      * 
      * @return The X of the bounding box of the original SVG image.
      */
-    public static int getOrigX() {
-        return 1;
+    public static double getOrigX() {
+        return 0.020368477329611778;
     }
 
     /**
@@ -356,8 +356,8 @@ g.setTransform(defaultTransform_);
      * 
      * @return The Y of the bounding box of the original SVG image.
      */
-    public static int getOrigY() {
-        return 3;
+    public static double getOrigY() {
+        return 2.218905210494995;
     }
 
 	/**
@@ -365,8 +365,8 @@ g.setTransform(defaultTransform_);
 	 * 
 	 * @return The width of the bounding box of the original SVG image.
 	 */
-	public static int getOrigWidth() {
-		return 48;
+	public static double getOrigWidth() {
+		return 47.81502151489258;
 	}
 
 	/**
@@ -374,8 +374,8 @@ g.setTransform(defaultTransform_);
 	 * 
 	 * @return The height of the bounding box of the original SVG image.
 	 */
-	public static int getOrigHeight() {
-		return 44;
+	public static double getOrigHeight() {
+		return 43.71882247924805;
 	}
 
 	/**
@@ -392,8 +392,8 @@ g.setTransform(defaultTransform_);
 	 * Creates a new transcoded SVG image.
 	 */
 	public View_zoom_out() {
-        this.width = getOrigWidth();
-        this.height = getOrigHeight();
+        this.width = (int) getOrigWidth();
+        this.height = (int) getOrigHeight();
 	}
 
 	/*

@@ -122,8 +122,9 @@ public class HighlightPainterUtils {
 						highlightBorderPainter);
 				smallCache.put(key, result);
 			}
-			int scaleFactor = UIUtil.isRetina() ? 2 : 1;
-			g2d.drawImage(result, 0, 0, result.getWidth() / scaleFactor, result.getHeight() / scaleFactor, null);
+			int scaleFactor = UIUtil.getScaleFactor();
+			g2d.drawImage(result, 0, 0, result.getWidth() / scaleFactor, 
+			        result.getHeight() / scaleFactor, null);
 		}
 	}
 
