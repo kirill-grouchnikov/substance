@@ -49,7 +49,7 @@
 	<property name="substance.drop.dir" value="${module.substance.basedir}/drop" />
 	<property name="substance.lib.dir" value="${module.substance.basedir}/lib" />
 	<property name="substance.src.dir" value="${module.substance.basedir}/src/" />
-	<property name="substance.version" value="7.1.00" />
+	<property name="substance.version" value="7.1.00-dev" />
 	<property name="substance.versionKey" value="7.1dev Vermont" />
 
     <property name="trident.version" value="1.4" />
