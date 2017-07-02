@@ -231,10 +231,9 @@ public class SubstanceMenuBackgroundDelegate {
 							activeState);
 			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(
 					menuItem, alpha, g));
-			HighlightPainterUtils.paintHighlight(graphics, null, menuItem,
-					new Rectangle(0, 0, menuItem.getWidth(), menuItem
-							.getHeight()), borderAlpha, null, fillScheme,
-					borderScheme);
+            HighlightPainterUtils.paintHighlight(graphics, null, menuItem,
+                    new Rectangle(0, 0, menuItem.getWidth(), menuItem.getHeight()), borderAlpha,
+                    null, fillScheme, borderScheme);
 			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(
 					menuItem, g));
 		}
