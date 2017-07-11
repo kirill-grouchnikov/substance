@@ -125,8 +125,7 @@ The other two options for setting Substance require changing the code. Go back t
 ```
 Note that here we are using another Substance skin, Graphite. In order to compile the new `Walkthrough.java`, you need to add the **substance.jar** and **trident.jar** to the build path. Consult your IDE help if you're using IDE. For command-prompt compilation, use the additional `-cp` flag:
 
-`javac -cp c:/temp/substance.jar;c:/temp/trident.jar Walkthrough
-.java`
+`javac -cp c:/temp/substance.jar;c:/temp/trident.jar Walkthrough.java`
 
 Now you can run your application without the `-Dswing.defaultlaf` JVM flag, but you still need to specify the location of the **substance.jar** and **trident.jar** as before:
 
