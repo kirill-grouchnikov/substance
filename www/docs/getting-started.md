@@ -7,6 +7,10 @@ Since **Substance** requires JDK 8, if you don't have such an installation on yo
 After you have JDK 8 installed on your machine, create the following `Walkthrough.java` class:
 
 ```java
+import java.awt.*;
+import javax.swing.*;
+import java.awt.image.*;
+
 public class Walkthrough extends JFrame {
   public Walkthrough() {
     super("Sample app");
