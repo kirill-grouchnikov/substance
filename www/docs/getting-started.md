@@ -36,7 +36,7 @@ public class Walkthrough extends JFrame {
 
 This is a simple frame (that does nothing) with a button, a checkbox and a label. You can create this class in your favourite IDE or in any text editor. Once this class is created, compile it. If you're using an IDE, consult the IDE help on the compilation process. If you're using a simple text editor, you can compile this class by using:
 
-`javac Walktrough.java`
+`javac Walkthrough.java`
 
 If you have problems, consult the online help for **javac** compiler. The compiled `Walkthrough.class` will be created in the same folder as your `Walkthrough.java`. In order to run it, use:
 
@@ -121,7 +121,8 @@ The other two options for setting Substance require changing the code. Go back t
 ```
 Note that here we are using another Substance skin, Graphite. In order to compile the new `Walkthrough.java`, you need to add the **substance.jar** and **trident.jar** to the build path. Consult your IDE help if you're using IDE. For command-prompt compilation, use the additional `-cp` flag:
 
-`javac -cp c:/temp/substance.jar;c:/temp/trident.jar Walktrough.java`
+`javac -cp c:/temp/substance.jar;c:/temp/trident.jar Walkthrough
+.java`
 
 Now you can run your application without the `-Dswing.defaultlaf` JVM flag, but you still need to specify the location of the **substance.jar** and **trident.jar** as before:
 
