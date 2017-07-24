@@ -63,7 +63,8 @@ The first option doesn't require any code changes in the application above. Run 
 
 You will see the following exception:
 
-`Exception in thread "AWT-EventQueue-0" java.lang.Error:
+<pre>
+Exception in thread "AWT-EventQueue-0" java.lang.Error:
 		Cannot load org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel
 	at javax.swing.UIManager.initializeDefaultLAF(UIManager.java:1345)
 	at javax.swing.UIManager.initialize(UIManager.java:1432)
@@ -87,7 +88,8 @@ You will see the following exception:
 	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:174)
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:169)
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)`
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
+</pre>
 
 This means that the **org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel** class in not found in the classpath. This class is located in the **substance.jar**. Here are the steps to locate and download the latest stable version of this file:
 
