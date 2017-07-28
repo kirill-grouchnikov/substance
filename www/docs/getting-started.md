@@ -7,6 +7,10 @@ Since **Substance** requires JDK 8, if you don't have such an installation on yo
 After you have JDK 8 installed on your machine, create the following `Walkthrough.java` class:
 
 ```java
+import java.awt.*;
+import javax.swing.*;
+import java.awt.image.*;
+
 public class Walkthrough extends JFrame {
   public Walkthrough() {
     super("Sample app");
@@ -36,7 +40,7 @@ public class Walkthrough extends JFrame {
 
 This is a simple frame (that does nothing) with a button, a checkbox and a label. You can create this class in your favourite IDE or in any text editor. Once this class is created, compile it. If you're using an IDE, consult the IDE help on the compilation process. If you're using a simple text editor, you can compile this class by using:
 
-`javac Walktrough.java`
+`javac Walkthrough.java`
 
 If you have problems, consult the online help for **javac** compiler. The compiled `Walkthrough.class` will be created in the same folder as your `Walkthrough.java`. In order to run it, use:
 
@@ -59,7 +63,8 @@ The first option doesn't require any code changes in the application above. Run 
 
 You will see the following exception:
 
-`Exception in thread "AWT-EventQueue-0" java.lang.Error:
+<pre>
+Exception in thread "AWT-EventQueue-0" java.lang.Error:
 		Cannot load org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel
 	at javax.swing.UIManager.initializeDefaultLAF(UIManager.java:1345)
 	at javax.swing.UIManager.initialize(UIManager.java:1432)
@@ -83,7 +88,8 @@ You will see the following exception:
 	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:174)
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:169)
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)`
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:122)
+</pre>
 
 This means that the **org.pushingpixels.substance.api.skin.SubstanceBusinessLookAndFeel** class in not found in the classpath. This class is located in the **substance.jar**. Here are the steps to locate and download the latest stable version of this file:
 
@@ -121,7 +127,7 @@ The other two options for setting Substance require changing the code. Go back t
 ```
 Note that here we are using another Substance skin, Graphite. In order to compile the new `Walkthrough.java`, you need to add the **substance.jar** and **trident.jar** to the build path. Consult your IDE help if you're using IDE. For command-prompt compilation, use the additional `-cp` flag:
 
-`javac -cp c:/temp/substance.jar;c:/temp/trident.jar Walktrough.java`
+`javac -cp c:/temp/substance.jar;c:/temp/trident.jar Walkthrough.java`
 
 Now you can run your application without the `-Dswing.defaultlaf` JVM flag, but you still need to specify the location of the **substance.jar** and **trident.jar** as before:
 
