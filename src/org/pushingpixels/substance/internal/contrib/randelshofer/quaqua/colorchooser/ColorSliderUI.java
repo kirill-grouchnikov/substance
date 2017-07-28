@@ -335,10 +335,12 @@ public class ColorSliderUI extends SubstanceSliderUI implements TransitionAwareU
 		}
 
 		Graphics2D gg = (Graphics2D) g.create();
+		Color c1 = new Color(colorSliderModel.getInterpolatedRGB(componentIndex, 0.0f),
+		        true);
+		Color c2 = new Color(colorSliderModel.getInterpolatedRGB(componentIndex, 1.0f));
 		gg.setPaint(new LinearGradientPaint(x, y, x2, y2, new float[] { 0f, 1.0f },
-				new Color[] {
-						new Color(colorSliderModel.getInterpolatedRGB(componentIndex, 0.0f), true),
-						new Color(colorSliderModel.getInterpolatedRGB(componentIndex, 1.0f)) }));
+		        slider.getOrientation() == JSlider.HORIZONTAL ?
+		                new Color[] { c1, c2 } : new Color[] { c2, c1 }));
 		gg.fillRect(x, y, width, height);
 		gg.dispose();
 	}

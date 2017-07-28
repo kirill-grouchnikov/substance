@@ -36,6 +36,7 @@ import java.util.Map;
 import javax.swing.*;
 
 import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
+import org.pushingpixels.lafwidget.icon.IsHiDpiAware;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
@@ -50,7 +51,7 @@ import org.pushingpixels.substance.internal.utils.*;
  * @author Kirill Grouchnikov
  */
 @TransitionAware
-public class TransitionAwareIcon implements Icon {
+public class TransitionAwareIcon implements Icon, IsHiDpiAware {
 	/**
 	 * The delegate needs to implement the method in this interface based on the
 	 * provided color scheme. The color scheme is computed based on the
@@ -145,6 +146,11 @@ public class TransitionAwareIcon implements Icon {
 						ComponentState.ENABLED));
 		this.iconWidth = markEnabledIcon.getIconWidth();
 		this.iconHeight = markEnabledIcon.getIconHeight();
+	}
+	
+	@Override
+	public boolean isHiDpiAware() {
+	    return true;
 	}
 
 	/**

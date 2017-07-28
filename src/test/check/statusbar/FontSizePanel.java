@@ -23,7 +23,6 @@ import org.pushingpixels.substance.api.fonts.FontSet;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
 
-import test.Check;
 import test.check.svg.View_zoom_in;
 import test.check.svg.View_zoom_out;
 

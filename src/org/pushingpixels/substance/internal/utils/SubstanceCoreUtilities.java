@@ -86,7 +86,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.ButtonUI;
-import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.UIResource;
 import javax.swing.text.JTextComponent;
 

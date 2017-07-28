@@ -133,8 +133,8 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 
 			int barRectWidth = progressBar.getWidth() - 2 * margin;
 			int barRectHeight = progressBar.getHeight() - 2 * margin;
-			int totalPixels = (progressBar.getOrientation() == JProgressBar.HORIZONTAL) ? barRectWidth
-					: barRectHeight;
+			int totalPixels = (progressBar.getOrientation() == JProgressBar.HORIZONTAL) ? 
+			        barRectWidth : barRectHeight;
 			// fix for defect 223 (min and max on the model are the
 			// same).
 			int pixelDelta = (span <= 0) ? 0 : (currValue - displayedValue)
@@ -160,13 +160,15 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 			AnimationConfigurationManager.getInstance().configureTimeline(
 					displayTimeline);
 
-			// do not animate progress bars used in cell renderers
+			// Do not animate progress bars used in cell renderers
 			// since in this case it will most probably be the
 			// same progress bar used to display different
-			// values for different cells.
+			// values for different cells. Also do not animate progress bars
+			// that are not part of the UI tree.
 			boolean isInCellRenderer = (SwingUtilities.getAncestorOfClass(
 					CellRendererPane.class, progressBar) != null);
-			if (!isInCellRenderer && Math.abs(pixelDelta) > 5) {
+			boolean hasParent = (progressBar.getParent() != null);
+			if (hasParent && !isInCellRenderer && Math.abs(pixelDelta) > 5) {
 				displayTimeline.play();
 			} else {
 				displayedValue = currValue;
