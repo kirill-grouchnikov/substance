@@ -39,7 +39,7 @@ import org.pushingpixels.substance.api.fonts.FontPolicy;
 import org.pushingpixels.substance.api.fonts.FontSet;
 
 /**
- * The default font policy for KDE desktops.
+ * The default font policy for KDE OS.
  * 
  * @author <a href="mailto:paranoid.tiberiumlabs@gmail.com">Paranoid</a>
  */

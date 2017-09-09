@@ -45,7 +45,6 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
@@ -313,16 +312,10 @@ public class Quaqua15ColorPicker extends AbstractColorChooserPanel {
 	@Override
 	protected void buildChooser() {
 		initComponents();
-		pickerButton.setIcon(new TransitionAwareIcon(pickerButton,
-				new TransitionAwareIcon.Delegate() {
-					@Override
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
-						return SubstanceImageCreator
-								.getSearchIconUiResource(15, scheme, pickerButton
-										.getComponentOrientation()
-										.isLeftToRight());
-					}
-				}, "ColorChooser.colorPickerIcon"));
+        pickerButton.setIcon(new TransitionAwareIcon(pickerButton,
+                (SubstanceColorScheme scheme) -> SubstanceImageCreator.getSearchIconUiResource(16,
+                        scheme, pickerButton.getComponentOrientation().isLeftToRight()),
+                "ColorChooser.colorPickerIcon"));
 	}
 
 	@Override

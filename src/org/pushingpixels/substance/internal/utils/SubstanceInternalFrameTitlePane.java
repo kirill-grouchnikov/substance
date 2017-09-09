@@ -57,7 +57,6 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
 import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
@@ -432,62 +431,30 @@ public class SubstanceInternalFrameTitlePane extends
 		if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
 			return;
 
-		Icon restoreIcon = new TransitionAwareIcon(this.maxButton,
-				new TransitionAwareIcon.Delegate() {
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
-						return SubstanceIconFactory
-								.getTitlePaneIcon(
-										SubstanceIconFactory.IconKind.RESTORE,
-										scheme,
-										SubstanceCoreUtilities
-												.getSkin(
-														SubstanceInternalFrameTitlePane.this)
-												.getBackgroundColorScheme(
-														DecorationAreaType.SECONDARY_TITLE_PANE));
-					}
-				}, "substance.internalFrame.restoreIcon");
+        Icon restoreIcon = new TransitionAwareIcon(this.maxButton,
+                (SubstanceColorScheme scheme) -> SubstanceIconFactory.getTitlePaneIcon(
+                        SubstanceIconFactory.IconKind.RESTORE, scheme,
+                        SubstanceCoreUtilities.getSkin(SubstanceInternalFrameTitlePane.this)
+                                .getBackgroundColorScheme(DecorationAreaType.SECONDARY_TITLE_PANE)),
+                "substance.internalFrame.restoreIcon");
 		Icon maximizeIcon = new TransitionAwareIcon(this.maxButton,
-				new TransitionAwareIcon.Delegate() {
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
-						return SubstanceIconFactory
-								.getTitlePaneIcon(
-										SubstanceIconFactory.IconKind.MAXIMIZE,
-										scheme,
-										SubstanceCoreUtilities
-												.getSkin(
-														SubstanceInternalFrameTitlePane.this)
-												.getBackgroundColorScheme(
-														DecorationAreaType.SECONDARY_TITLE_PANE));
-					}
-				}, "substance.internalFrame.maxIcon");
+                (SubstanceColorScheme scheme) -> SubstanceIconFactory.getTitlePaneIcon(
+                        SubstanceIconFactory.IconKind.MAXIMIZE, scheme,
+                        SubstanceCoreUtilities.getSkin(SubstanceInternalFrameTitlePane.this)
+                                .getBackgroundColorScheme(DecorationAreaType.SECONDARY_TITLE_PANE)),
+                "substance.internalFrame.maxIcon");
 		Icon minimizeIcon = new TransitionAwareIcon(this.iconButton,
-				new TransitionAwareIcon.Delegate() {
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
-						return SubstanceIconFactory
-								.getTitlePaneIcon(
-										SubstanceIconFactory.IconKind.MINIMIZE,
-										scheme,
-										SubstanceCoreUtilities
-												.getSkin(
-														SubstanceInternalFrameTitlePane.this)
-												.getBackgroundColorScheme(
-														DecorationAreaType.SECONDARY_TITLE_PANE));
-					}
-				}, "substance.internalFrame.minIcon");
-		Icon closeIcon = new TransitionAwareIcon(this.closeButton,
-				new TransitionAwareIcon.Delegate() {
-					public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme) {
-						return SubstanceIconFactory
-								.getTitlePaneIcon(
-										SubstanceIconFactory.IconKind.CLOSE,
-										scheme,
-										SubstanceCoreUtilities
-												.getSkin(
-														SubstanceInternalFrameTitlePane.this)
-												.getBackgroundColorScheme(
-														DecorationAreaType.SECONDARY_TITLE_PANE));
-					}
-				}, "substance.internalFrame.closeIcon");
+                (SubstanceColorScheme scheme) -> SubstanceIconFactory.getTitlePaneIcon(
+                        SubstanceIconFactory.IconKind.MINIMIZE, scheme,
+                        SubstanceCoreUtilities.getSkin(SubstanceInternalFrameTitlePane.this)
+                                .getBackgroundColorScheme(DecorationAreaType.SECONDARY_TITLE_PANE)),
+                "substance.internalFrame.minIcon");
+        Icon closeIcon = new TransitionAwareIcon(this.closeButton,
+                (SubstanceColorScheme scheme) -> SubstanceIconFactory.getTitlePaneIcon(
+                        SubstanceIconFactory.IconKind.CLOSE, scheme,
+                        SubstanceCoreUtilities.getSkin(SubstanceInternalFrameTitlePane.this)
+                                .getBackgroundColorScheme(DecorationAreaType.SECONDARY_TITLE_PANE)),
+                "substance.internalFrame.closeIcon");
 		if (this.frame.isIcon()) {
 			this.iconButton.setIcon(restoreIcon);
 			this.iconButton.setToolTipText(SubstanceCoreUtilities

@@ -193,7 +193,7 @@ public class SubstanceSizeUtils {
 	public static float getArrowIconHeight(int fontSize) {
 		if (fontSize < 12)
 			return 0.5f + fontSize * 0.5f;
-		return fontSize * 0.6f;
+		return getAdjustedSize(fontSize, 7.0f, 1, 0.4f);
 	}
 
 	/**
@@ -216,7 +216,7 @@ public class SubstanceSizeUtils {
 	 * @return Stroke width of arrow icons under the specified font size.
 	 */
 	public static float getArrowStrokeWidth(int fontSize) {
-		return fontSize / 6.0f;
+		return getAdjustedSize(fontSize, 2.0f, 1, 0.06f);
 	}
 
 	/**
@@ -390,7 +390,7 @@ public class SubstanceSizeUtils {
 	 * @return Stroke width of double arrow icons under the specified font size.
 	 */
 	public static float getDoubleArrowStrokeWidth(int fontSize) {
-		return fontSize / 8.0f;
+        return getAdjustedSize(fontSize, 1.5f, 1, 0.04f);
 	}
 
 	/**

@@ -197,7 +197,7 @@ public class BasePlugin implements LafComponentPlugin {
 						@Override
 						public Object createValue(UIDefaults table) {
 							return new IconUIResource(SubstanceImageCreator
-									.getSearchIcon(null, 15, true));
+									.getSearchIcon(null, 16, true));
 						}
 					},
 

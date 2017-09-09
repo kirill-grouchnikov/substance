@@ -12,9 +12,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.skin.BusinessSkin;
-
 public class Walkthrough extends JFrame {
     public Walkthrough() {
         super("Sample app");

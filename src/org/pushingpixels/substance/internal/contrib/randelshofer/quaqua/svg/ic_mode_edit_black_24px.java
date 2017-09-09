@@ -22,6 +22,7 @@ public class ic_mode_edit_black_24px implements Icon, UIResource, IsResizable, I
 	 * @param g
 	 *            Graphics context.
 	 */
+    @SuppressWarnings("unused")
 	public static void paint(Graphics2D g) {
         Shape shape = null;
         Paint paint = null;

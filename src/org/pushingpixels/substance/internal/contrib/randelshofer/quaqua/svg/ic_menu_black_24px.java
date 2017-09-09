@@ -22,6 +22,7 @@ public class ic_menu_black_24px implements Icon, UIResource, IsResizable, IsHiDp
 	 * @param g
 	 *            Graphics context.
 	 */
+    @SuppressWarnings("unused")
 	public static void paint(Graphics2D g) {
         Shape shape = null;
         Paint paint = null;

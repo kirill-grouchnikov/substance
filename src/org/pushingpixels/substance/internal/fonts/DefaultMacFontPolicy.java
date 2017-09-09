@@ -38,7 +38,7 @@ import org.pushingpixels.substance.api.fonts.FontPolicy;
 import org.pushingpixels.substance.api.fonts.FontSet;
 
 /**
- * The default font policy for Mac desktops.
+ * The default font policy for Mac OS.
  * 
  * @author Kirill Grouchnikov
  */

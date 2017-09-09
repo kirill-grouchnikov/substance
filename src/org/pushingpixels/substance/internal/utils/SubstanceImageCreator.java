@@ -305,8 +305,8 @@ public final class SubstanceImageCreator {
         Color arrowColor = SubstanceColorUtilities.getMarkColor(scheme, true);
 
         graphics.setColor(arrowColor);
-        int cap = (width < 15) ? BasicStroke.CAP_BUTT : BasicStroke.CAP_ROUND;
-        Stroke stroke = new BasicStroke(strokeWidth, cap, BasicStroke.JOIN_MITER);
+        Stroke stroke = new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND, 
+                BasicStroke.JOIN_MITER);
         graphics.setStroke(stroke);
 
         if (direction == SwingConstants.CENTER) {
@@ -1747,7 +1747,8 @@ public final class SubstanceImageCreator {
      */
     private static BufferedImage createSearchIcon(int dimension,
             SubstanceColorScheme colorScheme, boolean leftToRight) {
-        HiDpiAwareIcon hiDpiAwareIcon = new HiDpiAwareIcon(System_search.of(16, 16));
+        HiDpiAwareIcon hiDpiAwareIcon = 
+                new HiDpiAwareIcon(System_search.of(dimension, dimension));
         
         Color foregroundColor = SubstanceColorUtilities.getForegroundColor(colorScheme);
         Color forColorization = SubstanceColorUtilities.getAlphaColor(foregroundColor, 160);
