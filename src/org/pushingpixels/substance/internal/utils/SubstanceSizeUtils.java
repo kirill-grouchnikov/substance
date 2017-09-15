@@ -656,6 +656,16 @@ public class SubstanceSizeUtils {
 	public static float getSmallArrowIconHeight(int fontSize) {
 		return getArrowIconHeight(fontSize) - 1;
 	}
+	
+	public static float getSmallDoubleArrowIconHeight(int fontSize) {
+	    float result = getSmallArrowIconHeight(fontSize);
+	    result += getSmallDoubleArrowGap(fontSize);
+	    return result;
+	}
+	
+	public static float getSmallDoubleArrowGap(int fontSize) {
+        return 3 + 2 * SubstanceSizeUtils.getExtraPadding(fontSize) / 3;
+	}
 
 	/**
 	 * Returns the width of small arrow icons under the specified font size.
