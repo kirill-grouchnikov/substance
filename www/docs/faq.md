@@ -8,7 +8,15 @@ Substance is released under BSD license. You are free to modify any part of the 
 
 There are two supported ways of extending Substance. To create a custom look for branding your application, start by reading the skinning documentation and the code of the core skins in the `org.pushingpixels.substance.api.skin` package. To add custom behavior to the specific control(s), start by reading the widget documentation and the code in the [laf-widget](https://github.com/kirill-grouchnikov/laf-widget) project.
 
-While you can extend the UI delegates in the `org.pushingpixels.substance.internal.ui` package, it is not recommended. In fact, anything in this package is subject to change at any point in time - and frequently does so between releases. If you feel that your only way is to dive into the `internal.ui` package, we need to talk.
+While you can extend the UI delegates in the `org.pushingpixels.substance.internal.ui` package, it is not recommended. In fact, anything in this package is subject to change at any point in time - and frequently does so between releases. At some point down the line (let's say 2019/20) Substance will switch to require Java 9 and will use the Java module system to effectively hide the internal implementation details further.
+
+**Can I control some aspects of Substance via _UIManager_ or _UIDefaults_ key/value entries like I can with other look-and-feels?**
+
+The official answer is no, even though it might work right now for some of those customizations. These two classes are somewhat of a crutch, in that they serve as a global data table to drop stuff in so that various UI delegates can look at that later. And that crutch was never officially documented or included as part of the official Swing APIs.
+
+The main reason that it doesn't work under Substance is that in many places it simply did not scale well to the world where individual top-level windows are skinned differently and / or use different font sizes. Using a single global data table when different parts of the UI need different treatment is simply not a good solution.
+
+To properly control the visual appearance of your app use [skins](skins/overview.md). If that doesn't work for you, let's chat.
 
 **What is the policy for backwards binary and visual compatibility?**
 
@@ -20,13 +28,13 @@ There are no guarantees about visual compatibility between major or minor releas
 
 **Is it possible to backport Substance to run on earlier releases of Java?**
 
-This is probably not worth it. A lot of UI related bugs were fixed at the JDK level since Substance started out in 2005. At one point tools such as [Retrotranslator](http://retrotranslator.sourceforge.net/) and [Retroweaver](http://retroweaver.sourceforge.net/) were around, but they did not support the Java 5/6 classes and functions that Substance is using. Things might have changed since then. Go crazy.
+This is probably not worth it. A lot of UI related bugs were fixed at the JDK level since Substance started out in 2005. At one point tools such as [Retrotranslator](http://retrotranslator.sourceforge.net/) and [Retroweaver](http://retroweaver.sourceforge.net/) were around, but they did not support the newer classes and methods that Substance is using. Things might have changed since then. Go crazy.
 
 **I like some of the features, but the jar size is too big. How can i get a smaller runnable?**
 
 In short - if you like the features, you pay the price. In long - you have a number of options:
 
-* Use lite version (available from release 2.2). It's about 510KB less. Note that this option will be going away soon (probably in 7.1)
+* Use lite version (available from release 2.2). It's about 510KB less. Note that this option will be going away soon (probably in 2018).
 * Use [Proguard](https://sourceforge.net/projects/proguard/) or other similar tools. Note that if you use this option, the stack traces of Substance defects probably will not contain line numbers. This may make it very difficult to reproduce and fix the defect.
 * Set `compiler.debug` property to `off`. The result is the same as in the above option.
 * Use code obfuscators. Almost all classes and all non-private methods will need to have their names preserved.
@@ -58,7 +66,7 @@ By default, **all** Substance watermarks are screen-bound (also true under multi
 
 **I don't like Substance.**
 
-That's not really a question. If you don't like it, you can either help improve it by suggesting additional features in the forums and mailing lists, or use any other core or third-party look-and-feel. The landscape of third-party look-and-feels was a bit [more vibrant](http://www.pushing-pixels.org/?p=1643) when Substance started. Some of those are still around.
+That's not really a question. If you don't like it, you can either help improve it by suggesting additional features in the forums and mailing lists, or use any other core or third-party look-and-feel. The landscape of third-party look-and-feels was a bit more vibrant when Substance started. Some of those are still around.
 
 **What's happening with my pull request?**
 
@@ -103,7 +111,7 @@ If you want to change the default animation settings on your lists, tables and t
 
 **Is there support for custom tab components?**
 
-Substance does not support custom tab components specified by the [JTabbedPane.setTabComponentAt](http://docs.oracle.com/javase/6/docs/api/javax/swing/JTabbedPane.html#setTabComponentAt(int,%20java.awt.Component) API.
+Substance does not support custom tab components specified by the [JTabbedPane.setTabComponentAt](http://docs.oracle.com/javase/6/docs/api/javax/swing/JTabbedPane.html#setTabComponentAt(int,%20java.awt.Component)) API.
 
 **Can i use Substance only for some parts of my UI?**
 
