@@ -30,14 +30,17 @@
 package org.pushingpixels.substance.internal.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Insets;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ComponentUI;
@@ -55,6 +58,7 @@ import org.pushingpixels.substance.internal.svg.Dialog_information;
 import org.pushingpixels.substance.internal.svg.Dialog_warning;
 import org.pushingpixels.substance.internal.svg.Help_browser;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.icon.GlowingIcon;
 
 /**
@@ -69,12 +73,11 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
     }
 
     /**
-     * Label extension class. Due to defect 250, the option pane icon animation
-     * (glowing icon) should repaint only the icon itself and not the entire
-     * option pane. While the {@link AnimationConfigurationManager} API provides
-     * an option to enable animations on the specific component, it's better to
-     * enable it on the component class (to make the lookups faster). So, when
-     * the option pane icon label is created (in addIcon method), we use this
+     * Label extension class. Due to defect 250, the option pane icon animation (glowing icon)
+     * should repaint only the icon itself and not the entire option pane. While the
+     * {@link AnimationConfigurationManager} API provides an option to enable animations on the
+     * specific component, it's better to enable it on the component class (to make the lookups
+     * faster). So, when the option pane icon label is created (in addIcon method), we use this
      * class.
      * 
      * @author Kirill Grouchnikov
@@ -100,8 +103,7 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
     /*
      * (non-Javadoc)
      * 
-     * @see javax.swing.plaf.ComponentUI#paint(java.awt.Graphics,
-     * javax.swing.JComponent)
+     * @see javax.swing.plaf.ComponentUI#paint(java.awt.Graphics, javax.swing.JComponent)
      */
     @Override
     public void paint(Graphics g, JComponent c) {
@@ -182,4 +184,116 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
             }
         }
     }
+
+    protected Container createButtonArea() {
+        JPanel bottom = new JPanel();
+        bottom.setName("OptionPane.buttonArea");
+        bottom.setLayout(new SubstanceFooterLayout(
+                SubstanceSizeUtils.getAdjustedSize(SubstanceSizeUtils.getComponentFontSize(bottom),
+                        8, 4, 1, true),
+                SubstanceLookAndFeel.getOptionPaneButtonOrder().isDefaultButtonLeading()));
+        addButtonComponents(bottom, getButtons(), getInitialValueIndex());
+        return bottom;
+    }
+
+    /**
+     * This class extends ButtonAreaLayout from the base class because in one of the places there is
+     * an explicit cast of the button container to that layout.
+     */
+    private static class SubstanceFooterLayout extends ButtonAreaLayout {
+        private int padding;
+        private boolean isDefaultButtonLeading;
+
+        public SubstanceFooterLayout(int padding, boolean isDefaultButtonLeading) {
+            super(true, padding);
+            this.padding = padding;
+            this.isDefaultButtonLeading = isDefaultButtonLeading;
+        }
+
+        public void addLayoutComponent(String string, Component comp) {
+        }
+
+        private Dimension getMaxButtonSize(Container container) {
+            Component[] children = container.getComponents();
+            Dimension result = new Dimension(0, 0);
+            for (Component child : children) {
+                Dimension pref = child.getPreferredSize();
+                result.width = Math.max(result.width, pref.width);
+                result.height = Math.max(result.height, pref.height);
+            }
+            return result;
+        }
+
+        public void layoutContainer(Container container) {
+            Component[] children = container.getComponents();
+
+            if (children != null && children.length > 0) {
+                int numChildren = children.length;
+                Insets insets = container.getInsets();
+                Dimension maxDimension = getMaxButtonSize(container);
+                int totalButtonWidth = maxDimension.width * numChildren
+                        + padding * (numChildren - 1);
+
+                boolean isLeftToRight = container.getComponentOrientation().isLeftToRight();
+                int buttonAlignment = SubstanceLookAndFeel.getOptionPaneButtonAlignment().
+                        getButtonAlignmentInContainer(container);
+                int x;
+                switch (buttonAlignment) {
+                case SwingConstants.LEFT:
+                    x = insets.left;
+                    break;
+                case SwingConstants.CENTER:
+                    x = (container.getWidth() - insets.left - insets.right - totalButtonWidth) / 2;
+                    break;
+                default: 
+                    x = container.getWidth() - insets.right - totalButtonWidth;
+                    break;
+                }
+
+                // Here we have four cases:
+                // 1. Under LTR mode and button #0 leading - button #0 goes leftmost
+                // 2. Under LTR mode and button #0 trailing - button #0 goes rightmost
+                // 3. Under RTL mode and button #0 leading - button #0 goes rightmost
+                // 4. Under RTL mode and button #0 trailing - button #0 goes leftmost
+                // So the condition is to iterate over the child buttons in their order
+                // and place them from left to right when the LTR'ness is the same
+                // as the "default button is leading"'ness
+                boolean iterateForward = (isLeftToRight == this.isDefaultButtonLeading);
+
+                for (int counter = 0; counter < numChildren; counter++) {
+                    int index = iterateForward ? counter : numChildren - counter - 1;
+                    children[index].setBounds(x, insets.top, maxDimension.width,
+                            maxDimension.height);
+                    x += children[index].getWidth() + padding;
+                }
+            }
+        }
+
+        public Dimension minimumLayoutSize(Container container) {
+            if (container == null) {
+                return new Dimension(0, 0);
+            }
+
+            Component[] children = container.getComponents();
+            if ((children == null) || (children.length == 0)) {
+                return new Dimension(0, 0);
+            }
+            int numChildren = children.length;
+            Insets insets = container.getInsets();
+
+            Dimension maxDimension = getMaxButtonSize(container);
+            return new Dimension(
+                    insets.left + insets.right + maxDimension.width * numChildren
+                            + padding * (numChildren - 1),
+                    insets.top + insets.bottom + maxDimension.height);
+        }
+
+        public Dimension preferredLayoutSize(Container c) {
+            return minimumLayoutSize(c);
+        }
+
+        public void removeLayoutComponent(Component c) {
+        }
+    }
+
 }

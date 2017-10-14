@@ -34,6 +34,7 @@ import java.awt.geom.GeneralPath;
 
 import javax.swing.*;
 
+import org.pushingpixels.lafwidget.utils.LookUtils;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.*;
@@ -619,4 +620,85 @@ public class SubstanceConstants {
 		 */
 		TITLE_PANE_HEAP_STATUS
 	}
+    
+	/**
+	 * Button order for option pane buttons. 
+	 */
+    public enum SubstanceOptionPaneButtonOrder {
+        /**
+         * Platform-specific order. On macOS the default button will be the placed
+         * the closest to the trailing edge of the option pane (rightmost under LTR and
+         * leftmost under RTL). On other platforms the default button will be placed
+         * closest to the leading edge of the option pane (leftmost under LTR and
+         * rightmost under RTL).
+         */
+        PLATFORM {
+            @Override
+            public boolean isDefaultButtonLeading() {
+                return !LookUtils.IS_OS_MAC;
+            }
+        },
+        
+        /**
+         * The default button will be placed closest to the leading edge of the option pane
+         * (leftmost under LTR and rightmost under RTL).
+         */
+        DEFAULT_AS_LEADING {
+            @Override
+            public boolean isDefaultButtonLeading() {
+                return true;
+            }
+        },
+        
+        /**
+         * The default button will be placed closest to the trailing edge of the option pane
+         * (rightmost under LTR and leftmost under RTL).
+         */
+        DEFAULT_AS_TRAILING {
+            @Override
+            public boolean isDefaultButtonLeading() {
+                return false;
+            }
+        };
+        
+        public abstract boolean isDefaultButtonLeading();
+    }
+    
+    public enum SubstanceOptionPaneButtonAlignment {
+        PLATFORM {
+            @Override
+            public int getButtonAlignmentInContainer(Container c) {
+                // On macOS the buttons are aligned to the trailing edge of
+                // the container (right under LTR and left under RTL)
+                return LookUtils.IS_OS_MAC ? 
+                        (c.getComponentOrientation().isLeftToRight() ? SwingConstants.RIGHT :
+                            SwingConstants.LEFT) : SwingConstants.CENTER;
+            }
+        },
+        
+        ALIGNED_TO_PARENT_LEADING_EDGE {
+            @Override
+            public int getButtonAlignmentInContainer(Container c) {
+                return c.getComponentOrientation().isLeftToRight() ? SwingConstants.LEFT :
+                    SwingConstants.RIGHT;
+            }
+        },
+        
+        CENTERED {
+            @Override
+            public int getButtonAlignmentInContainer(Container c) {
+                return SwingConstants.CENTER;
+            }
+        },
+        
+        ALIGNED_TO_PARENT_TRAILING_EDGE {
+            @Override
+            public int getButtonAlignmentInContainer(Container c) {
+                return c.getComponentOrientation().isLeftToRight() ? SwingConstants.RIGHT :
+                    SwingConstants.LEFT;
+            }
+        };
+        
+        public abstract int getButtonAlignmentInContainer(Container c);
+    }
 }

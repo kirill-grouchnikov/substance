@@ -30,6 +30,7 @@ If you've skipped [getting started](www/docs/getting-started.md) page, to add Su
 ### Configure and customize
 
 <img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/skins/nebulabrickwall1.png" width="340" height="254" border=0 align="left">
+
 You can use Substance-specific settings and APIs to add custom functionality to your components. See the list of [API calls](www/docs/api.md), [client properties](www/docs/client-properties.md) and [VM flags](www/docs/vmflags.md) for more information. To configure the animations, consult the [animation overview](www/docs/animations.md).
 
 Substance can be customized to fit your visual needs. The overall visuals are controlled by [skins](www/docs/skins/overview.md), with each skin defined by [color scheme bundles](www/docs/skins/colorschemebundles.md) and [painters](www/docs/painters/overview.md). The [skinning primer](www/docs/painters/custom-skinning.md) has a few tips on how to use the different Substance painters in applications that wish to paint custom components in a way that is consistent with other Substance visuals. The Substance samples project provides a detailed walktrough that analyzes a complex UI mockup and uses different Substance APIs to implement it.

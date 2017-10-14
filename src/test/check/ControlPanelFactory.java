@@ -33,6 +33,7 @@ import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Composite;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -88,6 +89,8 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceConstants.FocusKind;
 import org.pushingpixels.substance.api.SubstanceConstants.MenuGutterFillKind;
+import org.pushingpixels.substance.api.SubstanceConstants.SubstanceOptionPaneButtonAlignment;
+import org.pushingpixels.substance.api.SubstanceConstants.SubstanceOptionPaneButtonOrder;
 import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.NebulaBrickWallSkin;
@@ -532,12 +535,48 @@ public class ControlPanelFactory {
 
 		builder.appendSeparator("Option panes");
 
+        final JComboBox optionPaneButtonOrderCombo = new FlexiComboBox<SubstanceOptionPaneButtonOrder>(SubstanceOptionPaneButtonOrder
+                .values()) {
+            @Override
+            public String getCaption(SubstanceOptionPaneButtonOrder item) {
+                return item.name();
+            }
+        };
+        optionPaneButtonOrderCombo.setSelectedItem(SubstanceLookAndFeel.getOptionPaneButtonOrder());
+        optionPaneButtonOrderCombo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                SubstanceLookAndFeel.setOptionPaneButtonOrder(
+                        (SubstanceOptionPaneButtonOrder) optionPaneButtonOrderCombo
+                        .getSelectedItem());
+            }
+        });
+        builder.append("Button order", optionPaneButtonOrderCombo);
+
+        final JComboBox optionPaneButtonAlignmentCombo = new FlexiComboBox<SubstanceOptionPaneButtonAlignment>(SubstanceOptionPaneButtonAlignment
+                .values()) {
+            @Override
+            public String getCaption(SubstanceOptionPaneButtonAlignment item) {
+                return item.name();
+            }
+        };
+        optionPaneButtonAlignmentCombo.setSelectedItem(SubstanceLookAndFeel.getOptionPaneButtonAlignment());
+        optionPaneButtonAlignmentCombo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                SubstanceLookAndFeel.setOptionPaneButtonAlignment(
+                        (SubstanceOptionPaneButtonAlignment) optionPaneButtonAlignmentCombo
+                        .getSelectedItem());
+            }
+        });
+        builder.append("Button alignment", optionPaneButtonAlignmentCombo);
+		
 		JButton bop = new JButton("Show");
 		bop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						JOptionPane pane = new JOptionPane("Sample option pane");
+						pane.applyComponentOrientation(ComponentOrientation
+                                .getOrientation(Locale.getDefault()));
 						JDialog dialog = pane.createDialog(mainFrame,
 								"Sample title");
 						dialog.setVisible(true);
@@ -629,6 +668,8 @@ public class ControlPanelFactory {
 						dialog.setLocationRelativeTo(mainFrame);
 						dialog.setLayout(new BorderLayout());
 						JDesktopPane panel = new JDesktopPane();
+                         panel.applyComponentOrientation(ComponentOrientation
+                                .getOrientation(Locale.getDefault()));
 						dialog.add(panel, BorderLayout.CENTER);
 						JOptionPane.showInputDialog(panel,
 								"Sample Question Message?", "Default Answer");
@@ -650,6 +691,8 @@ public class ControlPanelFactory {
 						dialog.setLocationRelativeTo(mainFrame);
 						dialog.setLayout(new BorderLayout());
 						JDesktopPane panel = new JDesktopPane();
+						panel.applyComponentOrientation(ComponentOrientation
+                                .getOrientation(Locale.getDefault()));
 						dialog.add(panel, BorderLayout.CENTER);
 						// dialog.setVisible(true);
 						String optionChoices[] = new String[] { "entry1",
@@ -676,6 +719,8 @@ public class ControlPanelFactory {
 						dialog.setLocationRelativeTo(mainFrame);
 						dialog.setLayout(new BorderLayout());
 						JDesktopPane panel = new JDesktopPane();
+                         panel.applyComponentOrientation(ComponentOrientation
+                                .getOrientation(Locale.getDefault()));
 						dialog.add(panel, BorderLayout.CENTER);
 						// dialog.setVisible(true);
 						JOptionPane.showInternalInputDialog(panel,

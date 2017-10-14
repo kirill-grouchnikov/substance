@@ -76,6 +76,7 @@ import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.lafwidget.icon.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.api.SubstanceConstants.MenuGutterFillKind;
+import org.pushingpixels.substance.api.SubstanceConstants.SubstanceOptionPaneButtonOrder;
 import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
 import org.pushingpixels.substance.api.combo.ComboPopupPrototypeCallback;
 import org.pushingpixels.substance.api.fonts.FontPolicy;
@@ -172,6 +173,12 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	 * @see #setToUseConstantThemesOnDialogs(boolean)
 	 */
 	private static boolean toUseConstantThemesOnDialogs = true;
+	
+	private static SubstanceConstants.SubstanceOptionPaneButtonOrder optionPaneButtonOrder =
+	        SubstanceConstants.SubstanceOptionPaneButtonOrder.PLATFORM;
+
+	private static SubstanceConstants.SubstanceOptionPaneButtonAlignment optionPaneButtonAlignment =
+            SubstanceConstants.SubstanceOptionPaneButtonAlignment.PLATFORM;
 
 	/**
 	 * Change listener on keyboard focus manager - fix for defect 208.
@@ -1927,38 +1934,98 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 		}
 	}
 
-	/**
-	 * Checks whether the <code>JOptionPane</code>s created with predefined
-	 * message types should use constant color schemes for the icons.
-	 * 
-	 * @return <code>true</code> if the <code>JOptionPane</code>s created with
-	 *         predefined message types should use constant color schemes for
-	 *         the icons, <code>false</code> otherwise.
-	 * @see #setToUseConstantThemesOnDialogs(boolean)
-	 */
-	public static boolean isToUseConstantThemesOnDialogs() {
-		return SubstanceLookAndFeel.toUseConstantThemesOnDialogs;
-	}
+    /**
+     * Checks whether the <code>JOptionPane</code>s created with predefined
+     * message types should use constant color schemes for the icons.
+     * 
+     * @return <code>true</code> if the <code>JOptionPane</code>s created with
+     *         predefined message types should use constant color schemes for
+     *         the icons, <code>false</code> otherwise.
+     * @see #setToUseConstantThemesOnDialogs(boolean)
+     */
+    public static boolean isToUseConstantThemesOnDialogs() {
+        return SubstanceLookAndFeel.toUseConstantThemesOnDialogs;
+    }
 
-	/**
-	 * Sets the new setting for the icons of the <code>JOptionPane</code>s
-	 * created with predefined message types.
-	 * 
-	 * @param toUseConstantThemesOnDialogs
-	 *            if <code>true</code>, the <code>JOptionPane</code>s created
-	 *            with predefined message types should use constant color
-	 *            schemes for the icons.
-	 * @see #isToUseConstantThemesOnDialogs()
-	 */
-	public static void setToUseConstantThemesOnDialogs(
-			boolean toUseConstantThemesOnDialogs) {
-		SubstanceLookAndFeel.toUseConstantThemesOnDialogs = toUseConstantThemesOnDialogs;
-		SwingUtilities.invokeLater(() -> {
-			for (Window window : Window.getWindows()) {
-				SwingUtilities.updateComponentTreeUI(window);
-			}
-		});
-	}
+    /**
+     * Sets the new setting for the icons of the <code>JOptionPane</code>s
+     * created with predefined message types.
+     * 
+     * @param toUseConstantThemesOnDialogs
+     *            if <code>true</code>, the <code>JOptionPane</code>s created
+     *            with predefined message types should use constant color
+     *            schemes for the icons.
+     * @see #isToUseConstantThemesOnDialogs()
+     */
+    public static void setToUseConstantThemesOnDialogs(
+            boolean toUseConstantThemesOnDialogs) {
+        SubstanceLookAndFeel.toUseConstantThemesOnDialogs = toUseConstantThemesOnDialogs;
+        SwingUtilities.invokeLater(() -> {
+            for (Window window : Window.getWindows()) {
+                SwingUtilities.updateComponentTreeUI(window);
+            }
+        });
+    }
+
+    /**
+     * Returns the currently set button order for all <code>JOptionPane</code>s.
+     * 
+     * @return The currently set button order for all <code>JOptionPane</code>s.
+     * @see #setOptionPaneButtonOrder(SubstanceOptionPaneButtonOrder)
+     */
+    public static SubstanceConstants.SubstanceOptionPaneButtonOrder getOptionPaneButtonOrder() {
+        return SubstanceLookAndFeel.optionPaneButtonOrder;
+    }
+
+    /**
+     * Sets the button order for all <code>JOptionPane</code>s.
+     * 
+     * @param optionPaneButtonOrder
+     *            The new button order for all <code>JOptionPane</code>s. The value cannot be null.
+     * @see #getOptionPaneButtonOrder()
+     */
+    public static void setOptionPaneButtonOrder(
+            SubstanceConstants.SubstanceOptionPaneButtonOrder optionPaneButtonOrder) {
+        if (optionPaneButtonOrder == null) {
+            throw new IllegalArgumentException("Cannot pass null. Did you mean PLATFORM?");
+        }
+        SubstanceLookAndFeel.optionPaneButtonOrder = optionPaneButtonOrder;
+        SwingUtilities.invokeLater(() -> {
+            for (Window window : Window.getWindows()) {
+                SwingUtilities.updateComponentTreeUI(window);
+            }
+        });
+    }
+
+    /**
+     * Returns the currently set button alignment for all <code>JOptionPane</code>s.
+     * 
+     * @return The currently set button alignment for all <code>JOptionPane</code>s.
+     * @see #setOptionPaneButtonAlignment(org.pushingpixels.substance.api.SubstanceConstants.SubstanceOptionPaneButtonAlignment)
+     */
+    public static SubstanceConstants.SubstanceOptionPaneButtonAlignment getOptionPaneButtonAlignment() {
+        return SubstanceLookAndFeel.optionPaneButtonAlignment;
+    }
+
+    /**
+     * Sets the button alignment for all <code>JOptionPane</code>s.
+     * 
+     * @param optionPaneButtonAlignment
+     *            The new button alignment for all <code>JOptionPane</code>s. The value cannot be null.
+     * @see #getOptionPaneButtonAlignment()
+     */
+    public static void setOptionPaneButtonAlignment(
+            SubstanceConstants.SubstanceOptionPaneButtonAlignment optionPaneButtonAlignment) {
+        if (optionPaneButtonAlignment == null) {
+            throw new IllegalArgumentException("Cannot pass null. Did you mean PLATFORM?");
+        }
+        SubstanceLookAndFeel.optionPaneButtonAlignment = optionPaneButtonAlignment;
+        SwingUtilities.invokeLater(() -> {
+            for (Window window : Window.getWindows()) {
+                SwingUtilities.updateComponentTreeUI(window);
+            }
+        });
+    }
 
 	/**
 	 * The current Substance skin.
