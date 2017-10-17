@@ -261,7 +261,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements 
 	@Override
 	protected JButton createLeftOneTouchButton() {
 		JButton oneTouchButton = new JButton() {
-			// Don't want the button to participate in focus traversable.
+			// Don't want the button to participate in focus traversal
 			@Override
 			public boolean isFocusable() {
 				return false;
@@ -311,7 +311,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements 
 	@Override
 	protected JButton createRightOneTouchButton() {
 		JButton oneTouchButton = new JButton() {
-			// Don't want the button to participate in focus traversable.
+			// Don't want the button to participate in focus traversal
 			@Override
 			public boolean isFocusable() {
 				return false;
@@ -472,6 +472,27 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements 
 						rightButton.setBounds(x, leftButton.getY() + leftButton.getHeight(),
 								blockSize, leftButton.getPreferredSize().height * 2 / 3);
 					}
+					
+//                    int buttonWidth = leftButton.getPreferredSize().width;
+//                    int buttonHeight = leftButton.getPreferredSize().height;
+//                    int offset = SubstanceSizeUtils.getSplitPaneButtonOffset(
+//                            SubstanceSizeUtils.getComponentFontSize(splitPane));
+//                    if (orientation == JSplitPane.VERTICAL_SPLIT) {
+//                        int extraX = (insets != null) ? insets.left : 0;
+//                        int y = (c.getSize().height - buttonWidth) / 2;
+//
+//                        leftButton.setBounds(extraX + offset, y, buttonWidth, buttonHeight);
+//                        rightButton.setBounds(leftButton.getX() + leftButton.getWidth(), y,
+//                                buttonWidth, buttonHeight);
+//                    } else {
+//                        int extraY = (insets != null) ? insets.top : 0;
+//                        int x = (c.getSize().width - buttonHeight) / 2;
+//
+//                        leftButton.setBounds(x, extraY + offset, buttonWidth, buttonHeight);
+//                        rightButton.setBounds(x, leftButton.getY() + leftButton.getHeight(),
+//                                buttonWidth, buttonHeight);
+//                    }
+
 				} else {
 					leftButton.setBounds(-5, -5, 1, 1);
 					rightButton.setBounds(-5, -5, 1, 1);

@@ -30,7 +30,6 @@
 package org.pushingpixels.substance.internal.utils.border;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -40,6 +39,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.UIResource;
 
+import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
@@ -88,10 +88,10 @@ public class SubstancePaneBorder extends AbstractBorder implements UIResource {
 		SubstanceColorScheme borderScheme = skin.getColorScheme(titlePaneComp,
 				ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED);
 
-		Graphics2D graphics = (Graphics2D) g;
+		Graphics2D graphics = (Graphics2D) g.create();
 
-		graphics.setColor(Color.red);
-		graphics.setStroke(new BasicStroke(1.5f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+		graphics.setStroke(new BasicStroke(UIUtil.isRetina() ? 1.5f : 1.0f, 
+		        BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
 		
 		// bottom and right in ultra dark
 		graphics.setColor(borderScheme.getUltraDarkColor());
@@ -113,6 +113,8 @@ public class SubstancePaneBorder extends AbstractBorder implements UIResource {
 		graphics.setColor(scheme.getLightColor());
 		graphics.drawRect(x + 2, y + 2, w - 5, h - 5);
 		graphics.drawRect(x + 3, y + 3, w - 7, h - 7);
+		
+		graphics.dispose();
 	}
 
 	/*

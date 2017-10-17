@@ -786,8 +786,6 @@ public class SubstanceSizeUtils {
 	public static float getSplitPaneArrowIconWidth(int fontSize) {
 		float result = SubstanceSizeUtils.getArrowIconWidth(fontSize)
 				+ SubstanceSizeUtils.getAdjustedSize(fontSize, -2, 1, -0.25f);
-		if (result % 2 == 0)
-			result--;
 		return result;
 	}
 

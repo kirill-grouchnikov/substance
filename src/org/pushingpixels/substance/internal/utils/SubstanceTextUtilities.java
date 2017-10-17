@@ -544,7 +544,7 @@ public class SubstanceTextUtilities {
 			Color backgr, boolean toOverlayWatermark) {
 		Graphics2D g2d = (Graphics2D) g.create();
 
-		BackgroundPaintingUtils.update(g, comp, false);
+		BackgroundPaintingUtils.update(g2d, comp, false);
 		SubstanceWatermark watermark = SubstanceCoreUtilities.getSkin(comp).getWatermark();
 		if (watermark != null) {
 			watermark.drawWatermarkImage(g2d, comp, 0, 0, comp.getWidth(), comp.getHeight());

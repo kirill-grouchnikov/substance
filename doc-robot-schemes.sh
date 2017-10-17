@@ -1,6 +1,6 @@
 export JAVA_HOME=`/usr/libexec/java_home -v 9`
 alias JAVA="java"
-SUBSTANCE_VERSION=7.1.00-rc
+SUBSTANCE_VERSION=7.1.00
 
 JAVA -cp ./drop/$SUBSTANCE_VERSION/substance-tools-$SUBSTANCE_VERSION.jar:./drop/$SUBSTANCE_VERSION/substance-tst-$SUBSTANCE_VERSION.jar:./lib/forms-1.2.0.jar:./lib/test/*:./lib/build/swingx-all-1.6.4.jar tools.docrobot.RobotMain tools.docrobot.schemes.AquaScheme
 JAVA -cp ./drop/$SUBSTANCE_VERSION/substance-tools-$SUBSTANCE_VERSION.jar:./drop/$SUBSTANCE_VERSION/substance-tst-$SUBSTANCE_VERSION.jar:./lib/forms-1.2.0.jar:./lib/test/*:./lib/build/swingx-all-1.6.4.jar tools.docrobot.RobotMain tools.docrobot.schemes.BarbyPinkScheme

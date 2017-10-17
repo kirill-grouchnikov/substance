@@ -568,8 +568,11 @@ public class Check extends JFrame {
 				}
 			}
 			if (substanceVer != null) {
-				JLabel statusLabel = new JLabel(substanceVer + " [built on "
-						+ substanceBuildStamp + "]");
+			    String stamp = substanceVer;
+			    if (substanceBuildStamp != null) {
+			        stamp += " [built on " + substanceBuildStamp + "]";
+			    }
+				JLabel statusLabel = new JLabel(stamp);
 				JXStatusBar.Constraint cStatusLabel = new JXStatusBar.Constraint();
 				cStatusLabel.setFixedWidth(400);
 				statusBar.add(statusLabel, cStatusLabel);

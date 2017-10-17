@@ -31,7 +31,6 @@ package org.pushingpixels.substance.internal.ui;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -167,11 +166,9 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 					: ComponentState.DISABLED_UNSELECTED;
 			SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
 					.getColorScheme(field, state);
-			Color topColor = isSelected ? scheme.getSelectionForegroundColor()
+			Color color = isSelected ? scheme.getSelectionForegroundColor()
 					: SubstanceColorUtilities.getForegroundColor(scheme);
-			Color bottomColor = topColor.brighter();
-			graphics.setPaint(new GradientPaint(x, y - dotDiameter, topColor,
-					x, y, bottomColor));
+			graphics.setColor(color);;
 			int echoPerChar = SubstanceCoreUtilities.getEchoPerChar(field);
 			for (int i = 0; i < echoPerChar; i++) {
 				graphics.fillOval(x + dotGap / 2, y - dotDiameter, dotDiameter,

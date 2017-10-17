@@ -287,7 +287,8 @@ public final class SubstanceImageCreator {
             width = height;
             height = tmp;
         }
-        BufferedImage arrowImage = SubstanceCoreUtilities.getBlankImage((int) width, (int) height);
+        BufferedImage arrowImage = SubstanceCoreUtilities.getBlankImage(
+                (int) Math.ceil(width), (int) Math.ceil(height));
 
         // System.out.println(width + ":" + height + ":" + strokeWidth);
 
