@@ -8,7 +8,7 @@ The `org.pushingpixels.substance.api.DecorationAreaType` class contains the avai
 
 The following screenshot is the main Substance test application under the Gemini skin:
 
-<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/thumb.png" width="600" height="449"/>
+<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/full.png" width="600" height="449"/>
 
 The next screenshot shows the `title` decoration area, which in this example includes the title pane of the main window:
 
@@ -32,7 +32,7 @@ The next screenshot shows the `general` decoration area, which in this example i
 
 Let's go back to the original screenshot:
 
-<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/thumb.png" width="600" height="449"/>
+<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/full.png" width="600" height="449"/>
 
 It illustrates that the specific skin assigns different color schemes to different decoration areas. The controls in those areas get the background and foreground colors based on their assigned color scheme (without any custom application code), thus creating visual distinction between different application areas.
 
