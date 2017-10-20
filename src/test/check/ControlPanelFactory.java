@@ -672,7 +672,7 @@ public class ControlPanelFactory {
                                 .getOrientation(Locale.getDefault()));
 						dialog.add(panel, BorderLayout.CENTER);
 						JOptionPane.showInputDialog(panel,
-								"Sample Question Message?", "Default Answer");
+								"Sample Question Message", "Default Answer");
 						dialog.dispose();
 					}
 				});
@@ -698,7 +698,7 @@ public class ControlPanelFactory {
 						String optionChoices[] = new String[] { "entry1",
 								"entry2", "entry3", "entry4" };
 						JOptionPane.showInputDialog(panel,
-								"Sample Question Message?", "Title Goes Here",
+								"Sample Question Message", "Title Goes Here",
 								JOptionPane.QUESTION_MESSAGE, null,
 								optionChoices, "entry1");
 						dialog.dispose();

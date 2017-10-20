@@ -268,8 +268,8 @@ public class RootPaneDefaultButtonTracker extends
 				return;
 			}
 			tracker = new RootPaneDefaultButtonTracker(jButton);
+            trackers.put(jButton, tracker);
 			tracker.startTimer();
-			trackers.put(jButton, tracker);
 			// long initialCycle = isAttentionDrawingCloseButton(jButton) ? -80
 			// : 0;
 			// cycles.put(jButton, initialCycle);

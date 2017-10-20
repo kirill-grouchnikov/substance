@@ -420,26 +420,22 @@ public class SampleMenuFactory {
 				"org.pushingpixels.substance.api.skin.SubstanceNebulaLookAndFeel"));
 		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Nebula Brick Wall",
 				"org.pushingpixels.substance.api.skin.SubstanceNebulaBrickWallLookAndFeel"));
-		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Office Black 2007",
-				"org.pushingpixels.substance.api.skin.SubstanceOfficeBlack2007LookAndFeel"));
-		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Office Silver 2007",
-				"org.pushingpixels.substance.api.skin.SubstanceOfficeSilver2007LookAndFeel"));
 		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Sahara",
 				"org.pushingpixels.substance.api.skin.SubstanceSaharaLookAndFeel"));
+        substanceMenus.addSeparator();
+        substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Office Black 2007",
+                "org.pushingpixels.substance.api.skin.SubstanceOfficeBlack2007LookAndFeel"));
+        substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Office Silver 2007",
+                "org.pushingpixels.substance.api.skin.SubstanceOfficeSilver2007LookAndFeel"));
+        substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Office Blue 2007",
+                "org.pushingpixels.substance.api.skin.SubstanceOfficeBlue2007LookAndFeel"));
 		substanceMenus.addSeparator();
-		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Office Blue 2007",
-				"org.pushingpixels.substance.api.skin.SubstanceOfficeBlue2007LookAndFeel"));
-		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Magellan",
-				"org.pushingpixels.substance.api.skin.SubstanceMagellanLookAndFeel"));
-		substanceMenus.addSeparator();
-		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Challenger Deep",
-				"org.pushingpixels.substance.api.skin.SubstanceChallengerDeepLookAndFeel"));
-		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Emerald Dusk",
-				"org.pushingpixels.substance.api.skin.SubstanceEmeraldDuskLookAndFeel"));
-		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Magma",
-				"org.pushingpixels.substance.api.skin.SubstanceMagmaLookAndFeel"));
+        substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Magellan",
+                "org.pushingpixels.substance.api.skin.SubstanceMagellanLookAndFeel"));
 		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Raven",
 				"org.pushingpixels.substance.api.skin.SubstanceRavenLookAndFeel"));
+        substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Twilight",
+                "org.pushingpixels.substance.api.skin.SubstanceTwilightLookAndFeel"));
 		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Graphite",
 				"org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel"));
 		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Graphite Glass",
@@ -450,8 +446,6 @@ public class SampleMenuFactory {
 				"org.pushingpixels.substance.api.skin.SubstanceGraphiteGoldLookAndFeel"));
 		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Graphite Chalk",
 				"org.pushingpixels.substance.api.skin.SubstanceGraphiteChalkLookAndFeel"));
-		substanceMenus.add(SubstanceLafChanger.getMenuItem(frame, "Twilight",
-				"org.pushingpixels.substance.api.skin.SubstanceTwilightLookAndFeel"));
 		lafMenu.add(substanceMenus);
 		lafMenu.addSeparator();
 		JMenu coreLafMenus = new JMenu("Core LAFs");
@@ -465,7 +459,7 @@ public class SampleMenuFactory {
 		coreLafMenus
 				.add(SubstanceLafChanger.getMenuItem(frame, "Motif", "com.sun.java.swing.plaf.motif.MotifLookAndFeel"));
 		coreLafMenus.add(
-				SubstanceLafChanger.getMenuItem(frame, "Nimbus", "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"));
+				SubstanceLafChanger.getMenuItem(frame, "Nimbus", "javax.swing.plaf.nimbus.NimbusLookAndFeel"));
 
 		JMenu customLafMenus = new JMenu("Custom LAFs");
 		lafMenu.add(customLafMenus);
@@ -542,7 +536,9 @@ public class SampleMenuFactory {
 				"org.fife.plaf.VisualStudio2005.VisualStudio2005LookAndFeel"));
 
 		customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "A03", "a03.swing.plaf.A03LookAndFeel"));
-		customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "Alloy", "com.incors.plaf.alloy.AlloyLookAndFeel"));
+        customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "Alloy", "com.incors.plaf.alloy.AlloyLookAndFeel"));
+        customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "BeautyEye Cross", "org.jb2011.lnf.beautyeye.BeautyEyeLookAndFeelCross"));
+        customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "BeautyEye Win", "org.jb2011.lnf.beautyeye.BeautyEyeLookAndFeelWin"));
         customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "Cezanne Textile",
                         "de.centigrade.laf.textile.TextileLookAndFeel"));
         customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "Darcula",
@@ -579,7 +575,8 @@ public class SampleMenuFactory {
 		customLafMenus
 				.add(SubstanceLafChanger.getMenuItem(frame, "Tiny", "de.muntjak.tinylookandfeel.TinyLookAndFeel"));
 		customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "Tonic", "com.digitprop.tonic.TonicLookAndFeel"));
-		customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "Trendy", "com.Trendy.swing.plaf.TrendyLookAndFeel"));
+        customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "Trendy", "com.Trendy.swing.plaf.TrendyLookAndFeel"));
+        customLafMenus.add(SubstanceLafChanger.getMenuItem(frame, "WebLaf", "com.alee.laf.WebLookAndFeel"));
 
 		lafMenu.addSeparator();
 		JMenu localeMenus = new JMenu("Change locale");

@@ -124,3 +124,11 @@ In case you wish to use cross-platform frame and dialog decorations, use the fol
 **I'm using `setOpaque()` method and i see visual artifacts in my UI**
 
 Do not change the opacity of controls painted by Substance in the application code. Doing so will lead to unpredictable visual results at runtime.
+
+**I'm seeing something weird in my editable text boxes. The cursor is not lining up properly with the characters**
+
+This has been reported and analysed by Dale Anson, specifically on Arch Linux distribution with XFCE desktop environment. JDK [provides](https://bugs.openjdk.java.net/browse/JDK-6288260) a way [to use](https://docs.oracle.com/javase/7/docs/api/java/awt/doc-files/DesktopProperties.html) desktop-specific text rendering settings (smoothing / anti-aliasing), and that is being used in Substance. Under the particular configuration above (and possibly others) this API does not seem to be doing the right thing as far as positioning and rendering the text. If you're experiencing this issue, run your app under `-Dawt.useSystemAAFontSettings=off` flag.
+
+**I'm using custom scale factor on my Windows machine, and under Java 9 I'm seeing rendering artifacts along the edges of some widgets**
+
+Java 9 has changed the way it treats drawing images when the images need to be upscaled to match the screen resolution. Until I figure out how to make the existing Hi DPI support to work on both Java 8 and Java 9, run your app under `–Dsun.java2d.uiScale=1.0` flag.
