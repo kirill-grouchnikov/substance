@@ -6,33 +6,33 @@ Menu bars, tool bars, status bars - these are common examples of special contain
 
 The `org.pushingpixels.substance.api.DecorationAreaType` class contains the available core decoration area types. As a picture is worth a thousand words, the following screenshots illustrate the different decoration area types.
 
-The following screenshot is the main Substance test application under the Business Black Steel skin (click to see full size version):
+The following screenshot is the main Substance test application under the Gemini skin:
 
-<a href="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/full.png"><img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/thumb.png" width="600" height="448"/></a>
+<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/full.png" width="600" height="449"/>
 
 The next screenshot shows the `title` decoration area, which in this example includes the title pane of the main window:
 
-<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/areas-title.png" width="600" height="448"/>
+<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/areas-title.png" width="600" height="449"/>
 
 The next screenshot shows the `header` decoration area, which in this example includes the menu bar of the main window:
 
-<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/areas-header.png" width="600" height="448"/>
+<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/areas-header.png" width="600" height="449"/>
 
 The next screenshot shows the `toolbar` decoration area, which in this example includes the tool bar of the main window:
 
-<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/areas-toolbar.png" width="600" height="448"/>
+<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/areas-toolbar.png" width="600" height="449"/>
 
 The next screenshot shows the `footer` decoration area, which in this example includes the status bar component from the SwingX suite:
 
-<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/areas-footer.png" width="600" height="448"/>
+<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/areas-footer.png" width="600" height="449"/>
 
 The next screenshot shows the `general` decoration area, which in this example includes the task pane container component from the SwingX suite:
 
-<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/areas-general.png" width="600" height="448"/>
+<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/areas-general.png" width="600" height="449"/>
 
 Let's go back to the original screenshot:
 
-<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/thumb.png" width="600" height="448"/>
+<img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/painters/decoration/full.png" width="600" height="449"/>
 
 It illustrates that the specific skin assigns different color schemes to different decoration areas. The controls in those areas get the background and foreground colors based on their assigned color scheme (without any custom application code), thus creating visual distinction between different application areas.
 
