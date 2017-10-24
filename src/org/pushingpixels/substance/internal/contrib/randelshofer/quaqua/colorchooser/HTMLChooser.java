@@ -239,6 +239,8 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
         springPanel = new javax.swing.JPanel();
 
         setLayout(new java.awt.GridBagLayout());
+        boolean isLtr = getComponentOrientation().isLeftToRight();
+        Insets tfInsets = new java.awt.Insets(1, isLtr ? 4 : 0, 0, isLtr ? 0 : 4);
 
         redLabel.setText(UIManager.getString("ColorChooser.rgbRedText"));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -272,6 +274,7 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = tfInsets;
         add(redField, gridBagConstraints);
 
         greenLabel.setText(UIManager.getString("ColorChooser.rgbGreenText"));
@@ -294,6 +297,7 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = tfInsets;
         add(greenField, gridBagConstraints);
 
         greenSlider.setMajorTickSpacing(255);
@@ -340,6 +344,7 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = tfInsets;
         add(blueField, gridBagConstraints);
 
         htmlPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 5));

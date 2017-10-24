@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.RenderingHints;
@@ -44,14 +45,25 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.basic.BasicBorders;
 
+import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.internal.svg.ic_refresh_black_24px;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
+import org.pushingpixels.substance.internal.utils.border.SubstanceTextComponentBorder;
+import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 
 /**
  * A color wheel showing a Red, Yellow, Blue color model traditionally used by
@@ -79,7 +91,7 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 	protected JLabel baseColorLabel;
 	protected Ellipse2D innerCircle, outerCircle, borderCircle;
 	protected JCheckBox useWebColors, decimalRGB;
-	protected Font font9pt;
+	protected Font fontSmall;
 
 	protected ModelColor chooserColor;
 	protected ModelColor[] selectedIttenColours;
@@ -112,7 +124,8 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 	private int adjustWheel;
 	private boolean adjustRollover;
 	private boolean ctrlKeyDown;
-	private double saturationMultipler, brightnessMultipler;
+	private double saturationMultipler;
+	private double brightnessMultipler;
 
 	/**
 	 * Creates a new instance of ColorWheelPanel
@@ -124,11 +137,11 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 		adjustRollover = true;
 		ctrlKeyDown = false;
 
-		font9pt = UIManager.getFont("ColorChooser.smallFont");
-		if (font9pt == null)
-			font9pt = new Font("Arial", 0, 9);
+		fontSmall = UIManager.getFont("ColorChooser.smallFont");
+		if (fontSmall == null)
+			fontSmall = new Font("Arial", 0, 9);
 
-		fontFamily = font9pt.getFamily();
+		fontFamily = fontSmall.getFamily();
 
 		showRollovers = true;
 		innerCircle = new Ellipse2D.Double(96, 96, 36, 36);
@@ -188,12 +201,42 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 				"CTRL+drag to adjust the color wheel"));
 		fixedPanel.add(brightnessSlider);
 
-		resetBtn = new JButton();
+		resetBtn = new JButton() {
+	        @Override
+	        public Insets getInsets() {
+	            return new Insets(0, 0, 0, 0);
+	        }
+
+	        @Override
+	        public Insets getInsets(Insets insets) {
+	            if (insets == null) {
+	                insets = new Insets(0, 0, 0, 0);
+	            }
+	            insets.set(0, 0, 0, 0);
+	            return insets;
+	        }
+
+	        @Override
+	        public Dimension getPreferredSize() {
+	            return new Dimension(10, 10);
+	        }
+		};
 		resetBtn.setBounds(237, 109, 10, 10);
 		resetBtn.setBackground(getBackground());
 		resetBtn.addActionListener(this);
+
+		final HiDpiAwareIcon resetIcon = new HiDpiAwareIcon(ic_refresh_black_24px.of(10, 10));
+        // Create a transition-aware wrapper around our icon so that it is colorized
+        // based on the color scheme that matches the current state of our toggle button
+        resetBtn.setIcon(new TransitionAwareIcon(resetBtn,
+                (SubstanceColorScheme scheme) -> resetIcon
+                        .colorize(SubstanceColorUtilities.getMarkColor(scheme, true)),
+                "Color wheel reset"));
+
 		resetBtn.setToolTipText(getLabel("Xoetrope.reset",
-				"Reset the color wheel sauturation and brightness"));
+				"Reset the color wheel saturation and brightness"));
+        resetBtn.putClientProperty(SubstanceLookAndFeel.BUTTON_PAINT_NEVER_PROPERTY, Boolean.TRUE);
+        resetBtn.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, SubstanceConstants.FocusKind.NONE);
 		fixedPanel.add(resetBtn);
 
 		saturationSlider = new JSlider(JSlider.VERTICAL);
@@ -217,7 +260,7 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 		useWebColors.setBounds(8, 248, 140, 18);
 		useWebColors.addActionListener(this);
 		useWebColors.setOpaque(false);
-		useWebColors.setFont(font9pt);
+		useWebColors.setFont(fontSmall);
 		fixedPanel.add(useWebColors);
 
 		decimalRGB = new JCheckBox(getLabel("Xoetrope.decimalRGB",
@@ -225,11 +268,11 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 		decimalRGB.setBounds(143, 248, 118, 18);
 		decimalRGB.addActionListener(this);
 		decimalRGB.setOpaque(false);
-		decimalRGB.setFont(font9pt);
+		decimalRGB.setFont(fontSmall);
 		fixedPanel.add(decimalRGB);
 
 		baseColorLabel = new JLabel();
-		baseColorLabel.setBounds(10, 268, 160, 18);
+		baseColorLabel.setBounds(10, 268, 160, 20);
 		baseColorLabel.setBackground(Color.red);
 		baseColorLabel.setOpaque(true);
 		baseColorLabel.setToolTipText(getLabel("Xoetrope.systemColorsTooltip",
@@ -244,13 +287,20 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 		});
 
 		baseColorEdit = new JTextField();
-		baseColorEdit.setBounds(180, 268, 75, 18);
+		baseColorEdit.setBounds(180, 268, 75, 20);
 		baseColorEdit.setOpaque(true);
 		fixedPanel.add(baseColorEdit);
 		baseColorEdit.addActionListener(this);
+		Insets baseColorEditInsets = SubstanceSizeUtils.getTextBorderInsets(SubstanceSizeUtils
+                .getComponentFontSize(baseColorEdit));
+		baseColorEditInsets.top = 0;
+		baseColorEditInsets.bottom = 0;
+        baseColorEdit.setBorder(new CompoundBorder(
+                new SubstanceTextComponentBorder(baseColorEditInsets),
+                new BasicBorders.MarginBorder()));
 
 		hueEdit = new JTextField();
-		hueEdit.setBounds(10, 288, 75, 20);
+		hueEdit.setBounds(10, 290, 75, 20);
 		fixedPanel.add(hueEdit);
 		hueEdit.setText("0");
 		hueEdit.getDocument().addDocumentListener(
@@ -258,12 +308,12 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 
 		JLabel hueLabel = new JLabel(getLabel("Xoetrope.hue", "Hue")
 				+ " \u00B0");
-		hueLabel.setBounds(10, 308, 75, 20);
-		hueLabel.setFont(font9pt);
+		hueLabel.setBounds(10, 310, 75, 20);
+		hueLabel.setFont(fontSmall);
 		fixedPanel.add(hueLabel);
 
 		satEdit = new JTextField();
-		satEdit.setBounds(95, 288, 75, 20);
+		satEdit.setBounds(95, 290, 75, 20);
 		fixedPanel.add(satEdit);
 		satEdit.setText("0");
 		satEdit.getDocument().addDocumentListener(
@@ -272,23 +322,23 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 		JLabel satLabel = new JLabel(getLabel("Xoetrope.saturation",
 				"Saturation")
 				+ " %");
-		satLabel.setBounds(95, 308, 75, 20);
-		satLabel.setFont(font9pt);
+		satLabel.setBounds(95, 310, 75, 20);
+		satLabel.setFont(fontSmall);
 		fixedPanel.add(satLabel);
 
 		brightEdit = new JTextField();
-		brightEdit.setBounds(180, 288, 75, 20);
+		brightEdit.setBounds(180, 290, 75, 20);
 		fixedPanel.add(brightEdit);
 		brightEdit.setText("0");
 		brightEdit.getDocument().addDocumentListener(
 				new ColorDocumentListener(brightEdit));
 
-		JLabel brightLabel = new JLabel(getLabel("Xoetrope.brightness",
+		JLabel brightnessLabel = new JLabel(getLabel("Xoetrope.brightness",
 				"Brightness")
 				+ " %");
-		brightLabel.setBounds(180, 308, 75, 20);
-		brightLabel.setFont(font9pt);
-		fixedPanel.add(brightLabel);
+		brightnessLabel.setBounds(180, 310, 75, 20);
+		brightnessLabel.setFont(fontSmall);
+		fixedPanel.add(brightnessLabel);
 
 		add(fixedPanel);
 	}
@@ -564,7 +614,7 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 	}
 
 	/**
-	 * Set the value of the saturartion edit to match the current color
+	 * Set the value of the saturation edit to match the current color
 	 */
 	private void setSaturation() {
 		satEdit.setText(Integer.toString((int) (100.0 * chooserColor.S)));
@@ -1440,7 +1490,7 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 	}
 
 	/**
-	 * Should the color wheeel's colors be adjusted
+	 * Should the color wheel's colors be adjusted
 	 * 
 	 * @return true if the colors should change to match the brightness and
 	 *         saturation

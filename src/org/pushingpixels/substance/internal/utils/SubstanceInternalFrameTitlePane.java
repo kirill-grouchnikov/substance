@@ -60,7 +60,6 @@ import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.internal.colorscheme.ShiftColorScheme;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
 import org.pushingpixels.substance.internal.ui.SubstanceMenuBarUI;
@@ -283,7 +282,7 @@ public class SubstanceInternalFrameTitlePane extends
 		if (!(backgr instanceof UIResource)) {
 			double colorization = SubstanceCoreUtilities
 					.getColorizationFactor(hostForColorization);
-			scheme = ShiftColorScheme.getShiftedScheme(scheme, backgr,
+			scheme = SubstanceColorSchemeUtilities.getShiftedScheme(scheme, backgr,
 					colorization, null, 0.0);
 		}
 		// }

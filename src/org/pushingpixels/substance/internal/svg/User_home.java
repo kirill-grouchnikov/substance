@@ -22,6 +22,7 @@ public class User_home implements Icon, UIResource, IsResizable, IsHiDpiAware {
 	 * @param g
 	 *            Graphics context.
 	 */
+    @SuppressWarnings("unused")
 	public static void paint(Graphics2D g) {
         Shape shape = null;
         Paint paint = null;

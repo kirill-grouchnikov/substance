@@ -11,6 +11,6 @@
 	<classpathentry kind="lib" path="lib/test/fest-reflect-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/test/fest-swing-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/test/fest-util-1.1.2.jar"/>
-	<classpathentry kind="lib" path="lib/build/substance-swingx-7.1.00.jar"/>
+	<classpathentry kind="lib" path="lib/build/substance-swingx-8.0.00-dev.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

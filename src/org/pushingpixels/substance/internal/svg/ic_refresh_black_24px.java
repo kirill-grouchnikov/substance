@@ -1,4 +1,4 @@
-package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.svg;
+package org.pushingpixels.substance.internal.svg;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -13,7 +13,7 @@ import org.pushingpixels.lafwidget.icon.IsResizable;
  * This class has been automatically generated using <a
  * href="https://github.com/kirill-grouchnikov/flamingo">Flamingo SVG transcoder</a>.
  */
-public class ic_brightness_high_black_24px implements Icon, UIResource, IsResizable, IsHiDpiAware {
+public class ic_refresh_black_24px implements Icon, UIResource, IsResizable, IsHiDpiAware {
 	/**
 	 * Paints the transcoded SVG image on the specified graphics context. You
 	 * can install a custom transformation on the graphics context to scale the
@@ -48,45 +48,30 @@ g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 AffineTransform defaultTransform__0_0 = g.getTransform();
 g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 // _0_0
+paint = new Color(0, 0, 0, 255);
+shape = new GeneralPath();
+((GeneralPath)shape).moveTo(17.65, 6.35);
+((GeneralPath)shape).curveTo(16.2, 4.9, 14.21, 4.0, 12.0, 4.0);
+((GeneralPath)shape).curveTo(7.58, 4.0, 4.01, 7.58, 4.01, 12.0);
+((GeneralPath)shape).curveTo(4.01, 16.42, 7.58, 20.0, 12.0, 20.0);
+((GeneralPath)shape).curveTo(15.73, 20.0, 18.84, 17.45, 19.73, 14.0);
+((GeneralPath)shape).lineTo(17.65, 14.0);
+((GeneralPath)shape).curveTo(16.83, 16.33, 14.61, 18.0, 12.0, 18.0);
+((GeneralPath)shape).curveTo(8.690001, 18.0, 6.0, 15.309999, 6.0, 12.0);
+((GeneralPath)shape).curveTo(6.0, 8.690001, 8.690001, 6.0, 12.0, 6.0);
+((GeneralPath)shape).curveTo(13.66, 6.0, 15.14, 6.69, 16.22, 7.7799997);
+((GeneralPath)shape).lineTo(13.0, 11.0);
+((GeneralPath)shape).lineTo(20.0, 11.0);
+((GeneralPath)shape).lineTo(20.0, 4.0);
+((GeneralPath)shape).lineTo(17.65, 6.35);
+((GeneralPath)shape).closePath();
+g.setPaint(paint);
+g.fill(shape);
 g.setTransform(defaultTransform__0_0);
 g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 AffineTransform defaultTransform__0_1 = g.getTransform();
 g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 // _0_1
-paint = new Color(0, 0, 0, 255);
-shape = new GeneralPath();
-((GeneralPath)shape).moveTo(20.0, 8.69);
-((GeneralPath)shape).lineTo(20.0, 4.0);
-((GeneralPath)shape).lineTo(15.309999, 4.0);
-((GeneralPath)shape).lineTo(12.0, 0.69);
-((GeneralPath)shape).lineTo(8.69, 4.0);
-((GeneralPath)shape).lineTo(4.0, 4.0);
-((GeneralPath)shape).lineTo(4.0, 8.690001);
-((GeneralPath)shape).lineTo(0.69, 12.0);
-((GeneralPath)shape).lineTo(4.0, 15.31);
-((GeneralPath)shape).lineTo(4.0, 20.0);
-((GeneralPath)shape).lineTo(8.690001, 20.0);
-((GeneralPath)shape).lineTo(12.0, 23.31);
-((GeneralPath)shape).lineTo(15.31, 20.0);
-((GeneralPath)shape).lineTo(20.0, 20.0);
-((GeneralPath)shape).lineTo(20.0, 15.309999);
-((GeneralPath)shape).lineTo(23.31, 12.0);
-((GeneralPath)shape).lineTo(20.0, 8.69);
-((GeneralPath)shape).closePath();
-((GeneralPath)shape).moveTo(12.0, 18.0);
-((GeneralPath)shape).curveTo(8.690001, 18.0, 6.0, 15.309999, 6.0, 12.0);
-((GeneralPath)shape).curveTo(6.0, 8.690001, 8.690001, 6.0, 12.0, 6.0);
-((GeneralPath)shape).curveTo(15.309999, 6.0, 18.0, 8.690001, 18.0, 12.0);
-((GeneralPath)shape).curveTo(18.0, 15.309999, 15.309999, 18.0, 12.0, 18.0);
-((GeneralPath)shape).closePath();
-((GeneralPath)shape).moveTo(12.0, 8.0);
-((GeneralPath)shape).curveTo(9.79, 8.0, 8.0, 9.79, 8.0, 12.0);
-((GeneralPath)shape).curveTo(8.0, 14.21, 9.79, 16.0, 12.0, 16.0);
-((GeneralPath)shape).curveTo(14.21, 16.0, 16.0, 14.21, 16.0, 12.0);
-((GeneralPath)shape).curveTo(16.0, 9.79, 14.21, 8.0, 12.0, 8.0);
-((GeneralPath)shape).closePath();
-g.setPaint(paint);
-g.fill(shape);
 g.setTransform(defaultTransform__0_1);
 g.setTransform(defaultTransform__0);
 g.setTransform(defaultTransform_);
@@ -99,7 +84,7 @@ g.setTransform(defaultTransform_);
      * @return The X of the bounding box of the original SVG image.
      */
     public static double getOrigX() {
-        return 0.6899999976158142;
+        return 4.010000228881836;
     }
 
     /**
@@ -108,7 +93,7 @@ g.setTransform(defaultTransform_);
      * @return The Y of the bounding box of the original SVG image.
      */
     public static double getOrigY() {
-        return 0.6899999976158142;
+        return 4.0;
     }
 
 	/**
@@ -117,7 +102,7 @@ g.setTransform(defaultTransform_);
 	 * @return The width of the bounding box of the original SVG image.
 	 */
 	public static double getOrigWidth() {
-		return 22.619998931884766;
+		return 15.989999771118164;
 	}
 
 	/**
@@ -126,7 +111,7 @@ g.setTransform(defaultTransform_);
 	 * @return The height of the bounding box of the original SVG image.
 	 */
 	public static double getOrigHeight() {
-		return 22.619998931884766;
+		return 16.0;
 	}
 
 	/**
@@ -142,7 +127,7 @@ g.setTransform(defaultTransform_);
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public ic_brightness_high_black_24px() {
+	public ic_refresh_black_24px() {
         this.width = (int) getOrigWidth();
         this.height = (int) getOrigHeight();
 	}
@@ -210,8 +195,8 @@ g.setTransform(defaultTransform_);
 		g2d.dispose();
 	}
 	
-	public static ic_brightness_high_black_24px of(int width, int height) {
-	   ic_brightness_high_black_24px result = new ic_brightness_high_black_24px();
+	public static ic_refresh_black_24px of(int width, int height) {
+	   ic_refresh_black_24px result = new ic_refresh_black_24px();
 	   result.width = width;
 	   result.height = height;
 	   return result;

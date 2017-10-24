@@ -157,6 +157,8 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
         hundredPercentButton = new javax.swing.JButton();
 
         setLayout(new java.awt.GridBagLayout());
+        boolean isLtr = getComponentOrientation().isLeftToRight();
+        Insets tfInsets = new java.awt.Insets(1, isLtr ? 4 : 0, 0, isLtr ? 0 : 4);
 
         brightnessLabel.setText(UIManager.getString("ColorChooser.hsbBrightnessText"));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -198,6 +200,7 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = tfInsets;
         add(brightnessFieldPanel, gridBagConstraints);
 
         springPanel.setLayout(new java.awt.BorderLayout());

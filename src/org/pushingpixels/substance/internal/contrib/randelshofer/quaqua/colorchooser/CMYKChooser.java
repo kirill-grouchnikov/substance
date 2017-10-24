@@ -198,6 +198,8 @@ implements UIResource {
         springPanel = new javax.swing.JPanel();
 
         setLayout(new java.awt.GridBagLayout());
+        boolean isLtr = getComponentOrientation().isLeftToRight();
+        Insets tfInsets = new java.awt.Insets(1, isLtr ? 4 : 0, 0, isLtr ? 0 : 4);
 
         cyanLabel.setText(UIManager.getString("ColorChooser.cmykCyanText"));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -237,6 +239,7 @@ implements UIResource {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = tfInsets;
         add(cyanFieldPanel, gridBagConstraints);
 
         magentaLabel.setText(UIManager.getString("ColorChooser.cmykMagentaText"));
@@ -277,6 +280,7 @@ implements UIResource {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = tfInsets;
         add(magentaFieldPanel, gridBagConstraints);
 
         yellowLabel.setText(UIManager.getString("ColorChooser.cmykYellowText"));
@@ -317,6 +321,7 @@ implements UIResource {
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = tfInsets;
         add(yellowFieldPanel, gridBagConstraints);
 
         blackLabel.setText(UIManager.getString("ColorChooser.cmykBlackText"));
@@ -357,6 +362,7 @@ implements UIResource {
         gridBagConstraints.gridy = 6;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = tfInsets;
         add(blackFieldPanel, gridBagConstraints);
 
         springPanel.setLayout(new java.awt.BorderLayout());

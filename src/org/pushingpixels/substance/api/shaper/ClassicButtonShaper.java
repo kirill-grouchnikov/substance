@@ -43,240 +43,211 @@ import org.pushingpixels.substance.internal.utils.border.SubstanceBorder;
 import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
 
 /**
- * Button shaper that returns rectangular buttons with slightly rounded corners
- * (ala Windows XP). This class is part of officially supported API.
+ * Button shaper that returns rectangular buttons with slightly rounded corners (ala Windows XP).
+ * This class is part of officially supported API.
  * 
  * @author Kirill Grouchnikov
  */
-public class ClassicButtonShaper implements SubstanceButtonShaper,
-		RectangularButtonShaper {
-	/**
-	 * Cache of already computed contours.
-	 */
-	private final static LazyResettableHashMap<GeneralPath> contours = new LazyResettableHashMap<GeneralPath>(
-			"ClassicButtonShaper");
+public class ClassicButtonShaper implements SubstanceButtonShaper, RectangularButtonShaper {
+    /**
+     * Cache of already computed contours.
+     */
+    private final static LazyResettableHashMap<GeneralPath> contours = new LazyResettableHashMap<GeneralPath>(
+            "ClassicButtonShaper");
 
-	/**
-	 * Reusable instance of this shaper.
-	 */
-	public static final ClassicButtonShaper INSTANCE = new ClassicButtonShaper();
+    /**
+     * Reusable instance of this shaper.
+     */
+    public static final ClassicButtonShaper INSTANCE = new ClassicButtonShaper();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.substance.button.SubstanceButtonShaper#getDisplayName()
-	 */
-	public String getDisplayName() {
-		return "Classic";
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.substance.button.SubstanceButtonShaper#getDisplayName()
+     */
+    public String getDisplayName() {
+        return "Classic";
+    }
 
-	@Override
-	public GeneralPath getButtonOutline(AbstractButton button, float extraInsets,
-			float width, float height, boolean isInner) {
-		Set<SubstanceConstants.Side> straightSides = SubstanceCoreUtilities
-				.getSides(button, SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
+    @Override
+    public GeneralPath getButtonOutline(AbstractButton button, float extraInsets, float width,
+            float height, boolean isInner) {
+        Set<SubstanceConstants.Side> straightSides = SubstanceCoreUtilities.getSides(button,
+                SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
 
-		float radius = this.getCornerRadius(button, extraInsets);
-		if (isInner) {
-			radius -= SubstanceSizeUtils.getBorderStrokeWidth();
-			if (radius < 0.0f)
-				radius = 0.0f;
-		}
+        float radius = this.getCornerRadius(button, extraInsets);
+        if (isInner) {
+            radius -= SubstanceSizeUtils.getBorderStrokeWidth();
+            if (radius < 0.0f)
+                radius = 0.0f;
+        }
 
-		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height,
-				straightSides, radius, extraInsets);
+        HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height, straightSides, radius,
+                extraInsets);
 
-		GeneralPath result = contours.get(key);
-		if (result != null) {
-			return result;
-		}
+        GeneralPath result = contours.get(key);
+        if (result != null) {
+            return result;
+        }
 
-		result = SubstanceOutlineUtilities.getBaseOutline(width, height,
-				radius, straightSides, extraInsets);
-		contours.put(key, result);
-		return result;
-	}
+        result = SubstanceOutlineUtilities.getBaseOutline(width, height, radius, straightSides,
+                extraInsets);
+        contours.put(key, result);
+        return result;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.substance.button.SubstanceButtonShaper#getButtonBorder
-	 * (javax .swing.AbstractButton)
-	 */
-	public Border getButtonBorder(final AbstractButton button) {
-		return new SubstanceButtonBorder(ClassicButtonShaper.class) {
-			public Insets getBorderInsets(Component c) {
-				int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
-				Insets buttonInsets = SubstanceSizeUtils
-						.getButtonInsets(fontSize);
-				int focusPadding = SubstanceSizeUtils
-						.getFocusRingPadding(fontSize);
-				int lrPadding = SubstanceCoreUtilities.hasText(button) ? SubstanceSizeUtils
-						.getTextButtonLRPadding(fontSize)
-						: 0;
-				Set<SubstanceConstants.Side> openSides = SubstanceCoreUtilities
-						.getSides(button,
-								SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY);
-				int left = lrPadding
-						+ buttonInsets.left
-						+ focusPadding
-						+ ((openSides != null)
-								&& openSides
-										.contains(SubstanceConstants.Side.LEFT) ? -1
-								: 0);
-				int right = lrPadding
-						+ buttonInsets.right
-						+ focusPadding
-						+ ((openSides != null)
-								&& openSides
-										.contains(SubstanceConstants.Side.RIGHT) ? -1
-								: 0);
-				int top = buttonInsets.top
-						+ ((openSides != null)
-								&& openSides
-										.contains(SubstanceConstants.Side.TOP) ? -1
-								: 0);
-				int bottom = buttonInsets.bottom
-						+ ((openSides != null)
-								&& openSides
-										.contains(SubstanceConstants.Side.BOTTOM) ? -1
-								: 0);
-				return new Insets(top, left, bottom, right);
-			}
-		};
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.substance.button.SubstanceButtonShaper#getButtonBorder (javax
+     * .swing.AbstractButton)
+     */
+    public Border getButtonBorder(final AbstractButton button) {
+        return new SubstanceButtonBorder(ClassicButtonShaper.class) {
+            public Insets getBorderInsets(Component c) {
+                int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
+                Insets buttonInsets = SubstanceSizeUtils.getButtonInsets(fontSize);
+                int focusPadding = SubstanceSizeUtils.getFocusRingPadding(fontSize);
+                int lrPadding = SubstanceCoreUtilities.hasText(button)
+                        ? SubstanceSizeUtils.getTextButtonLRPadding(fontSize)
+                        : 0;
+                Set<SubstanceConstants.Side> openSides = SubstanceCoreUtilities.getSides(button,
+                        SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY);
+                int left = lrPadding + buttonInsets.left + focusPadding
+                        + ((openSides != null) && openSides.contains(SubstanceConstants.Side.LEFT)
+                                ? -1
+                                : 0);
+                int right = lrPadding + buttonInsets.right + focusPadding
+                        + ((openSides != null) && openSides.contains(SubstanceConstants.Side.RIGHT)
+                                ? -1
+                                : 0);
+                int top = buttonInsets.top
+                        + ((openSides != null) && openSides.contains(SubstanceConstants.Side.TOP)
+                                ? -1
+                                : 0);
+                int bottom = buttonInsets.bottom
+                        + ((openSides != null) && openSides.contains(SubstanceConstants.Side.BOTTOM)
+                                ? -1
+                                : 0);
+                return new Insets(top, left, bottom, right);
+            }
+        };
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.substance.button.SubstanceButtonShaper#getPreferredSize
-	 * (javax .swing.AbstractButton, java.awt.Dimension)
-	 */
-	public Dimension getPreferredSize(AbstractButton button,
-			Dimension uiPreferredSize) {
-		Dimension result;
-		boolean toTweakWidth = false;
-		boolean toTweakHeight = false;
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.substance.button.SubstanceButtonShaper#getPreferredSize (javax
+     * .swing.AbstractButton, java.awt.Dimension)
+     */
+    public Dimension getPreferredSize(AbstractButton button, Dimension uiPreferredSize) {
+        Dimension result;
+        boolean toTweakWidth = false;
+        boolean toTweakHeight = false;
 
-		Icon icon = button.getIcon();
-		boolean hasIcon = SubstanceCoreUtilities.hasIcon(button);
-		boolean hasText = SubstanceCoreUtilities.hasText(button);
-		Insets margin = button.getMargin();
+        Icon icon = button.getIcon();
+        boolean hasIcon = SubstanceCoreUtilities.hasIcon(button);
+        boolean hasText = SubstanceCoreUtilities.hasText(button);
+        Insets margin = button.getMargin();
 
-		result = uiPreferredSize;
+        result = uiPreferredSize;
 
-		boolean hasNoMinSizeProperty = SubstanceCoreUtilities
-				.hasNoMinSizeProperty(button);
-		if ((!hasNoMinSizeProperty) && hasText) {
-			int baseWidth = uiPreferredSize.width;
-			baseWidth = Math.max(baseWidth, SubstanceSizeUtils
-					.getMinButtonWidth(SubstanceSizeUtils
-							.getComponentFontSize(button)));
-			result = new Dimension(baseWidth, uiPreferredSize.height);
-			int baseHeight = result.height;
-			// int padding = SubstanceSizeUtils
-			// .getButtonHeightPadding(SubstanceSizeUtils
-			// .getComponentFontSize(button));
-			// baseHeight += padding;
-			// baseHeight = Math.max(baseHeight, SubstanceSizeUtils
-			// .getMinButtonHeight(SubstanceSizeUtils
-			// .getComponentFontSize(button)));
-			result = new Dimension(result.width, baseHeight);
-		} else {
-			if (hasNoMinSizeProperty) {
-				if (margin != null) {
-					result = new Dimension(result.width + margin.left
-							+ margin.right, result.height + margin.top
-							+ margin.bottom);
-				}
-			}
-		}
+        boolean hasNoMinSizeProperty = SubstanceCoreUtilities.hasNoMinSizeProperty(button);
+        if ((!hasNoMinSizeProperty) && hasText) {
+            int baseWidth = uiPreferredSize.width;
+            baseWidth = Math.max(baseWidth, SubstanceSizeUtils
+                    .getMinButtonWidth(SubstanceSizeUtils.getComponentFontSize(button)));
+            result = new Dimension(baseWidth, uiPreferredSize.height);
+            int baseHeight = result.height;
+            // int padding = SubstanceSizeUtils
+            // .getButtonHeightPadding(SubstanceSizeUtils
+            // .getComponentFontSize(button));
+            // baseHeight += padding;
+            // baseHeight = Math.max(baseHeight, SubstanceSizeUtils
+            // .getMinButtonHeight(SubstanceSizeUtils
+            // .getComponentFontSize(button)));
+            result = new Dimension(result.width, baseHeight);
+        } else {
+            if (hasNoMinSizeProperty) {
+                if (margin != null) {
+                    result = new Dimension(result.width + margin.left + margin.right,
+                            result.height + margin.top + margin.bottom);
+                }
+            }
+        }
 
-		int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
-		int extraPadding = SubstanceSizeUtils.getExtraPadding(fontSize);
-		int focusPadding = SubstanceSizeUtils.getFocusRingPadding(fontSize);
-		int iconPaddingWidth = 6 + 2 * extraPadding + 2 * focusPadding;
-		int iconPaddingHeight = 6 + 2 * extraPadding;
-		if (margin != null) {
-			iconPaddingWidth = Math.max(iconPaddingWidth, margin.left
-					+ margin.right);
-			iconPaddingHeight = Math.max(iconPaddingHeight, margin.top
-					+ margin.bottom);
-		}
-		if (hasIcon) {
-			// check the icon height
-			int iconHeight = icon.getIconHeight();
-			if (iconHeight > (result.getHeight() - iconPaddingHeight)) {
-				result = new Dimension(result.width, iconHeight);
-				toTweakHeight = true;
-			}
-			int iconWidth = icon.getIconWidth();
-			if (iconWidth > (result.getWidth() - iconPaddingWidth)) {
-				result = new Dimension(iconWidth, result.height);
-				toTweakWidth = true;
-			}
-		}
-		// else {
-		// if (hasText) {
-		// result = new Dimension(result.width + 2 * extraPadding,
-		// result.height);
-		// }
-		// }
+        int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
+        int extraPadding = SubstanceSizeUtils.getExtraPadding(fontSize);
+        int focusPadding = SubstanceSizeUtils.getFocusRingPadding(fontSize);
+        int iconPaddingWidth = 6 + 2 * extraPadding + 2 * focusPadding;
+        int iconPaddingHeight = 6 + 2 * extraPadding;
+        if (margin != null) {
+            iconPaddingWidth = Math.max(iconPaddingWidth, margin.left + margin.right);
+            iconPaddingHeight = Math.max(iconPaddingHeight, margin.top + margin.bottom);
+        }
+        if (hasIcon) {
+            // check the icon height
+            int iconHeight = icon.getIconHeight();
+            if (iconHeight > (result.getHeight() - iconPaddingHeight)) {
+                result = new Dimension(result.width, iconHeight);
+                toTweakHeight = true;
+            }
+            int iconWidth = icon.getIconWidth();
+            if (iconWidth > (result.getWidth() - iconPaddingWidth)) {
+                result = new Dimension(iconWidth, result.height);
+                toTweakWidth = true;
+            }
+        }
+        // else {
+        // if (hasText) {
+        // result = new Dimension(result.width + 2 * extraPadding,
+        // result.height);
+        // }
+        // }
 
-		if (SubstanceCoreUtilities.isScrollBarButton(button)) {
-			toTweakWidth = false;
-			toTweakHeight = false;
-		}
+        if (SubstanceCoreUtilities.isScrollBarButton(button)) {
+            toTweakWidth = false;
+            toTweakHeight = false;
+        }
 
-		if (toTweakWidth) {
-			result = new Dimension(result.width + iconPaddingWidth,
-					result.height);
-		}
-		if (toTweakHeight) {
-			result = new Dimension(result.width, result.height
-					+ iconPaddingHeight);
-		}
+        if (toTweakWidth) {
+            result = new Dimension(result.width + iconPaddingWidth, result.height);
+        }
+        if (toTweakHeight) {
+            result = new Dimension(result.width, result.height + iconPaddingHeight);
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.substance.button.SubstanceButtonShaper#isProportionate
-	 * ()
-	 */
-	public boolean isProportionate() {
-		return true;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.substance.button.SubstanceButtonShaper#isProportionate ()
+     */
+    public boolean isProportionate() {
+        return true;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.substance.shaper.RectangularButtonShaper#getCornerRadius
-	 * (javax .swing.JComponent, java.awt.Insets)
-	 */
-	@Override
-	public float getCornerRadius(AbstractButton button, float insets) {
-		float radius = SubstanceSizeUtils
-				.getClassicButtonCornerRadius(SubstanceSizeUtils
-						.getComponentFontSize(button));
-		if (button.getClass().isAnnotationPresent(SubstanceInternalArrowButton.class)) {
-			Border parentBorder = ((JComponent) button.getParent()).getBorder();
-			if (parentBorder instanceof SubstanceBorder) {
-				radius *= ((SubstanceBorder) parentBorder)
-						.getRadiusScaleFactor();
-			}
-		}
-		if (SubstanceCoreUtilities.isToolBarButton(button)) {
-			radius = SubstanceCoreUtilities.getToolbarButtonCornerRadius(
-					button, insets);
-		}
-		return radius;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.substance.shaper.RectangularButtonShaper#getCornerRadius (javax
+     * .swing.JComponent, java.awt.Insets)
+     */
+    @Override
+    public float getCornerRadius(AbstractButton button, float insets) {
+        float radius = SubstanceSizeUtils
+                .getClassicButtonCornerRadius(SubstanceSizeUtils.getComponentFontSize(button));
+        if (button.getClass().isAnnotationPresent(SubstanceInternalArrowButton.class)) {
+            Border parentBorder = ((JComponent) button.getParent()).getBorder();
+            if (parentBorder instanceof SubstanceBorder) {
+                radius *= ((SubstanceBorder) parentBorder).getRadiusScaleFactor();
+            }
+        }
+        if (SubstanceCoreUtilities.isToolBarButton(button)) {
+            radius = SubstanceCoreUtilities.getToolbarButtonCornerRadius(button, insets);
+        }
+        return radius;
+    }
 }

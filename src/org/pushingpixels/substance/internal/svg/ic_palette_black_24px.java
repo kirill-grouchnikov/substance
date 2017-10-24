@@ -1,4 +1,4 @@
-package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.svg;
+package org.pushingpixels.substance.internal.svg;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -13,7 +13,7 @@ import org.pushingpixels.lafwidget.icon.IsResizable;
  * This class has been automatically generated using <a
  * href="https://github.com/kirill-grouchnikov/flamingo">Flamingo SVG transcoder</a>.
  */
-public class ic_album_black_24px implements Icon, UIResource, IsResizable, IsHiDpiAware {
+public class ic_palette_black_24px implements Icon, UIResource, IsResizable, IsHiDpiAware {
 	/**
 	 * Paints the transcoded SVG image on the specified graphics context. You
 	 * can install a custom transformation on the graphics context to scale the
@@ -48,33 +48,50 @@ g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 AffineTransform defaultTransform__0_0 = g.getTransform();
 g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 // _0_0
+paint = new Color(0, 0, 0, 255);
+shape = new GeneralPath();
+((GeneralPath)shape).moveTo(12.0, 3.0);
+((GeneralPath)shape).curveTo(7.03, 3.0, 3.0, 7.03, 3.0, 12.0);
+((GeneralPath)shape).curveTo(3.0, 16.97, 7.03, 21.0, 12.0, 21.0);
+((GeneralPath)shape).curveTo(12.83, 21.0, 13.5, 20.33, 13.5, 19.5);
+((GeneralPath)shape).curveTo(13.5, 19.11, 13.35, 18.76, 13.11, 18.49);
+((GeneralPath)shape).curveTo(12.88, 18.23, 12.73, 17.88, 12.73, 17.5);
+((GeneralPath)shape).curveTo(12.73, 16.67, 13.4, 16.0, 14.23, 16.0);
+((GeneralPath)shape).lineTo(16.0, 16.0);
+((GeneralPath)shape).curveTo(18.76, 16.0, 21.0, 13.76, 21.0, 11.0);
+((GeneralPath)shape).curveTo(21.0, 6.58, 16.97, 3.0, 12.0, 3.0);
+((GeneralPath)shape).closePath();
+((GeneralPath)shape).moveTo(6.5, 12.0);
+((GeneralPath)shape).curveTo(5.67, 12.0, 5.0, 11.33, 5.0, 10.5);
+((GeneralPath)shape).curveTo(5.0, 9.67, 5.67, 9.0, 6.5, 9.0);
+((GeneralPath)shape).curveTo(7.33, 9.0, 8.0, 9.67, 8.0, 10.5);
+((GeneralPath)shape).curveTo(8.0, 11.33, 7.33, 12.0, 6.5, 12.0);
+((GeneralPath)shape).closePath();
+((GeneralPath)shape).moveTo(9.5, 8.0);
+((GeneralPath)shape).curveTo(8.67, 8.0, 8.0, 7.33, 8.0, 6.5);
+((GeneralPath)shape).curveTo(8.0, 5.67, 8.67, 5.0, 9.5, 5.0);
+((GeneralPath)shape).curveTo(10.33, 5.0, 11.0, 5.67, 11.0, 6.5);
+((GeneralPath)shape).curveTo(11.0, 7.33, 10.33, 8.0, 9.5, 8.0);
+((GeneralPath)shape).closePath();
+((GeneralPath)shape).moveTo(14.5, 8.0);
+((GeneralPath)shape).curveTo(13.67, 8.0, 13.0, 7.33, 13.0, 6.5);
+((GeneralPath)shape).curveTo(13.0, 5.67, 13.67, 5.0, 14.5, 5.0);
+((GeneralPath)shape).curveTo(15.33, 5.0, 16.0, 5.67, 16.0, 6.5);
+((GeneralPath)shape).curveTo(16.0, 7.33, 15.33, 8.0, 14.5, 8.0);
+((GeneralPath)shape).closePath();
+((GeneralPath)shape).moveTo(17.5, 12.0);
+((GeneralPath)shape).curveTo(16.67, 12.0, 16.0, 11.33, 16.0, 10.5);
+((GeneralPath)shape).curveTo(16.0, 9.67, 16.67, 9.0, 17.5, 9.0);
+((GeneralPath)shape).curveTo(18.33, 9.0, 19.0, 9.67, 19.0, 10.5);
+((GeneralPath)shape).curveTo(19.0, 11.33, 18.33, 12.0, 17.5, 12.0);
+((GeneralPath)shape).closePath();
+g.setPaint(paint);
+g.fill(shape);
 g.setTransform(defaultTransform__0_0);
 g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 AffineTransform defaultTransform__0_1 = g.getTransform();
 g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 // _0_1
-paint = new Color(0, 0, 0, 255);
-shape = new GeneralPath();
-((GeneralPath)shape).moveTo(12.0, 2.0);
-((GeneralPath)shape).curveTo(6.48, 2.0, 2.0, 6.48, 2.0, 12.0);
-((GeneralPath)shape).curveTo(2.0, 17.52, 6.48, 22.0, 12.0, 22.0);
-((GeneralPath)shape).curveTo(17.52, 22.0, 22.0, 17.52, 22.0, 12.0);
-((GeneralPath)shape).curveTo(22.0, 6.4799995, 17.52, 2.0, 12.0, 2.0);
-((GeneralPath)shape).closePath();
-((GeneralPath)shape).moveTo(12.0, 16.5);
-((GeneralPath)shape).curveTo(9.51, 16.5, 7.5, 14.49, 7.5, 12.0);
-((GeneralPath)shape).curveTo(7.5, 9.51, 9.51, 7.5, 12.0, 7.5);
-((GeneralPath)shape).curveTo(14.49, 7.5, 16.5, 9.51, 16.5, 12.0);
-((GeneralPath)shape).curveTo(16.5, 14.49, 14.49, 16.5, 12.0, 16.5);
-((GeneralPath)shape).closePath();
-((GeneralPath)shape).moveTo(12.0, 11.0);
-((GeneralPath)shape).curveTo(11.45, 11.0, 11.0, 11.45, 11.0, 12.0);
-((GeneralPath)shape).curveTo(11.0, 12.55, 11.45, 13.0, 12.0, 13.0);
-((GeneralPath)shape).curveTo(12.55, 13.0, 13.0, 12.55, 13.0, 12.0);
-((GeneralPath)shape).curveTo(13.0, 11.45, 12.55, 11.0, 12.0, 11.0);
-((GeneralPath)shape).closePath();
-g.setPaint(paint);
-g.fill(shape);
 g.setTransform(defaultTransform__0_1);
 g.setTransform(defaultTransform__0);
 g.setTransform(defaultTransform_);
@@ -87,7 +104,7 @@ g.setTransform(defaultTransform_);
      * @return The X of the bounding box of the original SVG image.
      */
     public static double getOrigX() {
-        return 2.0;
+        return 3.0;
     }
 
     /**
@@ -96,7 +113,7 @@ g.setTransform(defaultTransform_);
      * @return The Y of the bounding box of the original SVG image.
      */
     public static double getOrigY() {
-        return 2.0;
+        return 3.0;
     }
 
 	/**
@@ -105,7 +122,7 @@ g.setTransform(defaultTransform_);
 	 * @return The width of the bounding box of the original SVG image.
 	 */
 	public static double getOrigWidth() {
-		return 20.0;
+		return 18.0;
 	}
 
 	/**
@@ -114,7 +131,7 @@ g.setTransform(defaultTransform_);
 	 * @return The height of the bounding box of the original SVG image.
 	 */
 	public static double getOrigHeight() {
-		return 20.0;
+		return 18.0;
 	}
 
 	/**
@@ -130,7 +147,7 @@ g.setTransform(defaultTransform_);
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public ic_album_black_24px() {
+	public ic_palette_black_24px() {
         this.width = (int) getOrigWidth();
         this.height = (int) getOrigHeight();
 	}
@@ -198,8 +215,8 @@ g.setTransform(defaultTransform_);
 		g2d.dispose();
 	}
 	
-	public static ic_album_black_24px of(int width, int height) {
-	   ic_album_black_24px result = new ic_album_black_24px();
+	public static ic_palette_black_24px of(int width, int height) {
+	   ic_palette_black_24px result = new ic_palette_black_24px();
 	   result.width = width;
 	   result.height = height;
 	   return result;

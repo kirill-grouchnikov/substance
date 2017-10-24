@@ -106,12 +106,6 @@ public class ShiftColorScheme extends BaseColorScheme {
 	private SubstanceColorScheme origScheme;
 
 	/**
-	 * Cache of shifted schemes.
-	 */
-	protected final static LazyResettableHashMap<SubstanceColorScheme> shiftedCache = new LazyResettableHashMap<SubstanceColorScheme>(
-			"ShiftColorScheme.shiftedSchemes");
-
-	/**
 	 * Creates a new shifted color scheme.
 	 * 
 	 * @param origScheme
@@ -289,45 +283,5 @@ public class ShiftColorScheme extends BaseColorScheme {
 	 */
 	public double getShiftFactor() {
 		return this.backgroundShiftFactor;
-	}
-
-	/**
-	 * Returns a shifted color scheme. This method is for internal use only.
-	 * 
-	 * @param orig
-	 *            The original color scheme.
-	 * @param backgroundShiftColor
-	 *            Shift color for the background color scheme colors. May be
-	 *            <code>null</code> - in this case, the background color scheme
-	 *            colors will not be shifted.
-	 * @param backgroundShiftFactor
-	 *            Shift factor for the background color scheme colors. If the
-	 *            shift color for the background color scheme colors is
-	 *            <code>null</code>, this value is ignored.
-	 * @param foregroundShiftColor
-	 *            Shift color for the foreground color scheme colors. May be
-	 *            <code>null</code> - in this case, the foreground color scheme
-	 *            colors will not be shifted.
-	 * @param foregroundShiftFactor
-	 *            Shift factor for the foreground color scheme colors. If the
-	 *            shift color for the foreground color scheme colors is
-	 *            <code>null</code>, this value is ignored.
-	 * @return Shifted scheme.
-	 */
-	public static SubstanceColorScheme getShiftedScheme(SubstanceColorScheme orig,
-			Color backgroundShiftColor, double backgroundShiftFactor, Color foregroundShiftColor,
-			double foregroundShiftFactor) {
-		HashMapKey key = SubstanceCoreUtilities.getHashKey(orig.getDisplayName(),
-				backgroundShiftColor == null ? "" : backgroundShiftColor.getRGB(),
-				backgroundShiftFactor,
-				foregroundShiftColor == null ? "" : foregroundShiftColor.getRGB(),
-				foregroundShiftFactor);
-		SubstanceColorScheme result = shiftedCache.get(key);
-		if (result == null) {
-			result = orig.shift(backgroundShiftColor, backgroundShiftFactor, foregroundShiftColor,
-					foregroundShiftFactor);
-			shiftedCache.put(key, result);
-		}
-		return result;
 	}
 }

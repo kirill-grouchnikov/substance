@@ -22,6 +22,7 @@ public class Dialog_information implements Icon, UIResource, IsResizable, IsHiDp
 	 * @param g
 	 *            Graphics context.
 	 */
+    @SuppressWarnings("unused")
 	public static void paint(Graphics2D g) {
         Shape shape = null;
         Paint paint = null;

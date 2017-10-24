@@ -1,4 +1,4 @@
-package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.svg;
+package org.pushingpixels.substance.internal.svg;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -13,7 +13,7 @@ import org.pushingpixels.lafwidget.icon.IsResizable;
  * This class has been automatically generated using <a
  * href="https://github.com/kirill-grouchnikov/flamingo">Flamingo SVG transcoder</a>.
  */
-public class ic_menu_black_24px implements Icon, UIResource, IsResizable, IsHiDpiAware {
+public class ic_mode_edit_black_24px implements Icon, UIResource, IsResizable, IsHiDpiAware {
 	/**
 	 * Paints the transcoded SVG image on the specified graphics context. You
 	 * can install a custom transformation on the graphics context to scale the
@@ -48,33 +48,30 @@ g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 AffineTransform defaultTransform__0_0 = g.getTransform();
 g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 // _0_0
+paint = new Color(0, 0, 0, 255);
+shape = new GeneralPath();
+((GeneralPath)shape).moveTo(3.0, 17.25);
+((GeneralPath)shape).lineTo(3.0, 21.0);
+((GeneralPath)shape).lineTo(6.75, 21.0);
+((GeneralPath)shape).lineTo(17.81, 9.94);
+((GeneralPath)shape).lineTo(14.059999, 6.1899996);
+((GeneralPath)shape).lineTo(3.0, 17.25);
+((GeneralPath)shape).closePath();
+((GeneralPath)shape).moveTo(20.71, 7.04);
+((GeneralPath)shape).curveTo(21.099998, 6.65, 21.099998, 6.02, 20.71, 5.63);
+((GeneralPath)shape).lineTo(18.369999, 3.2900002);
+((GeneralPath)shape).curveTo(17.98, 2.9, 17.349998, 2.9, 16.96, 3.2900002);
+((GeneralPath)shape).lineTo(15.129999, 5.1200004);
+((GeneralPath)shape).lineTo(18.88, 8.870001);
+((GeneralPath)shape).lineTo(20.71, 7.040001);
+((GeneralPath)shape).closePath();
+g.setPaint(paint);
+g.fill(shape);
 g.setTransform(defaultTransform__0_0);
 g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 AffineTransform defaultTransform__0_1 = g.getTransform();
 g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 // _0_1
-paint = new Color(0, 0, 0, 255);
-shape = new GeneralPath();
-((GeneralPath)shape).moveTo(3.0, 18.0);
-((GeneralPath)shape).lineTo(21.0, 18.0);
-((GeneralPath)shape).lineTo(21.0, 16.0);
-((GeneralPath)shape).lineTo(3.0, 16.0);
-((GeneralPath)shape).lineTo(3.0, 18.0);
-((GeneralPath)shape).closePath();
-((GeneralPath)shape).moveTo(3.0, 13.0);
-((GeneralPath)shape).lineTo(21.0, 13.0);
-((GeneralPath)shape).lineTo(21.0, 11.0);
-((GeneralPath)shape).lineTo(3.0, 11.0);
-((GeneralPath)shape).lineTo(3.0, 13.0);
-((GeneralPath)shape).closePath();
-((GeneralPath)shape).moveTo(3.0, 6.0);
-((GeneralPath)shape).lineTo(3.0, 8.0);
-((GeneralPath)shape).lineTo(21.0, 8.0);
-((GeneralPath)shape).lineTo(21.0, 6.0);
-((GeneralPath)shape).lineTo(3.0, 6.0);
-((GeneralPath)shape).closePath();
-g.setPaint(paint);
-g.fill(shape);
 g.setTransform(defaultTransform__0_1);
 g.setTransform(defaultTransform__0);
 g.setTransform(defaultTransform_);
@@ -96,7 +93,7 @@ g.setTransform(defaultTransform_);
      * @return The Y of the bounding box of the original SVG image.
      */
     public static double getOrigY() {
-        return 6.0;
+        return 2.9000000953674316;
     }
 
 	/**
@@ -105,7 +102,7 @@ g.setTransform(defaultTransform_);
 	 * @return The width of the bounding box of the original SVG image.
 	 */
 	public static double getOrigWidth() {
-		return 18.0;
+		return 18.099998474121094;
 	}
 
 	/**
@@ -114,7 +111,7 @@ g.setTransform(defaultTransform_);
 	 * @return The height of the bounding box of the original SVG image.
 	 */
 	public static double getOrigHeight() {
-		return 12.0;
+		return 18.100000381469727;
 	}
 
 	/**
@@ -130,7 +127,7 @@ g.setTransform(defaultTransform_);
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public ic_menu_black_24px() {
+	public ic_mode_edit_black_24px() {
         this.width = (int) getOrigWidth();
         this.height = (int) getOrigHeight();
 	}
@@ -198,8 +195,8 @@ g.setTransform(defaultTransform_);
 		g2d.dispose();
 	}
 	
-	public static ic_menu_black_24px of(int width, int height) {
-	   ic_menu_black_24px result = new ic_menu_black_24px();
+	public static ic_mode_edit_black_24px of(int width, int height) {
+	   ic_mode_edit_black_24px result = new ic_mode_edit_black_24px();
 	   result.width = width;
 	   result.height = height;
 	   return result;

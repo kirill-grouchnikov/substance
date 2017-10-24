@@ -22,6 +22,7 @@ public class System_search implements Icon, UIResource, IsResizable, IsHiDpiAwar
 	 * @param g
 	 *            Graphics context.
 	 */
+    @SuppressWarnings("unused")
 	public static void paint(Graphics2D g) {
         Shape shape = null;
         Paint paint = null;

@@ -143,6 +143,8 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
         springPanel = new javax.swing.JPanel();
 
         setLayout(new java.awt.GridBagLayout());
+        boolean isLtr = getComponentOrientation().isLeftToRight();
+        Insets tfInsets = new java.awt.Insets(1, isLtr ? 4 : 0, 0, isLtr ? 0 : 4);
 
         redLabel.setText(UIManager.getString("ColorChooser.rgbRedText"));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -175,6 +177,7 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = tfInsets;
         add(redField, gridBagConstraints);
 
         greenLabel.setText(UIManager.getString("ColorChooser.rgbGreenText"));
@@ -208,6 +211,7 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = tfInsets;
         add(greenField, gridBagConstraints);
 
         blueLabel.setText(UIManager.getString("ColorChooser.rgbBlueText"));
@@ -241,6 +245,7 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = tfInsets;
         add(blueField, gridBagConstraints);
 
         springPanel.setLayout(new java.awt.BorderLayout());

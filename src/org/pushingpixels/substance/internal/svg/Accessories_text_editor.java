@@ -22,6 +22,7 @@ public class Accessories_text_editor implements Icon, UIResource, IsResizable, I
 	 * @param g
 	 *            Graphics context.
 	 */
+    @SuppressWarnings("unused")
 	public static void paint(Graphics2D g) {
         Shape shape = null;
         Paint paint = null;

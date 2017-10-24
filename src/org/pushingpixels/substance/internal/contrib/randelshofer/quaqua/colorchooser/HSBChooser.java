@@ -151,6 +151,8 @@ implements UIResource {
         springPanel = new javax.swing.JPanel();
 
         setLayout(new java.awt.GridBagLayout());
+        boolean isLtr = getComponentOrientation().isLeftToRight();
+        Insets tfInsets = new java.awt.Insets(1, isLtr ? 4 : 0, 0, isLtr ? 0 : 4);
 
         hueLabel.setText(UIManager.getString("ColorChooser.hsbHueText"));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -191,6 +193,7 @@ implements UIResource {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = tfInsets;
         add(hueFieldPanel, gridBagConstraints);
 
         saturationLabel.setText(UIManager.getString("ColorChooser.hsbSaturationText"));
@@ -231,6 +234,7 @@ implements UIResource {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = tfInsets;
         add(saturationFieldPanel, gridBagConstraints);
 
         brightnessLabel.setText(UIManager.getString("ColorChooser.hsbBrightnessText"));
@@ -271,6 +275,7 @@ implements UIResource {
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.insets = tfInsets;
         add(brightnessFieldPanel, gridBagConstraints);
 
         springPanel.setLayout(new java.awt.BorderLayout());
