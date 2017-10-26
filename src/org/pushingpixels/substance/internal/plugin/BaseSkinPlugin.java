@@ -32,11 +32,12 @@ package org.pushingpixels.substance.internal.plugin;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.pushingpixels.substance.api.SubstanceSkinPlugin;
 import org.pushingpixels.substance.api.skin.*;
 
 /**
  * Core plugin for skins. See
- * {@link org.pushingpixels.substance.internal.plugin.SubstanceSkinPlugin}
+ * {@link org.pushingpixels.substance.api.SubstanceSkinPlugin}
  * interface. This class is <b>for internal use only</b>.
  * 
  * @author Kirill Grouchnikov.
@@ -65,9 +66,9 @@ public class BaseSkinPlugin implements SubstanceSkinPlugin {
 	 * 
 	 * @see org.pushingpixels.substance.plugin.SubstanceSkinPlugin#getSkins()
 	 */
+	@Override
 	public Set<SkinInfo> getSkins() {
 		Set<SkinInfo> result = new HashSet<SkinInfo>();
-		// result.add(create(AutumnSkin.NAME, AutumnSkin.class, false));
 		result.add(create(BusinessSkin.NAME, BusinessSkin.class, false));
 		result.add(create(BusinessBlackSteelSkin.NAME, BusinessBlackSteelSkin.class, false));
 		result.add(create(BusinessBlueSteelSkin.NAME, BusinessBlueSteelSkin.class, false));
@@ -98,15 +99,5 @@ public class BaseSkinPlugin implements SubstanceSkinPlugin {
 		result.add(create(CeruleanSkin.NAME, CeruleanSkin.class, false));
 
 		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.pushingpixels.substance.plugin.SubstanceSkinPlugin#
-	 * getDefaultSkinClassName()
-	 */
-	public String getDefaultSkinClassName() {
-		return null;
 	}
 }

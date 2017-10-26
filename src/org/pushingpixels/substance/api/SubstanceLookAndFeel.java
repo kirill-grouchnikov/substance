@@ -67,9 +67,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 
-import org.pushingpixels.lafplugin.ComponentPluginManager;
-import org.pushingpixels.lafplugin.LafPlugin;
-import org.pushingpixels.lafplugin.PluginManager;
 import org.pushingpixels.lafwidget.LafWidgetRepository;
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.animation.AnimationFacet;
@@ -94,7 +91,8 @@ import org.pushingpixels.substance.api.tabbed.TabCloseCallback;
 import org.pushingpixels.substance.internal.contrib.jgoodies.looks.common.ShadowPopupFactory;
 import org.pushingpixels.substance.internal.fonts.FontPolicies;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
-import org.pushingpixels.substance.internal.plugin.SubstanceSkinPlugin;
+import org.pushingpixels.substance.internal.plugin.BasePlugin;
+import org.pushingpixels.substance.internal.plugin.BaseSkinPlugin;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.LocaleChangeListener;
@@ -134,22 +132,7 @@ import org.pushingpixels.substance.internal.utils.TabCloseListenerManager;
  * @author Kirill Grouchnikov
  */
 public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
-	/**
-	 * The name of plugin configuration XML resource name. This is used for the
-	 * <a href="https://github.com/kirill-grouchnikov/laf-plugin">laf-plugin</a> support layer of
-	 * third-party components.
-	 */
-	public static final String PLUGIN_XML = "META-INF/substance-plugin.xml";
-
-	/**
-	 * Plugin manager for component plugins.
-	 */
-	private static ComponentPluginManager componentPlugins;
-
-	/**
-	 * Plugin manager for skin plugins.
-	 */
-	private static PluginManager skinPlugins;
+	private static SubstancePluginRepository pluginRepository;
 
 	/**
 	 * List of all listeners on skin changes.
@@ -1147,13 +1130,12 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	 * Initializes the plugins if necessary.
 	 */
 	protected static void initPluginsIfNecessary() {
-		if (SubstanceLookAndFeel.skinPlugins != null)
+		if (SubstanceLookAndFeel.pluginRepository != null)
 			return;
-		SubstanceLookAndFeel.skinPlugins = new PluginManager(
-				SubstanceLookAndFeel.PLUGIN_XML, LafPlugin.TAG_MAIN,
-				SubstanceSkinPlugin.TAG_SKIN_PLUGIN_CLASS);
-		SubstanceLookAndFeel.componentPlugins = new ComponentPluginManager(
-				SubstanceLookAndFeel.PLUGIN_XML);
+		SubstanceLookAndFeel.pluginRepository = SubstancePluginRepository.getInstance();
+		// initialize the base plugins
+        SubstanceLookAndFeel.pluginRepository.registerComponentPlugin(new BasePlugin());
+        SubstanceLookAndFeel.pluginRepository.registerSkinPlugin(new BaseSkinPlugin());
 	}
 
 	/**
@@ -1638,8 +1620,8 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	public UIDefaults getDefaults() {
 		UIDefaults table = super.getDefaults();
 
-		SubstanceLookAndFeel.componentPlugins.processAllDefaultsEntries(table,
-				this.skin);
+        SubstanceLookAndFeel.pluginRepository.processAllDefaultsEntriesComponentPlugins(table,
+                this.skin);
 		return table;
 	}
 
@@ -1660,8 +1642,7 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 				.getVmParameter(SubstanceLookAndFeel.TRACE_FILE);
 		if (paramTraceFile != null) {
 			MemoryAnalyzer.commence(1000, paramTraceFile);
-			for (Object plugin : SubstanceLookAndFeel.componentPlugins
-					.getAvailablePlugins(true))
+			for (SubstanceComponentPlugin plugin : SubstanceLookAndFeel.pluginRepository.getComponentPlugins())
 				MemoryAnalyzer.enqueueUsage("Has plugin '"
 						+ plugin.getClass().getName() + "'");
 		}
@@ -1672,7 +1653,7 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 		SubstanceTitlePane.setHeapStatusLogfileName(heapStatusPanelParam);
 
 		// initialize component plugins
-		SubstanceLookAndFeel.componentPlugins.initializeAll();
+		SubstanceLookAndFeel.pluginRepository.initializeAllComponentPlugins();
 
 		// initialize widget support
 		LafWidgetRepository.getRepository().setLafSupport(
@@ -1734,7 +1715,7 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 			this.skin.getWatermark().dispose();
 
 		// uninitialize component plugins
-		SubstanceLookAndFeel.componentPlugins.uninitializeAll();
+        SubstanceLookAndFeel.pluginRepository.uninitializeAllComponentPlugins();
 
 		// reset widget support
 		LafWidgetRepository.getRepository().unsetLafSupport();
@@ -2106,8 +2087,8 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 				initFontDefaults(lafDefaults, SubstanceLookAndFeel
 						.getFontPolicy().getFontSet("Substance", null));
 				newSkin.addCustomEntriesToTable(lafDefaults);
-				SubstanceLookAndFeel.componentPlugins
-						.processAllDefaultsEntries(lafDefaults, newSkin);
+		        SubstanceLookAndFeel.pluginRepository
+						.processAllDefaultsEntriesComponentPlugins(lafDefaults, newSkin);
 			}
 
 			// file chooser strings go to the main UIManager table
@@ -2222,8 +2203,7 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	public static Map<String, SkinInfo> getAllSkins() {
 		initPluginsIfNecessary();
 		Map<String, SkinInfo> result = new TreeMap<String, SkinInfo>();
-		for (Object skinPlugin : SubstanceLookAndFeel.skinPlugins
-				.getAvailablePlugins(true)) {
+		for (SubstanceSkinPlugin skinPlugin : SubstanceLookAndFeel.pluginRepository.getSkinPlugins()) {
 			for (SkinInfo skinInfo : ((SubstanceSkinPlugin) skinPlugin).getSkins()) {
 				result.put(skinInfo.getDisplayName(), skinInfo);
 			}

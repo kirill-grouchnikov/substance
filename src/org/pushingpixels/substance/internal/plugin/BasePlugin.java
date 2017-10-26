@@ -47,9 +47,9 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.InsetsUIResource;
 
-import org.pushingpixels.lafplugin.LafComponentPlugin;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceComponentPlugin;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.fonts.FontSet;
@@ -70,7 +70,7 @@ import org.pushingpixels.substance.internal.utils.icon.SubstanceIconFactory;
  * 
  * @author Kirill Grouchnikov
  */
-public class BasePlugin implements LafComponentPlugin {
+public class BasePlugin implements SubstanceComponentPlugin {
 
 	/**
 	 * Common directory for Quaqua images.
@@ -100,14 +100,8 @@ public class BasePlugin implements LafComponentPlugin {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.lafplugin.LafComponentPlugin#getDefaults(java.lang.
-	 * Object)
-	 */
-	public Object[] getDefaults(Object mSkin) {
+	@Override
+	public Object[] getDefaults(SubstanceSkin skin) {
 		if (this.hasQuaquaColorChooser) {
 			ResourceBundle bundle = ResourceBundle
 					.getBundle("org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.Labels");
@@ -117,7 +111,6 @@ public class BasePlugin implements LafComponentPlugin {
 				labelsList.add(key);
 				labelsList.add(bundle.getObject(key));
 			}
-			SubstanceSkin skin = (SubstanceSkin) mSkin;
 			final SubstanceColorScheme colorScheme = skin
 					.getActiveColorScheme(DecorationAreaType.NONE);
 			InsetsUIResource visualMargin = new InsetsUIResource(0, 0, 0, 0);
