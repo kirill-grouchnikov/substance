@@ -1297,19 +1297,22 @@ public class SubstanceCoreUtilities {
 	public static HiDpiAwareIcon getThemedIcon(Component comp, Icon orig) {
 		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities
 				.getColorScheme(comp, ComponentState.ENABLED);
-		float brightnessFactor = colorScheme.isDark() ? 0.2f : 0.8f;
-		return new HiDpiAwareIcon(SubstanceImageCreator.getColorSchemeImage(comp,
-				orig, colorScheme, brightnessFactor));
+		return getThemedIcon(comp, orig, colorScheme);
 	}
 
 	public static HiDpiAwareIcon getThemedIcon(JTabbedPane tab, int tabIndex, Icon orig) {
 		SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities
 				.getColorScheme(tab, tabIndex, ColorSchemeAssociationKind.TAB,
 						ComponentState.ENABLED);
-		float brightnessFactor = colorScheme.isDark() ? 0.2f : 0.8f;
-		return new HiDpiAwareIcon(SubstanceImageCreator.getColorSchemeImage(tab,
-				orig, colorScheme, brightnessFactor));
+        return getThemedIcon(tab, orig, colorScheme);
 	}
+	
+    public static HiDpiAwareIcon getThemedIcon(Component comp, Icon orig,
+            SubstanceColorScheme colorScheme) {
+        float brightnessFactor = colorScheme.isDark() ? 0.2f : 0.8f;
+        return new HiDpiAwareIcon(SubstanceImageCreator.getColorSchemeImage(comp, orig, colorScheme,
+                brightnessFactor));
+    }
 
 	public static Icon getOriginalIcon(AbstractButton b, Icon defaultIcon) {
 		ButtonModel model = b.getModel();

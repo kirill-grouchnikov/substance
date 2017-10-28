@@ -57,20 +57,20 @@ import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.inputmaps.InputMapSet;
 import org.pushingpixels.substance.api.inputmaps.SubstanceInputMapUtilities;
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultListCellRenderer;
-import org.pushingpixels.substance.internal.svg.Accessories_text_editor;
 import org.pushingpixels.substance.internal.svg.Computer;
-import org.pushingpixels.substance.internal.svg.Dialog_error;
-import org.pushingpixels.substance.internal.svg.Dialog_information;
-import org.pushingpixels.substance.internal.svg.Dialog_warning;
 import org.pushingpixels.substance.internal.svg.Drive_harddisk;
 import org.pushingpixels.substance.internal.svg.Folder;
-import org.pushingpixels.substance.internal.svg.Folder_new;
-import org.pushingpixels.substance.internal.svg.Format_justify_fill;
-import org.pushingpixels.substance.internal.svg.Go_up;
-import org.pushingpixels.substance.internal.svg.Help_browser;
 import org.pushingpixels.substance.internal.svg.Media_floppy;
 import org.pushingpixels.substance.internal.svg.Text_x_generic;
-import org.pushingpixels.substance.internal.svg.User_home;
+import org.pushingpixels.substance.internal.svg.ic_arrow_upward_black_24px;
+import org.pushingpixels.substance.internal.svg.ic_create_new_folder_black_24px;
+import org.pushingpixels.substance.internal.svg.ic_error_black_24px;
+import org.pushingpixels.substance.internal.svg.ic_help_black_24px;
+import org.pushingpixels.substance.internal.svg.ic_home_black_24px;
+import org.pushingpixels.substance.internal.svg.ic_info_black_24px;
+import org.pushingpixels.substance.internal.svg.ic_insert_drive_file_black_24px;
+import org.pushingpixels.substance.internal.svg.ic_view_list_black_24px;
+import org.pushingpixels.substance.internal.svg.ic_warning_black_24px;
 import org.pushingpixels.substance.internal.utils.border.SubstanceBorder;
 import org.pushingpixels.substance.internal.utils.border.SubstanceEtchedBorder;
 import org.pushingpixels.substance.internal.utils.border.SubstancePaneBorder;
@@ -411,19 +411,19 @@ public class SkinUtilities {
 				selectionTextForegroundColor,
 
 				"FileChooser.upFolderIcon",
-				Go_up.of(16, 16),
+				ic_arrow_upward_black_24px.of(16, 16),
 
 				"FileChooser.newFolderIcon",
-				Folder_new.of(16, 16),
+				ic_create_new_folder_black_24px.of(16, 16),
 
 				"FileChooser.homeFolderIcon",
-				User_home.of(16, 16),
+				ic_home_black_24px.of(16, 16),
 
 				"FileChooser.listViewIcon",
-				Format_justify_fill.of(16, 16),
+				ic_view_list_black_24px.of(16, 16),
 
 				"FileChooser.detailsViewIcon",
-				Accessories_text_editor.of(16, 16),
+				ic_insert_drive_file_black_24px.of(16, 16),
 
 				"FileChooser.usesSingleFilePane",
 				Boolean.TRUE,
@@ -628,22 +628,22 @@ public class SkinUtilities {
 						false),
 
 				"OptionPane.errorIcon",
-				new Dialog_error(),
+				ic_error_black_24px.of(20, 20),
 
 				"OptionPane.foreground",
 				foregroundColor,
 
 				"OptionPane.informationIcon",
-				new Dialog_information(),
+                ic_info_black_24px.of(20, 20),
 
 				"OptionPane.messageForeground",
 				foregroundColor,
 
 				"OptionPane.questionIcon",
-				new Help_browser(),
+				ic_help_black_24px.of(20, 20),
 
 				"OptionPane.warningIcon",
-				new Dialog_warning(),
+                ic_warning_black_24px.of(20, 20),
 				
 				"OptionPane.buttonPadding",
 				8,

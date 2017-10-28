@@ -183,7 +183,7 @@ public class SubstanceFileChooserUI extends MetalFileChooserUI {
 	protected void installIcons(JFileChooser fc) {
 		super.installIcons(fc);
 		
-		Dimension iconDimension = new Dimension(20, 20);
+		Dimension iconDimension = new Dimension(14, 14);
 
 		((IsResizable) directoryIcon).setDimension(iconDimension);
 		((IsResizable) fileIcon).setDimension(iconDimension);

@@ -1769,6 +1769,31 @@ public final class SubstanceImageCreator {
     }
 
     /**
+     * Creates a new version of the specified icon that is rendered in the
+     * colors of the specified color scheme.
+     * 
+     * @param comp
+     *            Component.
+     * @param original
+     *            The original icon.
+     * @param colorScheme
+     *            Color scheme.
+     * @return Scheme-based version of the original icon.
+     */
+    public static BufferedImage getColoredImage(Component comp, Icon original,
+            Color color) {
+        int w = original.getIconWidth();
+        int h = original.getIconHeight();
+        BufferedImage origImage = SubstanceCoreUtilities.getBlankImage(w, h);
+        Graphics2D g2d = (Graphics2D) origImage.getGraphics().create();
+        original.paintIcon(comp, origImage.getGraphics(), 0, 0);
+        g2d.dispose();
+
+        BufferedImage result = new ColorFilter(color).filter(origImage, null);
+        return result;
+    }
+
+    /**
      * Creates a new version of the specified image that is rendered in the
      * colors of the specified color scheme.
      * 
