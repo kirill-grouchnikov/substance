@@ -66,12 +66,12 @@ public class DesktopIconHoverPreviewWidget extends SubstanceWidget<JDesktopIcon>
 	 * The component that initiates the desktop icon preview (when the mouse
 	 * hover above it).
 	 */
-	protected JComponent compToHover;
+    private JComponent compToHover;
 
 	/**
 	 * Listens on the changes to the ancestor.
 	 */
-	protected PropertyChangeListener internalFramePropertyListener;
+	private PropertyChangeListener internalFramePropertyListener;
 
 	/**
 	 * Snapshot map.
@@ -91,7 +91,7 @@ public class DesktopIconHoverPreviewWidget extends SubstanceWidget<JDesktopIcon>
 	/**
 	 * Mouse handler for the {@link #compToHover}.
 	 */
-	protected TitleMouseHandler titleMouseHandler;
+	private TitleMouseHandler titleMouseHandler;
 
 	/**
 	 * Mouse handler for showing / hiding the preview window.

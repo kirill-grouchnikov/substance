@@ -48,97 +48,93 @@ import org.pushingpixels.substance.internal.utils.WidgetUtilities;
  * @author Kirill Grouchnikov
  */
 public class ScrollPaneSelectorWidget extends SubstanceWidget<JScrollPane> {
-	/**
-	 * The scroll pane selector for the associated scroll pane.
-	 */
-	protected ScrollPaneSelector scrollPaneSelector;
+    /**
+     * The scroll pane selector for the associated scroll pane.
+     */
+    private ScrollPaneSelector scrollPaneSelector;
 
-	/**
-	 * Hierarchy listener - remove the selector in the scroll pane of a combo
-	 * popup.
-	 */
-	protected HierarchyListener hierarchyListener;
+    /**
+     * Hierarchy listener - remove the selector in the scroll pane of a combo popup.
+     */
+    private HierarchyListener hierarchyListener;
 
-	/**
-	 * Property change listener - listens on the changes to
-	 * {@link SubstanceWidget#COMPONENT_PREVIEW_PAINTER} property.
-	 */
-	protected PropertyChangeListener propertyChangeListener;
+    /**
+     * Property change listener - listens on the changes to
+     * {@link SubstanceWidget#COMPONENT_PREVIEW_PAINTER} property.
+     */
+    private PropertyChangeListener propertyChangeListener;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.lafwidget.LafWidgetAdapter#installUI()
-	 */
-	@Override
-	public void installUI() {
-		if (SubstanceCoreUtilities.toShowExtraWidgets(this.jcomp)) {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.lafwidget.LafWidgetAdapter#installUI()
+     */
+    @Override
+    public void installUI() {
+        if (SubstanceCoreUtilities.toShowExtraWidgets(this.jcomp)) {
 
-			PreviewPainter pPainter = WidgetUtilities
-					.getComponentPreviewPainter(this.jcomp);
-			if (pPainter == null)
-				return;
-			this.scrollPaneSelector = new ScrollPaneSelector();
-			this.scrollPaneSelector.installOnScrollPane(this.jcomp);
-		}
-	}
+            PreviewPainter pPainter = WidgetUtilities.getComponentPreviewPainter(this.jcomp);
+            if (pPainter == null)
+                return;
+            this.scrollPaneSelector = new ScrollPaneSelector();
+            this.scrollPaneSelector.installOnScrollPane(this.jcomp);
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.lafwidget.LafWidgetAdapter#uninstallUI()
-	 */
-	@Override
-	public void uninstallUI() {
-		if (this.scrollPaneSelector != null) {
-			this.scrollPaneSelector.uninstallFromScrollPane();
-			this.scrollPaneSelector = null;
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.lafwidget.LafWidgetAdapter#uninstallUI()
+     */
+    @Override
+    public void uninstallUI() {
+        if (this.scrollPaneSelector != null) {
+            this.scrollPaneSelector.uninstallFromScrollPane();
+            this.scrollPaneSelector = null;
+        }
+    }
 
-	@Override
-	public void installListeners() {
-		this.hierarchyListener = (HierarchyEvent e) -> {
-			if (jcomp.getParent() instanceof ComboPopup) {
-				if (scrollPaneSelector != null) {
-					scrollPaneSelector.uninstallFromScrollPane();
-					scrollPaneSelector = null;
-				}
-			}
-		};
-		this.jcomp.addHierarchyListener(this.hierarchyListener);
+    @Override
+    public void installListeners() {
+        this.hierarchyListener = (HierarchyEvent e) -> {
+            if (jcomp.getParent() instanceof ComboPopup) {
+                if (scrollPaneSelector != null) {
+                    scrollPaneSelector.uninstallFromScrollPane();
+                    scrollPaneSelector = null;
+                }
+            }
+        };
+        this.jcomp.addHierarchyListener(this.hierarchyListener);
 
-		this.propertyChangeListener = (PropertyChangeEvent evt) -> {
-			if (SubstanceWidget.COMPONENT_PREVIEW_PAINTER.equals(evt.getPropertyName())) {
-				PreviewPainter pPainter = WidgetUtilities
-						.getComponentPreviewPainter(jcomp);
-				// Uninstall old scroll pane selector
-				if (scrollPaneSelector != null) {
-					scrollPaneSelector.uninstallFromScrollPane();
-					scrollPaneSelector = null;
-				}
-				// Install new scroll pane selector
-				if (pPainter != null
-						&& SubstanceCoreUtilities.toShowExtraWidgets(jcomp)) {
-					scrollPaneSelector = new ScrollPaneSelector();
-					scrollPaneSelector.installOnScrollPane(jcomp);
-				}
-			}
-		};
-		this.jcomp.addPropertyChangeListener(this.propertyChangeListener);
-	}
+        this.propertyChangeListener = (PropertyChangeEvent evt) -> {
+            if (SubstanceWidget.COMPONENT_PREVIEW_PAINTER.equals(evt.getPropertyName())) {
+                PreviewPainter pPainter = WidgetUtilities.getComponentPreviewPainter(jcomp);
+                // Uninstall old scroll pane selector
+                if (scrollPaneSelector != null) {
+                    scrollPaneSelector.uninstallFromScrollPane();
+                    scrollPaneSelector = null;
+                }
+                // Install new scroll pane selector
+                if (pPainter != null && SubstanceCoreUtilities.toShowExtraWidgets(jcomp)) {
+                    scrollPaneSelector = new ScrollPaneSelector();
+                    scrollPaneSelector.installOnScrollPane(jcomp);
+                }
+            }
+        };
+        this.jcomp.addPropertyChangeListener(this.propertyChangeListener);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.lafwidget.LafWidgetAdapter#uninstallListeners()
-	 */
-	@Override
-	public void uninstallListeners() {
-		this.jcomp.removeHierarchyListener(this.hierarchyListener);
-		this.hierarchyListener = null;
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.lafwidget.LafWidgetAdapter#uninstallListeners()
+     */
+    @Override
+    public void uninstallListeners() {
+        this.jcomp.removeHierarchyListener(this.hierarchyListener);
+        this.hierarchyListener = null;
 
-		this.jcomp.removePropertyChangeListener(this.propertyChangeListener);
-		this.propertyChangeListener = null;
-	}
+        this.jcomp.removePropertyChangeListener(this.propertyChangeListener);
+        this.propertyChangeListener = null;
+    }
 }

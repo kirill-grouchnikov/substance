@@ -44,9 +44,10 @@ import org.pushingpixels.substance.internal.utils.WidgetUtilities;
  */
 public class AutoScrollWidget extends SubstanceWidget<JScrollPane> {
     /**
-     * Property change listener - listens on the changes to {@link SubstanceWidget#AUTO_SCROLL} property.
+     * Property change listener - listens on the changes to {@link SubstanceWidget#AUTO_SCROLL}
+     * property.
      */
-    protected PropertyChangeListener propertyChangeListener;
+    private PropertyChangeListener propertyChangeListener;
 
     /*
      * (non-Javadoc)

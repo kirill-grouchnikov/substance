@@ -229,10 +229,10 @@ public class ScrollPaneSelector extends JComponent {
     }
 
     @Override
-    protected void paintComponent(Graphics g1D) {
+    protected void paintComponent(Graphics g) {
         if (theImage == null || theRectangle == null)
             return;
-        Graphics2D g = (Graphics2D) g1D.create();
+        Graphics2D g2d = (Graphics2D) g.create();
 
         Insets insets = getInsets();
         int xOffset = insets.left;
@@ -240,19 +240,19 @@ public class ScrollPaneSelector extends JComponent {
         int availableWidth = getWidth() - insets.left - insets.right;
         int availableHeight = getHeight() - insets.top - insets.bottom;
         int scaleFactor = UIUtil.getScaleFactor();
-        g.drawImage(theImage, xOffset, yOffset, theImage.getWidth() / scaleFactor,
+        g2d.drawImage(theImage, xOffset, yOffset, theImage.getWidth() / scaleFactor,
                 theImage.getHeight() / scaleFactor, null);
 
-        Color tmpColor = g.getColor();
+        Color tmpColor = g2d.getColor();
         Area area = new Area(new Rectangle(xOffset, yOffset, availableWidth, availableHeight));
         area.subtract(new Area(theRectangle));
-        g.setColor(new Color(200, 200, 200, 128));
-        g.fill(area);
-        g.setColor(Color.BLACK);
-        g.draw(theRectangle);
-        g.setColor(tmpColor);
+        g2d.setColor(new Color(200, 200, 200, 128));
+        g2d.fill(area);
+        g2d.setColor(Color.BLACK);
+        g2d.draw(theRectangle);
+        g2d.setColor(tmpColor);
 
-        g.dispose();
+        g2d.dispose();
     }
 
     // -- Private methods ------

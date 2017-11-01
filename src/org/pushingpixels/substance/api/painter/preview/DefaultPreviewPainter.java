@@ -29,96 +29,79 @@
  */
 package org.pushingpixels.substance.api.painter.preview;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JViewport;
 
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 
 /**
- * Default implementation of the component preview painter. The component
- * preview is a scaled-down (as necessary) thumbnail of the relevant component.
+ * Default implementation of the component preview painter. The component preview is a scaled-down
+ * (as necessary) thumbnail of the relevant component.
  * 
  * @author Kirill Grouchnikov
  */
 public class DefaultPreviewPainter extends PreviewPainter {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.lafwidget.PreviewPainter#hasPreview(java.awt.Container,
-	 *      java.awt.Component, int)
-	 */
-	public boolean hasPreview(Container parent, Component component,
-			int componentIndex) {
-		return (component != null);
-	}
+    @Override
+    public boolean hasPreview(Container parent, Component component, int componentIndex) {
+        return (component != null);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.lafwidget.preview.PreviewPainter#previewComponent(java.awt.Container,
-	 *      java.awt.Component, int, java.awt.Graphics, int, int, int, int)
-	 */
-	public void previewComponent(Container parent, Component component,
-			int componentIndex, Graphics g, int x, int y, int w, int h) {
-		if (component == null)
-			return;
-		int compWidth = component.getWidth();
-		int compHeight = component.getHeight();
+    @Override
+    public void previewComponent(Container parent, Component component, int componentIndex,
+            Graphics g, int x, int y, int w, int h) {
+        if (component == null)
+            return;
+        int compWidth = component.getWidth();
+        int compHeight = component.getHeight();
 
-		if ((compWidth > 0) && (compHeight > 0)) {
-			// draw component
-			BufferedImage tempCanvas = new BufferedImage(compWidth, compHeight,
-					BufferedImage.TYPE_INT_ARGB);
-			Graphics tempCanvasGraphics = tempCanvas.getGraphics();
-			component.paint(tempCanvasGraphics);
+        if ((compWidth > 0) && (compHeight > 0)) {
+            // draw component
+            BufferedImage tempCanvas = new BufferedImage(compWidth, compHeight,
+                    BufferedImage.TYPE_INT_ARGB);
+            Graphics tempCanvasGraphics = tempCanvas.getGraphics();
+            component.paint(tempCanvasGraphics);
 
-			// check if need to scale down
-			double coef = Math.min((double) w / (double) compWidth, (double) h
-					/ (double) compHeight);
-			if (coef < 1.0) {
-				int sdWidth = (int) (coef * compWidth);
-				int sdHeight = (int) (coef * compHeight);
-				int dx = x + (w - sdWidth) / 2;
-				int dy = y + (h - sdHeight) / 2;
+            int scaleFactor = UIUtil.getScaleFactor();
+            // check if need to scale down
+            double coef = Math.min((double) w / (double) compWidth,
+                    (double) h / (double) compHeight) / scaleFactor;
+            if (coef < 1.0) {
+                int sdWidth = (int) (coef * compWidth);
+                int sdHeight = (int) (coef * compHeight);
+                int dx = x + (w / scaleFactor - sdWidth) / 2;
+                int dy = y + (h / scaleFactor - sdHeight) / 2;
 
-				g.drawImage(WidgetUtilities.createThumbnail(tempCanvas,
-						sdWidth), dx, dy, null);
+                BufferedImage thumbnail = WidgetUtilities.createThumbnail(tempCanvas, sdWidth);
+                g.drawImage(thumbnail, dx, dy, thumbnail.getWidth() / scaleFactor,
+                        thumbnail.getHeight() / scaleFactor, null);
+            } else {
+                g.drawImage(tempCanvas, x, y, null);
+            }
+        }
+    }
 
-			} else {
-				g.drawImage(tempCanvas, x, y, null);
-			}
-		}
-	}
+    @Override
+    public boolean hasPreviewWindow(Container parent, Component component, int componentIndex) {
+        return true;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.lafwidget.PreviewPainter#hasPreviewWindow(java.awt.Container,
-	 *      java.awt.Component, int)
-	 */
-	public boolean hasPreviewWindow(Container parent, Component component,
-			int componentIndex) {
-		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.lafwidget.preview.PreviewPainter#getPreviewWindowDimension(java.awt.Container,
-	 *      java.awt.Component, int)
-	 */
-	public Dimension getPreviewWindowDimension(Container parent,
-			Component component, int componentIndex) {
-		Dimension superResult = super.getPreviewWindowDimension(parent,
-				component, componentIndex);
-		if (parent instanceof JViewport) {
-			Rectangle viewportRect = ((JViewport) parent).getViewRect();
-			int width = Math.min(viewportRect.width / 3, superResult.width);
-			int height = Math.min(viewportRect.height / 3, superResult.height);
-			return new Dimension(width, height);
-		}
-		return superResult;
-	}
+    @Override
+    public Dimension getPreviewWindowDimension(Container parent, Component component,
+            int componentIndex) {
+        Dimension superResult = super.getPreviewWindowDimension(parent, component, componentIndex);
+        if (parent instanceof JViewport) {
+            Rectangle viewportRect = ((JViewport) parent).getViewRect();
+            int width = Math.min(viewportRect.width / 3, superResult.width);
+            int height = Math.min(viewportRect.height / 3, superResult.height);
+            return new Dimension(width, height);
+        }
+        return superResult;
+    }
 }
