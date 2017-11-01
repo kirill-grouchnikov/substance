@@ -42,10 +42,10 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicDesktopIconUI;
 
-import org.pushingpixels.lafwidget.LafWidget;
-import org.pushingpixels.lafwidget.LafWidgetRepository;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceWidget;
+import org.pushingpixels.substance.api.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceInternalFrameTitlePane;
 
@@ -65,7 +65,7 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 	 */
 	private int width;
 
-	private Set<LafWidget> lafWidgets;
+	private Set<SubstanceWidget> lafWidgets;
 
 	/*
 	 * (non-Javadoc)
@@ -95,14 +95,14 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 					getBackgroundColorScheme(DecorationAreaType.SECONDARY_TITLE_PANE)
 						.getBackgroundFillColor());
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installDefaults();
 		}
 	}
 	
 	@Override
 	protected void uninstallDefaults() {
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallDefaults();
 		}
 
@@ -123,7 +123,7 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 		this.desktopIcon.setLayout(new BorderLayout());
 		this.desktopIcon.add(this.iconPane, BorderLayout.CENTER);
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installComponents();
 		}
 	}
@@ -140,7 +140,7 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 		this.desktopIcon.setLayout(null);
 		this.desktopIcon.remove(this.iconPane);
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallComponents();
 		}
 
@@ -160,7 +160,7 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 				.addMouseMotionListener(this.substanceLabelMouseInputListener);
 		this.iconPane.addMouseListener(this.substanceLabelMouseInputListener);
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installListeners();
 		}
 	}
@@ -180,7 +180,7 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 				.removeMouseListener(this.substanceLabelMouseInputListener);
 		this.substanceLabelMouseInputListener = null;
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallListeners();
 		}
 
@@ -235,19 +235,19 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 	 */
 	@Override
 	public void installUI(JComponent c) {
-		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+		this.lafWidgets = SubstanceWidgetRepository.getRepository().getMatchingWidgets(c);
 
 		super.installUI(c);
 		c.setOpaque(false);
 		
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installUI();
 		}
 	}
 
 	@Override
 	public void uninstallUI(JComponent c) {
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallUI();
 		}
 

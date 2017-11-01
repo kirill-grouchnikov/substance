@@ -56,7 +56,6 @@ import java.net.URL;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.swing.AbstractButton;
@@ -89,13 +88,6 @@ import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.text.JTextComponent;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.contrib.intellij.JBHiDPIScaledImage;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIconUiResource;
-import org.pushingpixels.lafwidget.icon.IsHiDpiAware;
-import org.pushingpixels.lafwidget.utils.TrackableThread;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -117,6 +109,11 @@ import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.api.tabbed.TabCloseCallback;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.JBHiDPIScaledImage;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
+import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIconUiResource;
+import org.pushingpixels.substance.internal.hidpi.IsHiDpiAware;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
 import org.pushingpixels.substance.internal.ui.SubstanceInternalFrameUI;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
@@ -706,6 +703,19 @@ public class SubstanceCoreUtilities {
 				.get(SubstanceLookAndFeel.BUTTON_NO_MIN_SIZE_PROPERTY)));
 	}
 
+    /**
+     * Marks the specified button as <code>flat</code>. A flat button doesn't
+     * show its background unless selected, armed, pressed or (possibly) hovered
+     * over. 
+     * 
+     * @param button
+     *            Button to mark as flat.
+     */
+    public static void markButtonAsFlat(AbstractButton button) {
+        button.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
+        button.setOpaque(false);
+    }
+
 	/**
 	 * Checks whether the specified component is flat.
 	 * 
@@ -1125,7 +1135,6 @@ public class SubstanceCoreUtilities {
 	 *            Client property name for retrieving the registered sides.
 	 * @return Set of sides registered on the specified button.
 	 */
-	@SuppressWarnings("unchecked")
 	public static Set<Side> getSides(JComponent component, String propertyName) {
 		if (component == null) {
 			return null;
@@ -1434,7 +1443,7 @@ public class SubstanceCoreUtilities {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
 		float alpha = maxAlphaCoef * focusStrength;
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(mainComp,
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(mainComp,
 				alpha, g));
 
 		Color color = SubstanceColorUtilities.getFocusColor(mainComp, transitionAwareUI);
@@ -1586,21 +1595,6 @@ public class SubstanceCoreUtilities {
 			}
 		}
 		return popups.length;
-	}
-
-	/**
-	 * Returns the resource bundle for the specified component.
-	 * 
-	 * @param jcomp
-	 *            Component.
-	 * @return Resource bundle for the specified component.
-	 */
-	public static ResourceBundle getResourceBundle(JComponent jcomp) {
-		if (LafWidgetUtilities.toIgnoreGlobalLocale(jcomp)) {
-			return SubstanceLookAndFeel.getLabelBundle(jcomp.getLocale());
-		} else {
-			return SubstanceLookAndFeel.getLabelBundle();
-		}
 	}
 
 	/**
@@ -2055,7 +2049,6 @@ public class SubstanceCoreUtilities {
 				|| (background instanceof SubstanceColorResource);
 	}
 
-	@SuppressWarnings("unchecked")
 	public static JTextComponent getTextComponentForTransitions(Component c) {
 		if (!(c instanceof JComponent))
 			return null;

@@ -78,13 +78,8 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.View;
 
-import org.pushingpixels.lafwidget.LafWidget;
-import org.pushingpixels.lafwidget.LafWidgetRepository;
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
+import org.pushingpixels.substance.api.AnimationConfigurationManager;
+import org.pushingpixels.substance.api.AnimationFacet;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
@@ -95,6 +90,8 @@ import org.pushingpixels.substance.api.SubstanceConstants.TabCloseKind;
 import org.pushingpixels.substance.api.SubstanceConstants.TabContentPaneBorderKind;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.SubstanceWidget;
+import org.pushingpixels.substance.api.SubstanceWidgetRepository;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
@@ -108,8 +105,10 @@ import org.pushingpixels.substance.api.tabbed.VetoableTabCloseListener;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker.StateContributionInfo;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
@@ -118,6 +117,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 import org.pushingpixels.substance.internal.utils.scroll.SubstanceScrollButton;
 import org.pushingpixels.trident.Timeline;
@@ -166,7 +166,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 //	
 //	private JScrollablePanel<JPanel> scrollableTabStrip;
 
-	private Set<LafWidget> lafWidgets;
+	private Set<SubstanceWidget> lafWidgets;
 
 	/*
 	 * (non-Javadoc)
@@ -658,18 +658,18 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 
 	@Override
 	public void installUI(JComponent c) {
-		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+		this.lafWidgets = SubstanceWidgetRepository.getRepository().getMatchingWidgets(c);
 
 		super.installUI(c);
 		
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installUI();
 		}
 	}
 	
 	@Override
 	public void uninstallUI(JComponent c) {
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallUI();
 		}
 		super.uninstallUI(c);
@@ -738,7 +738,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		};
 		this.tabPane.getModel().addChangeListener(this.substanceSelectionListener);
 		
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installListeners();
 		}
 	}
@@ -777,7 +777,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				this.substanceSelectionListener);
 		this.substanceSelectionListener = null;
 		
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallListeners();
 		}
 	}
@@ -797,7 +797,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		this.modifiedTimelines = new HashMap<Component, Timeline>();
 		this.currSelectedIndex = this.tabPane.getSelectedIndex();
 		
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installDefaults();
 		}
 	}
@@ -813,7 +813,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			timeline.cancel();
 		this.modifiedTimelines.clear();
 		
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallDefaults();
 		}
 
@@ -824,14 +824,14 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 	protected void installComponents() {
 		super.installComponents();
 		
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installComponents();
 		}
 	}
 	
 	@Override
 	protected void uninstallComponents() {
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallComponents();
 		}
 		
@@ -1106,7 +1106,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			final int tabIndex, final int x, final int y, int w, int h,
 			boolean isSelected) {
 		Graphics2D graphics = (Graphics2D) g.create();
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(
 				this.tabPane, g));
 
 		boolean isEnabled = this.tabPane.isEnabledAt(tabIndex);
@@ -1249,7 +1249,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		finalAlpha *= SubstanceColorSchemeUtilities.getAlpha(this.tabPane
 				.getComponentAt(tabIndex), currState);
 
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(
 				this.tabPane, finalAlpha, g));
 		graphics.drawImage(fullOpacity, x, y, fullOpacity.getWidth() / scaleFactor,
 				fullOpacity.getHeight() / scaleFactor, null);
@@ -1265,7 +1265,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				}
 			}
 			if (alpha > 0.0) {
-				graphics.setComposite(LafWidgetUtilities.getAlphaComposite(
+				graphics.setComposite(WidgetUtilities.getAlphaComposite(
 						this.tabPane, finalAlpha * alpha, g));
 
 				// paint close button
@@ -2022,7 +2022,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		this.tabAreaInsets = insets;
 		// Fire a property change event so that the tabbed
 		// pane can revalidate itself
-		LafWidgetUtilities.firePropertyChangeEvent(this.tabPane,
+		WidgetUtilities.firePropertyChangeEvent(this.tabPane,
 				"tabAreaInsets", old, tabAreaInsets);
 	}
 
@@ -2797,7 +2797,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 				themed.paintIcon(this.tabPane, g2d, 0, 0);
 			} else {
 				icon.paintIcon(this.tabPane, g2d, 0, 0);
-				g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
+				g2d.setComposite(WidgetUtilities.getAlphaComposite(
 						this.tabPane,
 						1.0f - tabTracker.getFacetStrength(ComponentStateFacet.ROLLOVER),
 						g2d));

@@ -60,25 +60,25 @@ import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
-import org.pushingpixels.lafwidget.LafWidget;
-import org.pushingpixels.lafwidget.LafWidgetRepository;
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIconUiResource;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
+import org.pushingpixels.substance.api.SubstanceWidget;
+import org.pushingpixels.substance.api.SubstanceWidgetRepository;
+import org.pushingpixels.substance.api.renderer.SubstanceDefaultTreeCellRenderer;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
+import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.HighlightPainterUtils;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceStripingUtils;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.substance.internal.utils.icon.SubstanceIconFactory;
 import org.pushingpixels.trident.Timeline.TimelineState;
 import org.pushingpixels.trident.callback.UIThreadTimelineCallbackAdapter;
@@ -137,7 +137,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 	 */
 	private Insets cellRendererInsets;
 
-	private Set<LafWidget> lafWidgets;
+	private Set<SubstanceWidget> lafWidgets;
 
 	/*
 	 * (non-Javadoc)
@@ -160,18 +160,18 @@ public class SubstanceTreeUI extends BasicTreeUI {
 
 	@Override
 	public void installUI(JComponent c) {
-		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+		this.lafWidgets = SubstanceWidgetRepository.getRepository().getMatchingWidgets(c);
 
 		super.installUI(c);
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installUI();
 		}
 	}
 
 	@Override
 	public void uninstallUI(JComponent c) {
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallUI();
 		}
 		super.uninstallUI(c);
@@ -206,7 +206,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		this.cellRendererInsets = SubstanceSizeUtils
 				.getTreeCellRendererInsets(SubstanceSizeUtils.getComponentFontSize(tree));
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installDefaults();
 		}
 	}
@@ -219,7 +219,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 	@Override
 	protected void uninstallDefaults() {
 		this.selectedPaths.clear();
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallDefaults();
 		}
 		super.uninstallDefaults();
@@ -273,7 +273,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		TreePathId pathId = new TreePathId(path);
 
 		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(tree, g));
+		g2d.setComposite(WidgetUtilities.getAlphaComposite(tree, g));
 
 		// Color background = renderer.getBackground();
 		// if (background == null)
@@ -334,12 +334,12 @@ public class SubstanceTreeUI extends BasicTreeUI {
 						SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
 								.getColorScheme(this.tree,
 										ColorSchemeAssociationKind.HIGHLIGHT_BORDER, currState);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.tree, alpha, g));
+						g2d.setComposite(WidgetUtilities.getAlphaComposite(this.tree, alpha, g));
 						// Fix for defect 180 - painting the
 						// highlight beneath the entire row
 						HighlightPainterUtils.paintHighlight(g2d, this.rendererPane, renderer,
 								rowRectangle, 0.8f, null, fillScheme, borderScheme);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.tree, g));
+						g2d.setComposite(WidgetUtilities.getAlphaComposite(this.tree, g));
 					}
 				} else {
 					for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> stateEntry : activeStates
@@ -355,12 +355,12 @@ public class SubstanceTreeUI extends BasicTreeUI {
 						SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
 								.getColorScheme(this.tree,
 										ColorSchemeAssociationKind.HIGHLIGHT_BORDER, activeState);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.tree, alpha, g));
+						g2d.setComposite(WidgetUtilities.getAlphaComposite(this.tree, alpha, g));
 						// Fix for defect 180 - painting the
 						// highlight beneath the entire row
 						HighlightPainterUtils.paintHighlight(g2d, this.rendererPane, renderer,
 								rowRectangle, 0.8f, null, fillScheme, borderScheme);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.tree, g));
+						g2d.setComposite(WidgetUtilities.getAlphaComposite(this.tree, g));
 					}
 				}
 			}
@@ -452,7 +452,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 						: ComponentState.DISABLED_UNSELECTED);
 
 		Graphics2D graphics = (Graphics2D) g.create();
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(this.tree, alpha, g));
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(this.tree, alpha, g));
 		super.paintExpandControl(graphics, clipBounds, insets, bounds, path, row, isExpanded,
 				hasBeenExpanded, isLeaf);
 		graphics.dispose();
@@ -539,7 +539,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		this.tree.addMouseMotionListener(this.substanceFadeRolloverListener);
 		this.tree.addMouseListener(this.substanceFadeRolloverListener);
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installListeners();
 		}
 	}
@@ -566,7 +566,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 		this.tree.removeMouseListener(this.substanceFadeRolloverListener);
 		this.substanceFadeRolloverListener = null;
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallListeners();
 		}
 
@@ -577,14 +577,14 @@ public class SubstanceTreeUI extends BasicTreeUI {
 	protected void installComponents() {
 		super.installComponents();
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installComponents();
 		}
 	}
 
 	@Override
 	protected void uninstallComponents() {
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallComponents();
 		}
 

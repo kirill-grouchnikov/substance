@@ -49,12 +49,12 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.RolloverMenuItemListener;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.substance.internal.utils.icon.CheckBoxMenuItemIcon;
 import org.pushingpixels.substance.internal.utils.menu.MenuUtilities;
 import org.pushingpixels.substance.internal.utils.menu.MenuUtilities.MenuPropertyListener;

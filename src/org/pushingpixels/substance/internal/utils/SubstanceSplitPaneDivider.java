@@ -29,7 +29,6 @@
  */
 package org.pushingpixels.substance.internal.utils;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -47,11 +46,9 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -242,7 +239,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements 
                         continue;
 
                     ComponentState activeState = activeEntry.getKey();
-                    graphics.setComposite(LafWidgetUtilities.getAlphaComposite(this.splitPane,
+                    graphics.setComposite(WidgetUtilities.getAlphaComposite(this.splitPane,
                             alpha * contribution, g));
                     SubstanceImageCreator.paintSplitDividerBumpImage(graphics, this, gripX, gripY,
                             thumbWidth, gripHeight, false,
@@ -271,7 +268,7 @@ public class SubstanceSplitPaneDivider extends BasicSplitPaneDivider implements 
                         continue;
 
                     ComponentState activeState = activeEntry.getKey();
-                    graphics.setComposite(LafWidgetUtilities.getAlphaComposite(this.splitPane,
+                    graphics.setComposite(WidgetUtilities.getAlphaComposite(this.splitPane,
                             alpha * contribution, g));
                     SubstanceImageCreator.paintSplitDividerBumpImage(graphics, this, gripX, gripY,
                             gripWidth, thumbHeight, true,

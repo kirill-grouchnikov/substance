@@ -41,8 +41,8 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicSeparatorUI;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.menu.MenuUtilities;
@@ -90,7 +90,7 @@ public class SubstanceSeparatorUI extends BasicSeparatorUI {
 			width = xOffset - 4;
 		}
 		graphics.translate(startX, 0);
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(parent));
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(parent));
 		SeparatorPainterUtils.paintSeparator(c, graphics, width, s.height,
 				((JSeparator) c).getOrientation(), true, 2);
 

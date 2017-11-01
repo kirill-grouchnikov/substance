@@ -34,9 +34,9 @@ import java.awt.Font;
 
 import javax.swing.UIDefaults;
 
-import org.pushingpixels.lafwidget.utils.LookUtils;
-import org.pushingpixels.substance.api.fonts.FontPolicy;
-import org.pushingpixels.substance.api.fonts.FontSet;
+import org.pushingpixels.substance.api.font.FontPolicy;
+import org.pushingpixels.substance.api.font.FontSet;
+import org.pushingpixels.substance.internal.contrib.jgoodies.looks.LookUtils;
 
 /**
  * Provides predefined FontPolicy implementations.

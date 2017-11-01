@@ -62,24 +62,24 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicListUI;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
+import org.pushingpixels.substance.api.AnimationFacet;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultListCellRenderer;
+import org.pushingpixels.substance.api.renderer.SubstanceDefaultListCellRenderer;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.HighlightPainterUtils;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceStripingUtils;
 import org.pushingpixels.substance.internal.utils.UpdateOptimizationAware;
 import org.pushingpixels.substance.internal.utils.UpdateOptimizationInfo;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.trident.Timeline.TimelineState;
 import org.pushingpixels.trident.callback.UIThreadTimelineCallbackAdapter;
 
@@ -143,7 +143,7 @@ public class SubstanceListUI extends BasicListUI implements
 				return;
 			}
 			// optimization on large lists and large selections
-			if (LafWidgetUtilities.hasNoAnimations(list,
+			if (WidgetUtilities.hasNoAnimations(list,
 					AnimationFacet.SELECTION))
 				return;
 
@@ -578,7 +578,7 @@ public class SubstanceListUI extends BasicListUI implements
 		// }
 
 		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(list, g));
+		g2d.setComposite(WidgetUtilities.getAlphaComposite(list, g));
 		if (!isWatermarkBleed) {
 			Color background = rendererComponent.getBackground();
 			// optimization - only render background if it's different
@@ -643,12 +643,12 @@ public class SubstanceListUI extends BasicListUI implements
 								.getHighlightColorScheme(currState);
 						SubstanceColorScheme borderScheme = this.updateInfo
 								.getHighlightBorderColorScheme(currState);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
+						g2d.setComposite(WidgetUtilities.getAlphaComposite(
 								list, alpha, g));
 						HighlightPainterUtils.paintHighlight(g2d,
 								this.rendererPane, rendererComponent, cellRect,
 								0.8f, null, fillScheme, borderScheme);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
+						g2d.setComposite(WidgetUtilities.getAlphaComposite(
 								list, g));
 					}
 				} else {
@@ -664,12 +664,12 @@ public class SubstanceListUI extends BasicListUI implements
 								.getHighlightColorScheme(activeState);
 						SubstanceColorScheme borderScheme = this.updateInfo
 								.getHighlightBorderColorScheme(activeState);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
+						g2d.setComposite(WidgetUtilities.getAlphaComposite(
 								list, alpha, g));
 						HighlightPainterUtils.paintHighlight(g2d,
 								this.rendererPane, rendererComponent, cellRect,
 								0.8f, null, fillScheme, borderScheme);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
+						g2d.setComposite(WidgetUtilities.getAlphaComposite(
 								list, g));
 					}
 				}

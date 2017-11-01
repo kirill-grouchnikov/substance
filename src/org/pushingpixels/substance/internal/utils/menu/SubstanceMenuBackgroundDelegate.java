@@ -42,7 +42,6 @@ import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -52,6 +51,7 @@ import org.pushingpixels.substance.internal.animation.StateTransitionTracker.Mod
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.HighlightPainterUtils;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -136,7 +136,7 @@ public class SubstanceMenuBackgroundDelegate {
 							textOffset, 0, new float[] { 0.0f, 1.0f },
 							new Color[] { leftColor, rightColor },
 							CycleMethod.REPEAT);
-					graphics.setComposite(LafWidgetUtilities.getAlphaComposite(
+					graphics.setComposite(WidgetUtilities.getAlphaComposite(
 							menuItem, 0.7f, g));
 
 					graphics.setPaint(gp);
@@ -154,7 +154,7 @@ public class SubstanceMenuBackgroundDelegate {
 							textOffset, 0, menuWidth, 0, new float[] { 0.0f, 1.0f },
 							new Color[] { leftColor, rightColor },
 							CycleMethod.REPEAT);
-					graphics.setComposite(LafWidgetUtilities.getAlphaComposite(
+					graphics.setComposite(WidgetUtilities.getAlphaComposite(
 							menuItem, 0.7f, g));
 					graphics.setPaint(gp);
 					graphics.fillRect(textOffset - 2, 0, menuWidth, menuHeight);
@@ -229,12 +229,12 @@ public class SubstanceMenuBackgroundDelegate {
 					.getColorScheme(menuItem,
 							ColorSchemeAssociationKind.HIGHLIGHT_BORDER,
 							activeState);
-			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(
+			graphics.setComposite(WidgetUtilities.getAlphaComposite(
 					menuItem, alpha, g));
             HighlightPainterUtils.paintHighlight(graphics, null, menuItem,
                     new Rectangle(0, 0, menuItem.getWidth(), menuItem.getHeight()), borderAlpha,
                     null, fillScheme, borderScheme);
-			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(
+			graphics.setComposite(WidgetUtilities.getAlphaComposite(
 					menuItem, g));
 		}
 

@@ -58,10 +58,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
+import org.pushingpixels.substance.api.AnimationConfigurationManager;
 import org.pushingpixels.substance.api.ColorSchemeSingleColorQuery;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
@@ -69,7 +66,9 @@ import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
 import org.pushingpixels.substance.api.painter.fill.FractionBasedFillPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
@@ -78,6 +77,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.Timeline.RepeatBehavior;
 import org.pushingpixels.trident.Timeline.TimelineState;
@@ -442,7 +442,7 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 		// install state-aware alpha channel (support for skins
 		// that use translucency on disabled states).
 		float stateAlpha = SubstanceColorSchemeUtilities.getAlpha(progressBar, fillState);
-		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(progressBar, stateAlpha, g));
+		g2d.setComposite(WidgetUtilities.getAlphaComposite(progressBar, stateAlpha, g));
 
 		SubstanceColorScheme fillScheme = SubstanceColorSchemeUtilities
 				.getColorScheme(progressBar, fillState);
@@ -511,7 +511,7 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 
 		// Deal with possible text painting
 		if (progressBar.isStringPainted()) {
-			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(progressBar,
+			g2d.setComposite(WidgetUtilities.getAlphaComposite(progressBar,
 					1.0f, g));
 			this.paintString(g2d, margin, margin, barRectWidth, barRectHeight,
 					amountFull, new Insets(margin, margin, margin, margin));
@@ -576,7 +576,7 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 		// install state-aware alpha channel (support for skins
 		// that use translucency on disabled states).
 		float stateAlpha = SubstanceColorSchemeUtilities.getAlpha(progressBar, progressState);
-		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(progressBar, stateAlpha, g));
+		g2d.setComposite(WidgetUtilities.getAlphaComposite(progressBar, stateAlpha, g));
 		float radius = 0.5f * SubstanceSizeUtils
 				.getClassicButtonCornerRadius(SubstanceSizeUtils
 						.getComponentFontSize(progressBar));
@@ -602,7 +602,7 @@ public class SubstanceProgressBarUI extends BasicProgressBarUI {
 
 		// Deal with possible text painting
 		if (progressBar.isStringPainted()) {
-			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(progressBar,
+			g2d.setComposite(WidgetUtilities.getAlphaComposite(progressBar,
 					1.0f, g));
 			this.paintString(g2d, margin, margin, barRectWidth, barRectHeight,
 					barRectWidth, new Insets(margin, margin, margin, margin));

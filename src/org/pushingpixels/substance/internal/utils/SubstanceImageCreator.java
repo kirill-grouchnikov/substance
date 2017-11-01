@@ -59,20 +59,19 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIconUiResource;
-import org.pushingpixels.lafwidget.utils.ColorFilter;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.painter.border.FlatBorderPainter;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
+import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.internal.painter.SimplisticFillPainter;
-import org.pushingpixels.substance.internal.svg.Locked;
-import org.pushingpixels.substance.internal.svg.System_search;
+import org.pushingpixels.substance.internal.svg.ic_lock_outline_black_24px;
+import org.pushingpixels.substance.internal.svg.ic_search_black_24px;
+import org.pushingpixels.substance.internal.utils.filters.ColorFilter;
 import org.pushingpixels.substance.internal.utils.filters.ColorSchemeFilter;
 import org.pushingpixels.substance.internal.utils.filters.GrayscaleFilter;
 import org.pushingpixels.substance.internal.utils.filters.TranslucentFilter;
@@ -1002,7 +1001,7 @@ public final class SubstanceImageCreator {
 
         if (borderAlpha > 0.0f) {
             Graphics2D g2d = (Graphics2D) graphics.create();
-            g2d.setComposite(LafWidgetUtilities.getAlphaComposite(null, borderAlpha, graphics));
+            g2d.setComposite(WidgetUtilities.getAlphaComposite(null, borderAlpha, graphics));
 
             paintSimpleBorderAliased(c, g2d, width, height, colorScheme);
 
@@ -1132,7 +1131,7 @@ public final class SubstanceImageCreator {
 
         if (borderAlpha > 0.0f) {
             Graphics2D g2d = (Graphics2D) graphics.create();
-            g2d.setComposite(LafWidgetUtilities.getAlphaComposite(null, borderAlpha, graphics));
+            g2d.setComposite(WidgetUtilities.getAlphaComposite(null, borderAlpha, graphics));
 
             paintSimpleBorderAliased(c, g2d, width, height, colorScheme);
             g2d.dispose();
@@ -1299,7 +1298,7 @@ public final class SubstanceImageCreator {
         borderPainter.paintBorder(dotGraphics, divider, bumpDotDiameter, bumpDotDiameter,
                 new Ellipse2D.Float(0, 0, bumpDotDiameter, bumpDotDiameter), null, colorScheme);
 
-        graphics.setComposite(LafWidgetUtilities.getAlphaComposite(divider, 0.8f, g));
+        graphics.setComposite(WidgetUtilities.getAlphaComposite(divider, 0.8f, g));
         int scaleFactor = UIUtil.getScaleFactor();
         for (int col = 0; col < bumpColumns; col++) {
             int cx = bumpColOffset + col * bumpCellSize;
@@ -1648,7 +1647,7 @@ public final class SubstanceImageCreator {
         onColor = isDark
                 ? SubstanceColorUtilities.getInterpolatedColor(colorScheme.getUltraLightColor(),
                         Color.white, 0.2)
-                : colorScheme.getUltraDarkColor().darker();
+                : colorScheme.getForegroundColor();
 
         boolean bit1 = ((value & 0x1) != 0);
         boolean bit2 = ((value & 0x2) != 0);
@@ -1685,7 +1684,7 @@ public final class SubstanceImageCreator {
      */
     private static BufferedImage createSearchIcon(int dimension, SubstanceColorScheme colorScheme,
             boolean leftToRight) {
-        HiDpiAwareIcon hiDpiAwareIcon = new HiDpiAwareIcon(System_search.of(dimension, dimension));
+        HiDpiAwareIcon hiDpiAwareIcon = new HiDpiAwareIcon(ic_search_black_24px.of(dimension, dimension));
 
         Color foregroundColor = SubstanceColorUtilities.getForegroundColor(colorScheme);
         Color forColorization = SubstanceColorUtilities.getAlphaColor(foregroundColor, 160);
@@ -1736,7 +1735,7 @@ public final class SubstanceImageCreator {
         int size = 9 + 2 * extraPadding;
 
         BufferedImage result = SubstanceCoreUtilities.getBlankImage(size, size);
-        Locked.of(size, size).paintIcon(c, result.getGraphics(), 0, 0);
+        ic_lock_outline_black_24px.of(size, size).paintIcon(c, result.getGraphics(), 0, 0);
         float brightnessFactor = scheme.isDark() ? 0.6f : -0.1f;
         ColorSchemeFilter filter = ColorSchemeFilter.getColorSchemeFilter(scheme, brightnessFactor);
         return new HiDpiAwareIcon(filter.filter(result, null));

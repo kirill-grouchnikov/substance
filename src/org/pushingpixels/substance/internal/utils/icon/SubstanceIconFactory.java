@@ -45,8 +45,6 @@ import javax.swing.JSlider;
 import javax.swing.JTree;
 import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
-import org.pushingpixels.lafwidget.icon.IsHiDpiAware;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -54,6 +52,8 @@ import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.internal.hidpi.IsHiDpiAware;
 import org.pushingpixels.substance.internal.ui.SubstanceSliderUI;
 import org.pushingpixels.substance.internal.ui.SubstanceTreeUI;
 import org.pushingpixels.substance.internal.utils.HashMapKey;

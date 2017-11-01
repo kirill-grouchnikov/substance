@@ -31,8 +31,8 @@ package org.pushingpixels.substance.api.watermark;
 
 import java.awt.*;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
@@ -61,7 +61,7 @@ public class SubstanceNullWatermark implements SubstanceWatermark {
 			int y, int width, int height) {
 		SubstanceSkin skin = SubstanceCoreUtilities.getSkin(c);
 		Graphics2D g2d = (Graphics2D) graphics.create();
-		g2d.setComposite(LafWidgetUtilities
+		g2d.setComposite(WidgetUtilities
 				.getAlphaComposite(c, 0.2f, graphics));
 		g2d.setColor(skin.getWatermarkColorScheme().getWatermarkLightColor());
 		g2d.fillRect(x, y, width, height);

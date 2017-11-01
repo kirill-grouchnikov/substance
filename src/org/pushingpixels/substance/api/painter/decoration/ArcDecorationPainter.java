@@ -36,9 +36,9 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.painter.SubstancePainterUtils;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**

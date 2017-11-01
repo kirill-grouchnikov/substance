@@ -38,7 +38,6 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-import org.pushingpixels.lafwidget.utils.AbstractFilter;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.internal.utils.*;
 

@@ -36,7 +36,7 @@ import javax.swing.LookAndFeel;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 
-import org.pushingpixels.lafwidget.utils.LookUtils;
+import org.pushingpixels.substance.internal.contrib.jgoodies.looks.LookUtils;
 import org.pushingpixels.substance.internal.contrib.jgoodies.looks.Options;
 
 
@@ -76,7 +76,7 @@ public final class ShadowPopupFactory extends PopupFactory {
      * shadow effect. The two following constants define the names of
      * these client properties.
      *
-     * @see com.jgoodies.looks.common.ShadowPopupBorder
+     * @see org.pushingpixels.substance.internal.contrib.jgoodies.looks.jgoodies.looks.common.ShadowPopupBorder
      */
     static final String PROP_HORIZONTAL_BACKGROUND = "jgoodies.hShadowBg";
     static final String PROP_VERTICAL_BACKGROUND   = "jgoodies.vShadowBg";

@@ -40,24 +40,29 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
-import org.pushingpixels.lafwidget.icon.IsHiDpiAware;
 import org.pushingpixels.substance.internal.animation.IconGlowTracker;
+import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.internal.hidpi.IsHiDpiAware;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 public class GlowingIcon implements Icon, IsHiDpiAware {
-
 	protected Icon delegate;
 
 	protected IconGlowTracker iconGlowTracker;
 
 	protected Map<Float, Icon> iconMap;
 
+	private float glowDampeningFactor = 3.0f;
+	
 	public GlowingIcon(Icon delegate, IconGlowTracker iconGlowTracker) {
 		this.delegate = delegate;
 		this.iconGlowTracker = iconGlowTracker;
 		this.iconMap = new HashMap<Float, Icon>();
+	}
+	
+	public void setDampeningFactor(float dampeningFactor) {
+	    glowDampeningFactor = dampeningFactor;
 	}
 	
 	@Override
@@ -120,7 +125,7 @@ public class GlowingIcon implements Icon, IsHiDpiAware {
 				for (int j = 0; j < pixelHeight; j++) {
 					int rgba = image.getRGB(i, j);
 					int transp = (rgba >>> 24) & 0xFF;
-					double coef = Math.sin(2.0 * Math.PI * fadePos / 2.0) / 3.0;
+					double coef = Math.sin(2.0 * Math.PI * fadePos / 2.0) / glowDampeningFactor;
 					Color newColor = (coef >= 0.0) ? SubstanceColorUtilities
 							.getLighterColor(new Color(rgba), coef)
 							: SubstanceColorUtilities.getDarkerColor(new Color(

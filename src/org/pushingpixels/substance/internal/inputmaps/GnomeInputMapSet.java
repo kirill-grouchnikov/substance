@@ -29,7 +29,7 @@
  */
 package org.pushingpixels.substance.internal.inputmaps;
 
-import org.pushingpixels.substance.api.inputmaps.SubstanceInputMap;
+import org.pushingpixels.substance.api.inputmap.SubstanceInputMap;
 
 public class GnomeInputMapSet extends BaseInputMapSet {
 	@Override

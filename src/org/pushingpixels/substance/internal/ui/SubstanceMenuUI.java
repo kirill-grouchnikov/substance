@@ -57,16 +57,16 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicMenuUI;
 
-import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.substance.internal.utils.icon.MenuArrowIcon;
 import org.pushingpixels.substance.internal.utils.menu.MenuUtilities;
 import org.pushingpixels.substance.internal.utils.menu.MenuUtilities.MenuPropertyListener;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
 import org.pushingpixels.substance.internal.utils.menu.SubstanceMenu;
 
 /**

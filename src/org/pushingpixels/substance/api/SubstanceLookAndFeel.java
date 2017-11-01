@@ -67,20 +67,15 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 
-import org.pushingpixels.lafwidget.LafWidgetRepository;
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.api.SubstanceConstants.MenuGutterFillKind;
 import org.pushingpixels.substance.api.SubstanceConstants.SubstanceOptionPaneButtonOrder;
 import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
 import org.pushingpixels.substance.api.combo.ComboPopupPrototypeCallback;
-import org.pushingpixels.substance.api.fonts.FontPolicy;
-import org.pushingpixels.substance.api.fonts.FontSet;
-import org.pushingpixels.substance.api.fonts.SubstanceFontUtilities;
-import org.pushingpixels.substance.api.inputmaps.InputMapSet;
-import org.pushingpixels.substance.api.inputmaps.SubstanceInputMapUtilities;
+import org.pushingpixels.substance.api.font.FontPolicy;
+import org.pushingpixels.substance.api.font.FontSet;
+import org.pushingpixels.substance.api.font.SubstanceFontUtilities;
+import org.pushingpixels.substance.api.inputmap.InputMapSet;
+import org.pushingpixels.substance.api.inputmap.SubstanceInputMapUtilities;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.shaper.StandardButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
@@ -88,8 +83,10 @@ import org.pushingpixels.substance.api.skin.SkinChangeListener;
 import org.pushingpixels.substance.api.skin.SkinInfo;
 import org.pushingpixels.substance.api.tabbed.BaseTabCloseListener;
 import org.pushingpixels.substance.api.tabbed.TabCloseCallback;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.contrib.jgoodies.looks.common.ShadowPopupFactory;
 import org.pushingpixels.substance.internal.fonts.FontPolicies;
+import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.plugin.BasePlugin;
 import org.pushingpixels.substance.internal.plugin.BaseSkinPlugin;
@@ -103,7 +100,6 @@ import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePane;
 import org.pushingpixels.substance.internal.utils.SubstanceWidgetManager;
-import org.pushingpixels.substance.internal.utils.SubstanceWidgetSupport;
 import org.pushingpixels.substance.internal.utils.TabCloseListenerManager;
 
 /**
@@ -1197,7 +1193,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	 */
 	public static synchronized void resetLabelBundle() {
 		SubstanceLookAndFeel.LABEL_BUNDLE = null;
-		LafWidgetRepository.resetLabelBundle();
 	}
 
 	/**
@@ -1655,10 +1650,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 		// initialize component plugins
 		SubstanceLookAndFeel.pluginRepository.initializeAllComponentPlugins();
 
-		// initialize widget support
-		LafWidgetRepository.getRepository().setLafSupport(
-				new SubstanceWidgetSupport());
-
 		// fix for defect 208 - tracking changes to focus owner
 		// and repainting the default button
 		this.focusOwnerChangeListener = new PropertyChangeListener() {
@@ -1716,9 +1707,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 
 		// uninitialize component plugins
         SubstanceLookAndFeel.pluginRepository.uninitializeAllComponentPlugins();
-
-		// reset widget support
-		LafWidgetRepository.getRepository().unsetLafSupport();
 
 		// clear caches
 		LazyResettableHashMap.reset();
@@ -2231,7 +2219,10 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	public static void setLabelBundleClassLoader(
 			ClassLoader labelBundleClassLoader) {
 		SubstanceLookAndFeel.labelBundleClassLoader = labelBundleClassLoader;
-		LafWidgetRepository.setLabelBundleClassLoader(labelBundleClassLoader);
+	}
+	
+	public static ClassLoader getLabelBundleClassLoader() {
+	    return SubstanceLookAndFeel.labelBundleClassLoader;
 	}
 
 	/**

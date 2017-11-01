@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 /**
  * The ColorWheel displays a hue/saturation wheel of the HSB color model. 

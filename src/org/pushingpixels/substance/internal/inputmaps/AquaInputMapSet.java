@@ -32,7 +32,7 @@ package org.pushingpixels.substance.internal.inputmaps;
 import javax.swing.JTextField;
 import javax.swing.text.DefaultEditorKit;
 
-import org.pushingpixels.substance.api.inputmaps.SubstanceInputMap;
+import org.pushingpixels.substance.api.inputmap.SubstanceInputMap;
 
 public class AquaInputMapSet extends BaseInputMapSet {
 	@Override

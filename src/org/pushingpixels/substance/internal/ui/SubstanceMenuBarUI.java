@@ -37,14 +37,14 @@ import javax.swing.JMenuBar;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicMenuBarUI;
 
-import org.pushingpixels.lafwidget.LafWidget;
-import org.pushingpixels.lafwidget.LafWidgetRepository;
-import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceWidget;
+import org.pushingpixels.substance.api.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
 
 /**
  * UI for menu bars in <b>Substance</b> look and feel.
@@ -52,7 +52,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
  * @author Kirill Grouchnikov
  */
 public class SubstanceMenuBarUI extends BasicMenuBarUI {
-	private Set<LafWidget> lafWidgets;
+	private Set<SubstanceWidget> lafWidgets;
 	
 	/*
 	 * (non-Javadoc)
@@ -66,18 +66,18 @@ public class SubstanceMenuBarUI extends BasicMenuBarUI {
 
 	@Override
 	public void installUI(JComponent c) {
-		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+		this.lafWidgets = SubstanceWidgetRepository.getRepository().getMatchingWidgets(c);
 
 		super.installUI(c);
 		
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installUI();
 		}
 	}
 	
 	@Override
 	public void uninstallUI(JComponent c) {
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallUI();
 		}
 		super.uninstallUI(c);
@@ -93,7 +93,7 @@ public class SubstanceMenuBarUI extends BasicMenuBarUI {
 		super.installDefaults();
 
 		SubstanceLookAndFeel.setDecorationType(this.menuBar, DecorationAreaType.HEADER);
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installDefaults();
 		}
 	}
@@ -107,7 +107,7 @@ public class SubstanceMenuBarUI extends BasicMenuBarUI {
 	protected void uninstallDefaults() {
 		DecorationPainterUtils.clearDecorationType(this.menuBar);
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallDefaults();
 		}
 
@@ -118,14 +118,14 @@ public class SubstanceMenuBarUI extends BasicMenuBarUI {
 	protected void installListeners() {
 		super.installListeners();
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installListeners();
 		}
 	}
 	
 	@Override
 	protected void uninstallListeners() {
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallListeners();
 		}
 

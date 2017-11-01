@@ -88,9 +88,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
-import org.pushingpixels.lafwidget.utils.TrackableThread;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
@@ -100,8 +97,10 @@ import org.pushingpixels.substance.api.skin.SkinInfo;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.substance.internal.utils.icon.SubstanceIconFactory;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
 
 /**
  * Title pane for <b>Substance</b> look and feel.
@@ -155,8 +154,7 @@ public class SubstanceTitlePane extends JComponent {
     protected JButton closeButton;
 
     /**
-     * Listens for changes in the state of the Window listener to update the
-     * state of the widgets.
+     * Listens for changes in the state of the Window listener to update the state of the widgets.
      */
     private WindowListener windowListener;
 
@@ -171,8 +169,8 @@ public class SubstanceTitlePane extends JComponent {
     protected JRootPane rootPane;
 
     /**
-     * Buffered Frame.state property. As state isn't bound, this is kept to
-     * determine when to avoid updating widgets.
+     * Buffered Frame.state property. As state isn't bound, this is kept to determine when to avoid
+     * updating widgets.
      */
     private int state;
 
@@ -182,8 +180,8 @@ public class SubstanceTitlePane extends JComponent {
     private SubstanceRootPaneUI rootPaneUI;
 
     /**
-     * The logfile name for the heap status panel. Can be <code>null</code> - in
-     * this case the {@link HeapStatusThread} will not write heap information.
+     * The logfile name for the heap status panel. Can be <code>null</code> - in this case the
+     * {@link HeapStatusThread} will not write heap information.
      */
     private static String heapStatusLogfileName;
 
@@ -204,8 +202,8 @@ public class SubstanceTitlePane extends JComponent {
     protected PropertyChangeListener propertyListener;
 
     /**
-     * Client property to mark every child to be either leading or trailing. The
-     * value must be one of {@link ExtraComponentKind}.
+     * Client property to mark every child to be either leading or trailing. The value must be one
+     * of {@link ExtraComponentKind}.
      * 
      * @see #markExtraComponent(JComponent, ExtraComponentKind)
      * @see #getTitleTextRectangle()
@@ -251,8 +249,7 @@ public class SubstanceTitlePane extends JComponent {
         private int currTakenHeapSizeKB;
 
         /**
-         * History of used heap portion (in percents). Each value is in 0.0-1.0
-         * range.
+         * History of used heap portion (in percents). Each value is in 0.0-1.0 range.
          */
         private LinkedList<Double> graphValues;
 
@@ -296,11 +293,14 @@ public class SubstanceTitlePane extends JComponent {
             int w = this.getWidth();
             int h = this.getHeight();
 
-            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+                    RenderingHints.VALUE_STROKE_PURE);
 
             float borderThickness = SubstanceSizeUtils.getBorderStrokeWidth();
-            graphics.setStroke(new BasicStroke(borderThickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+            graphics.setStroke(
+                    new BasicStroke(borderThickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
             graphics.draw(new Rectangle2D.Float(borderThickness / 2.0f, borderThickness / 2.0f,
                     w - borderThickness, h - borderThickness));
 
@@ -394,8 +394,8 @@ public class SubstanceTitlePane extends JComponent {
         private SimpleDateFormat format;
 
         /**
-         * Signifies whether a stop request has been issued on <code>this</code>
-         * thread using the {@link #requestStop()} call.
+         * Signifies whether a stop request has been issued on <code>this</code> thread using the
+         * {@link #requestStop()} call.
          */
         private boolean isStopRequested;
 
@@ -705,8 +705,8 @@ public class SubstanceTitlePane extends JComponent {
             this.heapStatusPanel.setVisible(isHeapStatusPanelShowing);
             this.heapStatusPanel
                     .setPreferredSize(new Dimension(80, this.getPreferredSize().height));
-            this.heapStatusPanel.setToolTipText(SubstanceCoreUtilities.getResourceBundle(rootPane)
-                    .getString("Tooltip.heapStatusPanel"));
+            this.heapStatusPanel.setToolTipText(
+                    SubstanceLookAndFeel.getLabelBundle().getString("Tooltip.heapStatusPanel"));
             this.heapStatusPanel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -738,11 +738,9 @@ public class SubstanceTitlePane extends JComponent {
     }
 
     /**
-     * Returns the <code>JMenuBar</code> displaying the appropriate system menu
-     * items.
+     * Returns the <code>JMenuBar</code> displaying the appropriate system menu items.
      * 
-     * @return <code>JMenuBar</code> displaying the appropriate system menu
-     *         items.
+     * @return <code>JMenuBar</code> displaying the appropriate system menu items.
      */
     protected JMenuBar createMenuBar() {
         this.menuBar = new SubstanceMenuBar();
@@ -759,8 +757,7 @@ public class SubstanceTitlePane extends JComponent {
     }
 
     /**
-     * Create the <code>Action</code>s that get associated with the buttons and
-     * menu items.
+     * Create the <code>Action</code>s that get associated with the buttons and menu items.
      */
     private void createActions() {
         this.closeAction = new CloseAction();
@@ -772,11 +769,10 @@ public class SubstanceTitlePane extends JComponent {
     }
 
     /**
-     * Returns the <code>JMenu</code> displaying the appropriate menu items for
-     * manipulating the Frame.
+     * Returns the <code>JMenu</code> displaying the appropriate menu items for manipulating the
+     * Frame.
      * 
-     * @return <code>JMenu</code> displaying the appropriate menu items for
-     *         manipulating the Frame.
+     * @return <code>JMenu</code> displaying the appropriate menu items for manipulating the Frame.
      */
     private JMenu createMenu() {
         JMenu menu = new JMenu("");
@@ -805,8 +801,8 @@ public class SubstanceTitlePane extends JComponent {
 
         if (SubstanceCoreUtilities.toShowExtraWidgets(rootPane)) {
             menu.addSeparator();
-            JMenu skinMenu = new JMenu(SubstanceCoreUtilities.getResourceBundle(rootPane)
-                    .getString("SystemMenu.skins"));
+            JMenu skinMenu = new JMenu(
+                    SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.skins"));
             Map<String, SkinInfo> allSkins = SubstanceLookAndFeel.getAllSkins();
             for (Map.Entry<String, SkinInfo> skinEntry : allSkins.entrySet()) {
                 final String skinClassName = skinEntry.getValue().getClassName();
@@ -825,8 +821,7 @@ public class SubstanceTitlePane extends JComponent {
     }
 
     /**
-     * Returns a <code>JButton</code> appropriate for placement on the
-     * TitlePane.
+     * Returns a <code>JButton</code> appropriate for placement on the TitlePane.
      * 
      * @return Title button.
      */
@@ -880,8 +875,8 @@ public class SubstanceTitlePane extends JComponent {
 
             this.minimizeButton.setFocusable(false);
             this.minimizeButton.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
-            this.minimizeButton.setToolTipText(SubstanceCoreUtilities.getResourceBundle(rootPane)
-                    .getString("SystemMenu.iconify"));
+            this.minimizeButton.setToolTipText(
+                    SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.iconify"));
 
             this.toggleButton = this.createTitleButton();
             this.toggleButton.setAction(this.restoreAction);
@@ -896,8 +891,8 @@ public class SubstanceTitlePane extends JComponent {
                     "substance.titlePane.maxIcon");
             this.toggleButton.setIcon(maxIcon);
 
-            this.toggleButton.setToolTipText(SubstanceCoreUtilities.getResourceBundle(rootPane)
-                    .getString("SystemMenu.maximize"));
+            this.toggleButton.setToolTipText(
+                    SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.maximize"));
             this.toggleButton.setFocusable(false);
             this.toggleButton.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
 
@@ -936,8 +931,8 @@ public class SubstanceTitlePane extends JComponent {
     }
 
     /**
-     * Sets the state of the window. If <code>updateRegardless</code> is true
-     * and the state has not changed, this will update anyway.
+     * Sets the state of the window. If <code>updateRegardless</code> is true and the state has not
+     * changed, this will update anyway.
      * 
      * @param state
      *            Window state.
@@ -979,8 +974,8 @@ public class SubstanceTitlePane extends JComponent {
                                                                 DecorationAreaType.PRIMARY_TITLE_PANE)),
                                 "substance.titlePane.restoreIcon");
                         this.updateToggleButton(this.restoreAction, restoreIcon);
-                        this.toggleButton.setToolTipText(SubstanceCoreUtilities
-                                .getResourceBundle(rootPane).getString("SystemMenu.restore"));
+                        this.toggleButton.setToolTipText(SubstanceLookAndFeel.getLabelBundle()
+                                .getString("SystemMenu.restore"));
                         this.maximizeAction.setEnabled(false);
                         this.restoreAction.setEnabled(true);
                     } else {
@@ -993,8 +988,8 @@ public class SubstanceTitlePane extends JComponent {
                                                                 DecorationAreaType.PRIMARY_TITLE_PANE)),
                                 "substance.titlePane.maxIcon");
                         this.updateToggleButton(this.maximizeAction, maxIcon);
-                        this.toggleButton.setToolTipText(SubstanceCoreUtilities
-                                .getResourceBundle(rootPane).getString("SystemMenu.maximize"));
+                        this.toggleButton.setToolTipText(SubstanceLookAndFeel.getLabelBundle()
+                                .getString("SystemMenu.maximize"));
                         this.maximizeAction.setEnabled(true);
                         this.restoreAction.setEnabled(false);
                     }
@@ -1031,8 +1026,8 @@ public class SubstanceTitlePane extends JComponent {
     }
 
     /**
-     * Updates the toggle button to contain the Icon <code>icon</code>, and
-     * Action <code>action</code>.
+     * Updates the toggle button to contain the Icon <code>icon</code>, and Action
+     * <code>action</code>.
      * 
      * @param action
      *            Action.
@@ -1046,8 +1041,8 @@ public class SubstanceTitlePane extends JComponent {
     }
 
     /**
-     * Returns the Frame rendering in. This will return null if the
-     * <code>JRootPane</code> is not contained in a <code>Frame</code>.
+     * Returns the Frame rendering in. This will return null if the <code>JRootPane</code> is not
+     * contained in a <code>Frame</code>.
      * 
      * @return Frame.
      */
@@ -1061,9 +1056,8 @@ public class SubstanceTitlePane extends JComponent {
     }
 
     /**
-     * Returns the <code>Window</code> the <code>JRootPane</code> is contained
-     * in. This will return null if there is no parent ancestor of the
-     * <code>JRootPane</code>.
+     * Returns the <code>Window</code> the <code>JRootPane</code> is contained in. This will return
+     * null if there is no parent ancestor of the <code>JRootPane</code>.
      * 
      * @return Window.
      */
@@ -1168,17 +1162,15 @@ public class SubstanceTitlePane extends JComponent {
     }
 
     /**
-     * Computes the rectangle of the title text. This method looks at all the
-     * children components of the title pane, grouping them by leading and
-     * trailing (based on {@link #EXTRA_COMPONENT_KIND} client property). The
-     * title text rectangle is the space between the leading group and the
+     * Computes the rectangle of the title text. This method looks at all the children components of
+     * the title pane, grouping them by leading and trailing (based on {@link #EXTRA_COMPONENT_KIND}
+     * client property). The title text rectangle is the space between the leading group and the
      * trailing group.
      * 
      * @return Rectangle of the title text.
      * @throws IllegalStateException
-     *             If at least one child component of this title pane is not
-     *             marked with the {@link #EXTRA_COMPONENT_KIND} client
-     *             property.
+     *             If at least one child component of this title pane is not marked with the
+     *             {@link #EXTRA_COMPONENT_KIND} client property.
      * @see #markExtraComponent(JComponent, ExtraComponentKind)
      * @see #EXTRA_COMPONENT_KIND
      */
@@ -1261,7 +1253,7 @@ public class SubstanceTitlePane extends JComponent {
          * Creates a new close action.
          */
         public CloseAction() {
-            super(SubstanceCoreUtilities.getResourceBundle(rootPane).getString("SystemMenu.close"),
+            super(SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.close"),
                     SubstanceImageCreator.getCloseIcon(
                             SubstanceCoreUtilities.getSkin(rootPane)
                                     .getActiveColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE),
@@ -1286,8 +1278,7 @@ public class SubstanceTitlePane extends JComponent {
          * Creates a new iconify action.
          */
         public IconifyAction() {
-            super(SubstanceCoreUtilities.getResourceBundle(rootPane)
-                    .getString("SystemMenu.iconify"),
+            super(SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.iconify"),
                     SubstanceImageCreator.getMinimizeIcon(
                             SubstanceCoreUtilities.getSkin(rootPane)
                                     .getActiveColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE),
@@ -1311,8 +1302,7 @@ public class SubstanceTitlePane extends JComponent {
          * Creates a new restore action.
          */
         public RestoreAction() {
-            super(SubstanceCoreUtilities.getResourceBundle(rootPane)
-                    .getString("SystemMenu.restore"),
+            super(SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.restore"),
                     SubstanceImageCreator.getRestoreIcon(
                             SubstanceCoreUtilities.getSkin(rootPane)
                                     .getActiveColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE),
@@ -1343,8 +1333,7 @@ public class SubstanceTitlePane extends JComponent {
          * Creates a new maximize action.
          */
         public MaximizeAction() {
-            super(SubstanceCoreUtilities.getResourceBundle(rootPane)
-                    .getString("SystemMenu.maximize"),
+            super(SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.maximize"),
                     SubstanceImageCreator.getMaximizeIcon(
                             SubstanceCoreUtilities.getSkin(rootPane)
                                     .getActiveColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE),
@@ -1366,8 +1355,8 @@ public class SubstanceTitlePane extends JComponent {
     }
 
     /**
-     * Class responsible for drawing the system menu. Looks up the image to draw
-     * from the Frame associated with the <code>JRootPane</code>.
+     * Class responsible for drawing the system menu. Looks up the image to draw from the Frame
+     * associated with the <code>JRootPane</code>.
      */
     public class SubstanceMenuBar extends JMenuBar {
         @Override
@@ -1407,8 +1396,7 @@ public class SubstanceTitlePane extends JComponent {
         /*
          * (non-Javadoc)
          * 
-         * @see java.awt.LayoutManager#addLayoutComponent(java.lang.String,
-         * java.awt.Component)
+         * @see java.awt.LayoutManager#addLayoutComponent(java.lang.String, java.awt.Component)
          */
         public void addLayoutComponent(String name, Component c) {
         }
@@ -1552,8 +1540,8 @@ public class SubstanceTitlePane extends JComponent {
     }
 
     /**
-     * PropertyChangeListener installed on the Window. Updates the necessary
-     * state as the state of the Window changes.
+     * PropertyChangeListener installed on the Window. Updates the necessary state as the state of
+     * the Window changes.
      */
     private class PropertyChangeHandler implements PropertyChangeListener {
         public void propertyChange(PropertyChangeEvent pce) {
@@ -1602,8 +1590,7 @@ public class SubstanceTitlePane extends JComponent {
 
     /**
      * Sets location for heap status logfile. Relevant if
-     * {@link #setCanHaveHeapStatusPanel(boolean)} was called with
-     * <code>true</code>.
+     * {@link #setCanHaveHeapStatusPanel(boolean)} was called with <code>true</code>.
      * 
      * @param heapStatusLogfileName
      *            Logfile for the heap status panel.
@@ -1618,20 +1605,19 @@ public class SubstanceTitlePane extends JComponent {
     protected void syncCloseButtonTooltip() {
         if (SubstanceCoreUtilities.isRootPaneModified(this.getRootPane())) {
             this.closeButton.setToolTipText(
-                    SubstanceCoreUtilities.getResourceBundle(rootPane).getString("SystemMenu.close")
-                            + " [" + SubstanceCoreUtilities.getResourceBundle(rootPane)
+                    SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.close") + " ["
+                            + SubstanceLookAndFeel.getLabelBundle()
                                     .getString("Tooltip.contentsNotSaved")
                             + "]");
         } else {
-            this.closeButton.setToolTipText(SubstanceCoreUtilities.getResourceBundle(rootPane)
-                    .getString("SystemMenu.close"));
+            this.closeButton.setToolTipText(
+                    SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.close"));
         }
         this.closeButton.repaint();
     }
 
     /**
-     * Marks the specified child component with the specified extra component
-     * kind.
+     * Marks the specified child component with the specified extra component kind.
      * 
      * @param comp
      *            Child component.

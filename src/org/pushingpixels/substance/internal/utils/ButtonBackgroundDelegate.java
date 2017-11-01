@@ -41,8 +41,6 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.JButton;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -58,6 +56,7 @@ import org.pushingpixels.substance.internal.animation.ModificationAwareUI;
 import org.pushingpixels.substance.internal.animation.RootPaneDefaultButtonTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.Timeline.TimelineState;
 
@@ -397,7 +396,7 @@ public class ButtonBackgroundDelegate {
 		}
 		if (extraAlpha > 0.0f) {
 			Graphics2D graphics = (Graphics2D) g.create();
-			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(button, extraAlpha, g));
+			graphics.setComposite(WidgetUtilities.getAlphaComposite(button, extraAlpha, g));
 			int factor = UIUtil.getScaleFactor();
 			graphics.drawImage(bgImage, 0, y, bgImage.getWidth() / factor,
 					bgImage.getHeight() / factor, null);

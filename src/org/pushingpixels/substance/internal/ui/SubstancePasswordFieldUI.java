@@ -58,12 +58,11 @@ import javax.swing.text.FieldView;
 import javax.swing.text.Position;
 import javax.swing.text.View;
 
-import org.pushingpixels.lafwidget.LafWidget;
-import org.pushingpixels.lafwidget.LafWidgetRepository;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceWidget;
+import org.pushingpixels.substance.api.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.RolloverTextControlListener;
@@ -73,6 +72,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 import org.pushingpixels.substance.internal.utils.border.SubstanceTextComponentBorder;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 
 /**
  * UI for password fields in <b>Substance</b> look and feel.
@@ -103,7 +103,7 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 	 */
 	private ButtonModel transitionModel;
 
-	private Set<LafWidget> lafWidgets;
+	private Set<SubstanceWidget> lafWidgets;
 
 	/**
 	 * Custom password view.
@@ -379,18 +379,18 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 
 	@Override
 	public void installUI(JComponent c) {
-		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+		this.lafWidgets = SubstanceWidgetRepository.getRepository().getMatchingWidgets(c);
 
 		super.installUI(c);
 		
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installUI();
 		}
 	}
 	
 	@Override
 	public void uninstallUI(JComponent c) {
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallUI();
 		}
 		super.uninstallUI(c);
@@ -443,7 +443,7 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 		};
 		this.passwordField
 				.addPropertyChangeListener(this.substancePropertyChangeListener);
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installListeners();
 		}
 	}
@@ -467,7 +467,7 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 				.removeMouseMotionListener(this.substanceRolloverListener);
 		this.substanceRolloverListener = null;
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallListeners();
 		}
 
@@ -507,14 +507,14 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements
 														.getDecorationType(passwordField))));
 			}
 		});
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installDefaults();
 		}
 	}
 	
 	@Override
 	protected void uninstallDefaults() {
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallDefaults();
 		}
 

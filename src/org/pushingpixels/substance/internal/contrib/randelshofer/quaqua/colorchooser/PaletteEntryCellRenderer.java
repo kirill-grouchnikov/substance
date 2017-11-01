@@ -21,7 +21,7 @@ import java.awt.Graphics;
 import javax.swing.Icon;
 import javax.swing.JList;
 
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultListCellRenderer;
+import org.pushingpixels.substance.api.renderer.SubstanceDefaultListCellRenderer;
 import org.pushingpixels.substance.internal.utils.SubstanceStripingUtils;
 
 /**

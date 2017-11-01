@@ -40,9 +40,9 @@ import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.AnimationConfigurationManager;
+import org.pushingpixels.substance.api.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
@@ -95,8 +95,7 @@ public class SubstanceSpinnerButton extends JButton {
 			}
 		});
 
-		this.setOpaque(false);
-		this.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
+        SubstanceCoreUtilities.markButtonAsFlat(this);
 		this.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
 				EnumSet.allOf(Side.class));
 	}

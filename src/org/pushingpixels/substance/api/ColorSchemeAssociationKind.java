@@ -29,7 +29,9 @@
  */
 package org.pushingpixels.substance.api;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JCheckBox;
 import javax.swing.JTabbedPane;

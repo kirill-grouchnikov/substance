@@ -49,8 +49,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
-import org.pushingpixels.lafwidget.utils.TrackableThread;
-
 /**
  * Tracer for memory usage patterns of <b>Substance</b> look-and-feel. The
  * tracer is started when VM has <code>-Dsubstancelaf.traceFile</code> flag. The

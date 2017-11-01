@@ -38,13 +38,13 @@ import java.awt.image.BufferedImage;
 import javax.swing.border.Border;
 import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -181,7 +181,7 @@ public class SubstanceBorder implements Border, UIResource {
 		float finalAlpha = alpha
 				* SubstanceColorSchemeUtilities.getAlpha(c, state);
 
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c,
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(c,
 				finalAlpha, g));
 
 		if (width * height < 100000) {

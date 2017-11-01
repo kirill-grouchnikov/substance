@@ -85,7 +85,6 @@ class SoftHashMap<K, V> extends AbstractMap<K, V> implements Serializable {
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
 	private void expungeStaleEntries() {
 		Reference<? extends V> ref;
 		while ((ref = queue.poll()) != null) {

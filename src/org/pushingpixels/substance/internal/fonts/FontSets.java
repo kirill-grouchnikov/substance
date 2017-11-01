@@ -34,8 +34,8 @@ import java.awt.Font;
 
 import javax.swing.plaf.FontUIResource;
 
-import org.pushingpixels.substance.api.fonts.FontPolicy;
-import org.pushingpixels.substance.api.fonts.FontSet;
+import org.pushingpixels.substance.api.font.FontPolicy;
+import org.pushingpixels.substance.api.font.FontSet;
 
 /**
  * Provides predefined FontSet implementations.

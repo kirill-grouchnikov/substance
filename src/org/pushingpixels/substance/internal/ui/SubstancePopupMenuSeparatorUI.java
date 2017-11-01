@@ -38,8 +38,8 @@ import javax.swing.JSeparator;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicPopupMenuSeparatorUI;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.menu.MenuUtilities;
@@ -80,7 +80,7 @@ public class SubstancePopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI {
 			}
 		}
 		graphics.translate(startX, 0);
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(sep));
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(sep));
 		SeparatorPainterUtils.paintSeparator(sep, graphics, width, s.height, sep.getOrientation(),
 				true, 2);
 

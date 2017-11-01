@@ -29,9 +29,22 @@
  */
 package org.pushingpixels.substance.api;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JRootPane;
+import javax.swing.MenuElement;
+import javax.swing.MenuSelectionManager;
 
 import org.pushingpixels.substance.api.skin.NebulaSkin;
 

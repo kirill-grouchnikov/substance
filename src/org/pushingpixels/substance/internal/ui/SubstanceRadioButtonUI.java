@@ -59,8 +59,6 @@ import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.plaf.basic.BasicRadioButtonUI;
 import javax.swing.text.View;
 
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
@@ -70,6 +68,7 @@ import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
@@ -79,6 +78,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 
 /**
  * UI for radio buttons in <b>Substance </b> look and feel.

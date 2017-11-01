@@ -57,8 +57,6 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicSliderUI;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -68,9 +66,11 @@ import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.SeparatorPainterUtils;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.RolloverControlListener;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
@@ -277,7 +277,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements TransitionAwareU
 				continue;
 
 			graphics.setComposite(
-					LafWidgetUtilities.getAlphaComposite(this.slider, contribution, g));
+					WidgetUtilities.getAlphaComposite(this.slider, contribution, g));
 
 			SubstanceColorScheme activeFillScheme = SubstanceColorSchemeUtilities
 					.getColorScheme(this.slider, activeState);
@@ -530,7 +530,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements TransitionAwareU
 		if (!clip.intersects(trackRect) && slider.getPaintTrack())
 			calculateGeometry();
 
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(this.slider, alpha, g));
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(this.slider, alpha, g));
 		if (slider.getPaintTrack() && clip.intersects(trackRect)) {
 			paintTrack(graphics);
 		}
@@ -541,7 +541,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements TransitionAwareU
 		if (clip.intersects(thumbRect)) {
 			paintThumb(graphics);
 		}
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(this.slider, 1.0f, g));
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(this.slider, 1.0f, g));
 		if (slider.getPaintLabels() && clip.intersects(labelRect)) {
 			paintLabels(graphics);
 		}

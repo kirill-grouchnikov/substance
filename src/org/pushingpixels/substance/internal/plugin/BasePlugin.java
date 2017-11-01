@@ -52,7 +52,7 @@ import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceComponentPlugin;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
-import org.pushingpixels.substance.api.fonts.FontSet;
+import org.pushingpixels.substance.api.font.FontSet;
 import org.pushingpixels.substance.internal.svg.ic_album_black_24px;
 import org.pushingpixels.substance.internal.svg.ic_brightness_high_black_24px;
 import org.pushingpixels.substance.internal.svg.ic_grid_on_black_24px;

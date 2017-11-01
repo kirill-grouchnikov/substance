@@ -32,8 +32,8 @@ package org.pushingpixels.substance.internal.inputmaps;
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
 
-import org.pushingpixels.substance.api.inputmaps.InputMapSet;
-import org.pushingpixels.substance.api.inputmaps.SubstanceInputMap;
+import org.pushingpixels.substance.api.inputmap.InputMapSet;
+import org.pushingpixels.substance.api.inputmap.SubstanceInputMap;
 
 public class BaseInputMapSet implements InputMapSet {
 	public static final String PRESSED = "pressed";

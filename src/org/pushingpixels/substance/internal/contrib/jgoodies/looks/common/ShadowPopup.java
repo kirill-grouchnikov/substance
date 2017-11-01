@@ -63,7 +63,7 @@ import javax.swing.border.Border;
  * @author Karsten Lentzsch
  * @version $Revision: 1.12 $
  *
- * @see com.jgoodies.looks.common.ShadowPopupBorder
+ * @see org.pushingpixels.substance.internal.contrib.jgoodies.looks.jgoodies.looks.common.ShadowPopupBorder
  * @see com.jgoodies.looks.common.ShadowPopupFactory
  */
 public final class ShadowPopup extends Popup {
@@ -282,7 +282,7 @@ public final class ShadowPopup extends Popup {
      * device.
      *
      * @see #show()
-     * @see com.jgoodies.looks.common.ShadowPopupBorder
+     * @see org.pushingpixels.substance.internal.contrib.jgoodies.looks.jgoodies.looks.common.ShadowPopupBorder
      * @see Robot#createScreenCapture(Rectangle)
      */
     private void snapshot() {

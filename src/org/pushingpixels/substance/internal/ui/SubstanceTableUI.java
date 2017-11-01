@@ -92,23 +92,22 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
+import org.pushingpixels.substance.api.AnimationConfigurationManager;
+import org.pushingpixels.substance.api.AnimationFacet;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.renderer.SubstanceDefaultTableCellRenderer;
+import org.pushingpixels.substance.api.renderer.SubstanceDefaultTableHeaderCellRenderer;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableCellRenderer;
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.HighlightPainterUtils;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorResource;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -116,6 +115,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceStripingUtils;
 import org.pushingpixels.substance.internal.utils.UpdateOptimizationAware;
 import org.pushingpixels.substance.internal.utils.UpdateOptimizationInfo;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.trident.Timeline.TimelineState;
 import org.pushingpixels.trident.callback.UIThreadTimelineCallbackAdapter;
 
@@ -808,7 +808,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 				: ComponentState.DISABLED_UNSELECTED;
 		float alpha = SubstanceColorSchemeUtilities.getAlpha(this.table,
 				currState);
-		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.table,
+		g2d.setComposite(WidgetUtilities.getAlphaComposite(this.table,
 				alpha, g));
 
 		Color gridColor = this.table.getGridColor();
@@ -974,7 +974,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 		if (draggedColumn != null) {
 			Graphics2D g2d = (Graphics2D) g.create();
 			// enhancement 331 - translucent dragged column
-			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.table,
+			g2d.setComposite(WidgetUtilities.getAlphaComposite(this.table,
 					0.65f, g));
 			this.paintDraggedArea(g2d, rMin, rMax, draggedColumn,
 					header.getDraggedDistance());
@@ -1075,7 +1075,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 		// (component from SwingX) and it has custom alpha value set,
 		// then the original graphics context will have a SRC_OVER
 		// alpha composite applied to it.
-		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.table, g));
+		g2d.setComposite(WidgetUtilities.getAlphaComposite(this.table, g));
 
 		TableCellId cellId = new TableCellId(row, column);
 
@@ -1191,13 +1191,13 @@ public class SubstanceTableUI extends BasicTableUI implements
 								.getHighlightColorScheme(currState);
 						SubstanceColorScheme borderScheme = this.updateInfo
 								.getHighlightBorderColorScheme(currState);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
+						g2d.setComposite(WidgetUtilities.getAlphaComposite(
 								this.table, alpha, g));
 						HighlightPainterUtils.paintHighlight(g2d,
 								this.rendererPane, component, highlightRect,
 								highlightBorderAlpha, highlightOpenSides,
 								fillScheme, borderScheme);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
+						g2d.setComposite(WidgetUtilities.getAlphaComposite(
 								this.table, g));
 					}
 				} else {
@@ -1213,13 +1213,13 @@ public class SubstanceTableUI extends BasicTableUI implements
 								.getHighlightColorScheme(activeState);
 						SubstanceColorScheme borderScheme = this.updateInfo
 								.getHighlightBorderColorScheme(activeState);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
+						g2d.setComposite(WidgetUtilities.getAlphaComposite(
 								this.table, alpha, g));
 						HighlightPainterUtils.paintHighlight(g2d,
 								this.rendererPane, component, highlightRect,
 								highlightBorderAlpha, highlightOpenSides,
 								fillScheme, borderScheme);
-						g2d.setComposite(LafWidgetUtilities.getAlphaComposite(
+						g2d.setComposite(WidgetUtilities.getAlphaComposite(
 								this.table, g));
 					}
 				}
@@ -1293,14 +1293,14 @@ public class SubstanceTableUI extends BasicTableUI implements
 						float alpha = this.updateInfo
 								.getHighlightAlpha(currState);
 						if (alpha > 0.0f) {
-							g2d.setComposite(LafWidgetUtilities
+							g2d.setComposite(WidgetUtilities
 									.getAlphaComposite(this.table, alpha, g));
 							HighlightPainterUtils.paintHighlight(g2d,
 									this.rendererPane, rendererComponent,
 									highlightRect, highlightBorderAlpha,
 									highlightOpenSides, fillScheme,
 									borderScheme);
-							g2d.setComposite(LafWidgetUtilities
+							g2d.setComposite(WidgetUtilities
 									.getAlphaComposite(this.table, g));
 						}
 					} else {
@@ -1315,14 +1315,14 @@ public class SubstanceTableUI extends BasicTableUI implements
 									.getHighlightAlpha(activeState)
 									* stateEntry.getValue().getContribution();
 							if (alpha > 0.0f) {
-								g2d.setComposite(LafWidgetUtilities
+								g2d.setComposite(WidgetUtilities
 										.getAlphaComposite(this.table, alpha, g));
 								HighlightPainterUtils.paintHighlight(g2d,
 										this.rendererPane, rendererComponent,
 										highlightRect, highlightBorderAlpha,
 										highlightOpenSides, fillScheme,
 										borderScheme);
-								g2d.setComposite(LafWidgetUtilities
+								g2d.setComposite(WidgetUtilities
 										.getAlphaComposite(this.table, g));
 							}
 						}
@@ -2459,7 +2459,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 	 */
 	protected boolean _hasSelectionAnimations() {
 		return this._hasAnimations()
-				&& !LafWidgetUtilities.hasNoAnimations(this.table,
+				&& !WidgetUtilities.hasNoAnimations(this.table,
 						AnimationFacet.SELECTION);
 	}
 
@@ -2471,7 +2471,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 	 */
 	protected boolean _hasRolloverAnimations() {
 		return this._hasAnimations()
-				&& !LafWidgetUtilities.hasNoAnimations(this.table,
+				&& !WidgetUtilities.hasNoAnimations(this.table,
 						AnimationFacet.ROLLOVER);
 	}
 

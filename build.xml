@@ -64,7 +64,6 @@
 	<path id="substance.module.classpath">
 		<path refid="${module.jdk.classpath.substance}" />
 		<pathelement location="${substance.lib.dir}/trident-${trident.version}.jar" />
-		<pathelement location="${substance.lib.dir}/build/laf-widget.jar" />
 	</path>
 
 	<patternset id="excluded.from.module.substance" />
@@ -85,8 +84,6 @@
 
 	<target name="compile.module.substance.production" description="compile module substance production classes">
 		<mkdir dir="${substance.output.dir}" />
-        <!-- Explode laf-widget -->
-        <unjar src="${substance.lib.dir}/build/laf-widget.jar" dest="${substance.output.dir}/" />
 		<javac source="${javac.source}" target="${javac.target}" encoding="${javac.encoding}" destdir="${substance.output.dir}" debug="${javac.debug}" nowarn="${javac.generate.no.warnings}" memoryMaximumSize="${javac.max.memory}" fork="true">
 			<compilerarg line="${javac.args.substance}" />
 			<bootclasspath refid="substance.module.bootclasspath" />
@@ -131,7 +128,7 @@
 	<target name="jar-bin-lite" description="create runtime jar with no custom color choosers">
 		<delete file="${substance.drop.dir}/${substance.version}/substance-lite-${substance.version}.jar" />
 		<jar compress="true" destfile="${substance.drop.dir}/${substance.version}/substance-lite-${substance.version}.jar">
-			<fileset dir="${substance.output.dir}/" excludes="tools/** test/** **/*.svg org/pushingpixels/substance/internal/contrib/randelshofer/** org/pushingpixels/substance/internal/contrib/xoetrope/** org/pushingpixels/substance/internal/ui/SubstanceColorChooserUI* org/pushingpixels/lafwidget/ant/**" />
+			<fileset dir="${substance.output.dir}/" excludes="**/*.svg org/pushingpixels/substance/internal/contrib/randelshofer/** org/pushingpixels/substance/internal/contrib/xoetrope/** org/pushingpixels/substance/internal/ui/SubstanceColorChooserUI*" />
 			<fileset dir="${module.substance.basedir}/" includes="resources/**" />
 			<manifest>
 				<attribute name="Substance-Distribution" value="Lite" />

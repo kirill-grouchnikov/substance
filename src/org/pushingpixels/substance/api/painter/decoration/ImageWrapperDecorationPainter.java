@@ -37,11 +37,11 @@ import java.awt.image.BufferedImage;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.painter.SubstancePainterUtils;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 
@@ -208,7 +208,7 @@ public abstract class ImageWrapperDecorationPainter implements
 			SubstanceColorScheme tileScheme, int offsetTextureX,
 			int offsetTextureY, int x, int y, int width, int height) {
 		Graphics2D graphics = (Graphics2D) g.create();
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(comp,
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(comp,
 				this.textureAlpha, g));
 
 		Image colorizedTile = this.getColorizedTile(tileScheme);

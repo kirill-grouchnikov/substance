@@ -40,10 +40,8 @@ import javax.swing.event.*;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.substance.api.*;
-import org.pushingpixels.substance.api.renderers.SubstanceRenderer;
+import org.pushingpixels.substance.api.renderer.SubstanceRenderer;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.Timeline.RepeatBehavior;

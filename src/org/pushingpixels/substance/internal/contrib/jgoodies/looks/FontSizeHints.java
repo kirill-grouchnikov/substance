@@ -30,8 +30,6 @@
 
 package org.pushingpixels.substance.internal.contrib.jgoodies.looks;
 
-import org.pushingpixels.lafwidget.utils.LookUtils;
-
 /**
  * Describes font size hints used by the JGoodies Windows look&amp;feel; future
  * implementations of the Plastic l&amp;f may use the same hints.

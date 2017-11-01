@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/laf-widget"/>
 	<classpathentry kind="lib" path="lib/trident-1.4.jar" sourcepath="/trident"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

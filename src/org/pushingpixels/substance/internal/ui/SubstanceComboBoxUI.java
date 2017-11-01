@@ -61,9 +61,8 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.text.JTextComponent;
 
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultComboBoxRenderer;
+import org.pushingpixels.substance.api.renderer.SubstanceDefaultComboBoxRenderer;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -79,6 +78,7 @@ import org.pushingpixels.substance.internal.utils.border.SubstanceTextComponentB
 import org.pushingpixels.substance.internal.utils.combo.ComboBoxBackgroundDelegate;
 import org.pushingpixels.substance.internal.utils.combo.SubstanceComboBoxEditor;
 import org.pushingpixels.substance.internal.utils.combo.SubstanceComboPopup;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 
 /**
  * UI for combo boxes in <b>Substance </b> look and feel.

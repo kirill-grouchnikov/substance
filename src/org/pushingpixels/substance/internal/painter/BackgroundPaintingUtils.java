@@ -34,9 +34,9 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
@@ -88,14 +88,14 @@ public class BackgroundPaintingUtils {
 		boolean isInCellRenderer = (SwingUtilities.getAncestorOfClass(
 				CellRendererPane.class, c) != null);
 		boolean isPreviewMode = Boolean.TRUE.equals(
-				c.getClientProperty(LafWidgetUtilities.PREVIEW_MODE));
+				c.getClientProperty(WidgetUtilities.PREVIEW_MODE));
 
 		Graphics2D graphics = (Graphics2D) g.create();
 		// optimization - do not call fillRect on graphics
 		// with anti-alias turned on
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_OFF);
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c, g));
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(c, g));
 
 		DecorationAreaType decorationType = SubstanceLookAndFeel.getDecorationType(c);
 		SubstanceSkin skin = SubstanceCoreUtilities.getSkin(c);
@@ -175,10 +175,10 @@ public class BackgroundPaintingUtils {
 		}
 
 		Graphics2D graphics = (Graphics2D) g.create();
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c, g));
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(c, g));
 		graphics.setColor(fillColor);
 		graphics.fillRect(rect.x, rect.y, rect.width, rect.height);
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c, 1.0f, g));
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(c, 1.0f, g));
 		// stamp watermark
 		SubstanceWatermark watermark = SubstanceCoreUtilities.getSkin(c)
 				.getWatermark();

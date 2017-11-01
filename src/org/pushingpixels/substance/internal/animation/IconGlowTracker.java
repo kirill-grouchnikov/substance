@@ -31,7 +31,7 @@ package org.pushingpixels.substance.internal.animation;
 
 import java.awt.Component;
 
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
+import org.pushingpixels.substance.api.AnimationConfigurationManager;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.Timeline.RepeatBehavior;
 import org.pushingpixels.trident.Timeline.TimelineState;

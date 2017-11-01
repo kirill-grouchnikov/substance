@@ -26,8 +26,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.UIManager;
 
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 
 /**
  * A panel which displays a selection of color crayons. The user can click at a

@@ -42,10 +42,10 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicDesktopPaneUI;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
 
 /**
  * UI for desktop panes in <b>Substance</b> look and feel.
@@ -89,7 +89,7 @@ public class SubstanceDesktopPaneUI extends BasicDesktopPaneUI {
 			return;
 		}
 		Graphics2D graphics = (Graphics2D) g.create();
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c, g));
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(c, g));
 		if (SubstanceCoreUtilities.isOpaque(c)) {
 			// hack for JLayeredPane.paint() and JDesktopPane.isOpaque()
 			Color back = c.getBackground();

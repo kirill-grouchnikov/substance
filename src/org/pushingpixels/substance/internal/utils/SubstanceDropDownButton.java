@@ -38,9 +38,9 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.border.EmptyBorder;
 
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.AnimationConfigurationManager;
+import org.pushingpixels.substance.api.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 
 /**
@@ -80,10 +80,9 @@ public final class SubstanceDropDownButton extends JButton {
 		int tbInset = SubstanceSizeUtils.getAdjustedSize(fontSize, 1, 2, 1, false);
 		setBorder(new EmptyBorder(tbInset + 1, 0, tbInset - 1, 0));
 
-		this.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
+		SubstanceCoreUtilities.markButtonAsFlat(this);
 		this.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
 				EnumSet.allOf(Side.class));
-		this.setOpaque(false);
 	}
 
 	@Override

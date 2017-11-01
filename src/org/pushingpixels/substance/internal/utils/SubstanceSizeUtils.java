@@ -36,12 +36,12 @@ import java.awt.Toolkit;
 import javax.swing.border.Border;
 import javax.swing.plaf.BorderUIResource;
 
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.SubstanceConstants;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.fonts.FontPolicy;
-import org.pushingpixels.substance.api.fonts.FontSet;
+import org.pushingpixels.substance.api.font.FontPolicy;
+import org.pushingpixels.substance.api.font.FontSet;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.fonts.DefaultGnomeFontPolicy;
 
 /**
@@ -995,4 +995,12 @@ public class SubstanceSizeUtils {
 		}
 	}
 
+    /**
+     * Returns the size of the lookup button. 
+     * 
+     * @return The size of the lookup button.
+     */
+    public static int getLookupButtonSize() {
+        return 4 + SubstanceSizeUtils.getControlFontSize();
+    }
 }

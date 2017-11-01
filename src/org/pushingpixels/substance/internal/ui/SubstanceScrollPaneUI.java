@@ -59,10 +59,10 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicScrollPaneUI;
 import javax.swing.table.JTableHeader;
 
-import org.pushingpixels.lafwidget.LafWidget;
-import org.pushingpixels.lafwidget.LafWidgetRepository;
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
+import org.pushingpixels.substance.api.AnimationConfigurationManager;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceWidget;
+import org.pushingpixels.substance.api.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -97,7 +97,7 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 	 */
 	protected Timeline horizontalScrollTimeline;
 
-	private Set<LafWidget> lafWidgets;
+	private Set<SubstanceWidget> lafWidgets;
 
 	/**
 	 * Creates new UI delegate.
@@ -113,18 +113,18 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 
 	@Override
 	public void installUI(JComponent c) {
-		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+		this.lafWidgets = SubstanceWidgetRepository.getRepository().getMatchingWidgets(c);
 
 		super.installUI(c);
 		
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installUI();
 		}
 	}
 	
 	@Override
 	public void uninstallUI(JComponent c) {
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallUI();
 		}
 		super.uninstallUI(c);
@@ -149,7 +149,7 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 
 		SwingUtilities.invokeLater(() -> installTableHeaderCornerFiller(scrollpane));
 		
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installDefaults();
 		}
 	}
@@ -172,7 +172,7 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 			c.setCorner(JScrollPane.UPPER_LEFT_CORNER, null);
 		}
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallDefaults();
 		}
 		super.uninstallDefaults(c);
@@ -301,7 +301,7 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 		c.getVerticalScrollBar().getModel().addChangeListener(
 				this.substanceVerticalScrollbarChangeListener);
 		
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installListeners();
 		}
 	}
@@ -323,7 +323,7 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 				this.substanceVerticalScrollbarChangeListener);
 		this.substanceVerticalScrollbarChangeListener = null;
 		
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallListeners();
 		}
 

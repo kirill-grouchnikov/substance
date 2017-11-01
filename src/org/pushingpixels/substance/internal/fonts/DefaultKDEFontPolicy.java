@@ -35,8 +35,8 @@ import java.util.regex.Pattern;
 
 import javax.swing.UIDefaults;
 
-import org.pushingpixels.substance.api.fonts.FontPolicy;
-import org.pushingpixels.substance.api.fonts.FontSet;
+import org.pushingpixels.substance.api.font.FontPolicy;
+import org.pushingpixels.substance.api.font.FontSet;
 
 /**
  * The default font policy for KDE OS.

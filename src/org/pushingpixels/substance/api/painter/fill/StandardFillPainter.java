@@ -33,8 +33,8 @@ import java.awt.*;
 import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.image.BufferedImage;
 
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 

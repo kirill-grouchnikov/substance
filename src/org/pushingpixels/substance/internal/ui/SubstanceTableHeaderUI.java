@@ -65,21 +65,21 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
+import org.pushingpixels.substance.api.AnimationConfigurationManager;
+import org.pushingpixels.substance.api.AnimationFacet;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
+import org.pushingpixels.substance.api.renderer.SubstanceDefaultTableHeaderCellRenderer;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.painter.HighlightPainterUtils;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.trident.Timeline.TimelineState;
 import org.pushingpixels.trident.callback.UIThreadTimelineCallbackAdapter;
 
@@ -510,7 +510,7 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 		g2d.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setColor(gridColor);
-		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.header, 0.7f, g));
+		g2d.setComposite(WidgetUtilities.getAlphaComposite(this.header, 0.7f, g));
 
 		float bottomLineY = bottom - strokeWidth / 2;
 		g2d.draw(new Line2D.Float((float) left.getX(), bottomLineY, (float) right.getX(), 
@@ -630,7 +630,7 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 	 */
 	private void paintCell(Graphics g, Rectangle cellRect, int columnIndex, boolean isSelected) {
 		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setComposite(LafWidgetUtilities.getAlphaComposite(header, g));
+		g2d.setComposite(WidgetUtilities.getAlphaComposite(header, g));
 
 		// paint default background
 		Component component = getHeaderRenderer(columnIndex);
@@ -670,10 +670,10 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 					SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
 							.getColorScheme(this.header,
 									ColorSchemeAssociationKind.HIGHLIGHT_BORDER, currState);
-					g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.header, alpha, g));
+					g2d.setComposite(WidgetUtilities.getAlphaComposite(this.header, alpha, g));
 					HighlightPainterUtils.paintHighlight(g2d, this.rendererPane, rendererPane,
 							cellRect, 0.8f, null, fillScheme, borderScheme);
-					g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.header, g));
+					g2d.setComposite(WidgetUtilities.getAlphaComposite(this.header, g));
 				}
 			} else {
 				for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> stateEntry : activeStates
@@ -688,10 +688,10 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 					SubstanceColorScheme borderScheme = SubstanceColorSchemeUtilities
 							.getColorScheme(this.header,
 									ColorSchemeAssociationKind.HIGHLIGHT_BORDER, activeState);
-					g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.header, alpha, g));
+					g2d.setComposite(WidgetUtilities.getAlphaComposite(this.header, alpha, g));
 					HighlightPainterUtils.paintHighlight(g2d, this.rendererPane, rendererPane,
 							cellRect, 0.8f, null, fillScheme, borderScheme);
-					g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.header, g));
+					g2d.setComposite(WidgetUtilities.getAlphaComposite(this.header, g));
 				}
 			}
 		}
@@ -894,7 +894,7 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
 					new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
-			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(this.header, 0.7f, g));
+			g2d.setComposite(WidgetUtilities.getAlphaComposite(this.header, 0.7f, g));
 
 			int x = ltr ? (int) strokeWidth / 2 : getWidth() - 1 - (int) strokeWidth / 2;
 			g2d.drawLine(x, 0, x, getHeight());

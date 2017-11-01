@@ -36,9 +36,9 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.DataBufferInt;
 import java.awt.image.Kernel;
 
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 
 /**
  * Factory for creating noise images. This class is part of officially supported

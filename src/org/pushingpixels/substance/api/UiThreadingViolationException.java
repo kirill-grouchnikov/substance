@@ -35,8 +35,7 @@ package org.pushingpixels.substance.api;
  * 
  * @author Kirill Grouchnikov
  */
-public class UiThreadingViolationException extends
-		org.pushingpixels.lafwidget.UiThreadingViolationException {
+public class UiThreadingViolationException extends RuntimeException {
 	/**
 	 * Creates a new instance of this exception.
 	 * 

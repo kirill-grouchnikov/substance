@@ -37,8 +37,8 @@ import java.util.StringTokenizer;
 import javax.swing.UIDefaults;
 import javax.swing.plaf.FontUIResource;
 
-import org.pushingpixels.substance.api.fonts.FontPolicy;
-import org.pushingpixels.substance.api.fonts.FontSet;
+import org.pushingpixels.substance.api.font.FontPolicy;
+import org.pushingpixels.substance.api.font.FontSet;
 
 /**
  * The default font policy for Gnome OS.

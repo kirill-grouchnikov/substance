@@ -29,15 +29,27 @@
  */
 package org.pushingpixels.substance.api;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.SwingConstants;
 
-import org.pushingpixels.lafwidget.utils.LookUtils;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.contrib.jgoodies.looks.LookUtils;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
  * <b>Substance</b> constants.
@@ -700,5 +712,81 @@ public class SubstanceConstants {
         };
         
         public abstract int getButtonAlignmentInContainer(Container c);
+    }
+
+    /**
+     * Password strength.
+     * 
+     * @author Kirill Grouchnikov
+     */
+    public static class PasswordStrength {
+    	/**
+    	 * Private constructor to prevent initialization.
+    	 */
+    	private PasswordStrength() {
+    	}
+    
+    	/**
+    	 * Weak strength.
+    	 */
+    	public static final PasswordStrength WEAK = new PasswordStrength();
+    
+    	/**
+    	 * Medium strength.
+    	 */
+    	public static final PasswordStrength MEDIUM = new PasswordStrength();
+    
+    	/**
+    	 * Strong strength.
+    	 */
+    	public static final PasswordStrength STRONG = new PasswordStrength();
+    }
+
+    /**
+     * Enumerates all available kinds of tab overview dialog.
+     * 
+     * @author Kirill Grouchnikov
+     */
+    public static class TabOverviewKind {
+    	/**
+    	 * Shows a grid with all tab thumbnails.
+    	 */
+    	public static final TabOverviewKind GRID = new TabOverviewKind("grid");
+    
+    	/**
+    	 * Shows a round carousel with all tab thumbnails.
+    	 */
+    	public static final TabOverviewKind ROUND_CAROUSEL = new TabOverviewKind(
+    			"round carousel");
+    
+    	/**
+    	 * Shows a menu carousel with all tab thumbnails.
+    	 */
+    	public static final TabOverviewKind MENU_CAROUSEL = new TabOverviewKind(
+    			"menu carousel");
+    
+    	/**
+    	 * Animation kind name.
+    	 */
+    	private String name;
+    
+    	/**
+    	 * Creates a new tab overview kind.
+    	 * 
+    	 * @param name
+    	 *            Tab overview kind name.
+    	 */
+    	public TabOverviewKind(String name) {
+    		this.name = name;
+    	}
+    
+    	/**
+    	 * Returns the name of <code>this</code> animation.
+    	 * 
+    	 * @return Name of <code>this</code> animation.
+    	 */
+    	public String getName() {
+    		return this.name;
+    	}
     }
 }

@@ -43,7 +43,7 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicFileChooserUI;
 import javax.swing.plaf.metal.MetalFileChooserUI;
 
-import org.pushingpixels.lafwidget.icon.IsResizable;
+import org.pushingpixels.substance.internal.hidpi.IsResizable;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**

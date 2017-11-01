@@ -32,9 +32,9 @@ package org.pushingpixels.substance.api.painter.decoration;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.*;
 
 /**

@@ -36,7 +36,6 @@ import java.util.Map;
 
 import javax.swing.UIManager;
 
-import org.pushingpixels.lafwidget.utils.LookUtils;
 import org.pushingpixels.substance.internal.contrib.jgoodies.looks.common.ShadowPopup;
 
 /**

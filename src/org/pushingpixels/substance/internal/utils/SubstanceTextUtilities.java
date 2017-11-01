@@ -53,9 +53,6 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
 import javax.swing.text.JTextComponent;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
@@ -65,8 +62,10 @@ import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.border.SubstanceTextComponentBorder;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 
 /**
  * Text-related utilities. This class if for internal use only.
@@ -116,12 +115,12 @@ public class SubstanceTextUtilities {
 		gBlurred.drawString(text, xOffset, yOffset);
 		blurred = convolve.filter(blurred, null);
 		
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c,
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(c,
 				luminFactor, g));
 		int scaleFactor = UIUtil.getScaleFactor();
 		graphics.drawImage(blurred, 0, 0, blurred.getWidth() / scaleFactor,
 				blurred.getHeight() / scaleFactor, null);
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c, g));
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(c, g));
 
 		FontMetrics fm = graphics.getFontMetrics();
 		SubstanceTextUtilities.paintText(graphics, c, 

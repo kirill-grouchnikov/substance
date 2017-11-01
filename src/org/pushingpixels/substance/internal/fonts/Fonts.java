@@ -34,9 +34,9 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.util.Locale;
 
-import org.pushingpixels.lafwidget.utils.LookUtils;
-import org.pushingpixels.substance.api.fonts.FontPolicy;
-import org.pushingpixels.substance.api.fonts.FontSet;
+import org.pushingpixels.substance.api.font.FontPolicy;
+import org.pushingpixels.substance.api.font.FontSet;
+import org.pushingpixels.substance.internal.contrib.jgoodies.looks.LookUtils;
 
 /**
  * Provides static access to popular Windows fonts. The sizes of the font

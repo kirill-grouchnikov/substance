@@ -33,10 +33,10 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.api.painter.decoration.SubstanceDecorationPainter;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
@@ -206,7 +206,7 @@ public class DecorationPainterUtils {
 		boolean isPreviewMode = false;
 		if (c instanceof JComponent) {
 			isPreviewMode = (Boolean.TRUE.equals(((JComponent) c)
-					.getClientProperty(LafWidgetUtilities.PREVIEW_MODE)));
+					.getClientProperty(WidgetUtilities.PREVIEW_MODE)));
 		}
 
 		if (!force && !isPreviewMode && !c.isShowing() && !isInCellRenderer) {
@@ -233,7 +233,7 @@ public class DecorationPainterUtils {
 
 			// paint the background second time with 50%
 			// translucency, making the watermark' bleed' through.
-			g2d.setComposite(LafWidgetUtilities.getAlphaComposite(c, 0.5f, g));
+			g2d.setComposite(WidgetUtilities.getAlphaComposite(c, 0.5f, g));
 			painter.paintDecorationArea(g2d, c, decorationType, c.getWidth(), c
 					.getHeight(), skin);
 		}

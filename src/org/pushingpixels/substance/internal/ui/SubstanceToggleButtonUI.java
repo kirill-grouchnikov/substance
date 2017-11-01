@@ -56,23 +56,23 @@ import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.plaf.basic.BasicToggleButtonUI;
 import javax.swing.text.View;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
-import org.pushingpixels.lafwidget.animation.effects.GhostingListener;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
+import org.pushingpixels.substance.api.AnimationConfigurationManager;
+import org.pushingpixels.substance.api.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.ButtonBackgroundDelegate;
 import org.pushingpixels.substance.internal.utils.ButtonVisualStateTracker;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.substance.internal.utils.icon.GlowingIcon;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostingListener;
 
 /**
  * UI for toggle buttons in <b>Substance</b> look and feel.
@@ -377,7 +377,7 @@ public class SubstanceToggleButtonUI extends BasicToggleButtonUI implements
 				.useThemedDefaultIcon(b)) ? SubstanceCoreUtilities
 				.getThemedIcon(b, originalIcon) : originalIcon;
 
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(b, g));
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(b, g));
 		float activeAmount = this.substanceVisualStateTracker
 				.getStateTransitionTracker().getActiveStrength();
 		graphics.translate(iconRect.x, iconRect.y);
@@ -390,7 +390,7 @@ public class SubstanceToggleButtonUI extends BasicToggleButtonUI implements
 				this.glowingIcon.paintIcon(b, graphics, 0, 0);
 			} else {
 				themedIcon.paintIcon(b, graphics, 0, 0);
-				graphics.setComposite(LafWidgetUtilities.getAlphaComposite(b,
+				graphics.setComposite(WidgetUtilities.getAlphaComposite(b,
 						activeAmount, g));
 				originalIcon.paintIcon(b, graphics, 0, 0);
 			}

@@ -58,22 +58,21 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-import org.pushingpixels.lafwidget.LafWidget;
-import org.pushingpixels.lafwidget.LafWidgetRepository;
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceWidget;
+import org.pushingpixels.substance.api.SubstanceWidgetRepository;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.RolloverControlListener;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
@@ -82,6 +81,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
 
 /**
  * UI for scroll bars in <b>Substance </b> look and feel.
@@ -133,7 +133,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements Transition
 	 */
 	protected AdjustmentListener substanceAdjustmentListener;
 
-	private Set<LafWidget> lafWidgets;
+	private Set<SubstanceWidget> lafWidgets;
 
 	private static int THUMB_DELTA = 2;
 
@@ -166,18 +166,18 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements Transition
 
 	@Override
 	public void installUI(JComponent c) {
-		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+		this.lafWidgets = SubstanceWidgetRepository.getRepository().getMatchingWidgets(c);
 
 		super.installUI(c);
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installUI();
 		}
 	}
 
 	@Override
 	public void uninstallUI(JComponent c) {
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallUI();
 		}
 		super.uninstallUI(c);
@@ -541,7 +541,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements Transition
 		BackgroundPaintingUtils.update(graphics, c, false);
 		float alpha = SubstanceColorSchemeUtilities.getAlpha(this.scrollbar,
 				ComponentState.getState(this.thumbModel, this.scrollbar));
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(c, alpha, g));
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(c, alpha, g));
 		super.paint(graphics, c);
 		graphics.dispose();
 	}
@@ -557,14 +557,14 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements Transition
 		this.scrollBarWidth = SubstanceSizeUtils
 				.getScrollBarWidth(SubstanceSizeUtils.getComponentFontSize(this.scrollbar));
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installDefaults();
 		}
 	}
 
 	@Override
 	protected void uninstallDefaults() {
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallDefaults();
 		}
 
@@ -582,7 +582,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements Transition
 				this.thumbModel);
 		this.compositeStateTransitionTracker.registerModelListeners();
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installComponents();
 		}
 	}
@@ -596,7 +596,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements Transition
 	protected void uninstallComponents() {
 		this.compositeStateTransitionTracker.unregisterModelListeners();
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallComponents();
 		}
 	}
@@ -644,7 +644,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements Transition
 		};
 		this.scrollbar.addAdjustmentListener(this.substanceAdjustmentListener);
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installListeners();
 		}
 	}
@@ -666,7 +666,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements Transition
 		this.scrollbar.removeAdjustmentListener(this.substanceAdjustmentListener);
 		this.substanceAdjustmentListener = null;
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallListeners();
 		}
 

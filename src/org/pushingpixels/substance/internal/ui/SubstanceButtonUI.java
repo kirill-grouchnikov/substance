@@ -57,15 +57,11 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 
-import org.pushingpixels.lafwidget.LafWidget;
-import org.pushingpixels.lafwidget.LafWidgetRepository;
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.lafwidget.animation.effects.GhostPaintingUtils;
-import org.pushingpixels.lafwidget.animation.effects.GhostingListener;
-import org.pushingpixels.lafwidget.utils.RenderingUtils;
+import org.pushingpixels.substance.api.AnimationConfigurationManager;
+import org.pushingpixels.substance.api.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceWidget;
+import org.pushingpixels.substance.api.SubstanceWidgetRepository;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.ModificationAwareUI;
 import org.pushingpixels.substance.internal.animation.RootPaneDefaultButtonTracker;
@@ -73,11 +69,15 @@ import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.ButtonBackgroundDelegate;
 import org.pushingpixels.substance.internal.utils.ButtonVisualStateTracker;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
 import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
+import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.substance.internal.utils.icon.GlowingIcon;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostingListener;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.Timeline.RepeatBehavior;
 import org.pushingpixels.trident.swing.SwingRepaintCallback;
@@ -154,7 +154,7 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 	 */
 	private GhostingListener ghostModelChangeListener;
 
-	private Set<LafWidget> lafWidgets;
+	private Set<SubstanceWidget> lafWidgets;
 
 	protected AbstractButton button;
 
@@ -186,18 +186,18 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 
 	@Override
 	public void installUI(JComponent c) {
-		this.lafWidgets = LafWidgetRepository.getRepository().getMatchingWidgets(c);
+		this.lafWidgets = SubstanceWidgetRepository.getRepository().getMatchingWidgets(c);
 
 		super.installUI(c);
 		
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installUI();
 		}
 	}
 	
 	@Override
 	public void uninstallUI(JComponent c) {
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallUI();
 		}
 		super.uninstallUI(c);
@@ -244,7 +244,7 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 				.getClientProperty(SubstanceLookAndFeel.WINDOW_MODIFIED))) {
 			trackModificationFlag();
 		}
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installDefaults();
 		}
 	}
@@ -269,7 +269,7 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 			b.setIcon(origIcon);
 		b.putClientProperty(SubstanceButtonUI.OPACITY_ORIGINAL, null);
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallDefaults();
 		}
 	}
@@ -330,7 +330,7 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 		this.ghostModelChangeListener = new GhostingListener(b, b.getModel());
 		this.ghostModelChangeListener.registerListeners();
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.installListeners();
 		}
 	}
@@ -352,7 +352,7 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 		this.ghostModelChangeListener.unregisterListeners();
 		this.ghostModelChangeListener = null;
 
-		for (LafWidget lafWidget : this.lafWidgets) {
+		for (SubstanceWidget lafWidget : this.lafWidgets) {
 			lafWidget.uninstallListeners();
 		}
 
@@ -497,7 +497,7 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 				&& SubstanceCoreUtilities.useThemedDefaultIcon(b)) 
 					? SubstanceCoreUtilities.getThemedIcon(b, originalIcon) : originalIcon;
 
-		graphics.setComposite(LafWidgetUtilities.getAlphaComposite(b, g));
+		graphics.setComposite(WidgetUtilities.getAlphaComposite(b, g));
 		float activeAmount = this.substanceVisualStateTracker
 				.getStateTransitionTracker().getActiveStrength();
 		graphics.translate(iconRect.x, iconRect.y);
@@ -509,7 +509,7 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 				this.glowingIcon.paintIcon(b, graphics, 0, 0);
 			} else {
 				themedIcon.paintIcon(b, graphics, 0, 0);
-				graphics.setComposite(LafWidgetUtilities.getAlphaComposite(b,
+				graphics.setComposite(WidgetUtilities.getAlphaComposite(b,
 						activeAmount, g));
 				originalIcon.paintIcon(b, graphics, 0, 0);
 			}

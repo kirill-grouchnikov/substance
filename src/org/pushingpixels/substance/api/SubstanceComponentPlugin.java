@@ -56,7 +56,7 @@ public interface SubstanceComponentPlugin {
      * 
      * @param skin
      *            Skin.
-     * @return Collection of custom settings based on the specified theme. The entries in the array
+     * @return Collection of custom settings based on the specified skin. The entries in the array
      *         should be pairwise, odd being symbolic name of a setting, and even being the setting
      *         value.
      */

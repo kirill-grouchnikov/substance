@@ -48,27 +48,26 @@ import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.plaf.basic.BasicBorders.MarginBorder;
 
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceSkin;
-import org.pushingpixels.substance.api.inputmaps.InputMapSet;
-import org.pushingpixels.substance.api.inputmaps.SubstanceInputMapUtilities;
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultListCellRenderer;
-import org.pushingpixels.substance.internal.svg.Computer;
-import org.pushingpixels.substance.internal.svg.Drive_harddisk;
-import org.pushingpixels.substance.internal.svg.Folder;
-import org.pushingpixels.substance.internal.svg.Media_floppy;
-import org.pushingpixels.substance.internal.svg.Text_x_generic;
+import org.pushingpixels.substance.api.inputmap.InputMapSet;
+import org.pushingpixels.substance.api.inputmap.SubstanceInputMapUtilities;
+import org.pushingpixels.substance.api.renderer.SubstanceDefaultListCellRenderer;
+import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.internal.svg.ic_arrow_upward_black_24px;
+import org.pushingpixels.substance.internal.svg.ic_computer_black_24px;
 import org.pushingpixels.substance.internal.svg.ic_create_new_folder_black_24px;
 import org.pushingpixels.substance.internal.svg.ic_error_black_24px;
+import org.pushingpixels.substance.internal.svg.ic_folder_black_24px;
 import org.pushingpixels.substance.internal.svg.ic_help_black_24px;
 import org.pushingpixels.substance.internal.svg.ic_home_black_24px;
 import org.pushingpixels.substance.internal.svg.ic_info_black_24px;
 import org.pushingpixels.substance.internal.svg.ic_insert_drive_file_black_24px;
+import org.pushingpixels.substance.internal.svg.ic_save_black_24px;
+import org.pushingpixels.substance.internal.svg.ic_storage_black_24px;
 import org.pushingpixels.substance.internal.svg.ic_view_list_black_24px;
 import org.pushingpixels.substance.internal.svg.ic_warning_black_24px;
 import org.pushingpixels.substance.internal.utils.border.SubstanceBorder;
@@ -429,19 +428,19 @@ public class SkinUtilities {
 				Boolean.TRUE,
 
 				"FileView.computerIcon",
-				Computer.of(16, 16),
+				ic_computer_black_24px.of(16, 16),
 
 				"FileView.directoryIcon",
-				Folder.of(16, 16),
+				ic_folder_black_24px.of(16, 16),
 
 				"FileView.fileIcon",
-				Text_x_generic.of(16, 16),
+				ic_insert_drive_file_black_24px.of(16, 16),
 
 				"FileView.floppyDriveIcon",
-				Media_floppy.of(16, 16),
+				ic_save_black_24px.of(16, 16),
 
 				"FileView.hardDriveIcon",
-				Drive_harddisk.of(16, 16),
+				ic_storage_black_24px.of(16, 16),
 
 				"FormattedTextField.background",
 				SubstanceColorUtilities.getDefaultBackgroundColor(true, skin,

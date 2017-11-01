@@ -32,7 +32,13 @@ package org.pushingpixels.substance.api;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JTabbedPane;
 import javax.swing.UIDefaults;
@@ -45,7 +51,9 @@ import org.pushingpixels.substance.api.painter.overlay.SubstanceOverlayPainter;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.api.trait.SubstanceTrait;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.SkinUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
  * Base abstract class for Substance skins.

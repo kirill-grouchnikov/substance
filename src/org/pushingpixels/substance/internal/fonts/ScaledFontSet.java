@@ -31,7 +31,7 @@ package org.pushingpixels.substance.internal.fonts;
 
 import javax.swing.plaf.FontUIResource;
 
-import org.pushingpixels.substance.api.fonts.FontSet;
+import org.pushingpixels.substance.api.font.FontSet;
 
 /**
  * Wrapper around the base Substance font set. Is used to create larger /

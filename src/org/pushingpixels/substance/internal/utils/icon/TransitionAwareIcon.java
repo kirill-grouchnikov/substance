@@ -35,261 +35,247 @@ import java.util.Map;
 
 import javax.swing.*;
 
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
-import org.pushingpixels.lafwidget.icon.IsHiDpiAware;
 import org.pushingpixels.substance.api.*;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.internal.hidpi.IsHiDpiAware;
 import org.pushingpixels.substance.internal.utils.*;
 
 /**
- * Icon with transition-aware capabilities. Has a delegate that does the actual
- * painting based on the transition color schemes. This class is used heavily on
- * Substance-provided icons, such as title pane button icons, arrow icons on
- * scroll bars and combos etc.
+ * Icon with transition-aware capabilities. Has a delegate that does the actual painting based on
+ * the transition color schemes. This class is used heavily on Substance-provided icons, such as
+ * title pane button icons, arrow icons on scroll bars and combos etc.
  * 
  * @author Kirill Grouchnikov
  */
 @TransitionAware
 public class TransitionAwareIcon implements Icon, IsHiDpiAware {
-	/**
-	 * The delegate needs to implement the method in this interface based on the
-	 * provided color scheme. The color scheme is computed based on the
-	 * transitions that are happening on the associated button.
-	 * 
-	 * @author Kirill Grouchnikov
-	 */
-	public static interface Delegate {
-		/**
-		 * Returns the icon that matches the specified scheme.
-		 * 
-		 * @param scheme
-		 *            Color scheme.
-		 * @return Icon that matches the specified scheme.
-		 */
-		public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme);
-	}
+    /**
+     * The delegate needs to implement the method in this interface based on the provided color
+     * scheme. The color scheme is computed based on the transitions that are happening on the
+     * associated button.
+     * 
+     * @author Kirill Grouchnikov
+     */
+    public static interface Delegate {
+        /**
+         * Returns the icon that matches the specified scheme.
+         * 
+         * @param scheme
+         *            Color scheme.
+         * @return Icon that matches the specified scheme.
+         */
+        public HiDpiAwareIcon getColorSchemeIcon(SubstanceColorScheme scheme);
+    }
 
-	public static interface ColorSchemeAssociationKindDelegate {
-		public ColorSchemeAssociationKind getColorSchemeAssociationKind(
-				ComponentState state);
-	}
+    public static interface ColorSchemeAssociationKindDelegate {
+        public ColorSchemeAssociationKind getColorSchemeAssociationKind(ComponentState state);
+    }
 
-	public static interface TransitionAwareUIDelegate {
-		public TransitionAwareUI getTransitionAwareUI();
-	}
+    public static interface TransitionAwareUIDelegate {
+        public TransitionAwareUI getTransitionAwareUI();
+    }
 
-	/**
-	 * The associated component.
-	 */
-	private JComponent comp;
+    /**
+     * The associated component.
+     */
+    private JComponent comp;
 
-	/**
-	 * The associated model.
-	 */
-	// private ButtonModel model;
+    /**
+     * The associated model.
+     */
+    // private ButtonModel model;
 
-	private TransitionAwareUIDelegate transitionAwareUIDelegate;
+    private TransitionAwareUIDelegate transitionAwareUIDelegate;
 
-	/**
-	 * Delegate to compute the actual icons.
-	 */
-	protected Delegate delegate;
+    /**
+     * Delegate to compute the actual icons.
+     */
+    protected Delegate delegate;
 
-	protected ColorSchemeAssociationKindDelegate colorSchemeAssociationKindDelegate;
+    protected ColorSchemeAssociationKindDelegate colorSchemeAssociationKindDelegate;
 
-	protected String uniqueIconTypeId;
+    protected String uniqueIconTypeId;
 
-	/**
-	 * Icon cache to speed up the subsequent icon painting. The basic assumption
-	 * is that the {@link #delegate} returns an icon that paints the same for
-	 * the same parameters.
-	 */
-	private static LazyResettableHashMap<HiDpiAwareIcon> iconMap =
-			new LazyResettableHashMap<HiDpiAwareIcon>("TransitionAwareIcon");
+    /**
+     * Icon cache to speed up the subsequent icon painting. The basic assumption is that the
+     * {@link #delegate} returns an icon that paints the same for the same parameters.
+     */
+    private static LazyResettableHashMap<HiDpiAwareIcon> iconMap = new LazyResettableHashMap<HiDpiAwareIcon>(
+            "TransitionAwareIcon");
 
-	private int iconWidth;
+    private int iconWidth;
 
-	private int iconHeight;
+    private int iconHeight;
 
-	public TransitionAwareIcon(final AbstractButton button, Delegate delegate,
-			String uniqueIconTypeId) {
-		this(button, (button == null) ? null : () -> (TransitionAwareUI) button.getUI(),
-				delegate, null, uniqueIconTypeId);
-	}
+    public TransitionAwareIcon(final AbstractButton button, Delegate delegate,
+            String uniqueIconTypeId) {
+        this(button, (button == null) ? null : () -> (TransitionAwareUI) button.getUI(), delegate,
+                null, uniqueIconTypeId);
+    }
 
-	/**
-	 * Creates a new transition-aware icon.
-	 * 
-	 * @param comp
-	 *            Associated component.
-	 * @param model
-	 *            Associated model.
-	 * @param delegate
-	 *            Delegate to compute the actual icons.
-	 */
-	public TransitionAwareIcon(
-			JComponent comp,
-			TransitionAwareUIDelegate transitionAwareUIDelegate,
-			Delegate delegate,
-			ColorSchemeAssociationKindDelegate colorSchemeAssociationKindDelegate,
-			String uniqueIconTypeId) {
-		this.comp = comp;
-		this.transitionAwareUIDelegate = transitionAwareUIDelegate;
-		this.delegate = delegate;
-		this.colorSchemeAssociationKindDelegate = colorSchemeAssociationKindDelegate;
-		this.uniqueIconTypeId = uniqueIconTypeId;
-		
-		HiDpiAwareIcon markEnabledIcon = this.delegate.getColorSchemeIcon(
-				SubstanceColorSchemeUtilities.getColorScheme(comp, 
-						ColorSchemeAssociationKind.MARK,
-						ComponentState.ENABLED));
-		this.iconWidth = markEnabledIcon.getIconWidth();
-		this.iconHeight = markEnabledIcon.getIconHeight();
-	}
-	
-	@Override
-	public boolean isHiDpiAware() {
-	    return true;
-	}
+    /**
+     * Creates a new transition-aware icon.
+     * 
+     * @param comp
+     *            Associated component.
+     * @param model
+     *            Associated model.
+     * @param delegate
+     *            Delegate to compute the actual icons.
+     */
+    public TransitionAwareIcon(JComponent comp, TransitionAwareUIDelegate transitionAwareUIDelegate,
+            Delegate delegate,
+            ColorSchemeAssociationKindDelegate colorSchemeAssociationKindDelegate,
+            String uniqueIconTypeId) {
+        this.comp = comp;
+        this.transitionAwareUIDelegate = transitionAwareUIDelegate;
+        this.delegate = delegate;
+        this.colorSchemeAssociationKindDelegate = colorSchemeAssociationKindDelegate;
+        this.uniqueIconTypeId = uniqueIconTypeId;
 
-	/**
-	 * Returns the current icon to paint.
-	 * 
-	 * @return Icon to paint.
-	 */
-	private synchronized HiDpiAwareIcon getIconToPaint() {
-		StateTransitionTracker stateTransitionTracker = this.transitionAwareUIDelegate
-				.getTransitionAwareUI().getTransitionTracker();
-		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
-				.getModelStateInfo();
-		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
-				.getStateContributionMap();
+        HiDpiAwareIcon markEnabledIcon = this.delegate
+                .getColorSchemeIcon(SubstanceColorSchemeUtilities.getColorScheme(comp,
+                        ColorSchemeAssociationKind.MARK, ComponentState.ENABLED));
+        this.iconWidth = markEnabledIcon.getIconWidth();
+        this.iconHeight = markEnabledIcon.getIconHeight();
+    }
 
-		ComponentState currState = modelStateInfo.getCurrModelState();
-		boolean buttonNeverPainted = SubstanceCoreUtilities
-				.isButtonNeverPainted(this.comp);
-		if (buttonNeverPainted) {
-			if (currState.isFacetActive(ComponentStateFacet.ENABLE))
-				currState = ComponentState.ENABLED;
-		}
+    @Override
+    public boolean isHiDpiAware() {
+        return true;
+    }
 
-		ColorSchemeAssociationKind baseAssociationKind = (this.colorSchemeAssociationKindDelegate == null) 
-				? ColorSchemeAssociationKind.MARK
-				: this.colorSchemeAssociationKindDelegate
-						.getColorSchemeAssociationKind(currState);
-		SubstanceColorScheme baseScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this.comp, baseAssociationKind, currState);
-		float baseAlpha = SubstanceColorSchemeUtilities.getAlpha(this.comp,
-				currState);
+    /**
+     * Returns the current icon to paint.
+     * 
+     * @return Icon to paint.
+     */
+    private synchronized HiDpiAwareIcon getIconToPaint() {
+        StateTransitionTracker stateTransitionTracker = this.transitionAwareUIDelegate
+                .getTransitionAwareUI().getTransitionTracker();
+        StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
+                .getModelStateInfo();
+        Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
+                .getStateContributionMap();
 
-		HashMapKey keyBase = SubstanceCoreUtilities.getHashKey(
-				this.uniqueIconTypeId, SubstanceSizeUtils.getComponentFontSize(this.comp), 
-				baseScheme.getDisplayName(), baseAlpha);
-		HiDpiAwareIcon layerBase = iconMap.get(keyBase);
-		if (layerBase == null) {
-			HiDpiAwareIcon baseFullOpacity = this.delegate.getColorSchemeIcon(baseScheme);
-			if (baseAlpha == 1.0f) {
-				layerBase = baseFullOpacity;
-				iconMap.put(keyBase, layerBase);
-			} else {
-				BufferedImage baseImage = SubstanceCoreUtilities.getBlankImage(
-						baseFullOpacity.getIconWidth(), baseFullOpacity.getIconHeight());
-				Graphics2D g2base = baseImage.createGraphics();
-				g2base.setComposite(AlphaComposite.SrcOver.derive(baseAlpha));
-				baseFullOpacity.paintIcon(this.comp, g2base, 0, 0);
-				g2base.dispose();
-				layerBase = new HiDpiAwareIcon(baseImage);
-				iconMap.put(keyBase, layerBase);
-			}
-		}
-		if (currState.isDisabled() || (activeStates.size() == 1)
-				|| buttonNeverPainted) {
-			return layerBase;
-		}
+        ComponentState currState = modelStateInfo.getCurrModelState();
+        boolean buttonNeverPainted = SubstanceCoreUtilities.isButtonNeverPainted(this.comp);
+        if (buttonNeverPainted) {
+            if (currState.isFacetActive(ComponentStateFacet.ENABLE))
+                currState = ComponentState.ENABLED;
+        }
 
-		BufferedImage result = SubstanceCoreUtilities.getBlankImage(layerBase
-				.getIconWidth(), layerBase.getIconHeight());
-		Graphics2D g2d = result.createGraphics();
-		// draw the base layer
-		layerBase.paintIcon(this.comp, g2d, 0, 0);
+        ColorSchemeAssociationKind baseAssociationKind = (this.colorSchemeAssociationKindDelegate == null)
+                ? ColorSchemeAssociationKind.MARK
+                : this.colorSchemeAssociationKindDelegate.getColorSchemeAssociationKind(currState);
+        SubstanceColorScheme baseScheme = SubstanceColorSchemeUtilities.getColorScheme(this.comp,
+                baseAssociationKind, currState);
+        float baseAlpha = SubstanceColorSchemeUtilities.getAlpha(this.comp, currState);
 
-		// draw the other active layers
-		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
-				.entrySet()) {
-			ComponentState activeState = activeEntry.getKey();
-			// System.out.println("Painting state " + activeState + "[curr is "
-			// + currState + "] with " + activeEntry.getValue());
-			if (activeState == currState)
-				continue;
+        HashMapKey keyBase = SubstanceCoreUtilities.getHashKey(this.uniqueIconTypeId,
+                SubstanceSizeUtils.getComponentFontSize(this.comp), baseScheme.getDisplayName(),
+                baseAlpha);
+        HiDpiAwareIcon layerBase = iconMap.get(keyBase);
+        if (layerBase == null) {
+            HiDpiAwareIcon baseFullOpacity = this.delegate.getColorSchemeIcon(baseScheme);
+            if (baseAlpha == 1.0f) {
+                layerBase = baseFullOpacity;
+                iconMap.put(keyBase, layerBase);
+            } else {
+                BufferedImage baseImage = SubstanceCoreUtilities.getBlankImage(
+                        baseFullOpacity.getIconWidth(), baseFullOpacity.getIconHeight());
+                Graphics2D g2base = baseImage.createGraphics();
+                g2base.setComposite(AlphaComposite.SrcOver.derive(baseAlpha));
+                baseFullOpacity.paintIcon(this.comp, g2base, 0, 0);
+                g2base.dispose();
+                layerBase = new HiDpiAwareIcon(baseImage);
+                iconMap.put(keyBase, layerBase);
+            }
+        }
+        if (currState.isDisabled() || (activeStates.size() == 1) || buttonNeverPainted) {
+            return layerBase;
+        }
 
-			float stateContribution = activeEntry.getValue().getContribution();
-			if (stateContribution > 0.0f) {
-				g2d.setComposite(AlphaComposite.SrcOver.derive(stateContribution));
+        BufferedImage result = SubstanceCoreUtilities.getBlankImage(layerBase.getIconWidth(),
+                layerBase.getIconHeight());
+        Graphics2D g2d = result.createGraphics();
+        // draw the base layer
+        layerBase.paintIcon(this.comp, g2d, 0, 0);
 
-				ColorSchemeAssociationKind associationKind = (this.colorSchemeAssociationKindDelegate == null) 
-						? ColorSchemeAssociationKind.MARK
-						: this.colorSchemeAssociationKindDelegate.getColorSchemeAssociationKind(activeState);
-				SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
-						.getColorScheme(this.comp, associationKind, activeState);
-				float alpha = SubstanceColorSchemeUtilities.getAlpha(this.comp,
-						activeState);
+        // draw the other active layers
+        for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
+                .entrySet()) {
+            ComponentState activeState = activeEntry.getKey();
+            // System.out.println("Painting state " + activeState + "[curr is "
+            // + currState + "] with " + activeEntry.getValue());
+            if (activeState == currState)
+                continue;
 
-				HashMapKey key = SubstanceCoreUtilities.getHashKey(
-						this.uniqueIconTypeId, 
-						SubstanceSizeUtils.getComponentFontSize(this.comp), 
-						scheme.getDisplayName(), alpha);
-				HiDpiAwareIcon layer = iconMap.get(key);
-				if (layer == null) {
-					HiDpiAwareIcon fullOpacity = this.delegate.getColorSchemeIcon(scheme);
-					if (alpha == 1.0f) {
-						layer = fullOpacity;
-						iconMap.put(key, layer);
-					} else {
-						BufferedImage image = SubstanceCoreUtilities
-								.getBlankImage(fullOpacity.getIconWidth(),
-										fullOpacity.getIconHeight());
-						Graphics2D g2layer = image.createGraphics();
-						g2layer.setComposite(AlphaComposite.SrcOver
-								.derive(alpha));
-						fullOpacity.paintIcon(this.comp, g2layer, 0, 0);
-						g2layer.dispose();
-						layer = new HiDpiAwareIcon(image);
-						iconMap.put(key, layer);
-					}
-				}
-				layer.paintIcon(this.comp, g2d, 0, 0);
-			}
-		}
-		g2d.dispose();
-		return new HiDpiAwareIcon(result);
-	}
+            float stateContribution = activeEntry.getValue().getContribution();
+            if (stateContribution > 0.0f) {
+                g2d.setComposite(AlphaComposite.SrcOver.derive(stateContribution));
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.Icon#getIconHeight()
-	 */
-	public int getIconHeight() {
-		return this.iconHeight;
-	}
+                ColorSchemeAssociationKind associationKind = (this.colorSchemeAssociationKindDelegate == null)
+                        ? ColorSchemeAssociationKind.MARK
+                        : this.colorSchemeAssociationKindDelegate
+                                .getColorSchemeAssociationKind(activeState);
+                SubstanceColorScheme scheme = SubstanceColorSchemeUtilities
+                        .getColorScheme(this.comp, associationKind, activeState);
+                float alpha = SubstanceColorSchemeUtilities.getAlpha(this.comp, activeState);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.Icon#getIconWidth()
-	 */
-	public int getIconWidth() {
-		return this.iconWidth;
-	}
+                HashMapKey key = SubstanceCoreUtilities.getHashKey(this.uniqueIconTypeId,
+                        SubstanceSizeUtils.getComponentFontSize(this.comp), scheme.getDisplayName(),
+                        alpha);
+                HiDpiAwareIcon layer = iconMap.get(key);
+                if (layer == null) {
+                    HiDpiAwareIcon fullOpacity = this.delegate.getColorSchemeIcon(scheme);
+                    if (alpha == 1.0f) {
+                        layer = fullOpacity;
+                        iconMap.put(key, layer);
+                    } else {
+                        BufferedImage image = SubstanceCoreUtilities.getBlankImage(
+                                fullOpacity.getIconWidth(), fullOpacity.getIconHeight());
+                        Graphics2D g2layer = image.createGraphics();
+                        g2layer.setComposite(AlphaComposite.SrcOver.derive(alpha));
+                        fullOpacity.paintIcon(this.comp, g2layer, 0, 0);
+                        g2layer.dispose();
+                        layer = new HiDpiAwareIcon(image);
+                        iconMap.put(key, layer);
+                    }
+                }
+                layer.paintIcon(this.comp, g2d, 0, 0);
+            }
+        }
+        g2d.dispose();
+        return new HiDpiAwareIcon(result);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
-	 * int, int)
-	 */
-	public void paintIcon(Component c, Graphics g, int x, int y) {
-		this.getIconToPaint().paintIcon(c, g, x, y);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.Icon#getIconHeight()
+     */
+    public int getIconHeight() {
+        return this.iconHeight;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.Icon#getIconWidth()
+     */
+    public int getIconWidth() {
+        return this.iconWidth;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics, int, int)
+     */
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+        this.getIconToPaint().paintIcon(c, g, x, y);
+    }
 }

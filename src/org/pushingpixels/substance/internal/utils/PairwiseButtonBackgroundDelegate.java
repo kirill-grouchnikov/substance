@@ -41,8 +41,6 @@ import java.util.Set;
 
 import javax.swing.AbstractButton;
 
-import org.pushingpixels.lafwidget.LafWidgetUtilities;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
@@ -56,6 +54,7 @@ import org.pushingpixels.substance.api.shaper.RectangularButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 
 /**
  * Delegate class for painting backgrounds of buttons in <b>Substance </b> look
@@ -197,7 +196,7 @@ public class PairwiseButtonBackgroundDelegate {
 		}
 		if (extraAlpha > 0.0f) {
 			Graphics2D graphics = (Graphics2D) g.create();
-			graphics.setComposite(LafWidgetUtilities.getAlphaComposite(button, extraAlpha, g));
+			graphics.setComposite(WidgetUtilities.getAlphaComposite(button, extraAlpha, g));
 			graphics.drawImage(fullOpacity, 0, 0, fullOpacity.getWidth() / scaleFactor,
 					fullOpacity.getHeight() / scaleFactor, null);
 			graphics.dispose();

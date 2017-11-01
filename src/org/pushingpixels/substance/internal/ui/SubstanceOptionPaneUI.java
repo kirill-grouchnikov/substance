@@ -46,16 +46,16 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicOptionPaneUI;
 
-import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
-import org.pushingpixels.lafwidget.animation.AnimationFacet;
-import org.pushingpixels.lafwidget.contrib.intellij.UIUtil;
-import org.pushingpixels.lafwidget.icon.HiDpiAwareIcon;
-import org.pushingpixels.lafwidget.icon.IsResizable;
+import org.pushingpixels.substance.api.AnimationConfigurationManager;
+import org.pushingpixels.substance.api.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.colorscheme.SteelBlueColorScheme;
 import org.pushingpixels.substance.api.colorscheme.SunsetColorScheme;
 import org.pushingpixels.substance.internal.animation.IconGlowTracker;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
+import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.internal.hidpi.IsResizable;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.svg.ic_error_black_24px;
 import org.pushingpixels.substance.internal.svg.ic_help_black_24px;
@@ -146,6 +146,7 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
             this.substanceIconLabel = new OptionPaneLabel();
             this.iconGlowTracker = new IconGlowTracker(substanceIconLabel);
             GlowingIcon glowingIcon = new GlowingIcon(sideIcon, this.iconGlowTracker);
+            glowingIcon.setDampeningFactor(10.0f);
             this.substanceIconLabel.setIcon(glowingIcon);
             this.substanceIconLabel.setBorder(new EmptyBorder(0, 8, 0, 8));
 
