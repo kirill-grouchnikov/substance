@@ -367,7 +367,7 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 	 */
 	@Override
 	public void paint(Graphics g, JComponent c) {
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
+		if (!SubstanceCoreUtilities.isCurrentLookAndFeel())
 			return;
 
 		final AbstractButton b = (AbstractButton) c;

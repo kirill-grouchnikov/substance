@@ -18,10 +18,12 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.Icon;
 import javax.swing.UIManager;
-import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.plaf.UIResource;
+
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 
 /**
  * SwatchesChooser.
@@ -32,9 +34,7 @@ import javax.swing.plaf.UIResource;
  * <br>1.0.1 2005-09-11 Get icon from UIManager.
  * <br>1.0  30 March 2005  Created.
  */
-public class SwatchesChooser
-extends AbstractColorChooserPanel
-implements UIResource {
+public class SwatchesChooser extends SubstanceColorChooserPanel implements UIResource {
     private SwatchPanel swatchPanel;
     
     
@@ -89,12 +89,9 @@ implements UIResource {
         return UIManager.getString("ColorChooser.colorSwatches");
     }
     
-    public Icon getLargeDisplayIcon() {
-        return UIManager.getIcon("ColorChooser.colorSwatchesIcon");
-    }
-    
-    public Icon getSmallDisplayIcon() {
-        return getLargeDisplayIcon();
+    @Override
+    public HiDpiAwareIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
+        return SubstanceLookAndFeel.getIconPack().getColorChooserColorSwatchesIcon(size, colorScheme);
     }
     
     public void setColorToModel(Color color) {

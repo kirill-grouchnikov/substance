@@ -337,7 +337,7 @@ public class ButtonBackgroundDelegate {
 	 */
 	public void updateBackground(Graphics g, AbstractButton button) {
 		// failsafe for LAF change
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
+		if (!SubstanceCoreUtilities.isCurrentLookAndFeel())
 			return;
 
 		if (SubstanceCoreUtilities.isButtonNeverPainted(button))
@@ -436,7 +436,7 @@ public class ButtonBackgroundDelegate {
 	 */
 	public static boolean contains(AbstractButton button, int x, int y) {
 		// failsafe for LAF change
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel()) {
+		if (!SubstanceCoreUtilities.isCurrentLookAndFeel()) {
 			return false;
 		}
 		SubstanceButtonShaper shaper = SubstanceCoreUtilities.getButtonShaper(button);

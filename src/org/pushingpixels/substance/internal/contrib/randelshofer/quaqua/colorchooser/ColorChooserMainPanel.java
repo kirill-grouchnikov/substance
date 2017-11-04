@@ -26,13 +26,10 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
-import javax.swing.colorchooser.AbstractColorChooserPanel;
 
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
-import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 
 /**
@@ -65,20 +62,18 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
 		}
 	}
 
-	public void addColorChooserPanel(final AbstractColorChooserPanel ccp) {
+	public void addColorChooserPanel(final SubstanceColorChooserPanel ccp) {
 		final String displayName = ccp.getDisplayName();
 
 		if (displayName.equals("Color Picker")) {
 			northPanel.add(ccp, BorderLayout.WEST);
 		} else {
-			// Get the registered icon and wrap it as hi-dpi aware icon
-			final HiDpiAwareIcon displayIcon = new HiDpiAwareIcon(ccp.getLargeDisplayIcon());
 			JToggleButton tb = new JToggleButton();
 			// Create a transition-aware wrapper around our icon so that it is colorized
 			// based on the color scheme that matches the current state of our toggle button
-			tb.setIcon(new TransitionAwareIcon(tb, (SubstanceColorScheme scheme) ->
-					displayIcon.colorize(SubstanceColorUtilities.getMarkColor(scheme, true)),
-					ccp.getDisplayName()));
+            tb.setIcon(new TransitionAwareIcon(tb,
+                    (SubstanceColorScheme scheme) -> ccp.getHiDpiAwareIcon(18, scheme),
+                    ccp.getDisplayName()));
 			
 			tb.setToolTipText(displayName);
 			tb.setFocusable(false);

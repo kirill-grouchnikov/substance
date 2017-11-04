@@ -333,7 +333,7 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 	
 	@Override
 	public void update(Graphics g, JComponent c) {
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
+		if (!SubstanceCoreUtilities.isCurrentLookAndFeel())
 			return;
 
 		// fix for issue 244 - paint the entire root pane so that it

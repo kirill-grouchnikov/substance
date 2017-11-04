@@ -114,7 +114,7 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
     @Override
     protected void installDefaults() {
         super.installDefaults();
-        if (SubstanceLookAndFeel.isCurrentLookAndFeel()) {
+        if (SubstanceCoreUtilities.isCurrentLookAndFeel()) {
             this.setForeground(SubstanceColorUtilities
                     .getForegroundColor(SubstanceCoreUtilities.getSkin(this.frame)
                             .getActiveColorScheme(DecorationAreaType.SECONDARY_TITLE_PANE)));
@@ -406,7 +406,7 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
     @Override
     protected void setButtonIcons() {
         super.setButtonIcons();
-        if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
+        if (!SubstanceCoreUtilities.isCurrentLookAndFeel())
             return;
 
         Icon restoreIcon = new TransitionAwareIcon(this.maxButton,

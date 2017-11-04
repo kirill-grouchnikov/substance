@@ -27,7 +27,7 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.pushingpixels.substance.internal.hidpi;
+package org.pushingpixels.substance.api.hidpi;
 
 public interface IsHiDpiAware {
 	public boolean isHiDpiAware();

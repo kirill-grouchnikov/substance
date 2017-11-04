@@ -68,9 +68,6 @@ import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
-import org.pushingpixels.substance.internal.svg.ic_search_black_24px;
-import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
@@ -308,12 +305,9 @@ public class MenuSearchWidget extends SubstanceWidget<JMenuBar> {
 
         private void updateSearchIcon() {
             int dimension = SubstanceSizeUtils.getControlFontSize();
-            HiDpiAwareIcon initialIcon = new HiDpiAwareIcon(
-                    ic_search_black_24px.of(dimension, dimension));
-            this.searchButton.setIcon(new TransitionAwareIcon(this.searchButton,
-                    (SubstanceColorScheme scheme) -> new HiDpiAwareIcon(
-                            initialIcon.colorize(SubstanceColorUtilities
-                                    .getAlphaColor(scheme.getForegroundColor(), 160))),
+            this.searchButton.setIcon(new TransitionAwareIcon(
+                    this.searchButton, (SubstanceColorScheme scheme) -> SubstanceLookAndFeel
+                            .getIconPack().getInspectIcon(dimension, scheme),
                     "substance.widget.menusearch"));
         }
     }

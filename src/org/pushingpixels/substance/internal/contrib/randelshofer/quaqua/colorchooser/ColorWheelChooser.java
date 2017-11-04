@@ -17,12 +17,14 @@ package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorch
 import java.awt.BorderLayout;
 import java.awt.Color;
 
-import javax.swing.Icon;
 import javax.swing.UIManager;
-import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.UIResource;
+
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 
 /**
  * A HSB color chooser, which displays a hue/saturation color wheel, and a
@@ -34,7 +36,7 @@ import javax.swing.plaf.UIResource;
  * 			1.0.1 2005-09-11 Get icon from UIManager. <br>
  * 			1.0 August 27, 2005 Created.
  */
-public class ColorWheelChooser extends AbstractColorChooserPanel implements UIResource {
+public class ColorWheelChooser extends SubstanceColorChooserPanel implements UIResource {
 	private ColorWheel colorWheel;
 	private HSBColorSliderModel ccModel = new HSBColorSliderModel();
 
@@ -87,13 +89,10 @@ public class ColorWheelChooser extends AbstractColorChooserPanel implements UIRe
 		return UIManager.getString("ColorChooser.colorWheel");
 	}
 
-	public javax.swing.Icon getLargeDisplayIcon() {
-		return UIManager.getIcon("ColorChooser.colorWheelIcon");
-	}
-
-	public Icon getSmallDisplayIcon() {
-		return getLargeDisplayIcon();
-	}
+    @Override
+    public HiDpiAwareIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
+        return SubstanceLookAndFeel.getIconPack().getColorChooserColorWheelIcon(size, colorScheme);
+    }
 
 	public void updateChooser() {
 		ccModel.setColor(getColorFromModel());

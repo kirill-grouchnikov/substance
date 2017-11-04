@@ -20,11 +20,14 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
 import javax.swing.JColorChooser;
 import javax.swing.UIManager;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.plaf.UIResource;
+
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 /**
  * The ColorSlidersChooser contains four individual color slider pages: gray
  * slider, RGB sliders, CMYK sliders, and HTML sliders.
@@ -38,7 +41,7 @@ import javax.swing.plaf.UIResource;
  * <br>1.1.1 2005-04-23 Localized form.
  * <br>1.0  30 March 2005  Created.
  */
-public class ColorSlidersChooser extends AbstractColorChooserPanel
+public class ColorSlidersChooser extends SubstanceColorChooserPanel
 implements UIResource {
     
     /**
@@ -125,12 +128,9 @@ implements UIResource {
         return UIManager.getString("ColorChooser.colorSliders");
     }
     
-    public Icon getLargeDisplayIcon() {
-        return UIManager.getIcon("ColorChooser.colorSlidersIcon");
-    }
-    
-    public Icon getSmallDisplayIcon() {
-        return getLargeDisplayIcon();
+    @Override
+    public HiDpiAwareIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
+        return SubstanceLookAndFeel.getIconPack().getColorChooserColorSlidersIcon(size, colorScheme);
     }
     
     public void updateChooser() {

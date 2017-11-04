@@ -43,7 +43,6 @@ import javax.swing.JComboBox;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
@@ -221,7 +220,7 @@ public class ComboBoxBackgroundDelegate {
 	public void updateBackground(Graphics g, JComboBox combo,
 			ButtonModel comboModel) {
 		// failsafe for LAF change
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
+		if (!SubstanceCoreUtilities.isCurrentLookAndFeel())
 			return;
 
 		int width = combo.getWidth();

@@ -52,7 +52,6 @@ import java.awt.Window;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.net.URL;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -61,7 +60,6 @@ import java.util.Set;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -103,6 +101,8 @@ import org.pushingpixels.substance.api.colorscheme.LightAquaColorScheme;
 import org.pushingpixels.substance.api.colorscheme.SunfireRedColorScheme;
 import org.pushingpixels.substance.api.colorscheme.SunsetColorScheme;
 import org.pushingpixels.substance.api.combo.ComboPopupPrototypeCallback;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.hidpi.IsHiDpiAware;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.SubstanceDecorationPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
@@ -111,9 +111,6 @@ import org.pushingpixels.substance.api.tabbed.TabCloseCallback;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.contrib.intellij.JBHiDPIScaledImage;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIconUiResource;
-import org.pushingpixels.substance.internal.hidpi.IsHiDpiAware;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
 import org.pushingpixels.substance.internal.ui.SubstanceInternalFrameUI;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
@@ -1500,21 +1497,6 @@ public class SubstanceCoreUtilities {
 	}
 
 	/**
-	 * Returns an icon pointed to by the specified string.
-	 * 
-	 * @param iconResource
-	 *            Resource location string.
-	 * @return Icon.
-	 */
-	public static Icon getHiDpiAwareIcon(String iconResource) {
-		ClassLoader cl = getClassLoaderForResources();
-		URL iconUrl = cl.getResource(iconResource);
-		if (iconUrl == null)
-			return null;
-		return new HiDpiAwareIconUiResource(new ImageIcon(iconUrl));
-	}
-
-	/**
 	 * Returns the class loader for loading the resource files. It is a fix by
 	 * Dag Joar and Christian Schlichtherle for application running with
 	 * -Xbootclasspath VM flag. In this case, the using
@@ -1783,7 +1765,7 @@ public class SubstanceCoreUtilities {
 	 * @see SubstanceLookAndFeel#SKIN_PROPERTY
 	 */
 	public static SubstanceSkin getSkin(Component c) {
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
+		if (!SubstanceCoreUtilities.isCurrentLookAndFeel())
 			return null;
 
 		if (!SubstanceRootPaneUI.hasCustomSkinOnAtLeastOneRootPane())
@@ -2084,4 +2066,15 @@ public class SubstanceCoreUtilities {
 	public static boolean isOpaque(JComponent c) {
 		return c.isOpaque();
 	}
+
+    /**
+     * Checks whether Substance is the current look-and-feel. This method is for
+     * internal use only.
+     * 
+     * @return <code>true</code> if Substance is the current look-and-feel,
+     *         <code>false</code> otherwise.
+     */
+    public static boolean isCurrentLookAndFeel() {
+    	return (SubstanceLookAndFeel.getCurrentSkin() != null);
+    }
 }

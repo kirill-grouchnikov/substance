@@ -38,15 +38,14 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.security.AccessControlException;
 
-import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
-import javax.swing.colorchooser.AbstractColorChooserPanel;
 
 import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 
 /**
@@ -60,7 +59,7 @@ import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
  *          1.1 2006-03-06 Abort picker when the user presses the Escape-Key. <br>
  *          1.0 December 18, 2005 Created.
  */
-public class Quaqua15ColorPicker extends AbstractColorChooserPanel {
+public class Quaqua15ColorPicker extends SubstanceColorChooserPanel {
 	/**
 	 * This frame is constantly moved to the current location of the mouse. This
 	 * ensures that we can trap mouse clicks while the picker cursor is showing.
@@ -312,10 +311,11 @@ public class Quaqua15ColorPicker extends AbstractColorChooserPanel {
 	@Override
 	protected void buildChooser() {
 		initComponents();
-        pickerButton.setIcon(new TransitionAwareIcon(pickerButton,
-                (SubstanceColorScheme scheme) -> SubstanceImageCreator.getSearchIconUiResource(16,
-                        scheme, pickerButton.getComponentOrientation().isLeftToRight()),
-                "ColorChooser.colorPickerIcon"));
+        pickerButton
+                .setIcon(new TransitionAwareIcon(
+                        pickerButton, (SubstanceColorScheme scheme) -> SubstanceLookAndFeel
+                                .getIconPack().getInspectIcon(16, scheme),
+                        "ColorChooser.colorPickerIcon"));
 	}
 
 	@Override
@@ -323,15 +323,10 @@ public class Quaqua15ColorPicker extends AbstractColorChooserPanel {
 		return UIManager.getString("ColorChooser.colorPicker");
 	}
 
-	@Override
-	public Icon getLargeDisplayIcon() {
-		return UIManager.getIcon("ColorChooser.colorPickerIcon");
-	}
-
-	@Override
-	public Icon getSmallDisplayIcon() {
-		return getLargeDisplayIcon();
-	}
+    @Override
+    public HiDpiAwareIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
+        return SubstanceLookAndFeel.getIconPack().getInspectIcon(size, colorScheme);
+    }
 
 	@Override
 	public void updateChooser() {

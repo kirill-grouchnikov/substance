@@ -58,6 +58,7 @@ import org.pushingpixels.substance.internal.animation.StateTransitionTracker.Sta
 import org.pushingpixels.substance.internal.ui.SubstanceTreeUI;
 import org.pushingpixels.substance.internal.ui.SubstanceTreeUI.TreePathId;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceStripingUtils;
 
@@ -225,7 +226,7 @@ public class SubstanceDefaultTreeCellRenderer extends JLabel implements TreeCell
 				this.setForeground(UIManager.getColor("Tree.textForeground"));
 		}
 
-		if (SubstanceLookAndFeel.isCurrentLookAndFeel())
+		if (SubstanceCoreUtilities.isCurrentLookAndFeel())
 			SubstanceStripingUtils.applyStripedBackground(tree, row, this);
 
 		// There needs to be a way to specify disabled icons.

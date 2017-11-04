@@ -60,7 +60,6 @@ import javax.swing.text.View;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.ComponentStateFacet;
 import org.pushingpixels.substance.api.SubstanceConstants.MenuGutterFillKind;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.WidgetUtilities;
@@ -433,7 +432,7 @@ public class MenuUtilities {
      */
     public static void paintMenuItem(Graphics g, JMenuItem menuItem, Icon checkIcon, Icon arrowIcon,
             int defaultTextIconGap) {
-        if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
+        if (!SubstanceCoreUtilities.isCurrentLookAndFeel())
             return;
 
         Graphics2D g2d = (Graphics2D) g.create();

@@ -29,6 +29,8 @@ import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 
+import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser.SubstanceColorChooserPanel;
+
 /**
  * QuaquaColorChooserUI with enhancements for Java 1.4.
  *
@@ -118,7 +120,7 @@ public class Quaqua14ColorChooserUI extends Quaqua13ColorChooserUI {
                 mainPanel.removeAllColorChooserPanels();
                 for (int i = 0; i < newPanels.length; i++) {
                     if (newPanels[i] != null) {
-                        mainPanel.addColorChooserPanel(newPanels[i]);
+                        mainPanel.addColorChooserPanel((SubstanceColorChooserPanel) newPanels[i]);
                     }
                 }
                 

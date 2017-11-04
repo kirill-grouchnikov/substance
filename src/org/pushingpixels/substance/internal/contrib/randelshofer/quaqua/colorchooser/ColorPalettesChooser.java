@@ -20,13 +20,15 @@ import java.text.MessageFormat;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
 import javax.swing.UIManager;
-import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.colorchooser.ColorSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.UIResource;
+
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 
 /**
  * ColorPalettesChooser.
@@ -36,7 +38,7 @@ import javax.swing.plaf.UIResource;
  * <br>1.0.1 2005-11-07 Load "UIManager" resource bundle from UIManager.
  * <br>1.0 September 18, 2005 Created.
  */
-public class ColorPalettesChooser extends AbstractColorChooserPanel implements UIResource {
+public class ColorPalettesChooser extends SubstanceColorChooserPanel implements UIResource {
     
     /**
      * We store here the name of the last selected color sliders panel.
@@ -153,12 +155,9 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
         return UIManager.getString("ColorChooser.colorPalettes");
     }
     
-    public javax.swing.Icon getLargeDisplayIcon() {
-        return UIManager.getIcon("ColorChooser.colorPalettesIcon");
-    }
-    
-    public Icon getSmallDisplayIcon() {
-        return getLargeDisplayIcon();
+    @Override
+    public HiDpiAwareIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
+        return SubstanceLookAndFeel.getIconPack().getColorChooserColorPalettesIcon(size, colorScheme);
     }
     
     public void updateChooser() {

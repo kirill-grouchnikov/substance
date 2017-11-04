@@ -36,10 +36,10 @@ import java.util.Map;
 import javax.swing.*;
 
 import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.hidpi.IsHiDpiAware;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
-import org.pushingpixels.substance.internal.hidpi.IsHiDpiAware;
 import org.pushingpixels.substance.internal.utils.*;
 
 /**

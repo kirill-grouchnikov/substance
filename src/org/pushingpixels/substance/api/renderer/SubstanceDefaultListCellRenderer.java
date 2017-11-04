@@ -50,6 +50,7 @@ import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker.StateContributionInfo;
 import org.pushingpixels.substance.internal.ui.SubstanceListUI;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceStripingUtils;
 import org.pushingpixels.substance.internal.utils.UpdateOptimizationInfo;
@@ -135,7 +136,7 @@ public class SubstanceDefaultListCellRenderer extends DefaultListCellRenderer {
 			}
 		}
 
-		if (SubstanceLookAndFeel.isCurrentLookAndFeel()
+		if (SubstanceCoreUtilities.isCurrentLookAndFeel()
 				&& (list.getLayoutOrientation() == JList.VERTICAL))
 			SubstanceStripingUtils.applyStripedBackground(list, index, this);
 

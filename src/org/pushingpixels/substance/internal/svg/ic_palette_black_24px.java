@@ -3,17 +3,14 @@ package org.pushingpixels.substance.internal.svg;
 import java.awt.*;
 import java.awt.geom.*;
 
-import javax.swing.Icon;
-import javax.swing.plaf.UIResource;
-
-import org.pushingpixels.substance.internal.hidpi.IsHiDpiAware;
-import org.pushingpixels.substance.internal.hidpi.IsResizable;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.iconpack.SubstanceIcon;
 
 /**
  * This class has been automatically generated using <a
  * href="https://github.com/kirill-grouchnikov/flamingo">Flamingo SVG transcoder</a>.
  */
-public class ic_palette_black_24px implements Icon, UIResource, IsResizable, IsHiDpiAware {
+public class ic_palette_black_24px implements SubstanceIcon {
 	/**
 	 * Paints the transcoded SVG image on the specified graphics context. You
 	 * can install a custom transformation on the graphics context to scale the
@@ -183,12 +180,6 @@ g.setTransform(defaultTransform_);
         return true;
     }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
-	 * int, int)
-	 */
     @Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		Graphics2D g2d = (Graphics2D) g.create();
@@ -215,11 +206,11 @@ g.setTransform(defaultTransform_);
 		g2d.dispose();
 	}
 	
-	public static ic_palette_black_24px of(int width, int height) {
-	   ic_palette_black_24px result = new ic_palette_black_24px();
-	   result.width = width;
-	   result.height = height;
-	   return result;
+	public static HiDpiAwareIcon of(int width, int height) {
+	   ic_palette_black_24px base = new ic_palette_black_24px();
+	   base.width = width;
+	   base.height = height;
+	   return new HiDpiAwareIcon(base);
 	}
 }
 

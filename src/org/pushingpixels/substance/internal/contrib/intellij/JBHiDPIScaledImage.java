@@ -23,7 +23,7 @@ import java.awt.image.ImageObserver;
 import java.awt.image.WritableRaster;
 import java.util.Hashtable;
 
-import org.pushingpixels.substance.internal.hidpi.IsHiDpiAware;
+import org.pushingpixels.substance.api.hidpi.IsHiDpiAware;
 
 /**
  * @author Konstantin Bulenkov

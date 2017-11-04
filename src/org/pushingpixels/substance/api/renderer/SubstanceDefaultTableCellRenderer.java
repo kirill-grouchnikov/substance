@@ -280,7 +280,7 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value,
 			boolean isSelected, boolean hasFocus, int row, int column) {
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
+		if (!SubstanceCoreUtilities.isCurrentLookAndFeel())
 			return super.getTableCellRendererComponent(table, value,
 					isSelected, hasFocus, row, column);
 

@@ -1,19 +1,16 @@
-package org.pushingpixels.substance.internal.widget.tree.dnd.svg;
+package org.pushingpixels.substance.internal.svg;
 
 import java.awt.*;
 import java.awt.geom.*;
 
-import javax.swing.Icon;
-import javax.swing.plaf.UIResource;
-
-import org.pushingpixels.substance.internal.hidpi.IsHiDpiAware;
-import org.pushingpixels.substance.internal.hidpi.IsResizable;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.iconpack.SubstanceIcon;
 
 /**
  * This class has been automatically generated using <a
  * href="https://github.com/kirill-grouchnikov/flamingo">Flamingo SVG transcoder</a>.
  */
-public class drop_not_allowed implements Icon, UIResource, IsResizable, IsHiDpiAware {
+public class ic_content_paste_black_24px implements SubstanceIcon {
 	/**
 	 * Paints the transcoded SVG image on the specified graphics context. You
 	 * can install a custom transformation on the graphics context to scale the
@@ -42,14 +39,43 @@ public class drop_not_allowed implements Icon, UIResource, IsResizable, IsHiDpiA
 // 
 g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 AffineTransform defaultTransform__0 = g.getTransform();
-g.transform(new AffineTransform(0.0020000000949949026f, 0.0f, 0.0f, 0.0020000000949949026f, -0.0f, -0.0f));
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, -0.0f, -0.0f));
 // _0
 g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 AffineTransform defaultTransform__0_0 = g.getTransform();
-g.transform(new AffineTransform(-0.9535830020904541f, 0.301131010055542f, -0.301131010055542f, -0.9535830020904541f, 720.8203735351562f, 363.7912902832031f));
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 // _0_0
-paint = new Color(255, 0, 0, 255);
-shape = new Ellipse2D.Double(239.2060089111328, 74.79399108886719, 350.9880065917969, 350.9880065917969);
+paint = new Color(0, 0, 0, 255);
+shape = new GeneralPath();
+((GeneralPath)shape).moveTo(19.0, 2.0);
+((GeneralPath)shape).lineTo(14.82, 2.0);
+((GeneralPath)shape).curveTo(14.4, 0.84, 13.3, 0.0, 12.0, 0.0);
+((GeneralPath)shape).curveTo(10.7, 0.0, 9.6, 0.84, 9.18, 2.0);
+((GeneralPath)shape).lineTo(5.0, 2.0);
+((GeneralPath)shape).curveTo(3.9, 2.0, 3.0, 2.9, 3.0, 4.0);
+((GeneralPath)shape).lineTo(3.0, 20.0);
+((GeneralPath)shape).curveTo(3.0, 21.1, 3.9, 22.0, 5.0, 22.0);
+((GeneralPath)shape).lineTo(19.0, 22.0);
+((GeneralPath)shape).curveTo(20.1, 22.0, 21.0, 21.1, 21.0, 20.0);
+((GeneralPath)shape).lineTo(21.0, 4.0);
+((GeneralPath)shape).curveTo(21.0, 2.9, 20.1, 2.0, 19.0, 2.0);
+((GeneralPath)shape).closePath();
+((GeneralPath)shape).moveTo(12.0, 2.0);
+((GeneralPath)shape).curveTo(12.55, 2.0, 13.0, 2.45, 13.0, 3.0);
+((GeneralPath)shape).curveTo(13.0, 3.55, 12.55, 4.0, 12.0, 4.0);
+((GeneralPath)shape).curveTo(11.45, 4.0, 11.0, 3.55, 11.0, 3.0);
+((GeneralPath)shape).curveTo(11.0, 2.45, 11.45, 2.0, 12.0, 2.0);
+((GeneralPath)shape).closePath();
+((GeneralPath)shape).moveTo(19.0, 20.0);
+((GeneralPath)shape).lineTo(5.0, 20.0);
+((GeneralPath)shape).lineTo(5.0, 4.0);
+((GeneralPath)shape).lineTo(7.0, 4.0);
+((GeneralPath)shape).lineTo(7.0, 7.0);
+((GeneralPath)shape).lineTo(17.0, 7.0);
+((GeneralPath)shape).lineTo(17.0, 4.0);
+((GeneralPath)shape).lineTo(19.0, 4.0);
+((GeneralPath)shape).lineTo(19.0, 20.0);
+((GeneralPath)shape).closePath();
 g.setPaint(paint);
 g.fill(shape);
 g.setTransform(defaultTransform__0_0);
@@ -57,10 +83,6 @@ g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 AffineTransform defaultTransform__0_1 = g.getTransform();
 g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 // _0_1
-paint = new Color(255, 255, 255, 255);
-shape = new Rectangle2D.Double(143.2050018310547, 220.64100646972656, 213.58900451660156, 58.71900177001953);
-g.setPaint(paint);
-g.fill(shape);
 g.setTransform(defaultTransform__0_1);
 g.setTransform(defaultTransform__0);
 g.setTransform(defaultTransform_);
@@ -73,7 +95,7 @@ g.setTransform(defaultTransform_);
      * @return The X of the bounding box of the original SVG image.
      */
     public static double getOrigX() {
-        return 0.059610459953546524;
+        return 3.0;
     }
 
     /**
@@ -82,7 +104,7 @@ g.setTransform(defaultTransform_);
      * @return The Y of the bounding box of the original SVG image.
      */
     public static double getOrigY() {
-        return 0.05961032584309578;
+        return 0.0;
     }
 
 	/**
@@ -91,7 +113,7 @@ g.setTransform(defaultTransform_);
 	 * @return The width of the bounding box of the original SVG image.
 	 */
 	public static double getOrigWidth() {
-		return 0.8807792067527771;
+		return 18.0;
 	}
 
 	/**
@@ -100,7 +122,7 @@ g.setTransform(defaultTransform_);
 	 * @return The height of the bounding box of the original SVG image.
 	 */
 	public static double getOrigHeight() {
-		return 0.8807792067527771;
+		return 22.0;
 	}
 
 	/**
@@ -116,7 +138,7 @@ g.setTransform(defaultTransform_);
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public drop_not_allowed() {
+	public ic_content_paste_black_24px() {
         this.width = (int) getOrigWidth();
         this.height = (int) getOrigHeight();
 	}
@@ -152,12 +174,6 @@ g.setTransform(defaultTransform_);
         return true;
     }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
-	 * int, int)
-	 */
     @Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		Graphics2D g2d = (Graphics2D) g.create();
@@ -184,11 +200,11 @@ g.setTransform(defaultTransform_);
 		g2d.dispose();
 	}
 	
-	public static drop_not_allowed of(int width, int height) {
-	   drop_not_allowed result = new drop_not_allowed();
-	   result.width = width;
-	   result.height = height;
-	   return result;
+	public static HiDpiAwareIcon of(int width, int height) {
+	   ic_content_paste_black_24px base = new ic_content_paste_black_24px();
+	   base.width = width;
+	   base.height = height;
+	   return new HiDpiAwareIcon(base);
 	}
 }
 

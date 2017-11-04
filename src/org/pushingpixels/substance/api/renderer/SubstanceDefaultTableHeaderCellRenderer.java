@@ -84,7 +84,7 @@ public class SubstanceDefaultTableHeaderCellRenderer extends
 
 		JTableHeader tableHeader = table.getTableHeader();
 		TableHeaderUI tableHeaderUI = tableHeader.getUI();
-		if (SubstanceLookAndFeel.isCurrentLookAndFeel()
+		if (SubstanceCoreUtilities.isCurrentLookAndFeel()
 				&& (tableHeaderUI instanceof SubstanceTableHeaderUI)) {
 			SubstanceTableHeaderUI ui = (SubstanceTableHeaderUI) tableHeaderUI;
 
@@ -141,7 +141,7 @@ public class SubstanceDefaultTableHeaderCellRenderer extends
 		}
 
 		TableUI tableUI = table.getUI();
-		if (SubstanceLookAndFeel.isCurrentLookAndFeel()
+		if (SubstanceCoreUtilities.isCurrentLookAndFeel()
 				&& (tableUI instanceof SubstanceTableUI)) {
 			this.setBorder(new EmptyBorder(((SubstanceTableUI) tableUI)
 					.getCellRendererInsets()));
@@ -153,7 +153,7 @@ public class SubstanceDefaultTableHeaderCellRenderer extends
 		this.setEnabled(tableHeader.isEnabled() && table.isEnabled());
 
 		// fix for defect 242 - not showing sort icon
-		if (SubstanceLookAndFeel.isCurrentLookAndFeel()) {
+		if (SubstanceCoreUtilities.isCurrentLookAndFeel()) {
 			this.setIcon(null);
 			RowSorter<? extends TableModel> rowSorter = table.getRowSorter();
 			if (rowSorter != null) {

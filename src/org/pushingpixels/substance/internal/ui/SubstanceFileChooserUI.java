@@ -29,7 +29,6 @@
  */
 package org.pushingpixels.substance.internal.ui;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,158 +42,165 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicFileChooserUI;
 import javax.swing.plaf.metal.MetalFileChooserUI;
 
-import org.pushingpixels.substance.internal.hidpi.IsResizable;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.iconpack.SubstanceIconPack;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
- * UI for file chooser in <b>Substance</b> look and feel. The
- * {@link BasicFileChooserUI} can't be used on its own (creates an empty
- * dialog).
+ * UI for file chooser in <b>Substance</b> look and feel. The {@link BasicFileChooserUI} can't be
+ * used on its own (creates an empty dialog).
  * 
  * @author Kirill Grouchnikov
  */
 public class SubstanceFileChooserUI extends MetalFileChooserUI {
-	/**
-	 * Custom file view - for system icons on the files.
-	 */
-	private final SubstanceFileView fileView = new SubstanceFileView();
+    /**
+     * Custom file view - for system icons on the files.
+     */
+    private final SubstanceFileView fileView = new SubstanceFileView();
 
-	/**
-	 * Custom file view implementation that returns system-specific file icons.
-	 * 
-	 * @author Kirill Grouchnikov
-	 */
-	private class SubstanceFileView extends BasicFileView {
-		/**
-		 * Cache for the file icons.
-		 */
-		private final Map<String, Icon> pathIconCache = new HashMap<String, Icon>();
+    private final static int ICON_SIZE = 14;
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * javax.swing.plaf.basic.BasicFileChooserUI$BasicFileView#getCachedIcon
-		 * (java.io.File)
-		 */
-		@Override
-		public Icon getCachedIcon(File f) {
-			return pathIconCache.get(f.getPath());
-		}
+    /**
+     * Custom file view implementation that returns system-specific file icons.
+     * 
+     * @author Kirill Grouchnikov
+     */
+    private class SubstanceFileView extends BasicFileView {
+        /**
+         * Cache for the file icons.
+         */
+        private final Map<String, Icon> pathIconCache = new HashMap<String, Icon>();
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * javax.swing.plaf.basic.BasicFileChooserUI$BasicFileView#getIcon(java
-		 * .io.File)
-		 */
-		@Override
-		public Icon getIcon(File f) {
-			Icon icon = getCachedIcon(f);
-			if (icon != null)
-				return icon;
+        /*
+         * (non-Javadoc)
+         * 
+         * @see javax.swing.plaf.basic.BasicFileChooserUI$BasicFileView#getCachedIcon (java.io.File)
+         */
+        @Override
+        public Icon getCachedIcon(File f) {
+            return pathIconCache.get(f.getPath());
+        }
 
-			icon = getDefaultIcon(f);
-			// System.out.println("System : " + f.getAbsolutePath() + " --> "
-			// + icon);
-			if (icon == null) {
-				icon = super.getIcon(f);
-				if (icon == null) {
-					icon = new ImageIcon(SubstanceCoreUtilities.getBlankImage(
-							8, 8));
-				}
-				// System.out.println("Super : " + f.getAbsolutePath() + " --> "
-				// + icon);
-			}
-			cacheIcon(f, icon);
-			return icon;
-		}
+        /*
+         * (non-Javadoc)
+         * 
+         * @see javax.swing.plaf.basic.BasicFileChooserUI$BasicFileView#getIcon(java .io.File)
+         */
+        @Override
+        public Icon getIcon(File f) {
+            Icon icon = getCachedIcon(f);
+            if (icon != null)
+                return icon;
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * javax.swing.plaf.basic.BasicFileChooserUI$BasicFileView#cacheIcon
-		 * (java.io.File, javax.swing.Icon)
-		 */
-		@Override
-		public void cacheIcon(File f, Icon icon) {
-			pathIconCache.put(f.getPath(), icon);
-		}
+            icon = getDefaultIcon(f);
+            // System.out.println("System : " + f.getAbsolutePath() + " --> "
+            // + icon);
+            if (icon == null) {
+                icon = super.getIcon(f);
+                if (icon == null) {
+                    icon = new ImageIcon(SubstanceCoreUtilities.getBlankImage(8, 8));
+                }
+                // System.out.println("Super : " + f.getAbsolutePath() + " --> "
+                // + icon);
+            }
+            cacheIcon(f, icon);
+            return icon;
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * javax.swing.plaf.basic.BasicFileChooserUI$BasicFileView#clearIconCache
-		 * ()
-		 */
-		@Override
-		public void clearIconCache() {
-			pathIconCache.clear();
-		}
+        /*
+         * (non-Javadoc)
+         * 
+         * @see javax.swing.plaf.basic.BasicFileChooserUI$BasicFileView#cacheIcon (java.io.File,
+         * javax.swing.Icon)
+         */
+        @Override
+        public void cacheIcon(File f, Icon icon) {
+            pathIconCache.put(f.getPath(), icon);
+        }
 
-		/**
-		 * Returns the default file icon.
-		 * 
-		 * @param f
-		 *            File.
-		 * @return File icon.
-		 */
-		public Icon getDefaultIcon(File f) {
-			JFileChooser fileChooser = getFileChooser();
-			Icon icon = fileChooser.getFileSystemView().getSystemIcon(f);
+        /*
+         * (non-Javadoc)
+         * 
+         * @see javax.swing.plaf.basic.BasicFileChooserUI$BasicFileView#clearIconCache ()
+         */
+        @Override
+        public void clearIconCache() {
+            pathIconCache.clear();
+        }
 
-			if (SubstanceCoreUtilities.useThemedDefaultIcon(null)) {
-				icon = SubstanceCoreUtilities.getThemedIcon(fileChooser, icon);
-			}
-			return icon;
-		}
-	}
+        /**
+         * Returns the default file icon.
+         * 
+         * @param f
+         *            File.
+         * @return File icon.
+         */
+        public Icon getDefaultIcon(File f) {
+            JFileChooser fileChooser = getFileChooser();
+            Icon icon = fileChooser.getFileSystemView().getSystemIcon(f);
+            if (icon instanceof HiDpiAwareIcon) {
+                SubstanceIconPack iconPack = SubstanceLookAndFeel.getIconPack();
+                SubstanceColorScheme colorScheme = SubstanceCoreUtilities.getSkin(fileChooser)
+                        .getEnabledColorScheme(DecorationAreaType.NONE);
+                icon = f.isDirectory()
+                        ? iconPack.getFileChooserDirectoryIcon(ICON_SIZE, colorScheme)
+                        : iconPack.getFileChooserFileIcon(ICON_SIZE, colorScheme);
+            }
 
-	public static ComponentUI createUI(JComponent comp) {
-		SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
-		return new SubstanceFileChooserUI((JFileChooser) comp);
-	}
+            if (SubstanceCoreUtilities.useThemedDefaultIcon(null)) {
+                icon = SubstanceCoreUtilities.getThemedIcon(fileChooser, icon);
+            }
+            return icon;
+        }
+    }
 
-	/**
-	 * Creates the UI delegate for the specified file chooser.
-	 * 
-	 * @param filechooser
-	 *            File chooser.
-	 */
-	public SubstanceFileChooserUI(JFileChooser filechooser) {
-		super(filechooser);
-	}
+    public static ComponentUI createUI(JComponent comp) {
+        SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
+        return new SubstanceFileChooserUI((JFileChooser) comp);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seejavax.swing.plaf.basic.BasicFileChooserUI#getFileView(javax.swing.
-	 * JFileChooser)
-	 */
-	@Override
-	public FileView getFileView(JFileChooser fc) {
-		return fileView;
-	}
-	
-	@Override
-	protected void installIcons(JFileChooser fc) {
-		super.installIcons(fc);
-		
-		Dimension iconDimension = new Dimension(14, 14);
+    /**
+     * Creates the UI delegate for the specified file chooser.
+     * 
+     * @param filechooser
+     *            File chooser.
+     */
+    public SubstanceFileChooserUI(JFileChooser filechooser) {
+        super(filechooser);
+    }
 
-		((IsResizable) directoryIcon).setDimension(iconDimension);
-		((IsResizable) fileIcon).setDimension(iconDimension);
-		((IsResizable) computerIcon).setDimension(iconDimension);
-		((IsResizable) hardDriveIcon).setDimension(iconDimension);
-		((IsResizable) floppyDriveIcon).setDimension(iconDimension);
+    /*
+     * (non-Javadoc)
+     * 
+     * @seejavax.swing.plaf.basic.BasicFileChooserUI#getFileView(javax.swing. JFileChooser)
+     */
+    @Override
+    public FileView getFileView(JFileChooser fc) {
+        return fileView;
+    }
 
-		((IsResizable) newFolderIcon).setDimension(iconDimension);
-		((IsResizable) upFolderIcon).setDimension(iconDimension);
-		((IsResizable) homeFolderIcon).setDimension(iconDimension);
-		((IsResizable) detailsViewIcon).setDimension(iconDimension);
-		((IsResizable) listViewIcon).setDimension(iconDimension);
-	}
+    @Override
+    protected void installIcons(JFileChooser fc) {
+        super.installIcons(fc);
+
+        SubstanceIconPack iconPack = SubstanceLookAndFeel.getIconPack();
+        SubstanceColorScheme colorScheme = SubstanceCoreUtilities.getSkin(fc)
+                .getEnabledColorScheme(DecorationAreaType.NONE);
+
+        directoryIcon = iconPack.getFileChooserDirectoryIcon(ICON_SIZE, colorScheme);
+        fileIcon = iconPack.getFileChooserFileIcon(ICON_SIZE, colorScheme);
+        computerIcon = iconPack.getFileChooserComputerIcon(ICON_SIZE, colorScheme);
+        hardDriveIcon = iconPack.getFileChooserHardDriveIcon(ICON_SIZE, colorScheme);
+        floppyDriveIcon = iconPack.getFileChooserFloppyDriveIcon(ICON_SIZE, colorScheme);
+
+        newFolderIcon = iconPack.getFileChooserNewFolderIcon(ICON_SIZE, colorScheme);
+        upFolderIcon = iconPack.getFileChooserUpFolderIcon(ICON_SIZE, colorScheme);
+        homeFolderIcon = iconPack.getFileChooserHomeFolderIcon(ICON_SIZE, colorScheme);
+        detailsViewIcon = iconPack.getFileChooserDetailsViewIcon(ICON_SIZE, colorScheme);
+        listViewIcon = iconPack.getFileChooserListViewIcon(ICON_SIZE, colorScheme);
+        viewMenuIcon = iconPack.getFileChooserViewMenuIcon(ICON_SIZE, colorScheme);
+    }
 }

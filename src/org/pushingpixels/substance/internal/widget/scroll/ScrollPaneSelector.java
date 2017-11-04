@@ -48,6 +48,7 @@ import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.EnumSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -66,9 +67,6 @@ import org.pushingpixels.substance.api.SubstanceConstants;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.preview.PreviewPainter;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
-import org.pushingpixels.substance.internal.svg.ic_adjust_black_24px;
-import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
@@ -138,7 +136,7 @@ public class ScrollPaneSelector extends JComponent {
         theButton.setFocusable(false);
         theButton.setFocusPainted(false);
         theButton.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
-                SubstanceConstants.Side.values());
+                EnumSet.allOf(SubstanceConstants.Side.class));
 
         MouseInputListener mil = new MouseInputAdapter() {
             @Override
@@ -270,12 +268,11 @@ public class ScrollPaneSelector extends JComponent {
         theComponent = (comp instanceof JComponent) ? (JComponent) comp : null;
 
         int dimension = UIManager.getInt("ScrollBar.width") - 4;
-        HiDpiAwareIcon hiDpiAwareIcon = new HiDpiAwareIcon(
-                ic_adjust_black_24px.of(dimension, dimension));
-        this.theButton.setIcon(new TransitionAwareIcon(this.theButton,
-                (SubstanceColorScheme scheme) -> new HiDpiAwareIcon(hiDpiAwareIcon.colorize(
-                        SubstanceColorUtilities.getAlphaColor(scheme.getForegroundColor(), 160))),
-                "substance.widget.scroll.selector"));
+        this.theButton
+                .setIcon(new TransitionAwareIcon(this.theButton,
+                        (SubstanceColorScheme scheme) -> SubstanceLookAndFeel.getIconPack()
+                                .getInspectIcon(dimension, scheme),
+                        "substance.widget.scroll.selector"));
 
         theScrollPane.doLayout();
     }

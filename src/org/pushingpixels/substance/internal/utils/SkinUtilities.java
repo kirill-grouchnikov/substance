@@ -52,24 +52,12 @@ import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.inputmap.InputMapSet;
 import org.pushingpixels.substance.api.inputmap.SubstanceInputMapUtilities;
 import org.pushingpixels.substance.api.renderer.SubstanceDefaultListCellRenderer;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIconUiResource;
-import org.pushingpixels.substance.internal.svg.ic_arrow_upward_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_computer_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_create_new_folder_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_error_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_folder_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_help_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_home_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_info_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_insert_drive_file_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_save_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_storage_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_view_list_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_warning_black_24px;
 import org.pushingpixels.substance.internal.utils.border.SubstanceBorder;
 import org.pushingpixels.substance.internal.utils.border.SubstanceEtchedBorder;
 import org.pushingpixels.substance.internal.utils.border.SubstancePaneBorder;
@@ -222,19 +210,10 @@ public class SkinUtilities {
 			}
 		};
 
-		// SubstanceColorSchemeBundle titlePaneBundle =
-		// skin.colorSchemeBundleMap
-		// .containsKey(DecorationAreaType.PRIMARY_TITLE_PANE) ?
-		// skin.colorSchemeBundleMap
-		// .get(DecorationAreaType.PRIMARY_TITLE_PANE)
-		// : skin.colorSchemeBundleMap.get(DecorationAreaType.NONE);
-		final SubstanceColorScheme titlePaneScheme = skin
-				.getBackgroundColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE);
-		// /skin.getColorScheme(
-		// DecorationAreaType.PRIMARY_TITLE_PANE,
-		// ColorSchemeAssociationKind.FILL, ComponentState.ACTIVE);
-		//
-		// titlePaneBundle.getActiveColorScheme();
+        final SubstanceColorScheme titlePaneScheme = skin
+                .getBackgroundColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE);
+        final SubstanceColorScheme defaultScheme = skin.getColorScheme(DecorationAreaType.NONE,
+                ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED);
 
 		Object menuItemInsets = new UIDefaults.LazyValue() {
 			@Override
@@ -410,37 +389,95 @@ public class SkinUtilities {
 				selectionTextForegroundColor,
 
 				"FileChooser.upFolderIcon",
-				ic_arrow_upward_black_24px.of(16, 16),
+                new UIDefaults.LazyValue() {
+                    public Object createValue(UIDefaults table) {
+                        return SubstanceLookAndFeel.getIconPack().getFileChooserUpFolderIcon(
+                                16, defaultScheme);
+                    }
+                },
 
 				"FileChooser.newFolderIcon",
-				ic_create_new_folder_black_24px.of(16, 16),
+                new UIDefaults.LazyValue() {
+                    public Object createValue(UIDefaults table) {
+                        return SubstanceLookAndFeel.getIconPack().getFileChooserNewFolderIcon(
+                                16, defaultScheme);
+                    }
+                },
 
 				"FileChooser.homeFolderIcon",
-				ic_home_black_24px.of(16, 16),
+                new UIDefaults.LazyValue() {
+                    public Object createValue(UIDefaults table) {
+                        return SubstanceLookAndFeel.getIconPack().getFileChooserHomeFolderIcon(
+                                16, defaultScheme);
+                    }
+                },
 
 				"FileChooser.listViewIcon",
-				ic_view_list_black_24px.of(16, 16),
+                new UIDefaults.LazyValue() {
+                    public Object createValue(UIDefaults table) {
+                        return SubstanceLookAndFeel.getIconPack().getFileChooserListViewIcon(
+                                16, defaultScheme);
+                    }
+                },
 
-				"FileChooser.detailsViewIcon",
-				ic_insert_drive_file_black_24px.of(16, 16),
+                "FileChooser.detailsViewIcon",
+                new UIDefaults.LazyValue() {
+                    public Object createValue(UIDefaults table) {
+                        return SubstanceLookAndFeel.getIconPack().getFileChooserDetailsViewIcon(
+                                16, defaultScheme);
+                    }
+                },
+
+                "FileChooser.viewMenuIcon",
+                new UIDefaults.LazyValue() {
+                    public Object createValue(UIDefaults table) {
+                        return SubstanceLookAndFeel.getIconPack().getFileChooserViewMenuIcon(
+                                16, defaultScheme);
+                    }
+                },
 
 				"FileChooser.usesSingleFilePane",
 				Boolean.TRUE,
 
 				"FileView.computerIcon",
-				ic_computer_black_24px.of(16, 16),
+                new UIDefaults.LazyValue() {
+                    public Object createValue(UIDefaults table) {
+                        return SubstanceLookAndFeel.getIconPack().getFileChooserComputerIcon(
+                                16, defaultScheme);
+                    }
+                },
 
 				"FileView.directoryIcon",
-				ic_folder_black_24px.of(16, 16),
+                new UIDefaults.LazyValue() {
+                    public Object createValue(UIDefaults table) {
+                        return SubstanceLookAndFeel.getIconPack().getFileChooserDirectoryIcon(
+                                16, defaultScheme);
+                    }
+                },
 
 				"FileView.fileIcon",
-				ic_insert_drive_file_black_24px.of(16, 16),
+                new UIDefaults.LazyValue() {
+                    public Object createValue(UIDefaults table) {
+                        return SubstanceLookAndFeel.getIconPack().getFileChooserFileIcon(
+                                16, defaultScheme);
+                    }
+                },
 
 				"FileView.floppyDriveIcon",
-				ic_save_black_24px.of(16, 16),
+                new UIDefaults.LazyValue() {
+                    public Object createValue(UIDefaults table) {
+                        return SubstanceLookAndFeel.getIconPack().getFileChooserFloppyDriveIcon(
+                                16, defaultScheme);
+                    }
+                },
 
 				"FileView.hardDriveIcon",
-				ic_storage_black_24px.of(16, 16),
+                new UIDefaults.LazyValue() {
+                    public Object createValue(UIDefaults table) {
+                        return SubstanceLookAndFeel.getIconPack().getFileChooserHardDriveIcon(
+                                16, defaultScheme);
+                    }
+                },
 
 				"FormattedTextField.background",
 				SubstanceColorUtilities.getDefaultBackgroundColor(true, skin,
@@ -627,22 +664,42 @@ public class SkinUtilities {
 						false),
 
 				"OptionPane.errorIcon",
-				ic_error_black_24px.of(20, 20),
+                new UIDefaults.LazyValue() {
+                    public Object createValue(UIDefaults table) {
+                        return SubstanceLookAndFeel.getIconPack().getOptionPaneErrorIcon(
+                                20, defaultScheme);
+                    }
+                },
 
 				"OptionPane.foreground",
 				foregroundColor,
 
 				"OptionPane.informationIcon",
-                ic_info_black_24px.of(20, 20),
+                new UIDefaults.LazyValue() {
+                    public Object createValue(UIDefaults table) {
+                        return SubstanceLookAndFeel.getIconPack().getOptionPaneInformationIcon(
+                                20, defaultScheme);
+                    }
+                },
 
 				"OptionPane.messageForeground",
 				foregroundColor,
 
 				"OptionPane.questionIcon",
-				ic_help_black_24px.of(20, 20),
+                new UIDefaults.LazyValue() {
+                    public Object createValue(UIDefaults table) {
+                        return SubstanceLookAndFeel.getIconPack().getOptionPaneQuestionIcon(
+                                20, defaultScheme);
+                    }
+                },
 
 				"OptionPane.warningIcon",
-                ic_warning_black_24px.of(20, 20),
+                new UIDefaults.LazyValue() {
+                    public Object createValue(UIDefaults table) {
+                        return SubstanceLookAndFeel.getIconPack().getOptionPaneWarningIcon(
+                                20, defaultScheme);
+                    }
+                },
 				
 				"OptionPane.buttonPadding",
 				8,
@@ -1144,7 +1201,7 @@ public class SkinUtilities {
 				"Tree.collapsedIcon",
 				new UIDefaults.LazyValue() {
 					public Object createValue(UIDefaults table) {
-						return new HiDpiAwareIconUiResource(
+						return new HiDpiAwareIcon(
 								SubstanceIconFactory.getTreeIcon(null, true));
 					}
 				},
@@ -1152,7 +1209,7 @@ public class SkinUtilities {
 				"Tree.expandedIcon",
 				new UIDefaults.LazyValue() {
 					public Object createValue(UIDefaults table) {
-						return new HiDpiAwareIconUiResource(
+						return new HiDpiAwareIcon(
 								SubstanceIconFactory.getTreeIcon(null, false));
 					}
 				},

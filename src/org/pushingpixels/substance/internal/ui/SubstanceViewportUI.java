@@ -39,7 +39,6 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicViewportUI;
 
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -82,7 +81,7 @@ public class SubstanceViewportUI extends BasicViewportUI {
 	 */
 	@Override
 	public void update(Graphics g, JComponent c) {
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
+		if (!SubstanceCoreUtilities.isCurrentLookAndFeel())
 			return;
 
 		if (toPaintBackground(c)) {

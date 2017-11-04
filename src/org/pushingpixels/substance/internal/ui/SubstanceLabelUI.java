@@ -46,7 +46,6 @@ import javax.swing.plaf.basic.BasicLabelUI;
 import javax.swing.text.View;
 
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -188,7 +187,7 @@ public class SubstanceLabelUI extends BasicLabelUI {
 	@Override
 	public void update(Graphics g, JComponent c) {
 		// failsafe for LAF change
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
+		if (!SubstanceCoreUtilities.isCurrentLookAndFeel())
 			return;
 		Graphics2D g2d = (Graphics2D) g.create();
 		RenderingUtils.installDesktopHints(g2d, c);

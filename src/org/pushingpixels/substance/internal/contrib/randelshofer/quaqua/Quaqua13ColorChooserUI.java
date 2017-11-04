@@ -35,6 +35,7 @@ import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser.ColorChooserMainPanel;
 import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser.QuaquaColorPreviewPanel;
+import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser.SubstanceColorChooserPanel;
 /**
  * QuaquaColorChooserUI.
  *
@@ -204,7 +205,7 @@ public class Quaqua13ColorChooserUI extends ColorChooserUI {
                 mainPanel.removeAllColorChooserPanels();
                 for (int i = 0; i < newPanels.length; i++) {
                     if (newPanels[i] != null) {
-                    mainPanel.addColorChooserPanel(newPanels[i]);
+                    mainPanel.addColorChooserPanel((SubstanceColorChooserPanel) newPanels[i]);
                     }
                 }
                 

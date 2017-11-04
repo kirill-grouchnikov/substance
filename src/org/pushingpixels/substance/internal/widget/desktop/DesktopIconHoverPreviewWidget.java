@@ -51,8 +51,8 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import org.pushingpixels.substance.api.SubstanceWidget;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.ui.SubstanceDesktopIconUI;
 import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 

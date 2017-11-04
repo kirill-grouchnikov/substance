@@ -46,7 +46,7 @@ import javax.swing.UIManager;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 
 import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 
 /**
@@ -308,10 +308,11 @@ public class ColorPicker extends AbstractColorChooserPanel {
 	@Override
 	protected void buildChooser() {
 		initComponents();
-        pickerButton.setIcon(new TransitionAwareIcon(pickerButton,
-                (SubstanceColorScheme scheme) -> SubstanceImageCreator.getSearchIconUiResource(16,
-                        scheme, pickerButton.getComponentOrientation().isLeftToRight()),
-                "ColorChooser.colorPickerIcon"));
+        pickerButton
+                .setIcon(new TransitionAwareIcon(
+                        pickerButton, (SubstanceColorScheme scheme) -> SubstanceLookAndFeel
+                                .getIconPack().getInspectIcon(16, scheme),
+                        "ColorChooser.colorPickerIcon"));
 	}
 
 	@Override

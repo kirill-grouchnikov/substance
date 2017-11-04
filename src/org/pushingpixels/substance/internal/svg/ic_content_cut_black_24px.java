@@ -1,19 +1,16 @@
-package org.pushingpixels.substance.internal.widget.tree.dnd.svg;
+package org.pushingpixels.substance.internal.svg;
 
 import java.awt.*;
 import java.awt.geom.*;
 
-import javax.swing.Icon;
-import javax.swing.plaf.UIResource;
-
-import org.pushingpixels.substance.internal.hidpi.IsHiDpiAware;
-import org.pushingpixels.substance.internal.hidpi.IsResizable;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.iconpack.SubstanceIcon;
 
 /**
  * This class has been automatically generated using <a
  * href="https://github.com/kirill-grouchnikov/flamingo">Flamingo SVG transcoder</a>.
  */
-public class drop_on_leaf implements Icon, UIResource, IsResizable, IsHiDpiAware {
+public class ic_content_cut_black_24px implements SubstanceIcon {
 	/**
 	 * Paints the transcoded SVG image on the specified graphics context. You
 	 * can install a custom transformation on the graphics context to scale the
@@ -42,119 +39,80 @@ public class drop_on_leaf implements Icon, UIResource, IsResizable, IsHiDpiAware
 // 
 g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 AffineTransform defaultTransform__0 = g.getTransform();
-g.transform(new AffineTransform(0.0020000000949949026f, 0.0f, 0.0f, 0.0020000000949949026f, -0.0f, -0.0f));
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, -0.0f, -0.0f));
 // _0
 g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 AffineTransform defaultTransform__0_0 = g.getTransform();
 g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 // _0_0
-paint = new Color(255, 255, 255, 255);
-shape = new Rectangle2D.Double(22.832000732421875, 23.933000564575195, 198.1750030517578, 198.1750030517578);
-g.setPaint(paint);
-g.fill(shape);
-paint = new Color(0, 0, 0, 255);
-stroke = new BasicStroke(9.0f,0,0,4.0f,null,0.0f);
-shape = new Rectangle2D.Double(22.832000732421875, 23.933000564575195, 198.1750030517578, 198.1750030517578);
-g.setPaint(paint);
-g.setStroke(stroke);
-g.draw(shape);
 g.setTransform(defaultTransform__0_0);
 g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 AffineTransform defaultTransform__0_1 = g.getTransform();
 g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 // _0_1
-paint = new Color(0, 0, 0, 255);
-stroke = new BasicStroke(1.0f,0,0,4.0f,null,0.0f);
-shape = new GeneralPath();
-g.setPaint(paint);
-g.setStroke(stroke);
-g.draw(shape);
 g.setTransform(defaultTransform__0_1);
 g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 AffineTransform defaultTransform__0_2 = g.getTransform();
 g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 // _0_2
-paint = new Color(0, 0, 0, 255);
-stroke = new BasicStroke(1.0f,0,0,4.0f,null,0.0f);
-shape = new GeneralPath();
-g.setPaint(paint);
-g.setStroke(stroke);
-g.draw(shape);
 g.setTransform(defaultTransform__0_2);
 g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 AffineTransform defaultTransform__0_3 = g.getTransform();
-g.transform(new AffineTransform(0.0f, -1.0f, 1.0f, 0.0f, -11.377001762390137f, 231.72900390625f));
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 // _0_3
-paint = new Color(0, 0, 0, 255);
-stroke = new BasicStroke(1.0f,0,0,4.0f,null,0.0f);
-shape = new GeneralPath();
-g.setPaint(paint);
-g.setStroke(stroke);
-g.draw(shape);
 g.setTransform(defaultTransform__0_3);
 g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
 AffineTransform defaultTransform__0_4 = g.getTransform();
-g.transform(new AffineTransform(-0.8660249710083008f, -0.5f, -0.5f, 0.8660249710083008f, 111.24959564208984f, -87.6527099609375f));
+g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 // _0_4
-paint = new Color(64, 64, 64, 255);
+paint = new Color(0, 0, 0, 255);
 shape = new GeneralPath();
-((GeneralPath)shape).moveTo(-304.144, -50.452);
-((GeneralPath)shape).lineTo(-204.635, 123.33);
-((GeneralPath)shape).lineTo(-403.653, 123.33);
-((GeneralPath)shape).lineTo(-304.144, -50.452);
+((GeneralPath)shape).moveTo(9.64, 7.64);
+((GeneralPath)shape).curveTo(9.87, 7.14, 10.0, 6.59, 10.0, 6.0);
+((GeneralPath)shape).curveTo(10.0, 3.79, 8.21, 2.0, 6.0, 2.0);
+((GeneralPath)shape).curveTo(3.79, 2.0, 2.0, 3.79, 2.0, 6.0);
+((GeneralPath)shape).curveTo(2.0, 8.21, 3.79, 10.0, 6.0, 10.0);
+((GeneralPath)shape).curveTo(6.59, 10.0, 7.14, 9.87, 7.64, 9.64);
+((GeneralPath)shape).lineTo(10.0, 12.0);
+((GeneralPath)shape).lineTo(7.6400003, 14.36);
+((GeneralPath)shape).curveTo(7.14, 14.13, 6.59, 14.0, 6.0, 14.0);
+((GeneralPath)shape).curveTo(3.79, 14.0, 2.0, 15.79, 2.0, 18.0);
+((GeneralPath)shape).curveTo(2.0, 20.21, 3.79, 22.0, 6.0, 22.0);
+((GeneralPath)shape).curveTo(8.21, 22.0, 10.0, 20.21, 10.0, 18.0);
+((GeneralPath)shape).curveTo(10.0, 17.41, 9.87, 16.86, 9.64, 16.36);
+((GeneralPath)shape).lineTo(12.0, 14.0);
+((GeneralPath)shape).lineTo(19.0, 21.0);
+((GeneralPath)shape).lineTo(22.0, 21.0);
+((GeneralPath)shape).lineTo(22.0, 20.0);
+((GeneralPath)shape).lineTo(9.64, 7.64);
+((GeneralPath)shape).closePath();
+((GeneralPath)shape).moveTo(6.0, 8.0);
+((GeneralPath)shape).curveTo(4.9, 8.0, 4.0, 7.11, 4.0, 6.0);
+((GeneralPath)shape).curveTo(4.0, 4.89, 4.9, 4.0, 6.0, 4.0);
+((GeneralPath)shape).curveTo(7.1, 4.0, 8.0, 4.89, 8.0, 6.0);
+((GeneralPath)shape).curveTo(8.0, 7.11, 7.1, 8.0, 6.0, 8.0);
+((GeneralPath)shape).closePath();
+((GeneralPath)shape).moveTo(6.0, 20.0);
+((GeneralPath)shape).curveTo(4.9, 20.0, 4.0, 19.11, 4.0, 18.0);
+((GeneralPath)shape).curveTo(4.0, 16.89, 4.9, 16.0, 6.0, 16.0);
+((GeneralPath)shape).curveTo(7.1, 16.0, 8.0, 16.89, 8.0, 18.0);
+((GeneralPath)shape).curveTo(8.0, 19.11, 7.1, 20.0, 6.0, 20.0);
+((GeneralPath)shape).closePath();
+((GeneralPath)shape).moveTo(12.0, 12.5);
+((GeneralPath)shape).curveTo(11.72, 12.5, 11.5, 12.28, 11.5, 12.0);
+((GeneralPath)shape).curveTo(11.5, 11.72, 11.72, 11.5, 12.0, 11.5);
+((GeneralPath)shape).curveTo(12.28, 11.5, 12.5, 11.72, 12.5, 12.0);
+((GeneralPath)shape).curveTo(12.5, 12.28, 12.28, 12.5, 12.0, 12.5);
+((GeneralPath)shape).closePath();
+((GeneralPath)shape).moveTo(19.0, 3.0);
+((GeneralPath)shape).lineTo(13.0, 9.0);
+((GeneralPath)shape).lineTo(15.0, 11.0);
+((GeneralPath)shape).lineTo(22.0, 4.0);
+((GeneralPath)shape).lineTo(22.0, 3.0);
 ((GeneralPath)shape).closePath();
 g.setPaint(paint);
 g.fill(shape);
-paint = new Color(64, 64, 64, 255);
-stroke = new BasicStroke(1.0f,0,0,4.0f,null,0.0f);
-shape = new GeneralPath();
-((GeneralPath)shape).moveTo(-304.144, -50.452);
-((GeneralPath)shape).lineTo(-204.635, 123.33);
-((GeneralPath)shape).lineTo(-403.653, 123.33);
-((GeneralPath)shape).lineTo(-304.144, -50.452);
-((GeneralPath)shape).closePath();
-g.setPaint(paint);
-g.setStroke(stroke);
-g.draw(shape);
 g.setTransform(defaultTransform__0_4);
-g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
-AffineTransform defaultTransform__0_5 = g.getTransform();
-g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
-// _0_5
-paint = new Color(0, 0, 0, 255);
-stroke = new BasicStroke(1.0f,0,0,4.0f,null,0.0f);
-shape = new GeneralPath();
-g.setPaint(paint);
-g.setStroke(stroke);
-g.draw(shape);
-g.setTransform(defaultTransform__0_5);
-g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
-AffineTransform defaultTransform__0_6 = g.getTransform();
-g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
-// _0_6
-paint = new Color(0, 0, 0, 255);
-shape = new Rectangle2D.Double(105.77300262451172, 67.23799896240234, 33.029998779296875, 121.84100341796875);
-g.setPaint(paint);
-g.fill(shape);
-g.setTransform(defaultTransform__0_6);
-g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
-AffineTransform defaultTransform__0_7 = g.getTransform();
-g.transform(new AffineTransform(0.0f, 1.0f, -1.0f, 0.0f, 270.1842956542969f, -379.3873291015625f));
-// _0_7
-paint = new Color(0, 0, 0, 255);
-shape = new Rectangle2D.Double(489.1960144042969, 88.0780029296875, 31.562000274658203, 121.84100341796875);
-g.setPaint(paint);
-g.fill(shape);
-g.setTransform(defaultTransform__0_7);
-g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
-AffineTransform defaultTransform__0_8 = g.getTransform();
-g.transform(new AffineTransform(0.0f, 1.0f, -1.0f, 0.0033080000430345535f, 574.8475341796875f, -406.206298828125f));
-// _0_8
-paint = new Color(64, 64, 64, 255);
-shape = new Rectangle2D.Double(510.7049865722656, 74.01200103759766, 32.95000076293945, 102.38300323486328);
-g.setPaint(paint);
-g.fill(shape);
-g.setTransform(defaultTransform__0_8);
 g.setTransform(defaultTransform__0);
 g.setTransform(defaultTransform_);
 
@@ -166,7 +124,7 @@ g.setTransform(defaultTransform_);
      * @return The X of the bounding box of the original SVG image.
      */
     public static double getOrigX() {
-        return 0.0;
+        return 2.0;
     }
 
     /**
@@ -175,7 +133,7 @@ g.setTransform(defaultTransform_);
      * @return The Y of the bounding box of the original SVG image.
      */
     public static double getOrigY() {
-        return 0.0;
+        return 2.0;
     }
 
 	/**
@@ -184,7 +142,7 @@ g.setTransform(defaultTransform_);
 	 * @return The width of the bounding box of the original SVG image.
 	 */
 	public static double getOrigWidth() {
-		return 1.0;
+		return 20.0;
 	}
 
 	/**
@@ -193,7 +151,7 @@ g.setTransform(defaultTransform_);
 	 * @return The height of the bounding box of the original SVG image.
 	 */
 	public static double getOrigHeight() {
-		return 0.46345800161361694;
+		return 20.0;
 	}
 
 	/**
@@ -209,7 +167,7 @@ g.setTransform(defaultTransform_);
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public drop_on_leaf() {
+	public ic_content_cut_black_24px() {
         this.width = (int) getOrigWidth();
         this.height = (int) getOrigHeight();
 	}
@@ -245,12 +203,6 @@ g.setTransform(defaultTransform_);
         return true;
     }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
-	 * int, int)
-	 */
     @Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		Graphics2D g2d = (Graphics2D) g.create();
@@ -277,11 +229,11 @@ g.setTransform(defaultTransform_);
 		g2d.dispose();
 	}
 	
-	public static drop_on_leaf of(int width, int height) {
-	   drop_on_leaf result = new drop_on_leaf();
-	   result.width = width;
-	   result.height = height;
-	   return result;
+	public static HiDpiAwareIcon of(int width, int height) {
+	   ic_content_cut_black_24px base = new ic_content_cut_black_24px();
+	   base.width = width;
+	   base.height = height;
+	   return new HiDpiAwareIcon(base);
 	}
 }
 

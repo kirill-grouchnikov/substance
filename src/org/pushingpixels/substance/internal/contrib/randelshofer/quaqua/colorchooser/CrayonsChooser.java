@@ -20,10 +20,12 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.Icon;
 import javax.swing.UIManager;
-import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.plaf.UIResource;
+
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 
 
 /**
@@ -35,7 +37,7 @@ import javax.swing.plaf.UIResource;
  * <br>1.0.1 2005-09-11 Get icon from UIManager.
  * <br>1.0 August 28, 2005 Created.
  */
-public class CrayonsChooser extends AbstractColorChooserPanel implements UIResource {
+public class CrayonsChooser extends SubstanceColorChooserPanel implements UIResource {
     private Crayons crayons;
     
     /**
@@ -71,12 +73,9 @@ public class CrayonsChooser extends AbstractColorChooserPanel implements UIResou
         return UIManager.getString("ColorChooser.crayons");
     }    
     
-    public javax.swing.Icon getLargeDisplayIcon() {
-        return UIManager.getIcon("ColorChooser.crayonsIcon");
-    }
-    
-    public Icon getSmallDisplayIcon() {
-        return getLargeDisplayIcon();
+    @Override
+    public HiDpiAwareIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
+        return SubstanceLookAndFeel.getIconPack().getColorChooserCrayonsIcon(size, colorScheme);
     }
     
     public void updateChooser() {

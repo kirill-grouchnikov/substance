@@ -1,19 +1,16 @@
-package org.pushingpixels.substance.internal.widget.text.svg;
+package org.pushingpixels.substance.internal.svg;
 
 import java.awt.*;
 import java.awt.geom.*;
 
-import javax.swing.Icon;
-import javax.swing.plaf.UIResource;
-
-import org.pushingpixels.substance.internal.hidpi.IsHiDpiAware;
-import org.pushingpixels.substance.internal.hidpi.IsResizable;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.iconpack.SubstanceIcon;
 
 /**
  * This class has been automatically generated using <a
  * href="https://github.com/kirill-grouchnikov/flamingo">Flamingo SVG transcoder</a>.
  */
-public class ic_content_copy_black_24px implements Icon, UIResource, IsResizable, IsHiDpiAware {
+public class ic_remove_circle_black_24px implements SubstanceIcon {
 	/**
 	 * Paints the transcoded SVG image on the specified graphics context. You
 	 * can install a custom transformation on the graphics context to scale the
@@ -55,30 +52,17 @@ g.transform(new AffineTransform(1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f));
 // _0_1
 paint = new Color(0, 0, 0, 255);
 shape = new GeneralPath();
-((GeneralPath)shape).moveTo(16.0, 1.0);
-((GeneralPath)shape).lineTo(4.0, 1.0);
-((GeneralPath)shape).curveTo(2.9, 1.0, 2.0, 1.9, 2.0, 3.0);
-((GeneralPath)shape).lineTo(2.0, 17.0);
-((GeneralPath)shape).lineTo(4.0, 17.0);
-((GeneralPath)shape).lineTo(4.0, 3.0);
-((GeneralPath)shape).lineTo(16.0, 3.0);
-((GeneralPath)shape).lineTo(16.0, 1.0);
+((GeneralPath)shape).moveTo(12.0, 2.0);
+((GeneralPath)shape).curveTo(6.48, 2.0, 2.0, 6.48, 2.0, 12.0);
+((GeneralPath)shape).curveTo(2.0, 17.52, 6.48, 22.0, 12.0, 22.0);
+((GeneralPath)shape).curveTo(17.52, 22.0, 22.0, 17.52, 22.0, 12.0);
+((GeneralPath)shape).curveTo(22.0, 6.4799995, 17.52, 2.0, 12.0, 2.0);
 ((GeneralPath)shape).closePath();
-((GeneralPath)shape).moveTo(19.0, 5.0);
-((GeneralPath)shape).lineTo(8.0, 5.0);
-((GeneralPath)shape).curveTo(6.9, 5.0, 6.0, 5.9, 6.0, 7.0);
-((GeneralPath)shape).lineTo(6.0, 21.0);
-((GeneralPath)shape).curveTo(6.0, 22.1, 6.9, 23.0, 8.0, 23.0);
-((GeneralPath)shape).lineTo(19.0, 23.0);
-((GeneralPath)shape).curveTo(20.1, 23.0, 21.0, 22.1, 21.0, 21.0);
-((GeneralPath)shape).lineTo(21.0, 7.0);
-((GeneralPath)shape).curveTo(21.0, 5.9, 20.1, 5.0, 19.0, 5.0);
-((GeneralPath)shape).closePath();
-((GeneralPath)shape).moveTo(19.0, 21.0);
-((GeneralPath)shape).lineTo(8.0, 21.0);
-((GeneralPath)shape).lineTo(8.0, 7.0);
-((GeneralPath)shape).lineTo(19.0, 7.0);
-((GeneralPath)shape).lineTo(19.0, 21.0);
+((GeneralPath)shape).moveTo(17.0, 13.0);
+((GeneralPath)shape).lineTo(7.0, 13.0);
+((GeneralPath)shape).lineTo(7.0, 11.0);
+((GeneralPath)shape).lineTo(17.0, 11.0);
+((GeneralPath)shape).lineTo(17.0, 13.0);
 ((GeneralPath)shape).closePath();
 g.setPaint(paint);
 g.fill(shape);
@@ -103,7 +87,7 @@ g.setTransform(defaultTransform_);
      * @return The Y of the bounding box of the original SVG image.
      */
     public static double getOrigY() {
-        return 1.0;
+        return 2.0;
     }
 
 	/**
@@ -112,7 +96,7 @@ g.setTransform(defaultTransform_);
 	 * @return The width of the bounding box of the original SVG image.
 	 */
 	public static double getOrigWidth() {
-		return 19.0;
+		return 20.0;
 	}
 
 	/**
@@ -121,7 +105,7 @@ g.setTransform(defaultTransform_);
 	 * @return The height of the bounding box of the original SVG image.
 	 */
 	public static double getOrigHeight() {
-		return 22.0;
+		return 20.0;
 	}
 
 	/**
@@ -137,7 +121,7 @@ g.setTransform(defaultTransform_);
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public ic_content_copy_black_24px() {
+	public ic_remove_circle_black_24px() {
         this.width = (int) getOrigWidth();
         this.height = (int) getOrigHeight();
 	}
@@ -173,12 +157,6 @@ g.setTransform(defaultTransform_);
         return true;
     }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
-	 * int, int)
-	 */
     @Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		Graphics2D g2d = (Graphics2D) g.create();
@@ -205,11 +183,11 @@ g.setTransform(defaultTransform_);
 		g2d.dispose();
 	}
 	
-	public static ic_content_copy_black_24px of(int width, int height) {
-	   ic_content_copy_black_24px result = new ic_content_copy_black_24px();
-	   result.width = width;
-	   result.height = height;
-	   return result;
+	public static HiDpiAwareIcon of(int width, int height) {
+	   ic_remove_circle_black_24px base = new ic_remove_circle_black_24px();
+	   base.width = width;
+	   base.height = height;
+	   return new HiDpiAwareIcon(base);
 	}
 }
 

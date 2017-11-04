@@ -29,15 +29,38 @@
  */
 package org.pushingpixels.substance.internal.widget.scroll;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.AWTEvent;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.AWTEventListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowEvent;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 
-import org.pushingpixels.substance.internal.widget.scroll.svg.autoscroll_all;
-import org.pushingpixels.substance.internal.widget.scroll.svg.autoscroll_h;
-import org.pushingpixels.substance.internal.widget.scroll.svg.autoscroll_v;
+import org.pushingpixels.substance.api.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.iconpack.SubstanceIconPack;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
  * Christopher Deckers (chrriis@nextencia.net) http://www.nextencia.net
@@ -46,14 +69,14 @@ import org.pushingpixels.substance.internal.widget.scroll.svg.autoscroll_v;
  */
 public class AutoScrollActivator {
 
-    protected JScrollPane scrollPane;
+    private JScrollPane scrollPane;
 
     public AutoScrollActivator(JScrollPane scrollPane) {
         this.scrollPane = scrollPane;
         configureScrollPane();
     }
 
-    protected static class AutoScrollProperties {
+    private static class AutoScrollProperties {
         public Point startLocation;
         public Point currentLocation;
         public Timer timer;
@@ -62,9 +85,9 @@ public class AutoScrollActivator {
         public JPopupMenu iconPopupMenu;
     }
 
-    protected AutoScrollProperties autoScrollProperties;
+    private AutoScrollProperties autoScrollProperties;
 
-    protected void deactivateAutoScroll() {
+    private void deactivateAutoScroll() {
         if (autoScrollProperties == null)
             return;
         autoScrollProperties.timer.stop();
@@ -73,7 +96,7 @@ public class AutoScrollActivator {
         autoScrollProperties = null;
     }
 
-    protected void activateAutoScroll(MouseEvent e) {
+    private void activateAutoScroll(MouseEvent e) {
         autoScrollProperties = new AutoScrollProperties();
         autoScrollProperties.isDragMode = false;
         JViewport viewport = scrollPane.getViewport();
@@ -164,8 +187,8 @@ public class AutoScrollActivator {
                                     - autoScrollProperties.startLocation.x),
                             Math.abs(autoScrollProperties.currentLocation.y
                                     - autoScrollProperties.startLocation.y));
-                    autoScrollProperties.isDragMode = size.width > HV_IMAGE_ICON.getIconWidth() / 2
-                            || size.height > HV_IMAGE_ICON.getIconHeight() / 2;
+                    autoScrollProperties.isDragMode = size.width > SCROLL_ICON_SIZE / 2
+                            || size.height > SCROLL_ICON_SIZE / 2;
                 }
                 break;
             case MouseEvent.MOUSE_PRESSED:
@@ -187,8 +210,8 @@ public class AutoScrollActivator {
                         | AWTEvent.MOUSE_WHEEL_EVENT_MASK | AWTEvent.WINDOW_FOCUS_EVENT_MASK);
     }
 
-    protected static class AutoScrollMouseListener extends MouseAdapter {
-        protected AutoScrollActivator autoScrollActivator;
+    private static class AutoScrollMouseListener extends MouseAdapter {
+        private AutoScrollActivator autoScrollActivator;
 
         public AutoScrollMouseListener(AutoScrollActivator autoScrollActivator) {
             this.autoScrollActivator = autoScrollActivator;
@@ -202,7 +225,7 @@ public class AutoScrollActivator {
         }
     }
 
-    protected void configureScrollPane() {
+    private void configureScrollPane() {
         for (MouseListener mouseListener : scrollPane.getMouseListeners()) {
             if (mouseListener instanceof AutoScrollMouseListener) {
                 return;
@@ -211,29 +234,23 @@ public class AutoScrollActivator {
         scrollPane.addMouseListener(new AutoScrollMouseListener(this));
     }
 
-    protected static final Icon H_IMAGE_ICON = autoscroll_h.of(28, 28);
-    protected static final Icon V_IMAGE_ICON = autoscroll_v.of(28, 28);
-    protected static final Icon HV_IMAGE_ICON = autoscroll_all.of(28, 28);
+    private static final int SCROLL_ICON_SIZE = 28;
 
-    protected Icon getAutoScrollIcon() {
-        Icon icon;
+    private Icon getAutoScrollIcon() {
+        SubstanceIconPack iconPack = SubstanceLookAndFeel.getIconPack();
+        SubstanceColorScheme colorScheme = SubstanceCoreUtilities.getSkin(scrollPane)
+                .getEnabledColorScheme(DecorationAreaType.NONE);
         if (scrollPane.getHorizontalScrollBar().isVisible()) {
             if (scrollPane.getVerticalScrollBar().isVisible()) {
-                icon = HV_IMAGE_ICON;
+                return iconPack.getScrollAllIcon(SCROLL_ICON_SIZE, colorScheme);
             } else {
-                icon = H_IMAGE_ICON;
-            }
-        } else {
-            if (scrollPane.getVerticalScrollBar().isVisible()) {
-                icon = V_IMAGE_ICON;
-            } else {
-                icon = HV_IMAGE_ICON;
+                return iconPack.getScrollHorizontalIcon(SCROLL_ICON_SIZE, colorScheme);
             }
         }
-        return icon;
+        return iconPack.getScrollVerticalIcon(SCROLL_ICON_SIZE, colorScheme);
     }
 
-    public static void setAutoScrollEnabled(final JScrollPane scrollPane, boolean isEnabled) {
+    static void setAutoScrollEnabled(final JScrollPane scrollPane, boolean isEnabled) {
         if (isEnabled) {
             new AutoScrollActivator(scrollPane);
         } else {

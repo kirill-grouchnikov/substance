@@ -217,7 +217,7 @@ public class SubstanceTextAreaUI extends BasicTextAreaUI implements
 
 		// support for per-window skins
 		SwingUtilities.invokeLater(() -> {
-			if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
+			if (!SubstanceCoreUtilities.isCurrentLookAndFeel())
 				return;
 			if (textArea == null)
 				return;

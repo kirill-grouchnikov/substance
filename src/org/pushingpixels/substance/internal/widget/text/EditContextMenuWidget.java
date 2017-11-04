@@ -48,14 +48,8 @@ import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.icon.HighlightableTransitionAwareIcon;
-import org.pushingpixels.substance.internal.widget.text.svg.ic_content_copy_black_24px;
-import org.pushingpixels.substance.internal.widget.text.svg.ic_content_cut_black_24px;
-import org.pushingpixels.substance.internal.widget.text.svg.ic_content_paste_black_24px;
-import org.pushingpixels.substance.internal.widget.text.svg.ic_delete_black_24px;
-import org.pushingpixels.substance.internal.widget.text.svg.ic_select_all_black_24px;
 
 /**
  * Adds edit context menu on text components.
@@ -121,11 +115,10 @@ public class EditContextMenuWidget extends SubstanceWidget<JTextComponent> {
         result.setEnabled(
                 jcomp.isEditable() && jcomp.isEnabled() && (jcomp.getSelectedText() != null));
 
-        HiDpiAwareIcon original = new HiDpiAwareIcon(
-                ic_content_cut_black_24px.of(ICON_SIZE, ICON_SIZE));
         HighlightableTransitionAwareIcon icon = new HighlightableTransitionAwareIcon(result,
                 () -> (TransitionAwareUI) result.getUI(),
-                (SubstanceColorScheme scheme) -> original.colorize(scheme.getForegroundColor()),
+                (SubstanceColorScheme scheme) -> SubstanceLookAndFeel.getIconPack()
+                        .getTextCutActionIcon(ICON_SIZE, scheme),
                 ComponentStateFacet.ARM, "substance.widget.editcontext.cut");
         result.setIcon(icon);
         result.setDisabledIcon(icon);
@@ -139,11 +132,10 @@ public class EditContextMenuWidget extends SubstanceWidget<JTextComponent> {
                 SubstanceLookAndFeel.getLabelBundle().getString("EditMenu.copy"));
         result.setEnabled(jcomp.isEnabled() && (jcomp.getSelectedText() != null));
 
-        HiDpiAwareIcon original = new HiDpiAwareIcon(
-                ic_content_copy_black_24px.of(ICON_SIZE, ICON_SIZE));
         HighlightableTransitionAwareIcon icon = new HighlightableTransitionAwareIcon(result,
                 () -> (TransitionAwareUI) result.getUI(),
-                (SubstanceColorScheme scheme) -> original.colorize(scheme.getForegroundColor()),
+                (SubstanceColorScheme scheme) -> SubstanceLookAndFeel.getIconPack()
+                        .getTextCopyActionIcon(ICON_SIZE, scheme),
                 ComponentStateFacet.ARM, "substance.widget.editcontext.copy");
         result.setIcon(icon);
         result.setDisabledIcon(icon);
@@ -163,11 +155,10 @@ public class EditContextMenuWidget extends SubstanceWidget<JTextComponent> {
         }
         result.setEnabled(isEnabled);
 
-        HiDpiAwareIcon original = new HiDpiAwareIcon(
-                ic_content_paste_black_24px.of(ICON_SIZE, ICON_SIZE));
         HighlightableTransitionAwareIcon icon = new HighlightableTransitionAwareIcon(result,
                 () -> (TransitionAwareUI) result.getUI(),
-                (SubstanceColorScheme scheme) -> original.colorize(scheme.getForegroundColor()),
+                (SubstanceColorScheme scheme) -> SubstanceLookAndFeel.getIconPack()
+                        .getTextPasteActionIcon(ICON_SIZE, scheme),
                 ComponentStateFacet.ARM, "substance.widget.editcontext.paste");
         result.setIcon(icon);
         result.setDisabledIcon(icon);
@@ -182,10 +173,10 @@ public class EditContextMenuWidget extends SubstanceWidget<JTextComponent> {
         result.setEnabled(
                 jcomp.isEditable() && jcomp.isEnabled() && (jcomp.getSelectedText() != null));
 
-        HiDpiAwareIcon original = new HiDpiAwareIcon(ic_delete_black_24px.of(ICON_SIZE, ICON_SIZE));
         HighlightableTransitionAwareIcon icon = new HighlightableTransitionAwareIcon(result,
                 () -> (TransitionAwareUI) result.getUI(),
-                (SubstanceColorScheme scheme) -> original.colorize(scheme.getForegroundColor()),
+                (SubstanceColorScheme scheme) -> SubstanceLookAndFeel.getIconPack()
+                        .getTextDeleteActionIcon(ICON_SIZE, scheme),
                 ComponentStateFacet.ARM, "substance.widget.editcontext.delete");
         result.setIcon(icon);
         result.setDisabledIcon(icon);
@@ -199,11 +190,10 @@ public class EditContextMenuWidget extends SubstanceWidget<JTextComponent> {
                 SubstanceLookAndFeel.getLabelBundle().getString("EditMenu.selectAll"));
         result.setEnabled(jcomp.isEnabled() && (jcomp.getDocument().getLength() > 0));
 
-        HiDpiAwareIcon original = new HiDpiAwareIcon(
-                ic_select_all_black_24px.of(ICON_SIZE, ICON_SIZE));
         HighlightableTransitionAwareIcon icon = new HighlightableTransitionAwareIcon(result,
                 () -> (TransitionAwareUI) result.getUI(),
-                (SubstanceColorScheme scheme) -> original.colorize(scheme.getForegroundColor()),
+                (SubstanceColorScheme scheme) -> SubstanceLookAndFeel.getIconPack()
+                        .getTextSelectAllActionIcon(ICON_SIZE, scheme),
                 ComponentStateFacet.ARM, "substance.widget.editcontext.selectall");
         result.setIcon(icon);
         result.setDisabledIcon(icon);

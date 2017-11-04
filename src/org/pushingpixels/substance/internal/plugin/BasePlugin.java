@@ -44,7 +44,6 @@ import javax.swing.UIDefaults;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.DimensionUIResource;
 import javax.swing.plaf.FontUIResource;
-import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.InsetsUIResource;
 
 import org.pushingpixels.substance.api.DecorationAreaType;
@@ -53,12 +52,6 @@ import org.pushingpixels.substance.api.SubstanceComponentPlugin;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.font.FontSet;
-import org.pushingpixels.substance.internal.svg.ic_album_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_brightness_high_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_grid_on_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_menu_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_mode_edit_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_palette_black_24px;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
@@ -112,7 +105,7 @@ public class BasePlugin implements SubstanceComponentPlugin {
 				labelsList.add(bundle.getObject(key));
 			}
 			final SubstanceColorScheme colorScheme = skin
-					.getActiveColorScheme(DecorationAreaType.NONE);
+					.getEnabledColorScheme(DecorationAreaType.NONE);
 			InsetsUIResource visualMargin = new InsetsUIResource(0, 0, 0, 0);
 			Color foregroundColor = new ColorUIResource(colorScheme
 					.getForegroundColor());
@@ -171,28 +164,6 @@ public class BasePlugin implements SubstanceComponentPlugin {
 					SubstanceImageCreator.getCrayonsImage(),
 					"ColorChooser.textSliderGap",
 					new Integer(0),
-					"ColorChooser.colorPalettesIcon",
-					ic_palette_black_24px.of(18, 18),
-					"ColorChooser.colorSlidersIcon",
-					ic_menu_black_24px.of(18, 18),
-					"ColorChooser.colorSwatchesIcon",
-					ic_grid_on_black_24px.of(18, 18),
-					"ColorChooser.colorWheelIcon",
-					ic_album_black_24px.of(18, 18),
-					"ColorChooser.crayonsIcon",
-					ic_mode_edit_black_24px.of(18, 18),
-					"ColorChooser.imagePalettesIcon",
-					ic_brightness_high_black_24px.of(18, 18),
-
-					// Icon of the color picker tool
-					"ColorChooser.colorPickerIcon",
-					new UIDefaults.LazyValue() {
-						@Override
-						public Object createValue(UIDefaults table) {
-							return new IconUIResource(SubstanceImageCreator
-									.getSearchIcon(null, 16, true));
-						}
-					},
 
 					// Magnifying glass used as the cursor image
 					"ColorChooser.colorPickerMagnifier",

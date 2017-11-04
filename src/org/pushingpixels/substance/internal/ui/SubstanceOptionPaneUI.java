@@ -48,21 +48,14 @@ import javax.swing.plaf.basic.BasicOptionPaneUI;
 
 import org.pushingpixels.substance.api.AnimationConfigurationManager;
 import org.pushingpixels.substance.api.AnimationFacet;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.colorscheme.SteelBlueColorScheme;
 import org.pushingpixels.substance.api.colorscheme.SunsetColorScheme;
+import org.pushingpixels.substance.api.iconpack.SubstanceIconPack;
 import org.pushingpixels.substance.internal.animation.IconGlowTracker;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
-import org.pushingpixels.substance.internal.hidpi.IsResizable;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
-import org.pushingpixels.substance.internal.svg.ic_error_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_help_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_info_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_warning_black_24px;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
-import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.icon.GlowingIcon;
 
@@ -76,7 +69,7 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
         AnimationConfigurationManager.getInstance().allowAnimations(AnimationFacet.ICON_GLOW,
                 OptionPaneLabel.class);
     }
-    
+
     private static final int ICON_SIZE = 20;
 
     /**
@@ -126,23 +119,12 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
     protected void addIcon(Container top) {
         Icon sideIcon = (optionPane == null ? null : optionPane.getIcon());
 
+        int messageType = optionPane.getMessageType();
         if (sideIcon == null && optionPane != null) {
-            sideIcon = this.getIconForType(optionPane.getMessageType());
+            sideIcon = getIconForType(messageType);
         }
 
         if (sideIcon != null) {
-            if (sideIcon instanceof IsResizable) {
-                int dimension = ICON_SIZE * UIUtil.getScaleFactor();
-                ((IsResizable) sideIcon).setDimension(new Dimension(dimension, dimension));
-            }
-            if (!SubstanceLookAndFeel.isToUseConstantThemesOnDialogs()) {
-                sideIcon = SubstanceCoreUtilities.getThemedIcon(null, sideIcon,
-                        getColorSchemeForType(optionPane.getMessageType()));
-            } else {
-                sideIcon = new HiDpiAwareIcon(SubstanceImageCreator.getColoredImage(null, sideIcon, 
-                        getColorSchemeForType(optionPane.getMessageType()).getMidColor()));
-            }
-
             this.substanceIconLabel = new OptionPaneLabel();
             this.iconGlowTracker = new IconGlowTracker(substanceIconLabel);
             GlowingIcon glowingIcon = new GlowingIcon(sideIcon, this.iconGlowTracker);
@@ -163,27 +145,17 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
      */
     @Override
     protected Icon getIconForType(int messageType) {
+        SubstanceIconPack iconPack = SubstanceLookAndFeel.getIconPack();
+        int size = ICON_SIZE * UIUtil.getScaleFactor();
         switch (messageType) {
         case JOptionPane.ERROR_MESSAGE:
-            return ic_error_black_24px.of(ICON_SIZE, ICON_SIZE);
+            return iconPack.getOptionPaneErrorIcon(size, new SunsetColorScheme());
         case JOptionPane.INFORMATION_MESSAGE:
-            return ic_info_black_24px.of(ICON_SIZE, ICON_SIZE);
+            return iconPack.getOptionPaneInformationIcon(size, new SteelBlueColorScheme());
         case JOptionPane.WARNING_MESSAGE:
-            return ic_warning_black_24px.of(ICON_SIZE, ICON_SIZE);
+            return iconPack.getOptionPaneWarningIcon(size, new SunsetColorScheme());
         case JOptionPane.QUESTION_MESSAGE:
-            return ic_help_black_24px.of(ICON_SIZE, ICON_SIZE);
-        }
-        return null;
-    }
-    
-    private SubstanceColorScheme getColorSchemeForType(int messageType) {
-        switch (messageType) {
-        case JOptionPane.ERROR_MESSAGE:
-        case JOptionPane.WARNING_MESSAGE:
-            return new SunsetColorScheme();
-        case JOptionPane.INFORMATION_MESSAGE:
-        case JOptionPane.QUESTION_MESSAGE:
-            return new SteelBlueColorScheme();
+            return iconPack.getOptionPaneQuestionIcon(size, new SteelBlueColorScheme());
         }
         return null;
     }
@@ -259,8 +231,8 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
                         + padding * (numChildren - 1);
 
                 boolean isLeftToRight = container.getComponentOrientation().isLeftToRight();
-                int buttonAlignment = SubstanceLookAndFeel.getOptionPaneButtonAlignment().
-                        getButtonAlignmentInContainer(container);
+                int buttonAlignment = SubstanceLookAndFeel.getOptionPaneButtonAlignment()
+                        .getButtonAlignmentInContainer(container);
                 int x;
                 switch (buttonAlignment) {
                 case SwingConstants.LEFT:
@@ -269,7 +241,7 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
                 case SwingConstants.CENTER:
                     x = (container.getWidth() - insets.left - insets.right - totalButtonWidth) / 2;
                     break;
-                default: 
+                default:
                     x = container.getWidth() - insets.right - totalButtonWidth;
                     break;
                 }

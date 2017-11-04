@@ -36,7 +36,7 @@ import java.util.WeakHashMap;
 
 import javax.swing.*;
 
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.Timeline.RepeatBehavior;
 import org.pushingpixels.trident.Timeline.TimelineState;
@@ -208,7 +208,7 @@ public class RootPaneDefaultButtonTracker extends
 			}
 		}
 		// maybe LAF has changed
-		if (SubstanceLookAndFeel.isCurrentLookAndFeel())
+		if (SubstanceCoreUtilities.isCurrentLookAndFeel())
 			jButton.repaint();
 	}
 

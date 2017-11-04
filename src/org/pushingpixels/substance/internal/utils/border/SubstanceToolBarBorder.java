@@ -43,9 +43,9 @@ import javax.swing.plaf.UIResource;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
@@ -65,7 +65,7 @@ public class SubstanceToolBarBorder extends AbstractBorder implements
 	@Override
 	public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
 		// failsafe for LAF change
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel())
+		if (!SubstanceCoreUtilities.isCurrentLookAndFeel())
 			return;
 
 		Graphics2D graphics = (Graphics2D) g.create();

@@ -74,6 +74,9 @@ import org.pushingpixels.substance.api.combo.ComboPopupPrototypeCallback;
 import org.pushingpixels.substance.api.font.FontPolicy;
 import org.pushingpixels.substance.api.font.FontSet;
 import org.pushingpixels.substance.api.font.SubstanceFontUtilities;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.iconpack.SubstanceDefaultIconPack;
+import org.pushingpixels.substance.api.iconpack.SubstanceIconPack;
 import org.pushingpixels.substance.api.inputmap.InputMapSet;
 import org.pushingpixels.substance.api.inputmap.SubstanceInputMapUtilities;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
@@ -86,7 +89,6 @@ import org.pushingpixels.substance.api.tabbed.TabCloseCallback;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.contrib.jgoodies.looks.common.ShadowPopupFactory;
 import org.pushingpixels.substance.internal.fonts.FontPolicies;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.plugin.BasePlugin;
 import org.pushingpixels.substance.internal.plugin.BaseSkinPlugin;
@@ -133,12 +135,12 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	/**
 	 * List of all listeners on skin changes.
 	 */
-	protected final static Set<SkinChangeListener> skinChangeListeners = new HashSet<SkinChangeListener>();
+	private final static Set<SkinChangeListener> skinChangeListeners = new HashSet<SkinChangeListener>();
 
 	/**
 	 * List of all listeners on changing locales.
 	 */
-	protected final static Set<LocaleChangeListener> localeChangeListeners = new HashSet<LocaleChangeListener>();
+	private final static Set<LocaleChangeListener> localeChangeListeners = new HashSet<LocaleChangeListener>();
 
 	/**
 	 * Indicates whether option dialogs (error, question, warning, info) should
@@ -162,12 +164,14 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	/**
 	 * Change listener on keyboard focus manager - fix for defect 208.
 	 */
-	protected PropertyChangeListener focusOwnerChangeListener;
+	private PropertyChangeListener focusOwnerChangeListener;
 
 	/**
 	 * The current keyboard focus manager - fix for defect 208.
 	 */
-	protected KeyboardFocusManager currentKeyboardFocusManager;
+	private KeyboardFocusManager currentKeyboardFocusManager;
+	
+	private static SubstanceIconPack iconPack;
 
 	/**
 	 * Smart tree scroll animation facet. Disabled by default, use
@@ -1402,53 +1406,84 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 		this.skin.addCustomEntriesToTable(table);
     }
 
-	/**
-	 * Sets the {@link FontPolicy} to be used with Substance family. If the
-	 * specified policy is <code>null</code>, the default will be reset. This
-	 * method does not require Substance to be the current look-and-feel, and
-	 * will cause Substance to be set as the current application look-and-feel.
-	 * 
-	 * @param fontPolicy
-	 *            The {@link FontPolicy} to be used with Substance family, or
-	 *            <code>null</code> to reset to the default
-	 * 
-	 * @see #getFontPolicy()
-	 * @see SubstanceLookAndFeel#SUBSTANCE_FONT_POLICY_KEY
-	 */
-	public static void setFontPolicy(FontPolicy fontPolicy) {
-		UIManager.put(SUBSTANCE_FONT_POLICY_KEY, fontPolicy);
-		SubstanceSizeUtils.setControlFontSize(-1);
-		SubstanceSizeUtils.resetPointsToPixelsRatio(fontPolicy);
-		SubstanceLookAndFeel.setSkin(SubstanceLookAndFeel.getCurrentSkin());
-	}
+    /**
+     * Sets the {@link FontPolicy} to be used with Substance family. If the
+     * specified policy is <code>null</code>, the default will be reset. This
+     * method does not require Substance to be the current look-and-feel, and
+     * will cause Substance to be set as the current application look-and-feel.
+     * 
+     * @param fontPolicy
+     *            The {@link FontPolicy} to be used with Substance family, or
+     *            <code>null</code> to reset to the default
+     * 
+     * @see #getFontPolicy()
+     * @see SubstanceLookAndFeel#SUBSTANCE_FONT_POLICY_KEY
+     */
+    public static void setFontPolicy(FontPolicy fontPolicy) {
+        UIManager.put(SUBSTANCE_FONT_POLICY_KEY, fontPolicy);
+        SubstanceSizeUtils.setControlFontSize(-1);
+        SubstanceSizeUtils.resetPointsToPixelsRatio(fontPolicy);
+        SubstanceLookAndFeel.setSkin(SubstanceLookAndFeel.getCurrentSkin());
+    }
 
-	/**
-	 * Looks up and retrieves the {@link FontPolicy} used by the Substance
-	 * family. If a {@link FontPolicy} has been set, it'll be returned.
-	 * Otherwise, this method checks if a {@link FontPolicy} or {@link FontSet}
-	 * is defined in the system properties or UIDefaults. If so, it is returned.
-	 * If no {@link FontPolicy} has been set for this look, in the system
-	 * properties or {@link UIDefaults}, the default Substance font policy will
-	 * be returned.
-	 * 
-	 * @return the {@link FontPolicy} set for this Look&amp;feel - if any, the
-	 *         {@link FontPolicy} specified in the system properties or
-	 *         {@link UIDefaults} - if any, or the default Substance font
-	 *         policy.
-	 * 
-	 * @see #setFontPolicy
-	 * @see FontPolicies
-	 * @see FontPolicies#customSettingsPolicy(FontPolicy)
-	 */
-	public static FontPolicy getFontPolicy() {
-		FontPolicy policy = (FontPolicy) UIManager
-				.get(SUBSTANCE_FONT_POLICY_KEY);
-		if (policy != null)
-			return policy;
+    /**
+     * Looks up and retrieves the {@link FontPolicy} used by the Substance
+     * family. If a {@link FontPolicy} has been set, it'll be returned.
+     * Otherwise, this method checks if a {@link FontPolicy} or {@link FontSet}
+     * is defined in the system properties or UIDefaults. If so, it is returned.
+     * If no {@link FontPolicy} has been set for this look, in the system
+     * properties or {@link UIDefaults}, the default Substance font policy will
+     * be returned.
+     * 
+     * @return the {@link FontPolicy} set for this Look&amp;feel - if any, the
+     *         {@link FontPolicy} specified in the system properties or
+     *         {@link UIDefaults} - if any, or the default Substance font
+     *         policy.
+     * 
+     * @see #setFontPolicy
+     * @see FontPolicies
+     * @see FontPolicies#customSettingsPolicy(FontPolicy)
+     */
+    public static FontPolicy getFontPolicy() {
+        FontPolicy policy = (FontPolicy) UIManager.get(SUBSTANCE_FONT_POLICY_KEY);
+        if (policy != null)
+            return policy;
 
-		// return default policy
-		return SubstanceFontUtilities.getDefaultFontPolicy();
-	}
+        // return default policy
+        return SubstanceFontUtilities.getDefaultFontPolicy();
+    }
+
+
+    /**
+     * Sets the {@link SubstanceIconPack} to be used with Substance family. 
+     * 
+     * @param iconPack
+     *            The {@link SubstanceIconPack} to be used with Substance family.
+     * 
+     * @see #getIconPack()
+     */
+    public static void setIconPack(SubstanceIconPack iconPack) {
+        if (iconPack == null) {
+            throw new IllegalArgumentException("Cannot pass null icon pack");
+        }
+        SubstanceLookAndFeel.iconPack = iconPack;
+        LazyResettableHashMap.reset();
+    }
+
+    /**
+     * Looks up and retrieves the {@link SubstanceIconPack} used by the Substance
+     * family. 
+     * 
+     * @return the {@link SubstanceIconPack} set for this Look&amp;feel.
+     * 
+     * @see #setIconPack(SubstanceIconPack)
+     */
+    public static SubstanceIconPack getIconPack() {
+        if (iconPack == null) {
+            iconPack = new SubstanceDefaultIconPack();
+        }
+        return iconPack;
+    }
 
 	/**
 	 * Sets the {@link InputMapSet} to be used with Substance family. If the
@@ -2300,17 +2335,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 		return DecorationPainterUtils.getImmediateDecorationType(comp);
 	}
 
-	/**
-	 * Checks whether Substance is the current look-and-feel. This method is for
-	 * internal use only.
-	 * 
-	 * @return <code>true</code> if Substance is the current look-and-feel,
-	 *         <code>false</code> otherwise.
-	 */
-	public static boolean isCurrentLookAndFeel() {
-		return ((UIManager.getLookAndFeel() instanceof SubstanceLookAndFeel) && (currentSkin != null));
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -2339,6 +2363,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 			result = intermediate;
 		}
 
-		return new HiDpiAwareIconUiResource(result);
+		return new HiDpiAwareIcon(result);
 	}
 }

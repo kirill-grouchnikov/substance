@@ -81,7 +81,7 @@ public class BackgroundPaintingUtils {
 	 */
 	public static void update(Graphics g, JComponent c, boolean force) {
 		// failsafe for LAF change
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel()) {
+		if (!SubstanceCoreUtilities.isCurrentLookAndFeel()) {
 			return;
 		}
 
@@ -164,7 +164,7 @@ public class BackgroundPaintingUtils {
 	public static void fillAndWatermark(Graphics g, JComponent c,
 			Color fillColor, Rectangle rect) {
 		// failsafe for LAF change
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel()) {
+		if (!SubstanceCoreUtilities.isCurrentLookAndFeel()) {
 			return;
 		}
 

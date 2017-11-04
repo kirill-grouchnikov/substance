@@ -40,9 +40,9 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.hidpi.IsHiDpiAware;
 import org.pushingpixels.substance.internal.animation.IconGlowTracker;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
-import org.pushingpixels.substance.internal.hidpi.IsHiDpiAware;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 

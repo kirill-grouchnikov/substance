@@ -1,19 +1,16 @@
-package org.pushingpixels.substance.internal.widget.scroll.svg;
+package org.pushingpixels.substance.internal.svg;
 
 import java.awt.*;
 import java.awt.geom.*;
 
-import javax.swing.Icon;
-import javax.swing.plaf.UIResource;
-
-import org.pushingpixels.substance.internal.hidpi.IsHiDpiAware;
-import org.pushingpixels.substance.internal.hidpi.IsResizable;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.iconpack.SubstanceIcon;
 
 /**
  * This class has been automatically generated using <a
  * href="https://github.com/kirill-grouchnikov/flamingo">Flamingo SVG transcoder</a>.
  */
-public class autoscroll_all implements Icon, UIResource, IsResizable, IsHiDpiAware {
+public class autoscroll_v implements SubstanceIcon {
 	/**
 	 * Paints the transcoded SVG image on the specified graphics context. You
 	 * can install a custom transformation on the graphics context to scale the
@@ -109,56 +106,6 @@ g.setPaint(paint);
 g.setStroke(stroke);
 g.draw(shape);
 g.setTransform(defaultTransform__0_2);
-g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
-AffineTransform defaultTransform__0_3 = g.getTransform();
-g.transform(new AffineTransform(0.0011970000341534615f, 0.9999989867210388f, 0.9999989867210388f, -0.0011970000341534615f, 47.25912094116211f, 1008.0562133789062f));
-// _0_3
-paint = new Color(74, 74, 74, 255);
-shape = new GeneralPath();
-((GeneralPath)shape).moveTo(-760.055, -51.146);
-((GeneralPath)shape).lineTo(-652.989, 53.828);
-((GeneralPath)shape).lineTo(-867.122, 53.828);
-((GeneralPath)shape).lineTo(-760.055, -51.146);
-((GeneralPath)shape).closePath();
-g.setPaint(paint);
-g.fill(shape);
-paint = new Color(0, 0, 0, 255);
-stroke = new BasicStroke(1.0f,0,0,4.0f,null,0.0f);
-shape = new GeneralPath();
-((GeneralPath)shape).moveTo(-760.055, -51.146);
-((GeneralPath)shape).lineTo(-652.989, 53.828);
-((GeneralPath)shape).lineTo(-867.122, 53.828);
-((GeneralPath)shape).lineTo(-760.055, -51.146);
-((GeneralPath)shape).closePath();
-g.setPaint(paint);
-g.setStroke(stroke);
-g.draw(shape);
-g.setTransform(defaultTransform__0_3);
-g.setComposite(AlphaComposite.getInstance(3, 1.0f * origAlpha));
-AffineTransform defaultTransform__0_4 = g.getTransform();
-g.transform(new AffineTransform(-0.0011970000341534615f, 0.9999989867210388f, -0.9999989867210388f, -0.0011970000341534615f, 435.8759460449219f, 1008.0547485351562f));
-// _0_4
-paint = new Color(74, 74, 74, 255);
-shape = new GeneralPath();
-((GeneralPath)shape).moveTo(-760.055, -51.146);
-((GeneralPath)shape).lineTo(-652.989, 53.828);
-((GeneralPath)shape).lineTo(-867.122, 53.828);
-((GeneralPath)shape).lineTo(-760.055, -51.146);
-((GeneralPath)shape).closePath();
-g.setPaint(paint);
-g.fill(shape);
-paint = new Color(0, 0, 0, 255);
-stroke = new BasicStroke(1.0f,0,0,4.0f,null,0.0f);
-shape = new GeneralPath();
-((GeneralPath)shape).moveTo(-760.055, -51.146);
-((GeneralPath)shape).lineTo(-652.989, 53.828);
-((GeneralPath)shape).lineTo(-867.122, 53.828);
-((GeneralPath)shape).lineTo(-760.055, -51.146);
-((GeneralPath)shape).closePath();
-g.setPaint(paint);
-g.setStroke(stroke);
-g.draw(shape);
-g.setTransform(defaultTransform__0_4);
 g.setTransform(defaultTransform__0);
 g.setTransform(defaultTransform_);
 
@@ -170,7 +117,7 @@ g.setTransform(defaultTransform_);
      * @return The X of the bounding box of the original SVG image.
      */
     public static double getOrigX() {
-        return 0.006746154744178057;
+        return 0.2724248766899109;
     }
 
     /**
@@ -188,7 +135,7 @@ g.setTransform(defaultTransform_);
 	 * @return The width of the bounding box of the original SVG image.
 	 */
 	public static double getOrigWidth() {
-		return 0.9887778759002686;
+		return 0.45515069365501404;
 	}
 
 	/**
@@ -213,7 +160,7 @@ g.setTransform(defaultTransform_);
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public autoscroll_all() {
+	public autoscroll_v() {
         this.width = (int) getOrigWidth();
         this.height = (int) getOrigHeight();
 	}
@@ -249,12 +196,6 @@ g.setTransform(defaultTransform_);
         return true;
     }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
-	 * int, int)
-	 */
     @Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		Graphics2D g2d = (Graphics2D) g.create();
@@ -281,11 +222,11 @@ g.setTransform(defaultTransform_);
 		g2d.dispose();
 	}
 	
-	public static autoscroll_all of(int width, int height) {
-	   autoscroll_all result = new autoscroll_all();
-	   result.width = width;
-	   result.height = height;
-	   return result;
+	public static HiDpiAwareIcon of(int width, int height) {
+	   autoscroll_v base = new autoscroll_v();
+	   base.width = width;
+	   base.height = height;
+	   return new HiDpiAwareIcon(base);
 	}
 }
 

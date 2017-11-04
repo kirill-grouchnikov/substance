@@ -46,7 +46,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.CompoundBorder;
-import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -56,8 +55,8 @@ import javax.swing.plaf.basic.BasicBorders;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceConstants;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
-import org.pushingpixels.substance.internal.svg.ic_refresh_black_24px;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser.SubstanceColorChooserPanel;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
@@ -68,7 +67,7 @@ import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
  * A color wheel showing a Red, Yellow, Blue color model traditionally used by
  * graphic artists. $Revision: 2254 $
  */
-public class ColorWheelPanel extends AbstractColorChooserPanel implements
+public class ColorWheelPanel extends SubstanceColorChooserPanel implements
 		ActionListener, MouseListener, MouseMotionListener, MouseWheelListener,
 		ChangeListener {
 	public static final int MONOCHROMATIC_SCHEME = 0;
@@ -224,12 +223,11 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 		resetBtn.setBackground(getBackground());
 		resetBtn.addActionListener(this);
 
-		final HiDpiAwareIcon resetIcon = new HiDpiAwareIcon(ic_refresh_black_24px.of(10, 10));
         // Create a transition-aware wrapper around our icon so that it is colorized
         // based on the color scheme that matches the current state of our toggle button
         resetBtn.setIcon(new TransitionAwareIcon(resetBtn,
-                (SubstanceColorScheme scheme) -> resetIcon
-                        .colorize(SubstanceColorUtilities.getMarkColor(scheme, true)),
+                (SubstanceColorScheme scheme) -> SubstanceLookAndFeel.getIconPack()
+                        .getRefreshIcon(10, scheme),
                 "Color wheel reset"));
 
 		resetBtn.setToolTipText(getLabel("Xoetrope.reset",
@@ -937,13 +935,8 @@ public class ColorWheelPanel extends AbstractColorChooserPanel implements
 	}
 
 	@Override
-	public Icon getLargeDisplayIcon() {
-		return UIManager.getIcon("ColorChooser.imagePalettesIcon");
-	}
-
-	@Override
-	public Icon getSmallDisplayIcon() {
-		return getLargeDisplayIcon();
+	public HiDpiAwareIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
+	    return SubstanceLookAndFeel.getIconPack().getColorChooserImagePalettesIcon(size, colorScheme);
 	}
 
 	@Override

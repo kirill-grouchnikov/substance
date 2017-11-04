@@ -41,7 +41,6 @@ import javax.swing.plaf.UIResource;
 import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
 import org.pushingpixels.substance.internal.utils.WidgetUtilities;
@@ -156,7 +155,7 @@ public class SubstanceBorder implements Border, UIResource {
 	private void paintBorder(Component c, Graphics g, int x, int y, int width,
 			int height, boolean isEnabled, boolean hasFocus, float alpha) {
 		// failsafe for LAF change
-		if (!SubstanceLookAndFeel.isCurrentLookAndFeel()) {
+		if (!SubstanceCoreUtilities.isCurrentLookAndFeel()) {
 			return;
 		}
 

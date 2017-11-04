@@ -67,17 +67,17 @@ import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.api.SubstanceWidgetRepository;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.renderer.SubstanceDefaultTreeCellRenderer;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.HighlightPainterUtils;
-import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceStripingUtils;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.substance.internal.utils.icon.SubstanceIconFactory;
 import org.pushingpixels.trident.Timeline.TimelineState;
@@ -197,8 +197,8 @@ public class SubstanceTreeUI extends BasicTreeUI {
 
 		Icon expandedIcon = SubstanceIconFactory.getTreeIcon(this.tree, false);
 		Icon collapsedIcon = SubstanceIconFactory.getTreeIcon(this.tree, true);
-		setExpandedIcon(new HiDpiAwareIconUiResource(expandedIcon));
-		setCollapsedIcon(new HiDpiAwareIconUiResource(collapsedIcon));
+		setExpandedIcon(new HiDpiAwareIcon(expandedIcon));
+		setCollapsedIcon(new HiDpiAwareIcon(collapsedIcon));
 
 		// instead of computing the cell renderer insets on
 		// every cell rendering, compute it once and expose to the

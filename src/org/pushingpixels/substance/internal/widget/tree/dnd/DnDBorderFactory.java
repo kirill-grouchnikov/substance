@@ -29,7 +29,6 @@
  */
 package org.pushingpixels.substance.internal.widget.tree.dnd;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -39,8 +38,12 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.border.Border;
 
-import org.pushingpixels.substance.internal.widget.tree.dnd.svg.drop_not_allowed;
-import org.pushingpixels.substance.internal.widget.tree.dnd.svg.drop_on_leaf;
+import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.colorscheme.SunsetColorScheme;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.iconpack.SubstanceIconPack;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
  * DnDBorderFactory is responsible for creating node borders used under
@@ -57,26 +60,28 @@ class DnDBorderFactory {
 	 */
 	static class DropAllowedBorder implements Border {
 		private static Insets insets = new Insets(0, 0, 3, 0);
-		private Icon plusIcon;
 
 		/**
 		 * Creates a new instance of DropAllowedBorder
 		 */
 		public DropAllowedBorder() {
-			this.plusIcon = drop_on_leaf.of(16, 16);
 		}
 
 		public void paintBorder(Component c, Graphics g, int x, int y,
 				int width, int height) {
 			int yh = y + height - 1;
-			if (this.plusIcon != null) {
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.translate(x + 8, yh - 8);
-				this.plusIcon.paintIcon(c, g2d, 0, 0);
-			}
-			yh -= 4;
-			g.setColor(Color.DARK_GRAY);
-			g.drawLine(x + 24, yh, x + 48, yh);
+	        SubstanceIconPack iconPack = SubstanceLookAndFeel.getIconPack();
+	        SubstanceColorScheme colorScheme = SubstanceCoreUtilities.getSkin(c)
+	                .getEnabledColorScheme(SubstanceLookAndFeel.getDecorationType(c));
+	        HiDpiAwareIcon icon = iconPack.getAllowedIcon(12, colorScheme);
+
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.translate(x, yh - icon.getIconHeight());
+            icon.paintIcon(c, g2d, 0, 0);
+			
+            yh -= 4;
+			g.setColor(colorScheme.getForegroundColor());
+			g.drawLine(x + 16, yh, x + 40, yh);
 		}
 
 		public Insets getBorderInsets(Component c) {
@@ -120,21 +125,21 @@ class DnDBorderFactory {
 	 */
 	class DropNotAllowedBorder implements Border {
 		private Insets insets = new Insets(0, 0, 0, 0);
-		private Icon plusIcon;
+		private Icon icon;
 
 		/**
 		 * Creates a new instance of DropOnNodeBorder
 		 */
 		public DropNotAllowedBorder() {
-			this.plusIcon = drop_not_allowed.of(16, 16);
+			this.icon = SubstanceLookAndFeel.getIconPack().getNotAllowedIcon(12, new SunsetColorScheme());
 		}
 
 		public void paintBorder(Component c, Graphics g, int x, int y,
 				int width, int height) {
-			if (this.plusIcon != null) {
+			if (this.icon != null) {
 				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.translate(x, y);
-				this.plusIcon.paintIcon(c, g2d, 0, 0);
+				g2d.translate(x, y + (height - this.icon.getIconHeight()) / 2);
+				this.icon.paintIcon(c, g2d, 0, 0);
 				g2d.dispose();
 			}
 		}

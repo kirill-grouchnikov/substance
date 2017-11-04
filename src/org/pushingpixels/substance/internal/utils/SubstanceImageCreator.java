@@ -33,6 +33,7 @@ import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -61,16 +62,14 @@ import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.painter.border.FlatBorderPainter;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIcon;
-import org.pushingpixels.substance.internal.hidpi.HiDpiAwareIconUiResource;
 import org.pushingpixels.substance.internal.painter.SimplisticFillPainter;
-import org.pushingpixels.substance.internal.svg.ic_lock_outline_black_24px;
-import org.pushingpixels.substance.internal.svg.ic_search_black_24px;
 import org.pushingpixels.substance.internal.utils.filters.ColorFilter;
 import org.pushingpixels.substance.internal.utils.filters.ColorSchemeFilter;
 import org.pushingpixels.substance.internal.utils.filters.GrayscaleFilter;
@@ -231,7 +230,7 @@ public final class SubstanceImageCreator {
                 getArrow(width, height, strokeWidth, direction, colorScheme));
         int finalWidth = (int) (Math.max(origWidth, origHeight) + 2);
         int finalHeight = (int) (Math.max(origWidth, height) + 2);
-        result.setDimension(finalWidth, finalHeight);
+        result.setDimension(new Dimension(finalWidth, finalHeight));
         return result;
     }
 
@@ -1672,37 +1671,6 @@ public final class SubstanceImageCreator {
     }
 
     /**
-     * Returns search icon.
-     * 
-     * @param dimension
-     *            Icon dimension.
-     * @param colorScheme
-     *            Icon color scheme.
-     * @param leftToRight
-     *            LTR indication of the resulting icon.
-     * @return Search icon.
-     */
-    private static BufferedImage createSearchIcon(int dimension, SubstanceColorScheme colorScheme,
-            boolean leftToRight) {
-        HiDpiAwareIcon hiDpiAwareIcon = new HiDpiAwareIcon(ic_search_black_24px.of(dimension, dimension));
-
-        Color foregroundColor = SubstanceColorUtilities.getForegroundColor(colorScheme);
-        Color forColorization = SubstanceColorUtilities.getAlphaColor(foregroundColor, 160);
-        return hiDpiAwareIcon.colorize(forColorization).toImage();
-    }
-
-    public static HiDpiAwareIcon getSearchIcon(JComponent c, int dimension, boolean leftToRight) {
-        SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities.getColorScheme(c,
-                ComponentState.ENABLED);
-        return new HiDpiAwareIcon(createSearchIcon(dimension, colorScheme, leftToRight));
-    }
-
-    public static HiDpiAwareIcon getSearchIconUiResource(int dimension,
-            SubstanceColorScheme colorScheme, boolean leftToRight) {
-        return new HiDpiAwareIconUiResource(createSearchIcon(dimension, colorScheme, leftToRight));
-    }
-
-    /**
      * Returns an icon that matches the specified watermark.
      * 
      * @param watermark
@@ -1733,12 +1701,8 @@ public final class SubstanceImageCreator {
         int componentFontSize = SubstanceSizeUtils.getComponentFontSize(c);
         int extraPadding = SubstanceSizeUtils.getExtraPadding(componentFontSize);
         int size = 9 + 2 * extraPadding;
-
-        BufferedImage result = SubstanceCoreUtilities.getBlankImage(size, size);
-        ic_lock_outline_black_24px.of(size, size).paintIcon(c, result.getGraphics(), 0, 0);
-        float brightnessFactor = scheme.isDark() ? 0.6f : -0.1f;
-        ColorSchemeFilter filter = ColorSchemeFilter.getColorSchemeFilter(scheme, brightnessFactor);
-        return new HiDpiAwareIcon(filter.filter(result, null));
+        
+        return SubstanceLookAndFeel.getIconPack().getLockIcon(size, scheme);
     }
 
     /**

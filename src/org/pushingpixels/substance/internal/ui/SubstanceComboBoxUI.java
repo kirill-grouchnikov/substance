@@ -685,7 +685,7 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements TransitionAw
 
     @Override
     public boolean isInside(MouseEvent me) {
-        if (!SubstanceLookAndFeel.isCurrentLookAndFeel()) {
+        if (!SubstanceCoreUtilities.isCurrentLookAndFeel()) {
             return false;
         }
         SubstanceButtonShaper shaper = ClassicButtonShaper.INSTANCE;
