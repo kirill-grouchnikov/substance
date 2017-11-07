@@ -34,11 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.swing.SwingUtilities;
-
 /**
- * Lazily initialized hash map for caching images. Note that this class is
- * <b>not</b> thread safe. In Substance, it is used only from EDT.
+ * Lazily initialized hash map for caching images. 
  * 
  * @author Kirill Grouchnikov
  * @param <T>
@@ -90,10 +87,7 @@ public class LazyResettableHashMap<T> {
 	 * @param entry
 	 *            Pair value.
 	 */
-	public void put(HashMapKey key, T entry) {
-		if (!SwingUtilities.isEventDispatchThread())
-			throw new IllegalArgumentException(
-					"Called outside Event Dispatch Thread");
+	public synchronized void put(HashMapKey key, T entry) {
 		this.createIfNecessary();
 		this.cache.put(key, entry);
 	}
@@ -105,7 +99,7 @@ public class LazyResettableHashMap<T> {
 	 *            Key.
 	 * @return Registered value or <code>null</code> if none.
 	 */
-	public T get(HashMapKey key) {
+	public synchronized T get(HashMapKey key) {
 		if (this.cache == null)
 			return null;
 		return this.cache.get(key);
