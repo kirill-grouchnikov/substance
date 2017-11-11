@@ -52,7 +52,8 @@
     <property name="substance.version" value="8.0.00-dev" />
     <property name="substance.versionKey" value="8.0.0dev Wyoming" />
 
-    <property name="trident.version" value="1.4" />
+    <property name="trident.basedir" value="${module.substance.basedir}/../trident" />
+    <property name="trident.version" value="1.5.00-dev" />
 
 	<path id="substance.module.bootclasspath">
 		<!-- Paths to be included in compilation bootclasspath -->
@@ -63,7 +64,7 @@
 
 	<path id="substance.module.classpath">
 		<path refid="${module.jdk.classpath.substance}" />
-		<pathelement location="${substance.lib.dir}/trident-${trident.version}.jar" />
+        <pathelement location="${trident.basedir}/drop/${trident.version}/trident-${trident.version}.jar" />
 	</path>
 
 	<patternset id="excluded.from.module.substance" />
