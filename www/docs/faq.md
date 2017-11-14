@@ -131,4 +131,6 @@ This has been reported and analysed by Dale Anson, specifically on Arch Linux di
 
 **I'm using custom scale factor on my Windows machine, and under Java 9 I'm seeing rendering artifacts along the edges of some widgets**
 
-Java 9 has changed the way it treats drawing images when the images need to be upscaled to match the screen resolution. Until I figure out how to make the existing Hi DPI support to work on both Java 8 and Java 9, run your app under `–Dsun.java2d.uiScale=1.0` flag.
+Java 9 has changed the way it treats drawing images when the images need to be upscaled to match the screen resolution. Until I figure out how to make the existing Hi DPI support to work on both Java 8 and Java 9, add the following to your app:
+* Run it under `–Dsun.java2d.uiScale=1.0` flag.
+* Call `SubstanceLookAndFeel.setFontPolicy(SubstanceFontUtilities.getScaledFontPolicy((float)(SubstanceSizeUtils.getPointsToPixelsRatio()) / 1.33F))` with the factor that matches the custom scale factor that you've set on your machine
