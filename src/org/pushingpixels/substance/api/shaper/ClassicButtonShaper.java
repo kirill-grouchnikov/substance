@@ -239,7 +239,8 @@ public class ClassicButtonShaper implements SubstanceButtonShaper, RectangularBu
     public float getCornerRadius(AbstractButton button, float insets) {
         float radius = SubstanceSizeUtils
                 .getClassicButtonCornerRadius(SubstanceSizeUtils.getComponentFontSize(button));
-        if (button.getClass().isAnnotationPresent(SubstanceInternalArrowButton.class)) {
+        if ((button != null)
+                && button.getClass().isAnnotationPresent(SubstanceInternalArrowButton.class)) {
             Border parentBorder = ((JComponent) button.getParent()).getBorder();
             if (parentBorder instanceof SubstanceBorder) {
                 radius *= ((SubstanceBorder) parentBorder).getRadiusScaleFactor();

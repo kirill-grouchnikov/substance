@@ -127,7 +127,7 @@ public class DelegateFractionBasedBorderPainter implements SubstanceBorderPainte
 		// issue 433 - the "c" can be null when painting
 		// the border of a tree icon used outside the
 		// JTree context.
-		boolean isSpecialButton = c.getClass()
+		boolean isSpecialButton = (c != null) && c.getClass()
 				.isAnnotationPresent(SubstanceInternalArrowButton.class);
 		int joinKind = isSpecialButton ? BasicStroke.JOIN_MITER : BasicStroke.JOIN_ROUND;
 		int capKind = isSpecialButton ? BasicStroke.CAP_SQUARE : BasicStroke.CAP_BUTT;

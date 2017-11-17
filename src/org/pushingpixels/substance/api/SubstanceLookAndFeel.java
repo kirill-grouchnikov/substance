@@ -118,7 +118,7 @@ import org.pushingpixels.substance.internal.utils.TabCloseListenerManager;
  * 
  * <ul>
  * <li>Use one of the core skin-based look-and-feels in the
- * <code>org.pushingpixels.substance.skin</code> package.</li>
+ * <code>org.pushingpixels.substance.api.skin</code> package.</li>
  * <li>Extend this class and pass a skin instance to the
  * {@link SubstanceLookAndFeel#SubstanceLookAndFeel(SubstanceSkin)} constructor.
  * </li>

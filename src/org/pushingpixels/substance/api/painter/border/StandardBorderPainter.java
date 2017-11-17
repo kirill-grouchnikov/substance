@@ -51,107 +51,100 @@ import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
  * @author Kirill Grouchnikov
  */
 public class StandardBorderPainter implements SubstanceBorderPainter {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.substance.api.trait.SubstanceTrait#getDisplayName()
-	 */
-	public String getDisplayName() {
-		return "Standard";
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.substance.api.trait.SubstanceTrait#getDisplayName()
+     */
+    public String getDisplayName() {
+        return "Standard";
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter
-	 * #isPaintingInnerContour()
-	 */
-	@Override
-	public boolean isPaintingInnerContour() {
-		return false;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter
+     * #isPaintingInnerContour()
+     */
+    @Override
+    public boolean isPaintingInnerContour() {
+        return false;
+    }
 
-	@Override
-	public void paintBorder(Graphics g, Component c, float width, float height,
-			Shape contour, Shape innerContour, SubstanceColorScheme borderScheme) {
-		if (contour == null)
-			return;
-		
-		Graphics2D graphics = (Graphics2D) g.create();
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-				RenderingHints.VALUE_STROKE_PURE);
+    @Override
+    public void paintBorder(Graphics g, Component c, float width, float height, Shape contour,
+            Shape innerContour, SubstanceColorScheme borderScheme) {
+        if (contour == null)
+            return;
 
-		Color topBorderColor = getTopBorderColor(borderScheme);
-		Color midBorderColor = getMidBorderColor(borderScheme);
-		Color bottomBorderColor = getBottomBorderColor(borderScheme);
+        Graphics2D graphics = (Graphics2D) g.create();
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+                RenderingHints.VALUE_STROKE_PURE);
 
-		if ((topBorderColor != null) && (midBorderColor != null)
-				&& (bottomBorderColor != null)) {
-			float strokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
-			// issue 433 - the "c" can be null when painting
-			// the border of a tree icon used outside the
-			// JTree context.
-			boolean isSpecialButton = c.getClass().isAnnotationPresent(SubstanceInternalArrowButton.class);
-			int joinKind = isSpecialButton ? BasicStroke.JOIN_MITER
-					: BasicStroke.JOIN_ROUND;
-			int capKind = isSpecialButton ? BasicStroke.CAP_SQUARE
-					: BasicStroke.CAP_BUTT;
-			graphics.setStroke(new BasicStroke(strokeWidth, capKind, joinKind));
+        Color topBorderColor = getTopBorderColor(borderScheme);
+        Color midBorderColor = getMidBorderColor(borderScheme);
+        Color bottomBorderColor = getBottomBorderColor(borderScheme);
 
-			MultipleGradientPaint gradient = new LinearGradientPaint(0, 0, 0,
-					height, new float[] { 0.0f, 0.5f, 1.0f },
-					new Color[] { topBorderColor, midBorderColor,
-							bottomBorderColor }, CycleMethod.REPEAT);
-			graphics.setPaint(gradient);
-//			graphics.setColor(Color.green);
-			graphics.draw(contour);
-		}
+        if ((topBorderColor != null) && (midBorderColor != null) && (bottomBorderColor != null)) {
+            float strokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
+            // issue 433 - the "c" can be null when painting
+            // the border of a tree icon used outside the
+            // JTree context.
+            boolean isSpecialButton = (c != null)
+                    && c.getClass().isAnnotationPresent(SubstanceInternalArrowButton.class);
+            int joinKind = isSpecialButton ? BasicStroke.JOIN_MITER : BasicStroke.JOIN_ROUND;
+            int capKind = isSpecialButton ? BasicStroke.CAP_SQUARE : BasicStroke.CAP_BUTT;
+            graphics.setStroke(new BasicStroke(strokeWidth, capKind, joinKind));
 
-		graphics.dispose();
-	}
+            MultipleGradientPaint gradient = new LinearGradientPaint(0, 0, 0, height,
+                    new float[] { 0.0f, 0.5f, 1.0f },
+                    new Color[] { topBorderColor, midBorderColor, bottomBorderColor },
+                    CycleMethod.REPEAT);
+            graphics.setPaint(gradient);
+            // graphics.setColor(Color.green);
+            graphics.draw(contour);
+        }
 
-	/**
-	 * Computes the color of the top portion of the border. Override to provide
-	 * different visual.
-	 * 
-	 * @param borderScheme
-	 *            The border color scheme.
-	 * @return The color of the top portion of the border.
-	 */
-	public Color getTopBorderColor(SubstanceColorScheme borderScheme) {
-		return SubstanceColorUtilities.getTopBorderColor(borderScheme);
-	}
+        graphics.dispose();
+    }
 
-	/**
-	 * Computes the color of the middle portion of the border. Override to
-	 * provide different visual.
-	 * 
-	 * @param borderScheme
-	 *            The border color scheme.
-	 * @return The color of the middle portion of the border.
-	 */
-	public Color getMidBorderColor(SubstanceColorScheme borderScheme) {
-		return SubstanceColorUtilities.getMidBorderColor(borderScheme);
-	}
+    /**
+     * Computes the color of the top portion of the border. Override to provide different visual.
+     * 
+     * @param borderScheme
+     *            The border color scheme.
+     * @return The color of the top portion of the border.
+     */
+    public Color getTopBorderColor(SubstanceColorScheme borderScheme) {
+        return SubstanceColorUtilities.getTopBorderColor(borderScheme);
+    }
 
-	/**
-	 * Computes the color of the bottom portion of the border. Override to
-	 * provide different visual.
-	 * 
-	 * @param borderScheme
-	 *            The border color scheme.
-	 * @return The color of the bottom portion of the border.
-	 */
-	public Color getBottomBorderColor(SubstanceColorScheme borderScheme) {
-		return SubstanceColorUtilities.getBottomBorderColor(borderScheme);
-	}
-	
-	@Override
-	public Color getRepresentativeColor(SubstanceColorScheme borderScheme) {
-		return this.getMidBorderColor(borderScheme);
-	}
+    /**
+     * Computes the color of the middle portion of the border. Override to provide different visual.
+     * 
+     * @param borderScheme
+     *            The border color scheme.
+     * @return The color of the middle portion of the border.
+     */
+    public Color getMidBorderColor(SubstanceColorScheme borderScheme) {
+        return SubstanceColorUtilities.getMidBorderColor(borderScheme);
+    }
+
+    /**
+     * Computes the color of the bottom portion of the border. Override to provide different visual.
+     * 
+     * @param borderScheme
+     *            The border color scheme.
+     * @return The color of the bottom portion of the border.
+     */
+    public Color getBottomBorderColor(SubstanceColorScheme borderScheme) {
+        return SubstanceColorUtilities.getBottomBorderColor(borderScheme);
+    }
+
+    @Override
+    public Color getRepresentativeColor(SubstanceColorScheme borderScheme) {
+        return this.getMidBorderColor(borderScheme);
+    }
 }
