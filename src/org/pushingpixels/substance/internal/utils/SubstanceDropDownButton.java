@@ -38,10 +38,10 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.border.EmptyBorder;
 
-import org.pushingpixels.substance.api.SubstanceConstants.Side;
-import org.pushingpixels.substance.api.AnimationConfigurationManager;
-import org.pushingpixels.substance.api.AnimationFacet;
+import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
+import org.pushingpixels.substance.api.SubstanceSlices.Side;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.internal.AnimationConfigurationManager;
 
 /**
  * Drop down button in <b>Substance</b> look and feel.

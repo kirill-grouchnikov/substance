@@ -29,7 +29,7 @@
  */
 package org.pushingpixels.substance.api.password;
 
-import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceSlices;
 
 /**
  * Specifies the interface for the password strength checkers.
@@ -44,16 +44,16 @@ public interface PasswordStrengthChecker {
 	 *            Password.
 	 * @return Password strength.
 	 */
-	public SubstanceConstants.PasswordStrength getStrength(char[] password);
+	public SubstanceSlices.PasswordStrength getStrength(char[] password);
 
 	/**
 	 * Returns the description of the password strength. The returned value can
-	 * contain HTML constructs and will be used as tooltip text on the
+	 * contain HTML constructs and will be used as the tooltip text on the
 	 * strength-check enabled password fields.
 	 * 
 	 * @param strength
 	 *            Password strength.
 	 * @return The description of the specified password strength.
 	 */
-	public String getDescription(SubstanceConstants.PasswordStrength strength);
+	public String getDescription(SubstanceSlices.PasswordStrength strength);
 }

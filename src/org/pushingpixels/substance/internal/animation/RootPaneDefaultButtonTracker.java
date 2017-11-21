@@ -34,7 +34,9 @@ import java.awt.Container;
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.trident.Timeline;

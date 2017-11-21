@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2017 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,77 +32,44 @@ package org.pushingpixels.substance.api;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.KeyboardFocusManager;
-import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.TreeMap;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JPasswordField;
 import javax.swing.JRootPane;
 import javax.swing.JTabbedPane;
-import javax.swing.LookAndFeel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 
-import org.pushingpixels.substance.api.SubstanceConstants.MenuGutterFillKind;
-import org.pushingpixels.substance.api.SubstanceConstants.SubstanceOptionPaneButtonOrder;
-import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
+import org.pushingpixels.substance.api.SubstanceSlices.MenuGutterFillKind;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.combo.ComboPopupPrototypeCallback;
-import org.pushingpixels.substance.api.font.FontPolicy;
-import org.pushingpixels.substance.api.font.FontSet;
-import org.pushingpixels.substance.api.font.SubstanceFontUtilities;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
-import org.pushingpixels.substance.api.iconpack.SubstanceDefaultIconPack;
-import org.pushingpixels.substance.api.iconpack.SubstanceIconPack;
-import org.pushingpixels.substance.api.inputmap.InputMapSet;
-import org.pushingpixels.substance.api.inputmap.SubstanceInputMapUtilities;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.shaper.StandardButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
-import org.pushingpixels.substance.api.skin.SkinChangeListener;
-import org.pushingpixels.substance.api.skin.SkinInfo;
-import org.pushingpixels.substance.api.tabbed.BaseTabCloseListener;
 import org.pushingpixels.substance.api.tabbed.TabCloseCallback;
+import org.pushingpixels.substance.internal.SubstancePluginRepository;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.contrib.jgoodies.looks.common.ShadowPopupFactory;
-import org.pushingpixels.substance.internal.fonts.FontPolicies;
-import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
-import org.pushingpixels.substance.internal.plugin.BasePlugin;
-import org.pushingpixels.substance.internal.plugin.BaseSkinPlugin;
-import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
-import org.pushingpixels.substance.internal.utils.LocaleChangeListener;
 import org.pushingpixels.substance.internal.utils.MemoryAnalyzer;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
-import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePane;
-import org.pushingpixels.substance.internal.utils.SubstanceWidgetManager;
-import org.pushingpixels.substance.internal.utils.TabCloseListenerManager;
 
 /**
  * <p>
@@ -122,44 +89,14 @@ import org.pushingpixels.substance.internal.utils.TabCloseListenerManager;
  * <li>Extend this class and pass a skin instance to the
  * {@link SubstanceLookAndFeel#SubstanceLookAndFeel(SubstanceSkin)} constructor.
  * </li>
- * <li>Call {@link SubstanceLookAndFeel#setSkin(String)} or
- * {@link SubstanceLookAndFeel#setSkin(SubstanceSkin)} static methods. These
+ * <li>Call {@link SubstanceCortex.GlobalScope#setSkin(String)} or
+ * {@link SubstanceCortex.GlobalScope#setSkin(SubstanceSkin)} static methods. These
  * methods do not require Substance to be the current look-and-feel.</li>
  * </ul>
  * 
  * @author Kirill Grouchnikov
  */
 public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
-	private static SubstancePluginRepository pluginRepository;
-
-	/**
-	 * List of all listeners on skin changes.
-	 */
-	private final static Set<SkinChangeListener> skinChangeListeners = new HashSet<SkinChangeListener>();
-
-	/**
-	 * List of all listeners on changing locales.
-	 */
-	private final static Set<LocaleChangeListener> localeChangeListeners = new HashSet<LocaleChangeListener>();
-
-	/**
-	 * Indicates whether option dialogs (error, question, warning, info) should
-	 * use constant color schemes for icon coloring. Note that since version
-	 * 4.0, the default setting is <code>true</code> (use constant color
-	 * scheme). To use color scheme-consistent coloring, call
-	 * {@link #setToUseConstantThemesOnDialogs(boolean)} and pass
-	 * <code>false</code>.
-	 * 
-	 * @see #isToUseConstantThemesOnDialogs()
-	 * @see #setToUseConstantThemesOnDialogs(boolean)
-	 */
-	private static boolean toUseConstantThemesOnDialogs = true;
-	
-	private static SubstanceConstants.SubstanceOptionPaneButtonOrder optionPaneButtonOrder =
-	        SubstanceConstants.SubstanceOptionPaneButtonOrder.PLATFORM;
-
-	private static SubstanceConstants.SubstanceOptionPaneButtonAlignment optionPaneButtonAlignment =
-            SubstanceConstants.SubstanceOptionPaneButtonAlignment.PLATFORM;
 
 	/**
 	 * Change listener on keyboard focus manager - fix for defect 208.
@@ -171,25 +108,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	 */
 	private KeyboardFocusManager currentKeyboardFocusManager;
 	
-	private static SubstanceIconPack iconPack;
-
-	/**
-	 * Smart tree scroll animation facet. Disabled by default, use
-	 * {@link AnimationConfigurationManager#allowAnimations(AnimationFacet)} to
-	 * enable. </p>
-	 * 
-	 * <p>
-	 * Smart tree scroll is relevant for scroll panes containing a tree. When
-	 * enabled, it automatically scrolls the tree horizontally when the viewport
-	 * shows mainly empty area (especially relevant for multi-level trees with
-	 * narrow viewports).
-	 * </p>
-	 * 
-	 * @since 4.0
-	 */
-	public final static AnimationFacet TREE_SMART_SCROLL_ANIMATION_KIND = new AnimationFacet(
-			"substancelaf.treeSmartScrollAnimationKind", false);
-
 	/**
 	 * Client property name for requesting that watermark should be painted on
 	 * the component and its descendants. This property can be set either as
@@ -287,8 +205,8 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	 * 
 	 * <p>
 	 * <ul>
-	 * <li>A value in {@link SubstanceConstants.Side} enum.
-	 * <li>Set of values in {@link SubstanceConstants.Side} enum.
+	 * <li>A value in {@link SubstanceSlices.Side} enum.
+	 * <li>Set of values in {@link SubstanceSlices.Side} enum.
 	 * </ul>
 	 * 
 	 * <p>
@@ -304,7 +222,7 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	 * <code>
 	 * JButton button = new JButton("text");<br>
 	 * button.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,<br>
-	 * &nbsp;&nbsp;SubstanceConstants.Side.RIGHT);
+	 * &nbsp;&nbsp;SubstanceSlices.Side.RIGHT);
 	 * </code>
 	 * 
 	 * @since version 2.1
@@ -318,8 +236,8 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	 * 
 	 * <p>
 	 * <ul>
-	 * <li>A value in {@link SubstanceConstants.Side} enum.
-	 * <li>Set of values in {@link SubstanceConstants.Side} enum.
+	 * <li>A value in {@link SubstanceSlices.Side} enum.
+	 * <li>Set of values in {@link SubstanceSlices.Side} enum.
 	 * </ul>
 	 * </p>
 	 * <p>
@@ -697,9 +615,9 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	 * Client property name for specifying the content pane border kind. This
 	 * property can be specified either on a single {@link JTabbedPane} or on
 	 * {@link UIManager}. The value should be one of
-	 * {@link SubstanceConstants.TabContentPaneBorderKind} enum. By default, the
+	 * {@link SubstanceSlices.TabContentPaneBorderKind} enum. By default, the
 	 * border kind is
-	 * {@link SubstanceConstants.TabContentPaneBorderKind#DOUBLE_PLACEMENT}.
+	 * {@link SubstanceSlices.TabContentPaneBorderKind#DOUBLE_PLACEMENT}.
 	 * 
 	 * <p>
 	 * Example of setting that all tabbed panes in the application have single
@@ -801,7 +719,7 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	/**
 	 * Client property name for specifying the kind of focus indication on
 	 * buttons, check boxes and radio buttons. The value should be one of
-	 * {@link SubstanceConstants.FocusKind} enum. This property can be set
+	 * {@link SubstanceSlices.FocusKind} enum. This property can be set
 	 * either on the specific component or as global property on
 	 * {@link UIManager}.
 	 * 
@@ -811,7 +729,7 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	 * has this property set, defines the focus indication kind. If neither
 	 * component nor its ancestors define this property, the global setting on
 	 * {@link UIManager} is checked. If there is no global setting, the default
-	 * {@link SubstanceConstants.FocusKind#ALL_INNER} is used. Here is an
+	 * {@link SubstanceSlices.FocusKind#ALL_INNER} is used. Here is an
 	 * example to illustrate the above:
 	 * </p>
 	 * 
@@ -834,18 +752,18 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	 * In the code above:
 	 * </p>
 	 * <ul>
-	 * <li>Button <b>b1</b> will have {@link SubstanceConstants.FocusKind#NONE}
+	 * <li>Button <b>b1</b> will have {@link SubstanceSlices.FocusKind#NONE}
 	 * focus kind which is set directly on the button.
 	 * <li>Button <b>b2</b> will have
-	 * {@link SubstanceConstants.FocusKind#UNDERLINE} focus kind which is
+	 * {@link SubstanceSlices.FocusKind#UNDERLINE} focus kind which is
 	 * inherited from its <b>topPanel</b> parent.
 	 * <li>Button <b>b3</b> will have
-	 * {@link SubstanceConstants.FocusKind#ALL_INNER} focus kind which is set
+	 * {@link SubstanceSlices.FocusKind#ALL_INNER} focus kind which is set
 	 * directly on the button.
 	 * </ul>
 	 * 
 	 * @since 2.2
-	 * @see SubstanceConstants.FocusKind
+	 * @see SubstanceSlices.FocusKind
 	 */
 	public final static String FOCUS_KIND = "substancelaf.focusKind";
 
@@ -1038,26 +956,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	public final static String COLORIZATION_FACTOR = "substancelaf.colorizationFactor";
 
 	/**
-	 * Internal client property name for storing application-specific font
-	 * policy.
-	 * 
-	 * @since version 3.3
-	 * @see #setFontPolicy(FontPolicy)
-	 * @see #getFontPolicy()
-	 */
-	protected final static String SUBSTANCE_FONT_POLICY_KEY = "substancelaf.fontPolicyKey";
-
-	/**
-	 * Internal client property name for storing application-specific input map
-	 * set.
-	 * 
-	 * @since version 6.1
-	 * @see #setInputMapSet(InputMapSet)
-	 * @see #getInputMapSet()
-	 */
-	protected final static String SUBSTANCE_INPUT_MAP_SET_KEY = "substancelaf.inputMapSetKey";
-
-	/**
 	 * Property name for specifying outline shaper. This property is used a
 	 * client property that can be set on a specific control.
 	 * 
@@ -1092,15 +990,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	 */
 	public static final String SKIN_PROPERTY = "substancelaf.skin";
 
-	/**
-	 * Resource bundle for <b>Substance</b> labels.
-	 */
-	private static ResourceBundle LABEL_BUNDLE = null;
-
-	/**
-	 * Class loader for {@link #LABEL_BUNDLE}.
-	 */
-	private static ClassLoader labelBundleClassLoader;
 
 	/**
 	 * The skin of this look-and-feel instance.
@@ -1113,8 +1002,7 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	protected String name;
 
 	/**
-	 * Creates a new skin-based Substance look-and-feel. This is the only way to
-	 * create an instance of {@link SubstanceLookAndFeel} class.
+	 * Creates a new skin-based Substance look-and-feel. 
 	 * 
 	 * @param skin
 	 *            Skin.
@@ -1122,113 +1010,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	protected SubstanceLookAndFeel(SubstanceSkin skin) {
 		this.skin = skin;
 		this.name = "Substance " + skin.getDisplayName();
-
-		initPluginsIfNecessary();
-	}
-
-	/**
-	 * Initializes the plugins if necessary.
-	 */
-	protected static void initPluginsIfNecessary() {
-		if (SubstanceLookAndFeel.pluginRepository != null)
-			return;
-		SubstanceLookAndFeel.pluginRepository = SubstancePluginRepository.getInstance();
-		// initialize the base plugins
-        SubstanceLookAndFeel.pluginRepository.registerComponentPlugin(new BasePlugin());
-        SubstanceLookAndFeel.pluginRepository.registerSkinPlugin(new BaseSkinPlugin());
-	}
-
-	/**
-	 * Retrieves the current label bundle.
-	 * 
-	 * @return The current label bundle.
-	 * @see #resetLabelBundle()
-	 */
-	public static synchronized ResourceBundle getLabelBundle() {
-		if (SubstanceLookAndFeel.LABEL_BUNDLE == null) {
-			// fix for RFE 157 (allowing custom class loader for
-			// resource bundles which can remove server calls
-			// in applets)
-			if (SubstanceLookAndFeel.labelBundleClassLoader == null) {
-				SubstanceLookAndFeel.LABEL_BUNDLE = ResourceBundle
-						.getBundle(
-								"org.pushingpixels.substance.internal.resources.Labels",
-								Locale.getDefault());
-			} else {
-				SubstanceLookAndFeel.LABEL_BUNDLE = ResourceBundle
-						.getBundle(
-								"org.pushingpixels.substance.internal.resources.Labels",
-								Locale.getDefault(),
-								SubstanceLookAndFeel.labelBundleClassLoader);
-			}
-			for (LocaleChangeListener lcl : SubstanceLookAndFeel.localeChangeListeners)
-				lcl.localeChanged();
-		}
-		return SubstanceLookAndFeel.LABEL_BUNDLE;
-	}
-
-	/**
-	 * Retrieves the label bundle for the specified locale.
-	 * 
-	 * @param locale
-	 *            Locale.
-	 * @return The label bundle for the specified locale.
-	 */
-	public static synchronized ResourceBundle getLabelBundle(Locale locale) {
-		// fix for RFE 157 (allowing custom class loader for
-		// resource bundles which can remove server calls
-		// in applets)
-		if (SubstanceLookAndFeel.labelBundleClassLoader == null) {
-			return ResourceBundle.getBundle(
-					"org.pushingpixels.substance.internal.resources.Labels",
-					locale);
-		} else {
-			return ResourceBundle.getBundle(
-					"org.pushingpixels.substance.internal.resources.Labels",
-					locale, SubstanceLookAndFeel.labelBundleClassLoader);
-		}
-	}
-
-	/**
-	 * Resets the current label bundle. Useful when the application changes
-	 * Locale at runtime.
-	 * 
-	 * @see #getLabelBundle()
-	 */
-	public static synchronized void resetLabelBundle() {
-		SubstanceLookAndFeel.LABEL_BUNDLE = null;
-	}
-
-	/**
-	 * Returns the current global skin. If the current look-and-feel is not
-	 * Substance, this method returns <code>null</code>. This method is for
-	 * internal use only. Applications should use the
-	 * {@link #getCurrentSkin(Component)}.
-	 * 
-	 * @return Current global skin.
-	 * @see #getCurrentSkin(Component)
-	 */
-	public static SubstanceSkin getCurrentSkin() {
-		LookAndFeel current = UIManager.getLookAndFeel();
-		if (current instanceof SubstanceLookAndFeel) {
-			return currentSkin;
-		}
-		return null;
-	}
-
-	/**
-	 * Returns the current skin for the specified component. If the current
-	 * look-and-feel is not Substance, this method returns <code>null</code>.
-	 * 
-	 * @param c
-	 *            Component. May be <code>null</code> - in this case the global
-	 *            current Substance skin will be returned.
-	 * @return Current skin for the specified component.
-	 * @see #SKIN_PROPERTY
-	 * @see #getCurrentSkin()
-	 */
-	public static SubstanceSkin getCurrentSkin(Component c) {
-		return SubstanceCoreUtilities.getSkin(c);
 	}
 
 	/*
@@ -1402,244 +1183,9 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	protected void initComponentDefaults(UIDefaults table) {
 		super.initComponentDefaults(table);
 
-		initFontDefaults(table);
+		SubstanceCortex.GlobalScope.initFontDefaults(table);
 		this.skin.addCustomEntriesToTable(table);
     }
-
-    /**
-     * Sets the {@link FontPolicy} to be used with Substance family. If the
-     * specified policy is <code>null</code>, the default will be reset. This
-     * method does not require Substance to be the current look-and-feel, and
-     * will cause Substance to be set as the current application look-and-feel.
-     * 
-     * @param fontPolicy
-     *            The {@link FontPolicy} to be used with Substance family, or
-     *            <code>null</code> to reset to the default
-     * 
-     * @see #getFontPolicy()
-     * @see SubstanceLookAndFeel#SUBSTANCE_FONT_POLICY_KEY
-     */
-    public static void setFontPolicy(FontPolicy fontPolicy) {
-        UIManager.put(SUBSTANCE_FONT_POLICY_KEY, fontPolicy);
-        SubstanceSizeUtils.setControlFontSize(-1);
-        SubstanceSizeUtils.resetPointsToPixelsRatio(fontPolicy);
-        SubstanceLookAndFeel.setSkin(SubstanceLookAndFeel.getCurrentSkin());
-    }
-
-    /**
-     * Looks up and retrieves the {@link FontPolicy} used by the Substance
-     * family. If a {@link FontPolicy} has been set, it'll be returned.
-     * Otherwise, this method checks if a {@link FontPolicy} or {@link FontSet}
-     * is defined in the system properties or UIDefaults. If so, it is returned.
-     * If no {@link FontPolicy} has been set for this look, in the system
-     * properties or {@link UIDefaults}, the default Substance font policy will
-     * be returned.
-     * 
-     * @return the {@link FontPolicy} set for this Look&amp;feel - if any, the
-     *         {@link FontPolicy} specified in the system properties or
-     *         {@link UIDefaults} - if any, or the default Substance font
-     *         policy.
-     * 
-     * @see #setFontPolicy
-     * @see FontPolicies
-     * @see FontPolicies#customSettingsPolicy(FontPolicy)
-     */
-    public static FontPolicy getFontPolicy() {
-        FontPolicy policy = (FontPolicy) UIManager.get(SUBSTANCE_FONT_POLICY_KEY);
-        if (policy != null)
-            return policy;
-
-        // return default policy
-        return SubstanceFontUtilities.getDefaultFontPolicy();
-    }
-
-
-    /**
-     * Sets the {@link SubstanceIconPack} to be used with Substance family. 
-     * 
-     * @param iconPack
-     *            The {@link SubstanceIconPack} to be used with Substance family.
-     * 
-     * @see #getIconPack()
-     */
-    public static void setIconPack(SubstanceIconPack iconPack) {
-        if (iconPack == null) {
-            throw new IllegalArgumentException("Cannot pass null icon pack");
-        }
-        SubstanceLookAndFeel.iconPack = iconPack;
-        LazyResettableHashMap.reset();
-    }
-
-    /**
-     * Looks up and retrieves the {@link SubstanceIconPack} used by the Substance
-     * family. 
-     * 
-     * @return the {@link SubstanceIconPack} set for this Look&amp;feel.
-     * 
-     * @see #setIconPack(SubstanceIconPack)
-     */
-    public static SubstanceIconPack getIconPack() {
-        if (iconPack == null) {
-            iconPack = new SubstanceDefaultIconPack();
-        }
-        return iconPack;
-    }
-
-	/**
-	 * Sets the {@link InputMapSet} to be used with Substance family. If the
-	 * specified set is <code>null</code>, the default will be reset. This
-	 * method does not require Substance to be the current look-and-feel, and
-	 * will cause Substance to be set as the current application look-and-feel.
-	 * 
-	 * @param inputMapSet
-	 *            The {@link InputMapSet} to be used with Substance family, or
-	 *            <code>null</code> to reset to the default
-	 * 
-	 * @see #getInputMapSet()
-	 * @see SubstanceLookAndFeel#SUBSTANCE_INPUT_MAP_SET_KEY
-	 */
-	public static void setInputMapSet(InputMapSet inputMapSet) {
-		UIManager.put(SUBSTANCE_INPUT_MAP_SET_KEY, inputMapSet);
-		SubstanceLookAndFeel.setSkin(SubstanceLookAndFeel.getCurrentSkin());
-	}
-
-	/**
-	 * Looks up and retrieves the {@link InputMapSet} used by the Substance
-	 * family. If a {@link InputMapSet} has been set, it'll be returned. If no
-	 * {@link InputMapSet} has been set for this look, the default Substance
-	 * input map set will be returned.
-	 * 
-	 * @return the {@link InputMapSet} set for this Look&amp;feel - if any, or
-	 *         the default Substance input map set.
-	 * 
-	 * @see #setInputMapSet(InputMapSet)
-	 */
-	public static InputMapSet getInputMapSet() {
-		InputMapSet inputMapSet = (InputMapSet) UIManager
-				.get(SUBSTANCE_INPUT_MAP_SET_KEY);
-		if (inputMapSet != null)
-			return inputMapSet;
-
-		// return system input map set
-		return SubstanceInputMapUtilities.getSystemInputMapSet();
-	}
-
-	/**
-	 * Looks up the correct control font and sets it for all controls.
-	 * 
-	 * @param table
-	 *            The UI defaults table.
-	 */
-	private void initFontDefaults(UIDefaults table) {
-		FontSet substanceFontSet = getFontPolicy()
-				.getFontSet("Substance", null);
-		initFontDefaults(table, substanceFontSet);
-	}
-
-	/**
-	 * Sets Fonts in the given FontSet as defaults for all known component types
-	 * in the given UIDefaults table.
-	 * 
-	 * @param table
-	 *            the UIDefaults table used to set fonts
-	 * @param fontSet
-	 *            describes the set of Fonts to be installed
-	 */
-	private static void initFontDefaults(UIDefaults table, FontSet fontSet) {
-		Font controlFont = fontSet.getControlFont();
-		Font menuFont = fontSet.getMenuFont();
-		Font messageFont = fontSet.getMessageFont();
-		Font toolTipFont = fontSet.getSmallFont();
-		Font titleFont = fontSet.getTitleFont();
-		Font windowFont = fontSet.getWindowTitleFont();
-
-		Object[] defaults = {
-
-		"Button.font", controlFont,
-
-		"CheckBox.font", controlFont,
-
-		"ColorChooser.font", controlFont,
-
-		"ComboBox.font", controlFont,
-
-		"EditorPane.font", controlFont,
-
-		"FormattedTextField.font", controlFont,
-
-		"Label.font", controlFont,
-
-		"List.font", controlFont,
-
-		"Panel.font", controlFont,
-
-		"PasswordField.font", controlFont,
-
-		"ProgressBar.font", controlFont,
-
-		"RadioButton.font", controlFont,
-
-		"ScrollPane.font", controlFont,
-
-		"Spinner.font", controlFont,
-
-		"TabbedPane.font", controlFont,
-
-		"Table.font", controlFont,
-
-		"TableHeader.font", controlFont,
-
-		"TextArea.font", controlFont,
-
-		"TextField.font", controlFont,
-
-		"TextPane.font", controlFont,
-
-		"ToolBar.font", controlFont,
-
-		"ToggleButton.font", controlFont,
-
-		"Tree.font", controlFont,
-
-		"Viewport.font", controlFont,
-
-		"InternalFrame.titleFont", windowFont,
-
-		"DesktopIcon.titleFont", windowFont,
-
-		"OptionPane.font", messageFont,
-
-		"OptionPane.messageFont", messageFont,
-
-		"OptionPane.buttonFont", messageFont,
-
-		"TitledBorder.font", titleFont,
-
-		"ToolTip.font", toolTipFont,
-
-		"CheckBoxMenuItem.font", menuFont,
-
-		"CheckBoxMenuItem.acceleratorFont", menuFont,
-
-		"Menu.font", menuFont,
-
-		"Menu.acceleratorFont", menuFont,
-
-		"MenuBar.font", menuFont,
-
-		"MenuItem.font", menuFont,
-
-		"MenuItem.acceleratorFont", menuFont,
-
-		"PopupMenu.font", menuFont,
-
-		"RadioButtonMenuItem.font", menuFont,
-
-		"RadioButtonMenuItem.acceleratorFont", menuFont,
-		// ?
-		};
-		table.putDefaults(defaults);
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -1650,7 +1196,7 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	public UIDefaults getDefaults() {
 		UIDefaults table = super.getDefaults();
 
-        SubstanceLookAndFeel.pluginRepository.processAllDefaultsEntriesComponentPlugins(table,
+		SubstancePluginRepository.getInstance().processAllDefaultsEntriesComponentPlugins(table,
                 this.skin);
 		return table;
 	}
@@ -1665,14 +1211,15 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 		super.initialize();
 		ShadowPopupFactory.install();
 
-		setSkin(this.skin, false);
+		SubstanceCortex.GlobalScope.setSkin(this.skin, false);
+		//setSkin(this.skin, false);
 
 		// tracer for memory analysis
 		String paramTraceFile = SubstanceCoreUtilities
 				.getVmParameter(SubstanceLookAndFeel.TRACE_FILE);
 		if (paramTraceFile != null) {
 			MemoryAnalyzer.commence(1000, paramTraceFile);
-			for (SubstanceComponentPlugin plugin : SubstanceLookAndFeel.pluginRepository.getComponentPlugins())
+			for (SubstanceComponentPlugin plugin : SubstancePluginRepository.getInstance().getComponentPlugins())
 				MemoryAnalyzer.enqueueUsage("Has plugin '"
 						+ plugin.getClass().getName() + "'");
 		}
@@ -1683,38 +1230,34 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 		SubstanceTitlePane.setHeapStatusLogfileName(heapStatusPanelParam);
 
 		// initialize component plugins
-		SubstanceLookAndFeel.pluginRepository.initializeAllComponentPlugins();
+		SubstancePluginRepository.getInstance().initializeAllComponentPlugins();
 
-		// fix for defect 208 - tracking changes to focus owner
-		// and repainting the default button
-		this.focusOwnerChangeListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ("focusOwner".equals(evt.getPropertyName())) {
-					Component newFocusOwner = (Component) evt.getNewValue();
-					if (newFocusOwner != null) {
-						JRootPane rootPane = SwingUtilities
-								.getRootPane(newFocusOwner);
-						if (rootPane == null)
-							return;
-						JButton defaultButton = rootPane.getDefaultButton();
-						if (defaultButton == null)
-							return;
-						defaultButton.repaint();
-					}
-				}
-				if ("managingFocus".equals(evt.getPropertyName())) {
-					if (Boolean.FALSE.equals(evt.getNewValue())) {
-						// new keyboard focus manager has been installed
-						currentKeyboardFocusManager
-								.removePropertyChangeListener(focusOwnerChangeListener);
-						currentKeyboardFocusManager = KeyboardFocusManager
-								.getCurrentKeyboardFocusManager();
-						currentKeyboardFocusManager
-								.addPropertyChangeListener(focusOwnerChangeListener);
-					}
-				}
-			}
-		};
+        // fix for defect 208 - tracking changes to focus owner
+        // and repainting the default button
+        this.focusOwnerChangeListener = (PropertyChangeEvent evt) -> {
+            if ("focusOwner".equals(evt.getPropertyName())) {
+                Component newFocusOwner = (Component) evt.getNewValue();
+                if (newFocusOwner != null) {
+                    JRootPane rootPane = SwingUtilities.getRootPane(newFocusOwner);
+                    if (rootPane == null)
+                        return;
+                    JButton defaultButton = rootPane.getDefaultButton();
+                    if (defaultButton == null)
+                        return;
+                    defaultButton.repaint();
+                }
+            }
+            if ("managingFocus".equals(evt.getPropertyName())) {
+                if (Boolean.FALSE.equals(evt.getNewValue())) {
+                    // new keyboard focus manager has been installed
+                    currentKeyboardFocusManager
+                            .removePropertyChangeListener(focusOwnerChangeListener);
+                    currentKeyboardFocusManager = KeyboardFocusManager
+                            .getCurrentKeyboardFocusManager();
+                    currentKeyboardFocusManager.addPropertyChangeListener(focusOwnerChangeListener);
+                }
+            }
+        };
 		this.currentKeyboardFocusManager = KeyboardFocusManager
 				.getCurrentKeyboardFocusManager();
 		this.currentKeyboardFocusManager
@@ -1730,7 +1273,8 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	public void uninitialize() {
 		super.uninitialize();
 
-		SubstanceLookAndFeel.currentSkin = null;
+		SubstanceCortex.GlobalScope.unsetSkin();
+//		SubstanceLookAndFeel.currentSkin = null;
 
 		ShadowPopupFactory.uninstall();
 
@@ -1741,7 +1285,7 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 			this.skin.getWatermark().dispose();
 
 		// uninitialize component plugins
-        SubstanceLookAndFeel.pluginRepository.uninitializeAllComponentPlugins();
+		SubstancePluginRepository.getInstance().uninitializeAllComponentPlugins();
 
 		// clear caches
 		LazyResettableHashMap.reset();
@@ -1752,488 +1296,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 		this.currentKeyboardFocusManager = null;
 	}
 
-	/**
-	 * Registers a new listener on skin change.
-	 * 
-	 * @param skinChangeListener
-	 *            New listener on skin change.
-	 * @see #setSkin(String)
-	 * @see #setSkin(SubstanceSkin)
-	 * @see #unregisterSkinChangeListener(SkinChangeListener)
-	 */
-	public static void registerSkinChangeListener(
-			SkinChangeListener skinChangeListener) {
-		SubstanceLookAndFeel.skinChangeListeners.add(skinChangeListener);
-	}
-
-	/**
-	 * Unregisters a listener on skin change.
-	 * 
-	 * @param skinChangeListener
-	 *            The listener to unregister.
-	 * @see #setSkin(String)
-	 * @see #setSkin(SubstanceSkin)
-	 * @see #registerSkinChangeListener(SkinChangeListener)
-	 */
-	public static void unregisterSkinChangeListener(
-			SkinChangeListener skinChangeListener) {
-		SubstanceLookAndFeel.skinChangeListeners.remove(skinChangeListener);
-	}
-
-	/**
-	 * Registers the specified listener on tab-close events on <b>all</b> tabbed
-	 * panes.
-	 * 
-	 * @param tabCloseListener
-	 *            Listener to register.
-	 * @see #registerTabCloseChangeListener(JTabbedPane, BaseTabCloseListener)
-	 * @see #unregisterTabCloseChangeListener(BaseTabCloseListener)
-	 * @see #unregisterTabCloseChangeListener(JTabbedPane, BaseTabCloseListener)
-	 */
-	public static void registerTabCloseChangeListener(
-			BaseTabCloseListener tabCloseListener) {
-		TabCloseListenerManager.getInstance()
-				.registerListener(tabCloseListener);
-	}
-
-	/**
-	 * Registers the specified listener on tab-close events on <b>the
-	 * specified</b> tabbed pane.
-	 * 
-	 * @param tabbedPane
-	 *            Tabbed pane. If <code>null</code>, the tab close listener is
-	 *            registered globally (for all tabbed panes).
-	 * @param tabCloseListener
-	 *            Listener to register.
-	 * @see #registerTabCloseChangeListener(BaseTabCloseListener)
-	 * @see #unregisterTabCloseChangeListener(BaseTabCloseListener)
-	 * @see #unregisterTabCloseChangeListener(JTabbedPane, BaseTabCloseListener)
-	 */
-	public static void registerTabCloseChangeListener(JTabbedPane tabbedPane,
-			BaseTabCloseListener tabCloseListener) {
-		TabCloseListenerManager.getInstance().registerListener(tabbedPane,
-				tabCloseListener);
-	}
-
-	/**
-	 * Unregisters the specified listener on tab-close events on <b>all</b>
-	 * tabbed panes.
-	 * 
-	 * @param tabCloseListener
-	 *            Listener to unregister.
-	 * @see #registerTabCloseChangeListener(BaseTabCloseListener)
-	 * @see #registerTabCloseChangeListener(JTabbedPane, BaseTabCloseListener)
-	 * @see #unregisterTabCloseChangeListener(JTabbedPane, BaseTabCloseListener)
-	 */
-	public static void unregisterTabCloseChangeListener(
-			BaseTabCloseListener tabCloseListener) {
-		TabCloseListenerManager.getInstance().unregisterListener(
-				tabCloseListener);
-	}
-
-	/**
-	 * Unregisters the specified listener on tab-close events on <b>the
-	 * specified</b> tabbed pane.
-	 * 
-	 * @param tabbedPane
-	 *            Tabbed pane. If <code>null</code>, the tab close listener is
-	 *            unregistered globally (for all tabbed panes).
-	 * @param tabCloseListener
-	 *            Listener to unregister.
-	 * @see #registerTabCloseChangeListener(BaseTabCloseListener)
-	 * @see #registerTabCloseChangeListener(JTabbedPane, BaseTabCloseListener)
-	 * @see #unregisterTabCloseChangeListener(BaseTabCloseListener)
-	 */
-	public static void unregisterTabCloseChangeListener(JTabbedPane tabbedPane,
-			BaseTabCloseListener tabCloseListener) {
-		TabCloseListenerManager.getInstance().unregisterListener(tabbedPane,
-				tabCloseListener);
-	}
-
-	/**
-	 * Returns the set of all listeners registered on tab-close events on
-	 * <b>all</b> tabbed panes.
-	 * 
-	 * @return Set of all listeners registered on tab-close events on <b>all</b>
-	 *         tabbed panes.
-	 */
-	public static Set<BaseTabCloseListener> getAllTabCloseListeners() {
-		return TabCloseListenerManager.getInstance().getListeners();
-	}
-
-	/**
-	 * Returns all listeners registered on tab closing of the specified tabbed
-	 * pane.
-	 * 
-	 * @param tabbedPane
-	 *            A tabbed pane. If <code>null</code>, all globally registered
-	 *            tab close listeners are returned.
-	 * @return All listeners registered on tab closing of the specified tabbed
-	 *         pane.
-	 */
-	public static Set<BaseTabCloseListener> getAllTabCloseListeners(
-			JTabbedPane tabbedPane) {
-		return TabCloseListenerManager.getInstance().getListeners(tabbedPane);
-	}
-
-	/**
-	 * Registers a new listener on locale change.
-	 * 
-	 * @param localeListener
-	 *            New listener on locale change.
-	 */
-	public static void registerLocaleChangeListener(
-			LocaleChangeListener localeListener) {
-		SubstanceLookAndFeel.localeChangeListeners.add(localeListener);
-	}
-
-	/**
-	 * Unregisters a listener on locale change.
-	 * 
-	 * @param localeListener
-	 *            The listener to unregister.
-	 */
-	public static void unregisterLocaleChangeListener(
-			LocaleChangeListener localeListener) {
-		SubstanceLookAndFeel.localeChangeListeners.remove(localeListener);
-	}
-
-	/**
-	 * Returns all listeners registered on locale change.
-	 * 
-	 * @return All listeners registered on locale change.
-	 */
-	public static Set<LocaleChangeListener> getLocaleListeners() {
-		return Collections
-				.unmodifiableSet(SubstanceLookAndFeel.localeChangeListeners);
-	}
-
-	/**
-	 * Sets the visibility of the specified widget kind(s). If the first
-	 * <code>rootPane</code> parameter is <code>null</code>, this call applies
-	 * to all root panes. This method should not be called from inside the
-	 * initialization sequence of your window. If the specific widget needs to
-	 * be visible when the window is shown, wrap the call with
-	 * {@link SwingUtilities#invokeLater(Runnable)}.
-	 * 
-	 * @param rootPane
-	 *            Root pane. May be <code>null</code>.
-	 * @param visible
-	 *            Visibility indication.
-	 * @param substanceWidgets
-	 *            Widget types.
-	 * @since version 5.0
-	 */
-	public static void setWidgetVisible(JRootPane rootPane, boolean visible,
-			SubstanceWidgetType... substanceWidgets) {
-		SubstanceWidgetManager.getInstance().register(rootPane, visible,
-				substanceWidgets);
-		if (rootPane != null) {
-			SwingUtilities.updateComponentTreeUI(rootPane);
-		} else {
-			for (Window window : Window.getWindows()) {
-				JRootPane root = SwingUtilities.getRootPane(window);
-				SwingUtilities.updateComponentTreeUI(root);
-			}
-		}
-	}
-
-    /**
-     * Checks whether the <code>JOptionPane</code>s created with predefined
-     * message types should use constant color schemes for the icons.
-     * 
-     * @return <code>true</code> if the <code>JOptionPane</code>s created with
-     *         predefined message types should use constant color schemes for
-     *         the icons, <code>false</code> otherwise.
-     * @see #setToUseConstantThemesOnDialogs(boolean)
-     */
-    public static boolean isToUseConstantThemesOnDialogs() {
-        return SubstanceLookAndFeel.toUseConstantThemesOnDialogs;
-    }
-
-    /**
-     * Sets the new setting for the icons of the <code>JOptionPane</code>s
-     * created with predefined message types.
-     * 
-     * @param toUseConstantThemesOnDialogs
-     *            if <code>true</code>, the <code>JOptionPane</code>s created
-     *            with predefined message types should use constant color
-     *            schemes for the icons.
-     * @see #isToUseConstantThemesOnDialogs()
-     */
-    public static void setToUseConstantThemesOnDialogs(
-            boolean toUseConstantThemesOnDialogs) {
-        SubstanceLookAndFeel.toUseConstantThemesOnDialogs = toUseConstantThemesOnDialogs;
-        SwingUtilities.invokeLater(() -> {
-            for (Window window : Window.getWindows()) {
-                SwingUtilities.updateComponentTreeUI(window);
-            }
-        });
-    }
-
-    /**
-     * Returns the currently set button order for all <code>JOptionPane</code>s.
-     * 
-     * @return The currently set button order for all <code>JOptionPane</code>s.
-     * @see #setOptionPaneButtonOrder(SubstanceOptionPaneButtonOrder)
-     */
-    public static SubstanceConstants.SubstanceOptionPaneButtonOrder getOptionPaneButtonOrder() {
-        return SubstanceLookAndFeel.optionPaneButtonOrder;
-    }
-
-    /**
-     * Sets the button order for all <code>JOptionPane</code>s.
-     * 
-     * @param optionPaneButtonOrder
-     *            The new button order for all <code>JOptionPane</code>s. The value cannot be null.
-     * @see #getOptionPaneButtonOrder()
-     */
-    public static void setOptionPaneButtonOrder(
-            SubstanceConstants.SubstanceOptionPaneButtonOrder optionPaneButtonOrder) {
-        if (optionPaneButtonOrder == null) {
-            throw new IllegalArgumentException("Cannot pass null. Did you mean PLATFORM?");
-        }
-        SubstanceLookAndFeel.optionPaneButtonOrder = optionPaneButtonOrder;
-        SwingUtilities.invokeLater(() -> {
-            for (Window window : Window.getWindows()) {
-                SwingUtilities.updateComponentTreeUI(window);
-            }
-        });
-    }
-
-    /**
-     * Returns the currently set button alignment for all <code>JOptionPane</code>s.
-     * 
-     * @return The currently set button alignment for all <code>JOptionPane</code>s.
-     * @see #setOptionPaneButtonAlignment(org.pushingpixels.substance.api.SubstanceConstants.SubstanceOptionPaneButtonAlignment)
-     */
-    public static SubstanceConstants.SubstanceOptionPaneButtonAlignment getOptionPaneButtonAlignment() {
-        return SubstanceLookAndFeel.optionPaneButtonAlignment;
-    }
-
-    /**
-     * Sets the button alignment for all <code>JOptionPane</code>s.
-     * 
-     * @param optionPaneButtonAlignment
-     *            The new button alignment for all <code>JOptionPane</code>s. The value cannot be null.
-     * @see #getOptionPaneButtonAlignment()
-     */
-    public static void setOptionPaneButtonAlignment(
-            SubstanceConstants.SubstanceOptionPaneButtonAlignment optionPaneButtonAlignment) {
-        if (optionPaneButtonAlignment == null) {
-            throw new IllegalArgumentException("Cannot pass null. Did you mean PLATFORM?");
-        }
-        SubstanceLookAndFeel.optionPaneButtonAlignment = optionPaneButtonAlignment;
-        SwingUtilities.invokeLater(() -> {
-            for (Window window : Window.getWindows()) {
-                SwingUtilities.updateComponentTreeUI(window);
-            }
-        });
-    }
-
-	/**
-	 * The current Substance skin.
-	 */
-	private static SubstanceSkin currentSkin = null;
-
-	/**
-	 * Sets the specified skin. If the current look-and-feel is not Substance,
-	 * this method will create a new Substance look-and-feel based on the
-	 * specified skin and set it on {@link UIManager}. This method does not
-	 * require Substance to be the current look-and-feel.
-	 * 
-	 * @param newSkin
-	 *            Skin to set.
-	 * @param toUpdateWindows
-	 *            if <code>true</code>, the
-	 *            {@link SwingUtilities#updateComponentTreeUI(Component)} is
-	 *            called on all windows returned by {@link Window#getWindows()}
-	 *            API.
-	 * @return <code>true</code> if the specified skin has been set
-	 *         successfully, <code>false</code> otherwise.
-	 * @see #setSkin(SubstanceSkin)
-	 */
-	private static boolean setSkin(SubstanceSkin newSkin,
-			boolean toUpdateWindows) {
-		if (!SwingUtilities.isEventDispatchThread()) {
-			throw new IllegalStateException(
-					"This method must be called on the Event Dispatch Thread");
-		}
-
-		if (!newSkin.isValid())
-			return false;
-
-		boolean isSubstance = (UIManager.getLookAndFeel() instanceof SubstanceLookAndFeel);
-		if (!isSubstance) {
-			class SkinDerivedLookAndFeel extends SubstanceLookAndFeel {
-				public SkinDerivedLookAndFeel(SubstanceSkin newSkin) {
-					super(newSkin);
-				}
-			}
-
-			LookAndFeel derived = new SkinDerivedLookAndFeel(newSkin);
-			try {
-				UIManager.setLookAndFeel(derived);
-			} catch (UnsupportedLookAndFeelException ulafe) {
-				return false;
-			}
-			if (!(UIManager.getLookAndFeel() instanceof SubstanceLookAndFeel)) {
-				return false;
-			}
-			for (Window window : Window.getWindows()) {
-				SwingUtilities.updateComponentTreeUI(window);
-			}
-			return true;
-		}
-
-		try {
-			// Required skin settings must be non-null
-			if (!newSkin.isValid()) {
-				return false;
-			}
-
-			// fix for defect 109 - memory leak on watermark switch
-			if ((currentSkin != null) && (currentSkin.getWatermark() != null)) {
-				currentSkin.getWatermark().dispose();
-			}
-			if (newSkin.getWatermark() != null) {
-				if (!newSkin.getWatermark().updateWatermarkImage(newSkin)) {
-					return false;
-				}
-			}
-
-			UIDefaults lafDefaults = UIManager.getLookAndFeelDefaults();
-			UIDefaults defaults = lafDefaults;
-			// The table will be null when the skin is set using a custom
-			// LAF
-			if (defaults != null) {
-				initFontDefaults(lafDefaults, SubstanceLookAndFeel
-						.getFontPolicy().getFontSet("Substance", null));
-				newSkin.addCustomEntriesToTable(lafDefaults);
-		        SubstanceLookAndFeel.pluginRepository
-						.processAllDefaultsEntriesComponentPlugins(lafDefaults, newSkin);
-			}
-
-			// file chooser strings go to the main UIManager table
-			ResourceBundle substanceBundle = SubstanceLookAndFeel
-					.getLabelBundle();
-			Enumeration<String> keyEn = substanceBundle.getKeys();
-			while (keyEn.hasMoreElements()) {
-				String key = keyEn.nextElement();
-				if (key.indexOf("FileChooser") != -1) {
-					String value = substanceBundle.getString(key);
-					UIManager.put(key, value);
-				}
-			}
-
-			if (isSubstance)
-				LazyResettableHashMap.reset();
-
-			currentSkin = newSkin;
-
-			if (toUpdateWindows) {
-				for (Window window : Window.getWindows()) {
-					SwingUtilities.updateComponentTreeUI(window);
-				}
-			}
-
-			// SwingUtilities.invokeLater(new Runnable() {
-			// public void run() {
-			for (SkinChangeListener skinChangeListener : SubstanceLookAndFeel.skinChangeListeners)
-				skinChangeListener.skinChanged();
-			// }
-			// });
-			return true;
-		} catch (NoClassDefFoundError ncdfe) {
-			// this may happen when a skin references some class
-			// that can't be found in the classpath.
-			ncdfe.printStackTrace(System.out);
-			return false;
-		} catch (Exception e) {
-			e.printStackTrace(System.out);
-			return false;
-		}
-	}
-
-	/**
-	 * Sets the specified skin. If the current look-and-feel is not Substance,
-	 * this method will create a new Substance look-and-feel based on the
-	 * specified skin and set it on {@link UIManager}. This method does not
-	 * require Substance to be the current look-and-feel. Calling this method
-	 * will call {@link SwingUtilities#updateComponentTreeUI(Component)} on all
-	 * open top-level windows.
-	 * 
-	 * @param newSkin
-	 *            Skin to set.
-	 * @return <code>true</code> if the specified skin has been set
-	 *         successfully, <code>false</code> otherwise.
-	 * @throws IllegalStateException
-	 *             When called outside the Event Dispatch Thread.
-	 * @see #registerSkinChangeListener(SkinChangeListener)
-	 * @see #unregisterSkinChangeListener(SkinChangeListener)
-	 * @see SubstanceSkin#isValid()
-	 */
-	public static boolean setSkin(SubstanceSkin newSkin) {
-		return setSkin(newSkin, true);
-	}
-
-	/**
-	 * Sets the specified skin. If the current look-and-feel is not Substance,
-	 * this method will create a new Substance look-and-feel based on the
-	 * specified skin and set it on {@link UIManager}. This method does not
-	 * require Substance to be the current look-and-feel. Calling this method
-	 * will call {@link SwingUtilities#updateComponentTreeUI(Component)} on all
-	 * open top-level windows.
-	 * 
-	 * @param skinClassName
-	 *            Skin to set.
-	 * @return <code>true</code> if the specified skin has been set
-	 *         successfully, <code>false</code> otherwise.
-	 * @throws IllegalStateException
-	 *             When called outside the Event Dispatch Thread.
-	 * @since version 3.1
-	 * @see #setSkin(SubstanceSkin)
-	 * @see #registerSkinChangeListener(SkinChangeListener)
-	 * @see #unregisterSkinChangeListener(SkinChangeListener)
-	 * @see SubstanceSkin#isValid()
-	 */
-	public static boolean setSkin(String skinClassName) {
-		try {
-			Class<?> skinClass = Class.forName(skinClassName);
-			if (skinClass == null) {
-				return false;
-			}
-			Object obj = skinClass.newInstance();
-			if (obj == null) {
-				return false;
-			}
-			if (!(obj instanceof SubstanceSkin)) {
-				return false;
-			}
-			return SubstanceLookAndFeel.setSkin((SubstanceSkin) obj);
-		} catch (Exception exc) {
-			exc.printStackTrace();
-			return false;
-		}
-	}
-
-	/**
-	 * Returns all available skins.
-	 * 
-	 * @return All available skins. Key - skin display name, value - skin
-	 *         information.
-	 */
-	public static Map<String, SkinInfo> getAllSkins() {
-		initPluginsIfNecessary();
-		Map<String, SkinInfo> result = new TreeMap<String, SkinInfo>();
-		for (SubstanceSkinPlugin skinPlugin : SubstanceLookAndFeel.pluginRepository.getSkinPlugins()) {
-			for (SkinInfo skinInfo : ((SubstanceSkinPlugin) skinPlugin).getSkins()) {
-				result.put(skinInfo.getDisplayName(), skinInfo);
-			}
-		}
-		return result;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -2242,97 +1304,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
 	@Override
 	public boolean getSupportsWindowDecorations() {
 		return true;
-	}
-
-	/**
-	 * Sets the class loader for {@link #LABEL_BUNDLE}.
-	 * 
-	 * @param labelBundleClassLoader
-	 *            Class loader for {@link #LABEL_BUNDLE}.
-	 * @since version 3.1
-	 */
-	public static void setLabelBundleClassLoader(
-			ClassLoader labelBundleClassLoader) {
-		SubstanceLookAndFeel.labelBundleClassLoader = labelBundleClassLoader;
-	}
-	
-	public static ClassLoader getLabelBundleClassLoader() {
-	    return SubstanceLookAndFeel.labelBundleClassLoader;
-	}
-
-	/**
-	 * Returns the title pane of the specified top-level window.
-	 * 
-	 * @param window
-	 *            Top-level window.
-	 * @return If the parameter is either {@link JFrame} or {@link JDialog} and
-	 *         has custom decorations, the result is the title pane,
-	 *         <code>null</code> otherwise.
-	 * @since version 3.1
-	 */
-	public static JComponent getTitlePaneComponent(Window window) {
-		JRootPane rootPane = null;
-		if (window instanceof JFrame) {
-			JFrame f = (JFrame) window;
-			rootPane = f.getRootPane();
-		}
-		if (window instanceof JDialog) {
-			JDialog d = (JDialog) window;
-			rootPane = d.getRootPane();
-		}
-		if (rootPane != null) {
-			SubstanceRootPaneUI ui = (SubstanceRootPaneUI) rootPane.getUI();
-			return ui.getTitlePane();
-		}
-		return null;
-	}
-
-	/**
-	 * Sets the decoration type of the specified component and all its children.
-	 * 
-	 * @param comp
-	 *            Component.
-	 * @param type
-	 *            Decoration type of the component and all its children.
-	 */
-	public static void setDecorationType(JComponent comp,
-			DecorationAreaType type) {
-		DecorationPainterUtils.setDecorationType(comp, type);
-	}
-
-	/**
-	 * Returns the decoration area type of the specified component. The
-	 * component and its ancestor hierarchy are scanned for the registered
-	 * decoration area type. If
-	 * {@link #setDecorationType(JComponent, DecorationAreaType)} has been
-	 * called on the specified component, the matching decoration type is
-	 * returned. Otherwise, the component hierarchy is scanned to find the
-	 * closest ancestor that was passed to
-	 * {@link #setDecorationType(JComponent, DecorationAreaType)} - and its
-	 * decoration type is returned. If neither the component, nor any one of its
-	 * parent components has been passed to the setter method,
-	 * {@link DecorationAreaType#NONE} is returned.
-	 * 
-	 * @param comp
-	 *            Component.
-	 * @return Decoration area type of the component.
-	 */
-	public static DecorationAreaType getDecorationType(Component comp) {
-		return DecorationPainterUtils.getDecorationType(comp);
-	}
-
-	/**
-	 * Returns the immediate decoration area type of the specified component.
-	 * The component is checked for the registered decoration area type. If
-	 * {@link #setDecorationType(JComponent, DecorationAreaType, boolean)} was
-	 * not called on this component, this method returns <code>null</code>.
-	 * 
-	 * @param comp
-	 *            Component.
-	 * @return Immediate decoration area type of the component.
-	 */
-	public static DecorationAreaType getImmediateDecorationType(Component comp) {
-		return DecorationPainterUtils.getImmediateDecorationType(comp);
 	}
 
 	/*

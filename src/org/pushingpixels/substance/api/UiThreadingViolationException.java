@@ -30,8 +30,12 @@
 package org.pushingpixels.substance.api;
 
 /**
- * This exception is thrown by Substance when it detects violations of UI
- * threading rules.
+ * This exception is thrown by Substance when it detects violations of Swing UI
+ * threading rules. See
+ * <a href="http://www.pushing-pixels.org/2008/07/15/stricter-checks-on-edt-violations-in-substance.html">here</a>
+ * and
+ * <a href="http://www.pushing-pixels.org/2010/02/16/your-application-will-be-with-you-momentarily.html">here</a>
+ * for more information on why Substance throws this exception.
  * 
  * @author Kirill Grouchnikov
  */

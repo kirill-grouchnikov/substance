@@ -50,9 +50,9 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.plaf.basic.BasicTextFieldUI;
 
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceWidget;
-import org.pushingpixels.substance.api.SubstanceWidgetRepository;
+import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.RolloverTextControlListener;
@@ -69,220 +69,214 @@ import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
  * @author Kirill Grouchnikov
  */
 public class SubstanceTextFieldUI extends BasicTextFieldUI implements TransitionAwareUI {
-	protected StateTransitionTracker stateTransitionTracker;
+    protected StateTransitionTracker stateTransitionTracker;
 
-	/**
-	 * The associated text field.
-	 */
-	protected JTextField textField;
+    /**
+     * The associated text field.
+     */
+    protected JTextField textField;
 
-	/**
-	 * Property change listener.
-	 */
-	protected PropertyChangeListener substancePropertyChangeListener;
+    /**
+     * Property change listener.
+     */
+    protected PropertyChangeListener substancePropertyChangeListener;
 
-	/**
-	 * Listener for transition animations.
-	 */
-	private RolloverTextControlListener substanceRolloverListener;
+    /**
+     * Listener for transition animations.
+     */
+    private RolloverTextControlListener substanceRolloverListener;
 
-	/**
-	 * Surrogate button model for tracking the state transitions.
-	 */
-	private ButtonModel transitionModel;
+    /**
+     * Surrogate button model for tracking the state transitions.
+     */
+    private ButtonModel transitionModel;
 
-	private Set<SubstanceWidget> lafWidgets;
+    private Set<SubstanceWidget> lafWidgets;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
-	 */
-	public static ComponentUI createUI(JComponent comp) {
-		SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
-		return new SubstanceTextFieldUI(comp);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
+     */
+    public static ComponentUI createUI(JComponent comp) {
+        SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
+        return new SubstanceTextFieldUI(comp);
+    }
 
-	/**
-	 * Simple constructor.
-	 * 
-	 * @param c
-	 *            Component (text field).
-	 */
-	public SubstanceTextFieldUI(JComponent c) {
-		super();
-		this.textField = (JTextField) c;
+    /**
+     * Simple constructor.
+     * 
+     * @param c
+     *            Component (text field).
+     */
+    public SubstanceTextFieldUI(JComponent c) {
+        super();
+        this.textField = (JTextField) c;
 
-		this.transitionModel = new DefaultButtonModel();
-		this.transitionModel.setArmed(false);
-		this.transitionModel.setSelected(false);
-		this.transitionModel.setPressed(false);
-		this.transitionModel.setRollover(false);
-		this.transitionModel.setEnabled(this.textField.isEnabled());
+        this.transitionModel = new DefaultButtonModel();
+        this.transitionModel.setArmed(false);
+        this.transitionModel.setSelected(false);
+        this.transitionModel.setPressed(false);
+        this.transitionModel.setRollover(false);
+        this.transitionModel.setEnabled(this.textField.isEnabled());
 
-		this.stateTransitionTracker = new StateTransitionTracker(
-				this.textField, this.transitionModel);
-		this.stateTransitionTracker.setRepaintCallback(
-				() -> SubstanceCoreUtilities.getTextComponentRepaintCallback(textField));
-	}
+        this.stateTransitionTracker = new StateTransitionTracker(this.textField,
+                this.transitionModel);
+        this.stateTransitionTracker.setRepaintCallback(
+                () -> SubstanceCoreUtilities.getTextComponentRepaintCallback(textField));
+    }
 
-	@Override
-	public void installUI(JComponent c) {
-		this.lafWidgets = SubstanceWidgetRepository.getRepository().getMatchingWidgets(c);
+    @Override
+    public void installUI(JComponent c) {
+        this.lafWidgets = SubstanceWidgetRepository.getRepository().getMatchingWidgets(c);
 
-		super.installUI(c);
-		
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.installUI();
-		}
-	}
-	
-	@Override
-	public void uninstallUI(JComponent c) {
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.uninstallUI();
-		}
-		super.uninstallUI(c);
-	}
+        super.installUI(c);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicTextUI#paintBackground(java.awt.Graphics)
-	 */
-	@Override
-	protected void paintBackground(Graphics g) {
-		SubstanceTextUtilities.paintTextCompBackground(g, this.textField);
-	}
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.installUI();
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicTextUI#installListeners()
-	 */
-	@Override
-	protected void installListeners() {
-		super.installListeners();
+    @Override
+    public void uninstallUI(JComponent c) {
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.uninstallUI();
+        }
+        super.uninstallUI(c);
+    }
 
-		this.substanceRolloverListener = new RolloverTextControlListener(
-				this.textField, this, this.transitionModel);
-		this.substanceRolloverListener.registerListeners();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicTextUI#paintBackground(java.awt.Graphics)
+     */
+    @Override
+    protected void paintBackground(Graphics g) {
+        SubstanceTextUtilities.paintTextCompBackground(g, this.textField);
+    }
 
-		this.stateTransitionTracker.registerModelListeners();
-		this.stateTransitionTracker.registerFocusListeners();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicTextUI#installListeners()
+     */
+    @Override
+    protected void installListeners() {
+        super.installListeners();
 
-		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
-			if ("font".equals(evt.getPropertyName())) {
-				SwingUtilities.invokeLater(() -> {
-					// remember the caret location - issue 404
-					int caretPos = textField.getCaretPosition();
-					textField.updateUI();
-					textField.setCaretPosition(caretPos);
-					Container parent = textField.getParent();
-					if (parent != null) {
-						parent.invalidate();
-						parent.validate();
-					}
-				});
-			}
+        this.substanceRolloverListener = new RolloverTextControlListener(this.textField, this,
+                this.transitionModel);
+        this.substanceRolloverListener.registerListeners();
 
-			if ("enabled".equals(evt.getPropertyName())) {
-				transitionModel.setEnabled(textField.isEnabled());
-			}
-		};
-		this.textField
-				.addPropertyChangeListener(this.substancePropertyChangeListener);
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.installListeners();
-		}
-	}
+        this.stateTransitionTracker.registerModelListeners();
+        this.stateTransitionTracker.registerFocusListeners();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicTextUI#uninstallListeners()
-	 */
-	@Override
-	protected void uninstallListeners() {
-		this.stateTransitionTracker.unregisterModelListeners();
-		this.stateTransitionTracker.unregisterFocusListeners();
+        this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+            if ("font".equals(evt.getPropertyName())) {
+                SwingUtilities.invokeLater(() -> {
+                    // remember the caret location - issue 404
+                    int caretPos = textField.getCaretPosition();
+                    textField.updateUI();
+                    textField.setCaretPosition(caretPos);
+                    Container parent = textField.getParent();
+                    if (parent != null) {
+                        parent.invalidate();
+                        parent.validate();
+                    }
+                });
+            }
 
-		this.textField
-				.removePropertyChangeListener(this.substancePropertyChangeListener);
-		this.substancePropertyChangeListener = null;
+            if ("enabled".equals(evt.getPropertyName())) {
+                transitionModel.setEnabled(textField.isEnabled());
+            }
+        };
+        this.textField.addPropertyChangeListener(this.substancePropertyChangeListener);
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.installListeners();
+        }
+    }
 
-		this.substanceRolloverListener.unregisterListeners();
-		this.substanceRolloverListener = null;
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicTextUI#uninstallListeners()
+     */
+    @Override
+    protected void uninstallListeners() {
+        this.stateTransitionTracker.unregisterModelListeners();
+        this.stateTransitionTracker.unregisterFocusListeners();
 
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.uninstallListeners();
-		}
+        this.textField.removePropertyChangeListener(this.substancePropertyChangeListener);
+        this.substancePropertyChangeListener = null;
 
-		super.uninstallListeners();
-	}
+        this.substanceRolloverListener.unregisterListeners();
+        this.substanceRolloverListener = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicTextUI#installDefaults()
-	 */
-	@Override
-	protected void installDefaults() {
-		super.installDefaults();
-		Border b = this.textField.getBorder();
-		if (b == null || b instanceof UIResource) {
-			Border newB = new BorderUIResource.CompoundBorderUIResource(
-					new SubstanceTextComponentBorder(SubstanceSizeUtils
-							.getTextBorderInsets(SubstanceSizeUtils
-									.getComponentFontSize(this.textField))),
-					new BasicBorders.MarginBorder());
-			this.textField.setBorder(newB);
-		}
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.uninstallListeners();
+        }
 
-		// support for per-window skins
-		SwingUtilities.invokeLater(() -> {
-			if (textField == null)
-				return;
-			Color foregr = textField.getForeground();
-			if ((foregr == null) || (foregr instanceof UIResource)) {
-				textField.setForeground(SubstanceColorUtilities
-						.getForegroundColor(SubstanceLookAndFeel
-								.getCurrentSkin(textField)
-								.getEnabledColorScheme(
-										SubstanceLookAndFeel
-												.getDecorationType(textField))));
-			}
-		});
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.installDefaults();
-		}
-	}
-	
-	@Override
-	protected void uninstallDefaults() {
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.uninstallDefaults();
-		}
+        super.uninstallListeners();
+    }
 
-		super.uninstallDefaults();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicTextUI#installDefaults()
+     */
+    @Override
+    protected void installDefaults() {
+        super.installDefaults();
+        Border b = this.textField.getBorder();
+        if (b == null || b instanceof UIResource) {
+            Border newB = new BorderUIResource.CompoundBorderUIResource(
+                    new SubstanceTextComponentBorder(SubstanceSizeUtils.getTextBorderInsets(
+                            SubstanceSizeUtils.getComponentFontSize(this.textField))),
+                    new BasicBorders.MarginBorder());
+            this.textField.setBorder(newB);
+        }
 
-	@Override
-	public boolean isInside(MouseEvent me) {
-		return true;
-	}
+        // support for per-window skins
+        SwingUtilities.invokeLater(() -> {
+            if (textField == null)
+                return;
+            Color foregr = textField.getForeground();
+            if ((foregr == null) || (foregr instanceof UIResource)) {
+                textField.setForeground(SubstanceColorUtilities
+                        .getForegroundColor(SubstanceCortex.ComponentScope.getCurrentSkin(textField)
+                                .getEnabledColorScheme(SubstanceCortex.ComponentScope
+                                        .getDecorationType(textField))));
+            }
+        });
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.installDefaults();
+        }
+    }
 
-	@Override
-	public StateTransitionTracker getTransitionTracker() {
-		return this.stateTransitionTracker;
-	}
+    @Override
+    protected void uninstallDefaults() {
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.uninstallDefaults();
+        }
 
-	@Override
-	public void update(Graphics g, JComponent c) {
-		Graphics2D g2d = (Graphics2D) g.create();
-		RenderingUtils.installDesktopHints(g2d, c);
-		super.update(g2d, c);
-		g2d.dispose();
-	}
+        super.uninstallDefaults();
+    }
+
+    @Override
+    public boolean isInside(MouseEvent me) {
+        return true;
+    }
+
+    @Override
+    public StateTransitionTracker getTransitionTracker() {
+        return this.stateTransitionTracker;
+    }
+
+    @Override
+    public void update(Graphics g, JComponent c) {
+        Graphics2D g2d = (Graphics2D) g.create();
+        RenderingUtils.installDesktopHints(g2d, c);
+        super.update(g2d, c);
+        g2d.dispose();
+    }
 }

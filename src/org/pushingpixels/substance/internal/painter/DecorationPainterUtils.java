@@ -29,214 +29,204 @@
  */
 package org.pushingpixels.substance.internal.painter;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import javax.swing.*;
+import javax.swing.CellRendererPane;
+import javax.swing.JComponent;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.painter.decoration.SubstanceDecorationPainter;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
-import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 
 /**
- * Contains utility methods related to decoration painters. This class is for
- * internal use only.
+ * Contains utility methods related to decoration painters. This class is for internal use only.
  * 
  * @author Kirill Grouchnikov
  */
 public class DecorationPainterUtils {
-	/**
-	 * Client property for marking a component with an instance of
-	 * {@link DecorationAreaType} enum.
-	 */
-	private static final String DECORATION_AREA_TYPE = 
-			"substancelaf.internal.painter.decorationAreaType";
-	
-	public static final String POPUP_INVOKER_LINK =
-			"substancelaf.internal.popupInvokerLink";
-	
-	public static interface PopupInvokerLink {
-		public JComponent getPopupInvoker();
-	}
+    /**
+     * Client property for marking a component with an instance of {@link DecorationAreaType} enum.
+     */
+    private static final String DECORATION_AREA_TYPE = "substancelaf.internal.painter.decorationAreaType";
 
-	/**
-	 * Sets the decoration type of the specified component.
-	 * 
-	 * @param comp
-	 *            Component.
-	 * @param type
-	 *            Decoration type of the component and its children.
-	 */
-	public static void setDecorationType(JComponent comp,
-			DecorationAreaType type) {
-		comp.putClientProperty(DECORATION_AREA_TYPE, type);
-	}
+    public static final String POPUP_INVOKER_LINK = "substancelaf.internal.popupInvokerLink";
 
-	/**
-	 * Clears the client properties related to the decoration area type.
-	 * 
-	 * @param comp
-	 *            Component.
-	 */
-	public static void clearDecorationType(JComponent comp) {
-		if (comp != null) {
-			comp.putClientProperty(DECORATION_AREA_TYPE, null);
-		}
-	}
+    public static interface PopupInvokerLink {
+        public JComponent getPopupInvoker();
+    }
 
-	/**
-	 * Returns the decoration area type of the specified component. The
-	 * component and its ancestor hierarchy are scanned for the registered
-	 * decoration area type. If
-	 * {@link #setDecorationType(JComponent, DecorationAreaType)} has been
-	 * called on the specified component, the matching decoration type is
-	 * returned. Otherwise, the component hierarchy is scanned to find the
-	 * closest ancestor that was passed to
-	 * {@link #setDecorationType(JComponent, DecorationAreaType)} - and its
-	 * decoration type is returned. If neither the component, nor any one of its
-	 * parent components has been passed to the setter method,
-	 * {@link DecorationAreaType#NONE} is returned.
-	 * 
-	 * @param comp
-	 *            Component.
-	 * @return Decoration area type of the component.
-	 */
-	public static DecorationAreaType getDecorationType(Component comp) {
-		JPopupMenu popupMenu = null;
-		JComponent popupInvoker = null;
-		Component c = comp;
-		while (c != null) {
-			if (c instanceof JComponent) {
-				JComponent jc = (JComponent) c;
-				Object prop = jc.getClientProperty(DECORATION_AREA_TYPE);
-				if (prop instanceof DecorationAreaType) {
-					return (DecorationAreaType) prop;
-				}
-				Object invokerProp = jc.getClientProperty(POPUP_INVOKER_LINK);
-				if (invokerProp instanceof PopupInvokerLink) {
-					popupInvoker = ((PopupInvokerLink) invokerProp).getPopupInvoker();
-				}
-			}
-			if (c instanceof JPopupMenu) {
-				popupMenu = (JPopupMenu) c;
-			}
-			c = c.getParent();
-		}
-		if (popupMenu != null) {
-			Component invoker = popupMenu.getInvoker();
-			if (popupMenu != invoker) {
-				return getDecorationType(popupMenu.getInvoker());
-			}
-		}
-		if (popupInvoker != null) {
-			return getDecorationType(popupInvoker);
-		}
-		return DecorationAreaType.NONE;
-	}
+    /**
+     * Sets the decoration type of the specified component.
+     * 
+     * @param comp
+     *            Component.
+     * @param type
+     *            Decoration type of the component and its children.
+     */
+    public static void setDecorationType(JComponent comp, DecorationAreaType type) {
+        comp.putClientProperty(DECORATION_AREA_TYPE, type);
+    }
 
-	/**
-	 * Returns the immediate decoration area type of the specified component.
-	 * The component is checked for the registered decoration area type. If
-	 * {@link #setDecorationType(JComponent, DecorationAreaType, boolean)} was
-	 * not called on this component, this method returns <code>null</code>.
-	 * 
-	 * @param comp
-	 *            Component.
-	 * @return Immediate decoration area type of the component.
-	 */
-	public static DecorationAreaType getImmediateDecorationType(Component comp) {
-		Component c = comp;
-		if (c instanceof JComponent) {
-			JComponent jc = (JComponent) c;
-			Object prop = jc.getClientProperty(DECORATION_AREA_TYPE);
-			if (prop instanceof DecorationAreaType)
-				return (DecorationAreaType) prop;
-		}
-		return null;
-	}
+    /**
+     * Clears the client properties related to the decoration area type.
+     * 
+     * @param comp
+     *            Component.
+     */
+    public static void clearDecorationType(JComponent comp) {
+        if (comp != null) {
+            comp.putClientProperty(DECORATION_AREA_TYPE, null);
+        }
+    }
 
-	/**
-	 * Paints the decoration background on the specified component. The
-	 * decoration background is not painted when the <code>force</code>
-	 * parameter is <code>false</code> and at least one of the following
-	 * conditions holds:
-	 * <ul>
-	 * <li>The component is in a cell renderer.</li>
-	 * <li>The component is not showing on the screen.</li>
-	 * <li>The component is in the preview mode.</li>
-	 * </ul>
-	 * 
-	 * @param g
-	 *            Graphics context.
-	 * @param c
-	 *            Component.
-	 * @param force
-	 *            If <code>true</code>, the painting of decoration background is
-	 *            enforced.
-	 */
-	public static void paintDecorationBackground(Graphics g, Component c,
-			boolean force) {
-		DecorationAreaType decorationType = SubstanceLookAndFeel
-				.getDecorationType(c);
-		paintDecorationBackground(g, c, decorationType, force);
-	}
+    /**
+     * Returns the decoration area type of the specified component. The component and its ancestor
+     * hierarchy are scanned for the registered decoration area type. If
+     * {@link #setDecorationType(JComponent, DecorationAreaType)} has been called on the specified
+     * component, the matching decoration type is returned. Otherwise, the component hierarchy is
+     * scanned to find the closest ancestor that was passed to
+     * {@link #setDecorationType(JComponent, DecorationAreaType)} - and its decoration type is
+     * returned. If neither the component, nor any one of its parent components has been passed to
+     * the setter method, {@link DecorationAreaType#NONE} is returned.
+     * 
+     * @param comp
+     *            Component.
+     * @return Decoration area type of the component.
+     */
+    public static DecorationAreaType getDecorationType(Component comp) {
+        JPopupMenu popupMenu = null;
+        JComponent popupInvoker = null;
+        Component c = comp;
+        while (c != null) {
+            if (c instanceof JComponent) {
+                JComponent jc = (JComponent) c;
+                Object prop = jc.getClientProperty(DECORATION_AREA_TYPE);
+                if (prop instanceof DecorationAreaType) {
+                    return (DecorationAreaType) prop;
+                }
+                Object invokerProp = jc.getClientProperty(POPUP_INVOKER_LINK);
+                if (invokerProp instanceof PopupInvokerLink) {
+                    popupInvoker = ((PopupInvokerLink) invokerProp).getPopupInvoker();
+                }
+            }
+            if (c instanceof JPopupMenu) {
+                popupMenu = (JPopupMenu) c;
+            }
+            c = c.getParent();
+        }
+        if (popupMenu != null) {
+            Component invoker = popupMenu.getInvoker();
+            if (popupMenu != invoker) {
+                return getDecorationType(popupMenu.getInvoker());
+            }
+        }
+        if (popupInvoker != null) {
+            return getDecorationType(popupInvoker);
+        }
+        return DecorationAreaType.NONE;
+    }
 
-	/**
-	 * Paints the decoration background on the specified component. See comments
-	 * on {@link #paintDecorationBackground(Graphics, Component, boolean)} for
-	 * the cases when the decoration background painting is skipped.
-	 * 
-	 * @param g
-	 *            Graphics context.
-	 * @param c
-	 *            Component.
-	 * @param decorationType
-	 *            Decoration area type of the component.
-	 * @param force
-	 *            If <code>true</code>, the painting of decoration background is
-	 *            enforced. #see
-	 *            {@link #paintDecorationBackground(Graphics, Component, boolean)}
-	 */
-	private static void paintDecorationBackground(Graphics g, Component c,
-			DecorationAreaType decorationType, boolean force) {
-		// System.out.println("Painting " + c.getClass().getSimpleName());
-		boolean isInCellRenderer = (SwingUtilities.getAncestorOfClass(
-				CellRendererPane.class, c) != null);
-		boolean isPreviewMode = false;
-		if (c instanceof JComponent) {
-			isPreviewMode = (Boolean.TRUE.equals(((JComponent) c)
-					.getClientProperty(WidgetUtilities.PREVIEW_MODE)));
-		}
+    /**
+     * Returns the immediate decoration area type of the specified component. The component is
+     * checked for the registered decoration area type. If
+     * {@link #setDecorationType(JComponent, DecorationAreaType, boolean)} was not called on this
+     * component, this method returns <code>null</code>.
+     * 
+     * @param comp
+     *            Component.
+     * @return Immediate decoration area type of the component.
+     */
+    public static DecorationAreaType getImmediateDecorationType(Component comp) {
+        Component c = comp;
+        if (c instanceof JComponent) {
+            JComponent jc = (JComponent) c;
+            Object prop = jc.getClientProperty(DECORATION_AREA_TYPE);
+            if (prop instanceof DecorationAreaType)
+                return (DecorationAreaType) prop;
+        }
+        return null;
+    }
 
-		if (!force && !isPreviewMode && !c.isShowing() && !isInCellRenderer) {
-			return;
-		}
+    /**
+     * Paints the decoration background on the specified component. The decoration background is not
+     * painted when the <code>force</code> parameter is <code>false</code> and at least one of the
+     * following conditions holds:
+     * <ul>
+     * <li>The component is in a cell renderer.</li>
+     * <li>The component is not showing on the screen.</li>
+     * <li>The component is in the preview mode.</li>
+     * </ul>
+     * 
+     * @param g
+     *            Graphics context.
+     * @param c
+     *            Component.
+     * @param force
+     *            If <code>true</code>, the painting of decoration background is enforced.
+     */
+    public static void paintDecorationBackground(Graphics g, Component c, boolean force) {
+        DecorationAreaType decorationType = SubstanceCortex.ComponentScope.getDecorationType(c);
+        paintDecorationBackground(g, c, decorationType, force);
+    }
 
-		if ((c.getHeight() == 0) || (c.getWidth() == 0))
-			return;
+    /**
+     * Paints the decoration background on the specified component. See comments on
+     * {@link #paintDecorationBackground(Graphics, Component, boolean)} for the cases when the
+     * decoration background painting is skipped.
+     * 
+     * @param g
+     *            Graphics context.
+     * @param c
+     *            Component.
+     * @param decorationType
+     *            Decoration area type of the component.
+     * @param force
+     *            If <code>true</code>, the painting of decoration background is enforced. #see
+     *            {@link #paintDecorationBackground(Graphics, Component, boolean)}
+     */
+    private static void paintDecorationBackground(Graphics g, Component c,
+            DecorationAreaType decorationType, boolean force) {
+        // System.out.println("Painting " + c.getClass().getSimpleName());
+        boolean isInCellRenderer = (SwingUtilities.getAncestorOfClass(CellRendererPane.class,
+                c) != null);
+        boolean isPreviewMode = false;
+        if (c instanceof JComponent) {
+            isPreviewMode = (Boolean.TRUE
+                    .equals(((JComponent) c).getClientProperty(WidgetUtilities.PREVIEW_MODE)));
+        }
 
-		SubstanceSkin skin = SubstanceCoreUtilities.getSkin(c);
-		SubstanceDecorationPainter painter = skin.getDecorationPainter();
+        if (!force && !isPreviewMode && !c.isShowing() && !isInCellRenderer) {
+            return;
+        }
 
-		Graphics2D g2d = (Graphics2D) g.create();
-		painter.paintDecorationArea(g2d, c, decorationType, c.getWidth(), c
-				.getHeight(), skin);
+        if ((c.getHeight() == 0) || (c.getWidth() == 0))
+            return;
 
-		SubstanceWatermark watermark = SubstanceCoreUtilities.getSkin(c)
-				.getWatermark();
-		if ((watermark != null) && !isPreviewMode && !isInCellRenderer
-				&& c.isShowing() && SubstanceCoreUtilities.toDrawWatermark(c)) {
-			// paint the watermark over the component
-			watermark.drawWatermarkImage(g2d, c, 0, 0, c.getWidth(), c
-					.getHeight());
+        SubstanceSkin skin = SubstanceCoreUtilities.getSkin(c);
+        SubstanceDecorationPainter painter = skin.getDecorationPainter();
 
-			// paint the background second time with 50%
-			// translucency, making the watermark' bleed' through.
-			g2d.setComposite(WidgetUtilities.getAlphaComposite(c, 0.5f, g));
-			painter.paintDecorationArea(g2d, c, decorationType, c.getWidth(), c
-					.getHeight(), skin);
-		}
-		g2d.dispose();
-	}
+        Graphics2D g2d = (Graphics2D) g.create();
+        painter.paintDecorationArea(g2d, c, decorationType, c.getWidth(), c.getHeight(), skin);
+
+        SubstanceWatermark watermark = SubstanceCoreUtilities.getSkin(c).getWatermark();
+        if ((watermark != null) && !isPreviewMode && !isInCellRenderer && c.isShowing()
+                && SubstanceCoreUtilities.toDrawWatermark(c)) {
+            // paint the watermark over the component
+            watermark.drawWatermarkImage(g2d, c, 0, 0, c.getWidth(), c.getHeight());
+
+            // paint the background second time with 50%
+            // translucency, making the watermark' bleed' through.
+            g2d.setComposite(WidgetUtilities.getAlphaComposite(c, 0.5f, g));
+            painter.paintDecorationArea(g2d, c, decorationType, c.getWidth(), c.getHeight(), skin);
+        }
+        g2d.dispose();
+    }
 }

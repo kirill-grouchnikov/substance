@@ -45,11 +45,11 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
@@ -166,7 +166,7 @@ public class SeparatorPainterUtils {
 				// decoration type
 				// of that separator
 				compScheme = SubstanceCoreUtilities.getSkin(c)
-						.getBackgroundColorScheme(SubstanceLookAndFeel.getDecorationType(c));
+						.getBackgroundColorScheme(SubstanceCortex.ComponentScope.getDecorationType(c));
 			}
 		}
 		if (compScheme == null) {
@@ -216,7 +216,7 @@ public class SeparatorPainterUtils {
 			int width, int height, int orientation, boolean hasShadow, int maxGradLengthStart,
 			int maxGradLengthEnd, boolean toEnforceAlphaColors) {
 
-		DecorationAreaType decorationAreaType = SubstanceLookAndFeel.getDecorationType(c);
+		DecorationAreaType decorationAreaType = SubstanceCortex.ComponentScope.getDecorationType(c);
 		SubstanceSkin skin = SubstanceCoreUtilities.getSkin(c);
 		// use alpha colors when the control is in a painted decoration area
 		// (where skin can use different background colors) or in a decoration

@@ -38,6 +38,9 @@ import java.awt.Insets;
 import javax.swing.ImageIcon;
 import javax.swing.border.AbstractBorder;
 
+import org.pushingpixels.substance.internal.contrib.jgoodies.looks.common.ShadowPopup;
+import org.pushingpixels.substance.internal.contrib.jgoodies.looks.common.ShadowPopupFactory;
+
 /**
  * A border with a drop shadow intended to be used as the outer border of
  * popups. Can paint the screen background if used with heavy-weight popup

@@ -33,7 +33,10 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 
 import org.pushingpixels.substance.internal.contrib.jgoodies.looks.LookUtils;
-import org.pushingpixels.substance.internal.inputmaps.*;
+import org.pushingpixels.substance.internal.inputmaps.AquaInputMapSet;
+import org.pushingpixels.substance.internal.inputmaps.BaseInputMapSet;
+import org.pushingpixels.substance.internal.inputmaps.GnomeInputMapSet;
+import org.pushingpixels.substance.internal.inputmaps.WindowsInputMapSet;
 
 public class SubstanceInputMapUtilities {
 	public static InputMapSet getSystemInputMapSet() {

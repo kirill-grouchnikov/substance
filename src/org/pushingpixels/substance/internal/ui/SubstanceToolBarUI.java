@@ -36,8 +36,8 @@ import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -49,86 +49,78 @@ import org.pushingpixels.substance.internal.widget.animation.effects.GhostPainti
  * @author Kirill Grouchnikov
  */
 public class SubstanceToolBarUI extends BasicToolBarUI {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
-	 */
-	public static ComponentUI createUI(JComponent comp) {
-		SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
-		return new SubstanceToolBarUI();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
+     */
+    public static ComponentUI createUI(JComponent comp) {
+        SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
+        return new SubstanceToolBarUI();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicToolBarUI#installDefaults()
-	 */
-	@Override
-	protected void installDefaults() {
-		super.installDefaults();
-		SubstanceLookAndFeel.setDecorationType(this.toolBar,
-				DecorationAreaType.TOOLBAR);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicToolBarUI#installDefaults()
+     */
+    @Override
+    protected void installDefaults() {
+        super.installDefaults();
+        SubstanceCortex.ComponentScope.setDecorationType(this.toolBar, DecorationAreaType.TOOLBAR);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicToolBarUI#uninstallDefaults()
-	 */
-	@Override
-	protected void uninstallDefaults() {
-		DecorationPainterUtils.clearDecorationType(this.toolBar);
-		super.uninstallDefaults();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicToolBarUI#uninstallDefaults()
+     */
+    @Override
+    protected void uninstallDefaults() {
+        DecorationPainterUtils.clearDecorationType(this.toolBar);
+        super.uninstallDefaults();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
-	 * javax.swing.JComponent)
-	 */
-	@Override
-	public void update(Graphics g, JComponent c) {
-		boolean isOpaque = SubstanceCoreUtilities.isOpaque(c);
-		if (isOpaque) {
-			BackgroundPaintingUtils.update(g, c, false);
-		} else {
-			super.update(g, c);
-		}
-		GhostPaintingUtils.paintGhostImages(c, g);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics, javax.swing.JComponent)
+     */
+    @Override
+    public void update(Graphics g, JComponent c) {
+        boolean isOpaque = SubstanceCoreUtilities.isOpaque(c);
+        if (isOpaque) {
+            BackgroundPaintingUtils.update(g, c, false);
+        } else {
+            super.update(g, c);
+        }
+        GhostPaintingUtils.paintGhostImages(c, g);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicToolBarUI#setBorderToRollover(java.awt.Component
-	 * )
-	 */
-	@Override
-	protected void setBorderToRollover(Component c) {
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicToolBarUI#setBorderToRollover(java.awt.Component )
+     */
+    @Override
+    protected void setBorderToRollover(Component c) {
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicToolBarUI#setBorderToNonRollover(java.awt
-	 * .Component)
-	 */
-	@Override
-	protected void setBorderToNonRollover(Component c) {
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicToolBarUI#setBorderToNonRollover(java.awt .Component)
+     */
+    @Override
+    protected void setBorderToNonRollover(Component c) {
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicToolBarUI#setBorderToNormal(java.awt.Component
-	 * )
-	 */
-	@Override
-	protected void setBorderToNormal(Component c) {
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicToolBarUI#setBorderToNormal(java.awt.Component )
+     */
+    @Override
+    protected void setBorderToNormal(Component c) {
+    }
 }

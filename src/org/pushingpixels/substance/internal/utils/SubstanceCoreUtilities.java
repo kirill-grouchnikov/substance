@@ -86,18 +86,19 @@ import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.text.JTextComponent;
 
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants.FocusKind;
-import org.pushingpixels.substance.api.SubstanceConstants.MenuGutterFillKind;
-import org.pushingpixels.substance.api.SubstanceConstants.Side;
-import org.pushingpixels.substance.api.SubstanceConstants.TabContentPaneBorderKind;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.FocusKind;
+import org.pushingpixels.substance.api.SubstanceSlices.MenuGutterFillKind;
+import org.pushingpixels.substance.api.SubstanceSlices.Side;
+import org.pushingpixels.substance.api.SubstanceSlices.TabContentPaneBorderKind;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.UiThreadingViolationException;
 import org.pushingpixels.substance.api.colorscheme.BottleGreenColorScheme;
 import org.pushingpixels.substance.api.colorscheme.LightAquaColorScheme;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.colorscheme.SunfireRedColorScheme;
 import org.pushingpixels.substance.api.colorscheme.SunsetColorScheme;
 import org.pushingpixels.substance.api.combo.ComboPopupPrototypeCallback;
@@ -1081,7 +1082,7 @@ public class SubstanceCoreUtilities {
 	 */
 	public static SubstanceColorScheme getOptionPaneColorScheme(
 			int messageType, SubstanceColorScheme mainScheme) {
-		if (!SubstanceLookAndFeel.isToUseConstantThemesOnDialogs())
+		if (!SubstanceCortex.GlobalScope.isToUseConstantThemesOnDialogs())
 			return mainScheme;
 
 		switch (messageType) {
@@ -1769,7 +1770,7 @@ public class SubstanceCoreUtilities {
 			return null;
 
 		if (!SubstanceRootPaneUI.hasCustomSkinOnAtLeastOneRootPane())
-			return SubstanceLookAndFeel.getCurrentSkin();
+			return SubstanceCortex.GlobalScope.getCurrentSkin();
 
 		SubstanceComboPopup comboPopup = (SubstanceComboPopup) SwingUtilities
 				.getAncestorOfClass(SubstanceComboPopup.class, c);
@@ -1804,7 +1805,7 @@ public class SubstanceCoreUtilities {
 			if (skinProp instanceof SubstanceSkin)
 				return (SubstanceSkin) skinProp;
 		}
-		return SubstanceLookAndFeel.getCurrentSkin();
+		return SubstanceCortex.GlobalScope.getCurrentSkin();
 	}
 
 	/**
@@ -2075,6 +2076,6 @@ public class SubstanceCoreUtilities {
      *         <code>false</code> otherwise.
      */
     public static boolean isCurrentLookAndFeel() {
-    	return (SubstanceLookAndFeel.getCurrentSkin() != null);
+    	    return (SubstanceCortex.GlobalScope.getCurrentSkin() != null);
     }
 }

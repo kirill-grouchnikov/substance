@@ -46,10 +46,10 @@ import javax.swing.plaf.DimensionUIResource;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.InsetsUIResource;
 
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceComponentPlugin;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.font.FontSet;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -229,15 +229,10 @@ public class BasePlugin implements SubstanceComponentPlugin {
 							new Object[] { new Integer(4), new Integer(4),
 									new Integer(25), new Integer(25) }),
 
-			// // Localization support
-			// "Labels",
-			// ResourceBundleUtil
-			// .getBundle("org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.Labels"),
-
 			};
 
 			Object[] colorDefaults = null;
-			FontSet substanceFontSet = SubstanceLookAndFeel.getFontPolicy()
+			FontSet substanceFontSet = SubstanceCortex.GlobalScope.getFontPolicy()
 					.getFontSet("Substance", null);
 			Font controlFont = substanceFontSet.getControlFont();
 

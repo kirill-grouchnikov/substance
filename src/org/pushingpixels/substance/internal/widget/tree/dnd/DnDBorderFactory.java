@@ -38,211 +38,208 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.border.Border;
 
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.colorscheme.SunsetColorScheme;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.iconpack.SubstanceIconPack;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
- * DnDBorderFactory is responsible for creating node borders used under
- * different drag and drop operations.
+ * DnDBorderFactory is responsible for creating node borders used under different drag and drop
+ * operations.
  * 
  * @author Antonio Vieiro (antonio@antonioshome.net), $Author: kirillcool $
  */
 class DnDBorderFactory {
-	/**
-	 * DropAllowedBorder is a Border that indicates that something is being
-	 * droped on top of a valid node.
-	 * 
-	 * @author Antonio Vieiro (antonio@antonioshome.net), $Author: kirillcool $
-	 */
-	static class DropAllowedBorder implements Border {
-		private static Insets insets = new Insets(0, 0, 3, 0);
+    /**
+     * DropAllowedBorder is a Border that indicates that something is being droped on top of a valid
+     * node.
+     * 
+     * @author Antonio Vieiro (antonio@antonioshome.net), $Author: kirillcool $
+     */
+    static class DropAllowedBorder implements Border {
+        private static Insets insets = new Insets(0, 0, 3, 0);
 
-		/**
-		 * Creates a new instance of DropAllowedBorder
-		 */
-		public DropAllowedBorder() {
-		}
+        /**
+         * Creates a new instance of DropAllowedBorder
+         */
+        public DropAllowedBorder() {
+        }
 
-		public void paintBorder(Component c, Graphics g, int x, int y,
-				int width, int height) {
-			int yh = y + height - 1;
-	        SubstanceIconPack iconPack = SubstanceLookAndFeel.getIconPack();
-	        SubstanceColorScheme colorScheme = SubstanceCoreUtilities.getSkin(c)
-	                .getEnabledColorScheme(SubstanceLookAndFeel.getDecorationType(c));
-	        HiDpiAwareIcon icon = iconPack.getAllowedIcon(12, colorScheme);
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            int yh = y + height - 1;
+            SubstanceIconPack iconPack = SubstanceCortex.GlobalScope.getIconPack();
+            SubstanceColorScheme colorScheme = SubstanceCoreUtilities.getSkin(c)
+                    .getEnabledColorScheme(SubstanceCortex.ComponentScope.getDecorationType(c));
+            HiDpiAwareIcon icon = iconPack.getAllowedIcon(12, colorScheme);
 
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.translate(x, yh - icon.getIconHeight());
             icon.paintIcon(c, g2d, 0, 0);
-			
+
             yh -= 4;
-			g.setColor(colorScheme.getForegroundColor());
-			g.drawLine(x + 16, yh, x + 40, yh);
-		}
+            g.setColor(colorScheme.getForegroundColor());
+            g.drawLine(x + 16, yh, x + 40, yh);
+        }
 
-		public Insets getBorderInsets(Component c) {
-			return DropAllowedBorder.insets;
-		}
+        public Insets getBorderInsets(Component c) {
+            return DropAllowedBorder.insets;
+        }
 
-		public boolean isBorderOpaque() {
-			return false;
-		}
-	}
+        public boolean isBorderOpaque() {
+            return false;
+        }
+    }
 
-	/**
-	 * OffsetBorder is a Border that contains an offset. This is used to
-	 * "separate" the node under the drop.
-	 * 
-	 * @author Antonio Vieiro (antonio@antonioshome.net), $Author: kirillcool $
-	 */
-	class OffsetBorder implements Border {
-		private Insets insets = new Insets(5, 0, 0, 0);
+    /**
+     * OffsetBorder is a Border that contains an offset. This is used to "separate" the node under
+     * the drop.
+     * 
+     * @author Antonio Vieiro (antonio@antonioshome.net), $Author: kirillcool $
+     */
+    class OffsetBorder implements Border {
+        private Insets insets = new Insets(5, 0, 0, 0);
 
-		public void paintBorder(Component c, Graphics g, int x, int y,
-				int width, int height) {
-			// empty
-		}
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            // empty
+        }
 
-		public Insets getBorderInsets(Component c) {
-			return this.insets;
-		}
+        public Insets getBorderInsets(Component c) {
+            return this.insets;
+        }
 
-		public boolean isBorderOpaque() {
-			return false;
-		}
+        public boolean isBorderOpaque() {
+            return false;
+        }
 
-	}
+    }
 
-	/**
-	 * DropOnNodeBorder is a Border that indicates that something cannot be
-	 * dropped here.
-	 * 
-	 * @author Antonio Vieiro (antonio@antonioshome.net), $Author: kirillcool $
-	 */
-	class DropNotAllowedBorder implements Border {
-		private Insets insets = new Insets(0, 0, 0, 0);
-		private Icon icon;
+    /**
+     * DropOnNodeBorder is a Border that indicates that something cannot be dropped here.
+     * 
+     * @author Antonio Vieiro (antonio@antonioshome.net), $Author: kirillcool $
+     */
+    class DropNotAllowedBorder implements Border {
+        private Insets insets = new Insets(0, 0, 0, 0);
+        private Icon icon;
 
-		/**
-		 * Creates a new instance of DropOnNodeBorder
-		 */
-		public DropNotAllowedBorder() {
-			this.icon = SubstanceLookAndFeel.getIconPack().getNotAllowedIcon(12, new SunsetColorScheme());
-		}
+        /**
+         * Creates a new instance of DropOnNodeBorder
+         */
+        public DropNotAllowedBorder() {
+            this.icon = SubstanceCortex.GlobalScope.getIconPack().getNotAllowedIcon(12,
+                    new SunsetColorScheme());
+        }
 
-		public void paintBorder(Component c, Graphics g, int x, int y,
-				int width, int height) {
-			if (this.icon != null) {
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.translate(x, y + (height - this.icon.getIconHeight()) / 2);
-				this.icon.paintIcon(c, g2d, 0, 0);
-				g2d.dispose();
-			}
-		}
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            if (this.icon != null) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.translate(x, y + (height - this.icon.getIconHeight()) / 2);
+                this.icon.paintIcon(c, g2d, 0, 0);
+                g2d.dispose();
+            }
+        }
 
-		public Insets getBorderInsets(Component c) {
-			return this.insets;
-		}
+        public Insets getBorderInsets(Component c) {
+            return this.insets;
+        }
 
-		public boolean isBorderOpaque() {
-			return false;
-		}
+        public boolean isBorderOpaque() {
+            return false;
+        }
 
-	}
+    }
 
-	/**
-	 * Creates a new instance of DnDBorderFactory
-	 */
-	public DnDBorderFactory() {
-		this.setDropAllowedBorder(new DropAllowedBorder()); 
-		this.setDropNotAllowedBorder(new DropNotAllowedBorder());
-		this.setOffsetBorder(new OffsetBorder());
-		this.setEmptyBorder(BorderFactory.createEmptyBorder());
-	}
+    /**
+     * Creates a new instance of DnDBorderFactory
+     */
+    public DnDBorderFactory() {
+        this.setDropAllowedBorder(new DropAllowedBorder());
+        this.setDropNotAllowedBorder(new DropNotAllowedBorder());
+        this.setOffsetBorder(new OffsetBorder());
+        this.setEmptyBorder(BorderFactory.createEmptyBorder());
+    }
 
-	/**
-	 * Holds value of property dropAllowedBorder.
-	 */
-	private Border dropAllowedBorder;
+    /**
+     * Holds value of property dropAllowedBorder.
+     */
+    private Border dropAllowedBorder;
 
-	/**
-	 * Getter for property dropAllowedBorder.
-	 * 
-	 * @return Value of property dropAllowedBorder.
-	 */
-	public Border getDropAllowedBorder() {
-		return this.dropAllowedBorder;
-	}
+    /**
+     * Getter for property dropAllowedBorder.
+     * 
+     * @return Value of property dropAllowedBorder.
+     */
+    public Border getDropAllowedBorder() {
+        return this.dropAllowedBorder;
+    }
 
-	/**
-	 * Setter for property dropAllowedBorder.
-	 * 
-	 * @param dropAllowedBorder
-	 *            New value of property dropAllowedBorder.
-	 */
-	public void setDropAllowedBorder(Border dropAllowedBorder) {
-		this.dropAllowedBorder = dropAllowedBorder;
-	}
+    /**
+     * Setter for property dropAllowedBorder.
+     * 
+     * @param dropAllowedBorder
+     *            New value of property dropAllowedBorder.
+     */
+    public void setDropAllowedBorder(Border dropAllowedBorder) {
+        this.dropAllowedBorder = dropAllowedBorder;
+    }
 
-	/**
-	 * Holds value of property dropNotAllowedBorder.
-	 */
-	private Border dropNotAllowedBorder;
+    /**
+     * Holds value of property dropNotAllowedBorder.
+     */
+    private Border dropNotAllowedBorder;
 
-	/**
-	 * Getter for property dropNotAllowedBorder.
-	 * 
-	 * @return Value of property dropNotAllowedBorder.
-	 */
-	public Border getDropNotAllowedBorder() {
-		return this.dropNotAllowedBorder;
-	}
+    /**
+     * Getter for property dropNotAllowedBorder.
+     * 
+     * @return Value of property dropNotAllowedBorder.
+     */
+    public Border getDropNotAllowedBorder() {
+        return this.dropNotAllowedBorder;
+    }
 
-	/**
-	 * Setter for property dropNotAllowedBorder.
-	 * 
-	 * @param dropNotAllowedBorder
-	 *            New value of property dropNotAllowedBorder.
-	 */
-	public void setDropNotAllowedBorder(Border dropNotAllowedBorder) {
-		this.dropNotAllowedBorder = dropNotAllowedBorder;
-	}
+    /**
+     * Setter for property dropNotAllowedBorder.
+     * 
+     * @param dropNotAllowedBorder
+     *            New value of property dropNotAllowedBorder.
+     */
+    public void setDropNotAllowedBorder(Border dropNotAllowedBorder) {
+        this.dropNotAllowedBorder = dropNotAllowedBorder;
+    }
 
-	/**
-	 * Holds value of property offsetBorder.
-	 */
-	private Border offsetBorder;
+    /**
+     * Holds value of property offsetBorder.
+     */
+    private Border offsetBorder;
 
-	/**
-	 * Getter for property offsetBorder.
-	 * 
-	 * @return Value of property offsetBorder.
-	 */
-	public Border getOffsetBorder() {
-		return this.offsetBorder;
-	}
+    /**
+     * Getter for property offsetBorder.
+     * 
+     * @return Value of property offsetBorder.
+     */
+    public Border getOffsetBorder() {
+        return this.offsetBorder;
+    }
 
-	/**
-	 * Setter for property offsetBorder.
-	 * 
-	 * @param offsetBorder
-	 *            New value of property offsetBorder.
-	 */
-	public void setOffsetBorder(Border offsetBorder) {
-		this.offsetBorder = offsetBorder;
-	}
+    /**
+     * Setter for property offsetBorder.
+     * 
+     * @param offsetBorder
+     *            New value of property offsetBorder.
+     */
+    public void setOffsetBorder(Border offsetBorder) {
+        this.offsetBorder = offsetBorder;
+    }
 
-	private Border emptyBorder;
+    private Border emptyBorder;
 
-	public Border getEmptyBorder() {
-		return this.emptyBorder;
-	}
+    public Border getEmptyBorder() {
+        return this.emptyBorder;
+    }
 
-	public void setEmptyBorder(Border anEmptyBorder) {
-		this.emptyBorder = anEmptyBorder;
-	}
+    public void setEmptyBorder(Border anEmptyBorder) {
+        this.emptyBorder = anEmptyBorder;
+    }
 }

@@ -33,8 +33,8 @@ import javax.accessibility.AccessibleContext;
 import javax.swing.JButton;
 import javax.swing.UIManager;
 
-import org.pushingpixels.substance.api.AnimationConfigurationManager;
-import org.pushingpixels.substance.api.AnimationFacet;
+import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
+import org.pushingpixels.substance.internal.AnimationConfigurationManager;
 
 /**
  * Title button in <b>Substance</b> look and feel.

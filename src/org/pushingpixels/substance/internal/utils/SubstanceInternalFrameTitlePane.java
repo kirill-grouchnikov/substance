@@ -56,8 +56,9 @@ import javax.swing.plaf.MenuBarUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
@@ -103,7 +104,7 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
     public SubstanceInternalFrameTitlePane(JInternalFrame f) {
         super(f);
         this.setToolTipText(f.getTitle());
-        SubstanceLookAndFeel.setDecorationType(this, DecorationAreaType.SECONDARY_TITLE_PANE);
+        SubstanceCortex.ComponentScope.setDecorationType(this, DecorationAreaType.SECONDARY_TITLE_PANE);
     }
 
     /*
@@ -436,22 +437,22 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
         if (this.frame.isIcon()) {
             this.iconButton.setIcon(restoreIcon);
             this.iconButton.setToolTipText(
-                    SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.restore"));
+                    SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.restore"));
             this.maxButton.setIcon(maximizeIcon);
             this.maxButton.setToolTipText(
-                    SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.maximize"));
+                    SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.maximize"));
         } else {
             this.iconButton.setIcon(minimizeIcon);
             this.iconButton.setToolTipText(
-                    SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.iconify"));
+                    SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.iconify"));
             if (this.frame.isMaximum()) {
                 this.maxButton.setIcon(restoreIcon);
                 this.maxButton.setToolTipText(
-                        SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.restore"));
+                        SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.restore"));
             } else {
                 this.maxButton.setIcon(maximizeIcon);
                 this.maxButton.setToolTipText(
-                        SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.maximize"));
+                        SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.maximize"));
             }
         }
         if (closeIcon != null) {
@@ -545,13 +546,13 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
     protected void syncCloseButtonTooltip() {
         if (SubstanceCoreUtilities.isInternalFrameModified(this.frame)) {
             this.closeButton.setToolTipText(
-                    SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.close") + " ["
-                            + SubstanceLookAndFeel.getLabelBundle()
+                    SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.close") + " ["
+                            + SubstanceCortex.GlobalScope.getLabelBundle()
                                     .getString("Tooltip.contentsNotSaved")
                             + "]");
         } else {
             this.closeButton.setToolTipText(
-                    SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.close"));
+                    SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.close"));
         }
         this.closeButton.repaint();
     }

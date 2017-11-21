@@ -43,9 +43,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
-import org.pushingpixels.substance.api.ComponentStateFacet;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.WidgetUtilities;
@@ -111,13 +111,13 @@ public class EditContextMenuWidget extends SubstanceWidget<JTextComponent> {
 
     private JMenuItem getCutItem() {
         JMenuItem result = new JMenuItem(
-                SubstanceLookAndFeel.getLabelBundle().getString("EditMenu.cut"));
+                SubstanceCortex.GlobalScope.getLabelBundle().getString("EditMenu.cut"));
         result.setEnabled(
                 jcomp.isEditable() && jcomp.isEnabled() && (jcomp.getSelectedText() != null));
 
         HighlightableTransitionAwareIcon icon = new HighlightableTransitionAwareIcon(result,
                 () -> (TransitionAwareUI) result.getUI(),
-                (SubstanceColorScheme scheme) -> SubstanceLookAndFeel.getIconPack()
+                (SubstanceColorScheme scheme) -> SubstanceCortex.GlobalScope.getIconPack()
                         .getTextCutActionIcon(ICON_SIZE, scheme),
                 ComponentStateFacet.ARM, "substance.widget.editcontext.cut");
         result.setIcon(icon);
@@ -129,12 +129,12 @@ public class EditContextMenuWidget extends SubstanceWidget<JTextComponent> {
 
     private JMenuItem getCopyItem() {
         JMenuItem result = new JMenuItem(
-                SubstanceLookAndFeel.getLabelBundle().getString("EditMenu.copy"));
+                SubstanceCortex.GlobalScope.getLabelBundle().getString("EditMenu.copy"));
         result.setEnabled(jcomp.isEnabled() && (jcomp.getSelectedText() != null));
 
         HighlightableTransitionAwareIcon icon = new HighlightableTransitionAwareIcon(result,
                 () -> (TransitionAwareUI) result.getUI(),
-                (SubstanceColorScheme scheme) -> SubstanceLookAndFeel.getIconPack()
+                (SubstanceColorScheme scheme) -> SubstanceCortex.GlobalScope.getIconPack()
                         .getTextCopyActionIcon(ICON_SIZE, scheme),
                 ComponentStateFacet.ARM, "substance.widget.editcontext.copy");
         result.setIcon(icon);
@@ -146,7 +146,7 @@ public class EditContextMenuWidget extends SubstanceWidget<JTextComponent> {
 
     private JMenuItem getPasteItem() {
         JMenuItem result = new JMenuItem(
-                SubstanceLookAndFeel.getLabelBundle().getString("EditMenu.paste"));
+                SubstanceCortex.GlobalScope.getLabelBundle().getString("EditMenu.paste"));
         boolean isEnabled = false;
         if (jcomp.isEditable() && jcomp.isEnabled()) {
             Transferable contents = Toolkit.getDefaultToolkit().getSystemClipboard()
@@ -157,7 +157,7 @@ public class EditContextMenuWidget extends SubstanceWidget<JTextComponent> {
 
         HighlightableTransitionAwareIcon icon = new HighlightableTransitionAwareIcon(result,
                 () -> (TransitionAwareUI) result.getUI(),
-                (SubstanceColorScheme scheme) -> SubstanceLookAndFeel.getIconPack()
+                (SubstanceColorScheme scheme) -> SubstanceCortex.GlobalScope.getIconPack()
                         .getTextPasteActionIcon(ICON_SIZE, scheme),
                 ComponentStateFacet.ARM, "substance.widget.editcontext.paste");
         result.setIcon(icon);
@@ -169,13 +169,13 @@ public class EditContextMenuWidget extends SubstanceWidget<JTextComponent> {
 
     private JMenuItem getDeleteItem() {
         JMenuItem result = new JMenuItem(
-                SubstanceLookAndFeel.getLabelBundle().getString("EditMenu.delete"));
+                SubstanceCortex.GlobalScope.getLabelBundle().getString("EditMenu.delete"));
         result.setEnabled(
                 jcomp.isEditable() && jcomp.isEnabled() && (jcomp.getSelectedText() != null));
 
         HighlightableTransitionAwareIcon icon = new HighlightableTransitionAwareIcon(result,
                 () -> (TransitionAwareUI) result.getUI(),
-                (SubstanceColorScheme scheme) -> SubstanceLookAndFeel.getIconPack()
+                (SubstanceColorScheme scheme) -> SubstanceCortex.GlobalScope.getIconPack()
                         .getTextDeleteActionIcon(ICON_SIZE, scheme),
                 ComponentStateFacet.ARM, "substance.widget.editcontext.delete");
         result.setIcon(icon);
@@ -187,12 +187,12 @@ public class EditContextMenuWidget extends SubstanceWidget<JTextComponent> {
 
     private JMenuItem getSelectAllItem() {
         JMenuItem result = new JMenuItem(
-                SubstanceLookAndFeel.getLabelBundle().getString("EditMenu.selectAll"));
+                SubstanceCortex.GlobalScope.getLabelBundle().getString("EditMenu.selectAll"));
         result.setEnabled(jcomp.isEnabled() && (jcomp.getDocument().getLength() > 0));
 
         HighlightableTransitionAwareIcon icon = new HighlightableTransitionAwareIcon(result,
                 () -> (TransitionAwareUI) result.getUI(),
-                (SubstanceColorScheme scheme) -> SubstanceLookAndFeel.getIconPack()
+                (SubstanceColorScheme scheme) -> SubstanceCortex.GlobalScope.getIconPack()
                         .getTextSelectAllActionIcon(ICON_SIZE, scheme),
                 ComponentStateFacet.ARM, "substance.widget.editcontext.selectall");
         result.setIcon(icon);

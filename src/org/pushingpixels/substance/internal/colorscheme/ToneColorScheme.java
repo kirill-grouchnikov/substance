@@ -31,7 +31,7 @@ package org.pushingpixels.substance.internal.colorscheme;
 
 import java.awt.Color;
 
-import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 
 /**
  * Toned color scheme. A toned color scheme is a color scheme that is shifted to

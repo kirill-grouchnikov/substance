@@ -27,13 +27,19 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.pushingpixels.substance.api;
+package org.pushingpixels.substance.internal;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.UIDefaults;
+
+import org.pushingpixels.substance.api.SubstanceComponentPlugin;
+import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.SubstanceSkinPlugin;
+import org.pushingpixels.substance.internal.plugin.BasePlugin;
+import org.pushingpixels.substance.internal.plugin.BaseSkinPlugin;
 
 public class SubstancePluginRepository {
     private Set<SubstanceComponentPlugin> componentPlugins = new HashSet<>();
@@ -42,6 +48,12 @@ public class SubstancePluginRepository {
     private static SubstancePluginRepository instance = new SubstancePluginRepository();
 
     public static SubstancePluginRepository getInstance() {
+        if (instance.componentPlugins.isEmpty()) {
+            instance.componentPlugins.add(new BasePlugin());
+        }
+        if (instance.skinPlugins.isEmpty()) {
+            instance.skinPlugins.add(new BaseSkinPlugin());
+        }
         return instance;
     }
 

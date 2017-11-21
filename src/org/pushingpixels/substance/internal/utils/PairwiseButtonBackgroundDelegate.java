@@ -41,11 +41,11 @@ import java.util.Set;
 
 import javax.swing.AbstractButton;
 
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants;
-import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.SubstanceSlices;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.Side;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.MatteFillPainter;
@@ -287,7 +287,7 @@ public class PairwiseButtonBackgroundDelegate {
 
 				int translateY = finalBackground.getHeight();
 				if (SubstanceCoreUtilities.isScrollButton(button)) {
-					if ((openSides != null) && openSides.contains(SubstanceConstants.Side.BOTTOM))
+					if ((openSides != null) && openSides.contains(SubstanceSlices.Side.BOTTOM))
 						translateY += 4;
 				}
 				AffineTransform at = AffineTransform.getTranslateInstance(0, translateY);
@@ -316,7 +316,7 @@ public class PairwiseButtonBackgroundDelegate {
 						height + deltaTop + deltaBottom, 
 						radius, straightSides, borderDelta);
 				if (SubstanceCoreUtilities.isScrollButton(button)) {
-					if ((openSides != null) && openSides.contains(SubstanceConstants.Side.LEFT))
+					if ((openSides != null) && openSides.contains(SubstanceSlices.Side.LEFT))
 						finalGraphics.translate(1, 0);
 				}
 

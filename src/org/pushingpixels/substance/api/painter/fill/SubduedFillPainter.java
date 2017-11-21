@@ -31,7 +31,7 @@ package org.pushingpixels.substance.api.painter.fill;
 
 import java.awt.Color;
 
-import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
 /**

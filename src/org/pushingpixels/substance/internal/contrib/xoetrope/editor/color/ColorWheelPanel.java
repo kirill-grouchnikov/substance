@@ -52,8 +52,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicBorders;
 
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceSlices;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser.SubstanceColorChooserPanel;
@@ -226,14 +227,14 @@ public class ColorWheelPanel extends SubstanceColorChooserPanel implements
         // Create a transition-aware wrapper around our icon so that it is colorized
         // based on the color scheme that matches the current state of our toggle button
         resetBtn.setIcon(new TransitionAwareIcon(resetBtn,
-                (SubstanceColorScheme scheme) -> SubstanceLookAndFeel.getIconPack()
+                (SubstanceColorScheme scheme) -> SubstanceCortex.GlobalScope.getIconPack()
                         .getRefreshIcon(10, scheme),
                 "Color wheel reset"));
 
 		resetBtn.setToolTipText(getLabel("Xoetrope.reset",
 				"Reset the color wheel saturation and brightness"));
         resetBtn.putClientProperty(SubstanceLookAndFeel.BUTTON_PAINT_NEVER_PROPERTY, Boolean.TRUE);
-        resetBtn.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, SubstanceConstants.FocusKind.NONE);
+        resetBtn.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, SubstanceSlices.FocusKind.NONE);
 		fixedPanel.add(resetBtn);
 
 		saturationSlider = new JSlider(JSlider.VERTICAL);
@@ -936,7 +937,8 @@ public class ColorWheelPanel extends SubstanceColorChooserPanel implements
 
 	@Override
 	public HiDpiAwareIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
-	    return SubstanceLookAndFeel.getIconPack().getColorChooserImagePalettesIcon(size, colorScheme);
+        return SubstanceCortex.GlobalScope.getIconPack().getColorChooserImagePalettesIcon(size,
+                colorScheme);
 	}
 
 	@Override

@@ -29,7 +29,17 @@
  */
 package org.pushingpixels.substance.api.watermark;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.InputStream;
@@ -39,9 +49,9 @@ import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.ImageWatermarkKind;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSkin;
-import org.pushingpixels.substance.api.SubstanceConstants.ImageWatermarkKind;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
@@ -389,7 +399,7 @@ public class SubstanceImageWatermark implements SubstanceWatermark {
 					"Can't pass null to SubstanceImageWatermark.setKind()");
 		}
 		this.kind = kind;
-		this.updateWatermarkImage(SubstanceLookAndFeel.getCurrentSkin(null));
+		this.updateWatermarkImage(SubstanceCortex.GlobalScope.getCurrentSkin());
 	}
 
 	/**
@@ -425,6 +435,6 @@ public class SubstanceImageWatermark implements SubstanceWatermark {
 							+ opacity);
 		}
 		this.opacity = opacity;
-		this.updateWatermarkImage(SubstanceLookAndFeel.getCurrentSkin(null));
+		this.updateWatermarkImage(SubstanceCortex.GlobalScope.getCurrentSkin());
 	}
 }

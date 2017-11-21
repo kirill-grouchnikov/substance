@@ -53,11 +53,11 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
 import javax.swing.text.JTextComponent;
 
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.ComponentStateFacet;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -490,7 +490,7 @@ public class SubstanceTextUtilities {
 	public static void paintTextCompBackground(Graphics g, JComponent comp) {
 		Color backgroundFillColor = getTextBackgroundFillColor(comp);
 		
-		boolean toPaintWatermark = (SubstanceLookAndFeel.getCurrentSkin(comp)
+		boolean toPaintWatermark = (SubstanceCortex.ComponentScope.getCurrentSkin(comp)
 				.getWatermark() != null)
 				&& (SubstanceCoreUtilities.toDrawWatermark(comp) || !comp
 						.isOpaque());

@@ -31,7 +31,7 @@ package org.pushingpixels.substance.api.painter.border;
 
 import java.awt.Color;
 
-import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 
 /**
  * Border painter that returns images with flat appearance. This class is part

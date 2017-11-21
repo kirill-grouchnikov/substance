@@ -34,11 +34,11 @@ import java.util.Map;
 
 import javax.swing.JComponent;
 
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSkin;
 
 public class UpdateOptimizationInfo {
@@ -69,7 +69,7 @@ public class UpdateOptimizationInfo {
 				.toDrawWatermark(this.component);
 		this.defaultScheme = SubstanceColorSchemeUtilities.getColorScheme(
 				this.component, ComponentState.ENABLED);
-		this.decorationAreaType = SubstanceLookAndFeel
+		this.decorationAreaType = SubstanceCortex.ComponentScope
 				.getDecorationType(this.component);
 
 		SubstanceSkin skin = SubstanceCoreUtilities.getSkin(this.component);

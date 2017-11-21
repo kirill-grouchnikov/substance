@@ -61,8 +61,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.painter.border.FlatBorderPainter;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
@@ -1702,7 +1702,7 @@ public final class SubstanceImageCreator {
         int extraPadding = SubstanceSizeUtils.getExtraPadding(componentFontSize);
         int size = 9 + 2 * extraPadding;
         
-        return SubstanceLookAndFeel.getIconPack().getLockIcon(size, scheme);
+        return SubstanceCortex.GlobalScope.getIconPack().getLockIcon(size, scheme);
     }
 
     /**

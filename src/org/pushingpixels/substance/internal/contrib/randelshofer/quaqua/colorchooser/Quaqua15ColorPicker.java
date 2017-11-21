@@ -43,8 +43,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 
@@ -313,7 +313,7 @@ public class Quaqua15ColorPicker extends SubstanceColorChooserPanel {
 		initComponents();
         pickerButton
                 .setIcon(new TransitionAwareIcon(
-                        pickerButton, (SubstanceColorScheme scheme) -> SubstanceLookAndFeel
+                        pickerButton, (SubstanceColorScheme scheme) -> SubstanceCortex.GlobalScope
                                 .getIconPack().getInspectIcon(16, scheme),
                         "ColorChooser.colorPickerIcon"));
 	}
@@ -325,7 +325,7 @@ public class Quaqua15ColorPicker extends SubstanceColorChooserPanel {
 
     @Override
     public HiDpiAwareIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
-        return SubstanceLookAndFeel.getIconPack().getInspectIcon(size, colorScheme);
+        return SubstanceCortex.GlobalScope.getIconPack().getInspectIcon(size, colorScheme);
     }
 
 	@Override

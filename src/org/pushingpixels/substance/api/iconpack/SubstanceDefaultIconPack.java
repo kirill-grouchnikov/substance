@@ -29,8 +29,8 @@
  */
 package org.pushingpixels.substance.api.iconpack;
 
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.svg.autoscroll_all;
 import org.pushingpixels.substance.internal.svg.autoscroll_h;
@@ -75,7 +75,7 @@ import org.pushingpixels.substance.internal.svg.ic_warning_black_24px;
 public class SubstanceDefaultIconPack implements SubstanceIconPack {
     private HiDpiAwareIcon getOptionPaneIcon(HiDpiAwareIcon base,
             SubstanceColorScheme colorScheme) {
-        if (!SubstanceLookAndFeel.isToUseConstantThemesOnDialogs()) {
+        if (!SubstanceCortex.GlobalScope.isToUseConstantThemesOnDialogs()) {
             return base.colorize(colorScheme);
         } else {
             return base.colorize(colorScheme.getMidColor());

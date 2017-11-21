@@ -47,9 +47,9 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicTextPaneUI;
 
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceWidget;
-import org.pushingpixels.substance.api.SubstanceWidgetRepository;
+import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.RolloverTextControlListener;
@@ -63,203 +63,197 @@ import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
  * 
  * @author Kirill Grouchnikov
  */
-public class SubstanceTextPaneUI extends BasicTextPaneUI implements
-		TransitionAwareUI {
-	protected StateTransitionTracker stateTransitionTracker;
+public class SubstanceTextPaneUI extends BasicTextPaneUI implements TransitionAwareUI {
+    protected StateTransitionTracker stateTransitionTracker;
 
-	/**
-	 * The associated text pane.
-	 */
-	protected JTextPane textPane;
+    /**
+     * The associated text pane.
+     */
+    protected JTextPane textPane;
 
-	/**
-	 * Property change listener.
-	 */
-	protected PropertyChangeListener substancePropertyChangeListener;
+    /**
+     * Property change listener.
+     */
+    protected PropertyChangeListener substancePropertyChangeListener;
 
-	/**
-	 * Listener for transition animations.
-	 */
-	private RolloverTextControlListener substanceRolloverListener;
+    /**
+     * Listener for transition animations.
+     */
+    private RolloverTextControlListener substanceRolloverListener;
 
-	/**
-	 * Surrogate button model for tracking the state transitions.
-	 */
-	private ButtonModel transitionModel;
+    /**
+     * Surrogate button model for tracking the state transitions.
+     */
+    private ButtonModel transitionModel;
 
-	private Set<SubstanceWidget> lafWidgets;
+    private Set<SubstanceWidget> lafWidgets;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
-	 */
-	public static ComponentUI createUI(JComponent comp) {
-		SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
-		return new SubstanceTextPaneUI(comp);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
+     */
+    public static ComponentUI createUI(JComponent comp) {
+        SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
+        return new SubstanceTextPaneUI(comp);
+    }
 
-	/**
-	 * Simple constructor.
-	 * 
-	 * @param c
-	 *            Component (text pane).
-	 */
-	public SubstanceTextPaneUI(JComponent c) {
-		super();
-		this.textPane = (JTextPane) c;
+    /**
+     * Simple constructor.
+     * 
+     * @param c
+     *            Component (text pane).
+     */
+    public SubstanceTextPaneUI(JComponent c) {
+        super();
+        this.textPane = (JTextPane) c;
 
-		this.transitionModel = new DefaultButtonModel();
-		this.transitionModel.setArmed(false);
-		this.transitionModel.setSelected(false);
-		this.transitionModel.setPressed(false);
-		this.transitionModel.setRollover(false);
-		this.transitionModel.setEnabled(this.textPane.isEnabled());
+        this.transitionModel = new DefaultButtonModel();
+        this.transitionModel.setArmed(false);
+        this.transitionModel.setSelected(false);
+        this.transitionModel.setPressed(false);
+        this.transitionModel.setRollover(false);
+        this.transitionModel.setEnabled(this.textPane.isEnabled());
 
-		this.stateTransitionTracker = new StateTransitionTracker(this.textPane,
-				this.transitionModel);
-	}
+        this.stateTransitionTracker = new StateTransitionTracker(this.textPane,
+                this.transitionModel);
+    }
 
-	@Override
-	public void installUI(JComponent c) {
-		this.lafWidgets = SubstanceWidgetRepository.getRepository().getMatchingWidgets(c);
+    @Override
+    public void installUI(JComponent c) {
+        this.lafWidgets = SubstanceWidgetRepository.getRepository().getMatchingWidgets(c);
 
-		super.installUI(c);
-		
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.installUI();
-		}
-	}
-	
-	@Override
-	public void uninstallUI(JComponent c) {
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.uninstallUI();
-		}
-		super.uninstallUI(c);
-	}
+        super.installUI(c);
 
-	@Override
-	protected void installListeners() {
-		super.installListeners();
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.installUI();
+        }
+    }
 
-		this.substanceRolloverListener = new RolloverTextControlListener(
-				this.textPane, this, this.transitionModel);
-		this.substanceRolloverListener.registerListeners();
+    @Override
+    public void uninstallUI(JComponent c) {
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.uninstallUI();
+        }
+        super.uninstallUI(c);
+    }
 
-		this.stateTransitionTracker.registerModelListeners();
-		this.stateTransitionTracker.registerFocusListeners();
+    @Override
+    protected void installListeners() {
+        super.installListeners();
 
-		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
-			if ("font".equals(evt.getPropertyName())) {
-				SwingUtilities.invokeLater(() -> {
-					// remember the caret location - issue 404
-					int caretPos = textPane.getCaretPosition();
-					textPane.updateUI();
-					textPane.setCaretPosition(caretPos);
-					Container parent = textPane.getParent();
-					if (parent != null) {
-						parent.invalidate();
-						parent.validate();
-					}
-				});
-			}
+        this.substanceRolloverListener = new RolloverTextControlListener(this.textPane, this,
+                this.transitionModel);
+        this.substanceRolloverListener.registerListeners();
 
-			if ("enabled".equals(evt.getPropertyName())) {
-				transitionModel.setEnabled(textPane.isEnabled());
-			}
-		};
-		this.textPane
-				.addPropertyChangeListener(this.substancePropertyChangeListener);
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.installListeners();
-		}
-	}
+        this.stateTransitionTracker.registerModelListeners();
+        this.stateTransitionTracker.registerFocusListeners();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicTextUI#uninstallListeners()
-	 */
-	@Override
-	protected void uninstallListeners() {
-		this.stateTransitionTracker.unregisterModelListeners();
-		this.stateTransitionTracker.unregisterFocusListeners();
+        this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+            if ("font".equals(evt.getPropertyName())) {
+                SwingUtilities.invokeLater(() -> {
+                    // remember the caret location - issue 404
+                    int caretPos = textPane.getCaretPosition();
+                    textPane.updateUI();
+                    textPane.setCaretPosition(caretPos);
+                    Container parent = textPane.getParent();
+                    if (parent != null) {
+                        parent.invalidate();
+                        parent.validate();
+                    }
+                });
+            }
 
-		this.textPane
-				.removePropertyChangeListener(this.substancePropertyChangeListener);
-		this.substancePropertyChangeListener = null;
+            if ("enabled".equals(evt.getPropertyName())) {
+                transitionModel.setEnabled(textPane.isEnabled());
+            }
+        };
+        this.textPane.addPropertyChangeListener(this.substancePropertyChangeListener);
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.installListeners();
+        }
+    }
 
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.uninstallListeners();
-		}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicTextUI#uninstallListeners()
+     */
+    @Override
+    protected void uninstallListeners() {
+        this.stateTransitionTracker.unregisterModelListeners();
+        this.stateTransitionTracker.unregisterFocusListeners();
 
-		super.uninstallListeners();
-	}
+        this.textPane.removePropertyChangeListener(this.substancePropertyChangeListener);
+        this.substancePropertyChangeListener = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicTextUI#installDefaults()
-	 */
-	@Override
-	protected void installDefaults() {
-		super.installDefaults();
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.uninstallListeners();
+        }
 
-		// support for per-window skins
-		SwingUtilities.invokeLater(() -> {
-			if (textPane == null)
-				return;
-			Color foregr = textPane.getForeground();
-			if ((foregr == null) || (foregr instanceof UIResource)) {
-				textPane.setForeground(SubstanceColorUtilities
-						.getForegroundColor(SubstanceLookAndFeel
-								.getCurrentSkin(textPane)
-								.getEnabledColorScheme(
-										SubstanceLookAndFeel
-												.getDecorationType(textPane))));
-			}
-		});
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.installDefaults();
-		}
-	}
-	
-	@Override
-	protected void uninstallDefaults() {
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.uninstallDefaults();
-		}
+        super.uninstallListeners();
+    }
 
-		super.uninstallDefaults();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicTextUI#installDefaults()
+     */
+    @Override
+    protected void installDefaults() {
+        super.installDefaults();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicTextUI#paintBackground(java.awt.Graphics)
-	 */
-	@Override
-	protected void paintBackground(Graphics g) {
-		SubstanceTextUtilities.paintTextCompBackground(g, this.textPane);
-	}
+        // support for per-window skins
+        SwingUtilities.invokeLater(() -> {
+            if (textPane == null)
+                return;
+            Color foregr = textPane.getForeground();
+            if ((foregr == null) || (foregr instanceof UIResource)) {
+                textPane.setForeground(SubstanceColorUtilities
+                        .getForegroundColor(SubstanceCortex.ComponentScope.getCurrentSkin(textPane)
+                                .getEnabledColorScheme(SubstanceCortex.ComponentScope
+                                        .getDecorationType(textPane))));
+            }
+        });
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.installDefaults();
+        }
+    }
 
-	@Override
-	public boolean isInside(MouseEvent me) {
-		return true;
-	}
+    @Override
+    protected void uninstallDefaults() {
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.uninstallDefaults();
+        }
 
-	@Override
-	public StateTransitionTracker getTransitionTracker() {
-		return this.stateTransitionTracker;
-	}
+        super.uninstallDefaults();
+    }
 
-	@Override
-	public void update(Graphics g, JComponent c) {
-		Graphics2D g2d = (Graphics2D) g.create();
-		RenderingUtils.installDesktopHints(g2d, c);
-		super.update(g2d, c);
-		g2d.dispose();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicTextUI#paintBackground(java.awt.Graphics)
+     */
+    @Override
+    protected void paintBackground(Graphics g) {
+        SubstanceTextUtilities.paintTextCompBackground(g, this.textPane);
+    }
+
+    @Override
+    public boolean isInside(MouseEvent me) {
+        return true;
+    }
+
+    @Override
+    public StateTransitionTracker getTransitionTracker() {
+        return this.stateTransitionTracker;
+    }
+
+    @Override
+    public void update(Graphics g, JComponent c) {
+        Graphics2D g2d = (Graphics2D) g.create();
+        RenderingUtils.installDesktopHints(g2d, c);
+        super.update(g2d, c);
+        g2d.dispose();
+    }
 }

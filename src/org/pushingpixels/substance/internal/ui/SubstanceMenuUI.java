@@ -66,8 +66,8 @@ import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.substance.internal.utils.icon.MenuArrowIcon;
 import org.pushingpixels.substance.internal.utils.menu.MenuUtilities;
 import org.pushingpixels.substance.internal.utils.menu.MenuUtilities.MenuPropertyListener;
-import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
 import org.pushingpixels.substance.internal.utils.menu.SubstanceMenu;
+import org.pushingpixels.substance.internal.widget.animation.effects.GhostPaintingUtils;
 
 /**
  * UI for menus in <b>Substance</b> look and feel.

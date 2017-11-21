@@ -40,7 +40,7 @@ import javax.swing.UIManager;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.plaf.ComponentUI;
 
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.Quaqua14ColorChooserUI;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
@@ -71,7 +71,7 @@ public class SubstanceColorChooserUI extends Quaqua14ColorChooserUI {
 						.getMethod("setLabelBundle",
 								new Class[] { ResourceBundle.class });
 				setBundleMethod.invoke(null,
-						new Object[] { SubstanceLookAndFeel.getLabelBundle() });
+						new Object[] { SubstanceCortex.GlobalScope.getLabelBundle() });
 			} catch (Throwable t) {
 				// ignore - either the method doesn't exist or the invocation
 				// failed. Nothing to do in both cases.

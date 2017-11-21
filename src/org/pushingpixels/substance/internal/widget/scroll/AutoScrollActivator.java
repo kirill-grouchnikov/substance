@@ -56,9 +56,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.iconpack.SubstanceIconPack;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
@@ -237,7 +237,7 @@ public class AutoScrollActivator {
     private static final int SCROLL_ICON_SIZE = 28;
 
     private Icon getAutoScrollIcon() {
-        SubstanceIconPack iconPack = SubstanceLookAndFeel.getIconPack();
+        SubstanceIconPack iconPack = SubstanceCortex.GlobalScope.getIconPack();
         SubstanceColorScheme colorScheme = SubstanceCoreUtilities.getSkin(scrollPane)
                 .getEnabledColorScheme(DecorationAreaType.NONE);
         if (scrollPane.getHorizontalScrollBar().isVisible()) {

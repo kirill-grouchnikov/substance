@@ -88,9 +88,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceSlices.SubstanceWidgetType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.skin.SkinInfo;
@@ -530,7 +531,7 @@ public class SubstanceTitlePane extends JComponent {
 
         this.setToolTipText(this.getTitle());
 
-        SubstanceLookAndFeel.setDecorationType(this, DecorationAreaType.PRIMARY_TITLE_PANE);
+        SubstanceCortex.ComponentScope.setDecorationType(this, DecorationAreaType.PRIMARY_TITLE_PANE);
         this.setForeground(SubstanceColorUtilities.getForegroundColor(SubstanceCoreUtilities
                 .getSkin(this).getBackgroundColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE)));
         // SubstanceColorSchemeUtilities
@@ -706,7 +707,7 @@ public class SubstanceTitlePane extends JComponent {
             this.heapStatusPanel
                     .setPreferredSize(new Dimension(80, this.getPreferredSize().height));
             this.heapStatusPanel.setToolTipText(
-                    SubstanceLookAndFeel.getLabelBundle().getString("Tooltip.heapStatusPanel"));
+                    SubstanceCortex.GlobalScope.getLabelBundle().getString("Tooltip.heapStatusPanel"));
             this.heapStatusPanel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -802,13 +803,13 @@ public class SubstanceTitlePane extends JComponent {
         if (SubstanceCoreUtilities.toShowExtraWidgets(rootPane)) {
             menu.addSeparator();
             JMenu skinMenu = new JMenu(
-                    SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.skins"));
-            Map<String, SkinInfo> allSkins = SubstanceLookAndFeel.getAllSkins();
+                    SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.skins"));
+            Map<String, SkinInfo> allSkins = SubstanceCortex.GlobalScope.getAllSkins();
             for (Map.Entry<String, SkinInfo> skinEntry : allSkins.entrySet()) {
                 final String skinClassName = skinEntry.getValue().getClassName();
                 JMenuItem jmiSkin = new JMenuItem(skinEntry.getKey());
                 jmiSkin.addActionListener((ActionEvent e) -> SwingUtilities
-                        .invokeLater(() -> SubstanceLookAndFeel.setSkin(skinClassName)));
+                        .invokeLater(() -> SubstanceCortex.GlobalScope.setSkin(skinClassName)));
 
                 skinMenu.add(jmiSkin);
             }
@@ -876,7 +877,7 @@ public class SubstanceTitlePane extends JComponent {
             this.minimizeButton.setFocusable(false);
             this.minimizeButton.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
             this.minimizeButton.setToolTipText(
-                    SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.iconify"));
+                    SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.iconify"));
 
             this.toggleButton = this.createTitleButton();
             this.toggleButton.setAction(this.restoreAction);
@@ -892,7 +893,7 @@ public class SubstanceTitlePane extends JComponent {
             this.toggleButton.setIcon(maxIcon);
 
             this.toggleButton.setToolTipText(
-                    SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.maximize"));
+                    SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.maximize"));
             this.toggleButton.setFocusable(false);
             this.toggleButton.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
 
@@ -974,7 +975,7 @@ public class SubstanceTitlePane extends JComponent {
                                                                 DecorationAreaType.PRIMARY_TITLE_PANE)),
                                 "substance.titlePane.restoreIcon");
                         this.updateToggleButton(this.restoreAction, restoreIcon);
-                        this.toggleButton.setToolTipText(SubstanceLookAndFeel.getLabelBundle()
+                        this.toggleButton.setToolTipText(SubstanceCortex.GlobalScope.getLabelBundle()
                                 .getString("SystemMenu.restore"));
                         this.maximizeAction.setEnabled(false);
                         this.restoreAction.setEnabled(true);
@@ -988,7 +989,7 @@ public class SubstanceTitlePane extends JComponent {
                                                                 DecorationAreaType.PRIMARY_TITLE_PANE)),
                                 "substance.titlePane.maxIcon");
                         this.updateToggleButton(this.maximizeAction, maxIcon);
-                        this.toggleButton.setToolTipText(SubstanceLookAndFeel.getLabelBundle()
+                        this.toggleButton.setToolTipText(SubstanceCortex.GlobalScope.getLabelBundle()
                                 .getString("SystemMenu.maximize"));
                         this.maximizeAction.setEnabled(true);
                         this.restoreAction.setEnabled(false);
@@ -1132,7 +1133,7 @@ public class SubstanceTitlePane extends JComponent {
         }
 
         Graphics2D graphics = (Graphics2D) g.create();
-        Font font = SubstanceLookAndFeel.getFontPolicy().getFontSet("Substance", null)
+        Font font = SubstanceCortex.GlobalScope.getFontPolicy().getFontSet("Substance", null)
                 .getWindowTitleFont();
         graphics.setFont(font);
 
@@ -1253,7 +1254,7 @@ public class SubstanceTitlePane extends JComponent {
          * Creates a new close action.
          */
         public CloseAction() {
-            super(SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.close"),
+            super(SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.close"),
                     SubstanceImageCreator.getCloseIcon(
                             SubstanceCoreUtilities.getSkin(rootPane)
                                     .getActiveColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE),
@@ -1278,7 +1279,7 @@ public class SubstanceTitlePane extends JComponent {
          * Creates a new iconify action.
          */
         public IconifyAction() {
-            super(SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.iconify"),
+            super(SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.iconify"),
                     SubstanceImageCreator.getMinimizeIcon(
                             SubstanceCoreUtilities.getSkin(rootPane)
                                     .getActiveColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE),
@@ -1302,7 +1303,7 @@ public class SubstanceTitlePane extends JComponent {
          * Creates a new restore action.
          */
         public RestoreAction() {
-            super(SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.restore"),
+            super(SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.restore"),
                     SubstanceImageCreator.getRestoreIcon(
                             SubstanceCoreUtilities.getSkin(rootPane)
                                     .getActiveColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE),
@@ -1333,7 +1334,7 @@ public class SubstanceTitlePane extends JComponent {
          * Creates a new maximize action.
          */
         public MaximizeAction() {
-            super(SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.maximize"),
+            super(SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.maximize"),
                     SubstanceImageCreator.getMaximizeIcon(
                             SubstanceCoreUtilities.getSkin(rootPane)
                                     .getActiveColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE),
@@ -1605,13 +1606,13 @@ public class SubstanceTitlePane extends JComponent {
     protected void syncCloseButtonTooltip() {
         if (SubstanceCoreUtilities.isRootPaneModified(this.getRootPane())) {
             this.closeButton.setToolTipText(
-                    SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.close") + " ["
-                            + SubstanceLookAndFeel.getLabelBundle()
+                    SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.close") + " ["
+                            + SubstanceCortex.GlobalScope.getLabelBundle()
                                     .getString("Tooltip.contentsNotSaved")
                             + "]");
         } else {
             this.closeButton.setToolTipText(
-                    SubstanceLookAndFeel.getLabelBundle().getString("SystemMenu.close"));
+                    SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.close"));
         }
         this.closeButton.repaint();
     }

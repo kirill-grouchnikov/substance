@@ -32,8 +32,8 @@ package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorch
 import javax.swing.Icon;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 

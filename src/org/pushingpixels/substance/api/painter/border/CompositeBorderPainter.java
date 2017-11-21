@@ -34,7 +34,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Shape;
 
-import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 
 /**
  * Composite border painter that delegates the painting of outer and inner

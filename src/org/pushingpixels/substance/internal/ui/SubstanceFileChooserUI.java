@@ -42,9 +42,9 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicFileChooserUI;
 import javax.swing.plaf.metal.MetalFileChooserUI;
 
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.iconpack.SubstanceIconPack;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -142,7 +142,7 @@ public class SubstanceFileChooserUI extends MetalFileChooserUI {
             JFileChooser fileChooser = getFileChooser();
             Icon icon = fileChooser.getFileSystemView().getSystemIcon(f);
             if (icon instanceof HiDpiAwareIcon) {
-                SubstanceIconPack iconPack = SubstanceLookAndFeel.getIconPack();
+                SubstanceIconPack iconPack = SubstanceCortex.GlobalScope.getIconPack();
                 SubstanceColorScheme colorScheme = SubstanceCoreUtilities.getSkin(fileChooser)
                         .getEnabledColorScheme(DecorationAreaType.NONE);
                 icon = f.isDirectory()
@@ -186,7 +186,7 @@ public class SubstanceFileChooserUI extends MetalFileChooserUI {
     protected void installIcons(JFileChooser fc) {
         super.installIcons(fc);
 
-        SubstanceIconPack iconPack = SubstanceLookAndFeel.getIconPack();
+        SubstanceIconPack iconPack = SubstanceCortex.GlobalScope.getIconPack();
         SubstanceColorScheme colorScheme = SubstanceCoreUtilities.getSkin(fc)
                 .getEnabledColorScheme(DecorationAreaType.NONE);
 

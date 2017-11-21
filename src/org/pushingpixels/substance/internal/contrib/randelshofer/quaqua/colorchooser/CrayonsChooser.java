@@ -23,8 +23,8 @@ import java.beans.PropertyChangeListener;
 import javax.swing.UIManager;
 import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 
 
@@ -75,7 +75,8 @@ public class CrayonsChooser extends SubstanceColorChooserPanel implements UIReso
     
     @Override
     public HiDpiAwareIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
-        return SubstanceLookAndFeel.getIconPack().getColorChooserCrayonsIcon(size, colorScheme);
+        return SubstanceCortex.GlobalScope.getIconPack().getColorChooserCrayonsIcon(size,
+                colorScheme);
     }
     
     public void updateChooser() {

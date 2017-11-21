@@ -78,20 +78,19 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.View;
 
-import org.pushingpixels.substance.api.AnimationConfigurationManager;
-import org.pushingpixels.substance.api.AnimationFacet;
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.ComponentStateFacet;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants;
-import org.pushingpixels.substance.api.SubstanceConstants.Side;
-import org.pushingpixels.substance.api.SubstanceConstants.TabCloseKind;
-import org.pushingpixels.substance.api.SubstanceConstants.TabContentPaneBorderKind;
+import org.pushingpixels.substance.api.SubstanceSlices;
+import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
+import org.pushingpixels.substance.api.SubstanceSlices.Side;
+import org.pushingpixels.substance.api.SubstanceSlices.TabCloseKind;
+import org.pushingpixels.substance.api.SubstanceSlices.TabContentPaneBorderKind;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceWidget;
-import org.pushingpixels.substance.api.SubstanceWidgetRepository;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
@@ -102,13 +101,14 @@ import org.pushingpixels.substance.api.tabbed.TabCloseCallback;
 import org.pushingpixels.substance.api.tabbed.TabCloseListener;
 import org.pushingpixels.substance.api.tabbed.VetoableMultipleTabCloseListener;
 import org.pushingpixels.substance.api.tabbed.VetoableTabCloseListener;
+import org.pushingpixels.substance.internal.AnimationConfigurationManager;
+import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker.StateContributionInfo;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
-import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
@@ -117,6 +117,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceTextUtilities;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 import org.pushingpixels.substance.internal.utils.scroll.SubstanceScrollButton;
@@ -946,7 +947,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 	private static BufferedImage getFinalTabBackgroundImage(
 			JTabbedPane tabPane, int tabIndex, int x, int y, int width,
 			int height, int tabPlacement,
-			SubstanceConstants.Side side, SubstanceColorScheme colorScheme,
+			SubstanceSlices.Side side, SubstanceColorScheme colorScheme,
 			SubstanceColorScheme borderScheme) {
 
 		SubstanceFillPainter fillPainter = SubstanceCoreUtilities
@@ -1144,12 +1145,12 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			BufferedImage layer1 = SubstanceTabbedPaneUI
 					.getFinalTabBackgroundImage(this.tabPane, tabIndex, x, y,
 							w, h, tabPlacement,
-							SubstanceConstants.Side.BOTTOM, colorScheme,
+							SubstanceSlices.Side.BOTTOM, colorScheme,
 							baseBorderScheme);
 			BufferedImage layer2 = SubstanceTabbedPaneUI
 					.getFinalTabBackgroundImage(this.tabPane, tabIndex, x, y,
 							w, h, tabPlacement,
-							SubstanceConstants.Side.BOTTOM, colorScheme2,
+							SubstanceSlices.Side.BOTTOM, colorScheme2,
 							baseBorderScheme);
 
 			fullOpacity = SubstanceCoreUtilities.getBlankImage(w, h);
@@ -1167,7 +1168,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 			BufferedImage layerBase = SubstanceTabbedPaneUI
 					.getFinalTabBackgroundImage(this.tabPane, tabIndex, x, y,
 							w, h, tabPlacement,
-							SubstanceConstants.Side.BOTTOM, baseColorScheme,
+							SubstanceSlices.Side.BOTTOM, baseColorScheme,
 							baseBorderScheme);
 
 			if ((modelStateInfo == null) || currState.isDisabled()
@@ -1204,7 +1205,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 								.getFinalTabBackgroundImage(this.tabPane,
 										tabIndex, x, y, w, h,
 										tabPlacement,
-										SubstanceConstants.Side.BOTTOM,
+										SubstanceSlices.Side.BOTTOM,
 										fillScheme, borderScheme);
 						g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor,
 								layer.getHeight() / scaleFactor, null);
@@ -1833,7 +1834,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		// check if there's at least one listener
 		// that vetoes the closing
 		boolean isVetoed = false;
-		for (BaseTabCloseListener listener : SubstanceLookAndFeel
+		for (BaseTabCloseListener listener : SubstanceCortex.ComponentScope
 				.getAllTabCloseListeners(this.tabPane)) {
 			if (listener instanceof VetoableTabCloseListener) {
 				VetoableTabCloseListener vetoableListener = (VetoableTabCloseListener) listener;
@@ -1851,7 +1852,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		if (isVetoed)
 			return;
 
-		for (BaseTabCloseListener listener : SubstanceLookAndFeel
+		for (BaseTabCloseListener listener : SubstanceCortex.ComponentScope
 				.getAllTabCloseListeners(this.tabPane)) {
 			if (listener instanceof TabCloseListener)
 				((TabCloseListener) listener).tabClosing(this.tabPane,
@@ -1868,7 +1869,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		}
 		this.tabPane.repaint();
 
-		for (BaseTabCloseListener listener : SubstanceLookAndFeel
+		for (BaseTabCloseListener listener : SubstanceCortex.ComponentScope
 				.getAllTabCloseListeners(this.tabPane)) {
 			if (listener instanceof TabCloseListener)
 				((TabCloseListener) listener)
@@ -1894,7 +1895,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		// check if there's at least one listener
 		// that vetoes the closing
 		boolean isVetoed = false;
-		for (BaseTabCloseListener listener : SubstanceLookAndFeel
+		for (BaseTabCloseListener listener : SubstanceCortex.ComponentScope
 				.getAllTabCloseListeners(this.tabPane)) {
 			if (listener instanceof VetoableMultipleTabCloseListener) {
 				VetoableMultipleTabCloseListener vetoableListener = (VetoableMultipleTabCloseListener) listener;
@@ -1906,7 +1907,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		if (isVetoed)
 			return;
 
-		for (BaseTabCloseListener listener : SubstanceLookAndFeel
+		for (BaseTabCloseListener listener : SubstanceCortex.ComponentScope
 				.getAllTabCloseListeners(this.tabPane)) {
 			if (listener instanceof MultipleTabCloseListener)
 				((MultipleTabCloseListener) listener).tabsClosing(this.tabPane,
@@ -1923,7 +1924,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 		}
 		this.tabPane.repaint();
 
-		for (BaseTabCloseListener listener : SubstanceLookAndFeel
+		for (BaseTabCloseListener listener : SubstanceCortex.ComponentScope
 				.getAllTabCloseListeners(this.tabPane)) {
 			if (listener instanceof MultipleTabCloseListener)
 				((MultipleTabCloseListener) listener).tabsClosed(this.tabPane,

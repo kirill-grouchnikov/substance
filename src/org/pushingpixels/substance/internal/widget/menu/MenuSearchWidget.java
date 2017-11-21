@@ -60,12 +60,12 @@ import javax.swing.MenuElement;
 import javax.swing.MenuSelectionManager;
 import javax.swing.SwingUtilities;
 
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.ComponentStateFacet;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
+import org.pushingpixels.substance.api.SubstanceSlices.SubstanceWidgetType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -132,7 +132,7 @@ public class MenuSearchWidget extends SubstanceWidget<JMenuBar> {
             this.searchButton = new JToggleButton();
             updateSearchIcon();
             this.searchButton.setPreferredSize(new Dimension(buttonDim, buttonDim));
-            ResourceBundle bundle = SubstanceLookAndFeel.getLabelBundle();
+            ResourceBundle bundle = SubstanceCortex.GlobalScope.getLabelBundle();
             this.searchButton.setToolTipText(bundle.getString("Tooltip.menuSearchButton"));
             this.searchButton.setFocusable(false);
             SubstanceCoreUtilities.markButtonAsFlat(this.searchButton);
@@ -220,7 +220,7 @@ public class MenuSearchWidget extends SubstanceWidget<JMenuBar> {
                     SearchPanel.this.add(resultButton);
                     SearchPanel.this.resultButtons.put(new Integer(count + 1), resultButton);
                     resultButton.setToolTipText("<html><body><b>"
-                            + searchResult.toString() + "</b><br>" + SubstanceLookAndFeel
+                            + searchResult.toString() + "</b><br>" + SubstanceCortex.GlobalScope
                                     .getLabelBundle().getString("Tooltip.menuSearchTooltip")
                             + "</html>");
                     SubstanceCoreUtilities.markButtonAsFlat(resultButton);
@@ -306,7 +306,7 @@ public class MenuSearchWidget extends SubstanceWidget<JMenuBar> {
         private void updateSearchIcon() {
             int dimension = SubstanceSizeUtils.getControlFontSize();
             this.searchButton.setIcon(new TransitionAwareIcon(
-                    this.searchButton, (SubstanceColorScheme scheme) -> SubstanceLookAndFeel
+                    this.searchButton, (SubstanceColorScheme scheme) -> SubstanceCortex.GlobalScope
                             .getIconPack().getInspectIcon(dimension, scheme),
                     "substance.widget.menusearch"));
         }
@@ -608,7 +608,7 @@ public class MenuSearchWidget extends SubstanceWidget<JMenuBar> {
                     "substance.widget.menusearch." + index));
         }
         searchPanel.updateSearchIcon();
-        ResourceBundle bundle = SubstanceLookAndFeel.getLabelBundle();
+        ResourceBundle bundle = SubstanceCortex.GlobalScope.getLabelBundle();
         searchPanel.searchButton.setToolTipText(bundle.getString("Tooltip.menuSearchButton"));
         searchPanel.searchStringField.setToolTipText(bundle.getString("Tooltip.menuSearchField"));
     }

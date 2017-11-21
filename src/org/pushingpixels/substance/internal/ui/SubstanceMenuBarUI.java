@@ -37,10 +37,10 @@ import javax.swing.JMenuBar;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicMenuBarUI;
 
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceWidget;
-import org.pushingpixels.substance.api.SubstanceWidgetRepository;
+import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -52,110 +52,108 @@ import org.pushingpixels.substance.internal.widget.animation.effects.GhostPainti
  * @author Kirill Grouchnikov
  */
 public class SubstanceMenuBarUI extends BasicMenuBarUI {
-	private Set<SubstanceWidget> lafWidgets;
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
-	 */
-	public static ComponentUI createUI(JComponent comp) {
-		SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
-		return new SubstanceMenuBarUI();
-	}
+    private Set<SubstanceWidget> lafWidgets;
 
-	@Override
-	public void installUI(JComponent c) {
-		this.lafWidgets = SubstanceWidgetRepository.getRepository().getMatchingWidgets(c);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
+     */
+    public static ComponentUI createUI(JComponent comp) {
+        SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
+        return new SubstanceMenuBarUI();
+    }
 
-		super.installUI(c);
-		
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.installUI();
-		}
-	}
-	
-	@Override
-	public void uninstallUI(JComponent c) {
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.uninstallUI();
-		}
-		super.uninstallUI(c);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicMenuBarUI#installDefaults()
-	 */
-	@Override
-	protected void installDefaults() {
-		super.installDefaults();
+    @Override
+    public void installUI(JComponent c) {
+        this.lafWidgets = SubstanceWidgetRepository.getRepository().getMatchingWidgets(c);
 
-		SubstanceLookAndFeel.setDecorationType(this.menuBar, DecorationAreaType.HEADER);
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.installDefaults();
-		}
-	}
+        super.installUI(c);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicMenuBarUI#uninstallDefaults()
-	 */
-	@Override
-	protected void uninstallDefaults() {
-		DecorationPainterUtils.clearDecorationType(this.menuBar);
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.installUI();
+        }
+    }
 
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.uninstallDefaults();
-		}
+    @Override
+    public void uninstallUI(JComponent c) {
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.uninstallUI();
+        }
+        super.uninstallUI(c);
+    }
 
-		super.uninstallDefaults();
-	}
-	
-	@Override
-	protected void installListeners() {
-		super.installListeners();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicMenuBarUI#installDefaults()
+     */
+    @Override
+    protected void installDefaults() {
+        super.installDefaults();
 
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.installListeners();
-		}
-	}
-	
-	@Override
-	protected void uninstallListeners() {
-		for (SubstanceWidget lafWidget : this.lafWidgets) {
-			lafWidget.uninstallListeners();
-		}
+        SubstanceCortex.ComponentScope.setDecorationType(this.menuBar, DecorationAreaType.HEADER);
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.installDefaults();
+        }
+    }
 
-		super.uninstallListeners();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicMenuBarUI#uninstallDefaults()
+     */
+    @Override
+    protected void uninstallDefaults() {
+        DecorationPainterUtils.clearDecorationType(this.menuBar);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
-	 * javax.swing.JComponent)
-	 */
-	@Override
-	public void update(Graphics g, JComponent c) {
-		boolean isOpaque = SubstanceCoreUtilities.isOpaque(c);
-		if (isOpaque) {
-			BackgroundPaintingUtils.update(g, c, false);
-		} else {
-			super.update(g, c);
-		}
-		GhostPaintingUtils.paintGhostImages(c, g);
-	}
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.uninstallDefaults();
+        }
 
-	/**
-	 * Returns the menu bar of this UI delegate. This method is for internal use
-	 * only.
-	 * 
-	 * @return The menu bar of this UI delegate.
-	 */
-	public JMenuBar getMenuBar() {
-		return this.menuBar;
-	}
+        super.uninstallDefaults();
+    }
+
+    @Override
+    protected void installListeners() {
+        super.installListeners();
+
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.installListeners();
+        }
+    }
+
+    @Override
+    protected void uninstallListeners() {
+        for (SubstanceWidget lafWidget : this.lafWidgets) {
+            lafWidget.uninstallListeners();
+        }
+
+        super.uninstallListeners();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics, javax.swing.JComponent)
+     */
+    @Override
+    public void update(Graphics g, JComponent c) {
+        boolean isOpaque = SubstanceCoreUtilities.isOpaque(c);
+        if (isOpaque) {
+            BackgroundPaintingUtils.update(g, c, false);
+        } else {
+            super.update(g, c);
+        }
+        GhostPaintingUtils.paintGhostImages(c, g);
+    }
+
+    /**
+     * Returns the menu bar of this UI delegate. This method is for internal use only.
+     * 
+     * @return The menu bar of this UI delegate.
+     */
+    public JMenuBar getMenuBar() {
+        return this.menuBar;
+    }
 }

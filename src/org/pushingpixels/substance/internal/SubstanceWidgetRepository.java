@@ -27,7 +27,7 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.pushingpixels.substance.api;
+package org.pushingpixels.substance.internal;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,6 +44,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JTree;
 import javax.swing.text.JTextComponent;
+
+import org.pushingpixels.substance.api.SubstanceWidget;
 
 /**
  * Repository of Substance widgets.

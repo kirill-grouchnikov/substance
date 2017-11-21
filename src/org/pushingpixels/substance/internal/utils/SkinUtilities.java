@@ -48,11 +48,11 @@ import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.plaf.basic.BasicBorders.MarginBorder;
 
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.inputmap.InputMapSet;
@@ -391,7 +391,7 @@ public class SkinUtilities {
 				"FileChooser.upFolderIcon",
                 new UIDefaults.LazyValue() {
                     public Object createValue(UIDefaults table) {
-                        return SubstanceLookAndFeel.getIconPack().getFileChooserUpFolderIcon(
+                        return SubstanceCortex.GlobalScope.getIconPack().getFileChooserUpFolderIcon(
                                 16, defaultScheme);
                     }
                 },
@@ -399,7 +399,7 @@ public class SkinUtilities {
 				"FileChooser.newFolderIcon",
                 new UIDefaults.LazyValue() {
                     public Object createValue(UIDefaults table) {
-                        return SubstanceLookAndFeel.getIconPack().getFileChooserNewFolderIcon(
+                        return SubstanceCortex.GlobalScope.getIconPack().getFileChooserNewFolderIcon(
                                 16, defaultScheme);
                     }
                 },
@@ -407,7 +407,7 @@ public class SkinUtilities {
 				"FileChooser.homeFolderIcon",
                 new UIDefaults.LazyValue() {
                     public Object createValue(UIDefaults table) {
-                        return SubstanceLookAndFeel.getIconPack().getFileChooserHomeFolderIcon(
+                        return SubstanceCortex.GlobalScope.getIconPack().getFileChooserHomeFolderIcon(
                                 16, defaultScheme);
                     }
                 },
@@ -415,7 +415,7 @@ public class SkinUtilities {
 				"FileChooser.listViewIcon",
                 new UIDefaults.LazyValue() {
                     public Object createValue(UIDefaults table) {
-                        return SubstanceLookAndFeel.getIconPack().getFileChooserListViewIcon(
+                        return SubstanceCortex.GlobalScope.getIconPack().getFileChooserListViewIcon(
                                 16, defaultScheme);
                     }
                 },
@@ -423,7 +423,7 @@ public class SkinUtilities {
                 "FileChooser.detailsViewIcon",
                 new UIDefaults.LazyValue() {
                     public Object createValue(UIDefaults table) {
-                        return SubstanceLookAndFeel.getIconPack().getFileChooserDetailsViewIcon(
+                        return SubstanceCortex.GlobalScope.getIconPack().getFileChooserDetailsViewIcon(
                                 16, defaultScheme);
                     }
                 },
@@ -431,7 +431,7 @@ public class SkinUtilities {
                 "FileChooser.viewMenuIcon",
                 new UIDefaults.LazyValue() {
                     public Object createValue(UIDefaults table) {
-                        return SubstanceLookAndFeel.getIconPack().getFileChooserViewMenuIcon(
+                        return SubstanceCortex.GlobalScope.getIconPack().getFileChooserViewMenuIcon(
                                 16, defaultScheme);
                     }
                 },
@@ -442,7 +442,7 @@ public class SkinUtilities {
 				"FileView.computerIcon",
                 new UIDefaults.LazyValue() {
                     public Object createValue(UIDefaults table) {
-                        return SubstanceLookAndFeel.getIconPack().getFileChooserComputerIcon(
+                        return SubstanceCortex.GlobalScope.getIconPack().getFileChooserComputerIcon(
                                 16, defaultScheme);
                     }
                 },
@@ -450,7 +450,7 @@ public class SkinUtilities {
 				"FileView.directoryIcon",
                 new UIDefaults.LazyValue() {
                     public Object createValue(UIDefaults table) {
-                        return SubstanceLookAndFeel.getIconPack().getFileChooserDirectoryIcon(
+                        return SubstanceCortex.GlobalScope.getIconPack().getFileChooserDirectoryIcon(
                                 16, defaultScheme);
                     }
                 },
@@ -458,7 +458,7 @@ public class SkinUtilities {
 				"FileView.fileIcon",
                 new UIDefaults.LazyValue() {
                     public Object createValue(UIDefaults table) {
-                        return SubstanceLookAndFeel.getIconPack().getFileChooserFileIcon(
+                        return SubstanceCortex.GlobalScope.getIconPack().getFileChooserFileIcon(
                                 16, defaultScheme);
                     }
                 },
@@ -466,7 +466,7 @@ public class SkinUtilities {
 				"FileView.floppyDriveIcon",
                 new UIDefaults.LazyValue() {
                     public Object createValue(UIDefaults table) {
-                        return SubstanceLookAndFeel.getIconPack().getFileChooserFloppyDriveIcon(
+                        return SubstanceCortex.GlobalScope.getIconPack().getFileChooserFloppyDriveIcon(
                                 16, defaultScheme);
                     }
                 },
@@ -474,7 +474,7 @@ public class SkinUtilities {
 				"FileView.hardDriveIcon",
                 new UIDefaults.LazyValue() {
                     public Object createValue(UIDefaults table) {
-                        return SubstanceLookAndFeel.getIconPack().getFileChooserHardDriveIcon(
+                        return SubstanceCortex.GlobalScope.getIconPack().getFileChooserHardDriveIcon(
                                 16, defaultScheme);
                     }
                 },
@@ -666,7 +666,7 @@ public class SkinUtilities {
 				"OptionPane.errorIcon",
                 new UIDefaults.LazyValue() {
                     public Object createValue(UIDefaults table) {
-                        return SubstanceLookAndFeel.getIconPack().getOptionPaneErrorIcon(
+                        return SubstanceCortex.GlobalScope.getIconPack().getOptionPaneErrorIcon(
                                 20, defaultScheme);
                     }
                 },
@@ -677,7 +677,7 @@ public class SkinUtilities {
 				"OptionPane.informationIcon",
                 new UIDefaults.LazyValue() {
                     public Object createValue(UIDefaults table) {
-                        return SubstanceLookAndFeel.getIconPack().getOptionPaneInformationIcon(
+                        return SubstanceCortex.GlobalScope.getIconPack().getOptionPaneInformationIcon(
                                 20, defaultScheme);
                     }
                 },
@@ -688,7 +688,7 @@ public class SkinUtilities {
 				"OptionPane.questionIcon",
                 new UIDefaults.LazyValue() {
                     public Object createValue(UIDefaults table) {
-                        return SubstanceLookAndFeel.getIconPack().getOptionPaneQuestionIcon(
+                        return SubstanceCortex.GlobalScope.getIconPack().getOptionPaneQuestionIcon(
                                 20, defaultScheme);
                     }
                 },
@@ -696,7 +696,7 @@ public class SkinUtilities {
 				"OptionPane.warningIcon",
                 new UIDefaults.LazyValue() {
                     public Object createValue(UIDefaults table) {
-                        return SubstanceLookAndFeel.getIconPack().getOptionPaneWarningIcon(
+                        return SubstanceCortex.GlobalScope.getIconPack().getOptionPaneWarningIcon(
                                 20, defaultScheme);
                     }
                 },

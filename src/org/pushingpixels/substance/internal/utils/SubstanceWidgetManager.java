@@ -35,7 +35,7 @@ import java.util.WeakHashMap;
 
 import javax.swing.JRootPane;
 
-import org.pushingpixels.substance.api.SubstanceConstants.SubstanceWidgetType;
+import org.pushingpixels.substance.api.SubstanceSlices.SubstanceWidgetType;
 
 public class SubstanceWidgetManager {
 	private static SubstanceWidgetManager instance;

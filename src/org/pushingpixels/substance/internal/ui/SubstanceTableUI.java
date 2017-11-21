@@ -92,22 +92,21 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import org.pushingpixels.substance.api.AnimationConfigurationManager;
-import org.pushingpixels.substance.api.AnimationFacet;
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.ComponentStateFacet;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants;
-import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.SubstanceSlices;
+import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
+import org.pushingpixels.substance.api.SubstanceSlices.Side;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.renderer.SubstanceDefaultTableCellRenderer;
 import org.pushingpixels.substance.api.renderer.SubstanceDefaultTableHeaderCellRenderer;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.internal.AnimationConfigurationManager;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.HighlightPainterUtils;
-import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorResource;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -115,6 +114,7 @@ import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceStripingUtils;
 import org.pushingpixels.substance.internal.utils.UpdateOptimizationAware;
 import org.pushingpixels.substance.internal.utils.UpdateOptimizationInfo;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
 import org.pushingpixels.trident.Timeline.TimelineState;
 import org.pushingpixels.trident.callback.UIThreadTimelineCallbackAdapter;
@@ -1105,7 +1105,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 			hasHighlights = (this.updateInfo.getHighlightAlpha(currState) > 0.0f);
 		}
 
-		Set<SubstanceConstants.Side> highlightOpenSides = null;
+		Set<SubstanceSlices.Side> highlightOpenSides = null;
 		float highlightBorderAlpha = 0.0f;
 
 		if (hasHighlights) {
@@ -1121,9 +1121,9 @@ public class SubstanceTableUI extends BasicTableUI implements
 				// will show the highlight for the entire row
 
 				// all cells have open left side
-				highlightOpenSides.add(SubstanceConstants.Side.LEFT);
+				highlightOpenSides.add(SubstanceSlices.Side.LEFT);
 				// all cells have open right side
-				highlightOpenSides.add(SubstanceConstants.Side.RIGHT);
+				highlightOpenSides.add(SubstanceSlices.Side.RIGHT);
 			}
 			if (table.getColumnSelectionAllowed()
 					&& !table.getRowSelectionAllowed()) {
@@ -1132,16 +1132,16 @@ public class SubstanceTableUI extends BasicTableUI implements
 
 				// the top side is open for all rows except the
 				// first, or when the table header is visible
-				highlightOpenSides.add(SubstanceConstants.Side.TOP);
+				highlightOpenSides.add(SubstanceSlices.Side.TOP);
 				// all cells but the last have open bottom side
-				highlightOpenSides.add(SubstanceConstants.Side.BOTTOM);
+				highlightOpenSides.add(SubstanceSlices.Side.BOTTOM);
 			}
 			if (row > 1) {
 				ComponentState upperNeighbourState = this
 						.getCellState(new TableCellId(row - 1, column));
 				if (currState == upperNeighbourState) {
 					// the cell above it is in the same state
-					highlightOpenSides.add(SubstanceConstants.Side.TOP);
+					highlightOpenSides.add(SubstanceSlices.Side.TOP);
 				}
 			}
 			if (column > 1) {
@@ -1149,20 +1149,20 @@ public class SubstanceTableUI extends BasicTableUI implements
 						.getCellState(new TableCellId(row, column - 1));
 				if (currState == leftNeighbourState) {
 					// the cell to the left is in the same state
-					highlightOpenSides.add(SubstanceConstants.Side.LEFT);
+					highlightOpenSides.add(SubstanceSlices.Side.LEFT);
 				}
 			}
 			if (row == 0) {
-				highlightOpenSides.add(SubstanceConstants.Side.TOP);
+				highlightOpenSides.add(SubstanceSlices.Side.TOP);
 			}
 			if (row == (table.getRowCount() - 1)) {
-				highlightOpenSides.add(SubstanceConstants.Side.BOTTOM);
+				highlightOpenSides.add(SubstanceSlices.Side.BOTTOM);
 			}
 			if (column == 0) {
-				highlightOpenSides.add(SubstanceConstants.Side.LEFT);
+				highlightOpenSides.add(SubstanceSlices.Side.LEFT);
 			}
 			if (column == (table.getColumnCount() - 1)) {
-				highlightOpenSides.add(SubstanceConstants.Side.RIGHT);
+				highlightOpenSides.add(SubstanceSlices.Side.RIGHT);
 			}
 		}
 
@@ -1176,9 +1176,9 @@ public class SubstanceTableUI extends BasicTableUI implements
 			if (hasHighlights) {
 				float extra = SubstanceSizeUtils.getBorderStrokeWidth();
 				float extraWidth = highlightOpenSides
-						.contains(SubstanceConstants.Side.LEFT) ? 0.0f : extra;
+						.contains(SubstanceSlices.Side.LEFT) ? 0.0f : extra;
 				float extraHeight = highlightOpenSides
-						.contains(SubstanceConstants.Side.TOP) ? 0.0f : extra;
+						.contains(SubstanceSlices.Side.TOP) ? 0.0f : extra;
 				Rectangle highlightRect = new Rectangle(highlightCellRect.x
 						- (int) extraWidth, highlightCellRect.y
 						- (int) extraHeight, highlightCellRect.width
@@ -1275,10 +1275,10 @@ public class SubstanceTableUI extends BasicTableUI implements
 				} else {
 					float extra = SubstanceSizeUtils.getBorderStrokeWidth();
 					float extraWidth = highlightOpenSides
-							.contains(SubstanceConstants.Side.LEFT) ? 0.0f
+							.contains(SubstanceSlices.Side.LEFT) ? 0.0f
 							: extra;
 					float extraHeight = highlightOpenSides
-							.contains(SubstanceConstants.Side.TOP) ? 0.0f
+							.contains(SubstanceSlices.Side.TOP) ? 0.0f
 							: extra;
 					Rectangle highlightRect = new Rectangle(highlightCellRect.x
 							- (int) extraWidth, highlightCellRect.y

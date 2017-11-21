@@ -37,7 +37,11 @@ import javax.swing.UIDefaults;
 import javax.swing.plaf.FontUIResource;
 
 import org.pushingpixels.substance.internal.contrib.jgoodies.looks.LookUtils;
-import org.pushingpixels.substance.internal.fonts.*;
+import org.pushingpixels.substance.internal.fonts.DefaultGnomeFontPolicy;
+import org.pushingpixels.substance.internal.fonts.DefaultKDEFontPolicy;
+import org.pushingpixels.substance.internal.fonts.DefaultMacFontPolicy;
+import org.pushingpixels.substance.internal.fonts.FontPolicies;
+import org.pushingpixels.substance.internal.fonts.ScaledFontSet;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**

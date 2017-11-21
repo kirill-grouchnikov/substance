@@ -36,8 +36,8 @@ import java.awt.Toolkit;
 import javax.swing.border.Border;
 import javax.swing.plaf.BorderUIResource;
 
-import org.pushingpixels.substance.api.SubstanceConstants;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.font.FontPolicy;
 import org.pushingpixels.substance.api.font.FontSet;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
@@ -69,7 +69,7 @@ public class SubstanceSizeUtils {
 	public static int getControlFontSize() {
 		if (controlFontSize > 0)
 			return controlFontSize;
-		FontPolicy fPolicy = SubstanceLookAndFeel.getFontPolicy();
+		FontPolicy fPolicy = SubstanceCortex.GlobalScope.getFontPolicy();
 		FontSet fSet = fPolicy.getFontSet("Substance", null);
 		controlFontSize = fSet.getControlFont().getSize();
 		return controlFontSize;
@@ -804,7 +804,7 @@ public class SubstanceSizeUtils {
 
 	/**
 	 * Returns the tabbed pane content insets under the specified size. The
-	 * {@link SubstanceConstants.TabContentPaneBorderKind#SINGLE_FULL} is
+	 * {@link SubstanceSlices.TabContentPaneBorderKind#SINGLE_FULL} is
 	 * assumed.
 	 * 
 	 * @param fontSize

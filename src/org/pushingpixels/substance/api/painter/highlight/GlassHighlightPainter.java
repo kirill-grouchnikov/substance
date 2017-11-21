@@ -29,9 +29,11 @@
  */
 package org.pushingpixels.substance.api.painter.highlight;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
-import org.pushingpixels.substance.api.SubstanceColorScheme;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.painter.fill.GlassFillPainter;
 
 /**

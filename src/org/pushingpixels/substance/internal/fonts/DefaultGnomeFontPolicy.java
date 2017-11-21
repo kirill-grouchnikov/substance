@@ -29,7 +29,10 @@
  */
 package org.pushingpixels.substance.internal.fonts;
 
-import java.awt.*;
+import java.awt.Font;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.lang.reflect.Method;
 import java.util.StringTokenizer;

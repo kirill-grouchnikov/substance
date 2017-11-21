@@ -46,6 +46,8 @@ import javax.swing.JRootPane;
 import javax.swing.MenuElement;
 import javax.swing.MenuSelectionManager;
 
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
 import org.pushingpixels.substance.api.skin.NebulaSkin;
 
 /**

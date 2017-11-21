@@ -46,12 +46,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicOptionPaneUI;
 
-import org.pushingpixels.substance.api.AnimationConfigurationManager;
-import org.pushingpixels.substance.api.AnimationFacet;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.colorscheme.SteelBlueColorScheme;
 import org.pushingpixels.substance.api.colorscheme.SunsetColorScheme;
 import org.pushingpixels.substance.api.iconpack.SubstanceIconPack;
+import org.pushingpixels.substance.internal.AnimationConfigurationManager;
 import org.pushingpixels.substance.internal.animation.IconGlowTracker;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
@@ -145,7 +145,7 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
      */
     @Override
     protected Icon getIconForType(int messageType) {
-        SubstanceIconPack iconPack = SubstanceLookAndFeel.getIconPack();
+        SubstanceIconPack iconPack = SubstanceCortex.GlobalScope.getIconPack();
         int size = ICON_SIZE * UIUtil.getScaleFactor();
         switch (messageType) {
         case JOptionPane.ERROR_MESSAGE:
@@ -187,7 +187,7 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
         bottom.setLayout(new SubstanceFooterLayout(
                 SubstanceSizeUtils.getAdjustedSize(SubstanceSizeUtils.getComponentFontSize(bottom),
                         8, 4, 1, true),
-                SubstanceLookAndFeel.getOptionPaneButtonOrder().isDefaultButtonLeading()));
+                SubstanceCortex.GlobalScope.getOptionPaneButtonOrder().isDefaultButtonLeading()));
         addButtonComponents(bottom, getButtons(), getInitialValueIndex());
         return bottom;
     }
@@ -231,7 +231,7 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
                         + padding * (numChildren - 1);
 
                 boolean isLeftToRight = container.getComponentOrientation().isLeftToRight();
-                int buttonAlignment = SubstanceLookAndFeel.getOptionPaneButtonAlignment()
+                int buttonAlignment = SubstanceCortex.GlobalScope.getOptionPaneButtonAlignment()
                         .getButtonAlignmentInContainer(container);
                 int x;
                 switch (buttonAlignment) {

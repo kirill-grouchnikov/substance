@@ -81,10 +81,11 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicRootPaneUI;
 
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceWidget;
-import org.pushingpixels.substance.api.SubstanceWidgetRepository;
+import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.animation.RootPaneDefaultButtonTracker;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.MemoryAnalyzer;
@@ -846,7 +847,7 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 			}
 		}
 		if (propertyName.equals("background")) {
-			SubstanceLookAndFeel.getTitlePaneComponent(window).setBackground(
+		    SubstanceCortex.WindowScope.getTitlePaneComponent(window).setBackground(
 					(Color) e.getNewValue());
 		}
 

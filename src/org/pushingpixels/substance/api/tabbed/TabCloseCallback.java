@@ -33,7 +33,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JTabbedPane;
 
-import org.pushingpixels.substance.api.SubstanceConstants.TabCloseKind;
+import org.pushingpixels.substance.api.SubstanceSlices.TabCloseKind;
 
 /**
  * Callback for registering app-specific behaviour on tab close buttons. This

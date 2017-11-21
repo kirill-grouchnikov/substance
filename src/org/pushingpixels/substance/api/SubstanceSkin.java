@@ -43,6 +43,11 @@ import java.util.Set;
 import javax.swing.JTabbedPane;
 import javax.swing.UIDefaults;
 
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.colorscheme.ColorSchemeTransform;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.SubstanceDecorationPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
@@ -291,12 +296,8 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 		// small optimization - lookup the decoration area only if there
 		// are decoration-specific scheme bundles.
 		if (this.colorSchemeBundleMap.size() > 1) {
-			DecorationAreaType decorationAreaType = SubstanceLookAndFeel
-					.getDecorationType(comp);
-			// if ((decorationAreaType == DecorationAreaType.NONE)
-			// && (componentState == ComponentState.DEFAULT)) {
-			// return this.defaultColorScheme;
-			// }
+            DecorationAreaType decorationAreaType = (comp == null) ? DecorationAreaType.NONE
+                    : SubstanceCortex.ComponentScope.getDecorationType(comp);
 			if (this.colorSchemeBundleMap.containsKey(decorationAreaType)) {
 				SubstanceColorScheme registered = this.colorSchemeBundleMap
 						.get(decorationAreaType).getColorScheme(componentState);
@@ -333,7 +334,7 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 		// small optimization - lookup the decoration area only if there
 		// are decoration-specific scheme bundles.
 		if (this.colorSchemeBundleMap.size() > 1) {
-			DecorationAreaType decorationAreaType = SubstanceLookAndFeel.getDecorationType(comp);
+			DecorationAreaType decorationAreaType = SubstanceCortex.ComponentScope.getDecorationType(comp);
 			if (this.colorSchemeBundleMap.containsKey(decorationAreaType)) {
 				Float registered = this.colorSchemeBundleMap.get(decorationAreaType)
 						.getHighlightAlpha(comp, componentState);
@@ -391,8 +392,8 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 		// small optimization - lookup the decoration area only if there
 		// are decoration-specific scheme bundles.
 		if (this.colorSchemeBundleMap.size() > 1) {
-			DecorationAreaType decorationAreaType = SubstanceLookAndFeel
-					.getDecorationType(comp);
+			DecorationAreaType decorationAreaType = (comp == null) ? DecorationAreaType.NONE : 
+			        SubstanceCortex.ComponentScope.getDecorationType(comp);
 			if (this.colorSchemeBundleMap.containsKey(decorationAreaType)) {
 				Float registered = this.colorSchemeBundleMap.get(
 						decorationAreaType).getAlpha(comp, componentState);
@@ -757,8 +758,8 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 		// small optimization - lookup the decoration area only if there
 		// are decoration-specific scheme bundles.
 		if (this.colorSchemeBundleMap.size() > 1) {
-			DecorationAreaType decorationAreaType = SubstanceLookAndFeel
-					.getDecorationType(comp);
+            DecorationAreaType decorationAreaType = (comp == null) ? DecorationAreaType.NONE
+                    : SubstanceCortex.ComponentScope.getDecorationType(comp);
 			if (this.colorSchemeBundleMap.containsKey(decorationAreaType)) {
 				return this.colorSchemeBundleMap.get(decorationAreaType)
 						.getColorScheme(associationKind, componentState, true);
@@ -788,7 +789,7 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 		// small optimization - lookup the decoration area only if there
 		// are decoration-specific scheme bundles.
 		if (this.colorSchemeBundleMap.size() > 1) {
-			DecorationAreaType decorationAreaType = SubstanceLookAndFeel
+			DecorationAreaType decorationAreaType = SubstanceCortex.ComponentScope
 					.getDecorationType(comp);
 			if (this.colorSchemeBundleMap.containsKey(decorationAreaType)) {
 				return this.colorSchemeBundleMap.get(decorationAreaType)

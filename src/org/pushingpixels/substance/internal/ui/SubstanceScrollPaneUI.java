@@ -59,10 +59,12 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicScrollPaneUI;
 import javax.swing.table.JTableHeader;
 
-import org.pushingpixels.substance.api.AnimationConfigurationManager;
+import org.pushingpixels.substance.api.SubstanceSlices;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceWidget;
-import org.pushingpixels.substance.api.SubstanceWidgetRepository;
+import org.pushingpixels.substance.internal.AnimationConfigurationManager;
+import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -141,7 +143,7 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 	protected void installDefaults(final JScrollPane scrollpane) {
 		super.installDefaults(scrollpane);
 		if (SubstanceCoreUtilities.toDrawWatermark(scrollpane)
-				&& (SubstanceLookAndFeel.getCurrentSkin(scrollpane)
+				&& (SubstanceCortex.ComponentScope.getCurrentSkin(scrollpane)
 						.getWatermark() != null)) {
 			scrollpane.setOpaque(false);
 			scrollpane.getViewport().setOpaque(false);
@@ -243,7 +245,7 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 					JTree tree = (JTree) c.getViewport().getView();
 					// check if the smart scroll is enabled
 					if (AnimationConfigurationManager.getInstance().isAnimationAllowed(
-							SubstanceLookAndFeel.TREE_SMART_SCROLL_ANIMATION_KIND,
+					        SubstanceSlices.AnimationFacet.TREE_SMART_SCROLL_ANIMATION_KIND,
 							tree)) {
 						SubstanceTreeUI treeUI = (SubstanceTreeUI) tree.getUI();
 						final Rectangle viewportRect = c.getViewport()

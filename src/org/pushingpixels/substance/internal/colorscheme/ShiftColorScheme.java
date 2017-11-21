@@ -31,9 +31,9 @@ package org.pushingpixels.substance.internal.colorscheme;
 
 import java.awt.Color;
 
-import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.colorscheme.BaseColorScheme;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
 /**
  * Base class for shifted color schemes. A shifted color scheme is based on some

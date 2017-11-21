@@ -29,16 +29,25 @@
  */
 package org.pushingpixels.substance.api.shaper;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.geom.GeneralPath;
 import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.border.Border;
 
-import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.internal.utils.*;
+import org.pushingpixels.substance.internal.utils.HashMapKey;
+import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceInternalArrowButton;
+import org.pushingpixels.substance.internal.utils.SubstanceOutlineUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 import org.pushingpixels.substance.internal.utils.border.SubstanceBorder;
 import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
 
@@ -72,7 +81,7 @@ public class ClassicButtonShaper implements SubstanceButtonShaper, RectangularBu
     @Override
     public GeneralPath getButtonOutline(AbstractButton button, float extraInsets, float width,
             float height, boolean isInner) {
-        Set<SubstanceConstants.Side> straightSides = SubstanceCoreUtilities.getSides(button,
+        Set<SubstanceSlices.Side> straightSides = SubstanceCoreUtilities.getSides(button,
                 SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
 
         float radius = this.getCornerRadius(button, extraInsets);
@@ -111,22 +120,22 @@ public class ClassicButtonShaper implements SubstanceButtonShaper, RectangularBu
                 int lrPadding = SubstanceCoreUtilities.hasText(button)
                         ? SubstanceSizeUtils.getTextButtonLRPadding(fontSize)
                         : 0;
-                Set<SubstanceConstants.Side> openSides = SubstanceCoreUtilities.getSides(button,
+                Set<SubstanceSlices.Side> openSides = SubstanceCoreUtilities.getSides(button,
                         SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY);
                 int left = lrPadding + buttonInsets.left + focusPadding
-                        + ((openSides != null) && openSides.contains(SubstanceConstants.Side.LEFT)
+                        + ((openSides != null) && openSides.contains(SubstanceSlices.Side.LEFT)
                                 ? -1
                                 : 0);
                 int right = lrPadding + buttonInsets.right + focusPadding
-                        + ((openSides != null) && openSides.contains(SubstanceConstants.Side.RIGHT)
+                        + ((openSides != null) && openSides.contains(SubstanceSlices.Side.RIGHT)
                                 ? -1
                                 : 0);
                 int top = buttonInsets.top
-                        + ((openSides != null) && openSides.contains(SubstanceConstants.Side.TOP)
+                        + ((openSides != null) && openSides.contains(SubstanceSlices.Side.TOP)
                                 ? -1
                                 : 0);
                 int bottom = buttonInsets.bottom
-                        + ((openSides != null) && openSides.contains(SubstanceConstants.Side.BOTTOM)
+                        + ((openSides != null) && openSides.contains(SubstanceSlices.Side.BOTTOM)
                                 ? -1
                                 : 0);
                 return new Insets(top, left, bottom, right);

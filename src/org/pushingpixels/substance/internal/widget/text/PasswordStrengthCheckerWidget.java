@@ -42,9 +42,9 @@ import javax.swing.border.Border;
 import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.BorderUIResource.CompoundBorderUIResource;
 
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.SubstanceWidget;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.password.PasswordStrengthChecker;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
@@ -123,7 +123,7 @@ public class PasswordStrengthCheckerWidget extends SubstanceWidget<JPasswordFiel
             if (passwordStrengthChecker == null)
                 return;
 
-            SubstanceConstants.PasswordStrength strength = passwordStrengthChecker
+            SubstanceSlices.PasswordStrength strength = passwordStrengthChecker
                     .getStrength(jpf.getPassword());
             if (c.getComponentOrientation().isLeftToRight())
                 paintPasswordStrengthMarker(g,
@@ -138,16 +138,16 @@ public class PasswordStrengthCheckerWidget extends SubstanceWidget<JPasswordFiel
         }
         
         private void paintPasswordStrengthMarker(Graphics g, int x, int y,
-                int width, int height, SubstanceConstants.PasswordStrength pStrength) {
+                int width, int height, SubstanceSlices.PasswordStrength pStrength) {
             Graphics2D g2 = (Graphics2D) g.create();
 
             SubstanceColorScheme colorScheme = null;
 
-            if (pStrength == SubstanceConstants.PasswordStrength.WEAK)
+            if (pStrength == SubstanceSlices.PasswordStrength.WEAK)
                 colorScheme = SubstanceColorSchemeUtilities.ORANGE;
-            if (pStrength == SubstanceConstants.PasswordStrength.MEDIUM)
+            if (pStrength == SubstanceSlices.PasswordStrength.MEDIUM)
                 colorScheme = SubstanceColorSchemeUtilities.YELLOW;
-            if (pStrength == SubstanceConstants.PasswordStrength.STRONG)
+            if (pStrength == SubstanceSlices.PasswordStrength.STRONG)
                 colorScheme = SubstanceColorSchemeUtilities.GREEN;
 
             if (colorScheme != null) {

@@ -31,8 +31,6 @@ package org.pushingpixels.substance.api.colorscheme;
 
 import java.awt.Color;
 
-import org.pushingpixels.substance.api.SchemeDerivedColors;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
 /**

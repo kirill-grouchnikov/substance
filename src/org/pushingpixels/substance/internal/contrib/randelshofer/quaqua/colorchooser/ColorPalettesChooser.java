@@ -26,8 +26,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 
 /**
@@ -157,7 +157,8 @@ public class ColorPalettesChooser extends SubstanceColorChooserPanel implements 
     
     @Override
     public HiDpiAwareIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
-        return SubstanceLookAndFeel.getIconPack().getColorChooserColorPalettesIcon(size, colorScheme);
+        return SubstanceCortex.GlobalScope.getIconPack().getColorChooserColorPalettesIcon(size,
+                colorScheme);
     }
     
     public void updateChooser() {

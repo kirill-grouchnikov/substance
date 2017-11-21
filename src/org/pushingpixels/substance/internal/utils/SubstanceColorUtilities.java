@@ -46,11 +46,11 @@ import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.UIResource;
 import javax.swing.text.JTextComponent;
 
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
@@ -817,9 +817,9 @@ public class SubstanceColorUtilities {
 					.getColorScheme(comp, compState)
 					.getTextBackgroundFillColor());
 		}
-		return new ColorUIResource(SubstanceLookAndFeel.getCurrentSkin(comp)
+		return new ColorUIResource(SubstanceCortex.ComponentScope.getCurrentSkin(comp)
 				.getBackgroundColorScheme(
-						SubstanceLookAndFeel.getDecorationType(comp))
+				        SubstanceCortex.ComponentScope.getDecorationType(comp))
 				.getBackgroundFillColor());
 	}
 

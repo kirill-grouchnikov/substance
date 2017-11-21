@@ -41,11 +41,11 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.JButton;
 
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants;
-import org.pushingpixels.substance.api.SubstanceConstants.Side;
+import org.pushingpixels.substance.api.SubstanceSlices;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.Side;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
@@ -125,7 +125,7 @@ public class ButtonBackgroundDelegate {
 		}
 
 		// compute the straight sides
-		Set<SubstanceConstants.Side> straightSides = SubstanceCoreUtilities.getSides(button,
+		Set<SubstanceSlices.Side> straightSides = SubstanceCoreUtilities.getSides(button,
 				SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
 
 		boolean isRoundButton = StandardButtonShaper.isRoundButton(button);

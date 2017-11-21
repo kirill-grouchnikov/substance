@@ -27,8 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
-import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceConstants;
+import org.pushingpixels.substance.api.SubstanceSlices;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.utils.icon.TransitionAwareIcon;
 
@@ -78,7 +78,7 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
 			tb.setToolTipText(displayName);
 			tb.setFocusable(false);
 			tb.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
-					EnumSet.allOf(SubstanceConstants.Side.class));
+					EnumSet.allOf(SubstanceSlices.Side.class));
 			JPanel centerView = new JPanel(new BorderLayout());
 			centerView.add(ccp);
 			chooserPanelHolder.add(centerView, displayName);

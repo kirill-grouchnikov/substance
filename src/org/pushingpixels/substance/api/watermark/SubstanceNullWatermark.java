@@ -29,11 +29,13 @@
  */
 package org.pushingpixels.substance.api.watermark;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import org.pushingpixels.substance.api.SubstanceSkin;
-import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 
 /**
  * Implementation of {@link SubstanceWatermark} that paints a translucent fill

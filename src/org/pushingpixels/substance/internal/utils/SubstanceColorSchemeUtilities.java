@@ -44,19 +44,19 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.substance.api.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SchemeBaseColors;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.colorscheme.BaseDarkColorScheme;
 import org.pushingpixels.substance.api.colorscheme.BaseLightColorScheme;
 import org.pushingpixels.substance.api.colorscheme.BottleGreenColorScheme;
 import org.pushingpixels.substance.api.colorscheme.LightGrayColorScheme;
 import org.pushingpixels.substance.api.colorscheme.MetallicColorScheme;
+import org.pushingpixels.substance.api.colorscheme.SchemeBaseColors;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.colorscheme.SunGlareColorScheme;
 import org.pushingpixels.substance.api.colorscheme.SunfireRedColorScheme;
 
@@ -309,7 +309,7 @@ public class SubstanceColorSchemeUtilities {
         }
 
         SubstanceColorScheme nonColorized = SubstanceCoreUtilities.getSkin(component)
-                .getActiveColorScheme(SubstanceLookAndFeel.getDecorationType(component));
+                .getActiveColorScheme(SubstanceCortex.ComponentScope.getDecorationType(component));
         return getColorizedScheme(component, nonColorized, !componentState.isDisabled());
     }
 

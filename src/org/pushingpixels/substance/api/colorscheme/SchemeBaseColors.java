@@ -27,76 +27,64 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.pushingpixels.substance.api;
+package org.pushingpixels.substance.api.colorscheme;
 
 import java.awt.Color;
 
+import org.pushingpixels.substance.api.trait.SubstanceTrait;
+
 /**
- * Interface for derived color scheme colors.
+ * Interface for base color scheme colors.
  * 
  * @author Kirill Grouchnikov
  */
-public interface SchemeDerivedColors {
+public interface SchemeBaseColors extends SubstanceTrait {
 	/**
-	 * Returns the watermark stamp color for <code>this</code> scheme.
+	 * Retrieves the foreground color.
 	 * 
-	 * @return Watermark stamp color for <code>this</code> scheme.
+	 * @return Foreground color.
 	 */
-	public Color getWatermarkStampColor();
+	public Color getForegroundColor();
 
 	/**
-	 * Returns the watermark light color for <code>this</code> scheme.
+	 * Retrieves the ultra-light color.
 	 * 
-	 * @return Watermark light color for <code>this</code> scheme.
+	 * @return Ultra-light color.
 	 */
-	public Color getWatermarkLightColor();
+	public Color getUltraLightColor();
 
 	/**
-	 * Returns the watermark dark color for <code>this</code> scheme.
+	 * Retrieves the extra color.
 	 * 
-	 * @return Watermark dark color for <code>this</code> scheme.
+	 * @return Extra color.
 	 */
-	public Color getWatermarkDarkColor();
+	public Color getExtraLightColor();
 
 	/**
-	 * Returns the line color for <code>this</code> scheme.
+	 * Retrieves the light color.
 	 * 
-	 * @return The line color for <code>this</code> scheme.
+	 * @return Light color.
 	 */
-	public Color getLineColor();
+	public Color getLightColor();
 
 	/**
-	 * Returns the selection background color for <code>this</code> scheme.
+	 * Retrieves the medium color.
 	 * 
-	 * @return The selection background color for <code>this</code> scheme.
+	 * @return Medium color.
 	 */
-	public Color getSelectionBackgroundColor();
+	public Color getMidColor();
 
 	/**
-	 * Returns the selection foreground color for <code>this</code> scheme.
+	 * Retrieves the dark color.
 	 * 
-	 * @return The selection foreground color for <code>this</code> scheme.
+	 * @return Dark color.
 	 */
-	public Color getSelectionForegroundColor();
+	public Color getDarkColor();
 
 	/**
-	 * Returns the background fill color for <code>this</code> scheme.
+	 * Retrieves the ultra-dark color.
 	 * 
-	 * @return The background fill color for <code>this</code> scheme.
+	 * @return Ultra-dark color.
 	 */
-	public Color getBackgroundFillColor();
-
-	/**
-	 * Returns the text background fill color for <code>this</code> scheme.
-	 * 
-	 * @return The text background fill color for <code>this</code> scheme.
-	 */
-	public Color getTextBackgroundFillColor();
-
-	/**
-	 * Returns the focus ring color for <code>this</code> scheme.
-	 * 
-	 * @return The focus ring color for <code>this</code> scheme.
-	 */
-	public Color getFocusRingColor();
+	public Color getUltraDarkColor();
 }

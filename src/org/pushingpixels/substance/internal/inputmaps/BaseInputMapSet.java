@@ -29,7 +29,9 @@
  */
 package org.pushingpixels.substance.internal.inputmaps;
 
-import javax.swing.*;
+import javax.swing.Action;
+import javax.swing.JTextField;
+import javax.swing.TransferHandler;
 import javax.swing.text.DefaultEditorKit;
 
 import org.pushingpixels.substance.api.inputmap.InputMapSet;

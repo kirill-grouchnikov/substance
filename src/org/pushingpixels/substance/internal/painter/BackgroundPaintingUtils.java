@@ -29,16 +29,29 @@
  */
 package org.pushingpixels.substance.internal.painter;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 
-import javax.swing.*;
+import javax.swing.CellRendererPane;
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JSpinner;
+import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
-import org.pushingpixels.substance.api.*;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
-import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
+import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 
 /**
  * Delegate for painting filled backgrounds.
@@ -97,7 +110,7 @@ public class BackgroundPaintingUtils {
 				RenderingHints.VALUE_ANTIALIAS_OFF);
 		graphics.setComposite(WidgetUtilities.getAlphaComposite(c, g));
 
-		DecorationAreaType decorationType = SubstanceLookAndFeel.getDecorationType(c);
+		DecorationAreaType decorationType = SubstanceCortex.ComponentScope.getDecorationType(c);
 		SubstanceSkin skin = SubstanceCoreUtilities.getSkin(c);
 		boolean isShowing = c.isShowing();
 		if (isShowing && (decorationType != DecorationAreaType.NONE)
