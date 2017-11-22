@@ -42,6 +42,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.substance.api.SubstanceWidget;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 
 /**
@@ -113,19 +114,16 @@ public class SelectOnEscapeWidget extends SubstanceWidget<JTextComponent> {
      */
     @Override
     public void installListeners() {
-        this.propertyChangeListener = new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (SubstanceWidget.TEXT_FLIP_SELECT_ON_ESCAPE.equals(evt.getPropertyName())) {
-                    boolean hasTextFlipSelection = WidgetUtilities
-                            .hasTextFlipSelectOnEscapeProperty(jcomp);
-                    if (hasTextFlipSelection) {
-                        // change the input map
-                        installTracking();
-                    } else {
-                        // remove the input map
-                        uninstallTracking();
-                    }
+        this.propertyChangeListener = (PropertyChangeEvent evt) -> {
+            if (SubstanceSynapse.TEXT_FLIP_SELECT_ON_ESCAPE.equals(evt.getPropertyName())) {
+                boolean hasTextFlipSelection = WidgetUtilities
+                        .hasTextFlipSelectOnEscapeProperty(jcomp);
+                if (hasTextFlipSelection) {
+                    // change the input map
+                    installTracking();
+                } else {
+                    // remove the input map
+                    uninstallTracking();
                 }
             }
         };

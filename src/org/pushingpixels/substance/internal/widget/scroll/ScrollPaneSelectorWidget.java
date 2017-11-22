@@ -39,6 +39,7 @@ import javax.swing.plaf.basic.ComboPopup;
 
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.api.painter.preview.PreviewPainter;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 
@@ -60,7 +61,7 @@ public class ScrollPaneSelectorWidget extends SubstanceWidget<JScrollPane> {
 
     /**
      * Property change listener - listens on the changes to
-     * {@link SubstanceWidget#COMPONENT_PREVIEW_PAINTER} property.
+     * {@link SubstanceSynapse#COMPONENT_PREVIEW_PAINTER} property.
      */
     private PropertyChangeListener propertyChangeListener;
 
@@ -107,7 +108,7 @@ public class ScrollPaneSelectorWidget extends SubstanceWidget<JScrollPane> {
         this.jcomp.addHierarchyListener(this.hierarchyListener);
 
         this.propertyChangeListener = (PropertyChangeEvent evt) -> {
-            if (SubstanceWidget.COMPONENT_PREVIEW_PAINTER.equals(evt.getPropertyName())) {
+            if (SubstanceSynapse.COMPONENT_PREVIEW_PAINTER.equals(evt.getPropertyName())) {
                 PreviewPainter pPainter = WidgetUtilities.getComponentPreviewPainter(jcomp);
                 // Uninstall old scroll pane selector
                 if (scrollPaneSelector != null) {

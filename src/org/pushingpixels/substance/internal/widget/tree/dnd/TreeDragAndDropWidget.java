@@ -69,6 +69,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.pushingpixels.substance.api.SubstanceWidget;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.utils.WidgetUtilities;
 
 /**
@@ -123,7 +124,7 @@ public class TreeDragAndDropWidget extends SubstanceWidget<JTree> {
 		this.listeners = new EventListenerList();
 
 		this.propertyChangeListener = (PropertyChangeEvent evt) -> {
-			if (SubstanceWidget.TREE_AUTO_DND_SUPPORT.equals(evt.getPropertyName())) {
+			if (SubstanceSynapse.TREE_AUTO_DND_SUPPORT.equals(evt.getPropertyName())) {
 				Object oldValue = evt.getOldValue();
 				Object newValue = evt.getNewValue();
 				boolean hadDnd = false;

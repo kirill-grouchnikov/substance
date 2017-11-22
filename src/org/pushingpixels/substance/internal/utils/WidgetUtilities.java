@@ -55,10 +55,10 @@ import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
-import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.api.painter.preview.PreviewPainter;
 import org.pushingpixels.substance.api.password.PasswordStrengthChecker;
 import org.pushingpixels.substance.internal.AnimationConfigurationManager;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 
 /**
@@ -197,7 +197,7 @@ public class WidgetUtilities {
         while (comp != null) {
             if (comp instanceof JComponent) {
                 Object textFocusSelectAllProperty = ((JComponent) comp)
-                        .getClientProperty(SubstanceWidget.TEXT_SELECT_ON_FOCUS);
+                        .getClientProperty(SubstanceSynapse.TEXT_SELECT_ON_FOCUS);
                 if (Boolean.TRUE.equals(textFocusSelectAllProperty))
                     return true;
                 if (Boolean.FALSE.equals(textFocusSelectAllProperty))
@@ -205,7 +205,7 @@ public class WidgetUtilities {
             }
             comp = comp.getParent();
         }
-        return (Boolean.TRUE.equals(UIManager.get(SubstanceWidget.TEXT_SELECT_ON_FOCUS)));
+        return (Boolean.TRUE.equals(UIManager.get(SubstanceSynapse.TEXT_SELECT_ON_FOCUS)));
     }
 
     /**
@@ -218,7 +218,7 @@ public class WidgetUtilities {
      */
     public static boolean hasTextFlipSelectOnEscapeProperty(JTextComponent textComp) {
         Object textFocusSelectAllProperty = textComp
-                .getClientProperty(SubstanceWidget.TEXT_FLIP_SELECT_ON_ESCAPE);
+                .getClientProperty(SubstanceSynapse.TEXT_FLIP_SELECT_ON_ESCAPE);
         return (Boolean.TRUE.equals(textFocusSelectAllProperty));
     }
 
@@ -232,12 +232,12 @@ public class WidgetUtilities {
      */
     public static boolean hasTextEditContextMenu(JTextComponent textComp) {
         Object textEditContextMenuProperty = textComp
-                .getClientProperty(SubstanceWidget.TEXT_EDIT_CONTEXT_MENU);
+                .getClientProperty(SubstanceSynapse.TEXT_EDIT_CONTEXT_MENU);
         if (Boolean.TRUE.equals(textEditContextMenuProperty))
             return true;
         if (Boolean.FALSE.equals(textEditContextMenuProperty))
             return false;
-        return (Boolean.TRUE.equals(UIManager.get(SubstanceWidget.TEXT_EDIT_CONTEXT_MENU)));
+        return (Boolean.TRUE.equals(UIManager.get(SubstanceSynapse.TEXT_EDIT_CONTEXT_MENU)));
     }
 
     /**
@@ -249,12 +249,12 @@ public class WidgetUtilities {
      *         <code>false</code> otherwise.
      */
     public static boolean hasAutoScroll(JScrollPane scrollPane) {
-        Object compProperty = scrollPane.getClientProperty(SubstanceWidget.AUTO_SCROLL);
+        Object compProperty = scrollPane.getClientProperty(SubstanceSynapse.AUTO_SCROLL);
         if (Boolean.TRUE.equals(compProperty))
             return true;
         if (Boolean.FALSE.equals(compProperty))
             return false;
-        return (Boolean.TRUE.equals(UIManager.get(SubstanceWidget.AUTO_SCROLL)));
+        return (Boolean.TRUE.equals(UIManager.get(SubstanceSynapse.AUTO_SCROLL)));
     }
 
     /**
@@ -266,12 +266,12 @@ public class WidgetUtilities {
      *         support, <code>false</code> otherwise.
      */
     public static boolean hasAutomaticDnDSupport(JTree tree) {
-        Object dndProperty = tree.getClientProperty(SubstanceWidget.TREE_AUTO_DND_SUPPORT);
+        Object dndProperty = tree.getClientProperty(SubstanceSynapse.TREE_AUTO_DND_SUPPORT);
         if (Boolean.TRUE.equals(dndProperty))
             return true;
         if (Boolean.FALSE.equals(dndProperty))
             return false;
-        return (Boolean.TRUE.equals(UIManager.get(SubstanceWidget.TREE_AUTO_DND_SUPPORT)));
+        return (Boolean.TRUE.equals(UIManager.get(SubstanceSynapse.TREE_AUTO_DND_SUPPORT)));
     }
 
     /**
@@ -444,7 +444,7 @@ public class WidgetUtilities {
         // check property on component
         if (comp instanceof JComponent) {
             Object compProp = ((JComponent) comp)
-                    .getClientProperty(SubstanceWidget.COMPONENT_PREVIEW_PAINTER);
+                    .getClientProperty(SubstanceSynapse.COMPONENT_PREVIEW_PAINTER);
             if (compProp instanceof PreviewPainter)
                 return (PreviewPainter) compProp;
         }
@@ -453,12 +453,12 @@ public class WidgetUtilities {
         Container parent = comp.getParent();
         if (parent instanceof JComponent) {
             Object parentProp = ((JComponent) parent)
-                    .getClientProperty(SubstanceWidget.COMPONENT_PREVIEW_PAINTER);
+                    .getClientProperty(SubstanceSynapse.COMPONENT_PREVIEW_PAINTER);
             if (parentProp instanceof PreviewPainter)
                 return (PreviewPainter) parentProp;
         }
 
-        Object globProp = UIManager.get(SubstanceWidget.COMPONENT_PREVIEW_PAINTER);
+        Object globProp = UIManager.get(SubstanceSynapse.COMPONENT_PREVIEW_PAINTER);
         if (globProp instanceof PreviewPainter)
             return (PreviewPainter) globProp;
 
@@ -474,7 +474,7 @@ public class WidgetUtilities {
      *         <code>null</code>.
      */
     public static PasswordStrengthChecker getPasswordStrengthChecker(JPasswordField jpf) {
-        Object obj = jpf.getClientProperty(SubstanceWidget.PASSWORD_STRENGTH_CHECKER);
+        Object obj = jpf.getClientProperty(SubstanceSynapse.PASSWORD_STRENGTH_CHECKER);
         if ((obj != null) && (obj instanceof PasswordStrengthChecker))
             return (PasswordStrengthChecker) obj;
         return null;

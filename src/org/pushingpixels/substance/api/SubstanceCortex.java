@@ -44,13 +44,17 @@ import java.util.TreeMap;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JPasswordField;
 import javax.swing.JRootPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTree;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
@@ -62,11 +66,15 @@ import org.pushingpixels.substance.api.font.FontSet;
 import org.pushingpixels.substance.api.font.SubstanceFontUtilities;
 import org.pushingpixels.substance.api.iconpack.SubstanceDefaultIconPack;
 import org.pushingpixels.substance.api.iconpack.SubstanceIconPack;
+import org.pushingpixels.substance.api.painter.preview.DefaultPreviewPainter;
+import org.pushingpixels.substance.api.painter.preview.PreviewPainter;
+import org.pushingpixels.substance.api.password.PasswordStrengthChecker;
 import org.pushingpixels.substance.api.skin.SkinChangeListener;
 import org.pushingpixels.substance.api.skin.SkinInfo;
 import org.pushingpixels.substance.api.tabbed.BaseTabCloseListener;
 import org.pushingpixels.substance.internal.AnimationConfigurationManager;
 import org.pushingpixels.substance.internal.SubstancePluginRepository;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.fonts.FontPolicies;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
@@ -918,6 +926,92 @@ public class SubstanceCortex {
                 SwingUtilities.updateComponentTreeUI(root);
             }
         }
+
+        /**
+         * Specifies global visibility of the lock icon on non-editable text components.
+         * 
+         * @param visible
+         *            If <code>true</code>, all non-editable text components not explicitly
+         *            configured with {@link ComponentScope#setLockIconVisible(JComponent, Boolean)}
+         *            will show a lock icon. Pass <code>null</code> to reset to the default
+         *            behavior.
+         * @see #resetLockIconVisibility()
+         * @see ComponentScope#setLockIconVisible(JComponent, Boolean)
+         * @since 8.0
+         */
+        public static void setLockIconVisible(Boolean visible) {
+            UIManager.put(SubstanceSynapse.HAS_LOCK_ICON, visible);
+        }
+
+        /**
+         * Specifies global preview painter to be used for showing preview thumbnails. Default
+         * implementation is available in the {@link DefaultPreviewPainter}.
+         * 
+         * @param previewPainter
+         *            Global preview painter. Can be <code>null</code>.
+         * @see ComponentOrParentScope#setComponentPreviewPainter(JComponent, PreviewPainter)
+         * @since 8.0
+         */
+        public static void setComponentPreviewPainter(PreviewPainter previewPainter) {
+            UIManager.put(SubstanceSynapse.COMPONENT_PREVIEW_PAINTER, previewPainter);
+        }
+
+        /**
+         * Specifies whether the contents of text components should be selected on focus gain.
+         * 
+         * @param selectTextOnFocus
+         *            If <code>true</code>, the contents of text components will be selected on
+         *            focus gain. Pass <code>null</code> to reset to the default behavior.
+         * @see ComponentOrParentChainScope#setSelectTextOnFocus(JComponent, Boolean)
+         * @since 8.0
+         */
+        public static void setSelectTextOnFocus(Boolean selectTextOnFocus) {
+            UIManager.put(SubstanceSynapse.TEXT_SELECT_ON_FOCUS, selectTextOnFocus);
+        }
+
+        /**
+         * Specifies whether text components should have the edit context menu (with Cut / Copy /
+         * Paste / ... menu items)
+         * 
+         * @param hasEditContextMenu
+         *            If <code>true</code>, text components will have the edit context menu (with
+         *            Cut / Copy / Paste / ... menu items). Pass <code>null</code> to reset to the
+         *            default behavior.
+         * @see ComponentScope#setTextEditContextMenuPresence(JTextComponent, Boolean)
+         * @since 8.0
+         */
+        public static void setTextEditContextMenuPresence(Boolean hasEditContextMenu) {
+            UIManager.put(SubstanceSynapse.TEXT_EDIT_CONTEXT_MENU, hasEditContextMenu);
+        }
+
+        /**
+         * Specifies whether trees should have should have automatic drag and drop support.
+         * 
+         * @param hasAutomaticDragAndDropSupport
+         *            If <code>true</code>, trees will have automatic drag and drop support. Pass
+         *            <code>null</code> to reset to the default behavior.
+         * @see ComponentScope#setAutomaticDragAndDropSupportPresence(JTree, Boolean)
+         * @since 8.0
+         */
+        public static void setAutomaticDragAndDropSupportPresence(
+                Boolean hasAutomaticDragAndDropSupport) {
+            UIManager.put(SubstanceSynapse.TREE_AUTO_DND_SUPPORT, hasAutomaticDragAndDropSupport);
+        }
+
+        /**
+         * Specifies whether scroll panes should have have auto-scroll support invoked on mouse
+         * button click that triggers popups.
+         * 
+         * @param hasAutomaticScroll
+         *            If <code>true</code>, scroll panes will have have auto-scroll support invoked
+         *            on mouse button click that triggers popups. Pass <code>null</code> to reset to
+         *            the default behavior.
+         * @see ComponentScope#setAutomaticScrollPresence(JScrollPane, Boolean)
+         * @since 8.0
+         */
+        public static void setAutomaticScrollPresence(Boolean hasAutomaticScroll) {
+            UIManager.put(SubstanceSynapse.AUTO_SCROLL, hasAutomaticScroll);
+        }
     }
 
     /**
@@ -1102,6 +1196,150 @@ public class SubstanceCortex {
                         "Component scope APIs do not accept null components");
             }
             return DecorationPainterUtils.getImmediateDecorationType(comp);
+        }
+
+        /**
+         * Specifies component-level visibility of the lock icon on the specific component.
+         * 
+         * @param comp
+         *            Component.
+         * @param visible
+         *            If <code>true</code>, the specific text component will show a lock icon when
+         *            it is in non-editable mode. Pass <code>null</code> to reset to the default
+         *            behavior.
+         * @see GlobalScope#setLockIconVisible(Boolean)
+         * @see #resetLockIconVisibility(JComponent)
+         * @since 8.0
+         */
+        public static void setLockIconVisible(JComponent comp, Boolean visible) {
+            comp.putClientProperty(SubstanceSynapse.HAS_LOCK_ICON, visible);
+        }
+
+        /**
+         * Specifies password strength checker for the specific password field.
+         * 
+         * @param passwordField
+         *            Password field.
+         * @param passwordStrengthChecker
+         *            Password strength checker
+         * @since 8.0
+         */
+        public static void setPasswordStrengthChecker(JPasswordField passwordField,
+                PasswordStrengthChecker passwordStrengthChecker) {
+            passwordField.putClientProperty(SubstanceSynapse.PASSWORD_STRENGTH_CHECKER,
+                    passwordStrengthChecker);
+        }
+
+        /**
+         * Specifies whether the text component contents should flip selection on ESCAPE key press.
+         * 
+         * @param comp
+         *            Text component.
+         * @param flipTextSelectionOnEscape
+         *            If <code>true</code>, the contents of the specified text component will flip
+         *            selection on ESCAPE key press. Pass <code>null</code> to reset to the default
+         *            behavior.
+         * @since 8.0
+         */
+        public static void setFlipTextSelectionOnEscape(JTextComponent comp,
+                Boolean flipTextSelectionOnEscape) {
+            comp.putClientProperty(SubstanceSynapse.TEXT_FLIP_SELECT_ON_ESCAPE,
+                    flipTextSelectionOnEscape);
+        }
+
+        /**
+         * Specifies whether the text component should have the edit context menu (with Cut / Copy /
+         * Paste / ... menu items).
+         * 
+         * @param comp
+         *            Text component.
+         * @param hasEditContextMenu
+         *            If <code>true</code>, the text component will have the edit context menu (with
+         *            Cut / Copy / Paste / ... menu items). Pass <code>null</code> to reset to the
+         *            default behavior.
+         * @see GlobalScope#setTextEditContextMenuPresence(Boolean)
+         * @since 8.0
+         */
+        public static void setTextEditContextMenuPresence(JTextComponent comp,
+                Boolean hasEditContextMenu) {
+            comp.putClientProperty(SubstanceSynapse.TEXT_EDIT_CONTEXT_MENU, hasEditContextMenu);
+        }
+
+        /**
+         * Specifies whether the tree should have automatic drag and drop support.
+         * 
+         * @param tree
+         *            Tree component.
+         * @param hasAutomaticDragAndDropSupport
+         *            If <code>true</code>, the tree will have automatic drag and drop support. Pass
+         *            <code>null</code> to reset to the default behavior.
+         * @see GlobalScope#setAutomaticDragAndDropSupportPresence(Boolean)
+         * @since 8.0
+         */
+        public static void setAutomaticDragAndDropSupportPresence(JTree tree,
+                Boolean hasAutomaticDragAndDropSupport) {
+            tree.putClientProperty(SubstanceSynapse.TREE_AUTO_DND_SUPPORT,
+                    hasAutomaticDragAndDropSupport);
+        }
+
+        /**
+         * Specifies whether the scroll pane should have have auto-scroll support invoked on mouse
+         * button click that triggers popups.
+         * 
+         * @param scrollPane
+         *            Scroll pane component.
+         * @param hasAutomaticScroll
+         *            If <code>true</code>, the scroll pane will have have auto-scroll support
+         *            invoked on mouse button click that triggers popups. Pass <code>null</code> to
+         *            reset to the default behavior.
+         * @see GlobalScope#setAutomaticScrollPresence(Boolean)
+         * @since 8.0
+         */
+        public static void setAutomaticScrollPresence(JScrollPane scrollPane,
+                Boolean hasAutomaticScroll) {
+            scrollPane.putClientProperty(SubstanceSynapse.AUTO_SCROLL, hasAutomaticScroll);
+        }
+    }
+
+    /**
+     * APIs in this scope apply to individual application {@link Component}s or all immediate child
+     * components of a container.
+     */
+    public static final class ComponentOrParentScope {
+        /**
+         * Specifies preview painter to be used for showing preview of the specific component or its
+         * immediate children. Default implementation is available in the
+         * {@link DefaultPreviewPainter}.
+         * 
+         * @param previewPainter
+         *            Preview painter. Can be <code>null</code>.
+         * @see GlobalScope#setComponentPreviewPainter(PreviewPainter)
+         * @since 8.0
+         */
+        public static void setComponentPreviewPainter(JComponent comp,
+                PreviewPainter previewPainter) {
+            comp.putClientProperty(SubstanceSynapse.COMPONENT_PREVIEW_PAINTER, previewPainter);
+        }
+    }
+
+    /**
+     * APIs in this scope apply to individual application {@link Component}s or all nested child
+     * components of a container.
+     */
+    public static final class ComponentOrParentChainScope {
+        /**
+         * Specifies whether the contents of the specified text component or its nested children
+         * should be selected on focus gain.
+         * 
+         * @param selectTextOnFocus
+         *            If <code>true</code>, the contents of the specified text component or its
+         *            nested children will be selected on focus gain. Pass <code>null</code> to
+         *            reset to the default behavior.
+         * @see GlobalScope#setSelectTextOnFocus(boolean)
+         * @since 8.0
+         */
+        public static void setSelectTextOnFocus(JComponent comp, Boolean selectTextOnFocus) {
+            comp.putClientProperty(SubstanceSynapse.TEXT_SELECT_ON_FOCUS, selectTextOnFocus);
         }
     }
 

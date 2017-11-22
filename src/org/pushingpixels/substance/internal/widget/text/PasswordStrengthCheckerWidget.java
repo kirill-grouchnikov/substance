@@ -46,6 +46,7 @@ import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.password.PasswordStrengthChecker;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.utils.SubstanceColorSchemeUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.WidgetUtilities;
@@ -58,7 +59,7 @@ import org.pushingpixels.substance.internal.utils.border.BorderWrapper;
  */
 public class PasswordStrengthCheckerWidget extends SubstanceWidget<JPasswordField> {
     /**
-     * Listens on changes to {@link SubstanceWidget#PASSWORD_STRENGTH_CHECKER} property.
+     * Listens on changes to {@link SubstanceSynapse#PASSWORD_STRENGTH_CHECKER} property.
      */
     protected PropertyChangeListener strengthCheckerListener;
 
@@ -126,19 +127,18 @@ public class PasswordStrengthCheckerWidget extends SubstanceWidget<JPasswordFiel
             SubstanceSlices.PasswordStrength strength = passwordStrengthChecker
                     .getStrength(jpf.getPassword());
             if (c.getComponentOrientation().isLeftToRight())
-                paintPasswordStrengthMarker(g,
-                        x + width - StrengthCheckedBorder.GUTTER_WIDTH, y,
+                paintPasswordStrengthMarker(g, x + width - StrengthCheckedBorder.GUTTER_WIDTH, y,
                         StrengthCheckedBorder.GUTTER_WIDTH, height, strength);
             else
-                paintPasswordStrengthMarker(g, x, y, StrengthCheckedBorder.GUTTER_WIDTH,
-                        height, strength);
+                paintPasswordStrengthMarker(g, x, y, StrengthCheckedBorder.GUTTER_WIDTH, height,
+                        strength);
 
             String tooltip = passwordStrengthChecker.getDescription(strength);
             jpf.setToolTipText(tooltip);
         }
-        
-        private void paintPasswordStrengthMarker(Graphics g, int x, int y,
-                int width, int height, SubstanceSlices.PasswordStrength pStrength) {
+
+        private void paintPasswordStrengthMarker(Graphics g, int x, int y, int width, int height,
+                SubstanceSlices.PasswordStrength pStrength) {
             Graphics2D g2 = (Graphics2D) g.create();
 
             SubstanceColorScheme colorScheme = null;
@@ -151,8 +151,8 @@ public class PasswordStrengthCheckerWidget extends SubstanceWidget<JPasswordFiel
                 colorScheme = SubstanceColorSchemeUtilities.GREEN;
 
             if (colorScheme != null) {
-                SubstanceImageCreator.paintRectangularBackground(null, g, x, y,
-                        width, height, colorScheme, 0.5f, false);
+                SubstanceImageCreator.paintRectangularBackground(null, g, x, y, width, height,
+                        colorScheme, 0.5f, false);
             }
 
             g2.dispose();
@@ -166,21 +166,19 @@ public class PasswordStrengthCheckerWidget extends SubstanceWidget<JPasswordFiel
      */
     @Override
     public void installListeners() {
-        this.strengthCheckerListener = new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (SubstanceWidget.PASSWORD_STRENGTH_CHECKER.equals(evt.getPropertyName())) {
-                    Object newValue = evt.getNewValue();
-                    Object oldValue = evt.getOldValue();
-                    if ((newValue != null) && (newValue instanceof PasswordStrengthChecker)
-                            && (!(oldValue instanceof PasswordStrengthChecker))) {
-                        jcomp.setBorder(
-                                new WrappedBorder(jcomp.getBorder(), new StrengthCheckedBorder()));
-                    } else {
-                        // restore core border
-                        Border coreBorder = UIManager.getBorder("PasswordField.border");
-                        jcomp.setBorder(coreBorder);
-                        jcomp.setToolTipText(null);
-                    }
+        this.strengthCheckerListener = (PropertyChangeEvent evt) -> {
+            if (SubstanceSynapse.PASSWORD_STRENGTH_CHECKER.equals(evt.getPropertyName())) {
+                Object newValue = evt.getNewValue();
+                Object oldValue = evt.getOldValue();
+                if ((newValue != null) && (newValue instanceof PasswordStrengthChecker)
+                        && (!(oldValue instanceof PasswordStrengthChecker))) {
+                    jcomp.setBorder(
+                            new WrappedBorder(jcomp.getBorder(), new StrengthCheckedBorder()));
+                } else {
+                    // restore core border
+                    Border coreBorder = UIManager.getBorder("PasswordField.border");
+                    jcomp.setBorder(coreBorder);
+                    jcomp.setToolTipText(null);
                 }
             }
         };
@@ -208,8 +206,8 @@ public class PasswordStrengthCheckerWidget extends SubstanceWidget<JPasswordFiel
         super.installDefaults();
 
         // check if the property is already set - can happen on LAF change
-        Object checker = this.jcomp.getClientProperty(SubstanceWidget.PASSWORD_STRENGTH_CHECKER);
-        if ((checker != null) && (checker instanceof PasswordStrengthChecker)) {
+        PasswordStrengthChecker checker = WidgetUtilities.getPasswordStrengthChecker(this.jcomp);
+        if (checker != null) {
             this.jcomp.setBorder(new BorderUIResource.CompoundBorderUIResource(
                     this.jcomp.getBorder(), new StrengthCheckedBorder()));
         }

@@ -40,6 +40,7 @@ import javax.swing.border.Border;
 import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.substance.api.SubstanceWidget;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
@@ -194,14 +195,14 @@ public class LockBorderWidget extends SubstanceWidget<JTextComponent> {
                 : false;
         if (comp instanceof JComponent) {
             if (!isEditableTextComponent && Boolean.TRUE
-                    .equals(((JComponent) comp).getClientProperty(SubstanceWidget.HAS_LOCK_ICON)))
+                    .equals(((JComponent) comp).getClientProperty(SubstanceSynapse.HAS_LOCK_ICON)))
                 return true;
             if (Boolean.FALSE
-                    .equals(((JComponent) comp).getClientProperty(SubstanceWidget.HAS_LOCK_ICON)))
+                    .equals(((JComponent) comp).getClientProperty(SubstanceSynapse.HAS_LOCK_ICON)))
                 return false;
         }
         if (!isEditableTextComponent
-                && Boolean.TRUE.equals(UIManager.get(SubstanceWidget.HAS_LOCK_ICON)))
+                && Boolean.TRUE.equals(UIManager.get(SubstanceSynapse.HAS_LOCK_ICON)))
             return true;
 
         return false;
