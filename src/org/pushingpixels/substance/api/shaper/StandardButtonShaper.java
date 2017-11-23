@@ -41,7 +41,7 @@ import javax.swing.JComponent;
 import javax.swing.border.Border;
 
 import org.pushingpixels.substance.api.SubstanceSlices;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -77,7 +77,7 @@ public class StandardButtonShaper implements SubstanceButtonShaper, RectangularB
     public GeneralPath getButtonOutline(AbstractButton button, float extraInsets, float width,
             float height, boolean isInner) {
         Set<SubstanceSlices.Side> straightSides = SubstanceCoreUtilities.getSides(button,
-                SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
+                SubstanceSynapse.BUTTON_STRAIGHT_SIDE_PROPERTY);
 
         float radius = this.getCornerRadius(button, extraInsets);
         if (isInner) {
@@ -116,7 +116,7 @@ public class StandardButtonShaper implements SubstanceButtonShaper, RectangularB
                         ? SubstanceSizeUtils.getTextButtonLRPadding(fontSize)
                         : 0;
                 Set<SubstanceSlices.Side> openSides = SubstanceCoreUtilities.getSides(button,
-                        SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY);
+                        SubstanceSynapse.BUTTON_OPEN_SIDE_PROPERTY);
                 int left = lrPadding + buttonInsets.left + focusPadding
                         + ((openSides != null) && openSides.contains(SubstanceSlices.Side.LEFT)
                                 ? -1

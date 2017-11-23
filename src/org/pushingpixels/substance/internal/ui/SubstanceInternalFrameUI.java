@@ -40,7 +40,7 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceInternalFrameTitlePane;
 
@@ -157,56 +157,6 @@ public class SubstanceInternalFrameUI extends BasicInternalFrameUI {
 		super.uninstallListeners();
 	}
 
-	// private class BorderListener1 extends BorderListener implements
-	// SwingConstants {
-	//
-	// Rectangle getIconBounds() {
-	// int xOffset = 5;
-	// Rectangle rect = null;
-	//
-	// Icon icon = SubstanceInternalFrameUI.this.frame.getFrameIcon();
-	// if (icon != null) {
-	// int iconY = ((SubstanceInternalFrameUI.this.titlePane.getHeight() / 2) -
-	// (icon
-	// .getIconHeight() / 2));
-	// rect = new Rectangle(xOffset, iconY, icon.getIconWidth(), icon
-	// .getIconHeight());
-	// }
-	// return rect;
-	// }
-	//
-	// @Override
-	// public void mouseClicked(MouseEvent e) {
-	// if ((e.getClickCount() == 2) && (e.getSource() ==
-	// SubstanceInternalFrameUI.this.getNorthPane())
-	// && SubstanceInternalFrameUI.this.frame.isClosable() &&
-	// !SubstanceInternalFrameUI.this.frame.isIcon()) {
-	// Rectangle rect = this.getIconBounds();
-	// if ((rect != null) && rect.contains(e.getX(), e.getY())) {
-	// SubstanceInternalFrameUI.this.frame.doDefaultCloseAction();
-	// } else {
-	// super.mouseClicked(e);
-	// }
-	// } else {
-	// super.mouseClicked(e);
-	// }
-	// }
-	// } // / End BorderListener Class
-	//
-	// /**
-	// * Returns the <code>MouseInputAdapter<code> that will be installed
-	// * on the TitlePane.
-	// *
-	// * @param w the <code>JInternalFrame</code>
-	// * @return the <code>MouseInputAdapter</code> that will be installed
-	// * on the TitlePane.
-	// * @since 1.6
-	// */
-	// @Override
-	// protected MouseInputAdapter createBorderListener(JInternalFrame w) {
-	// return new BorderListener1();
-	// }
-	//
 	/**
 	 * Returns the title pane of the associated internal frame. This method is
 	 * <b>for internal use only</b>.
@@ -219,7 +169,7 @@ public class SubstanceInternalFrameUI extends BasicInternalFrameUI {
 
 	void setWindowModified(boolean isWindowModified) {
 		titlePane.getCloseButton().putClientProperty(
-				SubstanceLookAndFeel.WINDOW_MODIFIED,
+				SubstanceSynapse.CONTENTS_MODIFIED,
 				Boolean.valueOf(isWindowModified));
 
 		SubstanceDesktopIconUI desktopIconUi = (SubstanceDesktopIconUI) this.frame

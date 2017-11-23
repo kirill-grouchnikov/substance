@@ -43,9 +43,9 @@ import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.ListUI;
 
 import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker.StateContributionInfo;
 import org.pushingpixels.substance.internal.ui.SubstanceListUI;
@@ -67,7 +67,7 @@ public class SubstanceDefaultListCellRenderer extends DefaultListCellRenderer {
 	 */
 	public SubstanceDefaultListCellRenderer() {
 		super();
-		this.putClientProperty(SubstanceLookAndFeel.COLORIZATION_FACTOR, 1.0);
+		SubstanceCortex.ComponentOrParentChainScope.setColorizationFactor(this, 1.0);
 	}
 
 	/*

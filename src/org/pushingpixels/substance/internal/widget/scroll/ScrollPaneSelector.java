@@ -61,10 +61,9 @@ import javax.swing.UIManager;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceCortex;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.preview.PreviewPainter;
 import org.pushingpixels.substance.internal.AnimationConfigurationManager;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
@@ -136,7 +135,7 @@ public class ScrollPaneSelector extends JComponent {
         SubstanceCoreUtilities.markButtonAsFlat(theButton);
         theButton.setFocusable(false);
         theButton.setFocusPainted(false);
-        theButton.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
+        SubstanceCortex.ComponentScope.setButtonStraightSides(this.theButton,
                 EnumSet.allOf(SubstanceSlices.Side.class));
 
         MouseInputListener mil = new MouseInputAdapter() {
@@ -269,11 +268,10 @@ public class ScrollPaneSelector extends JComponent {
         theComponent = (comp instanceof JComponent) ? (JComponent) comp : null;
 
         int dimension = UIManager.getInt("ScrollBar.width") - 4;
-        this.theButton
-                .setIcon(new TransitionAwareIcon(this.theButton,
-                        (SubstanceColorScheme scheme) -> SubstanceCortex.GlobalScope.getIconPack()
-                                .getInspectIcon(dimension, scheme),
-                        "substance.widget.scroll.selector"));
+        this.theButton.setIcon(new TransitionAwareIcon(
+                this.theButton, (SubstanceColorScheme scheme) -> SubstanceCortex.GlobalScope
+                        .getIconPack().getInspectIcon(dimension, scheme),
+                "substance.widget.scroll.selector"));
 
         theScrollPane.doLayout();
     }

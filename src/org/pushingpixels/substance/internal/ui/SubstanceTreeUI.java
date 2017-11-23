@@ -61,13 +61,14 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
-import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceWidget;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.api.renderer.SubstanceDefaultTreeCellRenderer;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -503,7 +504,7 @@ public class SubstanceTreeUI extends BasicTreeUI {
 	protected void installListeners() {
 		super.installListeners();
 		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
-			if (SubstanceLookAndFeel.WATERMARK_VISIBLE.equals(evt.getPropertyName())) {
+			if (SubstanceSynapse.WATERMARK_VISIBLE.equals(evt.getPropertyName())) {
 				tree.setOpaque(!SubstanceCoreUtilities.toDrawWatermark(tree));
 			}
 			if ("font".equals(evt.getPropertyName())) {

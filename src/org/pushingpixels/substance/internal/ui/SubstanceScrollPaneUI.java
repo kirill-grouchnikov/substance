@@ -59,11 +59,12 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicScrollPaneUI;
 import javax.swing.table.JTableHeader;
 
-import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.internal.AnimationConfigurationManager;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
@@ -191,7 +192,7 @@ public class SubstanceScrollPaneUI extends BasicScrollPaneUI {
 	protected void installListeners(final JScrollPane c) {
 		super.installListeners(c);
 		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
-			if (SubstanceLookAndFeel.WATERMARK_VISIBLE.equals(evt
+			if (SubstanceSynapse.WATERMARK_VISIBLE.equals(evt
 					.getPropertyName())) {
 				boolean toBleed = SubstanceCoreUtilities.toDrawWatermark(c);
 				c.setOpaque(!toBleed);

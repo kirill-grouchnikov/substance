@@ -83,7 +83,7 @@ public final class SubstanceSlices {
      * 
      * @author Kirill Grouchnikov
      * @see SubstanceLookAndFeel#BUTTON_OPEN_SIDE_PROPERTY
-     * @see SubstanceLookAndFeel#BUTTON_SIDE_PROPERTY
+     * @see SubstanceLookAndFeel#BUTTON_STRAIGHT_SIDE_PROPERTY
      */
     public static enum Side {
         /**
@@ -576,8 +576,9 @@ public final class SubstanceSlices {
 
     /**
      * Enumerates configurable Substance-specific widget types for
-     * {@link SubstanceCortex.RootPaneScope#setWidgetVisible(javax.swing.JRootPane, boolean, SubstanceWidgetType...)}
-     * API.
+     * {@link SubstanceCortex.GlobalScope#setWidgetVisible(boolean, SubstanceWidgetType...)} and
+     * {@link SubstanceCortex.WindowScope#setWidgetVisible(java.awt.Window, boolean, SubstanceWidgetType...)}
+     * APIs.
      * 
      * @author Kirill Grouchnikov
      */

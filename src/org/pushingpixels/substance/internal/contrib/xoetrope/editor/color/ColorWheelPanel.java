@@ -52,10 +52,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicBorders;
 
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceCortex;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorchooser.SubstanceColorChooserPanel;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
@@ -233,8 +232,9 @@ public class ColorWheelPanel extends SubstanceColorChooserPanel implements
 
 		resetBtn.setToolTipText(getLabel("Xoetrope.reset",
 				"Reset the color wheel saturation and brightness"));
-        resetBtn.putClientProperty(SubstanceLookAndFeel.BUTTON_PAINT_NEVER_PROPERTY, Boolean.TRUE);
-        resetBtn.putClientProperty(SubstanceLookAndFeel.FOCUS_KIND, SubstanceSlices.FocusKind.NONE);
+        SubstanceCortex.ComponentOrParentScope.setButtonNeverPaintBackground(resetBtn, true);
+        SubstanceCortex.ComponentOrParentChainScope.setFocusKind(resetBtn,
+                SubstanceSlices.FocusKind.NONE);
 		fixedPanel.add(resetBtn);
 
 		saturationSlider = new JSlider(JSlider.VERTICAL);

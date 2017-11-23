@@ -34,8 +34,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.List;
 
-import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.painter.overlay.SubstanceOverlayPainter;
 
 /**

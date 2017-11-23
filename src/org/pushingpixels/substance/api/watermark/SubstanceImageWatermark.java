@@ -49,9 +49,9 @@ import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
-import org.pushingpixels.substance.api.SubstanceSlices.ImageWatermarkKind;
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.SubstanceSlices.ImageWatermarkKind;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**

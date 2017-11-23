@@ -88,13 +88,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.UIResource;
 
-import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceSlices.SubstanceWidgetType;
-import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.SubstanceSlices.SubstanceWidgetType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.skin.SkinInfo;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
@@ -198,7 +199,7 @@ public class SubstanceTitlePane extends JComponent {
 
     /**
      * Listens on changes to <code>componentOrientation</code> and
-     * {@link SubstanceLookAndFeel#WINDOW_MODIFIED} properties.
+     * {@link SubstanceLookAndFeel#CONTENTS_MODIFIED} properties.
      */
     protected PropertyChangeListener propertyListener;
 
@@ -583,7 +584,7 @@ public class SubstanceTitlePane extends JComponent {
         // when window has been marked as changed.
         // Fix for defect 109 - memory leak on skin change.
         this.propertyListener = (final PropertyChangeEvent evt) -> {
-            if (SubstanceLookAndFeel.WINDOW_MODIFIED.equals(evt.getPropertyName())) {
+            if (SubstanceSynapse.CONTENTS_MODIFIED.equals(evt.getPropertyName())) {
                 syncCloseButtonTooltip();
             }
 
@@ -856,7 +857,7 @@ public class SubstanceTitlePane extends JComponent {
         this.closeButton.setIcon(closeIcon);
 
         this.closeButton.setFocusable(false);
-        this.closeButton.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
+        SubstanceCortex.ComponentOrParentScope.setFlatBackground(this.closeButton, true);
 
         this.closeButton.putClientProperty(SubstanceButtonUI.IS_TITLE_CLOSE_BUTTON, Boolean.TRUE);
 
@@ -875,7 +876,7 @@ public class SubstanceTitlePane extends JComponent {
             this.minimizeButton.setIcon(minIcon);
 
             this.minimizeButton.setFocusable(false);
-            this.minimizeButton.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
+            SubstanceCortex.ComponentOrParentScope.setFlatBackground(this.minimizeButton, true);
             this.minimizeButton.setToolTipText(
                     SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.iconify"));
 
@@ -895,7 +896,7 @@ public class SubstanceTitlePane extends JComponent {
             this.toggleButton.setToolTipText(
                     SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.maximize"));
             this.toggleButton.setFocusable(false);
-            this.toggleButton.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY, Boolean.TRUE);
+            SubstanceCortex.ComponentOrParentScope.setFlatBackground(this.toggleButton, true);
 
         }
         syncCloseButtonTooltip();

@@ -38,9 +38,9 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.border.EmptyBorder;
 
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceSlices.Side;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.internal.AnimationConfigurationManager;
 
 /**
@@ -51,54 +51,53 @@ import org.pushingpixels.substance.internal.AnimationConfigurationManager;
 @SubstanceInternalButton
 @SubstanceInternalArrowButton
 public final class SubstanceDropDownButton extends JButton {
-	static {
-		AnimationConfigurationManager.getInstance().disallowAnimations(
-				AnimationFacet.GHOSTING_BUTTON_PRESS, SubstanceDropDownButton.class);
-		AnimationConfigurationManager.getInstance().disallowAnimations(
-				AnimationFacet.GHOSTING_ICON_ROLLOVER, SubstanceDropDownButton.class);
-	}
+    static {
+        AnimationConfigurationManager.getInstance().disallowAnimations(
+                AnimationFacet.GHOSTING_BUTTON_PRESS, SubstanceDropDownButton.class);
+        AnimationConfigurationManager.getInstance().disallowAnimations(
+                AnimationFacet.GHOSTING_ICON_ROLLOVER, SubstanceDropDownButton.class);
+    }
 
-	/**
-	 * Simple constructor.
-	 * 
-	 * @param parent
-	 *            The parent component.
-	 */
-	public SubstanceDropDownButton(JComponent parent) {
-		super("");
-		this.setModel(new DefaultButtonModel() {
-			@Override
-			public void setArmed(boolean armed) {
-				super.setArmed(this.isPressed() || armed);
-			}
-		});
-		this.setEnabled(parent.isEnabled());
-		this.setFocusable(false);
-		this.setRequestFocusEnabled(parent.isEnabled());
+    /**
+     * Simple constructor.
+     * 
+     * @param parent
+     *            The parent component.
+     */
+    public SubstanceDropDownButton(JComponent parent) {
+        super("");
+        this.setModel(new DefaultButtonModel() {
+            @Override
+            public void setArmed(boolean armed) {
+                super.setArmed(this.isPressed() || armed);
+            }
+        });
+        this.setEnabled(parent.isEnabled());
+        this.setFocusable(false);
+        this.setRequestFocusEnabled(parent.isEnabled());
 
-		int fontSize = SubstanceSizeUtils.getComponentFontSize(parent);
-		int tbInset = SubstanceSizeUtils.getAdjustedSize(fontSize, 1, 2, 1, false);
-		setBorder(new EmptyBorder(tbInset + 1, 0, tbInset - 1, 0));
+        int fontSize = SubstanceSizeUtils.getComponentFontSize(parent);
+        int tbInset = SubstanceSizeUtils.getAdjustedSize(fontSize, 1, 2, 1, false);
+        setBorder(new EmptyBorder(tbInset + 1, 0, tbInset - 1, 0));
 
-		SubstanceCoreUtilities.markButtonAsFlat(this);
-		this.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY,
-				EnumSet.allOf(Side.class));
-	}
+        SubstanceCoreUtilities.markButtonAsFlat(this);
+        SubstanceCortex.ComponentScope.setButtonStraightSides(this, EnumSet.allOf(Side.class));
+    }
 
-	@Override
-	public void paint(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g.create();
+    @Override
+    public void paint(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g.create();
 
-		int width = getWidth();
-		int height = getHeight();
-		int clipDelta = (int) SubstanceSizeUtils.getBorderStrokeWidth();
+        int width = getWidth();
+        int height = getHeight();
+        int clipDelta = (int) SubstanceSizeUtils.getBorderStrokeWidth();
 
-		if (this.getComponentOrientation().isLeftToRight()) {
-			g2d.clipRect(clipDelta, 0, width - clipDelta, height);
-		} else {
-			g2d.clipRect(0, 0, width - clipDelta, height);
-		}
-		super.paint(g2d);
-		g2d.dispose();
-	}
+        if (this.getComponentOrientation().isLeftToRight()) {
+            g2d.clipRect(clipDelta, 0, width - clipDelta, height);
+        } else {
+            g2d.clipRect(0, 0, width - clipDelta, height);
+        }
+        super.paint(g2d);
+        g2d.dispose();
+    }
 }

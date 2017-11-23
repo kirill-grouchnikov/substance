@@ -57,11 +57,12 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 
-import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
 import org.pushingpixels.substance.internal.AnimationConfigurationManager;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.animation.ModificationAwareUI;
 import org.pushingpixels.substance.internal.animation.RootPaneDefaultButtonTracker;
@@ -241,7 +242,7 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 				.getTextIconGap(SubstanceSizeUtils.getComponentFontSize(b)));
 
 		if (Boolean.TRUE.equals(b
-				.getClientProperty(SubstanceLookAndFeel.WINDOW_MODIFIED))) {
+				.getClientProperty(SubstanceSynapse.CONTENTS_MODIFIED))) {
 			trackModificationFlag();
 		}
 		for (SubstanceWidget lafWidget : this.lafWidgets) {
@@ -306,7 +307,7 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 				trackGlowingIcon();
 			}
 
-			if (SubstanceLookAndFeel.WINDOW_MODIFIED.equals(evt.getPropertyName())) {
+			if (SubstanceSynapse.CONTENTS_MODIFIED.equals(evt.getPropertyName())) {
 				boolean newValue = (Boolean) evt.getNewValue();
 				if (newValue) {
 					trackModificationFlag();

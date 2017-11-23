@@ -40,9 +40,9 @@ import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceSlices.Side;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.internal.AnimationConfigurationManager;
 import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
@@ -55,79 +55,78 @@ import org.pushingpixels.substance.internal.utils.border.SubstanceButtonBorder;
 @SubstanceInternalButton
 @SubstanceInternalArrowButton
 public class SubstanceSpinnerButton extends JButton {
-	static {
-		AnimationConfigurationManager.getInstance().disallowAnimations(
-				AnimationFacet.GHOSTING_BUTTON_PRESS, SubstanceSpinnerButton.class);
-		AnimationConfigurationManager.getInstance().disallowAnimations(
-				AnimationFacet.GHOSTING_ICON_ROLLOVER, SubstanceSpinnerButton.class);
-	}
+    static {
+        AnimationConfigurationManager.getInstance().disallowAnimations(
+                AnimationFacet.GHOSTING_BUTTON_PRESS, SubstanceSpinnerButton.class);
+        AnimationConfigurationManager.getInstance().disallowAnimations(
+                AnimationFacet.GHOSTING_ICON_ROLLOVER, SubstanceSpinnerButton.class);
+    }
 
-	private abstract static class SpinnerButtonBorder extends SubstanceButtonBorder {
-		public SpinnerButtonBorder(Class<?> buttonShaperClass) {
-			super(buttonShaperClass);
-		}
-	}
+    private abstract static class SpinnerButtonBorder extends SubstanceButtonBorder {
+        public SpinnerButtonBorder(Class<?> buttonShaperClass) {
+            super(buttonShaperClass);
+        }
+    }
 
-	/**
-	 * Simple constructor.
-	 * 
-	 * @param spinner
-	 *            The owner spinner.
-	 * @param orientation
-	 *            The orientation of the spinner icon arrow.
-	 */
-	public SubstanceSpinnerButton(JSpinner spinner, final int orientation) {
-		this.setEnabled(spinner.isEnabled());
-		this.setFocusable(false);
-		this.setRequestFocusEnabled(false);
-		super.setBorder(new SpinnerButtonBorder(ClassicButtonShaper.class) {
-			public Insets getBorderInsets(Component c) {
-				int extraPadding = SubstanceSizeUtils
-						.getExtraPadding(SubstanceSizeUtils.getComponentFontSize(c));
-				// Bring the icons closer together instead of
-				// having them centered in the spinner buttons
-				int delta = SubstanceSizeUtils.getAdjustedSize(
-						SubstanceSizeUtils.getComponentFontSize(c), 3, 3, 1, false);
-				int deltaTop = (orientation == SwingConstants.NORTH) ? delta : 0;
-				int deltaBottom = (orientation == SwingConstants.NORTH) ? 0 : delta;
-				return new Insets(extraPadding + deltaTop, extraPadding, extraPadding + deltaBottom,
-						extraPadding);
-			}
-		});
+    /**
+     * Simple constructor.
+     * 
+     * @param spinner
+     *            The owner spinner.
+     * @param orientation
+     *            The orientation of the spinner icon arrow.
+     */
+    public SubstanceSpinnerButton(JSpinner spinner, final int orientation) {
+        this.setEnabled(spinner.isEnabled());
+        this.setFocusable(false);
+        this.setRequestFocusEnabled(false);
+        super.setBorder(new SpinnerButtonBorder(ClassicButtonShaper.class) {
+            public Insets getBorderInsets(Component c) {
+                int extraPadding = SubstanceSizeUtils
+                        .getExtraPadding(SubstanceSizeUtils.getComponentFontSize(c));
+                // Bring the icons closer together instead of
+                // having them centered in the spinner buttons
+                int delta = SubstanceSizeUtils.getAdjustedSize(
+                        SubstanceSizeUtils.getComponentFontSize(c), 3, 3, 1, false);
+                int deltaTop = (orientation == SwingConstants.NORTH) ? delta : 0;
+                int deltaBottom = (orientation == SwingConstants.NORTH) ? 0 : delta;
+                return new Insets(extraPadding + deltaTop, extraPadding, extraPadding + deltaBottom,
+                        extraPadding);
+            }
+        });
 
         SubstanceCoreUtilities.markButtonAsFlat(this);
-		this.putClientProperty(SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY, 
-				EnumSet.allOf(Side.class));
-	}
-	
-	@Override
-	public void setBorder(Border border) {
-	}
+        SubstanceCortex.ComponentScope.setButtonStraightSides(this, EnumSet.allOf(Side.class));
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.Component#isFocusable()
-	 */
-	@Override
-	public boolean isFocusable() {
-		return false;
-	}
+    @Override
+    public void setBorder(Border border) {
+    }
 
-	@Override
-	public void paint(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g.create();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.awt.Component#isFocusable()
+     */
+    @Override
+    public boolean isFocusable() {
+        return false;
+    }
 
-		int width = getWidth();
-		int height = getHeight();
-		int clipDelta = (int) SubstanceSizeUtils.getBorderStrokeWidth();
+    @Override
+    public void paint(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g.create();
 
-		if (this.getComponentOrientation().isLeftToRight()) {
-			g2d.clipRect(clipDelta, 0, width - clipDelta, height);
-		} else {
-			g2d.clipRect(0, 0, width - clipDelta, height);
-		}
-		super.paint(g2d);
-		g2d.dispose();
-	}
+        int width = getWidth();
+        int height = getHeight();
+        int clipDelta = (int) SubstanceSizeUtils.getBorderStrokeWidth();
+
+        if (this.getComponentOrientation().isLeftToRight()) {
+            g2d.clipRect(clipDelta, 0, width - clipDelta, height);
+        } else {
+            g2d.clipRect(0, 0, width - clipDelta, height);
+        }
+        super.paint(g2d);
+        g2d.dispose();
+    }
 }

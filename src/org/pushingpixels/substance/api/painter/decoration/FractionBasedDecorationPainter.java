@@ -41,10 +41,10 @@ import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.ColorSchemeSingleColorQuery;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.painter.FractionBasedPainter;
 import org.pushingpixels.substance.api.painter.SubstancePainterUtils;
 

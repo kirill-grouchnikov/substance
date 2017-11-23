@@ -99,10 +99,10 @@ import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKin
 import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
 import org.pushingpixels.substance.api.SubstanceSlices.Side;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.renderer.SubstanceDefaultTableCellRenderer;
 import org.pushingpixels.substance.api.renderer.SubstanceDefaultTableHeaderCellRenderer;
 import org.pushingpixels.substance.internal.AnimationConfigurationManager;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
@@ -473,7 +473,7 @@ public class SubstanceTableUI extends BasicTableUI implements
 	protected void installListeners() {
 		super.installListeners();
 		this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
-			if (SubstanceLookAndFeel.WATERMARK_VISIBLE.equals(evt
+			if (SubstanceSynapse.WATERMARK_VISIBLE.equals(evt
 					.getPropertyName())) {
 				SubstanceTableUI.this.table
 						.setOpaque(!SubstanceCoreUtilities

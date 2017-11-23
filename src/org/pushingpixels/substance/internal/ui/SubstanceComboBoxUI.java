@@ -65,6 +65,7 @@ import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.renderer.SubstanceDefaultComboBoxRenderer;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.RolloverTextControlListener;
@@ -430,7 +431,7 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements TransitionAw
                 });
             }
 
-            if (SubstanceLookAndFeel.COMBO_BOX_POPUP_FLYOUT_ORIENTATION.equals(propertyName)) {
+            if (SubstanceSynapse.COMBO_BOX_POPUP_FLYOUT_ORIENTATION.equals(propertyName)) {
                 SubstanceDropDownButton dropDownButton = (SubstanceDropDownButton) arrowButton;
                 dropDownButton.setIcon(getCurrentIcon(dropDownButton));
                 uneditableArrowIcon = SubstanceCoreUtilities.getArrowIcon(comboBox,

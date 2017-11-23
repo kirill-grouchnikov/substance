@@ -43,8 +43,8 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicDesktopIconUI;
 
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceWidget;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceInternalFrameTitlePane;
@@ -297,7 +297,7 @@ public class SubstanceDesktopIconUI extends BasicDesktopIconUI {
 
 	void setWindowModified(boolean isWindowModified) {
 		((SubstanceInternalFrameTitlePane) this.iconPane).getCloseButton()
-				.putClientProperty(SubstanceLookAndFeel.WINDOW_MODIFIED,
+				.putClientProperty(SubstanceSynapse.CONTENTS_MODIFIED,
 						Boolean.valueOf(isWindowModified));
 	}
 }

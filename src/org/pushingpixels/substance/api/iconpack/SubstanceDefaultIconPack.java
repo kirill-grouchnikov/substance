@@ -29,7 +29,6 @@
  */
 package org.pushingpixels.substance.api.iconpack;
 
-import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 import org.pushingpixels.substance.internal.svg.autoscroll_all;
@@ -75,11 +74,7 @@ import org.pushingpixels.substance.internal.svg.ic_warning_black_24px;
 public class SubstanceDefaultIconPack implements SubstanceIconPack {
     private HiDpiAwareIcon getOptionPaneIcon(HiDpiAwareIcon base,
             SubstanceColorScheme colorScheme) {
-        if (!SubstanceCortex.GlobalScope.isToUseConstantThemesOnDialogs()) {
-            return base.colorize(colorScheme);
-        } else {
-            return base.colorize(colorScheme.getMidColor());
-        }
+        return base.colorize(colorScheme.getMidColor());
     }
 
     @Override
@@ -201,21 +196,21 @@ public class SubstanceDefaultIconPack implements SubstanceIconPack {
         HiDpiAwareIcon base = ic_adjust_black_24px.of(preferredSize, preferredSize);
         return base.colorize(preferredIconColorScheme.getForegroundColor(), 0.625f);
     }
-    
+
     @Override
     public HiDpiAwareIcon getRefreshIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme) {
         HiDpiAwareIcon base = ic_refresh_black_24px.of(preferredSize, preferredSize);
         return base.colorize(preferredIconColorScheme.getForegroundColor());
     }
-    
+
     @Override
     public HiDpiAwareIcon getAllowedIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme) {
         HiDpiAwareIcon base = ic_add_circle_black_24px.of(preferredSize, preferredSize);
         return base.colorize(preferredIconColorScheme.getForegroundColor());
     }
-    
+
     @Override
     public HiDpiAwareIcon getNotAllowedIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme) {
@@ -257,7 +252,7 @@ public class SubstanceDefaultIconPack implements SubstanceIconPack {
         HiDpiAwareIcon base = ic_select_all_black_24px.of(preferredSize, preferredSize);
         return base.colorize(preferredIconColorScheme.getForegroundColor());
     }
-    
+
     @Override
     public HiDpiAwareIcon getColorChooserColorPalettesIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme) {
@@ -271,49 +266,49 @@ public class SubstanceDefaultIconPack implements SubstanceIconPack {
         HiDpiAwareIcon base = ic_menu_black_24px.of(preferredSize, preferredSize);
         return base.colorize(preferredIconColorScheme.getForegroundColor());
     }
-    
+
     @Override
     public HiDpiAwareIcon getColorChooserColorSwatchesIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme) {
         HiDpiAwareIcon base = ic_grid_on_black_24px.of(preferredSize, preferredSize);
         return base.colorize(preferredIconColorScheme.getForegroundColor());
     }
-    
+
     @Override
     public HiDpiAwareIcon getColorChooserColorWheelIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme) {
         HiDpiAwareIcon base = ic_album_black_24px.of(preferredSize, preferredSize);
         return base.colorize(preferredIconColorScheme.getForegroundColor());
     }
-    
+
     @Override
     public HiDpiAwareIcon getColorChooserCrayonsIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme) {
         HiDpiAwareIcon base = ic_mode_edit_black_24px.of(preferredSize, preferredSize);
         return base.colorize(preferredIconColorScheme.getForegroundColor());
     }
-    
+
     @Override
     public HiDpiAwareIcon getColorChooserImagePalettesIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme) {
         HiDpiAwareIcon base = ic_brightness_high_black_24px.of(preferredSize, preferredSize);
         return base.colorize(preferredIconColorScheme.getForegroundColor());
     }
-    
+
     @Override
     public HiDpiAwareIcon getScrollVerticalIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme) {
         HiDpiAwareIcon base = autoscroll_v.of(preferredSize, preferredSize);
         return base.colorize(preferredIconColorScheme.getForegroundColor());
     }
-    
+
     @Override
     public HiDpiAwareIcon getScrollHorizontalIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme) {
         HiDpiAwareIcon base = autoscroll_h.of(preferredSize, preferredSize);
         return base.colorize(preferredIconColorScheme.getForegroundColor());
     }
-    
+
     @Override
     public HiDpiAwareIcon getScrollAllIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme) {

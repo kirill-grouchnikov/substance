@@ -69,12 +69,154 @@ public class SubstanceSynapse {
      * Client property name for specifying that the tree component should have automatic drag and
      * drop support.
      */
-    public final static String TREE_AUTO_DND_SUPPORT = "substance.widget.treeAutoDnDSupport";
+    public final static String TREE_AUTO_DND_SUPPORT = "substance.internal.widget.treeAutoDnDSupport";
 
     /**
      * Client property name for specifying that a scroll pane should have auto-scroll support
      * invoked on mouse button click that triggers popups.
      */
-    public final static String AUTO_SCROLL = "substance.widget.scroll.auto";
+    public final static String AUTO_SCROLL = "substance.internal.widget.scroll.auto";
 
+    /**
+     * Client property name for requesting that watermark should be painted on the component and its
+     * descendants.
+     */
+    public static final String WATERMARK_VISIBLE = "substance.internal.watermark.visible";
+
+    /**
+     * Client property name for ignoring the default (minimum) dimension for a single button.
+     */
+    public static final String BUTTON_NO_MIN_SIZE = "substance.internal.buttonnominsize";
+
+    /**
+     * Client property name for specifying that a single button / all application buttons should not
+     * paint the background.
+     */
+    public static final String BUTTON_NEVER_PAINT_BACKGROUND = "substance.internal.buttonneverpaintbackground";
+
+    /**
+     * Client property name for specifying that the component should be painted flat (no background
+     * / border) when it's inactive.
+     */
+    public static final String FLAT_LOOK = "substance.internal.flatlook";
+
+    /**
+     * Client property name for specifying a straight side for a single button.
+     */
+    public static final String BUTTON_STRAIGHT_SIDE_PROPERTY = "substance.internal.buttonstraightside";
+
+    /**
+     * Client property name for specifying an open side for a single button.
+     */
+    public static final String BUTTON_OPEN_SIDE_PROPERTY = "substance.internal.buttonopenSide";
+
+    /**
+     * Client property name for specifying the corner radius for buttons.
+     */
+    public static final String TOOLBAR_BUTTON_CORNER_RADIUS = "substance.internal.toolbarbuttoncornerradius";
+
+    /**
+     * Client property name for specifying a skin to be used on the specific root pane.
+     */
+    public static final String ROOT_PANE_SKIN = "substance.rootpaneskin";
+
+    /**
+     * Client property name for specifying that extra UI elements (such as menu items in system menu
+     * or lock borders) should be shown.
+     */
+    public final static String SHOW_EXTRA_WIDGETS = "substance.internal.addWidgets";
+
+    /**
+     * Client property name for specifying the colorization amount applied to the background and
+     * foreground of the current color scheme and the application controls.
+     */
+    public final static String COLORIZATION_FACTOR = "substancelaf.colorizationFactor";
+
+    /**
+     * Client property name for specifying that icons on <code>JOptionPane</code>s created with
+     * predefined message types will use constant color schemes for the icons.
+     */
+    public final static String USE_THEMED_ICONS_ON_OPTION_PANES = "substance.internal.useThemedIconsOnOptionPanes";
+
+    /**
+     * Client property name for specifying that icons on controls such as buttons, toggle buttons,
+     * labels, tabs and menu items should match the color of the current color scheme when they are
+     * in default state.
+     */
+    public final static String USE_THEMED_DEFAULT_ICONS = "substance.internal.useThemedDefaultIcons";
+
+    /**
+     * Client property name for specifying that contents of a frame, dialog, internal frame, desktop
+     * icon or tab have been modified and not saved.
+     */
+    public final static String CONTENTS_MODIFIED = "substance.internal.contentsmodified";
+
+    /**
+     * Client property name for adding close buttons on tabs.
+     */
+    public final static String TABBED_PANE_CLOSE_BUTTONS_PROPERTY = "substance.internal.tabbedpanehasclosebuttons";
+
+    /**
+     * Client property name for specifying that only the close button of a marked-as-modified tab
+     * component should pulsate.
+     */
+    public final static String TABBED_PANE_CLOSE_BUTTONS_MODIFIED_ANIMATION = "substance.internal.tabbedpaneclosebuttonsmodifiedanimation";
+
+    /**
+     * Client property name for specifying the callback for deciding on the tab close type.
+     */
+    public final static String TABBED_PANE_CLOSE_CALLBACK = "substance.internal.tabbedpaneclosecallback";
+
+    /**
+     * Client property name for specifying the content pane border kind.
+     */
+    public final static String TABBED_PANE_CONTENT_BORDER_KIND = "substance.internal.tabbedPaneContentBorderKind";
+
+    /**
+     * Client property name for specifying the number of echo characters for each password
+     * character.
+     */
+    public final static String PASSWORD_ECHO_PER_CHAR = "substance.internal.passwordEchoPerChar";
+
+    /**
+     * Client property name for specifying outline shaper.
+     */
+    public static final String BUTTON_SHAPER_PROPERTY = "substance.internal.buttonShaper";
+
+    /**
+     * Client property name for specifying menu gutter fill kind.
+     */
+    public final static String MENU_GUTTER_FILL_KIND = "substance.internal.menuGutterFillKind";
+
+    /**
+     * Client property name for specifying the trace file.
+     */
+    public final static String TRACE_FILE = "substance.internal.traceFile";
+
+    /**
+     * Client property name for specifying the heap status trace file.
+     */
+    public static final String HEAP_STATUS_TRACE_FILE = "substance.internal.heapStatusTraceFile";
+
+    /**
+     * Client property name for specifying the kind of focus indication.
+     */
+    public final static String FOCUS_KIND = "substance.internal.focusKind";
+
+    /**
+     * Client property name for specifying combo popup flyout orientation.
+     */
+    public final static String COMBO_BOX_POPUP_FLYOUT_ORIENTATION = "substance.internal.comboboxpopupFlyoutOrientation";
+
+    /**
+     * Client property name for specifying the combobox popup prototype callback which is used to
+     * compute the width of the popup at runtime.
+     */
+    public final static String COMBOBOX_POPUP_PROTOTYPE_CALLBACK = "substance.internal.comboPopupPrototype";
+
+    /**
+     * Client property name for specifying the combobox popup prototype object which is used to
+     * compute the width of the popup at runtime.
+     */
+    public final static String COMBOBOX_POPUP_PROTOTYPE_OBJECT = "substance.internal.comboPopupPrototype";
 }

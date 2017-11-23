@@ -30,9 +30,9 @@
 package org.pushingpixels.substance.api.skin;
 
 import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceSkin;
 
 /**
  * <code>Graphite Aqua</code> skin. This class is part of officially supported

@@ -56,10 +56,11 @@ import javax.swing.plaf.MenuBarUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
-import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
-import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
 import org.pushingpixels.substance.internal.ui.SubstanceMenuBarUI;
@@ -78,7 +79,7 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
     protected PropertyChangeListener substancePropertyListener;
 
     /**
-     * Listens to the changes to the {@link SubstanceLookAndFeel#WINDOW_MODIFIED } property on the
+     * Listens to the changes to the {@link SubstanceLookAndFeel#CONTENTS_MODIFIED } property on the
      * internal frame and its root pane.
      */
     protected PropertyChangeListener substanceWinModifiedListener;
@@ -104,7 +105,8 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
     public SubstanceInternalFrameTitlePane(JInternalFrame f) {
         super(f);
         this.setToolTipText(f.getTitle());
-        SubstanceCortex.ComponentScope.setDecorationType(this, DecorationAreaType.SECONDARY_TITLE_PANE);
+        SubstanceCortex.ComponentScope.setDecorationType(this,
+                DecorationAreaType.SECONDARY_TITLE_PANE);
     }
 
     /*
@@ -159,12 +161,10 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
         this.frame.addPropertyChangeListener(this.substancePropertyListener);
 
         // Property change listener for pulsating close button
-        // when window has been marked as changed.
-        this.substanceWinModifiedListener = new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (SubstanceLookAndFeel.WINDOW_MODIFIED.equals(evt.getPropertyName())) {
-                    syncCloseButtonTooltip();
-                }
+        // when contents has been marked as modified.
+        this.substanceWinModifiedListener = (PropertyChangeEvent evt) -> {
+            if (SubstanceSynapse.CONTENTS_MODIFIED.equals(evt.getPropertyName())) {
+                syncCloseButtonTooltip();
             }
         };
         // Wire it on the root pane.
@@ -447,12 +447,12 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
                     SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.iconify"));
             if (this.frame.isMaximum()) {
                 this.maxButton.setIcon(restoreIcon);
-                this.maxButton.setToolTipText(
-                        SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.restore"));
+                this.maxButton.setToolTipText(SubstanceCortex.GlobalScope.getLabelBundle()
+                        .getString("SystemMenu.restore"));
             } else {
                 this.maxButton.setIcon(maximizeIcon);
-                this.maxButton.setToolTipText(
-                        SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.maximize"));
+                this.maxButton.setToolTipText(SubstanceCortex.GlobalScope.getLabelBundle()
+                        .getString("SystemMenu.maximize"));
             }
         }
         if (closeIcon != null) {
@@ -520,7 +520,7 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
             if (listener instanceof ClickListener)
                 return;
         this.maxButton.addActionListener(new ClickListener());
-        
+
         SubstanceCoreUtilities.markButtonAsFlat(this.iconButton);
         SubstanceCoreUtilities.markButtonAsFlat(this.maxButton);
         SubstanceCoreUtilities.markButtonAsFlat(this.closeButton);
@@ -544,10 +544,10 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
      * Synchronizes the tooltip of the close button.
      */
     protected void syncCloseButtonTooltip() {
-        if (SubstanceCoreUtilities.isInternalFrameModified(this.frame)) {
+        if (SubstanceCoreUtilities.isRootPaneModified(this.frame.getRootPane())) {
             this.closeButton.setToolTipText(
-                    SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.close") + " ["
-                            + SubstanceCortex.GlobalScope.getLabelBundle()
+                    SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.close")
+                            + " [" + SubstanceCortex.GlobalScope.getLabelBundle()
                                     .getString("Tooltip.contentsNotSaved")
                             + "]");
         } else {

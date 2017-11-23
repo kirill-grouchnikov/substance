@@ -63,12 +63,13 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicListUI;
 
 import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.renderer.SubstanceDefaultListCellRenderer;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.animation.StateTransitionMultiTracker;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
@@ -453,7 +454,7 @@ public class SubstanceListUI extends BasicListUI implements
 		list.addMouseListener(substanceFadeRolloverListener);
 
 		substancePropertyChangeListener = (final PropertyChangeEvent evt) -> {
-			if (SubstanceLookAndFeel.WATERMARK_VISIBLE.equals(evt
+			if (SubstanceSynapse.WATERMARK_VISIBLE.equals(evt
 					.getPropertyName())) {
 				list.setOpaque(!SubstanceCoreUtilities
 						.toDrawWatermark(list));

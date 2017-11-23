@@ -57,7 +57,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicMenuUI;
 
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -131,8 +131,7 @@ public class SubstanceMenuUI extends BasicMenuUI implements SubstanceMenu,
 				.getTextIconGap(SubstanceSizeUtils
 						.getComponentFontSize(this.menuItem));
 
-		this.menuItem.putClientProperty(SubstanceLookAndFeel.FLAT_PROPERTY,
-				Boolean.TRUE);
+        SubstanceCortex.ComponentOrParentScope.setFlatBackground(this.menuItem, true);
 
 		LookAndFeel.installProperty(menuItem, "opaque", Boolean.FALSE);
 	}

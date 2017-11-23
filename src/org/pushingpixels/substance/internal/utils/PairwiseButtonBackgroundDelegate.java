@@ -42,16 +42,17 @@ import java.util.Set;
 import javax.swing.AbstractButton;
 
 import org.pushingpixels.substance.api.ComponentState;
+import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.Side;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.MatteFillPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.api.shaper.RectangularButtonShaper;
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
@@ -119,7 +120,7 @@ public class PairwiseButtonBackgroundDelegate {
 		
 		Set<Side> openSides = toIgnoreOpenSides ? EnumSet.noneOf(Side.class)
 				: SubstanceCoreUtilities.getSides(button,
-						SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY);
+				        SubstanceSynapse.BUTTON_OPEN_SIDE_PROPERTY);
 		boolean needsRotation = (openSides != null) && 
 				(openSides.contains(Side.BOTTOM) || openSides.contains(Side.TOP));
 
@@ -243,9 +244,9 @@ public class PairwiseButtonBackgroundDelegate {
 			return null;
 		Set<Side> openSides = toIgnoreOpenSides ? EnumSet.noneOf(Side.class)
 				: SubstanceCoreUtilities.getSides(button,
-						SubstanceLookAndFeel.BUTTON_OPEN_SIDE_PROPERTY);
+				        SubstanceSynapse.BUTTON_OPEN_SIDE_PROPERTY);
 		Set<Side> straightSides = SubstanceCoreUtilities.getSides(button, 
-				SubstanceLookAndFeel.BUTTON_SIDE_PROPERTY);
+		        SubstanceSynapse.BUTTON_STRAIGHT_SIDE_PROPERTY);
 		boolean isBorderPainted = button.isBorderPainted();
 		boolean isContentAreaFilled = button.isContentAreaFilled();
 

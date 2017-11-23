@@ -36,8 +36,8 @@ import java.awt.Toolkit;
 import javax.swing.border.Border;
 import javax.swing.plaf.BorderUIResource;
 
-import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.font.FontPolicy;
 import org.pushingpixels.substance.api.font.FontSet;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
