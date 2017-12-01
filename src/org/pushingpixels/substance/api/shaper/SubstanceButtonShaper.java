@@ -44,13 +44,6 @@ import org.pushingpixels.substance.api.trait.SubstanceTrait;
  * @author Kirill Grouchnikov
  */
 public interface SubstanceButtonShaper extends SubstanceTrait {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.utils.SubstanceTrait#getDisplayName()
-	 */
-	public String getDisplayName();
-
 	/**
 	 * Returns the outline path for the specified button.
 	 * 

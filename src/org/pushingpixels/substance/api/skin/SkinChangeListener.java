@@ -29,7 +29,7 @@
  */
 package org.pushingpixels.substance.api.skin;
 
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSkin;
 
 /**
@@ -43,8 +43,8 @@ public interface SkinChangeListener {
 	/**
 	 * Invoked when the current <b>Substance</b> skin is changed.
 	 * 
-	 * @see SubstanceLookAndFeel#setSkin(SubstanceSkin)
-	 * @see SubstanceLookAndFeel#setSkin(String)
+	 * @see SubstanceCortex.GlobalScope#setSkin(String)
+	 * @see SubstanceCortex.GlobalScope#setSkin(SubstanceSkin)
 	 */
 	public void skinChanged();
 }

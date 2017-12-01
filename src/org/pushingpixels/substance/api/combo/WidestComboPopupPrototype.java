@@ -44,12 +44,7 @@ import org.pushingpixels.substance.internal.ui.SubstanceComboBoxUI;
  * @author Kirill Grouchnikov
  */
 public class WidestComboPopupPrototype implements ComboPopupPrototypeCallback {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.pushingpixels.substance.combo.ComboPopupPrototypeCallback#
-	 * getPopupPrototypeDisplayValue(javax.swing.JComboBox)
-	 */
+    @Override
 	public Object getPopupPrototypeDisplayValue(JComboBox jc) {
 		int maxWidth = -1;
 		Object prototype = null;

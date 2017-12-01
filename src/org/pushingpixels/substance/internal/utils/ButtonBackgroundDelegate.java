@@ -126,7 +126,7 @@ public class ButtonBackgroundDelegate {
 
 		// compute the straight sides
 		Set<SubstanceSlices.Side> straightSides = SubstanceCoreUtilities.getSides(button,
-				SubstanceSynapse.BUTTON_STRAIGHT_SIDE_PROPERTY);
+				SubstanceSynapse.BUTTON_STRAIGHT_SIDE);
 
 		boolean isRoundButton = StandardButtonShaper.isRoundButton(button);
 		float radius = 0.0f;
@@ -135,7 +135,7 @@ public class ButtonBackgroundDelegate {
 		}
 
 		Set<Side> openSides = SubstanceCoreUtilities.getSides(button,
-		        SubstanceSynapse.BUTTON_OPEN_SIDE_PROPERTY);
+		        SubstanceSynapse.BUTTON_OPEN_SIDE);
 		// String openKey = "";
 		// for (Side oSide : openSides) {
 		// openKey += oSide.name() + "-";

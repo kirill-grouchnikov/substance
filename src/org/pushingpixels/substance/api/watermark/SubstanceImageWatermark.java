@@ -146,13 +146,7 @@ public class SubstanceImageWatermark implements SubstanceWatermark {
 		this.origImageLocation = null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.substance.watermark.SubstanceWatermark#drawWatermarkImage(java
-	 * .awt.Graphics, int, int, int, int)
-	 */
+	@Override
 	public void drawWatermarkImage(Graphics graphics, Component c, int x,
 			int y, int width, int height) {
 		if (!c.isShowing())
@@ -201,26 +195,12 @@ public class SubstanceImageWatermark implements SubstanceWatermark {
 				y + dy, x + dx + width, y + dy + height, null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.substance.api.watermark.SubstanceWatermark#previewWatermark
-	 * (java.awt.Graphics, org.pushingpixels.substance.api.SubstanceSkin, int, int, int,
-	 * int)
-	 */
 	@Override
 	public void previewWatermark(Graphics g, SubstanceSkin skin, int x, int y,
 			int width, int height) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.substance.watermark.SubstanceWatermark#updateWatermarkImage
-	 * (org.pushingpixels.substance.skin.SubstanceSkin)
-	 */
+    @Override
 	public boolean updateWatermarkImage(SubstanceSkin skin) {
 		if (this.origImage == null) {
 			return false;
@@ -360,20 +340,12 @@ public class SubstanceImageWatermark implements SubstanceWatermark {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.api.trait.SubstanceTrait#getDisplayName()
-	 */
+    @Override
 	public String getDisplayName() {
 		return "Image";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.watermark.SubstanceWatermark#dispose()
-	 */
+    @Override
 	public void dispose() {
 		watermarkImage = null;
 	}

@@ -102,8 +102,8 @@ import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.colorscheme.SunfireRedColorScheme;
 import org.pushingpixels.substance.api.colorscheme.SunsetColorScheme;
 import org.pushingpixels.substance.api.combo.ComboPopupPrototypeCallback;
-import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
-import org.pushingpixels.substance.api.hidpi.IsHiDpiAware;
+import org.pushingpixels.substance.api.icon.IsHiDpiAware;
+import org.pushingpixels.substance.api.icon.SubstanceIcon;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.SubstanceDecorationPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
@@ -153,7 +153,7 @@ public class SubstanceCoreUtilities {
      * Clips string based on specified font metrics and available width (in pixels). Returns the
      * clipped string, which contains the beginning and the end of the input string separated by
      * ellipses (...) in case the string is too long to fit into the specified width, and the
-     * origianl string otherwise.
+     * original string otherwise.
      * 
      * @param metrics
      *            Font metrics.
@@ -163,7 +163,7 @@ public class SubstanceCoreUtilities {
      *            String to clip.
      * @return The clipped string, which contains the beginning and the end of the input string
      *         separated by ellipses (...) in case the string is too long to fit into the specified
-     *         width, and the origianl string otherwise.
+     *         width, and the original string otherwise.
      */
     public static String clipString(FontMetrics metrics, int availableWidth, String fullText) {
 
@@ -403,13 +403,13 @@ public class SubstanceCoreUtilities {
      * @param comp
      *            The button.
      * @return The button shaper of the specified button.
-     * @see SubstanceLookAndFeel#BUTTON_SHAPER_PROPERTY
+     * @see SubstanceLookAndFeel#BUTTON_SHAPER
      * @see SubstanceSkin#getButtonShaper()
      */
     public static SubstanceButtonShaper getButtonShaper(Component comp) {
         if (comp instanceof JComponent) {
             Object prop = ((JComponent) comp)
-                    .getClientProperty(SubstanceSynapse.BUTTON_SHAPER_PROPERTY);
+                    .getClientProperty(SubstanceSynapse.BUTTON_SHAPER);
             if (prop instanceof SubstanceButtonShaper)
                 return (SubstanceButtonShaper) prop;
         }
@@ -484,7 +484,7 @@ public class SubstanceCoreUtilities {
         Component tabComponent = tabbedPane.getComponentAt(tabIndex);
         if (tabComponent instanceof JComponent) {
             Object compProp = ((JComponent) tabComponent)
-                    .getClientProperty(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS_PROPERTY);
+                    .getClientProperty(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS);
             if (Boolean.TRUE.equals(compProp))
                 return true;
             if (Boolean.FALSE.equals(compProp))
@@ -492,13 +492,13 @@ public class SubstanceCoreUtilities {
         }
         // check property on tabbed pane
         Object tabProp = tabbedPane
-                .getClientProperty(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS_PROPERTY);
+                .getClientProperty(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS);
         if (Boolean.TRUE.equals(tabProp))
             return true;
         if (Boolean.FALSE.equals(tabProp))
             return false;
         // check property in UIManager
-        return UIManager.getBoolean(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS_PROPERTY);
+        return UIManager.getBoolean(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS);
     }
 
     /**
@@ -825,7 +825,6 @@ public class SubstanceCoreUtilities {
      *            Component.
      * @return <code>true</code> if the specified component will show scheme-colorized icon in the
      *         default state, <code>false</code> otherwise.
-     * @see SubstanceLookAndFeel#USE_THEMED_DEFAULT_ICONS
      */
     public static boolean useThemedDefaultIcon(JComponent comp) {
         if ((comp == null) || comp.getClass().isAnnotationPresent(SubstanceInternalButton.class)) {
@@ -1225,22 +1224,22 @@ public class SubstanceCoreUtilities {
         return Boolean.TRUE.equals(UIManager.get(SubstanceSynapse.SHOW_EXTRA_WIDGETS));
     }
 
-    public static HiDpiAwareIcon getThemedIcon(Component comp, Icon orig) {
+    public static SubstanceIcon getThemedIcon(Component comp, Icon orig) {
         SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities.getColorScheme(comp,
                 ComponentState.ENABLED);
         return getThemedIcon(comp, orig, colorScheme);
     }
 
-    public static HiDpiAwareIcon getThemedIcon(JTabbedPane tab, int tabIndex, Icon orig) {
+    public static SubstanceIcon getThemedIcon(JTabbedPane tab, int tabIndex, Icon orig) {
         SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities.getColorScheme(tab,
                 tabIndex, ColorSchemeAssociationKind.TAB, ComponentState.ENABLED);
         return getThemedIcon(tab, orig, colorScheme);
     }
 
-    public static HiDpiAwareIcon getThemedIcon(Component comp, Icon orig,
+    public static SubstanceIcon getThemedIcon(Component comp, Icon orig,
             SubstanceColorScheme colorScheme) {
         float brightnessFactor = colorScheme.isDark() ? 0.2f : 0.8f;
-        return new HiDpiAwareIcon(SubstanceImageCreator.getColorSchemeImage(comp, orig, colorScheme,
+        return new SubstanceIcon(SubstanceImageCreator.getColorSchemeImage(comp, orig, colorScheme,
                 brightnessFactor));
     }
 
@@ -1335,7 +1334,7 @@ public class SubstanceCoreUtilities {
      * @param textRect
      *            Text rectangle (if relevant).
      * @param maxAlphaCoef
-     *            Maximum alhpa coefficient for painting the focus. Values lower than 1.0 will
+     *            Maximum alpha coefficient for painting the focus. Values lower than 1.0 will
      *            result in a translucent focus ring (can be used to paint a focus ring that doesn't
      *            draw too much attention away from the content, for example on text components).
      * @param extraPadding
@@ -1668,7 +1667,6 @@ public class SubstanceCoreUtilities {
      * @param c
      *            Component.
      * @return The skin of the specified component.
-     * @see SubstanceLookAndFeel#ROOT_PANE_SKIN
      */
     public static SubstanceSkin getSkin(Component c) {
         if (!SubstanceCoreUtilities.isCurrentLookAndFeel())

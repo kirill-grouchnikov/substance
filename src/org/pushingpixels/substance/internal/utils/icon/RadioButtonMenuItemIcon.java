@@ -45,7 +45,7 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIcon;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -76,8 +76,8 @@ public class RadioButtonMenuItemIcon implements Icon, UIResource {
 	/**
 	 * Icon cache to speed up the painting.
 	 */
-	private static LazyResettableHashMap<HiDpiAwareIcon> iconMap =
-			new LazyResettableHashMap<HiDpiAwareIcon>("RadioButtonMenuItemIcon");
+	private static LazyResettableHashMap<SubstanceIcon> iconMap =
+			new LazyResettableHashMap<SubstanceIcon>("RadioButtonMenuItemIcon");
 
 	/**
 	 * Creates a new icon.
@@ -97,7 +97,7 @@ public class RadioButtonMenuItemIcon implements Icon, UIResource {
 	 * 
 	 * @return Icon to paint.
 	 */
-	private HiDpiAwareIcon getIconToPaint() {
+	private SubstanceIcon getIconToPaint() {
 		if (this.menuItem == null)
 			return null;
 		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) this.menuItem
@@ -136,9 +136,9 @@ public class RadioButtonMenuItemIcon implements Icon, UIResource {
 				checkMarkSize, fillPainter.getDisplayName(), borderPainter.getDisplayName(),
 				baseFillColorScheme.getDisplayName(), baseMarkColorScheme.getDisplayName(),
 				baseBorderColorScheme.getDisplayName(), visibility, alpha);
-		HiDpiAwareIcon iconBase = iconMap.get(keyBase);
+		SubstanceIcon iconBase = iconMap.get(keyBase);
 		if (iconBase == null) {
-			iconBase = new HiDpiAwareIcon(SubstanceImageCreator.getRadioButton(
+			iconBase = new SubstanceIcon(SubstanceImageCreator.getRadioButton(
 					this.menuItem, fillPainter, borderPainter, checkMarkSize,
 					currState, 0, baseFillColorScheme, baseMarkColorScheme,
 					baseBorderColorScheme, visibility, alpha));
@@ -181,9 +181,9 @@ public class RadioButtonMenuItemIcon implements Icon, UIResource {
 						fontSize, checkMarkSize, fillPainter.getDisplayName(), borderPainter.getDisplayName(),
 						fillColorScheme.getDisplayName(), markColorScheme.getDisplayName(),
 						borderColorScheme.getDisplayName(), visibility, alpha);
-				HiDpiAwareIcon iconLayer = iconMap.get(keyLayer);
+				SubstanceIcon iconLayer = iconMap.get(keyLayer);
 				if (iconLayer == null) {
-					iconLayer = new HiDpiAwareIcon(SubstanceImageCreator
+					iconLayer = new SubstanceIcon(SubstanceImageCreator
 							.getRadioButton(this.menuItem, fillPainter,
 									borderPainter, checkMarkSize, currState, 0,
 									fillColorScheme, markColorScheme,
@@ -196,7 +196,7 @@ public class RadioButtonMenuItemIcon implements Icon, UIResource {
 		}
 
 		g2d.dispose();
-		return new HiDpiAwareIcon(result);
+		return new SubstanceIcon(result);
 	}
 
 	@Override

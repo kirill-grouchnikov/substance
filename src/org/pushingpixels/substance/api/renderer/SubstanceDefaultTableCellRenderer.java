@@ -93,19 +93,11 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 			this.setBorderPainted(true);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * javax.swing.table.TableCellRenderer#getTableCellRendererComponent
-		 * (javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
-		 */
 		public Component getTableCellRendererComponent(JTable table,
 				Object value, boolean isSelected, boolean hasFocus, int row,
 				int column) {
 			if (isSelected) {
 				this.setForeground(table.getSelectionForeground());
-				// super.setBackground(table.getSelectionBackground());
 			} else {
 				this.setForeground(table.getForeground());
 			}
@@ -157,21 +149,11 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 			return this;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see javax.swing.JComponent#paint(java.awt.Graphics)
-		 */
 		@Override
 		public final void paint(Graphics g) {
 			super.paint(g);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
-		 */
 		@Override
 		protected final void paintComponent(Graphics g) {
 			super.paintComponent(g);
@@ -285,13 +267,6 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
         SubstanceCortex.ComponentOrParentChainScope.setColorizationFactor(this, 1.0);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax
-	 * .swing.JTable, java.lang.Object, boolean, boolean, int, int)
-	 */
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value,
 			boolean isSelected, boolean hasFocus, int row, int column) {
@@ -432,21 +407,11 @@ public class SubstanceDefaultTableCellRenderer extends DefaultTableCellRenderer 
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
-	 */
 	@Override
 	public final void paint(Graphics g) {
 		super.paint(g);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
-	 */
 	@Override
 	protected final void paintComponent(Graphics g) {
 		super.paintComponent(g);

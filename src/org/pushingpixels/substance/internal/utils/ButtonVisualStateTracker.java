@@ -54,7 +54,7 @@ public class ButtonVisualStateTracker {
 	private RolloverButtonListener substanceButtonListener;
 	/**
 	 * Property change listener. Listens on changes to the
-	 * {@link SubstanceLookAndFeel#BUTTON_SHAPER_PROPERTY} property and
+	 * {@link SubstanceLookAndFeel#BUTTON_SHAPER} property and
 	 * {@link AbstractButton#MODEL_CHANGED_PROPERTY} property.
 	 */
 	protected PropertyChangeListener substancePropertyListener;

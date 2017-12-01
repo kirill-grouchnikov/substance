@@ -64,7 +64,7 @@ import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIcon;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -101,7 +101,7 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements
 	/**
 	 * Icons for all component states
 	 */
-	private static LazyResettableHashMap<HiDpiAwareIcon> icons = new LazyResettableHashMap<HiDpiAwareIcon>(
+	private static LazyResettableHashMap<SubstanceIcon> icons = new LazyResettableHashMap<SubstanceIcon>(
 			"SubstanceRadioButtonUI");
 
 	protected StateTransitionTracker stateTransitionTracker;
@@ -190,7 +190,7 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements
 	 *            Previous state of the checkbox.
 	 * @return Matching icon.
 	 */
-	private static HiDpiAwareIcon getIcon(JToggleButton button,
+	private static SubstanceIcon getIcon(JToggleButton button,
 			StateTransitionTracker stateTransitionTracker) {
 		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
 				.getModelStateInfo();
@@ -223,9 +223,9 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements
 				fillPainter.getDisplayName(), borderPainter.getDisplayName(), 
 				baseFillColorScheme.getDisplayName(), baseMarkColorScheme.getDisplayName(), 
 				baseBorderColorScheme.getDisplayName(), visibility, alpha);
-		HiDpiAwareIcon iconBase = icons.get(keyBase);
+		SubstanceIcon iconBase = icons.get(keyBase);
 		if (iconBase == null) {
-			iconBase = new HiDpiAwareIcon(SubstanceImageCreator.getRadioButton(
+			iconBase = new SubstanceIcon(SubstanceImageCreator.getRadioButton(
 					button, fillPainter, borderPainter, checkMarkSize,
 					currState, 0, baseFillColorScheme, baseMarkColorScheme,
 					baseBorderColorScheme, visibility, alpha));
@@ -269,9 +269,9 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements
 						borderPainter.getDisplayName(), fillColorScheme.getDisplayName(),
 						markColorScheme.getDisplayName(), borderColorScheme.getDisplayName(), 
 						visibility, alpha);
-				HiDpiAwareIcon iconLayer = icons.get(keyLayer);
+				SubstanceIcon iconLayer = icons.get(keyLayer);
 				if (iconLayer == null) {
-					iconLayer = new HiDpiAwareIcon(SubstanceImageCreator.getRadioButton(
+					iconLayer = new SubstanceIcon(SubstanceImageCreator.getRadioButton(
 							button, fillPainter, borderPainter,
 							checkMarkSize, currState, 0,
 							fillColorScheme, markColorScheme,
@@ -284,7 +284,7 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements
 		}
 
 		g2d.dispose();
-		return new HiDpiAwareIcon(result);
+		return new SubstanceIcon(result);
 	}
 
 	/*

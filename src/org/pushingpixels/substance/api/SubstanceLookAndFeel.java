@@ -47,7 +47,7 @@ import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIcon;
 import org.pushingpixels.substance.internal.SubstancePluginRepository;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
@@ -415,6 +415,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
             result = intermediate;
         }
 
-        return new HiDpiAwareIcon(result);
+        return new SubstanceIcon(result);
     }
 }

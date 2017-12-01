@@ -63,7 +63,7 @@ import javax.swing.text.JTextComponent;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIcon;
 import org.pushingpixels.substance.api.painter.border.FlatBorderPainter;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
@@ -217,7 +217,7 @@ public final class SubstanceImageCreator {
      *            Arrow icon color scheme.
      * @return Arrow icon.
      */
-    public static HiDpiAwareIcon getArrowIcon(int fontSize, int direction,
+    public static SubstanceIcon getArrowIcon(int fontSize, int direction,
             SubstanceColorScheme colorScheme) {
         float origWidth = SubstanceSizeUtils.getArrowIconWidth(fontSize);
         float origHeight = SubstanceSizeUtils.getArrowIconHeight(fontSize);
@@ -226,7 +226,7 @@ public final class SubstanceImageCreator {
         if (direction == SwingConstants.CENTER)
             height *= 2;
         float strokeWidth = SubstanceSizeUtils.getArrowStrokeWidth(fontSize);
-        HiDpiAwareIcon result = new HiDpiAwareIcon(
+        SubstanceIcon result = new SubstanceIcon(
                 getArrow(width, height, strokeWidth, direction, colorScheme));
         int finalWidth = (int) (Math.max(origWidth, origHeight) + 2);
         int finalHeight = (int) (Math.max(origWidth, height) + 2);
@@ -253,9 +253,9 @@ public final class SubstanceImageCreator {
      * @see SwingConstants#SOUTH
      * @see SwingConstants#EAST
      */
-    public static HiDpiAwareIcon getArrowIcon(float width, float height, float strokeWidth,
+    public static SubstanceIcon getArrowIcon(float width, float height, float strokeWidth,
             int direction, SubstanceColorScheme scheme) {
-        return new HiDpiAwareIcon(getArrow(width, height, strokeWidth, direction, scheme));
+        return new SubstanceIcon(getArrow(width, height, strokeWidth, direction, scheme));
     }
 
     /**
@@ -358,7 +358,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the arrow.
      * @return Double arrow icon.
      */
-    public static HiDpiAwareIcon getDoubleArrowIcon(int fontSize, int direction,
+    public static SubstanceIcon getDoubleArrowIcon(int fontSize, int direction,
             SubstanceColorScheme colorScheme) {
         float arrowWidth = SubstanceSizeUtils.getArrowIconWidth(fontSize);
         float arrowHeight = SubstanceSizeUtils.getArrowIconHeight(fontSize);
@@ -388,7 +388,7 @@ public final class SubstanceImageCreator {
      * @see SwingConstants#SOUTH
      * @see SwingConstants#EAST
      */
-    public static HiDpiAwareIcon getDoubleArrowIcon(int fontSize, float fullWidth,
+    public static SubstanceIcon getDoubleArrowIcon(int fontSize, float fullWidth,
             float fullHeight, float arrowGap, float strokeWidth, int direction,
             SubstanceColorScheme colorScheme) {
         boolean toggle = (direction == SwingConstants.WEST)
@@ -428,7 +428,7 @@ public final class SubstanceImageCreator {
                     arrowHeight / scaleFactor, null);
         }
 
-        return new HiDpiAwareIcon(downArrowImage);
+        return new SubstanceIcon(downArrowImage);
     }
 
     /**
@@ -500,7 +500,7 @@ public final class SubstanceImageCreator {
         BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
 
         icon.paintIcon(null, result.getGraphics(), 0, 0);
-        Icon resultIcon = new HiDpiAwareIcon(new GrayscaleFilter().filter(result, null));
+        Icon resultIcon = new SubstanceIcon(new GrayscaleFilter().filter(result, null));
         // System.out.println("Orig " + icon.getIconWidth() + "x" +
         // icon.getIconHeight() + " -> " +
         // resultIcon.getIconWidth() + "x" + resultIcon.getIconHeight());
@@ -529,7 +529,7 @@ public final class SubstanceImageCreator {
 
         BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
         icon.paintIcon(c, result.getGraphics(), 0, 0);
-        return new HiDpiAwareIcon(new TranslucentFilter(alpha).filter(result, null));
+        return new SubstanceIcon(new TranslucentFilter(alpha).filter(result, null));
     }
 
     /**
@@ -757,7 +757,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the icon.
      * @return <code>Minimize</code> icon.
      */
-    public static HiDpiAwareIcon getMinimizeIcon(SubstanceColorScheme scheme,
+    public static SubstanceIcon getMinimizeIcon(SubstanceColorScheme scheme,
             SubstanceColorScheme backgroundScheme) {
         int iSize = SubstanceSizeUtils.getTitlePaneIconSize();
         return getMinimizeIcon(iSize, scheme, backgroundScheme);
@@ -772,7 +772,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the icon.
      * @return <code>Minimize</code> icon.
      */
-    public static HiDpiAwareIcon getMinimizeIcon(int iSize, SubstanceColorScheme scheme,
+    public static SubstanceIcon getMinimizeIcon(int iSize, SubstanceColorScheme scheme,
             SubstanceColorScheme backgroundScheme) {
         BufferedImage image = SubstanceCoreUtilities.getBlankImage(iSize, iSize);
         Graphics2D graphics = (Graphics2D) image.createGraphics();
@@ -790,7 +790,7 @@ public final class SubstanceImageCreator {
         int fgStrength = SubstanceColorUtilities.getColorBrightness(color.getRGB());
         int echoStrength = SubstanceColorUtilities.getColorBrightness(echoColor.getRGB());
         boolean noEcho = Math.abs(fgStrength - echoStrength) < 48;
-        return new HiDpiAwareIcon(SubstanceImageCreator.overlayEcho(image,
+        return new SubstanceIcon(SubstanceImageCreator.overlayEcho(image,
                 noEcho ? 0 : SubstanceColorUtilities.getColorStrength(color), echoColor, 1, 1));
     }
 
@@ -801,7 +801,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the icon.
      * @return <code>Restore</code> icon.
      */
-    public static HiDpiAwareIcon getRestoreIcon(SubstanceColorScheme scheme,
+    public static SubstanceIcon getRestoreIcon(SubstanceColorScheme scheme,
             SubstanceColorScheme backgroundScheme) {
         int iSize = SubstanceSizeUtils.getTitlePaneIconSize();
         BufferedImage image = SubstanceCoreUtilities.getBlankImage(iSize, iSize);
@@ -844,7 +844,7 @@ public final class SubstanceImageCreator {
         int fgStrength = SubstanceColorUtilities.getColorBrightness(color.getRGB());
         int echoStrength = SubstanceColorUtilities.getColorBrightness(echoColor.getRGB());
         boolean noEcho = Math.abs(fgStrength - echoStrength) < 48;
-        return new HiDpiAwareIcon(SubstanceImageCreator.overlayEcho(image,
+        return new SubstanceIcon(SubstanceImageCreator.overlayEcho(image,
                 noEcho ? 0 : SubstanceColorUtilities.getColorStrength(color), echoColor, 1, 1));
     }
 
@@ -855,7 +855,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the icon.
      * @return <code>Maximize</code> icon.
      */
-    public static HiDpiAwareIcon getMaximizeIcon(SubstanceColorScheme scheme,
+    public static SubstanceIcon getMaximizeIcon(SubstanceColorScheme scheme,
             SubstanceColorScheme backgroundScheme) {
         int iSize = SubstanceSizeUtils.getTitlePaneIconSize();
         return getMaximizeIcon(iSize, scheme, backgroundScheme);
@@ -870,7 +870,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the icon.
      * @return <code>Maximize</code> icon.
      */
-    public static HiDpiAwareIcon getMaximizeIcon(int iSize, SubstanceColorScheme scheme,
+    public static SubstanceIcon getMaximizeIcon(int iSize, SubstanceColorScheme scheme,
             SubstanceColorScheme backgroundScheme) {
         BufferedImage image = SubstanceCoreUtilities.getBlankImage(iSize, iSize);
         Graphics2D graphics = (Graphics2D) image.createGraphics();
@@ -895,7 +895,7 @@ public final class SubstanceImageCreator {
         int echoStrength = SubstanceColorUtilities.getColorBrightness(echoColor.getRGB());
         boolean noEcho = Math.abs(fgStrength - echoStrength) < 48;
 
-        return new HiDpiAwareIcon(SubstanceImageCreator.overlayEcho(image,
+        return new SubstanceIcon(SubstanceImageCreator.overlayEcho(image,
                 noEcho ? 0 : SubstanceColorUtilities.getColorStrength(color), echoColor, 1, 1));
     }
 
@@ -906,7 +906,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the icon.
      * @return <code>Close</code> icon.
      */
-    public static HiDpiAwareIcon getCloseIcon(SubstanceColorScheme scheme,
+    public static SubstanceIcon getCloseIcon(SubstanceColorScheme scheme,
             SubstanceColorScheme backgroundScheme) {
         return SubstanceImageCreator.getCloseIcon(SubstanceSizeUtils.getTitlePaneIconSize(), scheme,
                 backgroundScheme);
@@ -921,7 +921,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the icon.
      * @return <code>Close</code> icon.
      */
-    public static HiDpiAwareIcon getCloseIcon(int iSize, SubstanceColorScheme colorScheme,
+    public static SubstanceIcon getCloseIcon(int iSize, SubstanceColorScheme colorScheme,
             SubstanceColorScheme backgroundScheme) {
         BufferedImage image = SubstanceCoreUtilities.getBlankImage(iSize, iSize);
         Graphics2D graphics = (Graphics2D) image.createGraphics();
@@ -949,7 +949,7 @@ public final class SubstanceImageCreator {
         int echoStrength = SubstanceColorUtilities.getColorBrightness(echoColor.getRGB());
         boolean noEcho = Math.abs(fgStrength - echoStrength) < 48;
 
-        return new HiDpiAwareIcon(SubstanceImageCreator.overlayEcho(image,
+        return new SubstanceIcon(SubstanceImageCreator.overlayEcho(image,
                 noEcho ? 0 : SubstanceColorUtilities.getColorStrength(color), echoColor, 1, 1));
     }
 
@@ -1629,14 +1629,14 @@ public final class SubstanceImageCreator {
      *            Icon color scheme.
      * @return Icon representation of the specified integer value.
      */
-    public static HiDpiAwareIcon getHexaMarker(int value, SubstanceColorScheme colorScheme) {
+    public static SubstanceIcon getHexaMarker(int value, SubstanceColorScheme colorScheme) {
         BufferedImage result = SubstanceCoreUtilities.getBlankImage(9, 9);
 
         value %= 16;
         Color offColor = null;
         Color onColor = null;
         if (colorScheme == null) {
-            return new HiDpiAwareIcon(result);
+            return new SubstanceIcon(result);
         }
         boolean isDark = colorScheme.isDark();
         offColor = isDark
@@ -1667,7 +1667,7 @@ public final class SubstanceImageCreator {
         graphics.fillOval(0, 0, 4, 4);
 
         graphics.dispose();
-        return new HiDpiAwareIcon(result);
+        return new SubstanceIcon(result);
     }
 
     /**
@@ -1687,7 +1687,7 @@ public final class SubstanceImageCreator {
         watermark.previewWatermark(graphics, SubstanceColorSchemeUtilities.METALLIC_SKIN, 0, 0,
                 iSize, iSize);
         graphics.dispose();
-        return new HiDpiAwareIcon(result);
+        return new SubstanceIcon(result);
     }
 
     /**

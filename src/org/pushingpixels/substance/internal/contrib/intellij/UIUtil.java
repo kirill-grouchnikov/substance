@@ -38,13 +38,10 @@ public class UIUtil {
         private final static WeakHashMap<GraphicsDevice, Boolean> devicesToRetinaSupportCacheMap = new WeakHashMap<GraphicsDevice, Boolean>();
 
         /**
-         * The best way to understand whether we are on a retina device is
-         * [NSScreen backingScaleFactor] But we should not invoke it from any
-         * thread. We do not have access to the AppKit thread on the other hand.
-         * So let's use a dedicated method. It is rather safe because it caches
-         * a value that has been got on AppKit previously.
+         * This uses {@link GraphicsConfiguration}'s default transform as
+         * detailed at https://bugs.openjdk.java.net/browse/JDK-8172962 (starting in
+         * Java 9).
          */
-
         private static boolean isOracleMacRetinaDeviceModern(GraphicsDevice device) {
             GraphicsConfiguration graphicsConfig = device.getDefaultConfiguration();
 
@@ -54,6 +51,13 @@ public class UIUtil {
             return (scaleX > 1.0f && scaleY > 1.0f);
         }
 
+        /**
+         * The best way to understand whether we are on a retina device is
+         * [NSScreen backingScaleFactor] But we should not invoke it from any
+         * thread. We do not have access to the AppKit thread on the other hand.
+         * So let's use a dedicated method. It is rather safe because it caches
+         * a value that has been got on AppKit previously.
+         */
         private static boolean isOracleMacRetinaDeviceLegacy(GraphicsDevice device) {
             try {
                 Method getScaleFactorMethod = Class.forName("sun.awt.CGraphicsDevice")

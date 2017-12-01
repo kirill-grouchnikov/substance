@@ -77,13 +77,6 @@ public class SubstanceDefaultTableHeaderCellRenderer extends
         SubstanceCortex.ComponentOrParentChainScope.setColorizationFactor(this, 1.0);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax
-	 * .swing.JTable, java.lang.Object, boolean, boolean, int, int)
-	 */
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value,
 			boolean isSelected, boolean hasFocus, int row, int column) {
@@ -227,49 +220,11 @@ public class SubstanceDefaultTableHeaderCellRenderer extends
 		return scheme;
 	}
 
-	// /**
-	// * Returns <code>true</code> if the specified column is sorted.
-	// *
-	// * @param table
-	// * Table.
-	// * @param columnIndex
-	// * Column index.
-	// * @return <code>true</code> if the specified column is sorted,
-	// * <code>false</code> otherwise.
-	// */
-	// public static boolean isColumnSorted(JTable table, int columnIndex) {
-	// RowSorter<? extends TableModel> rowSorter = table.getRowSorter();
-	// if (rowSorter != null) {
-	// java.util.List<? extends RowSorter.SortKey> sortKeys = rowSorter
-	// .getSortKeys();
-	// if (sortKeys.size() > 0
-	// && sortKeys.get(0).getColumn() == table
-	// .convertColumnIndexToModel(columnIndex)) {
-	// switch (sortKeys.get(0).getSortOrder()) {
-	// case ASCENDING:
-	// case DESCENDING:
-	// return true;
-	// }
-	// }
-	// }
-	// return false;
-	// }
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
-	 */
 	@Override
 	public final void paint(Graphics g) {
 		super.paint(g);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
-	 */
 	@Override
 	protected final void paintComponent(Graphics g) {
 		super.paintComponent(g);

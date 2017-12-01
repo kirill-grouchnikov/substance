@@ -61,6 +61,7 @@ public class ClassicHighlightPainter implements SubstanceHighlightPainter {
 		this.painter = new ClassicFillPainter();
 	}
 
+    @Override
 	public String getDisplayName() {
 		return DISPLAY_NAME;
 	}

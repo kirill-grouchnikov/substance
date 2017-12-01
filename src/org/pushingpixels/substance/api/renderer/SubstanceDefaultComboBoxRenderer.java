@@ -96,13 +96,6 @@ public class SubstanceDefaultComboBoxRenderer extends
 		// + i.top + ", " + i.left + ", " + i.bottom + ", " + i.right);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing
-	 * .JList, java.lang.Object, int, boolean, boolean)
-	 */
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value,
 			int index, boolean isSelected, boolean cellHasFocus) {
@@ -228,11 +221,6 @@ public class SubstanceDefaultComboBoxRenderer extends
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.JComponent#getPreferredSize()
-	 */
 	@Override
 	public Dimension getPreferredSize() {
 		Dimension size;

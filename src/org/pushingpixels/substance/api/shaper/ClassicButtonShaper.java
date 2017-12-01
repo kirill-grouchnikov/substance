@@ -69,11 +69,7 @@ public class ClassicButtonShaper implements SubstanceButtonShaper, RectangularBu
      */
     public static final ClassicButtonShaper INSTANCE = new ClassicButtonShaper();
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.pushingpixels.substance.button.SubstanceButtonShaper#getDisplayName()
-     */
+    @Override
     public String getDisplayName() {
         return "Classic";
     }
@@ -82,7 +78,7 @@ public class ClassicButtonShaper implements SubstanceButtonShaper, RectangularBu
     public GeneralPath getButtonOutline(AbstractButton button, float extraInsets, float width,
             float height, boolean isInner) {
         Set<SubstanceSlices.Side> straightSides = SubstanceCoreUtilities.getSides(button,
-                SubstanceSynapse.BUTTON_STRAIGHT_SIDE_PROPERTY);
+                SubstanceSynapse.BUTTON_STRAIGHT_SIDE);
 
         float radius = this.getCornerRadius(button, extraInsets);
         if (isInner) {
@@ -105,12 +101,7 @@ public class ClassicButtonShaper implements SubstanceButtonShaper, RectangularBu
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.pushingpixels.substance.button.SubstanceButtonShaper#getButtonBorder (javax
-     * .swing.AbstractButton)
-     */
+    @Override
     public Border getButtonBorder(final AbstractButton button) {
         return new SubstanceButtonBorder(ClassicButtonShaper.class) {
             public Insets getBorderInsets(Component c) {
@@ -121,7 +112,7 @@ public class ClassicButtonShaper implements SubstanceButtonShaper, RectangularBu
                         ? SubstanceSizeUtils.getTextButtonLRPadding(fontSize)
                         : 0;
                 Set<SubstanceSlices.Side> openSides = SubstanceCoreUtilities.getSides(button,
-                        SubstanceSynapse.BUTTON_OPEN_SIDE_PROPERTY);
+                        SubstanceSynapse.BUTTON_OPEN_SIDE);
                 int left = lrPadding + buttonInsets.left + focusPadding
                         + ((openSides != null) && openSides.contains(SubstanceSlices.Side.LEFT)
                                 ? -1
@@ -143,12 +134,7 @@ public class ClassicButtonShaper implements SubstanceButtonShaper, RectangularBu
         };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.pushingpixels.substance.button.SubstanceButtonShaper#getPreferredSize (javax
-     * .swing.AbstractButton, java.awt.Dimension)
-     */
+    @Override
     public Dimension getPreferredSize(AbstractButton button, Dimension uiPreferredSize) {
         Dimension result;
         boolean toTweakWidth = false;
@@ -168,13 +154,6 @@ public class ClassicButtonShaper implements SubstanceButtonShaper, RectangularBu
                     .getMinButtonWidth(SubstanceSizeUtils.getComponentFontSize(button)));
             result = new Dimension(baseWidth, uiPreferredSize.height);
             int baseHeight = result.height;
-            // int padding = SubstanceSizeUtils
-            // .getButtonHeightPadding(SubstanceSizeUtils
-            // .getComponentFontSize(button));
-            // baseHeight += padding;
-            // baseHeight = Math.max(baseHeight, SubstanceSizeUtils
-            // .getMinButtonHeight(SubstanceSizeUtils
-            // .getComponentFontSize(button)));
             result = new Dimension(result.width, baseHeight);
         } else {
             if (hasNoMinSizeProperty) {
@@ -207,12 +186,6 @@ public class ClassicButtonShaper implements SubstanceButtonShaper, RectangularBu
                 toTweakWidth = true;
             }
         }
-        // else {
-        // if (hasText) {
-        // result = new Dimension(result.width + 2 * extraPadding,
-        // result.height);
-        // }
-        // }
 
         if (SubstanceCoreUtilities.isScrollBarButton(button)) {
             toTweakWidth = false;
@@ -229,21 +202,11 @@ public class ClassicButtonShaper implements SubstanceButtonShaper, RectangularBu
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.pushingpixels.substance.button.SubstanceButtonShaper#isProportionate ()
-     */
+    @Override
     public boolean isProportionate() {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.pushingpixels.substance.shaper.RectangularButtonShaper#getCornerRadius (javax
-     * .swing.JComponent, java.awt.Insets)
-     */
     @Override
     public float getCornerRadius(AbstractButton button, float insets) {
         float radius = SubstanceSizeUtils

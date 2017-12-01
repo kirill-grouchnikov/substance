@@ -61,6 +61,7 @@ public class GlassHighlightPainter implements SubstanceHighlightPainter {
 		this.painter = new GlassFillPainter();
 	}
 
+    @Override
 	public String getDisplayName() {
 		return DISPLAY_NAME;
 	}

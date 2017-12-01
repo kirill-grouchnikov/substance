@@ -31,6 +31,7 @@ package org.pushingpixels.substance.api;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.Window;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -74,8 +75,8 @@ import org.pushingpixels.substance.api.combo.ComboPopupPrototypeCallback;
 import org.pushingpixels.substance.api.font.FontPolicy;
 import org.pushingpixels.substance.api.font.FontSet;
 import org.pushingpixels.substance.api.font.SubstanceFontUtilities;
-import org.pushingpixels.substance.api.iconpack.SubstanceDefaultIconPack;
-import org.pushingpixels.substance.api.iconpack.SubstanceIconPack;
+import org.pushingpixels.substance.api.icon.SubstanceDefaultIconPack;
+import org.pushingpixels.substance.api.icon.SubstanceIconPack;
 import org.pushingpixels.substance.api.painter.preview.DefaultPreviewPainter;
 import org.pushingpixels.substance.api.painter.preview.PreviewPainter;
 import org.pushingpixels.substance.api.password.PasswordStrengthChecker;
@@ -516,10 +517,20 @@ public class SubstanceCortex {
             return result;
         }
 
+        /**
+         * Registers the specified component plugin. It is recommended to call this method
+         * <b>before</b> setting Substance as the look-and-feel in your application initialization
+         * sequence. If this method is called after Substance has been set, you will need to call
+         * the {@link #setSkin(String)} or {@link #setSkin(SubstanceSkin)} APIs to reinitialize the
+         * Substance skin.
+         */
         public static void registerComponentPlugin(SubstanceComponentPlugin componentPlugin) {
             SubstancePluginRepository.getInstance().registerComponentPlugin(componentPlugin);
         }
 
+        /**
+         * Registers the specified skin plugin.
+         */
         public static void registerSkinPlugin(SubstanceSkinPlugin skinPlugin) {
             SubstancePluginRepository.getInstance().registerSkinPlugin(skinPlugin);
         }
@@ -1186,8 +1197,7 @@ public class SubstanceCortex {
          * @see ComponentScope#setTabCloseButtonsVisible(JTabbedPane, Boolean)
          */
         public static void setTabCloseButtonsVisible(Boolean tabCloseButtonsVisible) {
-            UIManager.put(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS_PROPERTY,
-                    tabCloseButtonsVisible);
+            UIManager.put(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS, tabCloseButtonsVisible);
         }
 
         /**
@@ -1204,7 +1214,7 @@ public class SubstanceCortex {
          * @see ComponentScope#setTabCloseCallback(JTabbedPane, TabCloseCallback)
          */
         public static void setTabCloseCallback(TabCloseCallback tabCloseCallback) {
-            UIManager.put(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS_PROPERTY, tabCloseCallback);
+            UIManager.put(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS, tabCloseCallback);
         }
 
         /**
@@ -1671,7 +1681,7 @@ public class SubstanceCortex {
          * @since version 8.0
          */
         public static void setButtonOpenSide(JComponent comp, SubstanceSlices.Side openSide) {
-            comp.putClientProperty(SubstanceSynapse.BUTTON_OPEN_SIDE_PROPERTY, openSide);
+            comp.putClientProperty(SubstanceSynapse.BUTTON_OPEN_SIDE, openSide);
         }
 
         /**
@@ -1689,7 +1699,7 @@ public class SubstanceCortex {
          */
         public static void setButtonOpenSides(JComponent comp,
                 Set<SubstanceSlices.Side> openSides) {
-            comp.putClientProperty(SubstanceSynapse.BUTTON_OPEN_SIDE_PROPERTY, openSides);
+            comp.putClientProperty(SubstanceSynapse.BUTTON_OPEN_SIDE, openSides);
         }
 
         /**
@@ -1707,7 +1717,7 @@ public class SubstanceCortex {
          */
         public static void setButtonStraightSide(JComponent comp,
                 SubstanceSlices.Side straightSide) {
-            comp.putClientProperty(SubstanceSynapse.BUTTON_STRAIGHT_SIDE_PROPERTY, straightSide);
+            comp.putClientProperty(SubstanceSynapse.BUTTON_STRAIGHT_SIDE, straightSide);
         }
 
         /**
@@ -1726,7 +1736,7 @@ public class SubstanceCortex {
          */
         public static void setButtonStraightSides(JComponent comp,
                 Set<SubstanceSlices.Side> straightSides) {
-            comp.putClientProperty(SubstanceSynapse.BUTTON_STRAIGHT_SIDE_PROPERTY, straightSides);
+            comp.putClientProperty(SubstanceSynapse.BUTTON_STRAIGHT_SIDE, straightSides);
         }
 
         /**
@@ -1793,7 +1803,7 @@ public class SubstanceCortex {
          */
         public static void setTabCloseButtonsVisible(JTabbedPane tabbedPane,
                 Boolean tabCloseButtonsVisible) {
-            tabbedPane.putClientProperty(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS_PROPERTY,
+            tabbedPane.putClientProperty(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS,
                     tabCloseButtonsVisible);
         }
 
@@ -1810,7 +1820,7 @@ public class SubstanceCortex {
          */
         public static void setTabCloseButtonVisible(JComponent tabComponent,
                 Boolean tabCloseButtonVisible) {
-            tabComponent.putClientProperty(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS_PROPERTY,
+            tabComponent.putClientProperty(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS,
                     tabCloseButtonVisible);
         }
 
@@ -1831,7 +1841,7 @@ public class SubstanceCortex {
          */
         public static void setTabCloseCallback(JTabbedPane tabbedPane,
                 TabCloseCallback tabCloseCallback) {
-            tabbedPane.putClientProperty(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS_PROPERTY,
+            tabbedPane.putClientProperty(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS,
                     tabCloseCallback);
         }
 
@@ -1852,7 +1862,7 @@ public class SubstanceCortex {
          */
         public static void setTabCloseCallback(JComponent tabComponent,
                 TabCloseCallback tabCloseCallback) {
-            tabComponent.putClientProperty(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS_PROPERTY,
+            tabComponent.putClientProperty(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS,
                     tabCloseCallback);
         }
 
@@ -2018,6 +2028,65 @@ public class SubstanceCortex {
                 Integer comboPopupFlyoutOrientation) {
             comboBox.putClientProperty(SubstanceSynapse.COMBO_BOX_POPUP_FLYOUT_ORIENTATION,
                     comboPopupFlyoutOrientation);
+        }
+
+        public static Component getTopMostParentWithDecorationAreaType(Component comp,
+                DecorationAreaType type) {
+            if (comp == null) {
+                throw new IllegalArgumentException(
+                        "Component scope APIs do not accept null components");
+            }
+            Component c = comp;
+            Component topMostWithSameDecorationAreaType = c;
+            while (c != null) {
+                if (DecorationPainterUtils.getImmediateDecorationType(c) == type) {
+                    topMostWithSameDecorationAreaType = c;
+                }
+                c = c.getParent();
+            }
+            return topMostWithSameDecorationAreaType;
+        }
+
+        public static Point getOffsetInRootPaneCoords(Component comp) {
+            if (comp == null) {
+                throw new IllegalArgumentException(
+                        "Component scope APIs do not accept null components");
+            }
+            JRootPane rootPane = SwingUtilities.getRootPane(comp);
+            int dx = 0;
+            int dy = 0;
+            JComponent titlePane = null;
+
+            if (rootPane != null) {
+                titlePane = SubstanceCoreUtilities.getTitlePane(rootPane);
+
+                if (titlePane != null) {
+                    if (comp.isShowing() && titlePane.isShowing()) {
+                        dx += (comp.getLocationOnScreen().x - titlePane.getLocationOnScreen().x);
+                        dy += (comp.getLocationOnScreen().y - titlePane.getLocationOnScreen().y);
+                    } else {
+                        // have to traverse the hierarchy
+                        Component c = comp;
+                        dx = 0;
+                        dy = 0;
+                        while (c != rootPane) {
+                            dx += c.getX();
+                            dy += c.getY();
+                            c = c.getParent();
+                        }
+                        c = titlePane;
+                        if ((c != null) && (c.getParent() != null)) {
+                            while (c != rootPane) {
+                                dx -= c.getX();
+                                dy -= c.getY();
+                                c = c.getParent();
+                            }
+                        }
+                    }
+                }
+            }
+
+            return new Point(dx, dy);
         }
     }
 

@@ -70,13 +70,6 @@ public class SubstanceDefaultListCellRenderer extends DefaultListCellRenderer {
 		SubstanceCortex.ComponentOrParentChainScope.setColorizationFactor(this, 1.0);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing
-	 * .JList, java.lang.Object, int, boolean, boolean)
-	 */
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value, int index,
 			boolean isSelected, boolean cellHasFocus) {
@@ -185,13 +178,6 @@ public class SubstanceDefaultListCellRenderer extends DefaultListCellRenderer {
 	 */
 	public static class SubstanceUIResource extends SubstanceDefaultListCellRenderer
 			implements javax.swing.plaf.UIResource {
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing
-		 * .JList, java.lang.Object, int, boolean, boolean)
-		 */
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value, int index,
 				boolean isSelected, boolean cellHasFocus) {
@@ -199,41 +185,21 @@ public class SubstanceDefaultListCellRenderer extends DefaultListCellRenderer {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
-	 */
 	@Override
 	public final void paint(Graphics g) {
 		super.paint(g);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
-	 */
 	@Override
 	protected final void paintComponent(Graphics g) {
 		super.paintComponent(g);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.Container#paintComponents(java.awt.Graphics)
-	 */
 	@Override
 	public final void paintComponents(Graphics g) {
 		super.paintComponents(g);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.JComponent#paintBorder(java.awt.Graphics)
-	 */
 	@Override
 	protected final void paintBorder(Graphics g) {
 		super.paintBorder(g);

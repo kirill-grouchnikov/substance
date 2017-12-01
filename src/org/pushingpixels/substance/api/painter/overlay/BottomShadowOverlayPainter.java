@@ -37,9 +37,9 @@ import java.awt.Point;
 
 import javax.swing.SwingUtilities;
 
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
-import org.pushingpixels.substance.api.painter.SubstancePainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
 /**
@@ -82,7 +82,7 @@ public final class BottomShadowOverlayPainter implements
 		Color shadowColor = SubstanceColorUtilities
 				.getBackgroundFillColor(comp).darker();
 
-		Component topMostWithSameDecorationAreaType = SubstancePainterUtils
+		Component topMostWithSameDecorationAreaType = ComponentScope
 				.getTopMostParentWithDecorationAreaType(comp,
 						decorationAreaType);
 		int topHeight = topMostWithSameDecorationAreaType.getHeight();

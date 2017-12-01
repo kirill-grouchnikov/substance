@@ -27,122 +27,124 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.pushingpixels.substance.api.iconpack;
+package org.pushingpixels.substance.api.icon;
 
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
 
 /**
  * Icon pack interface for <b>Substance</b> look and feel. This class is part of officially
- * supported API.<br>
- * <br>
+ * supported API.
  * 
- * Starting from version 8.0, applications using Substance can provide icon packs that match the
- * overall iconography language that is consistent across the entire app.
+ * <p>
+ * Starting from version 8.0, applications using Substance can use a custom icon pack with
+ * {@link SubstanceCortex.GlobalScope#setIconPack(SubstanceIconPack)} to match the overall
+ * iconography language that maintains visual consistency across the entire app.
  * 
  * @author Kirill Grouchnikov
  * @since version 8.0
+ * @see {@link SubstanceCortex.GlobalScope#setIconPack(SubstanceIconPack)}
  */
 public interface SubstanceIconPack {
-    public HiDpiAwareIcon getOptionPaneInformationIcon(int preferredSize,
+    public SubstanceIcon getOptionPaneInformationIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public HiDpiAwareIcon getOptionPaneWarningIcon(int preferredSize,
+    public SubstanceIcon getOptionPaneWarningIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public HiDpiAwareIcon getOptionPaneErrorIcon(int preferredSize,
+    public SubstanceIcon getOptionPaneErrorIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public HiDpiAwareIcon getOptionPaneQuestionIcon(int preferredSize,
+    public SubstanceIcon getOptionPaneQuestionIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getFileChooserNewFolderIcon(int preferredSize,
+
+    public SubstanceIcon getFileChooserNewFolderIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getFileChooserUpFolderIcon(int preferredSize,
+
+    public SubstanceIcon getFileChooserUpFolderIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getFileChooserHomeFolderIcon(int preferredSize,
+
+    public SubstanceIcon getFileChooserHomeFolderIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getFileChooserListViewIcon(int preferredSize,
+
+    public SubstanceIcon getFileChooserListViewIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getFileChooserDetailsViewIcon(int preferredSize,
+
+    public SubstanceIcon getFileChooserDetailsViewIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getFileChooserViewMenuIcon(int preferredSize,
+
+    public SubstanceIcon getFileChooserViewMenuIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getFileChooserComputerIcon(int preferredSize,
+
+    public SubstanceIcon getFileChooserComputerIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getFileChooserDirectoryIcon(int preferredSize,
+
+    public SubstanceIcon getFileChooserDirectoryIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getFileChooserFileIcon(int preferredSize,
+
+    public SubstanceIcon getFileChooserFileIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getFileChooserFloppyDriveIcon(int preferredSize,
+
+    public SubstanceIcon getFileChooserFloppyDriveIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getFileChooserHardDriveIcon(int preferredSize,
+
+    public SubstanceIcon getFileChooserHardDriveIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getLockIcon(int preferredSize,
+
+    public SubstanceIcon getLockIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getInspectIcon(int preferredSize,
+
+    public SubstanceIcon getInspectIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getRefreshIcon(int preferredSize,
+
+    public SubstanceIcon getRefreshIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getAllowedIcon(int preferredSize,
+
+    public SubstanceIcon getAllowedIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getNotAllowedIcon(int preferredSize,
+
+    public SubstanceIcon getNotAllowedIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getTextCopyActionIcon(int preferredSize,
+
+    public SubstanceIcon getTextCopyActionIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getTextCutActionIcon(int preferredSize,
+
+    public SubstanceIcon getTextCutActionIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getTextPasteActionIcon(int preferredSize,
+
+    public SubstanceIcon getTextPasteActionIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getTextDeleteActionIcon(int preferredSize,
+
+    public SubstanceIcon getTextDeleteActionIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getTextSelectAllActionIcon(int preferredSize,
+
+    public SubstanceIcon getTextSelectAllActionIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getColorChooserColorPalettesIcon(int preferredSize,
+
+    public SubstanceIcon getColorChooserColorPalettesIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getColorChooserColorSlidersIcon(int preferredSize,
+
+    public SubstanceIcon getColorChooserColorSlidersIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getColorChooserColorSwatchesIcon(int preferredSize,
+
+    public SubstanceIcon getColorChooserColorSwatchesIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getColorChooserColorWheelIcon(int preferredSize,
+
+    public SubstanceIcon getColorChooserColorWheelIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getColorChooserCrayonsIcon(int preferredSize,
+
+    public SubstanceIcon getColorChooserCrayonsIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getColorChooserImagePalettesIcon(int preferredSize,
+
+    public SubstanceIcon getColorChooserImagePalettesIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getScrollVerticalIcon(int preferredSize,
+
+    public SubstanceIcon getScrollVerticalIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getScrollHorizontalIcon(int preferredSize,
+
+    public SubstanceIcon getScrollHorizontalIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
-    
-    public HiDpiAwareIcon getScrollAllIcon(int preferredSize,
+
+    public SubstanceIcon getScrollAllIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 }

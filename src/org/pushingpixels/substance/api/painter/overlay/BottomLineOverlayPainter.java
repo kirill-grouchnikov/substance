@@ -34,11 +34,11 @@ import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.ColorSchemeSingleColorQuery;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.painter.SubstancePainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
@@ -69,7 +69,7 @@ public final class BottomLineOverlayPainter implements SubstanceOverlayPainter {
 	@Override
 	public void paintOverlay(Graphics2D graphics, Component comp,
 			DecorationAreaType decorationAreaType, int width, int height, SubstanceSkin skin) {
-		Component topMostWithSameDecorationAreaType = SubstancePainterUtils
+		Component topMostWithSameDecorationAreaType = ComponentScope
 				.getTopMostParentWithDecorationAreaType(comp, decorationAreaType);
 
 		float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();

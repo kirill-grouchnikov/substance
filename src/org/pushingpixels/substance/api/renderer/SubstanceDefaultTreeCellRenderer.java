@@ -156,6 +156,7 @@ public class SubstanceDefaultTreeCellRenderer extends JLabel implements TreeCell
 	 * foreground color is set based on the selection and the icon is set based
 	 * on on leaf and expanded.
 	 */
+    @Override
 	public Component getTreeCellRendererComponent(JTree tree, Object value,
 			boolean sel, boolean expanded, boolean leaf, int row,
 			boolean hasFocus) {
@@ -432,21 +433,11 @@ public class SubstanceDefaultTreeCellRenderer extends JLabel implements TreeCell
 			boolean newValue) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
-	 */
 	@Override
 	public final void paint(Graphics g) {
 		super.paint(g);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
-	 */
 	@Override
 	protected final void paintComponent(Graphics g) {
 		super.paintComponent(g);

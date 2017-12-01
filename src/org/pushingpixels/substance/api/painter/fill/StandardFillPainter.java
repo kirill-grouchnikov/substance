@@ -55,10 +55,12 @@ import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
  * @author Kirill Grouchnikov
  */
 public class StandardFillPainter implements SubstanceFillPainter {
+    @Override
 	public String getDisplayName() {
 		return "Standard";
 	}
 
+    @Override
 	public void paintContourBackground(Graphics g, Component comp, float width,
 			float height, Shape contour, boolean isFocused,
 			SubstanceColorScheme fillScheme, boolean hasShine) {
@@ -218,7 +220,6 @@ public class StandardFillPainter implements SubstanceFillPainter {
 	 * @return The color of the middle portion of the fill from the bottom.
 	 */
 	public Color getMidFillColorBottom(SubstanceColorScheme fillScheme) {
-
 		return this.getMidFillColorTop(fillScheme);
 	}
 

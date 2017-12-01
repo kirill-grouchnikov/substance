@@ -74,25 +74,12 @@ public class ClassicDecorationPainter implements SubstanceDecorationPainter {
 		this.painter = new ClassicFillPainter();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.utils.SubstanceTrait#getDisplayName()
-	 */
+    @Override
 	public String getDisplayName() {
 		return DISPLAY_NAME;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * 
-	 * 
-	 * @seeorg.pushingpixels.substance.painter.decoration.SubstanceDecorationPainter
-	 * # paintDecorationArea(java.awt.Graphics2D, java.awt.Component,
-	 * org.pushingpixels.substance.painter.decoration.DecorationAreaType, int,
-	 * int, org.pushingpixels.substance.skin.SubstanceSkin)
-	 */
+	@Override
 	public void paintDecorationArea(Graphics2D graphics, Component comp,
 			DecorationAreaType decorationAreaType, int width, int height,
 			SubstanceSkin skin) {

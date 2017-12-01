@@ -44,7 +44,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 
-import org.pushingpixels.substance.api.hidpi.IsHiDpiAware;
+import org.pushingpixels.substance.api.icon.IsHiDpiAware;
 import org.pushingpixels.substance.internal.contrib.intellij.JBHiDPIScaledImage;
 
 /**

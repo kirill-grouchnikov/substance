@@ -91,7 +91,7 @@ public class PairwiseButtonBackgroundDelegate {
 	 *            Button orientation.
 	 * @param toIgnoreOpenSides
 	 *            If <code>true</code>, the open side setting (controlled by the
-	 *            {@link SubstanceLookAndFeel#BUTTON_OPEN_SIDE_PROPERTY} is
+	 *            {@link SubstanceLookAndFeel#BUTTON_OPEN_SIDE} is
 	 *            ignored.
 	 */
 	public static void updatePairwiseBackground(Graphics g,
@@ -120,7 +120,7 @@ public class PairwiseButtonBackgroundDelegate {
 		
 		Set<Side> openSides = toIgnoreOpenSides ? EnumSet.noneOf(Side.class)
 				: SubstanceCoreUtilities.getSides(button,
-				        SubstanceSynapse.BUTTON_OPEN_SIDE_PROPERTY);
+				        SubstanceSynapse.BUTTON_OPEN_SIDE);
 		boolean needsRotation = (openSides != null) && 
 				(openSides.contains(Side.BOTTOM) || openSides.contains(Side.TOP));
 
@@ -230,7 +230,7 @@ public class PairwiseButtonBackgroundDelegate {
 	 *            Composite to apply before painting the button.
 	 * @param toIgnoreOpenSides
 	 *            If <code>true</code>, the open side setting (controlled by the
-	 *            {@link SubstanceLookAndFeel#BUTTON_OPEN_SIDE_PROPERTY} is
+	 *            {@link SubstanceLookAndFeel#BUTTON_OPEN_SIDE} is
 	 *            ignored.
 	 * @return Button background image.
 	 */
@@ -244,9 +244,9 @@ public class PairwiseButtonBackgroundDelegate {
 			return null;
 		Set<Side> openSides = toIgnoreOpenSides ? EnumSet.noneOf(Side.class)
 				: SubstanceCoreUtilities.getSides(button,
-				        SubstanceSynapse.BUTTON_OPEN_SIDE_PROPERTY);
+				        SubstanceSynapse.BUTTON_OPEN_SIDE);
 		Set<Side> straightSides = SubstanceCoreUtilities.getSides(button, 
-		        SubstanceSynapse.BUTTON_STRAIGHT_SIDE_PROPERTY);
+		        SubstanceSynapse.BUTTON_STRAIGHT_SIDE);
 		boolean isBorderPainted = button.isBorderPainted();
 		boolean isContentAreaFilled = button.isContentAreaFilled();
 

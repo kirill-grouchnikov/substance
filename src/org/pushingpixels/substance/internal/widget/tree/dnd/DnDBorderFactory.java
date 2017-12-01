@@ -41,8 +41,8 @@ import javax.swing.border.Border;
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.colorscheme.SunsetColorScheme;
-import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
-import org.pushingpixels.substance.api.iconpack.SubstanceIconPack;
+import org.pushingpixels.substance.api.icon.SubstanceIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIconPack;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
@@ -72,7 +72,7 @@ class DnDBorderFactory {
             SubstanceIconPack iconPack = SubstanceCortex.GlobalScope.getIconPack();
             SubstanceColorScheme colorScheme = SubstanceCoreUtilities.getSkin(c)
                     .getEnabledColorScheme(SubstanceCortex.ComponentScope.getDecorationType(c));
-            HiDpiAwareIcon icon = iconPack.getAllowedIcon(12, colorScheme);
+            SubstanceIcon icon = iconPack.getAllowedIcon(12, colorScheme);
 
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.translate(x, yh - icon.getIconHeight());

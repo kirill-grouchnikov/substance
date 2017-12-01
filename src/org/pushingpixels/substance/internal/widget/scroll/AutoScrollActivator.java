@@ -59,7 +59,7 @@ import javax.swing.border.Border;
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.iconpack.SubstanceIconPack;
+import org.pushingpixels.substance.api.icon.SubstanceIconPack;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**

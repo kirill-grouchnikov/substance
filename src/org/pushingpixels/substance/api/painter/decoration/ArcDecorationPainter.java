@@ -45,10 +45,10 @@ import javax.swing.JComponent;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.painter.SubstancePainterUtils;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
@@ -170,7 +170,7 @@ public class ArcDecorationPainter implements SubstanceDecorationPainter {
 	 */
 	private void paintExtraBackground(Graphics2D graphics, Container parent, Component comp,
 			int width, int height, SubstanceColorScheme scheme) {
-		Point offset = SubstancePainterUtils.getOffsetInRootPaneCoords(comp);
+		Point offset = ComponentScope.getOffsetInRootPaneCoords(comp);
 		JRootPane rootPane = SwingUtilities.getRootPane(parent);
 		// fix for bug 234 - Window doesn't have a root pane.
 		JComponent titlePane = null;

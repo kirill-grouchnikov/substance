@@ -82,8 +82,8 @@ public final class SubstanceSlices {
      * Enumerates available sides.
      * 
      * @author Kirill Grouchnikov
-     * @see SubstanceLookAndFeel#BUTTON_OPEN_SIDE_PROPERTY
-     * @see SubstanceLookAndFeel#BUTTON_STRAIGHT_SIDE_PROPERTY
+     * @see SubstanceLookAndFeel#BUTTON_OPEN_SIDE
+     * @see SubstanceLookAndFeel#BUTTON_STRAIGHT_SIDE
      */
     public static enum Side {
         /**

@@ -41,13 +41,6 @@ import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
  * @author Kirill Grouchnikov
  */
 public class ClassicBorderPainter extends StandardBorderPainter {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.substance.api.painter.border.StandardBorderPainter#
-	 * getDisplayName()
-	 */
 	@Override
 	public String getDisplayName() {
 		return "Classic";

@@ -51,21 +51,11 @@ import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
  * @author Kirill Grouchnikov
  */
 public class StandardBorderPainter implements SubstanceBorderPainter {
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.pushingpixels.substance.api.trait.SubstanceTrait#getDisplayName()
-     */
+    @Override
     public String getDisplayName() {
         return "Standard";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter
-     * #isPaintingInnerContour()
-     */
     @Override
     public boolean isPaintingInnerContour() {
         return false;

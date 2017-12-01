@@ -34,11 +34,11 @@ import javax.swing.colorchooser.AbstractColorChooserPanel;
 
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIcon;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 public abstract class SubstanceColorChooserPanel extends AbstractColorChooserPanel {
-    public abstract HiDpiAwareIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme);
+    public abstract SubstanceIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme);
 
     @Override
     public Icon getLargeDisplayIcon() {

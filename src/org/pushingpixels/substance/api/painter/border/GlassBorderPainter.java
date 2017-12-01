@@ -41,13 +41,6 @@ import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
  * @author Kirill Grouchnikov
  */
 public class GlassBorderPainter extends StandardBorderPainter {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.substance.api.painter.border.StandardBorderPainter#
-	 * getDisplayName()
-	 */
 	@Override
 	public String getDisplayName() {
 		return "Glass";

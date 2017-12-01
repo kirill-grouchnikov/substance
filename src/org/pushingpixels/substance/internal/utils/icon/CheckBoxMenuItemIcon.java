@@ -45,7 +45,7 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIcon;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -76,8 +76,8 @@ public class CheckBoxMenuItemIcon implements Icon, UIResource {
 	/**
 	 * Icon cache to speed up the painting.
 	 */
-	private static LazyResettableHashMap<HiDpiAwareIcon> iconMap =
-			new LazyResettableHashMap<HiDpiAwareIcon>("CheckBoxMenuItemIcon");
+	private static LazyResettableHashMap<SubstanceIcon> iconMap =
+			new LazyResettableHashMap<SubstanceIcon>("CheckBoxMenuItemIcon");
 
 	/**
 	 * Creates a new icon.
@@ -97,7 +97,7 @@ public class CheckBoxMenuItemIcon implements Icon, UIResource {
 	 * 
 	 * @return Icon to paint.
 	 */
-	private HiDpiAwareIcon getIconToPaint() {
+	private SubstanceIcon getIconToPaint() {
 		if (this.menuItem == null)
 			return null;
 
@@ -140,9 +140,9 @@ public class CheckBoxMenuItemIcon implements Icon, UIResource {
 				baseFillColorScheme.getDisplayName(), baseMarkColorScheme.getDisplayName(), 
 				baseBorderColorScheme.getDisplayName(), visibility,
 				isCheckMarkFadingOut, alpha);
-		HiDpiAwareIcon iconBase = iconMap.get(keyBase);
+		SubstanceIcon iconBase = iconMap.get(keyBase);
 		if (iconBase == null) {
-			iconBase = new HiDpiAwareIcon(SubstanceImageCreator.getCheckBox(
+			iconBase = new SubstanceIcon(SubstanceImageCreator.getCheckBox(
 					this.menuItem, fillPainter, borderPainter, checkMarkSize,
 					currState, baseFillColorScheme, baseMarkColorScheme,
 					baseBorderColorScheme, visibility, isCheckMarkFadingOut, alpha));
@@ -188,9 +188,9 @@ public class CheckBoxMenuItemIcon implements Icon, UIResource {
 								.getDisplayName(), markColorScheme
 								.getDisplayName(), borderColorScheme
 								.getDisplayName(), visibility, alpha);
-				HiDpiAwareIcon iconLayer = iconMap.get(keyLayer);
+				SubstanceIcon iconLayer = iconMap.get(keyLayer);
 				if (iconLayer == null) {
-					iconLayer = new HiDpiAwareIcon(SubstanceImageCreator.getCheckBox(
+					iconLayer = new SubstanceIcon(SubstanceImageCreator.getCheckBox(
 							this.menuItem, fillPainter,
 							borderPainter, checkMarkSize, currState,
 							fillColorScheme, markColorScheme,
@@ -204,7 +204,7 @@ public class CheckBoxMenuItemIcon implements Icon, UIResource {
 		}
 
 		g2d.dispose();
-		return new HiDpiAwareIcon(result);
+		return new SubstanceIcon(result);
 	}
 
 	@Override

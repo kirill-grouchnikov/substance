@@ -37,9 +37,9 @@ import java.awt.Point;
 
 import javax.swing.SwingUtilities;
 
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
-import org.pushingpixels.substance.api.painter.SubstancePainterUtils;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 
 /**
@@ -81,7 +81,7 @@ public final class TopShadowOverlayPainter implements SubstanceOverlayPainter {
 				.getBackgroundFillColor(comp).darker();
 
 		// need to handle components "embedded" in other components
-		Component topMostWithSameDecorationAreaType = SubstancePainterUtils
+		Component topMostWithSameDecorationAreaType = ComponentScope
 				.getTopMostParentWithDecorationAreaType(comp,
 						decorationAreaType);
 		Point inTopMost = SwingUtilities.convertPoint(comp, new Point(0, 0),

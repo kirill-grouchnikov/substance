@@ -46,7 +46,7 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIcon;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.utils.HashMapKey;
@@ -69,8 +69,8 @@ public class ArrowButtonTransitionAwareIcon implements Icon {
 	 * is that the {@link #delegate} returns an icon that paints the same for
 	 * the same parameters.
 	 */
-	private static LazyResettableHashMap<HiDpiAwareIcon> iconMap =
-			new LazyResettableHashMap<HiDpiAwareIcon>("ButtonArrowTransitionAwareIcon");
+	private static LazyResettableHashMap<SubstanceIcon> iconMap =
+			new LazyResettableHashMap<SubstanceIcon>("ButtonArrowTransitionAwareIcon");
 
 	/**
 	 * Arrow icon orientation. Must be one of {@link SwingConstants#NORTH},
@@ -142,7 +142,7 @@ public class ArrowButtonTransitionAwareIcon implements Icon {
 	 *            Arrow button.
 	 * @return Icon to be painted.
 	 */
-	private HiDpiAwareIcon getIconToPaint() {
+	private SubstanceIcon getIconToPaint() {
 		boolean isMenu = (this.component instanceof JMenu);
 		StateTransitionTracker stateTransitionTracker = this.transitionAwareUIDelegate
 				.getTransitionAwareUI().getTransitionTracker();
@@ -167,9 +167,9 @@ public class ArrowButtonTransitionAwareIcon implements Icon {
 				this.component.getClass().getName(), this.orientation, 
 				SubstanceSizeUtils.getComponentFontSize(this.component), 
 				baseScheme.getDisplayName(), baseAlpha);
-		HiDpiAwareIcon layerBase = iconMap.get(keyBase);
+		SubstanceIcon layerBase = iconMap.get(keyBase);
 		if (layerBase == null) {
-			HiDpiAwareIcon baseFullOpacity = this.delegate.getColorSchemeIcon(baseScheme);
+			SubstanceIcon baseFullOpacity = this.delegate.getColorSchemeIcon(baseScheme);
 			if (baseAlpha == 1.0f) {
 				layerBase = baseFullOpacity;
 				iconMap.put(keyBase, layerBase);
@@ -181,7 +181,7 @@ public class ArrowButtonTransitionAwareIcon implements Icon {
 				g2base.setComposite(AlphaComposite.SrcOver.derive(baseAlpha));
 				baseFullOpacity.paintIcon(this.component, g2base, 0, 0);
 				g2base.dispose();
-				layerBase = new HiDpiAwareIcon(baseImage);
+				layerBase = new SubstanceIcon(baseImage);
 				iconMap.put(keyBase, layerBase);
 			}
 		}
@@ -232,9 +232,9 @@ public class ArrowButtonTransitionAwareIcon implements Icon {
 								this.orientation, SubstanceSizeUtils
 										.getComponentFontSize(this.component),
 								scheme.getDisplayName(), alpha);
-				HiDpiAwareIcon layer = iconMap.get(key);
+				SubstanceIcon layer = iconMap.get(key);
 				if (layer == null) {
-					HiDpiAwareIcon fullOpacity = this.delegate.getColorSchemeIcon(scheme);
+					SubstanceIcon fullOpacity = this.delegate.getColorSchemeIcon(scheme);
 					if (alpha == 1.0f) {
 						layer = fullOpacity;
 						iconMap.put(key, layer);
@@ -246,7 +246,7 @@ public class ArrowButtonTransitionAwareIcon implements Icon {
 						g2layer.setComposite(AlphaComposite.SrcOver.derive(alpha));
 						fullOpacity.paintIcon(this.component, g2layer, 0, 0);
 						g2layer.dispose();
-						layer = new HiDpiAwareIcon(image);
+						layer = new SubstanceIcon(image);
 						iconMap.put(key, layer);
 					}
 				}
@@ -254,7 +254,7 @@ public class ArrowButtonTransitionAwareIcon implements Icon {
 			}
 		}
 		g2d.dispose();
-		return new HiDpiAwareIcon(result);
+		return new SubstanceIcon(result);
 	}
 
 	/*

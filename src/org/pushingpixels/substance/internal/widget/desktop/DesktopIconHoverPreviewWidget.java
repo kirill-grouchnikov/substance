@@ -51,7 +51,7 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import org.pushingpixels.substance.api.SubstanceWidget;
-import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIcon;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.ui.SubstanceDesktopIconUI;
 import org.pushingpixels.substance.internal.utils.WidgetUtilities;
@@ -107,7 +107,7 @@ public class DesktopIconHoverPreviewWidget extends SubstanceWidget<JDesktopIcon>
 			if (previewImage != null) {
 				int scaleFactor = UIUtil.getScaleFactor();
 				DesktopIconHoverPreviewWidget.this.previewWindow.getContentPane().removeAll();
-				JLabel previewLabel = new JLabel(new HiDpiAwareIcon(previewImage));
+				JLabel previewLabel = new JLabel(new SubstanceIcon(previewImage));
 				DesktopIconHoverPreviewWidget.this.previewWindow.getContentPane().add(previewLabel,
 						BorderLayout.CENTER);
 				DesktopIconHoverPreviewWidget.this.previewWindow.setSize(

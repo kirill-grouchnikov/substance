@@ -27,21 +27,8 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
  */
-package org.pushingpixels.substance.api.iconpack;
+package org.pushingpixels.substance.api.icon;
 
-import javax.swing.Icon;
-import javax.swing.plaf.UIResource;
-
-import org.pushingpixels.substance.api.hidpi.IsHiDpiAware;
-import org.pushingpixels.substance.api.hidpi.IsResizable;
-
-/**
- * Icon interface for <b>Substance</b> icon packs. This class is
- * part of officially supported API.<br>
- * 
- * @author Kirill Grouchnikov
- * @since version 8.0
- */
-public interface SubstanceIcon extends Icon, IsResizable, IsHiDpiAware, UIResource {
-
+public interface IsHiDpiAware {
+	public boolean isHiDpiAware();
 }

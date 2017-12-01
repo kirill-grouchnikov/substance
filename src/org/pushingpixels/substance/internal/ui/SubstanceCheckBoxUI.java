@@ -51,7 +51,7 @@ import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIcon;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -88,7 +88,7 @@ public class SubstanceCheckBoxUI extends SubstanceRadioButtonUI {
 	/**
 	 * Hash map for storing icons.
 	 */
-	private static LazyResettableHashMap<HiDpiAwareIcon> icons = new LazyResettableHashMap<HiDpiAwareIcon>(
+	private static LazyResettableHashMap<SubstanceIcon> icons = new LazyResettableHashMap<SubstanceIcon>(
 			"SubstanceCheckBoxUI");
 
 	/**
@@ -181,9 +181,9 @@ public class SubstanceCheckBoxUI extends SubstanceRadioButtonUI {
 				baseMarkColorScheme.getDisplayName(), 
 				baseBorderColorScheme.getDisplayName(), visibility, 
 				isCheckMarkFadingOut, alpha);
-		HiDpiAwareIcon iconBase = icons.get(keyBase);
+		SubstanceIcon iconBase = icons.get(keyBase);
 		if (iconBase == null) {
-			iconBase = new HiDpiAwareIcon(SubstanceImageCreator.getCheckBox(button,
+			iconBase = new SubstanceIcon(SubstanceImageCreator.getCheckBox(button,
 					fillPainter, borderPainter, checkMarkSize, currState,
 					baseFillColorScheme, baseMarkColorScheme,
 					baseBorderColorScheme, visibility, isCheckMarkFadingOut, alpha));
@@ -228,9 +228,9 @@ public class SubstanceCheckBoxUI extends SubstanceRadioButtonUI {
 								.getDisplayName(), markColorScheme
 								.getDisplayName(), borderColorScheme
 								.getDisplayName(), visibility);
-				HiDpiAwareIcon iconLayer = icons.get(keyLayer);
+				SubstanceIcon iconLayer = icons.get(keyLayer);
 				if (iconLayer == null) {
-					iconLayer = new HiDpiAwareIcon(SubstanceImageCreator.getCheckBox(
+					iconLayer = new SubstanceIcon(SubstanceImageCreator.getCheckBox(
 							button, fillPainter, borderPainter,
 							checkMarkSize, currState, fillColorScheme,
 							markColorScheme, borderColorScheme,
@@ -243,7 +243,7 @@ public class SubstanceCheckBoxUI extends SubstanceRadioButtonUI {
 		}
 
 		g2d.dispose();
-		return new HiDpiAwareIcon(result);
+		return new SubstanceIcon(result);
 	}
 
 	/*

@@ -24,7 +24,7 @@ import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.hidpi.HiDpiAwareIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIcon;
 
 /**
  * A HSB color chooser, which displays a hue/saturation color wheel, and a
@@ -90,7 +90,7 @@ public class ColorWheelChooser extends SubstanceColorChooserPanel implements UIR
 	}
 
     @Override
-    public HiDpiAwareIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
+    public SubstanceIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
         return SubstanceCortex.GlobalScope.getIconPack().getColorChooserColorWheelIcon(size,
                 colorScheme);
     }
