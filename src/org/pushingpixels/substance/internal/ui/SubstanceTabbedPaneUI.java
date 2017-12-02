@@ -573,30 +573,27 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
             // mouse press, and that the tab has close button
             if (SubstanceCoreUtilities.hasCloseButton(SubstanceTabbedPaneUI.this.tabPane, tabIndex)
                     && (tabIndex == this.tabOfPressedCloseButton)) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        if ((tabIndex >= 0)
-                                && SubstanceTabbedPaneUI.this.tabPane.isEnabledAt(tabIndex)) {
-                            Rectangle rect = new Rectangle();
-                            rect = SubstanceTabbedPaneUI.this.getTabBounds(tabIndex, rect);
+                SwingUtilities.invokeLater(() -> {
+                    if ((tabIndex >= 0)
+                            && SubstanceTabbedPaneUI.this.tabPane.isEnabledAt(tabIndex)) {
+                        Rectangle rect = new Rectangle();
+                        rect = SubstanceTabbedPaneUI.this.getTabBounds(tabIndex, rect);
 
-                            Rectangle close = SubstanceTabbedPaneUI.this
-                                    .getCloseButtonRectangleForEvents(tabIndex, rect.x, rect.y,
-                                            rect.width, rect.height);
-                            // System.out.println("press " + close + " "
-                            // + e.getPoint());
-                            if (close.contains(e.getPoint())) {
-                                TabCloseCallback closeCallback = SubstanceCoreUtilities
-                                        .getTabCloseCallback(e, SubstanceTabbedPaneUI.this.tabPane,
-                                                tabIndex);
+                        Rectangle close = SubstanceTabbedPaneUI.this
+                                .getCloseButtonRectangleForEvents(tabIndex, rect.x, rect.y,
+                                        rect.width, rect.height);
+                        // System.out.println("press " + close + " "
+                        // + e.getPoint());
+                        if (close.contains(e.getPoint())) {
+                            TabCloseCallback closeCallback = SubstanceCoreUtilities
+                                    .getTabCloseCallback(e, SubstanceTabbedPaneUI.this.tabPane,
+                                            tabIndex);
 
-                                TabCloseKind tabCloseKind = (closeCallback == null)
-                                        ? TabCloseKind.THIS
-                                        : closeCallback.onCloseButtonClick(
-                                                SubstanceTabbedPaneUI.this.tabPane, tabIndex, e);
+                            TabCloseKind tabCloseKind = (closeCallback == null) ? TabCloseKind.THIS
+                                    : closeCallback.onCloseButtonClick(
+                                            SubstanceTabbedPaneUI.this.tabPane, tabIndex, e);
 
-                                SubstanceTabbedPaneUI.this.tryCloseTabs(tabIndex, tabCloseKind);
-                            }
+                            SubstanceTabbedPaneUI.this.tryCloseTabs(tabIndex, tabCloseKind);
                         }
                     }
                 });

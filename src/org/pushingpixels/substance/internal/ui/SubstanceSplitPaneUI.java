@@ -47,55 +47,50 @@ import org.pushingpixels.substance.internal.utils.SubstanceSplitPaneDivider;
  * @author Kirill Grouchnikov
  */
 public class SubstanceSplitPaneUI extends BasicSplitPaneUI {
-	/**
-	 * Property change listener that listens on changes to
-	 * {@link JSplitPane#ORIENTATION_PROPERTY} property.
-	 */
-	protected PropertyChangeListener substancePropertyListener;
+    /**
+     * Property change listener that listens on changes to {@link JSplitPane#ORIENTATION_PROPERTY}
+     * property.
+     */
+    protected PropertyChangeListener substancePropertyListener;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
-	 */
-	public static ComponentUI createUI(JComponent comp) {
-		SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
-		return new SubstanceSplitPaneUI();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
+     */
+    public static ComponentUI createUI(JComponent comp) {
+        SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
+        return new SubstanceSplitPaneUI();
+    }
 
-	@Override
-	protected void installListeners() {
-		super.installListeners();
+    @Override
+    protected void installListeners() {
+        super.installListeners();
 
-		this.substancePropertyListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (JSplitPane.ORIENTATION_PROPERTY.equals(evt
-						.getPropertyName())) {
-					SubstanceSplitPaneDivider substanceDivider = (SubstanceSplitPaneDivider) SubstanceSplitPaneUI.this.divider;
-					substanceDivider.updateOneTouchButtons((Integer) evt
-							.getNewValue());
-				}
-			};
-		};
-		this.splitPane
-				.addPropertyChangeListener(this.substancePropertyListener);
-	}
+        this.substancePropertyListener = (PropertyChangeEvent evt) -> {
+            if (JSplitPane.ORIENTATION_PROPERTY.equals(evt.getPropertyName())) {
+                SubstanceSplitPaneDivider substanceDivider = (SubstanceSplitPaneDivider) SubstanceSplitPaneUI.this.divider;
+                substanceDivider.updateOneTouchButtons((Integer) evt.getNewValue());
+            }
+            ;
+        };
+        this.splitPane.addPropertyChangeListener(this.substancePropertyListener);
+    }
 
-	@Override
-	protected void uninstallListeners() {
-		this.splitPane
-				.removePropertyChangeListener(this.substancePropertyListener);
-		this.substancePropertyListener = null;
-		super.uninstallListeners();
-	}
+    @Override
+    protected void uninstallListeners() {
+        this.splitPane.removePropertyChangeListener(this.substancePropertyListener);
+        this.substancePropertyListener = null;
+        super.uninstallListeners();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicSplitPaneUI#createDefaultDivider()
-	 */
-	@Override
-	public BasicSplitPaneDivider createDefaultDivider() {
-		return new SubstanceSplitPaneDivider(this);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicSplitPaneUI#createDefaultDivider()
+     */
+    @Override
+    public BasicSplitPaneDivider createDefaultDivider() {
+        return new SubstanceSplitPaneDivider(this);
+    }
 }

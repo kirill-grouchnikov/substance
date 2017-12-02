@@ -24,7 +24,6 @@ import javax.swing.Icon;
 import javax.swing.UIManager;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.VisualMargin;
@@ -86,11 +85,7 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
         new ColorSliderTextFieldHandler(greenField, ccModel, 1);
         new ColorSliderTextFieldHandler(blueField, ccModel, 2);
 
-        ccModel.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent evt) {
-                setColorToModel(ccModel.getColor());
-            }
-        });
+        ccModel.addChangeListener((ChangeEvent e) -> setColorToModel(ccModel.getColor()));
         redField.setMinimumSize(redField.getPreferredSize());
         greenField.setMinimumSize(greenField.getPreferredSize());
         blueField.setMinimumSize(blueField.getPreferredSize());

@@ -29,7 +29,6 @@ import java.awt.Robot;
 import java.awt.Transparency;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -189,11 +188,7 @@ public class ColorPicker extends AbstractColorChooserPanel {
             cursorGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                     RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
-            pickerTimer = new Timer(5, new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    updatePicker();
-                }
-            });
+            pickerTimer = new Timer(5, (ActionEvent e) -> updatePicker());
         }
         return pickerFrame;
     }

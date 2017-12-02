@@ -147,15 +147,13 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
     @Override
     protected void installListeners() {
         super.installListeners();
-        this.substancePropertyListener = new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (JInternalFrame.TITLE_PROPERTY.equals(evt.getPropertyName())) {
-                    SubstanceInternalFrameTitlePane.this.setToolTipText((String) evt.getNewValue());
-                }
-                if ("JInternalFrame.messageType".equals(evt.getPropertyName())) {
-                    updateOptionPaneState();
-                    frame.repaint();
-                }
+        this.substancePropertyListener = (PropertyChangeEvent evt) -> {
+            if (JInternalFrame.TITLE_PROPERTY.equals(evt.getPropertyName())) {
+                SubstanceInternalFrameTitlePane.this.setToolTipText((String) evt.getNewValue());
+            }
+            if ("JInternalFrame.messageType".equals(evt.getPropertyName())) {
+                updateOptionPaneState();
+                frame.repaint();
             }
         };
         this.frame.addPropertyChangeListener(this.substancePropertyListener);

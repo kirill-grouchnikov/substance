@@ -42,73 +42,60 @@ import org.pushingpixels.substance.api.SubstanceWidget;
  * @author Kirill Grouchnikov
  */
 public class GhostAnimationWidget extends SubstanceWidget<AbstractButton> {
-	/**
-	 * Model change listener for ghost image effects.
-	 */
-	private GhostingListener ghostModelChangeListener;
+    /**
+     * Model change listener for ghost image effects.
+     */
+    private GhostingListener ghostModelChangeListener;
 
-	/**
-	 * Property change listener. Listens on changes to the
-	 * {@link AbstractButton#MODEL_CHANGED_PROPERTY} property.
-	 */
-	protected PropertyChangeListener ghostPropertyListener;
+    /**
+     * Property change listener. Listens on changes to the
+     * {@link AbstractButton#MODEL_CHANGED_PROPERTY} property.
+     */
+    protected PropertyChangeListener ghostPropertyListener;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.lafwidget.LafWidgetAdapter#installDefaults()
-	 */
-	@Override
-	public void installDefaults() {
-		this.jcomp.setRolloverEnabled(true);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.lafwidget.LafWidgetAdapter#installDefaults()
+     */
+    @Override
+    public void installDefaults() {
+        this.jcomp.setRolloverEnabled(true);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.lafwidget.LafWidgetAdapter#installListeners()
-	 */
-	@Override
-	public void installListeners() {
-		this.ghostPropertyListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (AbstractButton.MODEL_CHANGED_PROPERTY.equals(evt
-						.getPropertyName())) {
-					if (ghostModelChangeListener != null)
-						ghostModelChangeListener.unregisterListeners();
-					ghostModelChangeListener = new GhostingListener(jcomp,
-							jcomp.getModel());
-					ghostModelChangeListener.registerListeners();
-				}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.lafwidget.LafWidgetAdapter#installListeners()
+     */
+    @Override
+    public void installListeners() {
+        this.ghostPropertyListener = (PropertyChangeEvent evt) -> {
+            if (AbstractButton.MODEL_CHANGED_PROPERTY.equals(evt.getPropertyName())) {
+                if (ghostModelChangeListener != null)
+                    ghostModelChangeListener.unregisterListeners();
+                ghostModelChangeListener = new GhostingListener(jcomp, jcomp.getModel());
+                ghostModelChangeListener.registerListeners();
+            }
+        };
+        jcomp.addPropertyChangeListener(this.ghostPropertyListener);
 
-				// if ("icon.bounds".equals(evt.getPropertyName())) {
-				// try {
-				// throw new IOException(evt.getNewValue().toString());
-				// } catch (Exception ie) {
-				// ie.printStackTrace();
-				// }
-				// }
-			}
-		};
-		jcomp.addPropertyChangeListener(this.ghostPropertyListener);
+        this.ghostModelChangeListener = new GhostingListener(jcomp, jcomp.getModel());
+        this.ghostModelChangeListener.registerListeners();
+    }
 
-		this.ghostModelChangeListener = new GhostingListener(jcomp, jcomp
-				.getModel());
-		this.ghostModelChangeListener.registerListeners();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.lafwidget.LafWidgetAdapter#uninstallListeners()
+     */
+    @Override
+    public void uninstallListeners() {
+        jcomp.removePropertyChangeListener(this.ghostPropertyListener);
+        this.ghostPropertyListener = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.lafwidget.LafWidgetAdapter#uninstallListeners()
-	 */
-	@Override
-	public void uninstallListeners() {
-		jcomp.removePropertyChangeListener(this.ghostPropertyListener);
-		this.ghostPropertyListener = null;
-
-		this.ghostModelChangeListener.unregisterListeners();
-		this.ghostModelChangeListener = null;
-	}
+        this.ghostModelChangeListener.unregisterListeners();
+        this.ghostModelChangeListener = null;
+    }
 
 }

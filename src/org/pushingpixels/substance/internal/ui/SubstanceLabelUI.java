@@ -58,140 +58,126 @@ import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
  * @author Kirill Grouchnikov
  */
 public class SubstanceLabelUI extends BasicLabelUI {
-	/**
-	 * Property change listener.
-	 */
-	protected PropertyChangeListener substancePropertyChangeListener;
-	private Rectangle paintIconR = new Rectangle();
-	private Rectangle paintTextR = new Rectangle();
-	private Rectangle paintViewR = new Rectangle();
-	private Insets paintViewInsets = new Insets(0, 0, 0, 0);
+    /**
+     * Property change listener.
+     */
+    protected PropertyChangeListener substancePropertyChangeListener;
+    private Rectangle paintIconR = new Rectangle();
+    private Rectangle paintTextR = new Rectangle();
+    private Rectangle paintViewR = new Rectangle();
+    private Insets paintViewInsets = new Insets(0, 0, 0, 0);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
-	 */
-	public static ComponentUI createUI(JComponent comp) {
-		SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
-		return new SubstanceLabelUI();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
+     */
+    public static ComponentUI createUI(JComponent comp) {
+        SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
+        return new SubstanceLabelUI();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicLabelUI#installListeners(javax.swing.JLabel)
-	 */
-	@Override
-	protected void installListeners(final JLabel c) {
-		super.installListeners(c);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicLabelUI#installListeners(javax.swing.JLabel)
+     */
+    @Override
+    protected void installListeners(final JLabel c) {
+        super.installListeners(c);
 
-		this.substancePropertyChangeListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ("opaque".equals(evt.getPropertyName())) {
-					if (!Boolean.TRUE.equals(c
-							.getClientProperty(SubstanceButtonUI.LOCK_OPACITY))) {
-						c.putClientProperty(SubstanceButtonUI.OPACITY_ORIGINAL,
-								evt.getNewValue());
-					}
-				}
+        this.substancePropertyChangeListener = (PropertyChangeEvent evt) -> {
+            if ("opaque".equals(evt.getPropertyName())) {
+                if (!Boolean.TRUE.equals(c.getClientProperty(SubstanceButtonUI.LOCK_OPACITY))) {
+                    c.putClientProperty(SubstanceButtonUI.OPACITY_ORIGINAL, evt.getNewValue());
+                }
+            }
+        };
+        c.addPropertyChangeListener(this.substancePropertyChangeListener);
+    }
 
-			}
-		};
-		c.addPropertyChangeListener(this.substancePropertyChangeListener);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicLabelUI#uninstallListeners(javax.swing.JLabel )
+     */
+    @Override
+    protected void uninstallListeners(JLabel c) {
+        c.removePropertyChangeListener(this.substancePropertyChangeListener);
+        this.substancePropertyChangeListener = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicLabelUI#uninstallListeners(javax.swing.JLabel
-	 * )
-	 */
-	@Override
-	protected void uninstallListeners(JLabel c) {
-		c.removePropertyChangeListener(this.substancePropertyChangeListener);
-		this.substancePropertyChangeListener = null;
+        super.uninstallListeners(c);
+    }
 
-		super.uninstallListeners(c);
-	}
+    @Override
+    public void paint(Graphics g, JComponent c) {
 
-	@Override
-	public void paint(Graphics g, JComponent c) {
+        JLabel label = (JLabel) c;
+        String text = label.getText();
 
-		JLabel label = (JLabel) c;
-		String text = label.getText();
+        Icon icon = null;
+        if (label.isEnabled()) {
+            icon = label.getIcon();
+            if ((icon != null) && SubstanceCoreUtilities.useThemedDefaultIcon(label))
+                icon = SubstanceCoreUtilities.getThemedIcon(label, icon);
+        } else {
+            icon = label.getDisabledIcon();
+        }
 
-		Icon icon = null;
-		if (label.isEnabled()) {
-			icon = label.getIcon();
-			if ((icon != null)
-					&& SubstanceCoreUtilities.useThemedDefaultIcon(label))
-				icon = SubstanceCoreUtilities.getThemedIcon(label, icon);
-		} else {
-			icon = label.getDisabledIcon();
-		}
+        if ((icon == null) && (text == null)) {
+            return;
+        }
 
-		if ((icon == null) && (text == null)) {
-			return;
-		}
+        Insets insets = label.getInsets(paintViewInsets);
+        paintViewR.x = insets.left;
+        paintViewR.y = insets.top;
+        paintViewR.width = c.getWidth() - (insets.left + insets.right);
+        paintViewR.height = c.getHeight() - (insets.top + insets.bottom);
+        paintIconR.x = paintIconR.y = paintIconR.width = paintIconR.height = 0;
+        paintTextR.x = paintTextR.y = paintTextR.width = paintTextR.height = 0;
 
-		Insets insets = label.getInsets(paintViewInsets);
-		paintViewR.x = insets.left;
-		paintViewR.y = insets.top;
-		paintViewR.width = c.getWidth() - (insets.left + insets.right);
-		paintViewR.height = c.getHeight() - (insets.top + insets.bottom);
-		paintIconR.x = paintIconR.y = paintIconR.width = paintIconR.height = 0;
-		paintTextR.x = paintTextR.y = paintTextR.width = paintTextR.height = 0;
+        String clippedText = SwingUtilities.layoutCompoundLabel(label, g.getFontMetrics(), text,
+                icon, label.getVerticalAlignment(), label.getHorizontalAlignment(),
+                label.getVerticalTextPosition(), label.getHorizontalTextPosition(), paintViewR,
+                paintIconR, paintTextR, label.getIconTextGap());
 
-		String clippedText = SwingUtilities.layoutCompoundLabel(label, g.getFontMetrics(), 
-				text, icon, label.getVerticalAlignment(),
-				label.getHorizontalAlignment(),
-				label.getVerticalTextPosition(), label
-						.getHorizontalTextPosition(), paintViewR, paintIconR,
-				paintTextR, label.getIconTextGap());
+        Graphics2D g2d = (Graphics2D) g.create();
+        BackgroundPaintingUtils.updateIfOpaque(g2d, c);
+        if (icon != null) {
+            g2d.translate(paintIconR.x, paintIconR.y);
+            icon.paintIcon(c, g2d, 0, 0);
+            g2d.translate(-paintIconR.x, -paintIconR.y);
+        }
+        ComponentState labelState = label.isEnabled() ? ComponentState.ENABLED
+                : ComponentState.DISABLED_UNSELECTED;
+        float labelAlpha = SubstanceColorSchemeUtilities.getAlpha(label, labelState);
+        if (text != null) {
+            final View v = (View) c.getClientProperty(BasicHTML.propertyKey);
+            if (v != null) {
+                v.paint(g2d, paintTextR);
+            } else {
+                // fix for issue 406 - use the same FG computation
+                // color as for other controls
+                SubstanceTextUtilities.paintText(g, label, paintTextR, clippedText,
+                        label.getDisplayedMnemonicIndex(), labelState, labelAlpha);
+            }
+        }
+        g2d.dispose();
+    }
 
-		Graphics2D g2d = (Graphics2D) g.create();
-		BackgroundPaintingUtils.updateIfOpaque(g2d, c);
-		if (icon != null) {
-			g2d.translate(paintIconR.x, paintIconR.y);
-			icon.paintIcon(c, g2d, 0, 0);
-			g2d.translate(-paintIconR.x, -paintIconR.y);
-		}
-		ComponentState labelState = label.isEnabled() ? ComponentState.ENABLED
-				: ComponentState.DISABLED_UNSELECTED;
-		float labelAlpha = SubstanceColorSchemeUtilities.getAlpha(label,
-				labelState);
-		if (text != null) {
-			final View v = (View) c.getClientProperty(BasicHTML.propertyKey);
-			if (v != null) {
-				v.paint(g2d, paintTextR);
-			} else {
-				// fix for issue 406 - use the same FG computation
-				// color as for other controls
-				SubstanceTextUtilities.paintText(g, label, paintTextR,
-						clippedText, label.getDisplayedMnemonicIndex(),
-						labelState, labelAlpha);
-			}
-		}
-		g2d.dispose();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
-	 * javax.swing.JComponent)
-	 */
-	@Override
-	public void update(Graphics g, JComponent c) {
-		// failsafe for LAF change
-		if (!SubstanceCoreUtilities.isCurrentLookAndFeel())
-			return;
-		Graphics2D g2d = (Graphics2D) g.create();
-		RenderingUtils.installDesktopHints(g2d, c);
-		this.paint(g2d, c);
-		g2d.dispose();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics, javax.swing.JComponent)
+     */
+    @Override
+    public void update(Graphics g, JComponent c) {
+        // failsafe for LAF change
+        if (!SubstanceCoreUtilities.isCurrentLookAndFeel())
+            return;
+        Graphics2D g2d = (Graphics2D) g.create();
+        RenderingUtils.installDesktopHints(g2d, c);
+        this.paint(g2d, c);
+        g2d.dispose();
+    }
 }

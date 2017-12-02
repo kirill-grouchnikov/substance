@@ -24,7 +24,6 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.VisualMargin;
@@ -119,11 +118,7 @@ implements UIResource {
         new ColorSliderTextFieldHandler(yellowField, ccModel, 2);
         new ColorSliderTextFieldHandler(blackField, ccModel, 3);
         
-        ccModel.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent evt) {
-                setColorToModel(ccModel.getColor());
-            }
-        });
+        ccModel.addChangeListener((ChangeEvent e) -> setColorToModel(ccModel.getColor()));
         cyanField.setMinimumSize(cyanField.getPreferredSize());
         magentaField.setMinimumSize(magentaField.getPreferredSize());
         yellowField.setMinimumSize(yellowField.getPreferredSize());

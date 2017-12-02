@@ -259,12 +259,8 @@ public class SubstanceCortex {
                     }
                 }
 
-                // SwingUtilities.invokeLater(new Runnable() {
-                // public void run() {
                 for (SkinChangeListener skinChangeListener : skinChangeListeners)
                     skinChangeListener.skinChanged();
-                // }
-                // });
                 return true;
             } catch (NoClassDefFoundError ncdfe) {
                 // this may happen when a skin references some class

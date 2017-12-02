@@ -18,7 +18,6 @@ package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorch
 import java.awt.Color;
 //import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.UIManager;
 import javax.swing.plaf.UIResource;
@@ -48,11 +47,9 @@ public class CrayonsChooser extends SubstanceColorChooserPanel implements UIReso
 
         crayons = new Crayons();
         add(crayons);
-        crayons.addPropertyChangeListener(new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals("Color")) {
-                    setColorToModel(crayons.getColor());
-                }
+        crayons.addPropertyChangeListener((PropertyChangeEvent evt) -> {
+            if (evt.getPropertyName().equals("Color")) {
+                setColorToModel(crayons.getColor());
             }
         });
     }

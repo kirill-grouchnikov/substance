@@ -38,12 +38,11 @@ import java.util.Set;
 import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
 import org.pushingpixels.trident.Timeline;
 import org.pushingpixels.trident.ease.Spline;
-import org.pushingpixels.trident.ease.TimelineEase;
 
 /**
- * Animation configuration manager. Note that while this class provides a variety of ways
- * to enable / disable animations on specific components and component classes, most of the core
- * animations on simple controls can not be turned off. 
+ * Animation configuration manager. Note that while this class provides a variety of ways to enable
+ * / disable animations on specific components and component classes, most of the core animations on
+ * simple controls can not be turned off.
  * 
  * Specifically, you have fine-grained controls over two classes of animations:
  * 
@@ -59,292 +58,268 @@ import org.pushingpixels.trident.ease.TimelineEase;
  * @since 2.1
  */
 public class AnimationConfigurationManager {
-	private static final Spline DEFAULT_EASE = new Spline(0.5f);
+    private static final Spline DEFAULT_EASE = new Spline(0.5f);
 
-	/**
-	 * Singleton instance.
-	 */
-	private static AnimationConfigurationManager instance;
+    /**
+     * Singleton instance.
+     */
+    private static AnimationConfigurationManager instance;
 
-	private long timelineDuration;
+    private long timelineDuration;
 
-	/**
-	 * Contains {@link AnimationFacet} instances.
-	 */
-	private Set<AnimationFacet> globalAllowed;
+    /**
+     * Contains {@link AnimationFacet} instances.
+     */
+    private Set<AnimationFacet> globalAllowed;
 
-	/**
-	 * Key - {@link AnimationFacet}, value - set of {@link Class} instances.
-	 */
-	private Map<AnimationFacet, Set<Class<?>>> classAllowed;
+    /**
+     * Key - {@link AnimationFacet}, value - set of {@link Class} instances.
+     */
+    private Map<AnimationFacet, Set<Class<?>>> classAllowed;
 
-	/**
-	 * Key - {@link AnimationFacet}, value - set of {@link Class} instances.
-	 */
-	private Map<AnimationFacet, Set<Class<?>>> classDisallowed;
+    /**
+     * Key - {@link AnimationFacet}, value - set of {@link Class} instances.
+     */
+    private Map<AnimationFacet, Set<Class<?>>> classDisallowed;
 
-	/**
-	 * Key - {@link AnimationFacet}, value - set of {@link Component} instances.
-	 */
-	private Map<AnimationFacet, Set<Component>> instanceAllowed;
+    /**
+     * Key - {@link AnimationFacet}, value - set of {@link Component} instances.
+     */
+    private Map<AnimationFacet, Set<Component>> instanceAllowed;
 
-	/**
-	 * Key - {@link AnimationFacet}, value - set of {@link Component} instances.
-	 */
-	private Map<AnimationFacet, Set<Component>> instanceDisallowed;
+    /**
+     * Key - {@link AnimationFacet}, value - set of {@link Component} instances.
+     */
+    private Map<AnimationFacet, Set<Component>> instanceDisallowed;
 
-	/**
-	 * Returns the configuration manager instance.
-	 * 
-	 * @return Configuration manager instance.
-	 */
-	public static synchronized AnimationConfigurationManager getInstance() {
-		if (instance == null) {
-			instance = new AnimationConfigurationManager();
-		}
-		return instance;
-	}
+    /**
+     * Returns the configuration manager instance.
+     * 
+     * @return Configuration manager instance.
+     */
+    public static synchronized AnimationConfigurationManager getInstance() {
+        if (instance == null) {
+            instance = new AnimationConfigurationManager();
+        }
+        return instance;
+    }
 
-	/**
-	 * Creates a new instance.
-	 */
-	private AnimationConfigurationManager() {
-		this.globalAllowed = new HashSet<AnimationFacet>();
-		this.classAllowed = new HashMap<AnimationFacet, Set<Class<?>>>();
-		this.classDisallowed = new HashMap<AnimationFacet, Set<Class<?>>>();
-		this.instanceAllowed = new HashMap<AnimationFacet, Set<Component>>();
-		this.instanceDisallowed = new HashMap<AnimationFacet, Set<Component>>();
-		this.timelineDuration = 200;
-	}
+    /**
+     * Creates a new instance.
+     */
+    private AnimationConfigurationManager() {
+        this.globalAllowed = new HashSet<AnimationFacet>();
+        this.classAllowed = new HashMap<AnimationFacet, Set<Class<?>>>();
+        this.classDisallowed = new HashMap<AnimationFacet, Set<Class<?>>>();
+        this.instanceAllowed = new HashMap<AnimationFacet, Set<Component>>();
+        this.instanceDisallowed = new HashMap<AnimationFacet, Set<Component>>();
+        this.timelineDuration = 200;
+    }
 
-	/**
-	 * Allows animations of the specified facet on all controls.
-	 * 
-	 * @param animationFacet
-	 *            Animation facet to allow.
-	 */
-	public synchronized void allowAnimations(AnimationFacet animationFacet) {
-		this.globalAllowed.add(animationFacet);
-	}
+    /**
+     * Allows animations of the specified facet on all controls.
+     * 
+     * @param animationFacet
+     *            Animation facet to allow.
+     */
+    public synchronized void allowAnimations(AnimationFacet animationFacet) {
+        this.globalAllowed.add(animationFacet);
+    }
 
-	/**
-	 * Allows animations of the specified facet on all controls of specified
-	 * class.
-	 * 
-	 * @param animationFacet
-	 *            Animation facet to allow.
-	 * @param clazz
-	 *            Control class for allowing the animation facet.
-	 */
-	public synchronized void allowAnimations(AnimationFacet animationFacet,
-			Class<?> clazz) {
-		Set<Class<?>> existingAllowed = this.classAllowed.get(animationFacet);
-		if (existingAllowed == null) {
-			existingAllowed = new HashSet<Class<?>>();
-			this.classAllowed.put(animationFacet, existingAllowed);
-		}
-		existingAllowed.add(clazz);
+    /**
+     * Allows animations of the specified facet on all controls of specified class.
+     * 
+     * @param animationFacet
+     *            Animation facet to allow.
+     * @param clazz
+     *            Control class for allowing the animation facet.
+     */
+    public synchronized void allowAnimations(AnimationFacet animationFacet, Class<?> clazz) {
+        Set<Class<?>> existingAllowed = this.classAllowed.get(animationFacet);
+        if (existingAllowed == null) {
+            existingAllowed = new HashSet<Class<?>>();
+            this.classAllowed.put(animationFacet, existingAllowed);
+        }
+        existingAllowed.add(clazz);
 
-		Set<Class<?>> existingDisallowed = this.classDisallowed
-				.get(animationFacet);
-		if (existingDisallowed != null) {
-			existingDisallowed.remove(clazz);
-		}
-	}
+        Set<Class<?>> existingDisallowed = this.classDisallowed.get(animationFacet);
+        if (existingDisallowed != null) {
+            existingDisallowed.remove(clazz);
+        }
+    }
 
-	/**
-	 * Allows animations of the specified facet on all controls of specified
-	 * classes.
-	 * 
-	 * @param animationFacet
-	 *            Animation facet to allow.
-	 * @param clazz
-	 *            Control classes for allowing the animation facet.
-	 */
-	public synchronized void allowAnimations(AnimationFacet animationFacet,
-			Class<?>[] clazz) {
-		for (int i = 0; i < clazz.length; i++) {
-			allowAnimations(animationFacet, clazz[i]);
-		}
-	}
+    /**
+     * Allows animations of the specified facet on all controls of specified classes.
+     * 
+     * @param animationFacet
+     *            Animation facet to allow.
+     * @param clazz
+     *            Control classes for allowing the animation facet.
+     */
+    public synchronized void allowAnimations(AnimationFacet animationFacet, Class<?>[] clazz) {
+        for (int i = 0; i < clazz.length; i++) {
+            allowAnimations(animationFacet, clazz[i]);
+        }
+    }
 
-	/**
-	 * Allows animations of the specified facet on the specified control.
-	 * 
-	 * @param animationFacet
-	 *            Animation facet to allow.
-	 * @param comp
-	 *            Control for allowing the animation facet.
-	 */
-	public synchronized void allowAnimations(AnimationFacet animationFacet,
-			Component comp) {
-		Set<Component> existingAllowed = this.instanceAllowed
-				.get(animationFacet);
-		if (existingAllowed == null) {
-			existingAllowed = new HashSet<Component>();
-			this.instanceAllowed.put(animationFacet, existingAllowed);
-		}
-		existingAllowed.add(comp);
+    /**
+     * Allows animations of the specified facet on the specified control.
+     * 
+     * @param animationFacet
+     *            Animation facet to allow.
+     * @param comp
+     *            Control for allowing the animation facet.
+     */
+    public synchronized void allowAnimations(AnimationFacet animationFacet, Component comp) {
+        Set<Component> existingAllowed = this.instanceAllowed.get(animationFacet);
+        if (existingAllowed == null) {
+            existingAllowed = new HashSet<Component>();
+            this.instanceAllowed.put(animationFacet, existingAllowed);
+        }
+        existingAllowed.add(comp);
 
-		Set<Component> existingDisallowed = this.instanceDisallowed
-				.get(animationFacet);
-		if (existingDisallowed != null) {
-			existingDisallowed.remove(comp);
-		}
-	}
+        Set<Component> existingDisallowed = this.instanceDisallowed.get(animationFacet);
+        if (existingDisallowed != null) {
+            existingDisallowed.remove(comp);
+        }
+    }
 
-	/**
-	 * Disallows animations of the specified facet on all controls.
-	 * 
-	 * @param animationFacet
-	 *            Animation facet to disallow.
-	 */
-	public synchronized void disallowAnimations(AnimationFacet animationFacet) {
-		this.globalAllowed.remove(animationFacet);
-	}
+    /**
+     * Disallows animations of the specified facet on all controls.
+     * 
+     * @param animationFacet
+     *            Animation facet to disallow.
+     */
+    public synchronized void disallowAnimations(AnimationFacet animationFacet) {
+        this.globalAllowed.remove(animationFacet);
+    }
 
-	/**
-	 * Disallows animations of the specified facet on all controls of specified
-	 * class.
-	 * 
-	 * @param animationFacet
-	 *            Animation facet to disallow.
-	 * @param clazz
-	 *            Control class for disallowing the animation facet.
-	 */
-	public synchronized void disallowAnimations(AnimationFacet animationFacet,
-			Class<?> clazz) {
-		Set<Class<?>> existingAllowed = this.classAllowed.get(animationFacet);
-		if (existingAllowed != null) {
-			existingAllowed.remove(clazz);
-			if (existingAllowed.size() == 0)
-				this.classAllowed.remove(animationFacet);
-		}
+    /**
+     * Disallows animations of the specified facet on all controls of specified class.
+     * 
+     * @param animationFacet
+     *            Animation facet to disallow.
+     * @param clazz
+     *            Control class for disallowing the animation facet.
+     */
+    public synchronized void disallowAnimations(AnimationFacet animationFacet, Class<?> clazz) {
+        Set<Class<?>> existingAllowed = this.classAllowed.get(animationFacet);
+        if (existingAllowed != null) {
+            existingAllowed.remove(clazz);
+            if (existingAllowed.size() == 0)
+                this.classAllowed.remove(animationFacet);
+        }
 
-		Set<Class<?>> existingDisallowed = this.classDisallowed
-				.get(animationFacet);
-		if (existingDisallowed == null) {
-			existingDisallowed = new HashSet<Class<?>>();
-			this.classDisallowed.put(animationFacet, existingDisallowed);
-		}
-		existingDisallowed.add(clazz);
-	}
+        Set<Class<?>> existingDisallowed = this.classDisallowed.get(animationFacet);
+        if (existingDisallowed == null) {
+            existingDisallowed = new HashSet<Class<?>>();
+            this.classDisallowed.put(animationFacet, existingDisallowed);
+        }
+        existingDisallowed.add(clazz);
+    }
 
-	/**
-	 * Disallows animations of the specified facet on all controls of specified
-	 * classes.
-	 * 
-	 * @param animationFacet
-	 *            Animation facet to disallow.
-	 * @param clazz
-	 *            Control classes for disallowing the animation facet.
-	 */
-	public synchronized void disallowAnimations(AnimationFacet animationFacet,
-			Class<?>[] clazz) {
-		for (int i = 0; i < clazz.length; i++) {
-			disallowAnimations(animationFacet, clazz[i]);
-		}
-	}
+    /**
+     * Disallows animations of the specified facet on all controls of specified classes.
+     * 
+     * @param animationFacet
+     *            Animation facet to disallow.
+     * @param clazz
+     *            Control classes for disallowing the animation facet.
+     */
+    public synchronized void disallowAnimations(AnimationFacet animationFacet, Class<?>[] clazz) {
+        for (int i = 0; i < clazz.length; i++) {
+            disallowAnimations(animationFacet, clazz[i]);
+        }
+    }
 
-	/**
-	 * Disallows animations of the specified facet on the specified control.
-	 * 
-	 * @param animationFacet
-	 *            Animation facet to disallow.
-	 * @param comp
-	 *            Control for disallowing the animation facet.
-	 */
-	public synchronized void disallowAnimations(AnimationFacet animationFacet,
-			Component comp) {
-		Set<Component> existingAllowed = this.instanceAllowed
-				.get(animationFacet);
-		if (existingAllowed != null) {
-			existingAllowed.remove(comp);
-			if (existingAllowed.size() == 0)
-				this.instanceAllowed.remove(animationFacet);
-		}
+    /**
+     * Disallows animations of the specified facet on the specified control.
+     * 
+     * @param animationFacet
+     *            Animation facet to disallow.
+     * @param comp
+     *            Control for disallowing the animation facet.
+     */
+    public synchronized void disallowAnimations(AnimationFacet animationFacet, Component comp) {
+        Set<Component> existingAllowed = this.instanceAllowed.get(animationFacet);
+        if (existingAllowed != null) {
+            existingAllowed.remove(comp);
+            if (existingAllowed.size() == 0)
+                this.instanceAllowed.remove(animationFacet);
+        }
 
-		Set<Component> existingDisallowed = this.instanceDisallowed
-				.get(animationFacet);
-		if (existingDisallowed == null) {
-			existingDisallowed = new HashSet<Component>();
-			this.instanceDisallowed.put(animationFacet, existingDisallowed);
-		}
-		existingDisallowed.add(comp);
-	}
+        Set<Component> existingDisallowed = this.instanceDisallowed.get(animationFacet);
+        if (existingDisallowed == null) {
+            existingDisallowed = new HashSet<Component>();
+            this.instanceDisallowed.put(animationFacet, existingDisallowed);
+        }
+        existingDisallowed.add(comp);
+    }
 
-	/**
-	 * Checks whether the specified animation facet is allowed on the specified
-	 * component.
-	 * 
-	 * @param animationFacet
-	 *            Animation facet.
-	 * @param comp
-	 *            Component. Can be <code>null</code>.
-	 * @return <code>true</code> if the specified animation facet is allowed on
-	 *         the specified component, <code>false</code> otherwise.
-	 */
-	public synchronized boolean isAnimationAllowed(
-			AnimationFacet animationFacet, Component comp) {
-		Set<Component> instanceDisallowed = this.instanceDisallowed
-				.get(animationFacet);
-		if (instanceDisallowed != null) {
-			if (instanceDisallowed.contains(comp))
-				return false;
-		}
-		Set<Component> instanceAllowed = this.instanceAllowed
-				.get(animationFacet);
-		if (instanceAllowed != null) {
-			if (instanceAllowed.contains(comp))
-				return true;
-		}
+    /**
+     * Checks whether the specified animation facet is allowed on the specified component.
+     * 
+     * @param animationFacet
+     *            Animation facet.
+     * @param comp
+     *            Component. Can be <code>null</code>.
+     * @return <code>true</code> if the specified animation facet is allowed on the specified
+     *         component, <code>false</code> otherwise.
+     */
+    public synchronized boolean isAnimationAllowed(AnimationFacet animationFacet, Component comp) {
+        Set<Component> instanceDisallowed = this.instanceDisallowed.get(animationFacet);
+        if (instanceDisallowed != null) {
+            if (instanceDisallowed.contains(comp))
+                return false;
+        }
+        Set<Component> instanceAllowed = this.instanceAllowed.get(animationFacet);
+        if (instanceAllowed != null) {
+            if (instanceAllowed.contains(comp))
+                return true;
+        }
 
-		if (comp != null) {
-			Class<?> clazz = comp.getClass();
-			Set<Class<?>> classAllowed = this.classAllowed.get(animationFacet);
-			Set<Class<?>> classDisallowed = this.classDisallowed
-					.get(animationFacet);
-			if (classDisallowed != null) {
-				for (Class<?> disallowed : classDisallowed) {
-					if (disallowed.isAssignableFrom(clazz))
-						return false;
-				}
-			}
-			if (classAllowed != null) {
-				for (Class<?> allowed : classAllowed) {
-					if (allowed.isAssignableFrom(clazz))
-						return true;
-				}
-			}
-		}
-		if (this.globalAllowed.contains(animationFacet))
-			return true;
-		return false;
-	}
+        if (comp != null) {
+            Class<?> clazz = comp.getClass();
+            Set<Class<?>> classAllowed = this.classAllowed.get(animationFacet);
+            Set<Class<?>> classDisallowed = this.classDisallowed.get(animationFacet);
+            if (classDisallowed != null) {
+                for (Class<?> disallowed : classDisallowed) {
+                    if (disallowed.isAssignableFrom(clazz))
+                        return false;
+                }
+            }
+            if (classAllowed != null) {
+                for (Class<?> allowed : classAllowed) {
+                    if (allowed.isAssignableFrom(clazz))
+                        return true;
+                }
+            }
+        }
+        if (this.globalAllowed.contains(animationFacet))
+            return true;
+        return false;
+    }
 
-	public void setTimelineDuration(long timelineDuration) {
-		this.timelineDuration = timelineDuration;
-	}
+    public void setTimelineDuration(long timelineDuration) {
+        this.timelineDuration = timelineDuration;
+    }
 
-	public long getTimelineDuration() {
-		return timelineDuration;
-	}
+    public long getTimelineDuration() {
+        return timelineDuration;
+    }
 
-	public void configureTimeline(Timeline timeline) {
-		timeline.setDuration(this.timelineDuration);
-		timeline.setEase(DEFAULT_EASE);
-	}
+    public void configureTimeline(Timeline timeline) {
+        timeline.setDuration(this.timelineDuration);
+        timeline.setEase(DEFAULT_EASE);
+    }
 
-	public void configureModifiedTimeline(Timeline timeline) {
-		timeline.setDuration(5 * this.timelineDuration);
-		timeline.setEase(new TimelineEase() {
-			@Override
-			public float map(float durationFraction) {
-				if (durationFraction < 0.8f) {
-					return 0.0f;
-				}
-				return 5.0f * (durationFraction - 0.8f);
-			}
-		});
-	}
+    public void configureModifiedTimeline(Timeline timeline) {
+        timeline.setDuration(5 * this.timelineDuration);
+        timeline.setEase((float durationFraction) -> {
+            if (durationFraction < 0.8f) {
+                return 0.0f;
+            }
+            return 5.0f * (durationFraction - 0.8f);
+        });
+    }
 }

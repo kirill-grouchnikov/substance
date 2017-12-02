@@ -50,130 +50,124 @@ import org.pushingpixels.substance.internal.utils.SubstanceInternalFrameTitlePan
  * @author Kirill Grouchnikov
  */
 public class SubstanceInternalFrameUI extends BasicInternalFrameUI {
-	/**
-	 * Title pane
-	 */
-	private SubstanceInternalFrameTitlePane titlePane;
+    /**
+     * Title pane
+     */
+    private SubstanceInternalFrameTitlePane titlePane;
 
-	/**
-	 * Property listener on the associated internal frame.
-	 */
-	protected PropertyChangeListener substancePropertyListener;
+    /**
+     * Property listener on the associated internal frame.
+     */
+    protected PropertyChangeListener substancePropertyListener;
 
-	/**
-	 * Simple constructor.
-	 * 
-	 * @param b
-	 *            Associated internal frame.
-	 */
-	public SubstanceInternalFrameUI(JInternalFrame b) {
-		super(b);
-	}
+    /**
+     * Simple constructor.
+     * 
+     * @param b
+     *            Associated internal frame.
+     */
+    public SubstanceInternalFrameUI(JInternalFrame b) {
+        super(b);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
-	 */
-	public static ComponentUI createUI(JComponent comp) {
-		SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
-		return new SubstanceInternalFrameUI((JInternalFrame) comp);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
+     */
+    public static ComponentUI createUI(JComponent comp) {
+        SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
+        return new SubstanceInternalFrameUI((JInternalFrame) comp);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicInternalFrameUI#createNorthPane(javax.swing
-	 * .JInternalFrame)
-	 */
-	@Override
-	protected JComponent createNorthPane(JInternalFrame w) {
-		this.titlePane = new SubstanceInternalFrameTitlePane(w);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicInternalFrameUI#createNorthPane(javax.swing .JInternalFrame)
+     */
+    @Override
+    protected JComponent createNorthPane(JInternalFrame w) {
+        this.titlePane = new SubstanceInternalFrameTitlePane(w);
 
-		// f.putClientProperty(INTERNAL_FRAME_PINNED, Boolean.TRUE);
+        // f.putClientProperty(INTERNAL_FRAME_PINNED, Boolean.TRUE);
 
-		return this.titlePane;
-	}
+        return this.titlePane;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicInternalFrameUI#uninstallComponents()
-	 */
-	@Override
-	protected void uninstallComponents() {
-		this.titlePane.uninstall();
-		super.uninstallComponents();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicInternalFrameUI#uninstallComponents()
+     */
+    @Override
+    protected void uninstallComponents() {
+        this.titlePane.uninstall();
+        super.uninstallComponents();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicInternalFrameUI#installListeners()
-	 */
-	@Override
-	protected void installListeners() {
-		super.installListeners();
-		this.substancePropertyListener = new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (JInternalFrame.IS_CLOSED_PROPERTY.equals(evt
-						.getPropertyName())) {
-					titlePane.uninstall();
-					JDesktopIcon jdi = frame.getDesktopIcon();
-					SubstanceDesktopIconUI ui = (SubstanceDesktopIconUI) jdi.getUI();
-					ui.uninstallIfNecessary(jdi);
-				}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicInternalFrameUI#installListeners()
+     */
+    @Override
+    protected void installListeners() {
+        super.installListeners();
+        this.substancePropertyListener = (PropertyChangeEvent evt) -> {
+            if (JInternalFrame.IS_CLOSED_PROPERTY.equals(evt.getPropertyName())) {
+                titlePane.uninstall();
+                JDesktopIcon jdi = frame.getDesktopIcon();
+                SubstanceDesktopIconUI ui = (SubstanceDesktopIconUI) jdi.getUI();
+                ui.uninstallIfNecessary(jdi);
+            }
 
-				if ("background".equals(evt.getPropertyName())) {
-					Color newBackgr = (Color) evt.getNewValue();
-					if (!(newBackgr instanceof UIResource)) {
-						getTitlePane().setBackground(newBackgr);
-						frame.getDesktopIcon().setBackground(newBackgr);
-					}
-				}
+            if ("background".equals(evt.getPropertyName())) {
+                Color newBackgr = (Color) evt.getNewValue();
+                if (!(newBackgr instanceof UIResource)) {
+                    getTitlePane().setBackground(newBackgr);
+                    frame.getDesktopIcon().setBackground(newBackgr);
+                }
+            }
 
-				if ("ancestor".equals(evt.getPropertyName())) {
-					// fix for issue 344 - reopening an internal frame
-					// that has been closed.
-					JDesktopIcon jdi = frame.getDesktopIcon();
-					SubstanceDesktopIconUI ui = (SubstanceDesktopIconUI) jdi.getUI();
-					ui.installIfNecessary(jdi);
-				}
-			}
-		};
-		this.frame.addPropertyChangeListener(this.substancePropertyListener);
-	}
+            if ("ancestor".equals(evt.getPropertyName())) {
+                // fix for issue 344 - reopening an internal frame
+                // that has been closed.
+                JDesktopIcon jdi = frame.getDesktopIcon();
+                SubstanceDesktopIconUI ui = (SubstanceDesktopIconUI) jdi.getUI();
+                ui.installIfNecessary(jdi);
+            }
+        };
+        this.frame.addPropertyChangeListener(this.substancePropertyListener);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicInternalFrameUI#uninstallListeners()
-	 */
-	@Override
-	protected void uninstallListeners() {
-		this.frame.removePropertyChangeListener(this.substancePropertyListener);
-		this.substancePropertyListener = null;
-		super.uninstallListeners();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicInternalFrameUI#uninstallListeners()
+     */
+    @Override
+    protected void uninstallListeners() {
+        this.frame.removePropertyChangeListener(this.substancePropertyListener);
+        this.substancePropertyListener = null;
+        super.uninstallListeners();
+    }
 
-	/**
-	 * Returns the title pane of the associated internal frame. This method is
-	 * <b>for internal use only</b>.
-	 * 
-	 * @return Title pane of the associated internal frame.
-	 */
-	public SubstanceInternalFrameTitlePane getTitlePane() {
-		return titlePane;
-	}
+    /**
+     * Returns the title pane of the associated internal frame. This method is <b>for internal use
+     * only</b>.
+     * 
+     * @return Title pane of the associated internal frame.
+     */
+    public SubstanceInternalFrameTitlePane getTitlePane() {
+        return titlePane;
+    }
 
-	void setWindowModified(boolean isWindowModified) {
-		titlePane.getCloseButton().putClientProperty(
-				SubstanceSynapse.CONTENTS_MODIFIED,
-				Boolean.valueOf(isWindowModified));
+    void setWindowModified(boolean isWindowModified) {
+        titlePane.getCloseButton().putClientProperty(SubstanceSynapse.CONTENTS_MODIFIED,
+                Boolean.valueOf(isWindowModified));
 
-		SubstanceDesktopIconUI desktopIconUi = (SubstanceDesktopIconUI) this.frame
-				.getDesktopIcon().getUI();
-		desktopIconUi.setWindowModified(isWindowModified);
-	}
+        SubstanceDesktopIconUI desktopIconUi = (SubstanceDesktopIconUI) this.frame.getDesktopIcon()
+                .getUI();
+        desktopIconUi.setWindowModified(isWindowModified);
+    }
 }

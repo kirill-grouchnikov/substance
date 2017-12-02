@@ -18,7 +18,6 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.EnumSet;
 
 import javax.swing.AbstractButton;
@@ -92,13 +91,11 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
                 cl.show(chooserPanelHolder, displayName);
             }
 
-            tb.addItemListener(new ItemListener() {
-                public void itemStateChanged(ItemEvent evt) {
-                    if (evt.getStateChange() == ItemEvent.SELECTED) {
-                        CardLayout cl = (CardLayout) chooserPanelHolder.getLayout();
-                        cl.show(chooserPanelHolder, displayName);
-                        lastSelectedChooserName = displayName;
-                    }
+            tb.addItemListener((ItemEvent evt) -> {
+                if (evt.getStateChange() == ItemEvent.SELECTED) {
+                    CardLayout cl = (CardLayout) chooserPanelHolder.getLayout();
+                    cl.show(chooserPanelHolder, displayName);
+                    lastSelectedChooserName = displayName;
                 }
             });
         }

@@ -19,7 +19,6 @@ import java.awt.Color;
 
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.substance.api.SubstanceCortex;
@@ -58,11 +57,7 @@ public class ColorWheelChooser extends SubstanceColorChooserPanel implements UIR
 		ccModel.configureColorSlider(2, brightnessSlider);
 		colorWheel.setModel(ccModel);
 
-		ccModel.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent evt) {
-				setColorToModel(ccModel.getColor());
-			}
-		});
+        ccModel.addChangeListener((ChangeEvent e) -> setColorToModel(ccModel.getColor()));
 	}
 
 	/**

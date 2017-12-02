@@ -458,15 +458,13 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
                     @Override
                     public void windowClosed(WindowEvent e) {
                         SubstanceCoreUtilities.testWindowCloseThreadingViolation(e.getWindow());
-                        SwingUtilities.invokeLater(new Runnable() {
-                            public void run() {
-                                Frame[] frames = Frame.getFrames();
-                                for (Frame frame : frames) {
-                                    if (frame.isDisplayable())
-                                        return;
-                                }
-                                SubstanceCoreUtilities.stopThreads();
+                        SwingUtilities.invokeLater(() -> {
+                            Frame[] frames = Frame.getFrames();
+                            for (Frame frame : frames) {
+                                if (frame.isDisplayable())
+                                    return;
                             }
+                            SubstanceCoreUtilities.stopThreads();
                         });
                     }
                 };

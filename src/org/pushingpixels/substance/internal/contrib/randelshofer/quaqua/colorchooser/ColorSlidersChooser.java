@@ -17,7 +17,6 @@ package org.pushingpixels.substance.internal.contrib.randelshofer.quaqua.colorch
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
@@ -91,12 +90,11 @@ implements UIResource {
         cbm.addElement(UIManager.getString("ColorChooser.hsbSliders"));
         cbm.addElement(UIManager.getString("ColorChooser.htmlSliders"));
         slidersComboBox.setModel(cbm);
-        slidersComboBox.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent evt) {
-                if (evt.getStateChange() == ItemEvent.SELECTED) {
-                    ((CardLayout) slidersHolder.getLayout()).show(slidersHolder, (String) evt.getItem());
-                    lastSelectedPanelIndex = slidersComboBox.getSelectedIndex(); 
-                }
+        slidersComboBox.addItemListener((ItemEvent evt) -> {
+            if (evt.getStateChange() == ItemEvent.SELECTED) {
+                ((CardLayout) slidersHolder.getLayout()).show(slidersHolder,
+                        (String) evt.getItem());
+                lastSelectedPanelIndex = slidersComboBox.getSelectedIndex();
             }
         });
         slidersComboBox.setSelectedIndex(lastSelectedPanelIndex);

@@ -128,22 +128,20 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
         blueSlider.setSnapToTicks(lastWebSaveSelectionState);
         
 
-        htmlListener = new ChangeListener() {
-            public void stateChanged(ChangeEvent evt) {
-                Color c = ccModel.getColor();
-                setColorToModel(c);
-                if (! c.equals(nameToColorMap.get(htmlField.getText().toLowerCase()))) {
-                    if (! htmlField.hasFocus()) {
-                        String hex = Integer.toHexString(0xffffff & c.getRGB());
-                        StringBuffer buf = new StringBuffer(7);
-                        buf.append('#');
-                        for (int i=hex.length(); i < 6; i++) {
-                            buf.append('0');
-                        }
-                        buf.append(hex.toUpperCase());
-                        if (! htmlField.getText().equals(buf.toString())) {
-                            htmlField.setText(buf.toString());
-                        }
+        htmlListener = (ChangeEvent e) -> {
+            Color c = ccModel.getColor();
+            setColorToModel(c);
+            if (!c.equals(nameToColorMap.get(htmlField.getText().toLowerCase()))) {
+                if (!htmlField.hasFocus()) {
+                    String hex = Integer.toHexString(0xffffff & c.getRGB());
+                    StringBuffer buf = new StringBuffer(7);
+                    buf.append('#');
+                    for (int i = hex.length(); i < 6; i++) {
+                        buf.append('0');
+                    }
+                    buf.append(hex.toUpperCase());
+                    if (!htmlField.getText().equals(buf.toString())) {
+                        htmlField.setText(buf.toString());
                     }
                 }
             }

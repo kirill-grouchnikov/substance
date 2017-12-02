@@ -256,17 +256,14 @@ public class GhostingListener {
      * Registers listeners on the relevant model changes.
      */
     public void registerListeners() {
-        this.modelListener = new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                if (AnimationConfigurationManager.getInstance()
-                        .isAnimationAllowed(AnimationFacet.GHOSTING_ICON_ROLLOVER, comp)) {
-                    trackModelChange(AnimationFacet.GHOSTING_ICON_ROLLOVER,
-                            buttonModel.isRollover());
-                }
-                if (AnimationConfigurationManager.getInstance()
-                        .isAnimationAllowed(AnimationFacet.GHOSTING_BUTTON_PRESS, comp)) {
-                    trackModelChange(AnimationFacet.GHOSTING_BUTTON_PRESS, buttonModel.isPressed());
-                }
+        this.modelListener = (ChangeEvent e) -> {
+            if (AnimationConfigurationManager.getInstance()
+                    .isAnimationAllowed(AnimationFacet.GHOSTING_ICON_ROLLOVER, comp)) {
+                trackModelChange(AnimationFacet.GHOSTING_ICON_ROLLOVER, buttonModel.isRollover());
+            }
+            if (AnimationConfigurationManager.getInstance()
+                    .isAnimationAllowed(AnimationFacet.GHOSTING_BUTTON_PRESS, comp)) {
+                trackModelChange(AnimationFacet.GHOSTING_BUTTON_PRESS, buttonModel.isPressed());
             }
         };
         this.buttonModel.addChangeListener(this.modelListener);

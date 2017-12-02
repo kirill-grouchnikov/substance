@@ -23,7 +23,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.UIManager;
 import javax.swing.colorchooser.ColorSelectionModel;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.substance.api.SubstanceCortex;
@@ -66,18 +65,12 @@ public class ColorPalettesChooser extends SubstanceColorChooserPanel implements 
         paletteCombo.setModel(cbm);
         //updatePaletteList();
         
-        paletteList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            /**
-             * Called whenever the value of the selection changes.
-             * @param e the event that characterizes the change.
-             */
-            public void valueChanged(ListSelectionEvent e) {
-                PaletteEntry entry = (PaletteEntry) paletteList.getSelectedValue();
-                if (entry != null) {
-                    PaletteListModel lm = (PaletteListModel) paletteList.getModel();
-                    lm.setClosestIndex(-1);
-                    setColorToModel(entry.getColor());
-                }
+        paletteList.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+            PaletteEntry entry = (PaletteEntry) paletteList.getSelectedValue();
+            if (entry != null) {
+                PaletteListModel lm = (PaletteListModel) paletteList.getModel();
+                lm.setClosestIndex(-1);
+                setColorToModel(entry.getColor());
             }
         });
         
