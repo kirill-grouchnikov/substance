@@ -52,6 +52,8 @@ import java.awt.Window;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -90,6 +92,7 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.FocusKind;
 import org.pushingpixels.substance.api.SubstanceSlices.MenuGutterFillKind;
@@ -113,6 +116,8 @@ import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.animation.TransitionAwareUI;
 import org.pushingpixels.substance.internal.contrib.intellij.JBHiDPIScaledImage;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
+import org.pushingpixels.substance.internal.contrib.jgoodies.looks.LookUtils;
+import org.pushingpixels.substance.internal.fonts.DefaultKDEFontPolicy;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
 import org.pushingpixels.substance.internal.ui.SubstanceInternalFrameUI;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
@@ -139,9 +144,15 @@ public class SubstanceCoreUtilities {
 
     public static final String TEXT_COMPONENT_AWARE = "substancelaf.internal.textComponentAware";
 
+    public static enum Platform {
+        MACOS, GNOME, KDE, WINDOWS, DEFAULT
+    }
+
     public static interface TextComponentAware<T> {
         public JTextComponent getTextComponent(T t);
     }
+
+    private static Platform platform;
 
     /**
      * Private constructor. Is here to enforce using static methods only.
@@ -408,8 +419,7 @@ public class SubstanceCoreUtilities {
      */
     public static SubstanceButtonShaper getButtonShaper(Component comp) {
         if (comp instanceof JComponent) {
-            Object prop = ((JComponent) comp)
-                    .getClientProperty(SubstanceSynapse.BUTTON_SHAPER);
+            Object prop = ((JComponent) comp).getClientProperty(SubstanceSynapse.BUTTON_SHAPER);
             if (prop instanceof SubstanceButtonShaper)
                 return (SubstanceButtonShaper) prop;
         }
@@ -491,8 +501,7 @@ public class SubstanceCoreUtilities {
                 return false;
         }
         // check property on tabbed pane
-        Object tabProp = tabbedPane
-                .getClientProperty(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS);
+        Object tabProp = tabbedPane.getClientProperty(SubstanceSynapse.TABBED_PANE_CLOSE_BUTTONS);
         if (Boolean.TRUE.equals(tabProp))
             return true;
         if (Boolean.FALSE.equals(tabProp))
@@ -742,8 +751,7 @@ public class SubstanceCoreUtilities {
                 .getClientProperty(SubstanceSynapse.COMBO_BOX_POPUP_FLYOUT_ORIENTATION);
         if (comboProperty instanceof Integer)
             return (Integer) comboProperty;
-        Object globalProperty = UIManager
-                .get(SubstanceSynapse.COMBO_BOX_POPUP_FLYOUT_ORIENTATION);
+        Object globalProperty = UIManager.get(SubstanceSynapse.COMBO_BOX_POPUP_FLYOUT_ORIENTATION);
         if (globalProperty instanceof Integer)
             return (Integer) globalProperty;
         return SwingConstants.SOUTH;
@@ -1017,14 +1025,14 @@ public class SubstanceCoreUtilities {
         }
 
         switch (messageType) {
-        case JOptionPane.INFORMATION_MESSAGE:
-            return new BottleGreenColorScheme();
-        case JOptionPane.QUESTION_MESSAGE:
-            return new LightAquaColorScheme();
-        case JOptionPane.WARNING_MESSAGE:
-            return new SunsetColorScheme();
-        case JOptionPane.ERROR_MESSAGE:
-            return new SunfireRedColorScheme();
+            case JOptionPane.INFORMATION_MESSAGE:
+                return new BottleGreenColorScheme();
+            case JOptionPane.QUESTION_MESSAGE:
+                return new LightAquaColorScheme();
+            case JOptionPane.WARNING_MESSAGE:
+                return new SunsetColorScheme();
+            case JOptionPane.ERROR_MESSAGE:
+                return new SunfireRedColorScheme();
         }
         return null;
     }
@@ -1050,7 +1058,7 @@ public class SubstanceCoreUtilities {
                 .getClientProperty(SubstanceSynapse.COMBOBOX_POPUP_PROTOTYPE_OBJECT);
         if (displayValue == null)
             displayValue = UIManager.get(SubstanceSynapse.COMBOBOX_POPUP_PROTOTYPE_OBJECT);
-        
+
         // check if this object is in the model ???
         return displayValue;
     }
@@ -1973,5 +1981,61 @@ public class SubstanceCoreUtilities {
      */
     public static boolean isCurrentLookAndFeel() {
         return (SubstanceCortex.GlobalScope.getCurrentSkin() != null);
+    }
+
+    public static int getButtonBarGravity(Container c) {
+        boolean isLeftToRight = c.getComponentOrientation().isLeftToRight();
+        SubstanceSlices.Gravity buttonBarGravity = SubstanceCortex.GlobalScope
+                .getButtonBarGravity();
+        switch (buttonBarGravity) {
+            case PLATFORM:
+                // On macOS the buttons are aligned to the trailing edge of
+                // the container (right under LTR and left under RTL)
+                return LookUtils.IS_OS_MAC
+                        ? (isLeftToRight ? SwingConstants.RIGHT : SwingConstants.LEFT)
+                        : SwingConstants.CENTER;
+            case LEADING:
+                return isLeftToRight ? SwingConstants.LEFT : SwingConstants.RIGHT;
+            case CENTERED:
+            case SWING_DEFAULT:
+                return SwingConstants.CENTER;
+            case TRAILING:
+                return isLeftToRight ? SwingConstants.RIGHT : SwingConstants.LEFT;
+        }
+        throw new IllegalStateException("Unknown button alignment " + buttonBarGravity);
+    }
+
+    public static synchronized Platform getPlatform() {
+        if (platform != null) {
+            return platform;
+        }
+
+        if (LookUtils.IS_OS_WINDOWS) {
+            return (platform = Platform.WINDOWS);
+        }
+        if (LookUtils.IS_OS_MAC) {
+            return (platform = Platform.MACOS);
+        }
+        try {
+            if (DefaultKDEFontPolicy.isKDERunning()) {
+                return (platform = Platform.KDE);
+            }
+        } catch (Throwable t) {
+            // security access - too bad for KDE desktops.
+        }
+        try {
+            String desktop = AccessController.doPrivileged(new PrivilegedAction<String>() {
+                public String run() {
+                    return System.getProperty("sun.desktop");
+                }
+            });
+            if ("gnome".equals(desktop)) {
+                return (platform = Platform.GNOME);
+            }
+        } catch (Throwable t) {
+            // security access - too bad for Gnome desktops.
+        }
+
+        return (platform = Platform.DEFAULT);
     }
 }

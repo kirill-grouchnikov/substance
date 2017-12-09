@@ -31,7 +31,6 @@ package org.pushingpixels.substance.api;
 
 import java.awt.BasicStroke;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -48,7 +47,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JRootPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
 import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.substance.api.shaper.SubstanceButtonShaper;
@@ -595,14 +593,14 @@ public final class SubstanceSlices {
     }
 
     /**
-     * Button order for option pane buttons.
+     * Button order for grouped buttons.
      */
-    public enum SubstanceOptionPaneButtonOrder {
+    public enum ButtonOrder {
         /**
          * Platform-specific order. On macOS the default button will be the placed the closest to
-         * the trailing edge of the option pane (rightmost under LTR and leftmost under RTL). On
+         * the trailing edge of the button group (rightmost under LTR and leftmost under RTL). On
          * other platforms the default button will be placed closest to the leading edge of the
-         * option pane (leftmost under LTR and rightmost under RTL).
+         * button group (leftmost under LTR and rightmost under RTL).
          */
         PLATFORM {
             @Override
@@ -612,7 +610,7 @@ public final class SubstanceSlices {
         },
 
         /**
-         * The default button will be placed closest to the leading edge of the option pane
+         * The default button will be placed closest to the leading edge of the button group
          * (leftmost under LTR and rightmost under RTL).
          */
         DEFAULT_AS_LEADING {
@@ -623,7 +621,7 @@ public final class SubstanceSlices {
         },
 
         /**
-         * The default button will be placed closest to the trailing edge of the option pane
+         * The default button will be placed closest to the trailing edge of the button group
          * (rightmost under LTR and leftmost under RTL).
          */
         DEFAULT_AS_TRAILING {
@@ -631,48 +629,62 @@ public final class SubstanceSlices {
             public boolean isDefaultButtonLeading() {
                 return false;
             }
+        },
+
+        /**
+         * The default button will be placed as it is under default Swing behavior.
+         */
+        SWING_DEFAULT {
+            @Override
+            public boolean isDefaultButtonLeading() {
+                return true;
+            }
         };
 
         public abstract boolean isDefaultButtonLeading();
     }
 
-    public enum SubstanceOptionPaneButtonAlignment {
-        PLATFORM {
-            @Override
-            public int getButtonAlignmentInContainer(Container c) {
-                // On macOS the buttons are aligned to the trailing edge of
-                // the container (right under LTR and left under RTL)
-                return LookUtils.IS_OS_MAC
-                        ? (c.getComponentOrientation().isLeftToRight() ? SwingConstants.RIGHT
-                                : SwingConstants.LEFT)
-                        : SwingConstants.CENTER;
-            }
-        },
+    public enum Gravity {
+        /** Platform-specific content gravity. */
+        PLATFORM,
 
-        ALIGNED_TO_PARENT_LEADING_EDGE {
-            @Override
-            public int getButtonAlignmentInContainer(Container c) {
-                return c.getComponentOrientation().isLeftToRight() ? SwingConstants.LEFT
-                        : SwingConstants.RIGHT;
-            }
-        },
+        /**
+         * Align content to the leading edge of the parent container. Leading edge is left under LTR
+         * component orientation and right under RTL component orientation.
+         */
+        LEADING,
 
-        CENTERED {
-            @Override
-            public int getButtonAlignmentInContainer(Container c) {
-                return SwingConstants.CENTER;
-            }
-        },
+        /** Center content horizontally in the parent container. */
+        CENTERED,
 
-        ALIGNED_TO_PARENT_TRAILING_EDGE {
-            @Override
-            public int getButtonAlignmentInContainer(Container c) {
-                return c.getComponentOrientation().isLeftToRight() ? SwingConstants.RIGHT
-                        : SwingConstants.LEFT;
-            }
-        };
+        /**
+         * Align content to the trailing edge of the parent container. Trailing edge is right under
+         * LTR component orientation and left under RTL component orientation.
+         */
+        TRAILING,
+        
+        /** Swing default content gravity. */
+        SWING_DEFAULT
+    }
 
-        public abstract int getButtonAlignmentInContainer(Container c);
+    public enum TitleIconGravity {
+        /** Platform-specific icon gravity. */
+        PLATFORM,
+        
+        /** Do not show icon. */
+        NONE,
+
+        /**
+         * Align icon next to the title text (on the left under LTR component orientation and on the
+         * right under RTL component orientation.
+         */
+        NEXT_TO_TITLE,
+
+        /** Align icon on the side of the title pane opposite to that of the control buttons. */
+        OPPOSITE_CONTROL_BUTTONS,
+        
+        /** Swing default icon gravity. */
+        SWING_DEFAULT
     }
 
     /**
@@ -681,19 +693,13 @@ public final class SubstanceSlices {
      * @author Kirill Grouchnikov
      */
     public static enum PasswordStrength {
-        /**
-         * Weak strength.
-         */
+        /** Weak strength. */
         WEAK,
 
-        /**
-         * Medium strength.
-         */
+        /** Medium strength. */
         MEDIUM,
 
-        /**
-         * Strong strength.
-         */
+        /** Strong strength. */
         STRONG
     }
 

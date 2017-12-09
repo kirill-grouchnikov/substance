@@ -64,11 +64,11 @@ import javax.swing.plaf.UIResource;
 import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.substance.api.SubstanceSlices.AnimationFacet;
+import org.pushingpixels.substance.api.SubstanceSlices.ButtonOrder;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceSlices.FocusKind;
 import org.pushingpixels.substance.api.SubstanceSlices.LocaleChangeListener;
 import org.pushingpixels.substance.api.SubstanceSlices.MenuGutterFillKind;
-import org.pushingpixels.substance.api.SubstanceSlices.SubstanceOptionPaneButtonOrder;
 import org.pushingpixels.substance.api.SubstanceSlices.SubstanceWidgetType;
 import org.pushingpixels.substance.api.SubstanceSlices.TabContentPaneBorderKind;
 import org.pushingpixels.substance.api.combo.ComboPopupPrototypeCallback;
@@ -158,9 +158,15 @@ public class SubstanceCortex {
 
         private static SubstanceIconPack iconPack;
 
-        private static SubstanceSlices.SubstanceOptionPaneButtonOrder optionPaneButtonOrder = SubstanceSlices.SubstanceOptionPaneButtonOrder.PLATFORM;
+        private static SubstanceSlices.ButtonOrder buttonBarButtonOrder = SubstanceSlices.ButtonOrder.PLATFORM;
 
-        private static SubstanceSlices.SubstanceOptionPaneButtonAlignment optionPaneButtonAlignment = SubstanceSlices.SubstanceOptionPaneButtonAlignment.PLATFORM;
+        private static SubstanceSlices.Gravity buttonBarGravity = SubstanceSlices.Gravity.PLATFORM;
+
+        private static SubstanceSlices.Gravity titleTextGravity = SubstanceSlices.Gravity.SWING_DEFAULT;
+
+        private static SubstanceSlices.Gravity titleControlButtonGroupGravity = SubstanceSlices.Gravity.SWING_DEFAULT;
+
+        private static SubstanceSlices.TitleIconGravity titleIconGravity = SubstanceSlices.TitleIconGravity.SWING_DEFAULT;
 
         /**
          * Sets the specified skin. If the current look-and-feel is not Substance, this method will
@@ -871,29 +877,32 @@ public class SubstanceCortex {
         }
 
         /**
-         * Returns the currently set button order for all <code>JOptionPane</code>s.
+         * Returns the currently set button order for all containers that display grouped buttons,
+         * such as <code>JOptionPane</code>s, for example.
          * 
-         * @return The currently set button order for all <code>JOptionPane</code>s.
-         * @see #setOptionPaneButtonOrder(SubstanceOptionPaneButtonOrder)
+         * @return The currently set button order for all containers that display grouped buttons.
+         * @see #setButtonBarOrder(ButtonOrder)
          */
-        public static SubstanceSlices.SubstanceOptionPaneButtonOrder getOptionPaneButtonOrder() {
-            return optionPaneButtonOrder;
+        public static SubstanceSlices.ButtonOrder getButtonBarOrder() {
+            return buttonBarButtonOrder;
         }
 
         /**
-         * Sets the button order for all <code>JOptionPane</code>s.
+         * Sets the button order for all containers that display grouped buttons, such as
+         * <code>JOptionPane</code>s, for example. The default order is
+         * {@link SubstanceSlices.ButtonOrder#PLATFORM}.
          * 
-         * @param optionPaneButtonOrder
-         *            The new button order for all <code>JOptionPane</code>s. The value cannot be
-         *            null.
-         * @see #getOptionPaneButtonOrder()
+         * @param buttonBarButtonOrder
+         *            The new button order for all containers that display grouped buttons. The
+         *            value cannot be <code>null</code>.
+         * @see #getButtonBarOrder()
          */
-        public static void setOptionPaneButtonOrder(
-                SubstanceSlices.SubstanceOptionPaneButtonOrder optionPaneButtonOrder) {
-            if (optionPaneButtonOrder == null) {
-                throw new IllegalArgumentException("Cannot pass null. Did you mean PLATFORM?");
+        public static void setButtonBarOrder(SubstanceSlices.ButtonOrder buttonBarButtonOrder) {
+            if (buttonBarButtonOrder == null) {
+                throw new IllegalArgumentException(
+                        "Cannot pass null. Did you mean PLATFORM or SWING_DEFAULT?");
             }
-            GlobalScope.optionPaneButtonOrder = optionPaneButtonOrder;
+            GlobalScope.buttonBarButtonOrder = buttonBarButtonOrder;
             SwingUtilities.invokeLater(() -> {
                 for (Window window : Window.getWindows()) {
                     SwingUtilities.updateComponentTreeUI(window);
@@ -902,34 +911,135 @@ public class SubstanceCortex {
         }
 
         /**
-         * Returns the currently set button alignment for all <code>JOptionPane</code>s.
+         * Returns the currently set button bar gravity for all containers that display grouped
+         * buttons, such as <code>JOptionPane</code>s, for example.
          * 
-         * @return The currently set button alignment for all <code>JOptionPane</code>s.
-         * @see #setOptionPaneButtonAlignment(org.pushingpixels.substance.api.SubstanceSlices.SubstanceOptionPaneButtonAlignment)
+         * @return The currently set button bar gravity for all containers that display grouped
+         *         buttons.
+         * @see #setButtonBarGravity(org.pushingpixels.substance.api.SubstanceSlices.Gravity)
          */
-        public static SubstanceSlices.SubstanceOptionPaneButtonAlignment getOptionPaneButtonAlignment() {
-            return optionPaneButtonAlignment;
+        public static SubstanceSlices.Gravity getButtonBarGravity() {
+            return buttonBarGravity;
         }
 
         /**
-         * Sets the button alignment for all <code>JOptionPane</code>s.
+         * Sets the button bar gravity for all containers that display grouped buttons, such as
+         * <code>JOptionPane</code>s, for example. The default gravity is
+         * {@link SubstanceSlices.Gravity#PLATFORM}.
          * 
-         * @param optionPaneButtonAlignment
-         *            The new button alignment for all <code>JOptionPane</code>s. The value cannot
-         *            be null.
-         * @see #getOptionPaneButtonAlignment()
+         * @param buttonBarGravity
+         *            The new button alignment for all containers that display grouped buttons. The
+         *            value cannot be <code>null</code>.
+         * @see #getButtonBarGravity()
          */
-        public static void setOptionPaneButtonAlignment(
-                SubstanceSlices.SubstanceOptionPaneButtonAlignment optionPaneButtonAlignment) {
-            if (optionPaneButtonAlignment == null) {
-                throw new IllegalArgumentException("Cannot pass null. Did you mean PLATFORM?");
+        public static void setButtonBarGravity(SubstanceSlices.Gravity buttonBarGravity) {
+            if (buttonBarGravity == null) {
+                throw new IllegalArgumentException(
+                        "Cannot pass null. Did you mean PLATFORM or SWING_DEFAULT?");
             }
-            GlobalScope.optionPaneButtonAlignment = optionPaneButtonAlignment;
+            GlobalScope.buttonBarGravity = buttonBarGravity;
             SwingUtilities.invokeLater(() -> {
                 for (Window window : Window.getWindows()) {
                     SwingUtilities.updateComponentTreeUI(window);
                 }
             });
+        }
+
+        /**
+         * Configures title pane content gravity for all decorated application windows. This will
+         * only apply if you are using {@link JFrame#setDefaultLookAndFeelDecorated(boolean)} and /
+         * pr {@link JDialog#setDefaultLookAndFeelDecorated(boolean)} APIs with <code>true</code>.
+         * The default gravities are {@link SubstanceSlices.Gravity#SWING_DEFAULT} and
+         * {@link SubstanceSlices.TitleIconGravity#SWING_DEFAULT}.
+         * 
+         * @param titleTextGravity
+         *            Gravity for the title text. The value cannot be <code>null</code>.
+         * @param titleControlButtonGroupGravity
+         *            Gravity for the control button group. The value cannot be <code>null</code> or
+         *            {@link SubstanceSlices.Gravity#CENTERED}.
+         * @param titleIconGravity
+         *            Gravity for the icon. The value cannot be <code>null</code>.
+         * 
+         * @see #getTitleTextGravity()
+         * @see #getTitleControlButtonGroupGravity()
+         * @see #getTitleIconGravity()
+         * @see JFrame#setDefaultLookAndFeelDecorated(boolean)
+         * @see JDialog#setDefaultLookAndFeelDecorated(boolean)
+         */
+        public static void configureTitleContentGravity(SubstanceSlices.Gravity titleTextGravity,
+                SubstanceSlices.Gravity titleControlButtonGroupGravity,
+                SubstanceSlices.TitleIconGravity titleIconGravity) {
+            if (titleTextGravity == null) {
+                throw new IllegalArgumentException(
+                        "Cannot pass null for text gravity. Did you mean PLATFORM or SWING_DEFAULT?");
+            }
+            if (titleControlButtonGroupGravity == null) {
+                throw new IllegalArgumentException(
+                        "Cannot pass null for control button group gravity. Did you mean PLATFORM or SWING_DEFAULT?");
+            }
+            if (titleIconGravity == null) {
+                throw new IllegalArgumentException(
+                        "Cannot pass null for icon gravity. Did you mean PLATFORM or SWING_DEFAULT?");
+            }
+
+            if (titleControlButtonGroupGravity == SubstanceSlices.Gravity.CENTERED) {
+                throw new IllegalArgumentException(
+                        "Cannot pass CENTERED for control button group gravity. Did you mean PLATFORM or SWING_DEFAULT?");
+            }
+
+            GlobalScope.titleTextGravity = titleTextGravity;
+            GlobalScope.titleControlButtonGroupGravity = titleControlButtonGroupGravity;
+            GlobalScope.titleIconGravity = titleIconGravity;
+            SwingUtilities.invokeLater(() -> {
+                for (Window window : Window.getWindows()) {
+                    SwingUtilities.updateComponentTreeUI(window);
+                }
+            });
+        }
+
+        /**
+         * Returns the gravity for the title text in title panes of all decorated application
+         * windows.
+         * 
+         * @return Gravity for the title text in title panes of all decorated application windows.
+         * @see #configureTitleContentGravity(org.pushingpixels.substance.api.SubstanceSlices.Gravity,
+         *      org.pushingpixels.substance.api.SubstanceSlices.Gravity,
+         *      org.pushingpixels.substance.api.SubstanceSlices.TitleIconGravity)
+         * @see #getTitleControlButtonGroupGravity()
+         * @see #getTitleIconGravity()
+         */
+        public static SubstanceSlices.Gravity getTitleTextGravity() {
+            return GlobalScope.titleTextGravity;
+        }
+
+        /**
+         * Returns the gravity for the control button group in title panes of all decorated
+         * application windows.
+         * 
+         * @return Gravity for the control button group in title panes of all decorated application
+         *         windows.
+         * @see #configureTitleContentGravity(org.pushingpixels.substance.api.SubstanceSlices.Gravity,
+         *      org.pushingpixels.substance.api.SubstanceSlices.Gravity,
+         *      org.pushingpixels.substance.api.SubstanceSlices.TitleIconGravity)
+         * @see #getTitleTextGravity()
+         * @see #getTitleIconGravity()
+         */
+        public static SubstanceSlices.Gravity getTitleControlButtonGroupGravity() {
+            return GlobalScope.titleControlButtonGroupGravity;
+        }
+
+        /**
+         * Returns the gravity for the icon in title panes of all decorated application windows.
+         * 
+         * @return Gravity for the icon in title panes of all decorated application windows.
+         * @see #configureTitleContentGravity(org.pushingpixels.substance.api.SubstanceSlices.Gravity,
+         *      org.pushingpixels.substance.api.SubstanceSlices.Gravity,
+         *      org.pushingpixels.substance.api.SubstanceSlices.TitleIconGravity)
+         * @see #getTitleControlButtonGroupGravity()
+         * @see #getTitleIconGravity()
+         */
+        public static SubstanceSlices.TitleIconGravity getTitleIconGravity() {
+            return GlobalScope.titleIconGravity;
         }
 
         /**

@@ -29,41 +29,24 @@
  */
 package org.pushingpixels.substance.api.inputmap;
 
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-
-import org.pushingpixels.substance.internal.contrib.jgoodies.looks.LookUtils;
 import org.pushingpixels.substance.internal.inputmaps.AquaInputMapSet;
 import org.pushingpixels.substance.internal.inputmaps.BaseInputMapSet;
 import org.pushingpixels.substance.internal.inputmaps.GnomeInputMapSet;
 import org.pushingpixels.substance.internal.inputmaps.WindowsInputMapSet;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 public class SubstanceInputMapUtilities {
-	public static InputMapSet getSystemInputMapSet() {
-		if (LookUtils.IS_OS_MAC) {
-			return new AquaInputMapSet();
-		}
-		if (LookUtils.IS_OS_WINDOWS) {
-			return new WindowsInputMapSet();
-		}
-		try {
-			String desktop = AccessController
-					.doPrivileged(new PrivilegedAction<String>() {
-						public String run() {
-							return System.getProperty("sun.desktop");
-						}
-					});
-			if ("gnome".equals(desktop)) {
-				return new GnomeInputMapSet();
-			}
-		} catch (Throwable t) {
-			// security access - too bad for Gnome desktops.
-		}
-
-		return getCrossPlatformInputMapSet();
-	}
-
-	public static InputMapSet getCrossPlatformInputMapSet() {
-		return new BaseInputMapSet();
-	}
+    public static InputMapSet getSystemInputMapSet() {
+        SubstanceCoreUtilities.Platform platform = SubstanceCoreUtilities.getPlatform();
+        switch (platform) {
+        case MACOS:
+            return new AquaInputMapSet();
+        case WINDOWS:
+            return new WindowsInputMapSet();
+        case GNOME:
+            return new GnomeInputMapSet();
+        default:
+            return new BaseInputMapSet();
+        }
+    }
 }

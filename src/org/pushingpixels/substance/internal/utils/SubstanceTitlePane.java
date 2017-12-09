@@ -91,6 +91,7 @@ import javax.swing.plaf.UIResource;
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceSlices.SubstanceWidgetType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
@@ -204,35 +205,9 @@ public class SubstanceTitlePane extends JComponent {
     protected PropertyChangeListener propertyListener;
 
     /**
-     * Client property to mark every child to be either leading or trailing. The value must be one
-     * of {@link ExtraComponentKind}.
-     * 
-     * @see #markExtraComponent(JComponent, ExtraComponentKind)
-     * @see #getTitleTextRectangle()
-     */
-    protected static final String EXTRA_COMPONENT_KIND = "substancelaf.internal.titlePane.extraComponentKind";
-
-    /**
      * The application icon to be displayed.
      */
     protected Image appIcon;
-
-    /**
-     * Enumerates the types of children components.
-     * 
-     * @author Kirill Grouchnikov
-     */
-    protected enum ExtraComponentKind {
-        /**
-         * Leading child components (left on LTR and right on RTL).
-         */
-        LEADING,
-
-        /**
-         * Trailing child components (right on LTR and left on RTL).
-         */
-        TRAILING
-    }
 
     /**
      * Panel that shows heap status and allows running the garbage collector.
@@ -532,11 +507,10 @@ public class SubstanceTitlePane extends JComponent {
 
         this.setToolTipText(this.getTitle());
 
-        SubstanceCortex.ComponentScope.setDecorationType(this, DecorationAreaType.PRIMARY_TITLE_PANE);
+        SubstanceCortex.ComponentScope.setDecorationType(this,
+                DecorationAreaType.PRIMARY_TITLE_PANE);
         this.setForeground(SubstanceColorUtilities.getForegroundColor(SubstanceCoreUtilities
                 .getSkin(this).getBackgroundColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE)));
-        // SubstanceColorSchemeUtilities
-        // .getColorScheme(this, ComponentState.ACTIVE)));
     }
 
     /**
@@ -700,15 +674,16 @@ public class SubstanceTitlePane extends JComponent {
             this.add(this.closeButton);
 
             this.heapStatusPanel = new HeapStatusPanel();
-            this.markExtraComponent(this.heapStatusPanel, ExtraComponentKind.TRAILING);
+            SubstanceTitlePaneUtilities.markTitlePaneExtraComponent(this.heapStatusPanel,
+                    SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
             this.add(this.heapStatusPanel);
             boolean isHeapStatusPanelShowing = SubstanceWidgetManager.getInstance()
                     .isAllowed(rootPane, SubstanceWidgetType.TITLE_PANE_HEAP_STATUS);
             this.heapStatusPanel.setVisible(isHeapStatusPanelShowing);
             this.heapStatusPanel
                     .setPreferredSize(new Dimension(80, this.getPreferredSize().height));
-            this.heapStatusPanel.setToolTipText(
-                    SubstanceCortex.GlobalScope.getLabelBundle().getString("Tooltip.heapStatusPanel"));
+            this.heapStatusPanel.setToolTipText(SubstanceCortex.GlobalScope.getLabelBundle()
+                    .getString("Tooltip.heapStatusPanel"));
             this.heapStatusPanel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -753,7 +728,12 @@ public class SubstanceTitlePane extends JComponent {
         // support for RTL
         this.menuBar.applyComponentOrientation(this.rootPane.getComponentOrientation());
 
-        this.markExtraComponent(this.menuBar, ExtraComponentKind.LEADING);
+        SubstanceSlices.TitleIconGravity iconGravity = SubstanceTitlePaneUtilities
+                .getTitlePaneIconGravity();
+        SubstanceTitlePaneUtilities.markTitlePaneExtraComponent(this.menuBar,
+                (iconGravity == SubstanceSlices.TitleIconGravity.NEXT_TO_TITLE)
+                        ? SubstanceTitlePaneUtilities.ExtraComponentKind.WITH_TITLE
+                        : SubstanceTitlePaneUtilities.ExtraComponentKind.LEADING);
 
         return this.menuBar;
     }
@@ -834,7 +814,8 @@ public class SubstanceTitlePane extends JComponent {
         button.setFocusable(false);
         button.setOpaque(true);
 
-        this.markExtraComponent(button, ExtraComponentKind.TRAILING);
+        SubstanceTitlePaneUtilities.markTitlePaneExtraComponent(button,
+                SubstanceTitlePaneUtilities.getTitlePaneControlButtonKind());
 
         return button;
     }
@@ -942,9 +923,7 @@ public class SubstanceTitlePane extends JComponent {
      *            if <code>true</code>, the update is done in any case.
      */
     private void setState(int state, boolean updateRegardless) {
-        Window w = this.getWindow();
-
-        if ((w != null) && (this.getWindowDecorationStyle() == JRootPane.FRAME)) {
+        if ((this.window != null) && (this.getWindowDecorationStyle() == JRootPane.FRAME)) {
             if ((this.state == state) && !updateRegardless) {
                 return;
             }
@@ -976,8 +955,8 @@ public class SubstanceTitlePane extends JComponent {
                                                                 DecorationAreaType.PRIMARY_TITLE_PANE)),
                                 "substance.titlePane.restoreIcon");
                         this.updateToggleButton(this.restoreAction, restoreIcon);
-                        this.toggleButton.setToolTipText(SubstanceCortex.GlobalScope.getLabelBundle()
-                                .getString("SystemMenu.restore"));
+                        this.toggleButton.setToolTipText(SubstanceCortex.GlobalScope
+                                .getLabelBundle().getString("SystemMenu.restore"));
                         this.maximizeAction.setEnabled(false);
                         this.restoreAction.setEnabled(true);
                     } else {
@@ -990,8 +969,8 @@ public class SubstanceTitlePane extends JComponent {
                                                                 DecorationAreaType.PRIMARY_TITLE_PANE)),
                                 "substance.titlePane.maxIcon");
                         this.updateToggleButton(this.maximizeAction, maxIcon);
-                        this.toggleButton.setToolTipText(SubstanceCortex.GlobalScope.getLabelBundle()
-                                .getString("SystemMenu.maximize"));
+                        this.toggleButton.setToolTipText(SubstanceCortex.GlobalScope
+                                .getLabelBundle().getString("SystemMenu.maximize"));
                         this.maximizeAction.setEnabled(true);
                         this.restoreAction.setEnabled(false);
                     }
@@ -1049,22 +1028,10 @@ public class SubstanceTitlePane extends JComponent {
      * @return Frame.
      */
     private Frame getFrame() {
-        Window window = this.getWindow();
-
-        if (window instanceof Frame) {
+        if (this.window instanceof Frame) {
             return (Frame) window;
         }
         return null;
-    }
-
-    /**
-     * Returns the <code>Window</code> the <code>JRootPane</code> is contained in. This will return
-     * null if there is no parent ancestor of the <code>JRootPane</code>.
-     * 
-     * @return Window.
-     */
-    private Window getWindow() {
-        return this.window;
     }
 
     /**
@@ -1073,22 +1040,33 @@ public class SubstanceTitlePane extends JComponent {
      * @return Display title.
      */
     private String getTitle() {
-        Window w = this.getWindow();
-
-        if (w instanceof Frame) {
-            return ((Frame) w).getTitle();
+        if (this.window instanceof Frame) {
+            return ((Frame) this.window).getTitle();
         }
-        if (w instanceof Dialog) {
-            return ((Dialog) w).getTitle();
+        if (this.window instanceof Dialog) {
+            return ((Dialog) this.window).getTitle();
         }
         return null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
-     */
+    private String getDisplayTitle() {
+        String theTitle = this.getTitle();
+        if (theTitle == null) {
+            return null;
+        }
+
+        Font font = SubstanceCortex.GlobalScope.getFontPolicy().getFontSet("Substance", null)
+                .getWindowTitleFont();
+
+        Rectangle titleTextRect = SubstanceTitlePaneUtilities.getTitlePaneTextRectangle(this,
+                (this.window != null) ? this.window : this.getRootPane());
+        FontMetrics fm = rootPane.getFontMetrics(font);
+        int titleWidth = titleTextRect.width - 20;
+        String clippedTitle = SubstanceCoreUtilities.clipString(fm, titleWidth, theTitle);
+
+        return clippedTitle;
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         // long start = System.nanoTime();
@@ -1098,9 +1076,9 @@ public class SubstanceTitlePane extends JComponent {
             this.setState(this.getFrame().getExtendedState());
         }
         final JRootPane rootPane = this.getRootPane();
-        Window window = this.getWindow();
-        boolean leftToRight = (window == null) ? rootPane.getComponentOrientation().isLeftToRight()
-                : window.getComponentOrientation().isLeftToRight();
+        boolean leftToRight = (this.window == null)
+                ? rootPane.getComponentOrientation().isLeftToRight()
+                : this.window.getComponentOrientation().isLeftToRight();
         int width = this.getWidth();
         int height = this.getHeight();
 
@@ -1112,39 +1090,46 @@ public class SubstanceTitlePane extends JComponent {
         SubstanceColorScheme scheme = skin
                 .getEnabledColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE);
 
-        int xOffset = 0;
         String theTitle = this.getTitle();
-
-        if (theTitle != null) {
-            Rectangle titleTextRect = this.getTitleTextRectangle();
-            FontMetrics fm = rootPane.getFontMetrics(g.getFont());
-            int titleWidth = titleTextRect.width - 20;
-            String clippedTitle = SubstanceCoreUtilities.clipString(fm, titleWidth, theTitle);
-            // show tooltip with full title only if necessary
-            if (theTitle.equals(clippedTitle)) {
-                this.setToolTipText(null);
-            } else {
-                this.setToolTipText(theTitle);
-            }
-            theTitle = clippedTitle;
-            if (leftToRight)
-                xOffset = titleTextRect.x;
-            else
-                xOffset = titleTextRect.x + titleTextRect.width - fm.stringWidth(theTitle);
-        }
+        String displayTitle = getDisplayTitle();
 
         Graphics2D graphics = (Graphics2D) g.create();
+        BackgroundPaintingUtils.update(graphics, SubstanceTitlePane.this, false);
+
         Font font = SubstanceCortex.GlobalScope.getFontPolicy().getFontSet("Substance", null)
                 .getWindowTitleFont();
         graphics.setFont(font);
 
-        BackgroundPaintingUtils.update(graphics, SubstanceTitlePane.this, false);
-        // DecorationPainterUtils.paintDecorationBackground(graphics,
-        // SubstanceTitlePane.this, false);
+        if (displayTitle != null) {
+            Rectangle titleTextRect = SubstanceTitlePaneUtilities.getTitlePaneTextRectangle(this,
+                    (this.window != null) ? this.window : this.getRootPane());
+            FontMetrics fm = rootPane.getFontMetrics(font);
+            int displayTitleWidth = fm.stringWidth(displayTitle);
 
-        // draw the title (if needed)
-        if (theTitle != null) {
-            FontMetrics fm = rootPane.getFontMetrics(graphics.getFont());
+            // show tooltip with full title only if necessary
+            if (theTitle.equals(displayTitle)) {
+                this.setToolTipText(null);
+            } else {
+                this.setToolTipText(theTitle);
+            }
+
+            int xOffset = 0;
+            SubstanceSlices.Gravity titleTextGravity = SubstanceTitlePaneUtilities
+                    .getTitlePaneTextGravity();
+            switch (titleTextGravity) {
+                case LEADING:
+                    xOffset = leftToRight ? titleTextRect.x
+                            : titleTextRect.x + titleTextRect.width - displayTitleWidth;
+                    break;
+                case TRAILING:
+                    xOffset = leftToRight
+                            ? titleTextRect.x + titleTextRect.width - displayTitleWidth
+                            : titleTextRect.x;
+                    break;
+                default:
+                    xOffset = titleTextRect.x + (titleTextRect.width - displayTitleWidth) / 2;
+            }
+
             int yOffset = ((height - fm.getHeight()) / 2) + fm.getAscent();
 
             SubstanceColorScheme fillScheme = skin
@@ -1152,8 +1137,8 @@ public class SubstanceTitlePane extends JComponent {
             Color echoColor = !fillScheme.isDark() ? fillScheme.getUltraDarkColor()
                     : fillScheme.getUltraLightColor();
             SubstanceTextUtilities.paintTextWithDropShadow(this, graphics,
-                    SubstanceColorUtilities.getForegroundColor(scheme), echoColor, theTitle, width,
-                    height, xOffset, yOffset);
+                    SubstanceColorUtilities.getForegroundColor(scheme), echoColor, displayTitle,
+                    width, height, xOffset, yOffset);
         }
 
         GhostPaintingUtils.paintGhostImages(this, graphics);
@@ -1161,90 +1146,6 @@ public class SubstanceTitlePane extends JComponent {
         // long end = System.nanoTime();
         // System.out.println(end - start);
         graphics.dispose();
-    }
-
-    /**
-     * Computes the rectangle of the title text. This method looks at all the children components of
-     * the title pane, grouping them by leading and trailing (based on {@link #EXTRA_COMPONENT_KIND}
-     * client property). The title text rectangle is the space between the leading group and the
-     * trailing group.
-     * 
-     * @return Rectangle of the title text.
-     * @throws IllegalStateException
-     *             If at least one child component of this title pane is not marked with the
-     *             {@link #EXTRA_COMPONENT_KIND} client property.
-     * @see #markExtraComponent(JComponent, ExtraComponentKind)
-     * @see #EXTRA_COMPONENT_KIND
-     */
-    protected Rectangle getTitleTextRectangle() {
-        JRootPane rootPane = this.getRootPane();
-        Window window = this.getWindow();
-        boolean leftToRight = (window == null) ? rootPane.getComponentOrientation().isLeftToRight()
-                : window.getComponentOrientation().isLeftToRight();
-
-        if (leftToRight) {
-            int maxLeadingX = 0;
-            int minTrailingX = this.getWidth();
-
-            for (int i = 0; i < this.getComponentCount(); i++) {
-                Component child = this.getComponent(i);
-                if (!child.isVisible())
-                    continue;
-                if (child instanceof JComponent) {
-                    ExtraComponentKind kind = (ExtraComponentKind) ((JComponent) child)
-                            .getClientProperty(EXTRA_COMPONENT_KIND);
-                    if (kind == null) {
-                        throw new IllegalStateException(
-                                "Title pane child " + child.getClass().getName()
-                                        + " is not marked as leading or trailing");
-                    }
-                    if (kind == ExtraComponentKind.LEADING) {
-                        int cx = child.getX() + child.getWidth();
-                        if (cx > maxLeadingX)
-                            maxLeadingX = cx;
-                    } else {
-                        int cx = child.getX();
-                        if (cx < minTrailingX)
-                            minTrailingX = cx;
-                    }
-                }
-            }
-
-            int start = maxLeadingX + 10;
-            int end = minTrailingX - 5;
-            return new Rectangle(start, 0, end - start, this.getHeight());
-        } else {
-            int minLeadingX = this.getWidth();
-            int maxTrailingX = 0;
-
-            for (int i = 0; i < this.getComponentCount(); i++) {
-                Component child = this.getComponent(i);
-                if (!child.isVisible())
-                    continue;
-                if (child instanceof JComponent) {
-                    ExtraComponentKind kind = (ExtraComponentKind) ((JComponent) child)
-                            .getClientProperty(EXTRA_COMPONENT_KIND);
-                    if (kind == null) {
-                        throw new IllegalStateException(
-                                "Title pane child " + child.getClass().getName()
-                                        + " is not marked as leading or trailing");
-                    }
-                    if (kind == ExtraComponentKind.LEADING) {
-                        int cx = child.getX();
-                        if (cx < minLeadingX)
-                            minLeadingX = cx;
-                    } else {
-                        int cx = child.getX() + child.getWidth();
-                        if (cx > maxTrailingX)
-                            maxTrailingX = cx;
-                    }
-                }
-            }
-
-            int start = maxTrailingX + 5;
-            int end = minLeadingX - 10;
-            return new Rectangle(start, 0, end - start, this.getHeight());
-        }
     }
 
     /**
@@ -1264,8 +1165,6 @@ public class SubstanceTitlePane extends JComponent {
         }
 
         public void actionPerformed(ActionEvent e) {
-            Window window = SubstanceTitlePane.this.getWindow();
-
             if (window != null) {
                 window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
             }
@@ -1455,10 +1354,10 @@ public class SubstanceTitlePane extends JComponent {
          * @see java.awt.LayoutManager#layoutContainer(java.awt.Container)
          */
         public void layoutContainer(Container c) {
-            boolean leftToRight = (SubstanceTitlePane.this.window == null)
-                    ? SubstanceTitlePane.this.getRootPane().getComponentOrientation()
-                            .isLeftToRight()
-                    : SubstanceTitlePane.this.window.getComponentOrientation().isLeftToRight();
+            Component compToQuery = (window != null) ? window : getRootPane();
+            boolean leftToRight = compToQuery.getComponentOrientation().isLeftToRight();
+            boolean controlButtonsOnRight = SubstanceTitlePaneUtilities
+                    .areTitlePaneControlButtonsOnRight(compToQuery);
 
             int w = SubstanceTitlePane.this.getWidth();
             int x;
@@ -1483,31 +1382,76 @@ public class SubstanceTitlePane extends JComponent {
 
             x = leftToRight ? w : 0;
 
-            spacing = 5;
-            x = leftToRight ? spacing : w - buttonWidth - spacing;
+            SubstanceSlices.TitleIconGravity iconGravity = SubstanceTitlePaneUtilities
+                    .getTitlePaneIconGravity();
+            SubstanceSlices.Gravity titleTextGravity = SubstanceTitlePaneUtilities
+                    .getTitlePaneTextGravity();
             if (SubstanceTitlePane.this.menuBar != null) {
-                SubstanceTitlePane.this.menuBar.setBounds(x, y, buttonWidth, buttonHeight);
-                // System.out.println(menuBar.getBounds());
+                spacing = 5;
+                int menuBarLeft;
+                switch (iconGravity) {
+                    case OPPOSITE_CONTROL_BUTTONS:
+                        menuBarLeft = controlButtonsOnRight ? spacing : w - buttonWidth - spacing;
+                        break;
+                    case NEXT_TO_TITLE:
+                        Rectangle titleRect = SubstanceTitlePaneUtilities.getTitlePaneTextRectangle(
+                                SubstanceTitlePane.this, (window != null) ? window : getRootPane());
+                        String displayTitle = getDisplayTitle();
+
+                        Font font = SubstanceCortex.GlobalScope.getFontPolicy()
+                                .getFontSet("Substance", null).getWindowTitleFont();
+                        int displayTitleWidth = rootPane.getFontMetrics(font)
+                                .stringWidth(displayTitle);
+                        switch (titleTextGravity) {
+                            case LEADING:
+                                menuBarLeft = leftToRight ? titleRect.x - buttonWidth - spacing
+                                        : titleRect.x + titleRect.width + spacing;
+                                break;
+                            case TRAILING:
+                                menuBarLeft = leftToRight
+                                        ? titleRect.x + titleRect.width - displayTitleWidth
+                                                - buttonWidth - spacing
+                                        : titleRect.x + titleRect.width + spacing;
+                                break;
+                            default:
+                                int displayTitleLeft = titleRect.x
+                                        + (titleRect.width - displayTitleWidth) / 2;
+                                menuBarLeft = leftToRight ? displayTitleLeft - buttonWidth - spacing
+                                        : displayTitleLeft + displayTitleWidth + spacing;
+                        }
+
+                        break;
+                    default:
+                        menuBarLeft = -1;
+
+                }
+                if (menuBarLeft >= 0) {
+                    SubstanceTitlePane.this.menuBar.setVisible(true);
+                    SubstanceTitlePane.this.menuBar.setBounds(menuBarLeft, y, buttonWidth,
+                            buttonHeight);
+                } else {
+                    SubstanceTitlePane.this.menuBar.setVisible(false);
+                }
             }
 
-            x = leftToRight ? w : 0;
+            x = controlButtonsOnRight ? w : 0;
             spacing = 3;
-            x += leftToRight ? -spacing - buttonWidth : spacing;
+            x += controlButtonsOnRight ? -spacing - buttonWidth : spacing;
             if (SubstanceTitlePane.this.closeButton != null) {
                 SubstanceTitlePane.this.closeButton.setBounds(x, y, buttonWidth, buttonHeight);
             }
 
-            if (!leftToRight)
+            if (!controlButtonsOnRight)
                 x += buttonWidth;
 
             if (SubstanceTitlePane.this.getWindowDecorationStyle() == JRootPane.FRAME) {
                 if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
                     if (SubstanceTitlePane.this.toggleButton.getParent() != null) {
                         spacing = 10;
-                        x += leftToRight ? -spacing - buttonWidth : spacing;
+                        x += controlButtonsOnRight ? -spacing - buttonWidth : spacing;
                         SubstanceTitlePane.this.toggleButton.setBounds(x, y, buttonWidth,
                                 buttonHeight);
-                        if (!leftToRight) {
+                        if (!controlButtonsOnRight) {
                             x += buttonWidth;
                         }
                     }
@@ -1516,10 +1460,10 @@ public class SubstanceTitlePane extends JComponent {
                 if ((SubstanceTitlePane.this.minimizeButton != null)
                         && (SubstanceTitlePane.this.minimizeButton.getParent() != null)) {
                     spacing = 2;
-                    x += leftToRight ? -spacing - buttonWidth : spacing;
+                    x += controlButtonsOnRight ? -spacing - buttonWidth : spacing;
                     SubstanceTitlePane.this.minimizeButton.setBounds(x, y, buttonWidth,
                             buttonHeight);
-                    if (!leftToRight) {
+                    if (!controlButtonsOnRight) {
                         x += buttonWidth;
                     }
                 }
@@ -1527,7 +1471,7 @@ public class SubstanceTitlePane extends JComponent {
                 if ((SubstanceTitlePane.this.heapStatusPanel != null)
                         && SubstanceTitlePane.this.heapStatusPanel.isVisible()) {
                     spacing = 5;
-                    x += leftToRight
+                    x += controlButtonsOnRight
                             ? (-spacing
                                     - SubstanceTitlePane.this.heapStatusPanel.getPreferredWidth())
                             : spacing;
@@ -1536,7 +1480,6 @@ public class SubstanceTitlePane extends JComponent {
                             SubstanceTitlePane.this.getHeight() - 3);
                 }
             }
-            // buttonsWidth = leftToRight ? w - x : x;
         }
 
     }
@@ -1561,8 +1504,9 @@ public class SubstanceTitlePane extends JComponent {
                 }
             } else {
                 if ("title".equals(name)) {
-                    SubstanceTitlePane.this.repaint();
                     SubstanceTitlePane.this.setToolTipText((String) pce.getNewValue());
+                    revalidate();
+                    repaint();
                 } else if ("componentOrientation" == name) {
                     revalidate();
                     repaint();
@@ -1607,8 +1551,8 @@ public class SubstanceTitlePane extends JComponent {
     protected void syncCloseButtonTooltip() {
         if (SubstanceCoreUtilities.isRootPaneModified(this.getRootPane())) {
             this.closeButton.setToolTipText(
-                    SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.close") + " ["
-                            + SubstanceCortex.GlobalScope.getLabelBundle()
+                    SubstanceCortex.GlobalScope.getLabelBundle().getString("SystemMenu.close")
+                            + " [" + SubstanceCortex.GlobalScope.getLabelBundle()
                                     .getString("Tooltip.contentsNotSaved")
                             + "]");
         } else {
@@ -1619,25 +1563,10 @@ public class SubstanceTitlePane extends JComponent {
     }
 
     /**
-     * Marks the specified child component with the specified extra component kind.
-     * 
-     * @param comp
-     *            Child component.
-     * @param kind
-     *            Extra kind.
-     * @see #getTitleTextRectangle()
-     * @see #EXTRA_COMPONENT_KIND
-     */
-    protected void markExtraComponent(JComponent comp, ExtraComponentKind kind) {
-        comp.putClientProperty(EXTRA_COMPONENT_KIND, kind);
-    }
-
-    /**
      * Updates the application icon.
      */
     private void updateAppIcon() {
-        Window window = getWindow();
-        if (window == null) {
+        if (this.window == null) {
             this.appIcon = null;
             return;
         }

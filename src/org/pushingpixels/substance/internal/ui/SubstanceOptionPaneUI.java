@@ -187,7 +187,7 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
         bottom.setLayout(new SubstanceFooterLayout(
                 SubstanceSizeUtils.getAdjustedSize(SubstanceSizeUtils.getComponentFontSize(bottom),
                         8, 4, 1, true),
-                SubstanceCortex.GlobalScope.getOptionPaneButtonOrder().isDefaultButtonLeading()));
+                SubstanceCortex.GlobalScope.getButtonBarOrder().isDefaultButtonLeading()));
         addButtonComponents(bottom, getButtons(), getInitialValueIndex());
         return bottom;
     }
@@ -231,8 +231,7 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
                         + padding * (numChildren - 1);
 
                 boolean isLeftToRight = container.getComponentOrientation().isLeftToRight();
-                int buttonAlignment = SubstanceCortex.GlobalScope.getOptionPaneButtonAlignment()
-                        .getButtonAlignmentInContainer(container);
+                int buttonAlignment = SubstanceCoreUtilities.getButtonBarGravity(container);
                 int x;
                 switch (buttonAlignment) {
                 case SwingConstants.LEFT:
@@ -243,7 +242,6 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
                     break;
                 default:
                     x = container.getWidth() - insets.right - totalButtonWidth;
-                    break;
                 }
 
                 // Here we have four cases:

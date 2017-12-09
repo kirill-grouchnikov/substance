@@ -35,188 +35,188 @@ public class SubstanceSynapse {
     /**
      * Client property name for specifying that the {@link LockBorderWidget} should put a lock icon.
      */
-    public final static String HAS_LOCK_ICON = "substance.internal.widget.hasLockIcon";
+    public final static String HAS_LOCK_ICON = "substancelaf.internal.widget.hasLockIcon";
 
     /**
      * Client property name for specifying the preview painter for a component.
      */
-    public final static String COMPONENT_PREVIEW_PAINTER = "substance.internal.widget.componentPreviewPainter";
+    public final static String COMPONENT_PREVIEW_PAINTER = "substancelaf.internal.widget.componentPreviewPainter";
 
     /**
      * Client property name for specifying password strength checker for a password field.
      */
-    public final static String PASSWORD_STRENGTH_CHECKER = "substance.internal.widget.passwordStrengthChecker";
+    public final static String PASSWORD_STRENGTH_CHECKER = "substancelaf.internal.widget.passwordStrengthChecker";
 
     /**
      * Client property name for specifying that the text component contents should be selected on
      * focus gain.
      */
-    public final static String TEXT_SELECT_ON_FOCUS = "substance.internal.widget.textSelectAllOnFocus";
+    public final static String TEXT_SELECT_ON_FOCUS = "substancelaf.internal.widget.textSelectAllOnFocus";
 
     /**
      * Client property name for specifying that the text component contents should flip selection on
      * ESCAPE key press.
      */
-    public final static String TEXT_FLIP_SELECT_ON_ESCAPE = "substance.internal.widget.textFlipSelectOnEscape";
+    public final static String TEXT_FLIP_SELECT_ON_ESCAPE = "substancelaf.internal.widget.textFlipSelectOnEscape";
 
     /**
      * Client property name for specifying that the text component should have the edit context menu
      * (with Cut / Copy / Paste / ... menu items).
      */
-    public final static String TEXT_EDIT_CONTEXT_MENU = "substance.internal.widget.textEditContextMenu";
+    public final static String TEXT_EDIT_CONTEXT_MENU = "substancelaf.internal.widget.textEditContextMenu";
 
     /**
      * Client property name for specifying that the tree component should have automatic drag and
      * drop support.
      */
-    public final static String TREE_AUTO_DND_SUPPORT = "substance.internal.widget.treeAutoDnDSupport";
+    public final static String TREE_AUTO_DND_SUPPORT = "substancelaf.internal.widget.treeAutoDnDSupport";
 
     /**
      * Client property name for specifying that a scroll pane should have auto-scroll support
      * invoked on mouse button click that triggers popups.
      */
-    public final static String AUTO_SCROLL = "substance.internal.widget.autoScroll";
+    public final static String AUTO_SCROLL = "substancelaf.internal.widget.autoScroll";
 
     /**
      * Client property name for requesting that watermark should be painted on the component and its
      * descendants.
      */
-    public static final String WATERMARK_VISIBLE = "substance.internal.watermarkVisible";
+    public static final String WATERMARK_VISIBLE = "substancelaf.internal.watermarkVisible";
 
     /**
      * Client property name for ignoring the default (minimum) dimension for a single button.
      */
-    public static final String BUTTON_NO_MIN_SIZE = "substance.internal.buttonNoMinSize";
+    public static final String BUTTON_NO_MIN_SIZE = "substancelaf.internal.buttonNoMinSize";
 
     /**
      * Client property name for specifying that a single button / all application buttons should not
      * paint the background.
      */
-    public static final String BUTTON_NEVER_PAINT_BACKGROUND = "substance.internal.buttonNeverPaintBackground";
+    public static final String BUTTON_NEVER_PAINT_BACKGROUND = "substancelaf.internal.buttonNeverPaintBackground";
 
     /**
      * Client property name for specifying that the component should be painted flat (no background
      * / border) when it's inactive.
      */
-    public static final String FLAT_LOOK = "substance.internal.FlatLook";
+    public static final String FLAT_LOOK = "substancelaf.internal.FlatLook";
 
     /**
      * Client property name for specifying a straight side for a single button.
      */
-    public static final String BUTTON_STRAIGHT_SIDE = "substance.internal.buttonStraightSide";
+    public static final String BUTTON_STRAIGHT_SIDE = "substancelaf.internal.buttonStraightSide";
 
     /**
      * Client property name for specifying an open side for a single button.
      */
-    public static final String BUTTON_OPEN_SIDE = "substance.internal.buttonOpenSide";
+    public static final String BUTTON_OPEN_SIDE = "substancelaf.internal.buttonOpenSide";
 
     /**
      * Client property name for specifying the corner radius for buttons.
      */
-    public static final String TOOLBAR_BUTTON_CORNER_RADIUS = "substance.internal.toolbarButtonCornerRadius";
+    public static final String TOOLBAR_BUTTON_CORNER_RADIUS = "substancelaf.internal.toolbarButtonCornerRadius";
 
     /**
      * Client property name for specifying a skin to be used on the specific root pane.
      */
-    public static final String ROOT_PANE_SKIN = "substance.internal.rootPaneSkin";
+    public static final String ROOT_PANE_SKIN = "substancelaf.internal.rootPaneSkin";
 
     /**
      * Client property name for specifying that extra UI elements (such as menu items in system menu
      * or lock borders) should be shown.
      */
-    public final static String SHOW_EXTRA_WIDGETS = "substance.internal.showExtraWidgets";
+    public final static String SHOW_EXTRA_WIDGETS = "substancelaf.internal.showExtraWidgets";
 
     /**
      * Client property name for specifying the colorization amount applied to the background and
      * foreground of the current color scheme and the application controls.
      */
-    public final static String COLORIZATION_FACTOR = "substance.internal.colorizationFactor";
+    public final static String COLORIZATION_FACTOR = "substancelaf.internal.colorizationFactor";
 
     /**
      * Client property name for specifying that icons on <code>JOptionPane</code>s created with
      * predefined message types will use constant color schemes for the icons.
      */
-    public final static String USE_THEMED_ICONS_ON_OPTION_PANES = "substance.internal.useThemedIconsOnOptionPanes";
+    public final static String USE_THEMED_ICONS_ON_OPTION_PANES = "substancelaf.internal.useThemedIconsOnOptionPanes";
 
     /**
      * Client property name for specifying that icons on controls such as buttons, toggle buttons,
      * labels, tabs and menu items should match the color of the current color scheme when they are
      * in default state.
      */
-    public final static String USE_THEMED_DEFAULT_ICONS = "substance.internal.useThemedDefaultIcons";
+    public final static String USE_THEMED_DEFAULT_ICONS = "substancelaf.internal.useThemedDefaultIcons";
 
     /**
      * Client property name for specifying that contents of a frame, dialog, internal frame, desktop
      * icon or tab have been modified and not saved.
      */
-    public final static String CONTENTS_MODIFIED = "substance.internal.contentsModified";
+    public final static String CONTENTS_MODIFIED = "substancelaf.internal.contentsModified";
 
     /**
      * Client property name for adding close buttons on tabs.
      */
-    public final static String TABBED_PANE_CLOSE_BUTTONS = "substance.internal.tabbedPaneHasCloseButtons";
+    public final static String TABBED_PANE_CLOSE_BUTTONS = "substancelaf.internal.tabbedPaneHasCloseButtons";
 
     /**
      * Client property name for specifying that only the close button of a marked-as-modified tab
      * component should pulsate.
      */
-    public final static String TABBED_PANE_CLOSE_BUTTONS_MODIFIED_ANIMATION = "substance.internal.tabbedPaneCloseButtonsModifiedAnimation";
+    public final static String TABBED_PANE_CLOSE_BUTTONS_MODIFIED_ANIMATION = "substancelaf.internal.tabbedPaneCloseButtonsModifiedAnimation";
 
     /**
      * Client property name for specifying the callback for deciding on the tab close type.
      */
-    public final static String TABBED_PANE_CLOSE_CALLBACK = "substance.internal.tabbedPaneCloseCallback";
+    public final static String TABBED_PANE_CLOSE_CALLBACK = "substancelaf.internal.tabbedPaneCloseCallback";
 
     /**
      * Client property name for specifying the content pane border kind.
      */
-    public final static String TABBED_PANE_CONTENT_BORDER_KIND = "substance.internal.tabbedPaneContentBorderKind";
+    public final static String TABBED_PANE_CONTENT_BORDER_KIND = "substancelaf.internal.tabbedPaneContentBorderKind";
 
     /**
      * Client property name for specifying the number of echo characters for each password
      * character.
      */
-    public final static String PASSWORD_ECHO_PER_CHAR = "substance.internal.passwordEchoPerChar";
+    public final static String PASSWORD_ECHO_PER_CHAR = "substancelaf.internal.passwordEchoPerChar";
 
     /**
      * Client property name for specifying outline shaper.
      */
-    public static final String BUTTON_SHAPER = "substance.internal.buttonShaper";
+    public static final String BUTTON_SHAPER = "substancelaf.internal.buttonShaper";
 
     /**
      * Client property name for specifying menu gutter fill kind.
      */
-    public final static String MENU_GUTTER_FILL_KIND = "substance.internal.menuGutterFillKind";
+    public final static String MENU_GUTTER_FILL_KIND = "substancelaf.internal.menuGutterFillKind";
 
     /**
      * Client property name for specifying the trace file.
      */
-    public final static String TRACE_FILE = "substance.internal.traceFile";
+    public final static String TRACE_FILE = "substancelaf.internal.traceFile";
 
     /**
      * Client property name for specifying the heap status trace file.
      */
-    public static final String HEAP_STATUS_TRACE_FILE = "substance.internal.heapStatusTraceFile";
+    public static final String HEAP_STATUS_TRACE_FILE = "substancelaf.internal.heapStatusTraceFile";
 
     /**
      * Client property name for specifying the kind of focus indication.
      */
-    public final static String FOCUS_KIND = "substance.internal.focusKind";
+    public final static String FOCUS_KIND = "substancelaf.internal.focusKind";
 
     /**
      * Client property name for specifying combo popup flyout orientation.
      */
-    public final static String COMBO_BOX_POPUP_FLYOUT_ORIENTATION = "substance.internal.comboBoxPopupFlyoutOrientation";
+    public final static String COMBO_BOX_POPUP_FLYOUT_ORIENTATION = "substancelaf.internal.comboBoxPopupFlyoutOrientation";
 
     /**
      * Client property name for specifying the combobox popup prototype callback which is used to
      * compute the width of the popup at runtime.
      */
-    public final static String COMBOBOX_POPUP_PROTOTYPE_CALLBACK = "substance.internal.comboPopupPrototype";
+    public final static String COMBOBOX_POPUP_PROTOTYPE_CALLBACK = "substancelaf.internal.comboPopupPrototype";
 
     /**
      * Client property name for specifying the combobox popup prototype object which is used to
      * compute the width of the popup at runtime.
      */
-    public final static String COMBOBOX_POPUP_PROTOTYPE_OBJECT = "substance.internal.comboPopupPrototype";
+    public final static String COMBOBOX_POPUP_PROTOTYPE_OBJECT = "substancelaf.internal.comboPopupPrototype";
 }

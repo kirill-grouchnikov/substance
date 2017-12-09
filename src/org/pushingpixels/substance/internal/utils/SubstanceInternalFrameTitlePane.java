@@ -33,6 +33,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -49,8 +50,8 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JInternalFrame.JDesktopIcon;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
-import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.MenuBarUI;
 import javax.swing.plaf.UIResource;
@@ -58,6 +59,7 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -109,11 +111,6 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
                 DecorationAreaType.SECONDARY_TITLE_PANE);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.plaf.basic.BasicInternalFrameTitlePane#installDefaults()
-     */
     @Override
     protected void installDefaults() {
         super.installDefaults();
@@ -122,28 +119,8 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
                     .getForegroundColor(SubstanceCoreUtilities.getSkin(this.frame)
                             .getActiveColorScheme(DecorationAreaType.SECONDARY_TITLE_PANE)));
         }
-        // this.wasClosable = this.frame.isClosable();
     }
 
-    // /*
-    // * (non-Javadoc)
-    // *
-    // * @see
-    // * javax.swing.plaf.basic.BasicInternalFrameTitlePane#uninstallDefaults()
-    // */
-    // @Override
-    // protected void uninstallDefaults() {
-    // super.uninstallDefaults();
-    // if (this.wasClosable != this.frame.isClosable()) {
-    // this.frame.setClosable(this.wasClosable);
-    // }
-    // }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.plaf.basic.BasicInternalFrameTitlePane#installListeners()
-     */
     @Override
     protected void installListeners() {
         super.installListeners();
@@ -169,11 +146,19 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
         this.frame.getRootPane().addPropertyChangeListener(this.substanceWinModifiedListener);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.plaf.basic.BasicInternalFrameTitlePane#uninstallListeners()
-     */
+    @Override
+    protected JMenuBar createSystemMenuBar() {
+        this.menuBar = new SubstanceMenuBar();
+        this.menuBar.setBorderPainted(false);
+        SubstanceSlices.TitleIconGravity iconGravity = SubstanceTitlePaneUtilities
+                .getTitlePaneIconGravity();
+        SubstanceTitlePaneUtilities.markTitlePaneExtraComponent(this.menuBar,
+                (iconGravity == SubstanceSlices.TitleIconGravity.NEXT_TO_TITLE)
+                        ? SubstanceTitlePaneUtilities.ExtraComponentKind.WITH_TITLE
+                        : SubstanceTitlePaneUtilities.ExtraComponentKind.LEADING);
+        return this.menuBar;
+    }
+
     @Override
     public void uninstallListeners() {
         this.frame.removePropertyChangeListener(this.substancePropertyListener);
@@ -209,11 +194,6 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
         this.putClientProperty(UNINSTALLED, Boolean.TRUE);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.plaf.basic.BasicInternalFrameTitlePane#enableActions()
-     */
     @Override
     protected void enableActions() {
         super.enableActions();
@@ -227,17 +207,26 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
-     */
+    private String getDisplayTitle() {
+        String theTitle = this.frame.getTitle();
+        if (theTitle == null) {
+            return null;
+        }
+
+        Font font = SubstanceCortex.GlobalScope.getFontPolicy().getFontSet("Substance", null)
+                .getWindowTitleFont();
+
+        Rectangle titleTextRect = SubstanceTitlePaneUtilities.getTitlePaneTextRectangle(this,
+                this.frame);
+        FontMetrics fm = this.frame.getFontMetrics(font);
+        int titleWidth = titleTextRect.width - 20;
+        String clippedTitle = SubstanceCoreUtilities.clipString(fm, titleWidth, theTitle);
+
+        return clippedTitle;
+    }
+
     @Override
     public void paintComponent(Graphics g) {
-        // if (this.isPalette) {
-        // this.paintPalette(g);
-        // return;
-        // }
         Graphics2D graphics = (Graphics2D) g.create();
         // Desktop icon is translucent.
         final float coef = (this.getParent() instanceof JDesktopIcon) ? 0.9f : 1.0f;
@@ -261,117 +250,52 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
                 hostFrame = desktopIcon.getInternalFrame();
             hostForColorization = desktopIcon;
         }
-        // if ((hostFrame != null) && SubstanceCoreUtilities.hasColorization(
-        // this)) {
         Color backgr = hostFrame.getBackground();
         if (!(backgr instanceof UIResource)) {
             double colorization = SubstanceCoreUtilities.getColorizationFactor(hostForColorization);
             scheme = SubstanceColorSchemeUtilities.getShiftedScheme(scheme, backgr, colorization,
                     null, 0.0);
         }
-        // }
-        String theTitle = this.frame.getTitle();
-
-        // offset of border
-        int xOffset = 0;
-        int leftEnd;
-        int rightEnd;
-
-        if (leftToRight) {
-            xOffset = 5;
-            Icon icon = this.frame.getFrameIcon();
-            if (icon != null) {
-                xOffset += icon.getIconWidth() + 5;
-            }
-
-            leftEnd = (this.menuBar == null) ? 0 : (this.menuBar.getWidth() + 5);
-            xOffset += leftEnd;
-            if (icon != null)
-                leftEnd += (icon.getIconWidth() + 5);
-
-            rightEnd = width - 5;
-
-            // find the leftmost button for the right end
-            AbstractButton leftmostButton = null;
-            if (this.frame.isIconifiable()) {
-                leftmostButton = this.iconButton;
-            } else {
-                if (this.frame.isMaximizable()) {
-                    leftmostButton = this.maxButton;
-                } else {
-                    if (this.frame.isClosable()) {
-                        leftmostButton = this.closeButton;
-                    }
-                }
-            }
-
-            if (leftmostButton != null) {
-                Rectangle rect = leftmostButton.getBounds();
-                rightEnd = rect.getBounds().x - 5;
-            }
-            if (theTitle != null) {
-                FontMetrics fm = this.frame.getFontMetrics(graphics.getFont());
-                int titleWidth = rightEnd - leftEnd;
-                String clippedTitle = SubstanceCoreUtilities.clipString(fm, titleWidth, theTitle);
-                // show tooltip with full title only if necessary
-                if (theTitle.equals(clippedTitle))
-                    this.setToolTipText(null);
-                else
-                    this.setToolTipText(theTitle);
-                theTitle = clippedTitle;
-            }
-        } else {
-            xOffset = width - 5;
-
-            Icon icon = this.frame.getFrameIcon();
-            if (icon != null) {
-                xOffset -= (icon.getIconWidth() + 5);
-            }
-
-            rightEnd = (this.menuBar == null) ? xOffset : xOffset - this.menuBar.getWidth() - 5;
-
-            // find the rightmost button for the left end
-            AbstractButton rightmostButton = null;
-            if (this.frame.isIconifiable()) {
-                rightmostButton = this.iconButton;
-            } else {
-                if (this.frame.isMaximizable()) {
-                    rightmostButton = this.maxButton;
-                } else {
-                    if (this.frame.isClosable()) {
-                        rightmostButton = this.closeButton;
-                    }
-                }
-            }
-
-            leftEnd = 5;
-            if (rightmostButton != null) {
-                Rectangle rect = rightmostButton.getBounds();
-                leftEnd = rect.getBounds().x + 5;
-            }
-            if (theTitle != null) {
-                FontMetrics fm = this.frame.getFontMetrics(graphics.getFont());
-                int titleWidth = rightEnd - leftEnd;
-                String clippedTitle = SubstanceCoreUtilities.clipString(fm, titleWidth, theTitle);
-                // show tooltip with full title only if necessary
-                if (theTitle.equals(clippedTitle)) {
-                    this.setToolTipText(null);
-                } else {
-                    this.setToolTipText(theTitle);
-                }
-                theTitle = clippedTitle;
-                xOffset = rightEnd - fm.stringWidth(theTitle);
-            }
-        }
 
         BackgroundPaintingUtils.update(graphics, SubstanceInternalFrameTitlePane.this, false);
-        // DecorationPainterUtils.paintDecorationBackground(graphics,
-        // SubstanceInternalFrameTitlePane.this, false);
 
-        // draw the title (if needed)
-        if (theTitle != null) {
-            JRootPane rootPane = this.getRootPane();
-            FontMetrics fm = rootPane.getFontMetrics(graphics.getFont());
+        String theTitle = this.frame.getTitle();
+        String displayTitle = getDisplayTitle();
+
+        Font font = SubstanceCortex.GlobalScope.getFontPolicy().getFontSet("Substance", null)
+                .getWindowTitleFont();
+        graphics.setFont(font);
+
+        if (displayTitle != null) {
+            Rectangle titleTextRect = SubstanceTitlePaneUtilities.getTitlePaneTextRectangle(this,
+                    this.frame);
+            FontMetrics fm = this.frame.getFontMetrics(font);
+            int displayTitleWidth = fm.stringWidth(displayTitle);
+
+            // show tooltip with full title only if necessary
+            if (theTitle.equals(displayTitle)) {
+                this.setToolTipText(null);
+            } else {
+                this.setToolTipText(theTitle);
+            }
+
+            int xOffset = 0;
+            SubstanceSlices.Gravity titleTextGravity = SubstanceTitlePaneUtilities
+                    .getTitlePaneTextGravity();
+            switch (titleTextGravity) {
+                case LEADING:
+                    xOffset = leftToRight ? titleTextRect.x
+                            : titleTextRect.x + titleTextRect.width - displayTitleWidth;
+                    break;
+                case TRAILING:
+                    xOffset = leftToRight
+                            ? titleTextRect.x + titleTextRect.width - displayTitleWidth
+                            : titleTextRect.x;
+                    break;
+                default:
+                    xOffset = titleTextRect.x + (titleTextRect.width - displayTitleWidth) / 2;
+            }
+
             int yOffset = ((height - fm.getHeight()) / 2) + fm.getAscent();
 
             SubstanceColorScheme fillScheme = SubstanceCoreUtilities.getSkin(this.frame)
@@ -379,29 +303,13 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
             Color echoColor = !fillScheme.isDark() ? fillScheme.getUltraDarkColor()
                     : fillScheme.getUltraLightColor();
             SubstanceTextUtilities.paintTextWithDropShadow(this, graphics,
-                    SubstanceColorUtilities.getForegroundColor(scheme), echoColor, theTitle, width,
-                    height, xOffset, yOffset);
-        }
-
-        Icon icon = this.frame.getFrameIcon();
-        if (icon != null) {
-            if (leftToRight) {
-                int iconY = ((height / 2) - (icon.getIconHeight() / 2));
-                icon.paintIcon(this.frame, graphics, 5, iconY);
-            } else {
-                int iconY = ((height / 2) - (icon.getIconHeight() / 2));
-                icon.paintIcon(this.frame, graphics, width - 5 - icon.getIconWidth(), iconY);
-            }
+                    SubstanceColorUtilities.getForegroundColor(scheme), echoColor, displayTitle,
+                    width, height, xOffset, yOffset);
         }
 
         graphics.dispose();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.plaf.basic.BasicInternalFrameTitlePane#setButtonIcons()
-     */
     @Override
     protected void setButtonIcons() {
         super.setButtonIcons();
@@ -481,22 +389,12 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.plaf.basic.BasicInternalFrameTitlePane#createActions()
-     */
     @Override
     protected void createActions() {
         super.createActions();
         this.iconifyAction = new SubstanceIconifyAction();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.plaf.basic.BasicInternalFrameTitlePane#createButtons()
-     */
     @Override
     protected void createButtons() {
         iconButton = new SubstanceTitleButton("InternalFrameTitlePane.iconifyButtonAccessibleName");
@@ -507,6 +405,15 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
 
         closeButton = new SubstanceTitleButton("InternalFrameTitlePane.closeButtonAccessibleName");
         closeButton.addActionListener(closeAction);
+
+        SubstanceTitlePaneUtilities.ExtraComponentKind buttonExtraComponentKind = SubstanceTitlePaneUtilities
+                .getTitlePaneControlButtonKind();
+        SubstanceTitlePaneUtilities.markTitlePaneExtraComponent(iconButton,
+                buttonExtraComponentKind);
+        SubstanceTitlePaneUtilities.markTitlePaneExtraComponent(maxButton,
+                buttonExtraComponentKind);
+        SubstanceTitlePaneUtilities.markTitlePaneExtraComponent(closeButton,
+                buttonExtraComponentKind);
 
         setButtonIcons();
 
@@ -528,11 +435,6 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
         this.enableActions();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.plaf.basic.BasicInternalFrameTitlePane#createLayout()
-     */
     @Override
     protected LayoutManager createLayout() {
         return new SubstanceTitlePaneLayout();
@@ -555,11 +457,6 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
         this.closeButton.repaint();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.JComponent#removeNotify()
-     */
     @Override
     public void removeNotify() {
         super.removeNotify();
@@ -573,11 +470,6 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.JComponent#addNotify()
-     */
     @Override
     public void addNotify() {
         super.addNotify();
@@ -634,9 +526,6 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
 
             // Compute height.
             int height = 0;
-            // if (isPalette) {
-            // height = paletteTitleHeight;
-            // } else {
             int fontHeight = fm.getHeight();
             fontHeight += 7;
             Icon icon = frame.getFrameIcon();
@@ -647,7 +536,6 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
             }
             iconHeight += 5;
             height = Math.max(fontHeight, iconHeight);
-            // }
 
             return new Dimension(width, height);
         }
@@ -655,12 +543,13 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
         @Override
         public void layoutContainer(Container c) {
             boolean leftToRight = frame.getComponentOrientation().isLeftToRight();
+            boolean controlButtonsOnRight = SubstanceTitlePaneUtilities
+                    .areTitlePaneControlButtonsOnRight(frame);
 
             int w = getWidth();
-            int x = leftToRight ? w : 0;
+            int x;
             int y = 2;
             int spacing;
-
             // assumes all buttons have the same dimensions
             // these dimensions include the borders
             int buttonHeight = closeButton.getIcon().getIconHeight();
@@ -668,49 +557,89 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
 
             y = (getHeight() - buttonHeight) / 2;
 
-            // Icon icon = frame.getFrameIcon();
-            // int iconHeight = 0;
-            // if (icon != null) {
-            // iconHeight = icon.getIconHeight();
-            // }
-            // int xMenuBar = (leftToRight) ? 2 : w - 16 - 2;
-            // menuBar.setBounds(xMenuBar, (getHeight() - iconHeight) / 2, 16,
-            // 16);
+            // assumes all buttons have the same dimensions
+            // these dimensions include the borders
 
+            x = leftToRight ? w : 0;
+
+            SubstanceSlices.TitleIconGravity iconGravity = SubstanceTitlePaneUtilities
+                    .getTitlePaneIconGravity();
+            SubstanceSlices.Gravity titleTextGravity = SubstanceTitlePaneUtilities
+                    .getTitlePaneTextGravity();
+            if (SubstanceInternalFrameTitlePane.this.menuBar != null) {
+                spacing = 5;
+                int menuBarLeft;
+                switch (iconGravity) {
+                    case OPPOSITE_CONTROL_BUTTONS:
+                        menuBarLeft = controlButtonsOnRight ? spacing : w - buttonWidth - spacing;
+                        break;
+                    case NEXT_TO_TITLE:
+                        Rectangle titleRect = SubstanceTitlePaneUtilities.getTitlePaneTextRectangle(
+                                SubstanceInternalFrameTitlePane.this, frame);
+                        String displayTitle = getDisplayTitle();
+
+                        Font font = SubstanceCortex.GlobalScope.getFontPolicy()
+                                .getFontSet("Substance", null).getWindowTitleFont();
+                        int displayTitleWidth = frame.getFontMetrics(font)
+                                .stringWidth(displayTitle);
+                        switch (titleTextGravity) {
+                            case LEADING:
+                                menuBarLeft = leftToRight ? titleRect.x - buttonWidth - spacing
+                                        : titleRect.x + titleRect.width + spacing;
+                                break;
+                            case TRAILING:
+                                menuBarLeft = leftToRight
+                                        ? titleRect.x + titleRect.width - displayTitleWidth
+                                                - buttonWidth - spacing
+                                        : titleRect.x + titleRect.width + spacing;
+                                break;
+                            default:
+                                int displayTitleLeft = titleRect.x
+                                        + (titleRect.width - displayTitleWidth) / 2;
+                                menuBarLeft = leftToRight ? displayTitleLeft - buttonWidth - spacing
+                                        : displayTitleLeft + displayTitleWidth + spacing;
+                        }
+
+                        break;
+                    default:
+                        menuBarLeft = -1;
+
+                }
+                if (menuBarLeft >= 0) {
+                    menuBar.setVisible(true);
+                    menuBar.setBounds(menuBarLeft, y, buttonWidth, buttonHeight);
+                } else {
+                    menuBar.setVisible(false);
+                }
+            }
+
+            x = controlButtonsOnRight ? w : 0;
+            spacing = 3;
             if (frame.isClosable()) {
-                // if (isPalette) {
-                // spacing = 3;
-                // x += leftToRight ? -spacing - (buttonWidth + 2) : spacing;
-                // closeButton.setBounds(x, y, buttonWidth + 2,
-                // getHeight() - 4);
-                // if (!leftToRight)
-                // x += (buttonWidth + 2);
-                // } else {
-                spacing = 4;
-                x += leftToRight ? -spacing - buttonWidth : spacing;
+                x += controlButtonsOnRight ? -spacing - buttonWidth : spacing;
                 closeButton.setBounds(x, y, buttonWidth, buttonHeight);
-                if (!leftToRight)
+                if (!controlButtonsOnRight) {
                     x += buttonWidth;
-                // }
+                }
             }
 
-            if (frame.isMaximizable()) {// && !isPalette) {
+            if (frame.isMaximizable()) {
                 spacing = frame.isClosable() ? 10 : 4;
-                x += leftToRight ? -spacing - buttonWidth : spacing;
+                x += controlButtonsOnRight ? -spacing - buttonWidth : spacing;
                 maxButton.setBounds(x, y, buttonWidth, buttonHeight);
-                if (!leftToRight)
+                if (!controlButtonsOnRight) {
                     x += buttonWidth;
+                }
             }
 
-            if (frame.isIconifiable()) {// && !isPalette) {
+            if (frame.isIconifiable()) {
                 spacing = frame.isMaximizable() ? 2 : (frame.isClosable() ? 10 : 4);
-                x += leftToRight ? -spacing - buttonWidth : spacing;
+                x += controlButtonsOnRight ? -spacing - buttonWidth : spacing;
                 iconButton.setBounds(x, y, buttonWidth, buttonHeight);
-                if (!leftToRight)
+                if (!controlButtonsOnRight) {
                     x += buttonWidth;
+                }
             }
-            //
-            // buttonsWidth = leftToRight ? w - x : x;
         }
     }
 
@@ -732,6 +661,34 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
             frame.putClientProperty(ICONIFYING, Boolean.TRUE);
             super.actionPerformed(e);
             frame.putClientProperty(ICONIFYING, null);
+        }
+    }
+
+    /**
+     * Class responsible for drawing the system menu. Looks up the image to draw from the Frame
+     * associated with the <code>JRootPane</code>.
+     */
+    public class SubstanceMenuBar extends JMenuBar {
+        @Override
+        public void paint(Graphics g) {
+            Icon icon = frame.getFrameIcon();
+
+            if (icon != null) {
+                icon.paintIcon(this, g, 0, 0);
+            }
+        }
+
+        @Override
+        public Dimension getMinimumSize() {
+            return this.getPreferredSize();
+        }
+
+        @Override
+        public Dimension getPreferredSize() {
+            Dimension size = super.getPreferredSize();
+
+            int iSize = SubstanceSizeUtils.getTitlePaneIconSize();
+            return new Dimension(Math.max(iSize, size.width), Math.max(size.height, iSize));
         }
     }
 
