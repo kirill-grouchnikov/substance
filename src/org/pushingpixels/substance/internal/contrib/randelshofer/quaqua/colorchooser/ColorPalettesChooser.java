@@ -27,7 +27,7 @@ import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.icon.SubstanceIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIconUIResource;
 
 /**
  * ColorPalettesChooser.
@@ -149,7 +149,7 @@ public class ColorPalettesChooser extends SubstanceColorChooserPanel implements 
     }
     
     @Override
-    public SubstanceIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
+    public SubstanceIconUIResource getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
         return SubstanceCortex.GlobalScope.getIconPack().getColorChooserColorPalettesIcon(size,
                 colorScheme);
     }

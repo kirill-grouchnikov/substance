@@ -66,7 +66,7 @@ import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKin
 import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.icon.SubstanceIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIconUIResource;
 import org.pushingpixels.substance.api.renderer.SubstanceDefaultTreeCellRenderer;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
@@ -198,8 +198,8 @@ public class SubstanceTreeUI extends BasicTreeUI {
 
 		Icon expandedIcon = SubstanceIconFactory.getTreeIcon(this.tree, false);
 		Icon collapsedIcon = SubstanceIconFactory.getTreeIcon(this.tree, true);
-		setExpandedIcon(new SubstanceIcon(expandedIcon));
-		setCollapsedIcon(new SubstanceIcon(collapsedIcon));
+		setExpandedIcon(new SubstanceIconUIResource(expandedIcon));
+		setCollapsedIcon(new SubstanceIconUIResource(collapsedIcon));
 
 		// instead of computing the cell renderer insets on
 		// every cell rendering, compute it once and expose to the

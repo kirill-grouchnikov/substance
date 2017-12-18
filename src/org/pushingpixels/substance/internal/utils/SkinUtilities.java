@@ -54,7 +54,7 @@ import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.icon.SubstanceIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIconUIResource;
 import org.pushingpixels.substance.api.inputmap.InputMapSet;
 import org.pushingpixels.substance.api.inputmap.SubstanceInputMapUtilities;
 import org.pushingpixels.substance.api.renderer.SubstanceDefaultListCellRenderer;
@@ -1201,7 +1201,7 @@ public class SkinUtilities {
 				"Tree.collapsedIcon",
 				new UIDefaults.LazyValue() {
 					public Object createValue(UIDefaults table) {
-						return new SubstanceIcon(
+						return new SubstanceIconUIResource(
 								SubstanceIconFactory.getTreeIcon(null, true));
 					}
 				},
@@ -1209,7 +1209,7 @@ public class SkinUtilities {
 				"Tree.expandedIcon",
 				new UIDefaults.LazyValue() {
 					public Object createValue(UIDefaults table) {
-						return new SubstanceIcon(
+						return new SubstanceIconUIResource(
 								SubstanceIconFactory.getTreeIcon(null, false));
 					}
 				},

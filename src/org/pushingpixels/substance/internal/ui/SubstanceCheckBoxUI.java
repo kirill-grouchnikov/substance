@@ -51,7 +51,7 @@ import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.icon.SubstanceIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIconUIResource;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -70,231 +70,209 @@ import org.pushingpixels.substance.internal.utils.filters.RenderingUtils;
  * @author Kirill Grouchnikov
  */
 public class SubstanceCheckBoxUI extends SubstanceRadioButtonUI {
-	/**
-	 * Prefix for the checkbox-related properties in the {@link UIManager}.
-	 */
-	private final static String propertyPrefix = "CheckBox" + ".";
+    /**
+     * Prefix for the checkbox-related properties in the {@link UIManager}.
+     */
+    private final static String propertyPrefix = "CheckBox" + ".";
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
-	 */
-	public static ComponentUI createUI(JComponent comp) {
-		SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
-		return new SubstanceCheckBoxUI((JToggleButton) comp);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#createUI(javax.swing.JComponent)
+     */
+    public static ComponentUI createUI(JComponent comp) {
+        SubstanceCoreUtilities.testComponentCreationThreadingViolation(comp);
+        return new SubstanceCheckBoxUI((JToggleButton) comp);
+    }
 
-	/**
-	 * Hash map for storing icons.
-	 */
-	private static LazyResettableHashMap<SubstanceIcon> icons = new LazyResettableHashMap<SubstanceIcon>(
-			"SubstanceCheckBoxUI");
+    /**
+     * Hash map for storing icons.
+     */
+    private static LazyResettableHashMap<SubstanceIconUIResource> icons = new LazyResettableHashMap<SubstanceIconUIResource>(
+            "SubstanceCheckBoxUI");
 
-	/**
-	 * Simple constructor.
-	 * 
-	 * @param button
-	 *            The associated button.
-	 */
-	public SubstanceCheckBoxUI(JToggleButton button) {
-		super(button);
-	}
+    /**
+     * Simple constructor.
+     * 
+     * @param button
+     *            The associated button.
+     */
+    public SubstanceCheckBoxUI(JToggleButton button) {
+        super(button);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicRadioButtonUI#getPropertyPrefix()
-	 */
-	@Override
-	protected String getPropertyPrefix() {
-		return propertyPrefix;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicRadioButtonUI#getPropertyPrefix()
+     */
+    @Override
+    protected String getPropertyPrefix() {
+        return propertyPrefix;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.pushingpixels.substance.SubstanceRadioButtonUI#installDefaults(javax
-	 * .swing .AbstractButton)
-	 */
-	@Override
-	protected void installDefaults(AbstractButton b) {
-		super.installDefaults(b);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.substance.SubstanceRadioButtonUI#installDefaults(javax .swing
+     * .AbstractButton)
+     */
+    @Override
+    protected void installDefaults(AbstractButton b) {
+        super.installDefaults(b);
 
-		button.setRolloverEnabled(true);
+        button.setRolloverEnabled(true);
 
-		Border border = b.getBorder();
-		if (border == null || border instanceof UIResource) {
-			b.setBorder(SubstanceSizeUtils.getCheckBoxBorder(SubstanceSizeUtils
-					.getComponentFontSize(b), b.getComponentOrientation()
-					.isLeftToRight()));
-		}
-	}
+        Border border = b.getBorder();
+        if (border == null || border instanceof UIResource) {
+            b.setBorder(
+                    SubstanceSizeUtils.getCheckBoxBorder(SubstanceSizeUtils.getComponentFontSize(b),
+                            b.getComponentOrientation().isLeftToRight()));
+        }
+    }
 
-	/**
-	 * Returns the icon that matches the current and previous states of the
-	 * checkbox.
-	 * 
-	 * @param button
-	 *            Button (should be {@link JCheckBox}).
-	 * @param currState
-	 *            Current state of the checkbox.
-	 * @param prevState
-	 *            Previous state of the checkbox.
-	 * @return Matching icon.
-	 */
-	private static Icon getIcon(JToggleButton button,
-			StateTransitionTracker stateTransitionTracker) {
-		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
-				.getModelStateInfo();
-		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
-				.getStateContributionMap();
+    /**
+     * Returns the icon that matches the current and previous states of the checkbox.
+     * 
+     * @param button
+     *            Button (should be {@link JCheckBox}).
+     * @param currState
+     *            Current state of the checkbox.
+     * @param prevState
+     *            Previous state of the checkbox.
+     * @return Matching icon.
+     */
+    private static Icon getIcon(JToggleButton button,
+            StateTransitionTracker stateTransitionTracker) {
+        StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
+                .getModelStateInfo();
+        Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
+                .getStateContributionMap();
 
-		SubstanceFillPainter fillPainter = SubstanceCoreUtilities
-				.getFillPainter(button);
-		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
-				.getBorderPainter(button);
-		ComponentState currState = modelStateInfo.getCurrModelState();
+        SubstanceFillPainter fillPainter = SubstanceCoreUtilities.getFillPainter(button);
+        SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(button);
+        ComponentState currState = modelStateInfo.getCurrModelState();
 
-		SubstanceColorScheme baseFillColorScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(button, ColorSchemeAssociationKind.FILL,
-						currState);
-		SubstanceColorScheme baseMarkColorScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(button, ColorSchemeAssociationKind.MARK,
-						currState);
-		SubstanceColorScheme baseBorderColorScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(button, ColorSchemeAssociationKind.BORDER,
-						currState);
-		float visibility = stateTransitionTracker
-				.getFacetStrength(ComponentStateFacet.SELECTION);
-		boolean isCheckMarkFadingOut = !currState
-				.isFacetActive(ComponentStateFacet.SELECTION);
-		float alpha = SubstanceColorSchemeUtilities.getAlpha(button, currState);
+        SubstanceColorScheme baseFillColorScheme = SubstanceColorSchemeUtilities
+                .getColorScheme(button, ColorSchemeAssociationKind.FILL, currState);
+        SubstanceColorScheme baseMarkColorScheme = SubstanceColorSchemeUtilities
+                .getColorScheme(button, ColorSchemeAssociationKind.MARK, currState);
+        SubstanceColorScheme baseBorderColorScheme = SubstanceColorSchemeUtilities
+                .getColorScheme(button, ColorSchemeAssociationKind.BORDER, currState);
+        float visibility = stateTransitionTracker.getFacetStrength(ComponentStateFacet.SELECTION);
+        boolean isCheckMarkFadingOut = !currState.isFacetActive(ComponentStateFacet.SELECTION);
+        float alpha = SubstanceColorSchemeUtilities.getAlpha(button, currState);
 
-		int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
-		int checkMarkSize = SubstanceSizeUtils.getCheckBoxMarkSize(fontSize);
+        int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
+        int checkMarkSize = SubstanceSizeUtils.getCheckBoxMarkSize(fontSize);
 
-		HashMapKey keyBase = SubstanceCoreUtilities.getHashKey(fontSize,
-				checkMarkSize, fillPainter.getDisplayName(), borderPainter.getDisplayName(),
-				baseFillColorScheme.getDisplayName(), 
-				baseMarkColorScheme.getDisplayName(), 
-				baseBorderColorScheme.getDisplayName(), visibility, 
-				isCheckMarkFadingOut, alpha);
-		SubstanceIcon iconBase = icons.get(keyBase);
-		if (iconBase == null) {
-			iconBase = new SubstanceIcon(SubstanceImageCreator.getCheckBox(button,
-					fillPainter, borderPainter, checkMarkSize, currState,
-					baseFillColorScheme, baseMarkColorScheme,
-					baseBorderColorScheme, visibility, isCheckMarkFadingOut, alpha));
-			icons.put(keyBase, iconBase);
-		}
-		if (currState.isDisabled() || (activeStates.size() == 1)) {
-			return iconBase;
-		}
+        HashMapKey keyBase = SubstanceCoreUtilities.getHashKey(fontSize, checkMarkSize,
+                fillPainter.getDisplayName(), borderPainter.getDisplayName(),
+                baseFillColorScheme.getDisplayName(), baseMarkColorScheme.getDisplayName(),
+                baseBorderColorScheme.getDisplayName(), visibility, isCheckMarkFadingOut, alpha);
+        SubstanceIconUIResource iconBase = icons.get(keyBase);
+        if (iconBase == null) {
+            iconBase = new SubstanceIconUIResource(
+                    SubstanceImageCreator.getCheckBox(button, fillPainter, borderPainter,
+                            checkMarkSize, currState, baseFillColorScheme, baseMarkColorScheme,
+                            baseBorderColorScheme, visibility, isCheckMarkFadingOut, alpha));
+            icons.put(keyBase, iconBase);
+        }
+        if (currState.isDisabled() || (activeStates.size() == 1)) {
+            return iconBase;
+        }
 
-		BufferedImage result = SubstanceCoreUtilities.getBlankImage(
-				iconBase.getIconWidth(), iconBase.getIconHeight());
-		Graphics2D g2d = result.createGraphics();
-		// draw the base layer
-		iconBase.paintIcon(button, g2d, 0, 0);
+        BufferedImage result = SubstanceCoreUtilities.getBlankImage(iconBase.getIconWidth(),
+                iconBase.getIconHeight());
+        Graphics2D g2d = result.createGraphics();
+        // draw the base layer
+        iconBase.paintIcon(button, g2d, 0, 0);
 
-		// draw other active layers
-		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
-				.entrySet()) {
-			ComponentState activeState = activeEntry.getKey();
-			// System.out.println("Painting state " + activeState + "[curr is "
-			// + currState + "] with " + activeEntry.getValue());
-			if (activeState == currState)
-				continue;
+        // draw other active layers
+        for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
+                .entrySet()) {
+            ComponentState activeState = activeEntry.getKey();
+            // System.out.println("Painting state " + activeState + "[curr is "
+            // + currState + "] with " + activeEntry.getValue());
+            if (activeState == currState)
+                continue;
 
-			float stateContribution = activeEntry.getValue().getContribution();
-			if (stateContribution > 0.0f) {
-				g2d.setComposite(AlphaComposite.SrcOver
-						.derive(stateContribution));
-				SubstanceColorScheme fillColorScheme = SubstanceColorSchemeUtilities
-						.getColorScheme(button,
-								ColorSchemeAssociationKind.FILL, activeState);
-				SubstanceColorScheme markColorScheme = SubstanceColorSchemeUtilities
-						.getColorScheme(button,
-								ColorSchemeAssociationKind.MARK, activeState);
-				SubstanceColorScheme borderColorScheme = SubstanceColorSchemeUtilities
-						.getColorScheme(button,
-								ColorSchemeAssociationKind.BORDER, activeState);
+            float stateContribution = activeEntry.getValue().getContribution();
+            if (stateContribution > 0.0f) {
+                g2d.setComposite(AlphaComposite.SrcOver.derive(stateContribution));
+                SubstanceColorScheme fillColorScheme = SubstanceColorSchemeUtilities
+                        .getColorScheme(button, ColorSchemeAssociationKind.FILL, activeState);
+                SubstanceColorScheme markColorScheme = SubstanceColorSchemeUtilities
+                        .getColorScheme(button, ColorSchemeAssociationKind.MARK, activeState);
+                SubstanceColorScheme borderColorScheme = SubstanceColorSchemeUtilities
+                        .getColorScheme(button, ColorSchemeAssociationKind.BORDER, activeState);
 
-				HashMapKey keyLayer = SubstanceCoreUtilities.getHashKey(
-						fontSize, checkMarkSize, fillPainter.getDisplayName(),
-						borderPainter.getDisplayName(), fillColorScheme
-								.getDisplayName(), markColorScheme
-								.getDisplayName(), borderColorScheme
-								.getDisplayName(), visibility);
-				SubstanceIcon iconLayer = icons.get(keyLayer);
-				if (iconLayer == null) {
-					iconLayer = new SubstanceIcon(SubstanceImageCreator.getCheckBox(
-							button, fillPainter, borderPainter,
-							checkMarkSize, currState, fillColorScheme,
-							markColorScheme, borderColorScheme,
-							visibility, isCheckMarkFadingOut, alpha));
-					icons.put(keyLayer, iconLayer);
-				}
+                HashMapKey keyLayer = SubstanceCoreUtilities.getHashKey(fontSize, checkMarkSize,
+                        fillPainter.getDisplayName(), borderPainter.getDisplayName(),
+                        fillColorScheme.getDisplayName(), markColorScheme.getDisplayName(),
+                        borderColorScheme.getDisplayName(), visibility);
+                SubstanceIconUIResource iconLayer = icons.get(keyLayer);
+                if (iconLayer == null) {
+                    iconLayer = new SubstanceIconUIResource(
+                            SubstanceImageCreator.getCheckBox(button, fillPainter, borderPainter,
+                                    checkMarkSize, currState, fillColorScheme, markColorScheme,
+                                    borderColorScheme, visibility, isCheckMarkFadingOut, alpha));
+                    icons.put(keyLayer, iconLayer);
+                }
 
-				iconLayer.paintIcon(button, g2d, 0, 0);
-			}
-		}
+                iconLayer.paintIcon(button, g2d, 0, 0);
+            }
+        }
 
-		g2d.dispose();
-		return new SubstanceIcon(result);
-	}
+        g2d.dispose();
+        return new SubstanceIconUIResource(result);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicButtonUI#createButtonListener(javax.swing
-	 * .AbstractButton)
-	 */
-	@Override
-	protected BasicButtonListener createButtonListener(AbstractButton b) {
-		return new RolloverButtonListener(b, this.stateTransitionTracker);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicButtonUI#createButtonListener(javax.swing .AbstractButton)
+     */
+    @Override
+    protected BasicButtonListener createButtonListener(AbstractButton b) {
+        return new RolloverButtonListener(b, this.stateTransitionTracker);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicRadioButtonUI#getDefaultIcon()
-	 */
-	@Override
-	public Icon getDefaultIcon() {
-		if (!(UIManager.getLookAndFeel() instanceof SubstanceLookAndFeel)) {
-			return null;
-		}
-		return SubstanceCheckBoxUI.getIcon(this.button,
-				this.stateTransitionTracker);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.basic.BasicRadioButtonUI#getDefaultIcon()
+     */
+    @Override
+    public Icon getDefaultIcon() {
+        if (!(UIManager.getLookAndFeel() instanceof SubstanceLookAndFeel)) {
+            return null;
+        }
+        return SubstanceCheckBoxUI.getIcon(this.button, this.stateTransitionTracker);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
-	 * javax.swing.JComponent)
-	 */
-	@Override
-	public void update(Graphics g, JComponent c) {
-		Graphics2D g2d = (Graphics2D) g.create();
-		RenderingUtils.installDesktopHints(g2d, c);
-		super.update(g2d, c);
-		g2d.dispose();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics, javax.swing.JComponent)
+     */
+    @Override
+    public void update(Graphics g, JComponent c) {
+        Graphics2D g2d = (Graphics2D) g.create();
+        RenderingUtils.installDesktopHints(g2d, c);
+        super.update(g2d, c);
+        g2d.dispose();
+    }
 
-	/**
-	 * Returns memory usage string.
-	 * 
-	 * @return Memory usage string.
-	 */
-	public static String getMemoryUsage() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("SubstanceCheckBox: \n");
-		sb.append("\t" + SubstanceCheckBoxUI.icons.size() + " icons");
-		return sb.toString();
-	}
+    /**
+     * Returns memory usage string.
+     * 
+     * @return Memory usage string.
+     */
+    public static String getMemoryUsage() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("SubstanceCheckBox: \n");
+        sb.append("\t" + SubstanceCheckBoxUI.icons.size() + " icons");
+        return sb.toString();
+    }
 }

@@ -46,105 +46,105 @@ import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
  * @see {@link SubstanceCortex.GlobalScope#setIconPack(SubstanceIconPack)}
  */
 public interface SubstanceIconPack {
-    public SubstanceIcon getOptionPaneInformationIcon(int preferredSize,
+    public SubstanceIconUIResource getOptionPaneInformationIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getOptionPaneWarningIcon(int preferredSize,
+    public SubstanceIconUIResource getOptionPaneWarningIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getOptionPaneErrorIcon(int preferredSize,
+    public SubstanceIconUIResource getOptionPaneErrorIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getOptionPaneQuestionIcon(int preferredSize,
+    public SubstanceIconUIResource getOptionPaneQuestionIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getFileChooserNewFolderIcon(int preferredSize,
+    public SubstanceIconUIResource getFileChooserNewFolderIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getFileChooserUpFolderIcon(int preferredSize,
+    public SubstanceIconUIResource getFileChooserUpFolderIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getFileChooserHomeFolderIcon(int preferredSize,
+    public SubstanceIconUIResource getFileChooserHomeFolderIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getFileChooserListViewIcon(int preferredSize,
+    public SubstanceIconUIResource getFileChooserListViewIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getFileChooserDetailsViewIcon(int preferredSize,
+    public SubstanceIconUIResource getFileChooserDetailsViewIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getFileChooserViewMenuIcon(int preferredSize,
+    public SubstanceIconUIResource getFileChooserViewMenuIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getFileChooserComputerIcon(int preferredSize,
+    public SubstanceIconUIResource getFileChooserComputerIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getFileChooserDirectoryIcon(int preferredSize,
+    public SubstanceIconUIResource getFileChooserDirectoryIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getFileChooserFileIcon(int preferredSize,
+    public SubstanceIconUIResource getFileChooserFileIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getFileChooserFloppyDriveIcon(int preferredSize,
+    public SubstanceIconUIResource getFileChooserFloppyDriveIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getFileChooserHardDriveIcon(int preferredSize,
+    public SubstanceIconUIResource getFileChooserHardDriveIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getLockIcon(int preferredSize,
+    public SubstanceIconUIResource getLockIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getInspectIcon(int preferredSize,
+    public SubstanceIconUIResource getInspectIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getRefreshIcon(int preferredSize,
+    public SubstanceIconUIResource getRefreshIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getAllowedIcon(int preferredSize,
+    public SubstanceIconUIResource getAllowedIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getNotAllowedIcon(int preferredSize,
+    public SubstanceIconUIResource getNotAllowedIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getTextCopyActionIcon(int preferredSize,
+    public SubstanceIconUIResource getTextCopyActionIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getTextCutActionIcon(int preferredSize,
+    public SubstanceIconUIResource getTextCutActionIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getTextPasteActionIcon(int preferredSize,
+    public SubstanceIconUIResource getTextPasteActionIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getTextDeleteActionIcon(int preferredSize,
+    public SubstanceIconUIResource getTextDeleteActionIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getTextSelectAllActionIcon(int preferredSize,
+    public SubstanceIconUIResource getTextSelectAllActionIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getColorChooserColorPalettesIcon(int preferredSize,
+    public SubstanceIconUIResource getColorChooserColorPalettesIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getColorChooserColorSlidersIcon(int preferredSize,
+    public SubstanceIconUIResource getColorChooserColorSlidersIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getColorChooserColorSwatchesIcon(int preferredSize,
+    public SubstanceIconUIResource getColorChooserColorSwatchesIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getColorChooserColorWheelIcon(int preferredSize,
+    public SubstanceIconUIResource getColorChooserColorWheelIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getColorChooserCrayonsIcon(int preferredSize,
+    public SubstanceIconUIResource getColorChooserCrayonsIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getColorChooserImagePalettesIcon(int preferredSize,
+    public SubstanceIconUIResource getColorChooserImagePalettesIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getScrollVerticalIcon(int preferredSize,
+    public SubstanceIconUIResource getScrollVerticalIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getScrollHorizontalIcon(int preferredSize,
+    public SubstanceIconUIResource getScrollHorizontalIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 
-    public SubstanceIcon getScrollAllIcon(int preferredSize,
+    public SubstanceIconUIResource getScrollAllIcon(int preferredSize,
             SubstanceColorScheme preferredIconColorScheme);
 }

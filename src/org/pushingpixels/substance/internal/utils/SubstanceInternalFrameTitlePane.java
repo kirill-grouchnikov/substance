@@ -149,7 +149,12 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
     @Override
     protected JMenuBar createSystemMenuBar() {
         this.menuBar = new SubstanceMenuBar();
-        this.menuBar.setBorderPainted(false);
+        this.menuBar.setBorderPainted(true);
+        this.menuBar.setOpaque(false);
+        this.menuBar.setFocusable(false);
+        // support for RTL
+        this.menuBar.applyComponentOrientation(this.getComponentOrientation());
+
         SubstanceSlices.TitleIconGravity iconGravity = SubstanceTitlePaneUtilities
                 .getTitlePaneIconGravity();
         SubstanceTitlePaneUtilities.markTitlePaneExtraComponent(this.menuBar,
@@ -296,7 +301,8 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
                     xOffset = titleTextRect.x + (titleTextRect.width - displayTitleWidth) / 2;
             }
 
-            int yOffset = ((height - fm.getHeight()) / 2) + fm.getAscent();
+            int yOffset = titleTextRect.y + (int) ((titleTextRect.getHeight() - fm.getHeight()) / 2)
+                    + fm.getAscent();
 
             SubstanceColorScheme fillScheme = SubstanceCoreUtilities.getSkin(this.frame)
                     .getBackgroundColorScheme(DecorationAreaType.SECONDARY_TITLE_PANE);
@@ -548,14 +554,13 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
 
             int w = getWidth();
             int x;
-            int y = 2;
             int spacing;
             // assumes all buttons have the same dimensions
             // these dimensions include the borders
             int buttonHeight = closeButton.getIcon().getIconHeight();
             int buttonWidth = closeButton.getIcon().getIconWidth();
 
-            y = (getHeight() - buttonHeight) / 2;
+            int y = (getHeight() - buttonHeight) / 2;
 
             // assumes all buttons have the same dimensions
             // these dimensions include the borders

@@ -1130,12 +1130,15 @@ public class SubstanceTitlePane extends JComponent {
                     xOffset = titleTextRect.x + (titleTextRect.width - displayTitleWidth) / 2;
             }
 
-            int yOffset = ((height - fm.getHeight()) / 2) + fm.getAscent();
+            int yOffset = titleTextRect.y + (int) ((titleTextRect.getHeight() - fm.getHeight()) / 2)
+                    + fm.getAscent();
 
             SubstanceColorScheme fillScheme = skin
                     .getBackgroundColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE);
             Color echoColor = !fillScheme.isDark() ? fillScheme.getUltraDarkColor()
                     : fillScheme.getUltraLightColor();
+//            graphics.setColor(Color.yellow);
+//            graphics.fill(titleTextRect);
             SubstanceTextUtilities.paintTextWithDropShadow(this, graphics,
                     SubstanceColorUtilities.getForegroundColor(scheme), echoColor, displayTitle,
                     width, height, xOffset, yOffset);
@@ -1262,6 +1265,8 @@ public class SubstanceTitlePane extends JComponent {
     public class SubstanceMenuBar extends JMenuBar {
         @Override
         public void paint(Graphics g) {
+//            g.setColor(Color.yellow);
+//            g.fillRect(0, 0, getWidth(), getHeight());
             if (appIcon != null) {
                 int scaleFactor = SubstanceCoreUtilities.isHiDpiAwareImage(appIcon) ? 2 : 1;
                 g.drawImage(appIcon, 0, 0, appIcon.getWidth(null) / scaleFactor,
@@ -1361,7 +1366,6 @@ public class SubstanceTitlePane extends JComponent {
 
             int w = SubstanceTitlePane.this.getWidth();
             int x;
-            int y = 3;
             int spacing;
             int buttonHeight;
             int buttonWidth;
@@ -1375,7 +1379,7 @@ public class SubstanceTitlePane extends JComponent {
                 buttonWidth = SubstanceSizeUtils.getTitlePaneIconSize();
             }
 
-            y = (getHeight() - buttonHeight) / 2;
+            final int y = (getHeight() - buttonHeight) / 2;
 
             // assumes all buttons have the same dimensions
             // these dimensions include the borders

@@ -41,7 +41,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.pushingpixels.substance.api.icon.IsHiDpiAware;
-import org.pushingpixels.substance.api.icon.SubstanceIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIconUIResource;
 import org.pushingpixels.substance.internal.animation.IconGlowTracker;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
@@ -135,7 +135,7 @@ public class GlowingIcon implements Icon, IsHiDpiAware {
 							| (newColor.getGreen() << 8) | newColor.getBlue());
 				}
 			}
-			toPaint = isHiDpiAware() ? new SubstanceIcon(image) : new ImageIcon(image);
+			toPaint = isHiDpiAware() ? new SubstanceIconUIResource(image) : new ImageIcon(image);
 			this.iconMap.put(fadePos, toPaint);
 		}
 		Graphics2D g2d = (Graphics2D) g.create();

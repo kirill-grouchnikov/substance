@@ -106,7 +106,7 @@ import org.pushingpixels.substance.api.colorscheme.SunfireRedColorScheme;
 import org.pushingpixels.substance.api.colorscheme.SunsetColorScheme;
 import org.pushingpixels.substance.api.combo.ComboPopupPrototypeCallback;
 import org.pushingpixels.substance.api.icon.IsHiDpiAware;
-import org.pushingpixels.substance.api.icon.SubstanceIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIconUIResource;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.SubstanceDecorationPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
@@ -1232,23 +1232,23 @@ public class SubstanceCoreUtilities {
         return Boolean.TRUE.equals(UIManager.get(SubstanceSynapse.SHOW_EXTRA_WIDGETS));
     }
 
-    public static SubstanceIcon getThemedIcon(Component comp, Icon orig) {
+    public static SubstanceIconUIResource getThemedIcon(Component comp, Icon orig) {
         SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities.getColorScheme(comp,
                 ComponentState.ENABLED);
         return getThemedIcon(comp, orig, colorScheme);
     }
 
-    public static SubstanceIcon getThemedIcon(JTabbedPane tab, int tabIndex, Icon orig) {
+    public static SubstanceIconUIResource getThemedIcon(JTabbedPane tab, int tabIndex, Icon orig) {
         SubstanceColorScheme colorScheme = SubstanceColorSchemeUtilities.getColorScheme(tab,
                 tabIndex, ColorSchemeAssociationKind.TAB, ComponentState.ENABLED);
         return getThemedIcon(tab, orig, colorScheme);
     }
 
-    public static SubstanceIcon getThemedIcon(Component comp, Icon orig,
+    public static SubstanceIconUIResource getThemedIcon(Component comp, Icon orig,
             SubstanceColorScheme colorScheme) {
         float brightnessFactor = colorScheme.isDark() ? 0.2f : 0.8f;
-        return new SubstanceIcon(SubstanceImageCreator.getColorSchemeImage(comp, orig, colorScheme,
-                brightnessFactor));
+        return new SubstanceIconUIResource(SubstanceImageCreator.getColorSchemeImage(comp, orig,
+                colorScheme, brightnessFactor));
     }
 
     public static Icon getOriginalIcon(AbstractButton b, Icon defaultIcon) {
@@ -1838,8 +1838,7 @@ public class SubstanceCoreUtilities {
             // insets.
             // Best possible similarity is 0 (no scale, no insets).
             // It's found while the experiments that good-looking result is
-            // achieved
-            // with scale factors x1, x3/4, x2/3, xN, x1/N.
+            // achieved with scale factors x1, x3/4, x2/3, xN, x1/N.
             Image im = i.next();
             if (im == null) {
                 continue;

@@ -37,7 +37,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import javax.swing.Icon;
+import javax.swing.plaf.UIResource;
 
+import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.internal.contrib.intellij.JBHiDPIScaledImage;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
@@ -47,15 +49,15 @@ import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.filters.ColorFilter;
 
 /**
- * Resizable high-DPI aware implementation of the core {@link Icon} interface that maintains crisp
- * pixel-perfect appearance of icons across the entire app. This class is part of officially
- * supported API.
+ * A {@link UIResource} variant of the resizable high-DPI aware implementation of the core
+ * {@link Icon} interface that maintains crisp pixel-perfect appearance of icons across the entire
+ * app. This class is part of officially supported API.
  * 
  * @author Kirill Grouchnikov
  * @since version 8.0
- * @see SubstanceIconUIResource
+ * @see {@link SubstanceCortex.GlobalScope#setIconPack(SubstanceIconUIResourcePack)}
  */
-public class SubstanceIcon implements Icon, IsResizable, IsHiDpiAware {
+public class SubstanceIconUIResource implements Icon, IsResizable, IsHiDpiAware, UIResource {
     private final int factor;
     private final boolean isHiDpiAwareSource;
 
@@ -65,7 +67,7 @@ public class SubstanceIcon implements Icon, IsResizable, IsHiDpiAware {
     private int width;
     private int height;
 
-    public SubstanceIcon(BufferedImage image) {
+    public SubstanceIconUIResource(BufferedImage image) {
         this.imageSource = image;
         this.factor = UIUtil.getScaleFactor();
         this.isHiDpiAwareSource = image instanceof JBHiDPIScaledImage;
@@ -73,9 +75,10 @@ public class SubstanceIcon implements Icon, IsResizable, IsHiDpiAware {
         this.height = getInternalHeight();
     }
 
-    public SubstanceIcon(Icon icon) {
-        if (icon instanceof SubstanceIcon) {
-            throw new IllegalArgumentException("Can't wrap another instance of SubstanceIcon");
+    public SubstanceIconUIResource(Icon icon) {
+        if (icon instanceof SubstanceIconUIResource) {
+            throw new IllegalArgumentException(
+                    "Can't wrap another instance of SubstanceIconUIResource");
         }
         this.iconSource = icon;
         this.factor = UIUtil.getScaleFactor();
@@ -148,24 +151,26 @@ public class SubstanceIcon implements Icon, IsResizable, IsHiDpiAware {
         return result;
     }
 
-    public SubstanceIcon colorize(Color color) {
-        return new SubstanceIcon(new ColorFilter(color).filter(this.toImage(), null));
+    public SubstanceIconUIResource colorize(Color color) {
+        return new SubstanceIconUIResource(new ColorFilter(color).filter(this.toImage(), null));
     }
 
-    public SubstanceIcon colorize(Color color, float alpha) {
-        return new SubstanceIcon(
+    public SubstanceIconUIResource colorize(Color color, float alpha) {
+        return new SubstanceIconUIResource(
                 new ColorFilter(SubstanceColorUtilities.getAlphaColor(color, (int) (alpha * 255)))
                         .filter(this.toImage(), null));
     }
 
-    public SubstanceIcon colorize(SubstanceColorScheme colorScheme) {
+    public SubstanceIconUIResource colorize(SubstanceColorScheme colorScheme) {
         float brightnessFactor = colorScheme.isDark() ? 0.2f : 0.8f;
-        return new SubstanceIcon(SubstanceImageCreator.getColorSchemeImage(null, this, colorScheme,
-                brightnessFactor));
+        return new SubstanceIconUIResource(SubstanceImageCreator.getColorSchemeImage(null, this,
+                colorScheme, brightnessFactor));
     }
 
-    public SubstanceIcon colorize(SubstanceColorScheme colorScheme, float brightnessFactor) {
-        return new SubstanceIcon(SubstanceImageCreator.getColorSchemeImage(null, this, colorScheme,
-                brightnessFactor));
+    public SubstanceIconUIResource colorize(SubstanceColorScheme colorScheme,
+            float brightnessFactor) {
+        return new SubstanceIconUIResource(SubstanceImageCreator.getColorSchemeImage(null, this,
+                colorScheme, brightnessFactor));
     }
+
 }

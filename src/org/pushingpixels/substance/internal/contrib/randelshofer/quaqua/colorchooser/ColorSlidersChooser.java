@@ -26,7 +26,7 @@ import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.icon.SubstanceIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIconUIResource;
 /**
  * The ColorSlidersChooser contains four individual color slider pages: gray
  * slider, RGB sliders, CMYK sliders, and HTML sliders.
@@ -127,7 +127,7 @@ implements UIResource {
     }
     
     @Override
-    public SubstanceIcon getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
+    public SubstanceIconUIResource getHiDpiAwareIcon(int size, SubstanceColorScheme colorScheme) {
         return SubstanceCortex.GlobalScope.getIconPack().getColorChooserColorSlidersIcon(size,
                 colorScheme);
     }

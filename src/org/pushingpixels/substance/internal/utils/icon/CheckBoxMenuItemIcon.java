@@ -45,7 +45,7 @@ import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.icon.SubstanceIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIconUIResource;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -63,166 +63,149 @@ import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
  * @author Kirill Grouchnikov
  */
 public class CheckBoxMenuItemIcon implements Icon, UIResource {
-	/**
-	 * The size of <code>this</code> icon.
-	 */
-	private int size;
+    /**
+     * The size of <code>this</code> icon.
+     */
+    private int size;
 
-	/**
-	 * The associated menu item.
-	 */
-	private JMenuItem menuItem;
+    /**
+     * The associated menu item.
+     */
+    private JMenuItem menuItem;
 
-	/**
-	 * Icon cache to speed up the painting.
-	 */
-	private static LazyResettableHashMap<SubstanceIcon> iconMap =
-			new LazyResettableHashMap<SubstanceIcon>("CheckBoxMenuItemIcon");
+    /**
+     * Icon cache to speed up the painting.
+     */
+    private static LazyResettableHashMap<SubstanceIconUIResource> iconMap = new LazyResettableHashMap<SubstanceIconUIResource>(
+            "CheckBoxMenuItemIcon");
 
-	/**
-	 * Creates a new icon.
-	 * 
-	 * @param menuItem
-	 *            The corresponding menu item.
-	 * @param size
-	 *            The size of <code>this</code> icon.
-	 */
-	public CheckBoxMenuItemIcon(JMenuItem menuItem, int size) {
-		this.menuItem = menuItem;
-		this.size = size;
-	}
+    /**
+     * Creates a new icon.
+     * 
+     * @param menuItem
+     *            The corresponding menu item.
+     * @param size
+     *            The size of <code>this</code> icon.
+     */
+    public CheckBoxMenuItemIcon(JMenuItem menuItem, int size) {
+        this.menuItem = menuItem;
+        this.size = size;
+    }
 
-	/**
-	 * Returns the current icon to paint.
-	 * 
-	 * @return Icon to paint.
-	 */
-	private SubstanceIcon getIconToPaint() {
-		if (this.menuItem == null)
-			return null;
+    /**
+     * Returns the current icon to paint.
+     * 
+     * @return Icon to paint.
+     */
+    private SubstanceIconUIResource getIconToPaint() {
+        if (this.menuItem == null)
+            return null;
 
-		TransitionAwareUI transitionAwareUI = (TransitionAwareUI) this.menuItem
-				.getUI();
-		StateTransitionTracker stateTransitionTracker = transitionAwareUI
-				.getTransitionTracker();
+        TransitionAwareUI transitionAwareUI = (TransitionAwareUI) this.menuItem.getUI();
+        StateTransitionTracker stateTransitionTracker = transitionAwareUI.getTransitionTracker();
 
-		StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
-				.getModelStateInfo();
-		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
-				.getStateContributionMap();
+        StateTransitionTracker.ModelStateInfo modelStateInfo = stateTransitionTracker
+                .getModelStateInfo();
+        Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = modelStateInfo
+                .getStateContributionMap();
 
-		SubstanceFillPainter fillPainter = SubstanceCoreUtilities
-				.getFillPainter(this.menuItem);
-		SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
-				.getBorderPainter(this.menuItem);
-		ComponentState currState = modelStateInfo.getCurrModelState();
+        SubstanceFillPainter fillPainter = SubstanceCoreUtilities.getFillPainter(this.menuItem);
+        SubstanceBorderPainter borderPainter = SubstanceCoreUtilities
+                .getBorderPainter(this.menuItem);
+        ComponentState currState = modelStateInfo.getCurrModelState();
 
-		SubstanceColorScheme baseFillColorScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this.menuItem, ColorSchemeAssociationKind.FILL,
-						currState);
-		SubstanceColorScheme baseMarkColorScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this.menuItem, ColorSchemeAssociationKind.MARK,
-						currState);
-		SubstanceColorScheme baseBorderColorScheme = SubstanceColorSchemeUtilities
-				.getColorScheme(this.menuItem,
-						ColorSchemeAssociationKind.BORDER, currState);
-		float visibility = stateTransitionTracker
-				.getFacetStrength(ComponentStateFacet.SELECTION);
-		boolean isCheckMarkFadingOut = !currState
-				.isFacetActive(ComponentStateFacet.SELECTION);
-		float alpha = SubstanceColorSchemeUtilities.getAlpha(this.menuItem, currState);
+        SubstanceColorScheme baseFillColorScheme = SubstanceColorSchemeUtilities
+                .getColorScheme(this.menuItem, ColorSchemeAssociationKind.FILL, currState);
+        SubstanceColorScheme baseMarkColorScheme = SubstanceColorSchemeUtilities
+                .getColorScheme(this.menuItem, ColorSchemeAssociationKind.MARK, currState);
+        SubstanceColorScheme baseBorderColorScheme = SubstanceColorSchemeUtilities
+                .getColorScheme(this.menuItem, ColorSchemeAssociationKind.BORDER, currState);
+        float visibility = stateTransitionTracker.getFacetStrength(ComponentStateFacet.SELECTION);
+        boolean isCheckMarkFadingOut = !currState.isFacetActive(ComponentStateFacet.SELECTION);
+        float alpha = SubstanceColorSchemeUtilities.getAlpha(this.menuItem, currState);
 
-		int fontSize = SubstanceSizeUtils.getComponentFontSize(this.menuItem);
-		int checkMarkSize = this.size + 3;
+        int fontSize = SubstanceSizeUtils.getComponentFontSize(this.menuItem);
+        int checkMarkSize = this.size + 3;
 
-		HashMapKey keyBase = SubstanceCoreUtilities.getHashKey(fontSize, checkMarkSize, 
-				fillPainter.getDisplayName(), borderPainter.getDisplayName(), 
-				baseFillColorScheme.getDisplayName(), baseMarkColorScheme.getDisplayName(), 
-				baseBorderColorScheme.getDisplayName(), visibility,
-				isCheckMarkFadingOut, alpha);
-		SubstanceIcon iconBase = iconMap.get(keyBase);
-		if (iconBase == null) {
-			iconBase = new SubstanceIcon(SubstanceImageCreator.getCheckBox(
-					this.menuItem, fillPainter, borderPainter, checkMarkSize,
-					currState, baseFillColorScheme, baseMarkColorScheme,
-					baseBorderColorScheme, visibility, isCheckMarkFadingOut, alpha));
-			iconMap.put(keyBase, iconBase);
-		}
-		if (currState.isDisabled() || (activeStates.size() == 1)) {
-			return iconBase;
-		}
+        HashMapKey keyBase = SubstanceCoreUtilities.getHashKey(fontSize, checkMarkSize,
+                fillPainter.getDisplayName(), borderPainter.getDisplayName(),
+                baseFillColorScheme.getDisplayName(), baseMarkColorScheme.getDisplayName(),
+                baseBorderColorScheme.getDisplayName(), visibility, isCheckMarkFadingOut, alpha);
+        SubstanceIconUIResource iconBase = iconMap.get(keyBase);
+        if (iconBase == null) {
+            iconBase = new SubstanceIconUIResource(
+                    SubstanceImageCreator.getCheckBox(this.menuItem, fillPainter, borderPainter,
+                            checkMarkSize, currState, baseFillColorScheme, baseMarkColorScheme,
+                            baseBorderColorScheme, visibility, isCheckMarkFadingOut, alpha));
+            iconMap.put(keyBase, iconBase);
+        }
+        if (currState.isDisabled() || (activeStates.size() == 1)) {
+            return iconBase;
+        }
 
-		BufferedImage result = SubstanceCoreUtilities.getBlankImage(iconBase
-				.getIconWidth(), iconBase.getIconHeight());
-		Graphics2D g2d = result.createGraphics();
-		// draw the base layer
-		iconBase.paintIcon(this.menuItem, g2d, 0, 0);
+        BufferedImage result = SubstanceCoreUtilities.getBlankImage(iconBase.getIconWidth(),
+                iconBase.getIconHeight());
+        Graphics2D g2d = result.createGraphics();
+        // draw the base layer
+        iconBase.paintIcon(this.menuItem, g2d, 0, 0);
 
-		// draw other active layers
-		for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
-				.entrySet()) {
-			ComponentState activeState = activeEntry.getKey();
-			// System.out.println("Painting state " + activeState + "[curr is "
-			// + currState + "] with " + activeEntry.getValue());
-			if (activeState == currState)
-				continue;
+        // draw other active layers
+        for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
+                .entrySet()) {
+            ComponentState activeState = activeEntry.getKey();
+            // System.out.println("Painting state " + activeState + "[curr is "
+            // + currState + "] with " + activeEntry.getValue());
+            if (activeState == currState)
+                continue;
 
-			float stateContribution = activeEntry.getValue().getContribution();
-			if (stateContribution > 0.0f) {
-				g2d.setComposite(AlphaComposite.SrcOver
-						.derive(stateContribution));
-				SubstanceColorScheme fillColorScheme = SubstanceColorSchemeUtilities
-						.getColorScheme(this.menuItem,
-								ColorSchemeAssociationKind.FILL, activeState);
-				SubstanceColorScheme markColorScheme = SubstanceColorSchemeUtilities
-						.getColorScheme(this.menuItem,
-								ColorSchemeAssociationKind.MARK, activeState);
-				SubstanceColorScheme borderColorScheme = SubstanceColorSchemeUtilities
-						.getColorScheme(this.menuItem,
-								ColorSchemeAssociationKind.BORDER, activeState);
+            float stateContribution = activeEntry.getValue().getContribution();
+            if (stateContribution > 0.0f) {
+                g2d.setComposite(AlphaComposite.SrcOver.derive(stateContribution));
+                SubstanceColorScheme fillColorScheme = SubstanceColorSchemeUtilities.getColorScheme(
+                        this.menuItem, ColorSchemeAssociationKind.FILL, activeState);
+                SubstanceColorScheme markColorScheme = SubstanceColorSchemeUtilities.getColorScheme(
+                        this.menuItem, ColorSchemeAssociationKind.MARK, activeState);
+                SubstanceColorScheme borderColorScheme = SubstanceColorSchemeUtilities
+                        .getColorScheme(this.menuItem, ColorSchemeAssociationKind.BORDER,
+                                activeState);
 
-				HashMapKey keyLayer = SubstanceCoreUtilities.getHashKey(
-						fontSize, checkMarkSize, fillPainter.getDisplayName(),
-						borderPainter.getDisplayName(), 
-						fillColorScheme
-								.getDisplayName(), markColorScheme
-								.getDisplayName(), borderColorScheme
-								.getDisplayName(), visibility, alpha);
-				SubstanceIcon iconLayer = iconMap.get(keyLayer);
-				if (iconLayer == null) {
-					iconLayer = new SubstanceIcon(SubstanceImageCreator.getCheckBox(
-							this.menuItem, fillPainter,
-							borderPainter, checkMarkSize, currState,
-							fillColorScheme, markColorScheme,
-							borderColorScheme, visibility,
-							isCheckMarkFadingOut, alpha));
-					iconMap.put(keyLayer, iconLayer);
-				}
+                HashMapKey keyLayer = SubstanceCoreUtilities.getHashKey(fontSize, checkMarkSize,
+                        fillPainter.getDisplayName(), borderPainter.getDisplayName(),
+                        fillColorScheme.getDisplayName(), markColorScheme.getDisplayName(),
+                        borderColorScheme.getDisplayName(), visibility, alpha);
+                SubstanceIconUIResource iconLayer = iconMap.get(keyLayer);
+                if (iconLayer == null) {
+                    iconLayer = new SubstanceIconUIResource(SubstanceImageCreator.getCheckBox(
+                            this.menuItem, fillPainter, borderPainter, checkMarkSize, currState,
+                            fillColorScheme, markColorScheme, borderColorScheme, visibility,
+                            isCheckMarkFadingOut, alpha));
+                    iconMap.put(keyLayer, iconLayer);
+                }
 
-				iconLayer.paintIcon(this.menuItem, g2d, 0, 0);
-			}
-		}
+                iconLayer.paintIcon(this.menuItem, g2d, 0, 0);
+            }
+        }
 
-		g2d.dispose();
-		return new SubstanceIcon(result);
-	}
+        g2d.dispose();
+        return new SubstanceIconUIResource(result);
+    }
 
-	@Override
-	public void paintIcon(Component c, Graphics g, int x, int y) {
-		Icon iconToDraw = this.getIconToPaint();
-		if (iconToDraw != null)
-			iconToDraw.paintIcon(c, g, x, y);
-	}
+    @Override
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+        Icon iconToDraw = this.getIconToPaint();
+        if (iconToDraw != null)
+            iconToDraw.paintIcon(c, g, x, y);
+    }
 
-	@Override
-	public int getIconWidth() {
-		Icon iconToDraw = this.getIconToPaint();
-		return iconToDraw.getIconWidth();
-	}
+    @Override
+    public int getIconWidth() {
+        Icon iconToDraw = this.getIconToPaint();
+        return iconToDraw.getIconWidth();
+    }
 
-	@Override
-	public int getIconHeight() {
-		Icon iconToDraw = this.getIconToPaint();
-		return iconToDraw.getIconHeight();
-	}
+    @Override
+    public int getIconHeight() {
+        Icon iconToDraw = this.getIconToPaint();
+        return iconToDraw.getIconHeight();
+    }
 }

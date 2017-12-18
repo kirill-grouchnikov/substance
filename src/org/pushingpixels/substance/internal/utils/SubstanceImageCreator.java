@@ -63,7 +63,7 @@ import javax.swing.text.JTextComponent;
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.api.icon.SubstanceIcon;
+import org.pushingpixels.substance.api.icon.SubstanceIconUIResource;
 import org.pushingpixels.substance.api.painter.border.FlatBorderPainter;
 import org.pushingpixels.substance.api.painter.border.SubstanceBorderPainter;
 import org.pushingpixels.substance.api.painter.fill.SubstanceFillPainter;
@@ -76,15 +76,14 @@ import org.pushingpixels.substance.internal.utils.filters.GrayscaleFilter;
 import org.pushingpixels.substance.internal.utils.filters.TranslucentFilter;
 
 /**
- * Provides utility functions for creating various images for <b>Substance </b>
- * look and feel. This class is <b>for internal use only</b>.
+ * Provides utility functions for creating various images for <b>Substance </b> look and feel. This
+ * class is <b>for internal use only</b>.
  * 
  * @author Kirill Grouchnikov
  */
 public final class SubstanceImageCreator {
     /**
-     * Custom fill painter for filling the checkmarks of checkboxes and radio
-     * buttons.
+     * Custom fill painter for filling the checkmarks of checkboxes and radio buttons.
      * 
      * @author Kirill Grouchnikov
      */
@@ -217,7 +216,7 @@ public final class SubstanceImageCreator {
      *            Arrow icon color scheme.
      * @return Arrow icon.
      */
-    public static SubstanceIcon getArrowIcon(int fontSize, int direction,
+    public static SubstanceIconUIResource getArrowIcon(int fontSize, int direction,
             SubstanceColorScheme colorScheme) {
         float origWidth = SubstanceSizeUtils.getArrowIconWidth(fontSize);
         float origHeight = SubstanceSizeUtils.getArrowIconHeight(fontSize);
@@ -226,7 +225,7 @@ public final class SubstanceImageCreator {
         if (direction == SwingConstants.CENTER)
             height *= 2;
         float strokeWidth = SubstanceSizeUtils.getArrowStrokeWidth(fontSize);
-        SubstanceIcon result = new SubstanceIcon(
+        SubstanceIconUIResource result = new SubstanceIconUIResource(
                 getArrow(width, height, strokeWidth, direction, colorScheme));
         int finalWidth = (int) (Math.max(origWidth, origHeight) + 2);
         int finalHeight = (int) (Math.max(origWidth, height) + 2);
@@ -253,9 +252,9 @@ public final class SubstanceImageCreator {
      * @see SwingConstants#SOUTH
      * @see SwingConstants#EAST
      */
-    public static SubstanceIcon getArrowIcon(float width, float height, float strokeWidth,
+    public static SubstanceIconUIResource getArrowIcon(float width, float height, float strokeWidth,
             int direction, SubstanceColorScheme scheme) {
-        return new SubstanceIcon(getArrow(width, height, strokeWidth, direction, scheme));
+        return new SubstanceIconUIResource(getArrow(width, height, strokeWidth, direction, scheme));
     }
 
     /**
@@ -285,8 +284,8 @@ public final class SubstanceImageCreator {
             width = height;
             height = tmp;
         }
-        BufferedImage arrowImage = SubstanceCoreUtilities.getBlankImage(
-                (int) Math.ceil(width), (int) Math.ceil(height));
+        BufferedImage arrowImage = SubstanceCoreUtilities.getBlankImage((int) Math.ceil(width),
+                (int) Math.ceil(height));
 
         // System.out.println(width + ":" + height + ":" + strokeWidth);
 
@@ -320,26 +319,26 @@ public final class SubstanceImageCreator {
             float cushion = strokeWidth / 2.0f;
             GeneralPath gp = new GeneralPath();
             switch (direction) {
-            case SwingConstants.SOUTH:
-                gp.moveTo(cushion, cushion);
-                gp.lineTo(0.5f * (width), height - cushion - 1);
-                gp.lineTo(width - cushion, cushion);
-                break;
-            case SwingConstants.NORTH:
-                gp.moveTo(cushion, height - cushion - 1);
-                gp.lineTo(0.5f * (width), cushion);
-                gp.lineTo(width - cushion, height - cushion - 1);
-                break;
-            case SwingConstants.EAST:
-                gp.moveTo(cushion, cushion);
-                gp.lineTo(width - 1 - cushion, 0.5f * (height));
-                gp.lineTo(cushion, height - cushion);
-                break;
-            case SwingConstants.WEST:
-                gp.moveTo(width - 1 - cushion, cushion);
-                gp.lineTo(cushion, 0.5f * (height));
-                gp.lineTo(width - 1- cushion, height - cushion);
-                break;
+                case SwingConstants.SOUTH:
+                    gp.moveTo(cushion, cushion);
+                    gp.lineTo(0.5f * (width), height - cushion - 1);
+                    gp.lineTo(width - cushion, cushion);
+                    break;
+                case SwingConstants.NORTH:
+                    gp.moveTo(cushion, height - cushion - 1);
+                    gp.lineTo(0.5f * (width), cushion);
+                    gp.lineTo(width - cushion, height - cushion - 1);
+                    break;
+                case SwingConstants.EAST:
+                    gp.moveTo(cushion, cushion);
+                    gp.lineTo(width - 1 - cushion, 0.5f * (height));
+                    gp.lineTo(cushion, height - cushion);
+                    break;
+                case SwingConstants.WEST:
+                    gp.moveTo(width - 1 - cushion, cushion);
+                    gp.lineTo(cushion, 0.5f * (height));
+                    gp.lineTo(width - 1 - cushion, height - cushion);
+                    break;
             }
             graphics.draw(gp);
 
@@ -358,14 +357,13 @@ public final class SubstanceImageCreator {
      *            Color scheme for the arrow.
      * @return Double arrow icon.
      */
-    public static SubstanceIcon getDoubleArrowIcon(int fontSize, int direction,
+    public static SubstanceIconUIResource getDoubleArrowIcon(int fontSize, int direction,
             SubstanceColorScheme colorScheme) {
         float arrowWidth = SubstanceSizeUtils.getArrowIconWidth(fontSize);
         float arrowHeight = SubstanceSizeUtils.getArrowIconHeight(fontSize);
         float arrowStrokeWidth = SubstanceSizeUtils.getDoubleArrowStrokeWidth(fontSize);
         float arrowGap = SubstanceSizeUtils.getSmallDoubleArrowGap(fontSize);
-        return getDoubleArrowIcon(fontSize, arrowWidth, 
-                arrowHeight + arrowGap, arrowGap, 
+        return getDoubleArrowIcon(fontSize, arrowWidth, arrowHeight + arrowGap, arrowGap,
                 arrowStrokeWidth, direction, colorScheme);
     }
 
@@ -388,30 +386,25 @@ public final class SubstanceImageCreator {
      * @see SwingConstants#SOUTH
      * @see SwingConstants#EAST
      */
-    public static SubstanceIcon getDoubleArrowIcon(int fontSize, float fullWidth,
+    public static SubstanceIconUIResource getDoubleArrowIcon(int fontSize, float fullWidth,
             float fullHeight, float arrowGap, float strokeWidth, int direction,
             SubstanceColorScheme colorScheme) {
-        boolean toggle = (direction == SwingConstants.WEST)
-                || (direction == SwingConstants.EAST);
+        boolean toggle = (direction == SwingConstants.WEST) || (direction == SwingConstants.EAST);
         int singleArrowWidth = toggle ? (int) fullHeight : (int) fullWidth;
-        int singleArrowHeight = toggle 
-                ? (int) (fullWidth - arrowGap)
+        int singleArrowHeight = toggle ? (int) (fullWidth - arrowGap)
                 : (int) (fullHeight - arrowGap);
-        BufferedImage downArrowImage = SubstanceCoreUtilities.getBlankImage(
-                (int) fullWidth, (int) fullHeight);
+        BufferedImage downArrowImage = SubstanceCoreUtilities.getBlankImage((int) fullWidth,
+                (int) fullHeight);
 
-        BufferedImage singleArrow = getArrow(
-                singleArrowWidth,
-                singleArrowHeight,
-                strokeWidth, direction,
-                colorScheme);
+        BufferedImage singleArrow = getArrow(singleArrowWidth, singleArrowHeight, strokeWidth,
+                direction, colorScheme);
 
         // get graphics and set hints
         Graphics2D graphics = (Graphics2D) downArrowImage.getGraphics();
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        //graphics.setColor(new Color(255, 0, 0, 128));
-        //graphics.fillRect(0, 0, downArrowImage.getWidth(), downArrowImage.getHeight());
+        // graphics.setColor(new Color(255, 0, 0, 128));
+        // graphics.fillRect(0, 0, downArrowImage.getWidth(), downArrowImage.getHeight());
 
         int scaleFactor = UIUtil.getScaleFactor();
         int arrowHeight = singleArrow.getHeight();
@@ -428,7 +421,7 @@ public final class SubstanceImageCreator {
                     arrowHeight / scaleFactor, null);
         }
 
-        return new SubstanceIcon(downArrowImage);
+        return new SubstanceIconUIResource(downArrowImage);
     }
 
     /**
@@ -437,8 +430,8 @@ public final class SubstanceImageCreator {
      * @param bi
      *            Image to rotate.
      * @param quadrantClockwise
-     *            Amount of quadrants to rotate in clockwise direction. The
-     *            rotation angle is 90 times this value.
+     *            Amount of quadrants to rotate in clockwise direction. The rotation angle is 90
+     *            times this value.
      * @return Rotated image.
      */
     public static BufferedImage getRotated(BufferedImage bi, int quadrantClockwise,
@@ -458,21 +451,22 @@ public final class SubstanceImageCreator {
         AffineTransform at = null;
         int factorForRotation = respectScaleFactorDuringRotation ? factor : 1;
         switch (quadrantClockwise) {
-        case 1:
-            at = AffineTransform.getTranslateInstance(width / factorForRotation, 0);
-            at.rotate(Math.PI / 2);
-            break;
-        case 2:
-            at = AffineTransform.getTranslateInstance(width / factorForRotation, height / factorForRotation);
-            at.rotate(Math.PI);
-            break;
-        case 3:
-            at = AffineTransform.getTranslateInstance(0, height / factorForRotation);
-            at.rotate(-Math.PI / 2);
+            case 1:
+                at = AffineTransform.getTranslateInstance(width / factorForRotation, 0);
+                at.rotate(Math.PI / 2);
+                break;
+            case 2:
+                at = AffineTransform.getTranslateInstance(width / factorForRotation,
+                        height / factorForRotation);
+                at.rotate(Math.PI);
+                break;
+            case 3:
+                at = AffineTransform.getTranslateInstance(0, height / factorForRotation);
+                at.rotate(-Math.PI / 2);
         }
         Graphics2D rotg = biRot.createGraphics();
-        //rotg.setColor(new Color(0, 0, 255, 255));
-        //rotg.fillRect(0, 0, biRot.getWidth(), biRot.getHeight());
+        // rotg.setColor(new Color(0, 0, 255, 255));
+        // rotg.fillRect(0, 0, biRot.getWidth(), biRot.getHeight());
         rotg.scale(1.0f / factor, 1.0f / factor);
         if (at != null) {
             rotg.setTransform(at);
@@ -500,7 +494,7 @@ public final class SubstanceImageCreator {
         BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
 
         icon.paintIcon(null, result.getGraphics(), 0, 0);
-        Icon resultIcon = new SubstanceIcon(new GrayscaleFilter().filter(result, null));
+        Icon resultIcon = new SubstanceIconUIResource(new GrayscaleFilter().filter(result, null));
         // System.out.println("Orig " + icon.getIconWidth() + "x" +
         // icon.getIconHeight() + " -> " +
         // resultIcon.getIconWidth() + "x" + resultIcon.getIconHeight());
@@ -515,8 +509,8 @@ public final class SubstanceImageCreator {
      * @param icon
      *            Icon.
      * @param alpha
-     *            The alpha of the resulting image. The closer this value is to
-     *            0.0, the more transparent resulting image will be.
+     *            The alpha of the resulting image. The closer this value is to 0.0, the more
+     *            transparent resulting image will be.
      * @return Transparent version of the specified icon.
      */
     public static Icon makeTransparent(Component c, Icon icon, double alpha) {
@@ -529,12 +523,11 @@ public final class SubstanceImageCreator {
 
         BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
         icon.paintIcon(c, result.getGraphics(), 0, 0);
-        return new SubstanceIcon(new TranslucentFilter(alpha).filter(result, null));
+        return new SubstanceIconUIResource(new TranslucentFilter(alpha).filter(result, null));
     }
 
     /**
-     * Retrieves radio button of the specified size that matches the specified
-     * parameters.
+     * Retrieves radio button of the specified size that matches the specified parameters.
      * 
      * @param component
      *            Component.
@@ -543,8 +536,7 @@ public final class SubstanceImageCreator {
      * @param componentState
      *            Component state.
      * @param offsetX
-     *            Offset on X axis - should be positive in order to see the
-     *            entire radio button.
+     *            Offset on X axis - should be positive in order to see the entire radio button.
      * @param fillColorScheme
      *            Color scheme for the inner fill.
      * @param markColorScheme
@@ -553,8 +545,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the border.
      * @param checkMarkVisibility
      *            Check mark visibility in 0.0-1.0 range.
-     * @return Radio button of the specified size that matches the specified
-     *         parameters.
+     * @return Radio button of the specified size that matches the specified parameters.
      */
     public static BufferedImage getRadioButton(JComponent component,
             SubstanceFillPainter fillPainter, SubstanceBorderPainter borderPainter, int dimension,
@@ -627,8 +618,7 @@ public final class SubstanceImageCreator {
     }
 
     /**
-     * Retrieves check box of the specified size that matches the specified
-     * component state.
+     * Retrieves check box of the specified size that matches the specified component state.
      * 
      * @param button
      *            Button for the check mark.
@@ -645,11 +635,9 @@ public final class SubstanceImageCreator {
      * @param checkMarkVisibility
      *            Check mark visibility in 0.0-1.0 range.
      * @param isCheckMarkFadingOut
-     *            if <code>true</code>, the value of
-     *            <code>interpolationCyclePos10</code> is used as the alpha
-     *            channel.
-     * @return Check box of the specified size that matches the specified
-     *         component state.
+     *            if <code>true</code>, the value of <code>interpolationCyclePos10</code> is used as
+     *            the alpha channel.
+     * @return Check box of the specified size that matches the specified component state.
      */
     public static BufferedImage getCheckBox(AbstractButton button, SubstanceFillPainter fillPainter,
             SubstanceBorderPainter borderPainter, int dimension, ComponentState componentState,
@@ -757,7 +745,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the icon.
      * @return <code>Minimize</code> icon.
      */
-    public static SubstanceIcon getMinimizeIcon(SubstanceColorScheme scheme,
+    public static SubstanceIconUIResource getMinimizeIcon(SubstanceColorScheme scheme,
             SubstanceColorScheme backgroundScheme) {
         int iSize = SubstanceSizeUtils.getTitlePaneIconSize();
         return getMinimizeIcon(iSize, scheme, backgroundScheme);
@@ -772,7 +760,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the icon.
      * @return <code>Minimize</code> icon.
      */
-    public static SubstanceIcon getMinimizeIcon(int iSize, SubstanceColorScheme scheme,
+    public static SubstanceIconUIResource getMinimizeIcon(int iSize, SubstanceColorScheme scheme,
             SubstanceColorScheme backgroundScheme) {
         BufferedImage image = SubstanceCoreUtilities.getBlankImage(iSize, iSize);
         Graphics2D graphics = (Graphics2D) image.createGraphics();
@@ -790,7 +778,7 @@ public final class SubstanceImageCreator {
         int fgStrength = SubstanceColorUtilities.getColorBrightness(color.getRGB());
         int echoStrength = SubstanceColorUtilities.getColorBrightness(echoColor.getRGB());
         boolean noEcho = Math.abs(fgStrength - echoStrength) < 48;
-        return new SubstanceIcon(SubstanceImageCreator.overlayEcho(image,
+        return new SubstanceIconUIResource(SubstanceImageCreator.overlayEcho(image,
                 noEcho ? 0 : SubstanceColorUtilities.getColorStrength(color), echoColor, 1, 1));
     }
 
@@ -801,7 +789,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the icon.
      * @return <code>Restore</code> icon.
      */
-    public static SubstanceIcon getRestoreIcon(SubstanceColorScheme scheme,
+    public static SubstanceIconUIResource getRestoreIcon(SubstanceColorScheme scheme,
             SubstanceColorScheme backgroundScheme) {
         int iSize = SubstanceSizeUtils.getTitlePaneIconSize();
         BufferedImage image = SubstanceCoreUtilities.getBlankImage(iSize, iSize);
@@ -844,7 +832,7 @@ public final class SubstanceImageCreator {
         int fgStrength = SubstanceColorUtilities.getColorBrightness(color.getRGB());
         int echoStrength = SubstanceColorUtilities.getColorBrightness(echoColor.getRGB());
         boolean noEcho = Math.abs(fgStrength - echoStrength) < 48;
-        return new SubstanceIcon(SubstanceImageCreator.overlayEcho(image,
+        return new SubstanceIconUIResource(SubstanceImageCreator.overlayEcho(image,
                 noEcho ? 0 : SubstanceColorUtilities.getColorStrength(color), echoColor, 1, 1));
     }
 
@@ -855,7 +843,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the icon.
      * @return <code>Maximize</code> icon.
      */
-    public static SubstanceIcon getMaximizeIcon(SubstanceColorScheme scheme,
+    public static SubstanceIconUIResource getMaximizeIcon(SubstanceColorScheme scheme,
             SubstanceColorScheme backgroundScheme) {
         int iSize = SubstanceSizeUtils.getTitlePaneIconSize();
         return getMaximizeIcon(iSize, scheme, backgroundScheme);
@@ -870,7 +858,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the icon.
      * @return <code>Maximize</code> icon.
      */
-    public static SubstanceIcon getMaximizeIcon(int iSize, SubstanceColorScheme scheme,
+    public static SubstanceIconUIResource getMaximizeIcon(int iSize, SubstanceColorScheme scheme,
             SubstanceColorScheme backgroundScheme) {
         BufferedImage image = SubstanceCoreUtilities.getBlankImage(iSize, iSize);
         Graphics2D graphics = (Graphics2D) image.createGraphics();
@@ -895,7 +883,7 @@ public final class SubstanceImageCreator {
         int echoStrength = SubstanceColorUtilities.getColorBrightness(echoColor.getRGB());
         boolean noEcho = Math.abs(fgStrength - echoStrength) < 48;
 
-        return new SubstanceIcon(SubstanceImageCreator.overlayEcho(image,
+        return new SubstanceIconUIResource(SubstanceImageCreator.overlayEcho(image,
                 noEcho ? 0 : SubstanceColorUtilities.getColorStrength(color), echoColor, 1, 1));
     }
 
@@ -906,7 +894,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the icon.
      * @return <code>Close</code> icon.
      */
-    public static SubstanceIcon getCloseIcon(SubstanceColorScheme scheme,
+    public static SubstanceIconUIResource getCloseIcon(SubstanceColorScheme scheme,
             SubstanceColorScheme backgroundScheme) {
         return SubstanceImageCreator.getCloseIcon(SubstanceSizeUtils.getTitlePaneIconSize(), scheme,
                 backgroundScheme);
@@ -921,7 +909,7 @@ public final class SubstanceImageCreator {
      *            Color scheme for the icon.
      * @return <code>Close</code> icon.
      */
-    public static SubstanceIcon getCloseIcon(int iSize, SubstanceColorScheme colorScheme,
+    public static SubstanceIconUIResource getCloseIcon(int iSize, SubstanceColorScheme colorScheme,
             SubstanceColorScheme backgroundScheme) {
         BufferedImage image = SubstanceCoreUtilities.getBlankImage(iSize, iSize);
         Graphics2D graphics = (Graphics2D) image.createGraphics();
@@ -949,7 +937,7 @@ public final class SubstanceImageCreator {
         int echoStrength = SubstanceColorUtilities.getColorBrightness(echoColor.getRGB());
         boolean noEcho = Math.abs(fgStrength - echoStrength) < 48;
 
-        return new SubstanceIcon(SubstanceImageCreator.overlayEcho(image,
+        return new SubstanceIconUIResource(SubstanceImageCreator.overlayEcho(image,
                 noEcho ? 0 : SubstanceColorUtilities.getColorStrength(color), echoColor, 1, 1));
     }
 
@@ -971,8 +959,8 @@ public final class SubstanceImageCreator {
      * @param borderAlpha
      *            Border alpha.
      * @param isVertical
-     *            if <code>true</code>, the gradient will be vertical, if
-     *            <code>false</code>, the gradient will be horizontal.
+     *            if <code>true</code>, the gradient will be vertical, if <code>false</code>, the
+     *            gradient will be horizontal.
      */
     public static void paintRectangularBackground(Component c, Graphics g, int startX, int startY,
             int width, int height, SubstanceColorScheme colorScheme, float borderAlpha,
@@ -1053,8 +1041,7 @@ public final class SubstanceImageCreator {
     }
 
     /**
-     * Paints rectangular gradient background with spots and optional replicated
-     * stripe image.
+     * Paints rectangular gradient background with spots and optional replicated stripe image.
      * 
      * @param g
      *            Graphics context.
@@ -1177,8 +1164,7 @@ public final class SubstanceImageCreator {
      * @param colorScheme
      *            Color scheme.
      * @param alwaysUseActive
-     *            Indicates whether the active color scheme should always be
-     *            used.
+     *            Indicates whether the active color scheme should always be used.
      * @param width
      *            Drag bumps width.
      * @param height
@@ -1413,8 +1399,8 @@ public final class SubstanceImageCreator {
     }
 
     /**
-     * Retrieves a single crayon of the specified color and dimensions for the
-     * crayon panel in color chooser.
+     * Retrieves a single crayon of the specified color and dimensions for the crayon panel in color
+     * chooser.
      * 
      * @param mainColor
      *            Crayon main color.
@@ -1619,9 +1605,8 @@ public final class SubstanceImageCreator {
     }
 
     /**
-     * Returns small icon representation of the specified integer value. The
-     * remainder of dividing the integer by 16 is translated to four circles
-     * arranged in 2*2 grid.
+     * Returns small icon representation of the specified integer value. The remainder of dividing
+     * the integer by 16 is translated to four circles arranged in 2*2 grid.
      * 
      * @param value
      *            Integer value to represent.
@@ -1629,14 +1614,14 @@ public final class SubstanceImageCreator {
      *            Icon color scheme.
      * @return Icon representation of the specified integer value.
      */
-    public static SubstanceIcon getHexaMarker(int value, SubstanceColorScheme colorScheme) {
+    public static SubstanceIconUIResource getHexaMarker(int value, SubstanceColorScheme colorScheme) {
         BufferedImage result = SubstanceCoreUtilities.getBlankImage(9, 9);
 
         value %= 16;
         Color offColor = null;
         Color onColor = null;
         if (colorScheme == null) {
-            return new SubstanceIcon(result);
+            return new SubstanceIconUIResource(result);
         }
         boolean isDark = colorScheme.isDark();
         offColor = isDark
@@ -1667,7 +1652,7 @@ public final class SubstanceImageCreator {
         graphics.fillOval(0, 0, 4, 4);
 
         graphics.dispose();
-        return new SubstanceIcon(result);
+        return new SubstanceIconUIResource(result);
     }
 
     /**
@@ -1687,7 +1672,7 @@ public final class SubstanceImageCreator {
         watermark.previewWatermark(graphics, SubstanceColorSchemeUtilities.METALLIC_SKIN, 0, 0,
                 iSize, iSize);
         graphics.dispose();
-        return new SubstanceIcon(result);
+        return new SubstanceIconUIResource(result);
     }
 
     /**
@@ -1701,13 +1686,13 @@ public final class SubstanceImageCreator {
         int componentFontSize = SubstanceSizeUtils.getComponentFontSize(c);
         int extraPadding = SubstanceSizeUtils.getExtraPadding(componentFontSize);
         int size = 9 + 2 * extraPadding;
-        
+
         return SubstanceCortex.GlobalScope.getIconPack().getLockIcon(size, scheme);
     }
 
     /**
-     * Creates a new version of the specified icon that is rendered in the
-     * colors of the specified color scheme.
+     * Creates a new version of the specified icon that is rendered in the colors of the specified
+     * color scheme.
      * 
      * @param comp
      *            Component.
@@ -1732,8 +1717,8 @@ public final class SubstanceImageCreator {
     }
 
     /**
-     * Creates a new version of the specified icon that is rendered in the
-     * colors of the specified color scheme.
+     * Creates a new version of the specified icon that is rendered in the colors of the specified
+     * color scheme.
      * 
      * @param comp
      *            Component.
@@ -1743,8 +1728,7 @@ public final class SubstanceImageCreator {
      *            Color scheme.
      * @return Scheme-based version of the original icon.
      */
-    public static BufferedImage getColoredImage(Component comp, Icon original,
-            Color color) {
+    public static BufferedImage getColoredImage(Component comp, Icon original, Color color) {
         int w = original.getIconWidth();
         int h = original.getIconHeight();
         BufferedImage origImage = SubstanceCoreUtilities.getBlankImage(w, h);
@@ -1757,8 +1741,8 @@ public final class SubstanceImageCreator {
     }
 
     /**
-     * Creates a new version of the specified image that is rendered in the
-     * colors of the specified color scheme.
+     * Creates a new version of the specified image that is rendered in the colors of the specified
+     * color scheme.
      * 
      * @param original
      *            The original image.
