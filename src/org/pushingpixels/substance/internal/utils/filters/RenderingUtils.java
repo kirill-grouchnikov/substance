@@ -41,18 +41,15 @@ import java.awt.print.PrinterGraphics;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.CellRendererPane;
-import javax.swing.SwingUtilities;
-
 public class RenderingUtils {
 	private static final String PROP_DESKTOPHINTS = "awt.font.desktophints";
 
 	private static Map<String, Map> desktopHintsCache = new HashMap<String, Map>();
 
 	public static void installDesktopHints(Graphics2D g2, Component c) {
-		if (SwingUtilities.getAncestorOfClass(CellRendererPane.class, c) != null) {
-			return;
-		}
+//		if (SwingUtilities.getAncestorOfClass(CellRendererPane.class, c) != null) {
+//			return;
+//		}
 
 		Map desktopHints = desktopHints(g2);
 		if (desktopHints != null && !desktopHints.isEmpty()) {

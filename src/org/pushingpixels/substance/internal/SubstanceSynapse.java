@@ -219,4 +219,15 @@ public class SubstanceSynapse {
      * compute the width of the popup at runtime.
      */
     public final static String COMBOBOX_POPUP_PROTOTYPE_OBJECT = "substancelaf.internal.comboPopupPrototype";
+
+    /**
+     * Client property name for specifying that the content of the root pane extends into the title
+     * pane area.
+     */
+    public final static String ROOT_PANE_CONTENTS_EXTENDS_INTO_TITLE_PANE = "substancelaf.internal.rootPaneContentExtendsIntoTitlePane";
+
+    /**
+     * Client property name for specifying that the preferred height of the title pane.
+     */
+    public final static String ROOT_PANE_PREFERRED_TITLE_PANE_HEIGHT = "substancelaf.internal.rootPanePreferredTitlePaneHeight";
 }

@@ -42,6 +42,7 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -120,6 +121,10 @@ public class SubstanceTitlePane extends JComponent {
      * JMenuBar, typically renders the system menu items.
      */
     protected JMenuBar menuBar;
+
+    private boolean isControlOnlyMode;
+
+    private int preferredHeight;
 
     /**
      * Action used to close the Window.
@@ -863,8 +868,8 @@ public class SubstanceTitlePane extends JComponent {
 
             this.toggleButton = this.createTitleButton();
             this.toggleButton.setAction(this.restoreAction);
-            this.toggleButton.setBorder(null);
             this.toggleButton.setText(null);
+            this.toggleButton.setBorder(null);
 
             Icon maxIcon = new TransitionAwareIcon(this.toggleButton,
                     (SubstanceColorScheme scheme) -> SubstanceIconFactory.getTitlePaneIcon(
@@ -1069,6 +1074,10 @@ public class SubstanceTitlePane extends JComponent {
 
     @Override
     public void paintComponent(Graphics g) {
+        if (this.isControlOnlyMode) {
+            return;
+        }
+
         // long start = System.nanoTime();
         // As state isn't bound, we need a convenience place to check
         // if it has changed. Changing the state typically changes the
@@ -1137,8 +1146,8 @@ public class SubstanceTitlePane extends JComponent {
                     .getBackgroundColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE);
             Color echoColor = !fillScheme.isDark() ? fillScheme.getUltraDarkColor()
                     : fillScheme.getUltraLightColor();
-//            graphics.setColor(Color.yellow);
-//            graphics.fill(titleTextRect);
+            // graphics.setColor(Color.yellow);
+            // graphics.fill(titleTextRect);
             SubstanceTextUtilities.paintTextWithDropShadow(this, graphics,
                     SubstanceColorUtilities.getForegroundColor(scheme), echoColor, displayTitle,
                     width, height, xOffset, yOffset);
@@ -1265,8 +1274,8 @@ public class SubstanceTitlePane extends JComponent {
     public class SubstanceMenuBar extends JMenuBar {
         @Override
         public void paint(Graphics g) {
-//            g.setColor(Color.yellow);
-//            g.fillRect(0, 0, getWidth(), getHeight());
+            // g.setColor(Color.yellow);
+            // g.fillRect(0, 0, getWidth(), getHeight());
             if (appIcon != null) {
                 int scaleFactor = SubstanceCoreUtilities.isHiDpiAwareImage(appIcon) ? 2 : 1;
                 g.drawImage(appIcon, 0, 0, appIcon.getWidth(null) / scaleFactor,
@@ -1341,6 +1350,7 @@ public class SubstanceTitlePane extends JComponent {
             }
 
             int finalHeight = Math.max(fontHeight, iconHeight);
+            finalHeight = Math.max(finalHeight, SubstanceTitlePane.this.preferredHeight);
             return finalHeight;
         }
 
@@ -1367,27 +1377,18 @@ public class SubstanceTitlePane extends JComponent {
             int w = SubstanceTitlePane.this.getWidth();
             int x;
             int spacing;
-            int buttonHeight;
-            int buttonWidth;
-
-            if ((SubstanceTitlePane.this.closeButton != null)
-                    && (SubstanceTitlePane.this.closeButton.getIcon() != null)) {
-                buttonHeight = SubstanceTitlePane.this.closeButton.getIcon().getIconHeight();
-                buttonWidth = SubstanceTitlePane.this.closeButton.getIcon().getIconWidth();
-            } else {
-                buttonHeight = SubstanceSizeUtils.getTitlePaneIconSize();
-                buttonWidth = SubstanceSizeUtils.getTitlePaneIconSize();
-            }
-
-            final int y = (getHeight() - buttonHeight) / 2;
 
             // assumes all buttons have the same dimensions
             // these dimensions include the borders
+            int buttonSize = getControlButtonSize();
+
+            final int y = (getHeight() - buttonSize) / 2;
 
             x = leftToRight ? w : 0;
 
-            SubstanceSlices.TitleIconGravity iconGravity = SubstanceTitlePaneUtilities
-                    .getTitlePaneIconGravity();
+            SubstanceSlices.TitleIconGravity iconGravity = isControlOnlyMode
+                    ? SubstanceSlices.TitleIconGravity.NONE
+                    : SubstanceTitlePaneUtilities.getTitlePaneIconGravity();
             SubstanceSlices.Gravity titleTextGravity = SubstanceTitlePaneUtilities
                     .getTitlePaneTextGravity();
             if (SubstanceTitlePane.this.menuBar != null) {
@@ -1395,7 +1396,7 @@ public class SubstanceTitlePane extends JComponent {
                 int menuBarLeft;
                 switch (iconGravity) {
                     case OPPOSITE_CONTROL_BUTTONS:
-                        menuBarLeft = controlButtonsOnRight ? spacing : w - buttonWidth - spacing;
+                        menuBarLeft = controlButtonsOnRight ? spacing : w - buttonSize - spacing;
                         break;
                     case NEXT_TO_TITLE:
                         Rectangle titleRect = SubstanceTitlePaneUtilities.getTitlePaneTextRectangle(
@@ -1408,73 +1409,71 @@ public class SubstanceTitlePane extends JComponent {
                                 .stringWidth(displayTitle);
                         switch (titleTextGravity) {
                             case LEADING:
-                                menuBarLeft = leftToRight ? titleRect.x - buttonWidth - spacing
+                                menuBarLeft = leftToRight ? titleRect.x - buttonSize - spacing
                                         : titleRect.x + titleRect.width + spacing;
                                 break;
                             case TRAILING:
                                 menuBarLeft = leftToRight
                                         ? titleRect.x + titleRect.width - displayTitleWidth
-                                                - buttonWidth - spacing
+                                                - buttonSize - spacing
                                         : titleRect.x + titleRect.width + spacing;
                                 break;
                             default:
                                 int displayTitleLeft = titleRect.x
                                         + (titleRect.width - displayTitleWidth) / 2;
-                                menuBarLeft = leftToRight ? displayTitleLeft - buttonWidth - spacing
+                                menuBarLeft = leftToRight ? displayTitleLeft - buttonSize - spacing
                                         : displayTitleLeft + displayTitleWidth + spacing;
                         }
 
                         break;
                     default:
                         menuBarLeft = -1;
-
                 }
                 if (menuBarLeft >= 0) {
                     SubstanceTitlePane.this.menuBar.setVisible(true);
-                    SubstanceTitlePane.this.menuBar.setBounds(menuBarLeft, y, buttonWidth,
-                            buttonHeight);
+                    SubstanceTitlePane.this.menuBar.setBounds(menuBarLeft, y, buttonSize,
+                            buttonSize);
                 } else {
                     SubstanceTitlePane.this.menuBar.setVisible(false);
                 }
             }
 
             x = controlButtonsOnRight ? w : 0;
-            spacing = 3;
-            x += controlButtonsOnRight ? -spacing - buttonWidth : spacing;
+            spacing = getControlButtonsSmallGap();
+            x += controlButtonsOnRight ? -spacing - buttonSize : spacing;
             if (SubstanceTitlePane.this.closeButton != null) {
-                SubstanceTitlePane.this.closeButton.setBounds(x, y, buttonWidth, buttonHeight);
+                SubstanceTitlePane.this.closeButton.setBounds(x, y, buttonSize, buttonSize);
             }
 
             if (!controlButtonsOnRight)
-                x += buttonWidth;
+                x += buttonSize;
 
             if (SubstanceTitlePane.this.getWindowDecorationStyle() == JRootPane.FRAME) {
                 if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
                     if (SubstanceTitlePane.this.toggleButton.getParent() != null) {
-                        spacing = 10;
-                        x += controlButtonsOnRight ? -spacing - buttonWidth : spacing;
-                        SubstanceTitlePane.this.toggleButton.setBounds(x, y, buttonWidth,
-                                buttonHeight);
+                        spacing = getControlButtonsLargeGap();
+                        x += controlButtonsOnRight ? -spacing - buttonSize : spacing;
+                        SubstanceTitlePane.this.toggleButton.setBounds(x, y, buttonSize,
+                                buttonSize);
                         if (!controlButtonsOnRight) {
-                            x += buttonWidth;
+                            x += buttonSize;
                         }
                     }
                 }
 
                 if ((SubstanceTitlePane.this.minimizeButton != null)
                         && (SubstanceTitlePane.this.minimizeButton.getParent() != null)) {
-                    spacing = 2;
-                    x += controlButtonsOnRight ? -spacing - buttonWidth : spacing;
-                    SubstanceTitlePane.this.minimizeButton.setBounds(x, y, buttonWidth,
-                            buttonHeight);
+                    spacing = getControlButtonsSmallGap();
+                    x += controlButtonsOnRight ? -spacing - buttonSize : spacing;
+                    SubstanceTitlePane.this.minimizeButton.setBounds(x, y, buttonSize, buttonSize);
                     if (!controlButtonsOnRight) {
-                        x += buttonWidth;
+                        x += buttonSize;
                     }
                 }
 
                 if ((SubstanceTitlePane.this.heapStatusPanel != null)
                         && SubstanceTitlePane.this.heapStatusPanel.isVisible()) {
-                    spacing = 5;
+                    spacing = getControlButtonsLargeGap();
                     x += controlButtonsOnRight
                             ? (-spacing
                                     - SubstanceTitlePane.this.heapStatusPanel.getPreferredWidth())
@@ -1485,7 +1484,6 @@ public class SubstanceTitlePane extends JComponent {
                 }
             }
         }
-
     }
 
     /**
@@ -1579,7 +1577,7 @@ public class SubstanceTitlePane extends JComponent {
         if (iconImages.size() == 0) {
             this.appIcon = null;
         } else {
-            int prefSize = SubstanceSizeUtils.getTitlePaneIconSize();
+            int prefSize = getControlButtonSize();
             this.appIcon = SubstanceCoreUtilities.getScaledIconImage(iconImages, prefSize,
                     prefSize);
         }
@@ -1587,5 +1585,81 @@ public class SubstanceTitlePane extends JComponent {
 
     public AbstractButton getCloseButton() {
         return this.closeButton;
+    }
+
+    public int getControlButtonSize() {
+        if ((this.closeButton != null) && (this.closeButton.getIcon() != null)) {
+            return this.closeButton.getIcon().getIconHeight();
+        } else {
+            return SubstanceSizeUtils.getTitlePaneIconSize();
+        }
+    }
+
+    private int getControlButtonsSmallGap() {
+        return 3;
+    }
+
+    private int getControlButtonsLargeGap() {
+        return 10;
+    }
+
+    public void setControlOnlyMode() {
+        this.isControlOnlyMode = true;
+        this.setOpaque(false);
+        this.revalidate();
+        this.repaint();
+    }
+
+    public void setPreferredHeight(int preferredHeight) {
+        this.preferredHeight = preferredHeight;
+        this.revalidate();
+        this.repaint();
+    }
+
+    public JButton createControlButton() {
+        JButton result = createTitleButton();
+        int prefSize = getControlButtonSize();
+        result.setPreferredSize(new Dimension(prefSize, prefSize));
+        SubstanceCortex.ComponentOrParentScope.setFlatBackground(result, true);
+        SubstanceCortex.ComponentScope.setDecorationType(result,
+                DecorationAreaType.PRIMARY_TITLE_PANE);
+        return result;
+    }
+
+    public Insets getControlInsets() {
+        Component compToQuery = (window != null) ? window : getRootPane();
+        boolean controlButtonsOnRight = SubstanceTitlePaneUtilities
+                .areTitlePaneControlButtonsOnRight(compToQuery);
+
+        int buttonSize = getControlButtonSize();
+
+        // Close button and its offset
+        int controlInsets = getControlButtonsSmallGap();
+        controlInsets += buttonSize;
+
+        if (this.getWindowDecorationStyle() == JRootPane.FRAME) {
+            if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
+                // Toggle / maximize button
+                if (this.toggleButton.getParent() != null) {
+                    controlInsets += getControlButtonsLargeGap();
+                    controlInsets += buttonSize;
+                }
+            }
+
+            if ((this.minimizeButton != null) && (this.minimizeButton.getParent() != null)) {
+                // Minimize button
+                controlInsets += getControlButtonsSmallGap();
+                controlInsets += buttonSize;
+            }
+
+            if ((this.heapStatusPanel != null) && this.heapStatusPanel.isVisible()) {
+                // Heap status panel
+                controlInsets += getControlButtonsLargeGap();
+                controlInsets += this.heapStatusPanel.getPreferredWidth();
+            }
+        }
+
+        return controlButtonsOnRight ? new Insets(0, 0, 0, controlInsets)
+                : new Insets(0, controlInsets, 0, 0);
     }
 }

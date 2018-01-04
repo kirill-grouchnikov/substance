@@ -92,6 +92,7 @@ import org.pushingpixels.substance.internal.utils.MemoryAnalyzer;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceTitlePane;
+import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 
 /**
  * UI for root panes in <b>Substance </b> look and feel.
@@ -123,7 +124,9 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
      * <code>JComponent</code> providing window decorations. This will be null if not providing
      * window decorations.
      */
-    private JComponent titlePane;
+    private SubstanceTitlePane titlePane;
+
+    private boolean isContentExtendingIntoTitlePane;
 
     /**
      * <code>MouseInputListener</code> that is added to the parent <code>Window</code> the
@@ -625,9 +628,18 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
     private void installClientDecorations(JRootPane root) {
         this.installBorder(root);
 
-        JComponent titlePane = this.createTitlePane(root);
+        SubstanceTitlePane titlePane = this.createTitlePane(root);
 
         this.setTitlePane(root, titlePane);
+        if (Boolean.TRUE.equals(root
+                .getClientProperty(SubstanceSynapse.ROOT_PANE_CONTENTS_EXTENDS_INTO_TITLE_PANE))) {
+            extendContentIntoTitlePane();
+        }
+        Object preferredTitlePaneHeight = root
+                .getClientProperty(SubstanceSynapse.ROOT_PANE_PREFERRED_TITLE_PANE_HEIGHT);
+        if (preferredTitlePaneHeight != null) {
+            setPreferredTitlePaneHeight((Integer) preferredTitlePaneHeight);
+        }
         this.installWindowListeners(root, root.getParent());
         this.installLayout(root);
         if (this.window != null) {
@@ -674,7 +686,7 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
      *            Root pane.
      * @return The title pane component.
      */
-    protected JComponent createTitlePane(JRootPane root) {
+    protected SubstanceTitlePane createTitlePane(JRootPane root) {
         return new SubstanceTitlePane(root, this);
     }
 
@@ -710,9 +722,9 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
      * @param titlePane
      *            The <code>JComponent</code> to use for the window title pane.
      */
-    private void setTitlePane(JRootPane root, JComponent titlePane) {
+    private void setTitlePane(JRootPane root, SubstanceTitlePane titlePane) {
         JLayeredPane layeredPane = root.getLayeredPane();
-        JComponent oldTitlePane = this.getTitlePane();
+        JComponent oldTitlePane = this.titlePane;
 
         if (oldTitlePane != null) {
             // fix for defect 109 - memory leak on skin change
@@ -762,7 +774,44 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
      * @return Title pane.
      */
     public JComponent getTitlePane() {
+        if (this.isContentExtendingIntoTitlePane) {
+            return null;
+        }
         return this.titlePane;
+    }
+    
+    public JButton createTitlePaneControlButton() {
+        if (this.titlePane == null) {
+            return null;
+        }
+        
+        return this.titlePane.createControlButton();
+    }
+
+    public Insets getTitlePaneControlInsets() {
+        if (this.titlePane == null) {
+            return null;
+        }
+        return this.titlePane.getControlInsets();
+    }
+
+    public void extendContentIntoTitlePane() {
+        if (this.titlePane == null) {
+            throw new IllegalStateException("This root pane has not been marked to be decorated");
+        }
+        this.isContentExtendingIntoTitlePane = true;
+        this.titlePane.setControlOnlyMode();
+        Container titlePaneParent = this.titlePane.getParent();
+        titlePaneParent.setComponentZOrder(this.titlePane, 0);
+        titlePaneParent.invalidate();
+    }
+
+    public void setPreferredTitlePaneHeight(int preferredTitlePaneHeight) {
+        if (this.titlePane == null) {
+            throw new IllegalStateException("This root pane has not been marked to be decorated");
+        }
+        this.titlePane.setPreferredHeight(preferredTitlePaneHeight);
+        this.titlePane.getParent().invalidate();
     }
 
     /**
@@ -1020,13 +1069,23 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
             // technically, these are not our children.
             if ((root.getWindowDecorationStyle() != JRootPane.NONE)
                     && (root.getUI() instanceof SubstanceRootPaneUI)) {
-                JComponent titlePane = ((SubstanceRootPaneUI) root.getUI()).getTitlePane();
                 if (titlePane != null) {
                     Dimension tpd = titlePane.getPreferredSize();
                     if (tpd != null) {
                         int tpHeight = tpd.height;
-                        titlePane.setBounds(0, 0, w, tpHeight);
-                        nextY += tpHeight;
+                        if (!isContentExtendingIntoTitlePane) {
+                            titlePane.setBounds(0, 0, w, tpHeight);
+                            nextY += tpHeight;
+                        } else {
+                            boolean controlButtonsOnRight = SubstanceTitlePaneUtilities
+                                    .areTitlePaneControlButtonsOnRight(root);
+                            Insets titlePaneControlInsets = titlePane.getControlInsets();
+                            int titlePaneWidth = controlButtonsOnRight
+                                    ? titlePaneControlInsets.right
+                                    : titlePaneControlInsets.left;
+                            int titlePaneX = controlButtonsOnRight ? w - titlePaneWidth : 0;
+                            titlePane.setBounds(titlePaneX, 0, titlePaneWidth, tpHeight);
+                        }
                     }
                 }
             }
@@ -1036,7 +1095,6 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
                 nextY += mbd.height;
             }
             if (root.getContentPane() != null) {
-                // Dimension cpd = root.getContentPane().getPreferredSize();
                 root.getContentPane().setBounds(0, nextY, w, h < nextY ? 0 : h - nextY);
             }
         }
@@ -1125,7 +1183,8 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
             JRootPane rootPane = SubstanceRootPaneUI.this.getRootPane();
             this.isMousePressed = true;
 
-            if (rootPane.getWindowDecorationStyle() == JRootPane.NONE) {
+            if ((getTitlePane() == null)
+                    || (rootPane.getWindowDecorationStyle() == JRootPane.NONE)) {
                 return;
             }
             Point dragWindowOffset = ev.getPoint();
@@ -1274,39 +1333,42 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
                 Dimension min = w.getMinimumSize();
 
                 switch (this.dragCursor) {
-                case Cursor.E_RESIZE_CURSOR:
-                    this.adjust(r, min, 0, 0, pt.x + (this.dragWidth - this.dragOffsetX) - r.width,
-                            0);
-                    break;
-                case Cursor.S_RESIZE_CURSOR:
-                    this.adjust(r, min, 0, 0, 0,
-                            pt.y + (this.dragHeight - this.dragOffsetY) - r.height);
-                    break;
-                case Cursor.N_RESIZE_CURSOR:
-                    this.adjust(r, min, 0, pt.y - this.dragOffsetY, 0, -(pt.y - this.dragOffsetY));
-                    break;
-                case Cursor.W_RESIZE_CURSOR:
-                    this.adjust(r, min, pt.x - this.dragOffsetX, 0, -(pt.x - this.dragOffsetX), 0);
-                    break;
-                case Cursor.NE_RESIZE_CURSOR:
-                    this.adjust(r, min, 0, pt.y - this.dragOffsetY,
-                            pt.x + (this.dragWidth - this.dragOffsetX) - r.width,
-                            -(pt.y - this.dragOffsetY));
-                    break;
-                case Cursor.SE_RESIZE_CURSOR:
-                    this.adjust(r, min, 0, 0, pt.x + (this.dragWidth - this.dragOffsetX) - r.width,
-                            pt.y + (this.dragHeight - this.dragOffsetY) - r.height);
-                    break;
-                case Cursor.NW_RESIZE_CURSOR:
-                    this.adjust(r, min, pt.x - this.dragOffsetX, pt.y - this.dragOffsetY,
-                            -(pt.x - this.dragOffsetX), -(pt.y - this.dragOffsetY));
-                    break;
-                case Cursor.SW_RESIZE_CURSOR:
-                    this.adjust(r, min, pt.x - this.dragOffsetX, 0, -(pt.x - this.dragOffsetX),
-                            pt.y + (this.dragHeight - this.dragOffsetY) - r.height);
-                    break;
-                default:
-                    break;
+                    case Cursor.E_RESIZE_CURSOR:
+                        this.adjust(r, min, 0, 0,
+                                pt.x + (this.dragWidth - this.dragOffsetX) - r.width, 0);
+                        break;
+                    case Cursor.S_RESIZE_CURSOR:
+                        this.adjust(r, min, 0, 0, 0,
+                                pt.y + (this.dragHeight - this.dragOffsetY) - r.height);
+                        break;
+                    case Cursor.N_RESIZE_CURSOR:
+                        this.adjust(r, min, 0, pt.y - this.dragOffsetY, 0,
+                                -(pt.y - this.dragOffsetY));
+                        break;
+                    case Cursor.W_RESIZE_CURSOR:
+                        this.adjust(r, min, pt.x - this.dragOffsetX, 0, -(pt.x - this.dragOffsetX),
+                                0);
+                        break;
+                    case Cursor.NE_RESIZE_CURSOR:
+                        this.adjust(r, min, 0, pt.y - this.dragOffsetY,
+                                pt.x + (this.dragWidth - this.dragOffsetX) - r.width,
+                                -(pt.y - this.dragOffsetY));
+                        break;
+                    case Cursor.SE_RESIZE_CURSOR:
+                        this.adjust(r, min, 0, 0,
+                                pt.x + (this.dragWidth - this.dragOffsetX) - r.width,
+                                pt.y + (this.dragHeight - this.dragOffsetY) - r.height);
+                        break;
+                    case Cursor.NW_RESIZE_CURSOR:
+                        this.adjust(r, min, pt.x - this.dragOffsetX, pt.y - this.dragOffsetY,
+                                -(pt.x - this.dragOffsetX), -(pt.y - this.dragOffsetY));
+                        break;
+                    case Cursor.SW_RESIZE_CURSOR:
+                        this.adjust(r, min, pt.x - this.dragOffsetX, 0, -(pt.x - this.dragOffsetX),
+                                pt.y + (this.dragHeight - this.dragOffsetY) - r.height);
+                        break;
+                    default:
+                        break;
                 }
                 if (!r.equals(startBounds)) {
                     w.setBounds(r);
@@ -1517,7 +1579,6 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
                 SubstanceRootPaneUI.this.window.setLocation(eventLocationOnScreen.x - dragOffset.x,
                         eventLocationOnScreen.y - dragOffset.y);
             }
-
         }
 
         @Override

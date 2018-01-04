@@ -55,6 +55,7 @@ import org.pushingpixels.substance.internal.utils.filters.ColorFilter;
  * 
  * @author Kirill Grouchnikov
  * @since version 8.0
+ * @see SubstanceIcon
  * @see {@link SubstanceCortex.GlobalScope#setIconPack(SubstanceIconUIResourcePack)}
  */
 public class SubstanceIconUIResource implements Icon, IsResizable, IsHiDpiAware, UIResource {

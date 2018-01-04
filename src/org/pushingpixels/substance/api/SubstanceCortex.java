@@ -31,6 +31,7 @@ package org.pushingpixels.substance.api;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Window;
 import java.util.Collections;
@@ -43,6 +44,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import javax.swing.AbstractButton;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -2519,6 +2521,60 @@ public class SubstanceCortex {
                 return ui.getTitlePane();
             }
             return null;
+        }
+        
+        public static JButton createTitlePaneControlButton(Window window) {
+            if (window == null) {
+                throw new IllegalArgumentException("Window scope APIs do not accept null windows");
+            }
+            JRootPane rootPane = SwingUtilities.getRootPane(window);
+            if (rootPane != null) {
+                SubstanceRootPaneUI ui = (SubstanceRootPaneUI) rootPane.getUI();
+                return ui.createTitlePaneControlButton();
+            }
+            return null;
+        }
+
+        public static Insets getTitlePaneControlInsets(Window window) {
+            if (window == null) {
+                throw new IllegalArgumentException("Window scope APIs do not accept null windows");
+            }
+            JRootPane rootPane = SwingUtilities.getRootPane(window);
+            if (rootPane != null) {
+                SubstanceRootPaneUI ui = (SubstanceRootPaneUI) rootPane.getUI();
+                return ui.getTitlePaneControlInsets();
+            }
+            return null;
+        }
+
+        public static void extendContentIntoTitlePane(Window window) {
+            if (window == null) {
+                throw new IllegalArgumentException("Window scope APIs do not accept null windows");
+            }
+            JRootPane rootPane = SwingUtilities.getRootPane(window);
+            if (rootPane != null) {
+                rootPane.putClientProperty(
+                        SubstanceSynapse.ROOT_PANE_CONTENTS_EXTENDS_INTO_TITLE_PANE, Boolean.TRUE);
+                SubstanceRootPaneUI ui = (SubstanceRootPaneUI) rootPane.getUI();
+                ui.extendContentIntoTitlePane();
+            }
+        }
+
+        public static void setPreferredTitlePaneHeight(Window window,
+                int preferredTitlePaneHeight) {
+            if (window == null) {
+                throw new IllegalArgumentException("Window scope APIs do not accept null windows");
+            }
+            if (preferredTitlePaneHeight <= 0) {
+                throw new IllegalArgumentException("Should pass positive value");
+            }
+            JRootPane rootPane = SwingUtilities.getRootPane(window);
+            if (rootPane != null) {
+                rootPane.putClientProperty(SubstanceSynapse.ROOT_PANE_PREFERRED_TITLE_PANE_HEIGHT,
+                        Integer.valueOf(preferredTitlePaneHeight));
+                SubstanceRootPaneUI ui = (SubstanceRootPaneUI) rootPane.getUI();
+                ui.setPreferredTitlePaneHeight(preferredTitlePaneHeight);
+            }
         }
 
     }
