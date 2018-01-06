@@ -65,6 +65,8 @@ import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JList;
@@ -119,7 +121,6 @@ import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.contrib.jgoodies.looks.LookUtils;
 import org.pushingpixels.substance.internal.fonts.DefaultKDEFontPolicy;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
-import org.pushingpixels.substance.internal.ui.SubstanceInternalFrameUI;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 import org.pushingpixels.substance.internal.utils.combo.SubstanceComboPopup;
 import org.pushingpixels.substance.internal.utils.icon.ArrowButtonTransitionAwareIcon;
@@ -1578,26 +1579,6 @@ public class SubstanceCoreUtilities {
     }
 
     /**
-     * Returns the title pane of the specified root pane.
-     * 
-     * @param rootPane
-     *            Root pane.
-     * @return The title pane of the specified root pane.
-     */
-    public static JComponent getTitlePane(JRootPane rootPane) {
-        JInternalFrame jif = (JInternalFrame) SwingUtilities
-                .getAncestorOfClass(JInternalFrame.class, rootPane);
-        if (jif != null) {
-            SubstanceInternalFrameUI ui = (SubstanceInternalFrameUI) jif.getUI();
-            return ui.getTitlePane();
-        }
-        SubstanceRootPaneUI ui = (SubstanceRootPaneUI) rootPane.getUI();
-        if (ui == null)
-            return null;
-        return ui.getTitlePane();
-    }
-
-    /**
      * Returns the arrow icon.
      * 
      * @param comp
@@ -2036,5 +2017,22 @@ public class SubstanceCoreUtilities {
         }
 
         return (platform = Platform.DEFAULT);
+    }
+
+    /**
+     * Returns the title pane of the specified top-level window.
+     * 
+     * @param window
+     *            Top-level window.
+     * @return If the parameter is either {@link JFrame} or {@link JDialog} and has custom
+     *         decorations, the result is the title pane, <code>null</code> otherwise.
+     */
+    public static JComponent getTitlePaneComponent(Window window) {
+        JRootPane rootPane = SwingUtilities.getRootPane(window);
+        if (rootPane != null) {
+            SubstanceRootPaneUI ui = (SubstanceRootPaneUI) rootPane.getUI();
+            return ui.getTitlePane();
+        }
+        return null;
     }
 }

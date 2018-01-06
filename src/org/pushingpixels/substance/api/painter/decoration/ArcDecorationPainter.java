@@ -33,6 +33,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.LinearGradientPaint;
 import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.Point;
@@ -41,7 +42,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JComponent;
+import javax.swing.JLayeredPane;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 
@@ -53,145 +54,142 @@ import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
- * Implementation of {@link SubstanceDecorationPainter} that uses "arc" painting
- * on title panes and lighter gradient near the center of the application frame.
+ * Implementation of {@link SubstanceDecorationPainter} that uses "arc" painting on title panes and
+ * lighter gradient near the center of the application frame.
  * 
  * @author Kirill Grouchnikov
  */
 public class ArcDecorationPainter implements SubstanceDecorationPainter {
-	/**
-	 * The display name for the decoration painters of this class.
-	 */
-	public static final String DISPLAY_NAME = "Arc";
+    /**
+     * The display name for the decoration painters of this class.
+     */
+    public static final String DISPLAY_NAME = "Arc";
 
-	@Override
-	public String getDisplayName() {
-		return DISPLAY_NAME;
-	}
+    @Override
+    public String getDisplayName() {
+        return DISPLAY_NAME;
+    }
 
-	@Override
-	public void paintDecorationArea(Graphics2D graphics, Component comp,
-			DecorationAreaType decorationAreaType, int width, int height, SubstanceSkin skin) {
-		if ((decorationAreaType == DecorationAreaType.PRIMARY_TITLE_PANE)
-				|| (decorationAreaType == DecorationAreaType.SECONDARY_TITLE_PANE)) {
-			this.paintTitleBackground(graphics, comp, width, height,
-					skin.getBackgroundColorScheme(decorationAreaType));
-		} else {
-			this.paintExtraBackground(graphics, SubstanceCoreUtilities.getHeaderParent(comp), comp,
-					width, height, skin.getBackgroundColorScheme(decorationAreaType));
-		}
-	}
+    @Override
+    public void paintDecorationArea(Graphics2D graphics, Component comp,
+            DecorationAreaType decorationAreaType, int width, int height, SubstanceSkin skin) {
+        if ((decorationAreaType == DecorationAreaType.PRIMARY_TITLE_PANE)
+                || (decorationAreaType == DecorationAreaType.SECONDARY_TITLE_PANE)) {
+            this.paintTitleBackground(graphics, comp, width, height,
+                    skin.getBackgroundColorScheme(decorationAreaType));
+        } else {
+            this.paintExtraBackground(graphics, SubstanceCoreUtilities.getHeaderParent(comp), comp,
+                    width, height, skin.getBackgroundColorScheme(decorationAreaType));
+        }
+    }
 
-	/**
-	 * Paints the title background.
-	 * 
-	 * @param graphics
-	 *            Graphics context.
-	 * @param comp
-	 *            Component.
-	 * @param width
-	 *            Width.
-	 * @param height
-	 *            Height.
-	 * @param scheme
-	 *            Color scheme for painting the title background.
-	 */
-	private void paintTitleBackground(Graphics2D graphics, Component comp, int width, int height,
-			SubstanceColorScheme scheme) {
-		// System.out.println(scheme.getDisplayName());
-		// create rectangular background and later draw it on
-		// result image with contour clip.
-		BufferedImage rectangular = SubstanceCoreUtilities.getBlankImage(width, height);
-		Graphics2D rgraphics = (Graphics2D) rectangular.getGraphics();
+    /**
+     * Paints the title background.
+     * 
+     * @param graphics
+     *            Graphics context.
+     * @param comp
+     *            Component.
+     * @param width
+     *            Width.
+     * @param height
+     *            Height.
+     * @param scheme
+     *            Color scheme for painting the title background.
+     */
+    private void paintTitleBackground(Graphics2D graphics, Component comp, int width, int height,
+            SubstanceColorScheme scheme) {
+        // System.out.println(scheme.getDisplayName());
+        // create rectangular background and later draw it on
+        // result image with contour clip.
+        BufferedImage rectangular = SubstanceCoreUtilities.getBlankImage(width, height);
+        Graphics2D rgraphics = (Graphics2D) rectangular.getGraphics();
 
-		// Fill background
-		GeneralPath clipTop = new GeneralPath();
-		clipTop.moveTo(0, 0);
-		clipTop.lineTo(width, 0);
-		clipTop.lineTo(width, height / 2);
-		clipTop.quadTo(width / 2, height / 4, 0, height / 2);
-		clipTop.lineTo(0, 0);
+        // Fill background
+        GeneralPath clipTop = new GeneralPath();
+        clipTop.moveTo(0, 0);
+        clipTop.lineTo(width, 0);
+        clipTop.lineTo(width, height / 2);
+        clipTop.quadTo(width / 2, height / 4, 0, height / 2);
+        clipTop.lineTo(0, 0);
 
-		rgraphics.setClip(clipTop);
-		LinearGradientPaint gradientTop = new LinearGradientPaint(0, 0, width, 0,
-				new float[] { 0.0f, 0.5f, 1.0f }, new Color[] { scheme.getLightColor(),
-						scheme.getUltraLightColor(), scheme.getLightColor() },
-				CycleMethod.REPEAT);
-		rgraphics.setPaint(gradientTop);
-		rgraphics.fillRect(0, 0, width, height);
+        rgraphics.setClip(clipTop);
+        LinearGradientPaint gradientTop = new LinearGradientPaint(0, 0, width, 0,
+                new float[] { 0.0f, 0.5f, 1.0f }, new Color[] { scheme.getLightColor(),
+                                scheme.getUltraLightColor(), scheme.getLightColor() },
+                CycleMethod.REPEAT);
+        rgraphics.setPaint(gradientTop);
+        rgraphics.fillRect(0, 0, width, height);
 
-		GeneralPath clipBottom = new GeneralPath();
-		clipBottom.moveTo(0, height);
-		clipBottom.lineTo(width, height);
-		clipBottom.lineTo(width, height / 2);
-		clipBottom.quadTo(width / 2, height / 4, 0, height / 2);
-		clipBottom.lineTo(0, height);
+        GeneralPath clipBottom = new GeneralPath();
+        clipBottom.moveTo(0, height);
+        clipBottom.lineTo(width, height);
+        clipBottom.lineTo(width, height / 2);
+        clipBottom.quadTo(width / 2, height / 4, 0, height / 2);
+        clipBottom.lineTo(0, height);
 
-		rgraphics.setClip(clipBottom);
-		LinearGradientPaint gradientBottom = new LinearGradientPaint(0, 0, width, 0,
-				new float[] { 0.0f, 0.5f, 1.0f },
-				new Color[] { scheme.getMidColor(), scheme.getLightColor(), scheme.getMidColor() },
-				CycleMethod.REPEAT);
-		rgraphics.setPaint(gradientBottom);
-		rgraphics.fillRect(0, 0, width, height);
+        rgraphics.setClip(clipBottom);
+        LinearGradientPaint gradientBottom = new LinearGradientPaint(0, 0, width, 0,
+                new float[] { 0.0f, 0.5f, 1.0f },
+                new Color[] { scheme.getMidColor(), scheme.getLightColor(), scheme.getMidColor() },
+                CycleMethod.REPEAT);
+        rgraphics.setPaint(gradientBottom);
+        rgraphics.fillRect(0, 0, width, height);
 
-		GeneralPath mid = new GeneralPath();
-		mid.moveTo(width, height / 2);
-		mid.quadTo(width / 2, height / 4, 0, height / 2);
-		// rgraphics.setClip(new Rectangle(0, 0, width / 2, height));
-		// rgraphics
-		// .setClip(new Rectangle(width / 2, 0, width - width / 2, height));
-		rgraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		rgraphics.setClip(new Rectangle(0, 0, width, height));
-		rgraphics.draw(mid);
+        GeneralPath mid = new GeneralPath();
+        mid.moveTo(width, height / 2);
+        mid.quadTo(width / 2, height / 4, 0, height / 2);
+        // rgraphics.setClip(new Rectangle(0, 0, width / 2, height));
+        // rgraphics
+        // .setClip(new Rectangle(width / 2, 0, width - width / 2, height));
+        rgraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        rgraphics.setClip(new Rectangle(0, 0, width, height));
+        rgraphics.draw(mid);
 
-		int scaleFactor = UIUtil.getScaleFactor();
-		graphics.drawImage(rectangular, 0, 0, rectangular.getWidth() / scaleFactor,
-				rectangular.getHeight() / scaleFactor, null);
-	}
+        int scaleFactor = UIUtil.getScaleFactor();
+        graphics.drawImage(rectangular, 0, 0, rectangular.getWidth() / scaleFactor,
+                rectangular.getHeight() / scaleFactor, null);
+    }
 
-	/**
-	 * Paints the background of non-title decoration areas.
-	 * 
-	 * @param graphics
-	 *            Graphics context.
-	 * @param parent
-	 *            Component ancestor for computing the correct offset of the
-	 *            background painting.
-	 * @param comp
-	 *            Component.
-	 * @param width
-	 *            Width.
-	 * @param height
-	 *            Height.
-	 * @param scheme
-	 *            Color scheme for painting the title background.
-	 */
-	private void paintExtraBackground(Graphics2D graphics, Container parent, Component comp,
-			int width, int height, SubstanceColorScheme scheme) {
-		Point offset = ComponentScope.getOffsetInRootPaneCoords(comp);
-		JRootPane rootPane = SwingUtilities.getRootPane(parent);
-		// fix for bug 234 - Window doesn't have a root pane.
-		JComponent titlePane = null;
-		if (rootPane != null) {
-			titlePane = SubstanceCoreUtilities.getTitlePane(rootPane);
-		}
+    /**
+     * Paints the background of non-title decoration areas.
+     * 
+     * @param graphics
+     *            Graphics context.
+     * @param parent
+     *            Component ancestor for computing the correct offset of the background painting.
+     * @param comp
+     *            Component.
+     * @param width
+     *            Width.
+     * @param height
+     *            Height.
+     * @param scheme
+     *            Color scheme for painting the title background.
+     */
+    private void paintExtraBackground(Graphics2D graphics, Container parent, Component comp,
+            int width, int height, SubstanceColorScheme scheme) {
+        Point offset = ComponentScope.getOffsetInRootPaneCoords(comp);
+        JRootPane rootPane = SwingUtilities.getRootPane(parent);
+        // fix for bug 234 - Window doesn't have a root pane.
+        JLayeredPane layeredPane = rootPane.getLayeredPane();
+        Insets layeredPaneInsets = (layeredPane != null) ? layeredPane.getInsets() : null;
 
-		int pWidth = (titlePane == null) ? parent.getWidth() : titlePane.getWidth();
+        int pWidth = (layeredPane == null) ? parent.getWidth()
+                : layeredPane.getWidth() - layeredPaneInsets.left - layeredPaneInsets.right;
 
-		if (pWidth != 0) {
-			LinearGradientPaint gradientBottom = new LinearGradientPaint(-offset.x, 0,
-					-offset.x + pWidth, 0, 
-					new float[] { 0.0f, 0.5f, 1.0f }, 
-					new Color[] { scheme.getMidColor(), scheme.getLightColor(), 
-							scheme.getMidColor() },
-					CycleMethod.REPEAT);
-			Graphics2D g2d = (Graphics2D) graphics.create();
-			g2d.setPaint(gradientBottom);
-			g2d.fillRect(-offset.x, 0, pWidth, height);
-			g2d.dispose();
-		}
+        if (pWidth != 0) {
+            LinearGradientPaint gradientBottom = new LinearGradientPaint(-offset.x, 0,
+                    -offset.x + pWidth, 0, new float[] { 0.0f, 0.5f, 1.0f },
+                    new Color[] { scheme.getMidColor(), scheme.getLightColor(),
+                                    scheme.getMidColor() },
+                    CycleMethod.REPEAT);
+            Graphics2D g2d = (Graphics2D) graphics.create();
+            g2d.setPaint(gradientBottom);
+            g2d.fillRect(-offset.x, 0, pWidth, height);
+            g2d.dispose();
+        }
 
-	}
+    }
 }

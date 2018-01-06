@@ -47,10 +47,6 @@ public class RenderingUtils {
 	private static Map<String, Map> desktopHintsCache = new HashMap<String, Map>();
 
 	public static void installDesktopHints(Graphics2D g2, Component c) {
-//		if (SwingUtilities.getAncestorOfClass(CellRendererPane.class, c) != null) {
-//			return;
-//		}
-
 		Map desktopHints = desktopHints(g2);
 		if (desktopHints != null && !desktopHints.isEmpty()) {
 			g2.addRenderingHints(desktopHints);

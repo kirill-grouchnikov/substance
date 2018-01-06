@@ -50,6 +50,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPasswordField;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
@@ -103,13 +104,11 @@ import org.pushingpixels.substance.internal.utils.SubstanceWidgetManager;
 import org.pushingpixels.substance.internal.utils.TabCloseListenerManager;
 
 /**
- * <p>
  * This class is the only officially-supported entry point into configuring the behavior of
  * Substance-powered UIs and for querying the state of such UIs. <b>All</b> APIs in this class
  * should be called when Substance is the currently set look-and-feel unless explicitly stated
  * otherwise. The API surface of this class is broken into a number of scopes, with every scope
  * applying at the specific granularity level of control:
- * </p>
  * 
  * <ul>
  * <li>{@link GlobalScope} - configuring and querying the global state of the application.</li>
@@ -2163,15 +2162,17 @@ public class SubstanceCortex {
             JRootPane rootPane = SwingUtilities.getRootPane(comp);
             int dx = 0;
             int dy = 0;
-            JComponent titlePane = null;
 
             if (rootPane != null) {
-                titlePane = SubstanceCoreUtilities.getTitlePane(rootPane);
+                JLayeredPane layeredPane = rootPane.getLayeredPane();
 
-                if (titlePane != null) {
-                    if (comp.isShowing() && titlePane.isShowing()) {
-                        dx += (comp.getLocationOnScreen().x - titlePane.getLocationOnScreen().x);
-                        dy += (comp.getLocationOnScreen().y - titlePane.getLocationOnScreen().y);
+                if (layeredPane != null) {
+                    Insets layeredPaneInsets = layeredPane.getInsets();
+                    if (comp.isShowing() && layeredPane.isShowing()) {
+                        dx += (comp.getLocationOnScreen().x - layeredPane.getLocationOnScreen().x
+                                + layeredPaneInsets.left);
+                        dy += (comp.getLocationOnScreen().y - layeredPane.getLocationOnScreen().y
+                                + layeredPaneInsets.top);
                     } else {
                         // have to traverse the hierarchy
                         Component c = comp;
@@ -2182,7 +2183,7 @@ public class SubstanceCortex {
                             dy += c.getY();
                             c = c.getParent();
                         }
-                        c = titlePane;
+                        c = layeredPane;
                         if ((c != null) && (c.getParent() != null)) {
                             while (c != rootPane) {
                                 dx -= c.getX();
@@ -2190,6 +2191,8 @@ public class SubstanceCortex {
                                 c = c.getParent();
                             }
                         }
+                        dx += layeredPaneInsets.left;
+                        dy += layeredPaneInsets.right;
                     }
                 }
             }
@@ -2440,7 +2443,7 @@ public class SubstanceCortex {
 
         /**
          * <p>
-         * Specifying that contents of a root pane have been modified and not saved. The
+         * Specifies that contents of a root pane have been modified and not saved. The
          * <b>close</b> button of the title pane of the matching frame / dialog will be animated (in
          * case that the frame / dialog have decorated title pane). In case the root pane belongs to
          * a {@link JInternalFrame} and that frame is iconified (to a
@@ -2477,13 +2480,13 @@ public class SubstanceCortex {
      */
     public static final class WindowScope {
         /**
-         * Sets the visibility of the specified widget kind(s). This method should not be called
+         * Sets the visibility of the specified widget type(s). This method should not be called
          * from inside the initialization sequence of your window. If the specific widget needs to
          * be visible when the window is shown, wrap the call with
          * {@link SwingUtilities#invokeLater(Runnable)}.
          * 
-         * @param rootPane
-         *            Root pane. May be <code>null</code>.
+         * @param window
+         *            Window. May not be <code>null</code>.
          * @param visible
          *            Visibility indication.
          * @param substanceWidgets
@@ -2503,50 +2506,26 @@ public class SubstanceCortex {
         }
 
         /**
-         * Returns the title pane of the specified top-level window.
+         * Marks the specified window to have its content extend vertically into the title pane
+         * area. Use the following methods for finer control over such extended content:
+         * 
+         * <ul>
+         * <li>{@link #getTitlePaneControlInsets(Window)} to query the insets that should be
+         * reserved for the main control buttons - close / maximize / minimize. {@link Insets#left}
+         * and {@link Insets#right} are the two relevant fields.</li>
+         * <li>{@link #setPreferredTitlePaneHeight(Window, int)} to increase the preferred height of
+         * the title pane area in case the content you extend into that area is taller than the main
+         * control buttons.</li>
+         * <li>{@link #createTitlePaneControlButton(Window)} to get a button that has consistent
+         * visual appearance and preferred size with the main control buttons.</li>
+         * </ul>
          * 
          * @param window
-         *            Top-level window.
-         * @return If the parameter is either {@link JFrame} or {@link JDialog} and has custom
-         *         decorations, the result is the title pane, <code>null</code> otherwise.
-         * @since version 8.0
+         *            Window. May not be <code>null</code>.
+         * @see #getTitlePaneControlInsets(Window)
+         * @see #setPreferredTitlePaneHeight(Window, int)
+         * @see #createTitlePaneControlButton(Window)
          */
-        public static JComponent getTitlePaneComponent(Window window) {
-            if (window == null) {
-                throw new IllegalArgumentException("Window scope APIs do not accept null windows");
-            }
-            JRootPane rootPane = SwingUtilities.getRootPane(window);
-            if (rootPane != null) {
-                SubstanceRootPaneUI ui = (SubstanceRootPaneUI) rootPane.getUI();
-                return ui.getTitlePane();
-            }
-            return null;
-        }
-        
-        public static JButton createTitlePaneControlButton(Window window) {
-            if (window == null) {
-                throw new IllegalArgumentException("Window scope APIs do not accept null windows");
-            }
-            JRootPane rootPane = SwingUtilities.getRootPane(window);
-            if (rootPane != null) {
-                SubstanceRootPaneUI ui = (SubstanceRootPaneUI) rootPane.getUI();
-                return ui.createTitlePaneControlButton();
-            }
-            return null;
-        }
-
-        public static Insets getTitlePaneControlInsets(Window window) {
-            if (window == null) {
-                throw new IllegalArgumentException("Window scope APIs do not accept null windows");
-            }
-            JRootPane rootPane = SwingUtilities.getRootPane(window);
-            if (rootPane != null) {
-                SubstanceRootPaneUI ui = (SubstanceRootPaneUI) rootPane.getUI();
-                return ui.getTitlePaneControlInsets();
-            }
-            return null;
-        }
-
         public static void extendContentIntoTitlePane(Window window) {
             if (window == null) {
                 throw new IllegalArgumentException("Window scope APIs do not accept null windows");
@@ -2560,6 +2539,72 @@ public class SubstanceCortex {
             }
         }
 
+        /**
+         * Returns a new instance of a button that has consistent visuals and preferred size to be
+         * used in application content that is extended into the title pane area with
+         * {@link #extendContentIntoTitlePane(Window)} API. If the content of the button will need
+         * more space (horizontally and / or vertically), you can query the preferred size and then
+         * tweak it.
+         * 
+         * @param window
+         *            Window. May not be <code>null</code>.
+         * @return A new instance of a button that has consistent visuals and preferred size to be
+         *         used in application content that is extended into the title pane area.
+         * @see #extendContentIntoTitlePane(Window)
+         * @see #getTitlePaneControlInsets(Window)
+         * @see #setPreferredTitlePaneHeight(Window, int)
+         */
+        public static JButton createTitlePaneControlButton(Window window) {
+            if (window == null) {
+                throw new IllegalArgumentException("Window scope APIs do not accept null windows");
+            }
+            JRootPane rootPane = SwingUtilities.getRootPane(window);
+            if (rootPane != null) {
+                SubstanceRootPaneUI ui = (SubstanceRootPaneUI) rootPane.getUI();
+                return ui.createTitlePaneControlButton();
+            }
+            return null;
+        }
+
+        /**
+         * Queries the insets that should be reserved for the main control buttons (close / maximize
+         * / minimize) in application content that is extended into the title pane area with
+         * {@link #extendContentIntoTitlePane(Window)} API. {@link Insets#left} and
+         * {@link Insets#right} are the two relevant fields.
+         * 
+         * @param window
+         *            Window. May not be <code>null</code>.
+         * @return The insets that should be reserved for the main control buttons (close / maximize
+         *         / minimize) in application content that is extended into the title pane area.
+         * @see #extendContentIntoTitlePane(Window)
+         * @see #createTitlePaneControlButton(Window)
+         * @see #setPreferredTitlePaneHeight(Window, int)
+         */
+        public static Insets getTitlePaneControlInsets(Window window) {
+            if (window == null) {
+                throw new IllegalArgumentException("Window scope APIs do not accept null windows");
+            }
+            JRootPane rootPane = SwingUtilities.getRootPane(window);
+            if (rootPane != null) {
+                SubstanceRootPaneUI ui = (SubstanceRootPaneUI) rootPane.getUI();
+                return ui.getTitlePaneControlInsets();
+            }
+            return null;
+        }
+
+        /**
+         * Increase the preferred height of the title pane area in case the content you extend into
+         * that area with {@link #extendContentIntoTitlePane(Window)} API is taller than the main
+         * control buttons.
+         * 
+         * @param window
+         *            Window. May not be <code>null</code>.
+         * @param preferredTitlePaneHeight
+         *            Preferred height of the title pane area. Must be a positive value.
+         * @see #extendContentIntoTitlePane(Window)
+         * @see #createTitlePaneControlButton(Window)
+         * @see #getTitlePaneControlInsets(Window)
+         */
         public static void setPreferredTitlePaneHeight(Window window,
                 int preferredTitlePaneHeight) {
             if (window == null) {
@@ -2576,6 +2621,5 @@ public class SubstanceCortex {
                 ui.setPreferredTitlePaneHeight(preferredTitlePaneHeight);
             }
         }
-
     }
 }

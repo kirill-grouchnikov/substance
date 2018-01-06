@@ -81,7 +81,6 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicRootPaneUI;
 
-import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -774,17 +773,14 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
      * @return Title pane.
      */
     public JComponent getTitlePane() {
-        if (this.isContentExtendingIntoTitlePane) {
-            return null;
-        }
         return this.titlePane;
     }
-    
+
     public JButton createTitlePaneControlButton() {
         if (this.titlePane == null) {
             return null;
         }
-        
+
         return this.titlePane.createControlButton();
     }
 
@@ -853,7 +849,7 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
             }
         }
         if (propertyName.equals("background")) {
-            SubstanceCortex.WindowScope.getTitlePaneComponent(window)
+            SubstanceCoreUtilities.getTitlePaneComponent(window)
                     .setBackground((Color) e.getNewValue());
         }
 
@@ -1183,7 +1179,7 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
             JRootPane rootPane = SubstanceRootPaneUI.this.getRootPane();
             this.isMousePressed = true;
 
-            if ((getTitlePane() == null)
+            if ((titlePane == null)
                     || (rootPane.getWindowDecorationStyle() == JRootPane.NONE)) {
                 return;
             }
@@ -1192,8 +1188,6 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
             if (w != null) {
                 w.toFront();
             }
-            Point convertedDragWindowOffset = SwingUtilities.convertPoint(w, dragWindowOffset,
-                    SubstanceRootPaneUI.this.getTitlePane());
 
             Frame f = null;
             Dialog d = null;
@@ -1206,8 +1200,7 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 
             int frameState = (f != null) ? f.getExtendedState() : 0;
 
-            if ((SubstanceRootPaneUI.this.getTitlePane() != null) && SubstanceRootPaneUI.this
-                    .getTitlePane().contains(convertedDragWindowOffset)) {
+            if (isMouseEventInExtendedTitlePane(ev)) {
                 if ((((f != null) && ((frameState & Frame.MAXIMIZED_BOTH) == 0)) || (d != null))
                         && (dragWindowOffset.y >= SubstanceRootPaneUI.BORDER_DRAG_THICKNESS)
                         && (dragWindowOffset.x >= SubstanceRootPaneUI.BORDER_DRAG_THICKNESS)
@@ -1418,17 +1411,18 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
                 return;
             }
 
-            JComponent windowTitlePane = SubstanceRootPaneUI.this.getTitlePane();
             // fix for issue 444 - ignore double clicks when the title pane
             // is not showing (for example under JRootPane.NONE decoration
             // style).
-            if (windowTitlePane == null)
+            if (titlePane == null)
                 return;
 
-            Point convertedPoint = SwingUtilities.convertPoint(w, ev.getPoint(), windowTitlePane);
+            // Point convertedPoint = SwingUtilities.convertPoint(w, ev.getPoint(),
+            // windowTitlePane);
 
             int state = f.getExtendedState();
-            if ((windowTitlePane != null) && windowTitlePane.contains(convertedPoint)) {
+            if (isMouseEventInExtendedTitlePane(ev)) {
+                // if ((windowTitlePane != null) && windowTitlePane.contains(convertedPoint)) {
                 if (((ev.getClickCount() % 2) == 0)
                         && ((ev.getModifiers() & InputEvent.BUTTON1_MASK) != 0)) {
                     if (f.isResizable()) {
@@ -1538,13 +1532,16 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
             Point dragWindowOffset = ev.getPoint();
             Component source = (Component) ev.getSource();
 
-            Point convertedDragWindowOffset = SwingUtilities.convertPoint(source, dragWindowOffset,
-                    getTitlePane());
+            // Point convertedDragWindowOffset = SwingUtilities.convertPoint(source,
+            // dragWindowOffset,
+            // getTitlePane());
 
             dragWindowOffset = SwingUtilities.convertPoint(source, dragWindowOffset,
                     SubstanceRootPaneUI.this.window);
 
-            if (getTitlePane() != null && getTitlePane().contains(convertedDragWindowOffset)) {
+            if (isMouseEventInExtendedTitlePane(ev)) {
+                // if (getTitlePane() != null && getTitlePane().contains(convertedDragWindowOffset))
+                // {
                 if (SubstanceRootPaneUI.this.window != null) {
                     SubstanceRootPaneUI.this.window.toFront();
                     dragOffset = dragWindowOffset;
@@ -1591,12 +1588,13 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
                 return;
             }
 
-            Point convertedPoint = SwingUtilities.convertPoint(SubstanceRootPaneUI.this.window,
-                    ev.getPoint(), SubstanceRootPaneUI.this.getTitlePane());
+            // Point convertedPoint = SwingUtilities.convertPoint(SubstanceRootPaneUI.this.window,
+            // ev.getPoint(), SubstanceRootPaneUI.this.getTitlePane());
 
             int state = f.getExtendedState();
-            if ((SubstanceRootPaneUI.this.getTitlePane() != null)
-                    && SubstanceRootPaneUI.this.getTitlePane().contains(convertedPoint)) {
+            if (isMouseEventInExtendedTitlePane(ev)) {
+                // if ((SubstanceRootPaneUI.this.getTitlePane() != null)
+                // && SubstanceRootPaneUI.this.getTitlePane().contains(convertedPoint)) {
                 if (((ev.getClickCount() % 2) == 0)
                         && ((ev.getModifiers() & InputEvent.BUTTON1_MASK) != 0)) {
                     if (f.isResizable()) {
@@ -1615,9 +1613,8 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
     }
 
     private void propagateModificationState() {
-        JComponent titlePane = getTitlePane();
-        if (titlePane instanceof SubstanceTitlePane) {
-            ((SubstanceTitlePane) titlePane).getCloseButton().putClientProperty(
+        if (this.titlePane != null) {
+            this.titlePane.getCloseButton().putClientProperty(
                     SubstanceSynapse.CONTENTS_MODIFIED,
                     root.getClientProperty(SubstanceSynapse.CONTENTS_MODIFIED));
             return;
@@ -1634,5 +1631,29 @@ public class SubstanceRootPaneUI extends BasicRootPaneUI {
 
     public static boolean hasCustomSkinOnAtLeastOneRootPane() {
         return (rootPanesWithCustomSkin > 0);
+    }
+
+    private boolean isMouseEventInExtendedTitlePane(MouseEvent ev) {
+        Point point = ev.getPoint();
+        Component source = (Component) ev.getSource();
+        if (this.titlePane == null) {
+            return false;
+        }
+        if (!isContentExtendingIntoTitlePane) {
+            return (this.titlePane != null
+                    && this.titlePane.contains(SwingUtilities.convertPoint(source, point, this.titlePane)));
+        } else {
+            // Built-in title pane is not going to be full-width. Work with layered pane
+            // and its insets
+            JLayeredPane layeredPane = this.root.getLayeredPane();
+            Insets layeredPaneInsets = layeredPane.getInsets();
+            Point convertedPoint = SwingUtilities.convertPoint(source, point, layeredPane);
+            convertedPoint.x += layeredPaneInsets.left;
+            convertedPoint.y += layeredPaneInsets.top;
+            Rectangle titlePaneRect = new Rectangle(0, 0, layeredPane.getWidth() - 
+                    layeredPaneInsets.left - layeredPaneInsets.right,
+                    this.titlePane.getHeight());
+            return titlePaneRect.contains(convertedPoint);
+        }
     }
 }

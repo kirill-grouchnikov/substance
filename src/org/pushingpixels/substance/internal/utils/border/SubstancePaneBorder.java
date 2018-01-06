@@ -40,7 +40,6 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
@@ -83,7 +82,7 @@ public class SubstancePaneBorder extends AbstractBorder implements UIResource {
 
 		SubstanceColorScheme scheme = skin
 				.getBackgroundColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE);
-		Component titlePaneComp = SubstanceCortex.WindowScope
+		Component titlePaneComp = SubstanceCoreUtilities
 				.getTitlePaneComponent(SwingUtilities.windowForComponent(c));
 		SubstanceColorScheme borderScheme = skin.getColorScheme(titlePaneComp,
 				ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED);
