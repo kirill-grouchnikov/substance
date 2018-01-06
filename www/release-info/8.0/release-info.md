@@ -56,3 +56,17 @@ Starting with version 8.0, Substance has switched to [Material Design icon pack]
 In addition, the newly added `api.icon.SubstanceIconPack` interface and `SubstanceCortex.GlobalScope.setIconPack` API can be used to configure your application to use a consistent set of icons - such as the previously used [Project Tango](https://commons.wikimedia.org/wiki/Tango_icons).
 
 ### Configurable and custom title pane content (Project Visor)
+
+Substance 8.0 provides a number of APIs to configure the layout in and around the title pane area of application windows.
+
+`SubstanceCortex.GlobalScope.configureTitleContentGravity` is the API to globally configure the gravity (edge alignment) of title pane content - title text, control buttons (minimize, maximize, close) and app icon.
+
+The following APIs on the `SubstanceCortex.WindowScope` scope allow apps to extend the main content view into the title pane area:
+
+* `extendContentIntoTitlePane(Window)` to marks the specified window to have its content extend vertically into the title pane area.
+* `getTitlePaneControlInsets(Window)` to query the insets that should be
+reserved for the main control buttons - close / maximize / minimize.
+* `setPreferredTitlePaneHeight(Window, int)` to increase the preferred height of the title pane area in case the content you extend into that area is taller than the main control buttons.
+* `createTitlePaneControlButton(Window)` to get a button that has consistent visual appearance and preferred size with the main control buttons.
+
+Calling `JFrame.setDefaultLookAndFeelDecorated(true)` on the specific window is the mandatory pre-requisite to be extend the window content into the title pane area with `SubstanceCortex.WindowScope.extendContentIntoTitlePane(Window)` API. See the [mail skeleton demo app](https://github.com/kirill-grouchnikov/substance-demo/tree/master/src/org/pushingpixels/demo/substance/main/visor) for sample code on how to use these APIs.
