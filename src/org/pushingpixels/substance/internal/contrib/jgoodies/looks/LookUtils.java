@@ -188,7 +188,8 @@ public final class LookUtils {
 	
 	public static final boolean IS_VENDOR_APPLE = containsIgnoreCase(JAVA_VENDOR, "Apple");
 	
-	public static final boolean IS_JAVA_9 = startsWith(JAVA_SPEC_VERSION, "9");
+    public static final boolean IS_JAVA_8 = startsWith(JAVA_SPEC_VERSION, "8");
+    public static final boolean IS_JAVA_9 = startsWith(JAVA_SPEC_VERSION, "9");
 
 	// Other Properties *******************************************************
 

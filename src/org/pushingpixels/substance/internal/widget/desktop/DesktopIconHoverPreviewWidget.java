@@ -62,229 +62,229 @@ import org.pushingpixels.substance.internal.utils.WidgetUtilities;
  * @author Kirill Grouchnikov
  */
 public class DesktopIconHoverPreviewWidget extends SubstanceWidget<JDesktopIcon> {
-	/**
-	 * The component that initiates the desktop icon preview (when the mouse
-	 * hover above it).
-	 */
+    /**
+     * The component that initiates the desktop icon preview (when the mouse hover above it).
+     */
     private JComponent compToHover;
 
-	/**
-	 * Listens on the changes to the ancestor.
-	 */
-	private PropertyChangeListener internalFramePropertyListener;
+    /**
+     * Listens on the changes to the ancestor.
+     */
+    private PropertyChangeListener internalFramePropertyListener;
 
-	/**
-	 * Snapshot map.
-	 */
-	private BufferedImage snapshot;
+    /**
+     * Snapshot map.
+     */
+    private BufferedImage snapshot;
 
-	/**
-	 * Preview window (activated on hover).
-	 */
-	private JWindow previewWindow;
+    /**
+     * Preview window (activated on hover).
+     */
+    private JWindow previewWindow;
 
-	/**
-	 * Indicates whether the corresponding desktop icon is dragged.
-	 */
-	private boolean isInDrag;
+    /**
+     * Indicates whether the corresponding desktop icon is dragged.
+     */
+    private boolean isInDrag;
 
-	/**
-	 * Mouse handler for the {@link #compToHover}.
-	 */
-	private TitleMouseHandler titleMouseHandler;
+    /**
+     * Mouse handler for the {@link #compToHover}.
+     */
+    private TitleMouseHandler titleMouseHandler;
 
-	/**
-	 * Mouse handler for showing / hiding the preview window.
-	 * 
-	 * @author Kirill Grouchnikov.
-	 */
-	protected class TitleMouseHandler extends MouseInputAdapter {
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			if (DesktopIconHoverPreviewWidget.this.isInDrag)
-				return;
-			BufferedImage previewImage = snapshot;
-			if (previewImage != null) {
-				int scaleFactor = UIUtil.getScaleFactor();
-				DesktopIconHoverPreviewWidget.this.previewWindow.getContentPane().removeAll();
-				JLabel previewLabel = new JLabel(new SubstanceIconUIResource(previewImage));
-				DesktopIconHoverPreviewWidget.this.previewWindow.getContentPane().add(previewLabel,
-						BorderLayout.CENTER);
-				DesktopIconHoverPreviewWidget.this.previewWindow.setSize(
-						previewImage.getWidth() / scaleFactor,
-						previewImage.getHeight() / scaleFactor);
-				DesktopIconHoverPreviewWidget.this.syncPreviewWindow(true);
-				DesktopIconHoverPreviewWidget.this.previewWindow.setVisible(true);
-			}
-		}
+    /**
+     * Mouse handler for showing / hiding the preview window.
+     * 
+     * @author Kirill Grouchnikov.
+     */
+    protected class TitleMouseHandler extends MouseInputAdapter {
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            if (DesktopIconHoverPreviewWidget.this.isInDrag)
+                return;
+            BufferedImage previewImage = snapshot;
+            if (previewImage != null) {
+                double scaleFactor = UIUtil.getScaleFactor();
+                DesktopIconHoverPreviewWidget.this.previewWindow.getContentPane().removeAll();
+                JLabel previewLabel = new JLabel(new SubstanceIconUIResource(previewImage));
+                DesktopIconHoverPreviewWidget.this.previewWindow.getContentPane().add(previewLabel,
+                        BorderLayout.CENTER);
+                DesktopIconHoverPreviewWidget.this.previewWindow.setSize(
+                        (int) (previewImage.getWidth() / scaleFactor),
+                        (int) (previewImage.getHeight() / scaleFactor));
+                DesktopIconHoverPreviewWidget.this.syncPreviewWindow(true);
+                DesktopIconHoverPreviewWidget.this.previewWindow.setVisible(true);
+            }
+        }
 
-		@Override
-		public void mouseExited(MouseEvent e) {
-			DesktopIconHoverPreviewWidget.this.isInDrag = false;
-			DesktopIconHoverPreviewWidget.this.previewWindow.dispose();
-		}
+        @Override
+        public void mouseExited(MouseEvent e) {
+            DesktopIconHoverPreviewWidget.this.isInDrag = false;
+            DesktopIconHoverPreviewWidget.this.previewWindow.dispose();
+        }
 
-		@Override
-		public void mousePressed(MouseEvent e) {
-			DesktopIconHoverPreviewWidget.this.previewWindow.dispose();
-		}
+        @Override
+        public void mousePressed(MouseEvent e) {
+            DesktopIconHoverPreviewWidget.this.previewWindow.dispose();
+        }
 
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			DesktopIconHoverPreviewWidget.this.isInDrag = false;
-			DesktopIconHoverPreviewWidget.this.syncPreviewWindow(true);
-			DesktopIconHoverPreviewWidget.this.previewWindow.setVisible(true);
-		}
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            DesktopIconHoverPreviewWidget.this.isInDrag = false;
+            DesktopIconHoverPreviewWidget.this.syncPreviewWindow(true);
+            DesktopIconHoverPreviewWidget.this.previewWindow.setVisible(true);
+        }
 
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			DesktopIconHoverPreviewWidget.this.isInDrag = true;
-			if (DesktopIconHoverPreviewWidget.this.previewWindow.isVisible()) {
-				DesktopIconHoverPreviewWidget.this.syncPreviewWindow(false);
-				DesktopIconHoverPreviewWidget.this.previewWindow.dispose();
-			}
-		}
-	}
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            DesktopIconHoverPreviewWidget.this.isInDrag = true;
+            if (DesktopIconHoverPreviewWidget.this.previewWindow.isVisible()) {
+                DesktopIconHoverPreviewWidget.this.syncPreviewWindow(false);
+                DesktopIconHoverPreviewWidget.this.previewWindow.dispose();
+            }
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.lafwidget.LafWidgetAdapter#installComponents()
-	 */
-	@Override
-	public void installComponents() {
-		this.previewWindow = new JWindow();
-		this.previewWindow.getContentPane().setLayout(new BorderLayout());
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.lafwidget.LafWidgetAdapter#installComponents()
+     */
+    @Override
+    public void installComponents() {
+        this.previewWindow = new JWindow();
+        this.previewWindow.getContentPane().setLayout(new BorderLayout());
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.lafwidget.LafWidgetAdapter#installListeners()
-	 */
-	@Override
-	public void installListeners() {
-		this.internalFramePropertyListener = (PropertyChangeEvent evt) -> {
-			if ("ancestor".equals(evt.getPropertyName())) {
-				updateSnapshot(jcomp.getInternalFrame());
-			}
-		};
-		jcomp.getInternalFrame().addPropertyChangeListener(this.internalFramePropertyListener);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.lafwidget.LafWidgetAdapter#installListeners()
+     */
+    @Override
+    public void installListeners() {
+        this.internalFramePropertyListener = (PropertyChangeEvent evt) -> {
+            if ("ancestor".equals(evt.getPropertyName())) {
+                updateSnapshot(jcomp.getInternalFrame());
+            }
+        };
+        jcomp.getInternalFrame().addPropertyChangeListener(this.internalFramePropertyListener);
 
-		this.titleMouseHandler = new TitleMouseHandler();
+        this.titleMouseHandler = new TitleMouseHandler();
 
         SubstanceDesktopIconUI ui = (SubstanceDesktopIconUI) jcomp.getUI();
         this.compToHover = ui.getComponentForHover();
 
-		if (this.compToHover != null) {
-			this.compToHover.addMouseMotionListener(this.titleMouseHandler);
-			this.compToHover.addMouseListener(this.titleMouseHandler);
-		}
-	}
+        if (this.compToHover != null) {
+            this.compToHover.addMouseMotionListener(this.titleMouseHandler);
+            this.compToHover.addMouseListener(this.titleMouseHandler);
+        }
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.lafwidget.LafWidgetAdapter#uninstallListeners()
-	 */
-	@Override
-	public void uninstallListeners() {
-		jcomp.getInternalFrame().removePropertyChangeListener(this.internalFramePropertyListener);
-		this.internalFramePropertyListener = null;
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.lafwidget.LafWidgetAdapter#uninstallListeners()
+     */
+    @Override
+    public void uninstallListeners() {
+        jcomp.getInternalFrame().removePropertyChangeListener(this.internalFramePropertyListener);
+        this.internalFramePropertyListener = null;
 
-		if (this.compToHover != null) {
-			this.compToHover.removeMouseMotionListener(this.titleMouseHandler);
-			this.compToHover.removeMouseListener(this.titleMouseHandler);
-		}
-		this.titleMouseHandler = null;
-	}
+        if (this.compToHover != null) {
+            this.compToHover.removeMouseMotionListener(this.titleMouseHandler);
+            this.compToHover.removeMouseListener(this.titleMouseHandler);
+        }
+        this.titleMouseHandler = null;
+    }
 
-	/**
-	 * Synchronizes the preview window.
-	 * 
-	 * @param toShow
-	 *            Indication whether the preview window is shown.
-	 */
-	private void syncPreviewWindow(boolean toShow) {
-		if (toShow) {
-			int x = jcomp.getLocationOnScreen().x;
-			int y = jcomp.getLocationOnScreen().y;
+    /**
+     * Synchronizes the preview window.
+     * 
+     * @param toShow
+     *            Indication whether the preview window is shown.
+     */
+    private void syncPreviewWindow(boolean toShow) {
+        if (toShow) {
+            int x = jcomp.getLocationOnScreen().x;
+            int y = jcomp.getLocationOnScreen().y;
 
-			this.previewWindow.setLocation(x, y - this.previewWindow.getHeight());
+            this.previewWindow.setLocation(x, y - this.previewWindow.getHeight());
 
-		}
-	}
+        }
+    }
 
-	/**
-	 * Updates the snapshot of the specified internal frame.
-	 * 
-	 * @param frame
-	 *            Internal frame.
-	 */
-	private void updateSnapshot(JInternalFrame frame) {
-		if (!frame.isShowing())
-			return;
-		// Draw the current state of the internal frame to a
-		// temp image (w/o border and decorations). It would be nice
-		// to use Robot, but this frame may be partially obscured,
-		// so we take our chances that the frame will be properly
-		// drawn by the user code.
-		int frameWidth = frame.getWidth();
-		int frameHeight = frame.getHeight();
+    /**
+     * Updates the snapshot of the specified internal frame.
+     * 
+     * @param frame
+     *            Internal frame.
+     */
+    private void updateSnapshot(JInternalFrame frame) {
+        if (!frame.isShowing())
+            return;
+        // Draw the current state of the internal frame to a
+        // temp image (w/o border and decorations). It would be nice
+        // to use Robot, but this frame may be partially obscured,
+        // so we take our chances that the frame will be properly
+        // drawn by the user code.
+        int frameWidth = frame.getWidth();
+        int frameHeight = frame.getHeight();
 
-		int dx = 0;
-		int dy = 0;
-		// Now we need to remove the border and the title pane :)
-		Border internalFrameBorder = UIManager.getBorder("InternalFrame.border");
-		Insets borderInsets = internalFrameBorder.getBorderInsets(frame);
-		dx += borderInsets.left;
-		dy += borderInsets.top;
-		frameWidth -= (borderInsets.left + borderInsets.right);
-		frameHeight -= (borderInsets.top + borderInsets.bottom);
+        int dx = 0;
+        int dy = 0;
+        // Now we need to remove the border and the title pane :)
+        Border internalFrameBorder = UIManager.getBorder("InternalFrame.border");
+        Insets borderInsets = internalFrameBorder.getBorderInsets(frame);
+        dx += borderInsets.left;
+        dy += borderInsets.top;
+        frameWidth -= (borderInsets.left + borderInsets.right);
+        frameHeight -= (borderInsets.top + borderInsets.bottom);
 
-		BasicInternalFrameUI frameUI = (BasicInternalFrameUI) frame.getUI();
-		JComponent frameTitlePane = frameUI.getNorthPane();
+        BasicInternalFrameUI frameUI = (BasicInternalFrameUI) frame.getUI();
+        JComponent frameTitlePane = frameUI.getNorthPane();
 
-		if (frameTitlePane != null) {
-			dy += frameTitlePane.getHeight();
-			frameHeight -= frameTitlePane.getHeight();
-		}
+        if (frameTitlePane != null) {
+            dy += frameTitlePane.getHeight();
+            frameHeight -= frameTitlePane.getHeight();
+        }
 
-		// fix for defect 112 - checking frame height and width
-		if ((frameWidth > 0) && (frameHeight > 0)) {
-			// draw frame (note the canvas translation)
-			BufferedImage tempCanvas = new BufferedImage(frameWidth, frameHeight, BufferedImage.TYPE_INT_ARGB);
-			Graphics tempCanvasGraphics = tempCanvas.getGraphics();
-			tempCanvasGraphics.translate(-dx, -dy);
-			Map<Component, Boolean> dbSnapshot = new HashMap<Component, Boolean>();
-			WidgetUtilities.makePreviewable(frame, dbSnapshot);
-			frame.paint(tempCanvasGraphics);
-			WidgetUtilities.restorePreviewable(frame, dbSnapshot);
+        // fix for defect 112 - checking frame height and width
+        if ((frameWidth > 0) && (frameHeight > 0)) {
+            // draw frame (note the canvas translation)
+            BufferedImage tempCanvas = new BufferedImage(frameWidth, frameHeight,
+                    BufferedImage.TYPE_INT_ARGB);
+            Graphics tempCanvasGraphics = tempCanvas.getGraphics();
+            tempCanvasGraphics.translate(-dx, -dy);
+            Map<Component, Boolean> dbSnapshot = new HashMap<Component, Boolean>();
+            WidgetUtilities.makePreviewable(frame, dbSnapshot);
+            frame.paint(tempCanvasGraphics);
+            WidgetUtilities.restorePreviewable(frame, dbSnapshot);
 
-			int maxWidth = UIManager.getInt("DesktopIcon.width");
-			int maxHeight = maxWidth;
+            int maxWidth = UIManager.getInt("DesktopIcon.width");
+            int maxHeight = maxWidth;
 
-			// check if need to scale down
-			double coef = Math.min((double) maxWidth / (double) frameWidth, 
-					(double) maxHeight / (double) frameHeight);
-			if (coef < 1.0) {
-				int sdWidth = (int) (coef * frameWidth);
-				BufferedImage scaledDown = WidgetUtilities.createThumbnail(tempCanvas, sdWidth);
-				snapshot = scaledDown;
-			} else {
-				snapshot = tempCanvas;
-			}
-		}
-	}
+            // check if need to scale down
+            double coef = Math.min((double) maxWidth / (double) frameWidth,
+                    (double) maxHeight / (double) frameHeight);
+            if (coef < 1.0) {
+                int sdWidth = (int) (coef * frameWidth);
+                BufferedImage scaledDown = WidgetUtilities.createThumbnail(tempCanvas, sdWidth);
+                snapshot = scaledDown;
+            } else {
+                snapshot = tempCanvas;
+            }
+        }
+    }
 
-	/**
-	 * Returns the snapshot of the specified internal frame.
-	 * 
-	 * @param frame
-	 *            Internal frame.
-	 * @return The snapshot of the specified internal frame.
-	 */
-	public synchronized BufferedImage getSnapshot(JInternalFrame frame) {
-		return this.snapshot;
-	}
+    /**
+     * Returns the snapshot of the specified internal frame.
+     * 
+     * @param frame
+     *            Internal frame.
+     * @return The snapshot of the specified internal frame.
+     */
+    public synchronized BufferedImage getSnapshot(JInternalFrame frame) {
+        return this.snapshot;
+    }
 }

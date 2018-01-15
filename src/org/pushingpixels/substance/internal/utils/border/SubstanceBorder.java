@@ -197,9 +197,9 @@ public class SubstanceBorder implements Border, UIResource {
 				g2d.dispose();
 				smallImageCache.put(hashKey, result);
 			}
-			int scaleFactor = UIUtil.getScaleFactor();
-			graphics.drawImage(result, x, y, result.getWidth() / scaleFactor,
-					result.getHeight() / scaleFactor, null);
+			double scaleFactor = UIUtil.getScaleFactor();
+			graphics.drawImage(result, x, y, (int) (result.getWidth() / scaleFactor),
+			        (int) (result.getHeight() / scaleFactor), null);
 		} else {
 			// for borders larger than 100000 pixels, use simple
 			// painting

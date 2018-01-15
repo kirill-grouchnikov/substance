@@ -116,9 +116,9 @@ public class SubstanceTextUtilities {
         blurred = convolve.filter(blurred, null);
 
         graphics.setComposite(WidgetUtilities.getAlphaComposite(c, luminFactor, g));
-        int scaleFactor = UIUtil.getScaleFactor();
-        graphics.drawImage(blurred, 0, 0, blurred.getWidth() / scaleFactor,
-                blurred.getHeight() / scaleFactor, null);
+        double scaleFactor = UIUtil.getScaleFactor();
+        graphics.drawImage(blurred, 0, 0, (int) (blurred.getWidth() / scaleFactor),
+                (int) (blurred.getHeight() / scaleFactor), null);
         graphics.setComposite(WidgetUtilities.getAlphaComposite(c, g));
 
         FontMetrics fm = graphics.getFontMetrics();

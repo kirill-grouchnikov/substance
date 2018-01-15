@@ -644,7 +644,7 @@ public final class SubstanceSlices {
         public abstract boolean isDefaultButtonLeading();
     }
 
-    public enum Gravity {
+    public enum HorizontalGravity {
         /** Platform-specific content gravity. */
         PLATFORM,
 
@@ -662,15 +662,26 @@ public final class SubstanceSlices {
          * LTR component orientation and left under RTL component orientation.
          */
         TRAILING,
-        
+
         /** Swing default content gravity. */
         SWING_DEFAULT
     }
 
-    public enum TitleIconGravity {
+    public enum VerticalGravity {
+        /** Align content to the top edge of the parent container. */
+        TOP,
+
+        /** Center content horizontally in the parent container. */
+        CENTERED,
+
+        /** Align content to the bottom edge of the parent container. */
+        BOTTOM
+    }
+
+    public enum TitleIconHorizontalGravity {
         /** Platform-specific icon gravity. */
         PLATFORM,
-        
+
         /** Do not show icon. */
         NONE,
 
@@ -682,7 +693,7 @@ public final class SubstanceSlices {
 
         /** Align icon on the side of the title pane opposite to that of the control buttons. */
         OPPOSITE_CONTROL_BUTTONS,
-        
+
         /** Swing default icon gravity. */
         SWING_DEFAULT
     }

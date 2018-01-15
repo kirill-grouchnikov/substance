@@ -94,7 +94,7 @@ public class WidgetUtilities {
         int width = image.getWidth();
         BufferedImage thumb = image;
 
-        int scaleFactor = UIUtil.getScaleFactor();
+        double scaleFactor = UIUtil.getScaleFactor();
         do {
             width /= 2;
             if (width < requestedThumbWidth) {
@@ -105,8 +105,8 @@ public class WidgetUtilities {
             Graphics2D g2 = temp.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                     RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g2.drawImage(thumb, 0, 0, temp.getWidth() / scaleFactor, temp.getHeight() / scaleFactor,
-                    null);
+            g2.drawImage(thumb, 0, 0, (int) (temp.getWidth() / scaleFactor),
+                    (int) (temp.getHeight() / scaleFactor), null);
             g2.dispose();
 
             thumb = temp;

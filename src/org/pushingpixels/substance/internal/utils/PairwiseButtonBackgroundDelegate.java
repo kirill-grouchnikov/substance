@@ -132,7 +132,7 @@ public class PairwiseButtonBackgroundDelegate {
 		Map<ComponentState, StateTransitionTracker.StateContributionInfo> activeStates = 
 				modelStateInfo.getStateContributionMap();
 
-		int scaleFactor = UIUtil.getScaleFactor();
+		double scaleFactor = UIUtil.getScaleFactor();
 		if (currState.isDisabled() || (activeStates.size() == 1)) {
 			fullOpacity = baseLayer;
 		} else {
@@ -141,8 +141,8 @@ public class PairwiseButtonBackgroundDelegate {
 			Graphics2D g2fullOpacity = fullOpacity.createGraphics();
 
 			// draw the base layer
-			g2fullOpacity.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor,
-					baseLayer.getHeight() / scaleFactor, null);
+			g2fullOpacity.drawImage(baseLayer, 0, 0, (int) (baseLayer.getWidth() / scaleFactor),
+			        (int) (baseLayer.getHeight() / scaleFactor), null);
 
 			for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : 
 					activeStates.entrySet()) {
@@ -164,8 +164,8 @@ public class PairwiseButtonBackgroundDelegate {
 						borderScheme, toIgnoreOpenSides, needsRotation);
 
 				g2fullOpacity.setComposite(AlphaComposite.SrcOver.derive(contribution));
-				g2fullOpacity.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor,
-						layer.getHeight() / scaleFactor, null);
+				g2fullOpacity.drawImage(layer, 0, 0, (int) (layer.getWidth() / scaleFactor),
+				        (int) (layer.getHeight() / scaleFactor), null);
 			}
 
 			g2fullOpacity.dispose();
@@ -198,8 +198,8 @@ public class PairwiseButtonBackgroundDelegate {
 		if (extraAlpha > 0.0f) {
 			Graphics2D graphics = (Graphics2D) g.create();
 			graphics.setComposite(WidgetUtilities.getAlphaComposite(button, extraAlpha, g));
-			graphics.drawImage(fullOpacity, 0, 0, fullOpacity.getWidth() / scaleFactor,
-					fullOpacity.getHeight() / scaleFactor, null);
+			graphics.drawImage(fullOpacity, 0, 0, (int) (fullOpacity.getWidth() / scaleFactor),
+			        (int) (fullOpacity.getHeight() / scaleFactor), null);
 			graphics.dispose();
 		}
 	}
@@ -294,7 +294,7 @@ public class PairwiseButtonBackgroundDelegate {
 				AffineTransform at = AffineTransform.getTranslateInstance(0, translateY);
 				at.rotate(-Math.PI / 2);
 
-				int scaleFactor = UIUtil.getScaleFactor();
+				double scaleFactor = UIUtil.getScaleFactor();
 				finalGraphics.scale(1, 1);
 				finalGraphics.setTransform(at);
 				finalGraphics.scale(scaleFactor, scaleFactor);

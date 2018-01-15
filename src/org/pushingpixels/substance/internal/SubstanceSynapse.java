@@ -227,7 +227,32 @@ public class SubstanceSynapse {
     public final static String ROOT_PANE_CONTENTS_EXTENDS_INTO_TITLE_PANE = "substancelaf.internal.rootPaneContentExtendsIntoTitlePane";
 
     /**
-     * Client property name for specifying that the preferred height of the title pane.
+     * Client property name for specifying the preferred height of the title pane.
      */
     public final static String ROOT_PANE_PREFERRED_TITLE_PANE_HEIGHT = "substancelaf.internal.rootPanePreferredTitlePaneHeight";
+    
+    /**
+     * Client property name for specifying the horizontal gravity of the button bar content. 
+     */
+    public final static String BUTTON_BAR_GRAVITY = "substancelaf.internal.buttonBarGravity";
+
+    /**
+     * Client property name for specifying the horizontal gravity of the title pane text.
+     */
+    public final static String TITLE_TEXT_HORIZONTAL_GRAVITY = "substancelaf.internal.titleTextHorizontalGravity";
+
+    /**
+     * Client property name for specifying the horizontal gravity of the title pane control button group.
+     */
+    public final static String TITLE_CONTROL_BUTTON_GROUP_HORIZONTAL_GRAVITY = "substancelaf.internal.titleControlButtonGroupHorizontalGravity";
+
+    /**
+     * Client property name for specifying the horizontal gravity of the title pane control button group.
+     */
+    public final static String TITLE_CONTROL_BUTTON_GROUP_VERTICAL_GRAVITY = "substancelaf.internal.titleControlButtonGroupVerticalGravity";
+
+    /**
+     * Client property name for specifying the horizontal gravity of the title pane icon.
+     */
+    public final static String TITLE_ICON_HORIZONTAL_GRAVITY = "substancelaf.internal.titleIconHorizontalGravity";
 }

@@ -34,6 +34,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Window;
+import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -94,12 +95,14 @@ import org.pushingpixels.substance.internal.AnimationConfigurationManager;
 import org.pushingpixels.substance.internal.SubstancePluginRepository;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.fonts.FontPolicies;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
+import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceWidgetManager;
 import org.pushingpixels.substance.internal.utils.TabCloseListenerManager;
 
@@ -161,13 +164,7 @@ public class SubstanceCortex {
 
         private static SubstanceSlices.ButtonOrder buttonBarButtonOrder = SubstanceSlices.ButtonOrder.PLATFORM;
 
-        private static SubstanceSlices.Gravity buttonBarGravity = SubstanceSlices.Gravity.PLATFORM;
-
-        private static SubstanceSlices.Gravity titleTextGravity = SubstanceSlices.Gravity.SWING_DEFAULT;
-
-        private static SubstanceSlices.Gravity titleControlButtonGroupGravity = SubstanceSlices.Gravity.SWING_DEFAULT;
-
-        private static SubstanceSlices.TitleIconGravity titleIconGravity = SubstanceSlices.TitleIconGravity.SWING_DEFAULT;
+        private static SubstanceSlices.HorizontalGravity buttonBarGravity = SubstanceSlices.HorizontalGravity.PLATFORM;
 
         /**
          * Sets the specified skin. If the current look-and-feel is not Substance, this method will
@@ -917,23 +914,23 @@ public class SubstanceCortex {
          * 
          * @return The currently set button bar gravity for all containers that display grouped
          *         buttons.
-         * @see #setButtonBarGravity(org.pushingpixels.substance.api.SubstanceSlices.Gravity)
+         * @see #setButtonBarGravity(org.pushingpixels.substance.api.SubstanceSlices.HorizontalGravity)
          */
-        public static SubstanceSlices.Gravity getButtonBarGravity() {
+        public static SubstanceSlices.HorizontalGravity getButtonBarGravity() {
             return buttonBarGravity;
         }
 
         /**
          * Sets the button bar gravity for all containers that display grouped buttons, such as
          * <code>JOptionPane</code>s, for example. The default gravity is
-         * {@link SubstanceSlices.Gravity#PLATFORM}.
+         * {@link SubstanceSlices.HorizontalGravity#PLATFORM}.
          * 
          * @param buttonBarGravity
          *            The new button alignment for all containers that display grouped buttons. The
          *            value cannot be <code>null</code>.
          * @see #getButtonBarGravity()
          */
-        public static void setButtonBarGravity(SubstanceSlices.Gravity buttonBarGravity) {
+        public static void setButtonBarGravity(SubstanceSlices.HorizontalGravity buttonBarGravity) {
             if (buttonBarGravity == null) {
                 throw new IllegalArgumentException(
                         "Cannot pass null. Did you mean PLATFORM or SWING_DEFAULT?");
@@ -949,48 +946,58 @@ public class SubstanceCortex {
         /**
          * Configures title pane content gravity for all decorated application windows. This will
          * only apply if you are using {@link JFrame#setDefaultLookAndFeelDecorated(boolean)} and /
-         * pr {@link JDialog#setDefaultLookAndFeelDecorated(boolean)} APIs with <code>true</code>.
-         * The default gravities are {@link SubstanceSlices.Gravity#SWING_DEFAULT} and
-         * {@link SubstanceSlices.TitleIconGravity#SWING_DEFAULT}.
+         * or {@link JDialog#setDefaultLookAndFeelDecorated(boolean)} APIs with <code>true</code>.
+         * The default gravities are {@link SubstanceSlices.HorizontalGravity#SWING_DEFAULT} and
+         * {@link SubstanceSlices.TitleIconHorizontalGravity#SWING_DEFAULT}. Note that specific
+         * windows can have the horizontal gravity of control button group set to a different value
+         * with
+         * {@link WindowScope#extendContentIntoTitlePane(Window, org.pushingpixels.substance.api.SubstanceSlices.HorizontalGravity, org.pushingpixels.substance.api.SubstanceSlices.VerticalGravity)}
+         * API.
          * 
-         * @param titleTextGravity
-         *            Gravity for the title text. The value cannot be <code>null</code>.
-         * @param titleControlButtonGroupGravity
-         *            Gravity for the control button group. The value cannot be <code>null</code> or
-         *            {@link SubstanceSlices.Gravity#CENTERED}.
-         * @param titleIconGravity
-         *            Gravity for the icon. The value cannot be <code>null</code>.
+         * @param titleTextHorizontalGravity
+         *            Horizontal gravity for the title text. The value cannot be <code>null</code>.
+         * @param titleControlButtonGroupHorizontalGravity
+         *            Horizontal gravity for the control button group. The value cannot be
+         *            <code>null</code> or {@link SubstanceSlices.HorizontalGravity#CENTERED}.
+         * @param titleIconHorizontalGravity
+         *            Horizontal gravity for the icon. The value cannot be <code>null</code>.
          * 
-         * @see #getTitleTextGravity()
-         * @see #getTitleControlButtonGroupGravity()
-         * @see #getTitleIconGravity()
+         * @see WindowScope#extendContentIntoTitlePane(Window,
+         *      org.pushingpixels.substance.api.SubstanceSlices.HorizontalGravity,
+         *      org.pushingpixels.substance.api.SubstanceSlices.VerticalGravity)
+         * @see #getTitleTextHorizontalGravity()
+         * @see WindowScope#getTitleControlButtonGroupHorizontalGravity(Window)
+         * @see #getTitleIconHorizontalGravity()
          * @see JFrame#setDefaultLookAndFeelDecorated(boolean)
          * @see JDialog#setDefaultLookAndFeelDecorated(boolean)
          */
-        public static void configureTitleContentGravity(SubstanceSlices.Gravity titleTextGravity,
-                SubstanceSlices.Gravity titleControlButtonGroupGravity,
-                SubstanceSlices.TitleIconGravity titleIconGravity) {
-            if (titleTextGravity == null) {
+        public static void configureTitleContentGravity(
+                SubstanceSlices.HorizontalGravity titleTextHorizontalGravity,
+                SubstanceSlices.HorizontalGravity titleControlButtonGroupHorizontalGravity,
+                SubstanceSlices.TitleIconHorizontalGravity titleIconHorizontalGravity) {
+            if (titleTextHorizontalGravity == null) {
                 throw new IllegalArgumentException(
                         "Cannot pass null for text gravity. Did you mean PLATFORM or SWING_DEFAULT?");
             }
-            if (titleControlButtonGroupGravity == null) {
+            if (titleControlButtonGroupHorizontalGravity == null) {
                 throw new IllegalArgumentException(
-                        "Cannot pass null for control button group gravity. Did you mean PLATFORM or SWING_DEFAULT?");
+                        "Cannot pass null for control button group horizontal gravity. Did you mean PLATFORM or SWING_DEFAULT?");
             }
-            if (titleIconGravity == null) {
+            if (titleIconHorizontalGravity == null) {
                 throw new IllegalArgumentException(
-                        "Cannot pass null for icon gravity. Did you mean PLATFORM or SWING_DEFAULT?");
+                        "Cannot pass null for icon horizontal gravity. Did you mean PLATFORM or SWING_DEFAULT?");
+            }
+            if (titleControlButtonGroupHorizontalGravity == SubstanceSlices.HorizontalGravity.CENTERED) {
+                throw new IllegalArgumentException(
+                        "Cannot pass CENTERED for control button group horizontal gravity. Did you mean PLATFORM or SWING_DEFAULT?");
             }
 
-            if (titleControlButtonGroupGravity == SubstanceSlices.Gravity.CENTERED) {
-                throw new IllegalArgumentException(
-                        "Cannot pass CENTERED for control button group gravity. Did you mean PLATFORM or SWING_DEFAULT?");
-            }
-
-            GlobalScope.titleTextGravity = titleTextGravity;
-            GlobalScope.titleControlButtonGroupGravity = titleControlButtonGroupGravity;
-            GlobalScope.titleIconGravity = titleIconGravity;
+            UIManager.put(SubstanceSynapse.TITLE_TEXT_HORIZONTAL_GRAVITY,
+                    titleTextHorizontalGravity);
+            UIManager.put(SubstanceSynapse.TITLE_CONTROL_BUTTON_GROUP_HORIZONTAL_GRAVITY,
+                    titleControlButtonGroupHorizontalGravity);
+            UIManager.put(SubstanceSynapse.TITLE_ICON_HORIZONTAL_GRAVITY,
+                    titleIconHorizontalGravity);
             SwingUtilities.invokeLater(() -> {
                 for (Window window : Window.getWindows()) {
                     SwingUtilities.updateComponentTreeUI(window);
@@ -1002,45 +1009,31 @@ public class SubstanceCortex {
          * Returns the gravity for the title text in title panes of all decorated application
          * windows.
          * 
-         * @return Gravity for the title text in title panes of all decorated application windows.
-         * @see #configureTitleContentGravity(org.pushingpixels.substance.api.SubstanceSlices.Gravity,
-         *      org.pushingpixels.substance.api.SubstanceSlices.Gravity,
-         *      org.pushingpixels.substance.api.SubstanceSlices.TitleIconGravity)
-         * @see #getTitleControlButtonGroupGravity()
-         * @see #getTitleIconGravity()
-         */
-        public static SubstanceSlices.Gravity getTitleTextGravity() {
-            return GlobalScope.titleTextGravity;
-        }
-
-        /**
-         * Returns the gravity for the control button group in title panes of all decorated
-         * application windows.
-         * 
-         * @return Gravity for the control button group in title panes of all decorated application
+         * @return HorizontalGravity for the title text in title panes of all decorated application
          *         windows.
-         * @see #configureTitleContentGravity(org.pushingpixels.substance.api.SubstanceSlices.Gravity,
-         *      org.pushingpixels.substance.api.SubstanceSlices.Gravity,
-         *      org.pushingpixels.substance.api.SubstanceSlices.TitleIconGravity)
-         * @see #getTitleTextGravity()
-         * @see #getTitleIconGravity()
+         * @see #configureTitleContentGravity(org.pushingpixels.substance.api.SubstanceSlices.HorizontalGravity,
+         *      org.pushingpixels.substance.api.SubstanceSlices.HorizontalGravity,
+         *      org.pushingpixels.substance.api.SubstanceSlices.TitleIconHorizontalGravity)
+         * @see WindowScope#getTitleControlButtonGroupHorizontalGravity(Window)
+         * @see #getTitleIconHorizontalGravity()
          */
-        public static SubstanceSlices.Gravity getTitleControlButtonGroupGravity() {
-            return GlobalScope.titleControlButtonGroupGravity;
+        public static SubstanceSlices.HorizontalGravity getTitleTextHorizontalGravity() {
+            return SubstanceTitlePaneUtilities.getTitleTextHorizontalGravity();
         }
 
         /**
          * Returns the gravity for the icon in title panes of all decorated application windows.
          * 
-         * @return Gravity for the icon in title panes of all decorated application windows.
-         * @see #configureTitleContentGravity(org.pushingpixels.substance.api.SubstanceSlices.Gravity,
-         *      org.pushingpixels.substance.api.SubstanceSlices.Gravity,
-         *      org.pushingpixels.substance.api.SubstanceSlices.TitleIconGravity)
-         * @see #getTitleControlButtonGroupGravity()
-         * @see #getTitleIconGravity()
+         * @return Horizontal gravity for the icon in title panes of all decorated application
+         *         windows.
+         * @see #configureTitleContentGravity(org.pushingpixels.substance.api.SubstanceSlices.HorizontalGravity,
+         *      org.pushingpixels.substance.api.SubstanceSlices.HorizontalGravity,
+         *      org.pushingpixels.substance.api.SubstanceSlices.TitleIconHorizontalGravity)
+         * @see WindowScope#getTitleControlButtonGroupHorizontalGravity(Window)
+         * @see #getTitleIconHorizontalGravity()
          */
-        public static SubstanceSlices.TitleIconGravity getTitleIconGravity() {
-            return GlobalScope.titleIconGravity;
+        public static SubstanceSlices.TitleIconHorizontalGravity getTitleIconHorizontalGravity() {
+            return SubstanceTitlePaneUtilities.getTitleIconHorizontalGravity();
         }
 
         /**
@@ -1484,6 +1477,14 @@ public class SubstanceCortex {
         public static void setComboBoxPopupFlyoutOrientation(int comboPopupFlyoutOrientation) {
             UIManager.put(SubstanceSynapse.COMBO_BOX_POPUP_FLYOUT_ORIENTATION,
                     Integer.valueOf(comboPopupFlyoutOrientation));
+        }
+
+        public static BufferedImage getBlankImage(int width, int height) {
+            return SubstanceCoreUtilities.getBlankImage(width, height);
+        }
+
+        public static double getScaleFactor() {
+            return UIUtil.getScaleFactor();
         }
     }
 
@@ -2443,10 +2444,10 @@ public class SubstanceCortex {
 
         /**
          * <p>
-         * Specifies that contents of a root pane have been modified and not saved. The
-         * <b>close</b> button of the title pane of the matching frame / dialog will be animated (in
-         * case that the frame / dialog have decorated title pane). In case the root pane belongs to
-         * a {@link JInternalFrame} and that frame is iconified (to a
+         * Specifies that contents of a root pane have been modified and not saved. The <b>close</b>
+         * button of the title pane of the matching frame / dialog will be animated (in case that
+         * the frame / dialog have decorated title pane). In case the root pane belongs to a
+         * {@link JInternalFrame} and that frame is iconified (to a
          * {@link JInternalFrame.JDesktopIcon}), the close button of the its desktop icon is
          * animated as well.
          * </p>
@@ -2511,8 +2512,7 @@ public class SubstanceCortex {
          * 
          * <ul>
          * <li>{@link #getTitlePaneControlInsets(Window)} to query the insets that should be
-         * reserved for the main control buttons - close / maximize / minimize. {@link Insets#left}
-         * and {@link Insets#right} are the two relevant fields.</li>
+         * reserved for the main control buttons - close / maximize / minimize.
          * <li>{@link #setPreferredTitlePaneHeight(Window, int)} to increase the preferred height of
          * the title pane area in case the content you extend into that area is taller than the main
          * control buttons.</li>
@@ -2522,18 +2522,42 @@ public class SubstanceCortex {
          * 
          * @param window
          *            Window. May not be <code>null</code>.
+         * @param controlButtonGroupHorizontalGravity
+         *            Horizontal gravity for the title control buttons. Must be either
+         *            {@link SubstanceSlices.HorizontalGravity#LEADING} or
+         *            {@link SubstanceSlices.HorizontalGravity#TRAILING}.
+         * @param controlButtonGroupVerticalGravity
+         *            Vertical gravity for the title control buttons. May not be <code>null</code>.
          * @see #getTitlePaneControlInsets(Window)
          * @see #setPreferredTitlePaneHeight(Window, int)
+         * @see #getTitleControlButtonGroupHorizontalGravity(Window)
          * @see #createTitlePaneControlButton(Window)
          */
-        public static void extendContentIntoTitlePane(Window window) {
+        public static void extendContentIntoTitlePane(Window window,
+                SubstanceSlices.HorizontalGravity controlButtonGroupHorizontalGravity,
+                SubstanceSlices.VerticalGravity controlButtonGroupVerticalGravity) {
             if (window == null) {
                 throw new IllegalArgumentException("Window scope APIs do not accept null windows");
+            }
+            if ((controlButtonGroupHorizontalGravity != SubstanceSlices.HorizontalGravity.LEADING)
+                    && (controlButtonGroupHorizontalGravity != SubstanceSlices.HorizontalGravity.TRAILING)) {
+                throw new IllegalArgumentException(
+                        "Can only pass LEADING or TRAILING for control button group horizontal gravity.");
+            }
+            if (controlButtonGroupVerticalGravity == null) {
+                throw new IllegalArgumentException(
+                        "Cannot pass null for control button group vertical gravity. Did you mean CENTERED?");
             }
             JRootPane rootPane = SwingUtilities.getRootPane(window);
             if (rootPane != null) {
                 rootPane.putClientProperty(
                         SubstanceSynapse.ROOT_PANE_CONTENTS_EXTENDS_INTO_TITLE_PANE, Boolean.TRUE);
+                rootPane.putClientProperty(
+                        SubstanceSynapse.TITLE_CONTROL_BUTTON_GROUP_HORIZONTAL_GRAVITY,
+                        controlButtonGroupHorizontalGravity);
+                rootPane.putClientProperty(
+                        SubstanceSynapse.TITLE_CONTROL_BUTTON_GROUP_VERTICAL_GRAVITY,
+                        controlButtonGroupVerticalGravity);
                 SubstanceRootPaneUI ui = (SubstanceRootPaneUI) rootPane.getUI();
                 ui.extendContentIntoTitlePane();
             }
@@ -2570,7 +2594,9 @@ public class SubstanceCortex {
          * Queries the insets that should be reserved for the main control buttons (close / maximize
          * / minimize) in application content that is extended into the title pane area with
          * {@link #extendContentIntoTitlePane(Window)} API. {@link Insets#left} and
-         * {@link Insets#right} are the two relevant fields.
+         * {@link Insets#right} give the horizontal insets of the control buttons.
+         * {@link Insets#top} and {@link Insets#right} give the vertical insets within the matching
+         * horizontal insets.
          * 
          * @param window
          *            Window. May not be <code>null</code>.
@@ -2620,6 +2646,30 @@ public class SubstanceCortex {
                 SubstanceRootPaneUI ui = (SubstanceRootPaneUI) rootPane.getUI();
                 ui.setPreferredTitlePaneHeight(preferredTitlePaneHeight);
             }
+        }
+
+        /**
+         * Returns the horizontal gravity for the control button group in the title pane of the
+         * specific window.
+         * 
+         * @return Horizontal gravity for the control button group in the title pane of the specific
+         *         window.
+         * @see GlobalScope#configureTitleContentGravity(org.pushingpixels.substance.api.SubstanceSlices.HorizontalGravity,
+         *      org.pushingpixels.substance.api.SubstanceSlices.HorizontalGravity,
+         *      org.pushingpixels.substance.api.SubstanceSlices.TitleIconHorizontalGravity)
+         * @see #extendContentIntoTitlePane(Window,
+         *      org.pushingpixels.substance.api.SubstanceSlices.HorizontalGravity,
+         *      org.pushingpixels.substance.api.SubstanceSlices.VerticalGravity)
+         * @see GlobalScope#getTitleTextHorizontalGravity()
+         * @see GlobalScope#getTitleIconHorizontalGravity()
+         */
+        public static SubstanceSlices.HorizontalGravity getTitleControlButtonGroupHorizontalGravity(
+                Window window) {
+            if (window == null) {
+                throw new IllegalArgumentException("Window scope APIs do not accept null windows");
+            }
+            return SubstanceTitlePaneUtilities.getTitleControlButtonGroupHorizontalGravity(
+                    SwingUtilities.getRootPane(window));
         }
     }
 }

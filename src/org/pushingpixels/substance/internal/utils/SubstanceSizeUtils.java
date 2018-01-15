@@ -227,7 +227,7 @@ public class SubstanceSizeUtils {
 	 * @return Stroke width of borders under the specified font size.
 	 */
 	public static float getBorderStrokeWidth() {
-		return UIUtil.isRetina() ? 0.5f : 1.0f;
+		return 1.0f / (float) UIUtil.getScaleFactor();
 	}
 
 	/**
@@ -450,7 +450,7 @@ public class SubstanceSizeUtils {
 	 * Returns the stroke width of focus rings.
 	 */
 	public static float getFocusStrokeWidth() {
-		return UIUtil.isRetina() ? 0.5f : 1.0f;
+        return 1.0f / (float) UIUtil.getScaleFactor();
 	}
 
 	/**

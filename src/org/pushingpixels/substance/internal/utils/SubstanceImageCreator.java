@@ -310,10 +310,11 @@ public final class SubstanceImageCreator {
                     scheme);
             BufferedImage bottom = getArrow(width, smallHeight, strokeWidth, SwingConstants.SOUTH,
                     scheme);
-            int factor = UIUtil.getScaleFactor();
-            graphics.drawImage(top, 0, 0, top.getWidth() / factor, top.getHeight() / factor, null);
-            graphics.drawImage(bottom, 0, (int) (height / 2.0), bottom.getWidth() / factor,
-                    bottom.getHeight() / factor, null);
+            double factor = UIUtil.getScaleFactor();
+            graphics.drawImage(top, 0, 0, (int) (top.getWidth() / factor),
+                    (int) (top.getHeight() / factor), null);
+            graphics.drawImage(bottom, 0, (int) (height / 2.0), (int) (bottom.getWidth() / factor),
+                    (int) (bottom.getHeight() / factor), null);
             return arrowImage;
         } else {
             float cushion = strokeWidth / 2.0f;
@@ -406,19 +407,19 @@ public final class SubstanceImageCreator {
         // graphics.setColor(new Color(255, 0, 0, 128));
         // graphics.fillRect(0, 0, downArrowImage.getWidth(), downArrowImage.getHeight());
 
-        int scaleFactor = UIUtil.getScaleFactor();
+        double scaleFactor = UIUtil.getScaleFactor();
         int arrowHeight = singleArrow.getHeight();
         int arrowWidth = singleArrow.getWidth();
         if (!toggle) {
-            graphics.drawImage(singleArrow, 0, 0, arrowWidth / scaleFactor,
-                    arrowHeight / scaleFactor, null);
-            graphics.drawImage(singleArrow, 0, (int) arrowGap, arrowWidth / scaleFactor,
-                    arrowHeight / scaleFactor, null);
+            graphics.drawImage(singleArrow, 0, 0, (int) (arrowWidth / scaleFactor),
+                    (int) (arrowHeight / scaleFactor), null);
+            graphics.drawImage(singleArrow, 0, (int) arrowGap, (int) (arrowWidth / scaleFactor),
+                    (int) (arrowHeight / scaleFactor), null);
         } else {
-            graphics.drawImage(singleArrow, 0, 0, arrowWidth / scaleFactor,
-                    arrowHeight / scaleFactor, null);
-            graphics.drawImage(singleArrow, (int) arrowGap, 0, arrowWidth / scaleFactor,
-                    arrowHeight / scaleFactor, null);
+            graphics.drawImage(singleArrow, 0, 0, (int) (arrowWidth / scaleFactor),
+                    (int) (arrowHeight / scaleFactor), null);
+            graphics.drawImage(singleArrow, (int) arrowGap, 0, (int) (arrowWidth / scaleFactor),
+                    (int) (arrowHeight / scaleFactor), null);
         }
 
         return new SubstanceIconUIResource(downArrowImage);
@@ -446,10 +447,11 @@ public final class SubstanceImageCreator {
             width = bi.getHeight();
             height = bi.getWidth();
         }
-        int factor = UIUtil.getScaleFactor();
-        BufferedImage biRot = SubstanceCoreUtilities.getBlankImage(width / factor, height / factor);
+        double factor = UIUtil.getScaleFactor();
+        BufferedImage biRot = SubstanceCoreUtilities.getBlankImage((int) (width / factor),
+                (int) (height / factor));
         AffineTransform at = null;
-        int factorForRotation = respectScaleFactorDuringRotation ? factor : 1;
+        double factorForRotation = respectScaleFactorDuringRotation ? factor : 1;
         switch (quadrantClockwise) {
             case 1:
                 at = AffineTransform.getTranslateInstance(width / factorForRotation, 0);
@@ -687,9 +689,10 @@ public final class SubstanceImageCreator {
 
             BufferedImage checkMark = SubstanceImageCreator.getCheckMark(dimension - yOffset / 2,
                     !componentState.isDisabled(), markColorScheme, checkMarkVisibility);
-            int factor = UIUtil.getScaleFactor();
+            double factor = UIUtil.getScaleFactor();
             graphics.drawImage(checkMark, 1 + 2 * xOffset / 3, (dimension < 14) ? 0 : -1,
-                    checkMark.getWidth() / factor, checkMark.getHeight() / factor, null);
+                    (int) (checkMark.getWidth() / factor), (int) (checkMark.getHeight() / factor),
+                    null);
         }
 
         return offBackground;
@@ -715,9 +718,9 @@ public final class SubstanceImageCreator {
 
         offsetX = offsetY = 0;
         BufferedImage echo = new ColorFilter(echoColor).filter(image, null);
-        int factor = UIUtil.getScaleFactor();
-        int tweakedWidth = width / factor;
-        int tweakedHeight = height / factor;
+        double factor = UIUtil.getScaleFactor();
+        int tweakedWidth = (int) (width / factor);
+        int tweakedHeight = (int) (height / factor);
         BufferedImage result = SubstanceCoreUtilities.getBlankImage(tweakedWidth, tweakedHeight);
         Graphics2D graphics = (Graphics2D) result.getGraphics().create();
         graphics.setComposite(getAlphaComposite(0.2f * echoAlpha * echoAlpha * echoAlpha));
@@ -1068,7 +1071,7 @@ public final class SubstanceImageCreator {
             int startY, int width, int height, SubstanceColorScheme colorScheme,
             BufferedImage stripeImage, int stripeOffset, float borderAlpha, boolean isVertical) {
         Graphics2D graphics = (Graphics2D) g.create(startX, startY, width, height);
-        int scaleFactor = UIUtil.getScaleFactor();
+        double scaleFactor = UIUtil.getScaleFactor();
         if (!isVertical) {
             LinearGradientPaint paint = new LinearGradientPaint(0, 0, 0, height,
                     new float[] { 0.0f, 0.2f, 0.5f, 0.8f, 1.0f },
@@ -1081,14 +1084,14 @@ public final class SubstanceImageCreator {
 
             if (stripeImage != null) {
                 int stripeSize = stripeImage.getHeight();
-                int stripeCount = scaleFactor * width / stripeSize;
-                stripeOffset = stripeOffset % (2 * stripeSize * scaleFactor);
+                int stripeCount = (int) (scaleFactor * width / stripeSize);
+                stripeOffset = (int) (stripeOffset % (2 * stripeSize * scaleFactor));
                 for (int stripe = -2; stripe <= stripeCount; stripe += 2) {
-                    int stripePos = stripe * stripeSize / scaleFactor + stripeOffset;
+                    int stripePos = (int) (stripe * stripeSize / scaleFactor + stripeOffset);
 
                     graphics.drawImage(stripeImage, stripePos, 0,
-                            stripeImage.getWidth() / scaleFactor,
-                            stripeImage.getHeight() / scaleFactor, null);
+                            (int) (stripeImage.getWidth() / scaleFactor),
+                            (int) (stripeImage.getHeight() / scaleFactor), null);
                 }
             }
         } else {
@@ -1103,14 +1106,14 @@ public final class SubstanceImageCreator {
 
             if (stripeImage != null) {
                 int stripeSize = stripeImage.getWidth();
-                int stripeCount = scaleFactor * height / stripeSize;
-                stripeOffset = stripeOffset % (2 * stripeSize * scaleFactor);
+                int stripeCount = (int) (scaleFactor * height / stripeSize);
+                stripeOffset = (int) (stripeOffset % (2 * stripeSize * scaleFactor));
                 for (int stripe = -2; stripe <= stripeCount; stripe += 2) {
-                    int stripePos = stripe * stripeSize / scaleFactor + stripeOffset;
+                    int stripePos = (int) (stripe * stripeSize / scaleFactor + stripeOffset);
 
                     graphics.drawImage(stripeImage, 0, stripePos,
-                            stripeImage.getWidth() / scaleFactor,
-                            stripeImage.getHeight() / scaleFactor, null);
+                            (int) (stripeImage.getWidth() / scaleFactor),
+                            (int) (stripeImage.getHeight() / scaleFactor), null);
                 }
             }
         }
@@ -1284,13 +1287,13 @@ public final class SubstanceImageCreator {
                 new Ellipse2D.Float(0, 0, bumpDotDiameter, bumpDotDiameter), null, colorScheme);
 
         graphics.setComposite(WidgetUtilities.getAlphaComposite(divider, 0.8f, g));
-        int scaleFactor = UIUtil.getScaleFactor();
+        double scaleFactor = UIUtil.getScaleFactor();
         for (int col = 0; col < bumpColumns; col++) {
             int cx = bumpColOffset + col * bumpCellSize;
             for (int row = 0; row < bumpRows; row++) {
                 int cy = bumpRowOffset + row * bumpCellSize + (bumpCellSize - bumpDotDiameter) / 2;
-                graphics.drawImage(singleDot, cx, cy, singleDot.getWidth() / scaleFactor,
-                        singleDot.getHeight() / scaleFactor, null);
+                graphics.drawImage(singleDot, cx, cy, (int) (singleDot.getWidth() / scaleFactor),
+                        (int) (singleDot.getHeight() / scaleFactor), null);
             }
         }
         graphics.dispose();
@@ -1591,13 +1594,13 @@ public final class SubstanceImageCreator {
         graphics.setColor(new Color(240, 240, 240));
         graphics.fillRect(0, 0, iw, ih);
 
-        int scaleFactor = UIUtil.getScaleFactor();
+        double scaleFactor = UIUtil.getScaleFactor();
         for (int i = 0; i < SubstanceImageCreator.crayonColors.length; i++) {
             Color crayonColor = new Color(0xff000000 | SubstanceImageCreator.crayonColors[i]);
             BufferedImage crayonImage = SubstanceImageCreator.getSingleCrayon(crayonColor, 22, 120);
             graphics.drawImage(crayonImage, SubstanceImageCreator.crayonX(i),
-                    SubstanceImageCreator.crayonY(i), crayonImage.getWidth() / scaleFactor,
-                    crayonImage.getHeight() / scaleFactor, null);
+                    SubstanceImageCreator.crayonY(i), (int) (crayonImage.getWidth() / scaleFactor),
+                    (int) (crayonImage.getHeight() / scaleFactor), null);
         }
 
         graphics.dispose();
@@ -1614,7 +1617,8 @@ public final class SubstanceImageCreator {
      *            Icon color scheme.
      * @return Icon representation of the specified integer value.
      */
-    public static SubstanceIconUIResource getHexaMarker(int value, SubstanceColorScheme colorScheme) {
+    public static SubstanceIconUIResource getHexaMarker(int value,
+            SubstanceColorScheme colorScheme) {
         BufferedImage result = SubstanceCoreUtilities.getBlankImage(9, 9);
 
         value %= 16;
@@ -1706,6 +1710,9 @@ public final class SubstanceImageCreator {
             SubstanceColorScheme colorScheme, float originalBrightnessFactor) {
         int w = original.getIconWidth();
         int h = original.getIconHeight();
+        if ((w == 0) || (h == 0)) {
+            return null;
+        }
         BufferedImage origImage = SubstanceCoreUtilities.getBlankImage(w, h);
         Graphics2D g2d = (Graphics2D) origImage.getGraphics().create();
         original.paintIcon(comp, origImage.getGraphics(), 0, 0);

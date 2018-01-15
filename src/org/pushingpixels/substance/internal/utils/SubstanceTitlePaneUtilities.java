@@ -33,9 +33,12 @@ import java.awt.Component;
 import java.awt.Rectangle;
 
 import javax.swing.JComponent;
+import javax.swing.JRootPane;
+import javax.swing.UIManager;
 
 import org.pushingpixels.substance.api.SubstanceCortex;
 import org.pushingpixels.substance.api.SubstanceSlices;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 /**
  * Various utility functions for title panes. This class is <b>for internal use only</b>.
@@ -64,9 +67,9 @@ public class SubstanceTitlePaneUtilities {
         WITH_TITLE
     }
 
-    public static ExtraComponentKind getTitlePaneControlButtonKind() {
-        SubstanceSlices.Gravity controlButtonGroupGravity = SubstanceCortex.GlobalScope
-                .getTitleControlButtonGroupGravity();
+    public static ExtraComponentKind getTitlePaneControlButtonKind(JRootPane rootPane) {
+        SubstanceSlices.HorizontalGravity controlButtonGroupGravity =
+                getTitleControlButtonGroupHorizontalGravity(rootPane);
         switch (controlButtonGroupGravity) {
             case LEADING:
                 return ExtraComponentKind.LEADING;
@@ -86,10 +89,58 @@ public class SubstanceTitlePaneUtilities {
         }
     }
 
-    public static boolean areTitlePaneControlButtonsOnRight(Component component) {
-        boolean isLtr = component.getComponentOrientation().isLeftToRight();
-        SubstanceSlices.Gravity controlButtonGroupGravity = SubstanceCortex.GlobalScope
-                .getTitleControlButtonGroupGravity();
+    public static SubstanceSlices.HorizontalGravity getTitleTextHorizontalGravity() {
+        Object globalProperty = UIManager.get(SubstanceSynapse.TITLE_TEXT_HORIZONTAL_GRAVITY);
+        if (globalProperty instanceof SubstanceSlices.HorizontalGravity) {
+            return (SubstanceSlices.HorizontalGravity) globalProperty;
+        }
+        return SubstanceSlices.HorizontalGravity.SWING_DEFAULT;
+    }
+
+    public static SubstanceSlices.TitleIconHorizontalGravity getTitleIconHorizontalGravity() {
+        Object globalProperty = UIManager.get(SubstanceSynapse.TITLE_ICON_HORIZONTAL_GRAVITY);
+        if (globalProperty instanceof SubstanceSlices.TitleIconHorizontalGravity) {
+            return (SubstanceSlices.TitleIconHorizontalGravity) globalProperty;
+        }
+        return SubstanceSlices.TitleIconHorizontalGravity.SWING_DEFAULT;
+    }
+
+    public static SubstanceSlices.HorizontalGravity getTitleControlButtonGroupHorizontalGravity(
+            JRootPane rootPane) {
+        Object rootPaneProperty = (rootPane == null) ? null
+                : rootPane.getClientProperty(
+                        SubstanceSynapse.TITLE_CONTROL_BUTTON_GROUP_HORIZONTAL_GRAVITY);
+        if (rootPaneProperty instanceof SubstanceSlices.HorizontalGravity) {
+            return (SubstanceSlices.HorizontalGravity) rootPaneProperty;
+        }
+        Object globalProperty = UIManager
+                .get(SubstanceSynapse.TITLE_CONTROL_BUTTON_GROUP_HORIZONTAL_GRAVITY);
+        if (globalProperty instanceof SubstanceSlices.HorizontalGravity) {
+            return (SubstanceSlices.HorizontalGravity) globalProperty;
+        }
+        return SubstanceSlices.HorizontalGravity.SWING_DEFAULT;
+    }
+
+    public static SubstanceSlices.VerticalGravity getTitleControlButtonGroupVerticalGravity(
+            JRootPane rootPane) {
+        Object rootPaneProperty = (rootPane == null) ? null
+                : rootPane.getClientProperty(
+                        SubstanceSynapse.TITLE_CONTROL_BUTTON_GROUP_VERTICAL_GRAVITY);
+        if (rootPaneProperty instanceof SubstanceSlices.VerticalGravity) {
+            return (SubstanceSlices.VerticalGravity) rootPaneProperty;
+        }
+        Object globalProperty = UIManager
+                .get(SubstanceSynapse.TITLE_CONTROL_BUTTON_GROUP_VERTICAL_GRAVITY);
+        if (globalProperty instanceof SubstanceSlices.HorizontalGravity) {
+            return (SubstanceSlices.VerticalGravity) globalProperty;
+        }
+        return SubstanceSlices.VerticalGravity.CENTERED;
+    }
+
+    public static boolean areTitlePaneControlButtonsOnRight(JRootPane rootPane) {
+        boolean isLtr = rootPane.getComponentOrientation().isLeftToRight();
+        SubstanceSlices.HorizontalGravity controlButtonGroupGravity = getTitleControlButtonGroupHorizontalGravity(
+                rootPane);
         switch (controlButtonGroupGravity) {
             case LEADING:
                 return isLtr ? false : true;
@@ -109,49 +160,49 @@ public class SubstanceTitlePaneUtilities {
         }
     }
 
-    public static SubstanceSlices.Gravity getTitlePaneTextGravity() {
-        SubstanceSlices.Gravity titleTextGravity = SubstanceCortex.GlobalScope
-                .getTitleTextGravity();
+    public static SubstanceSlices.HorizontalGravity getTitlePaneTextGravity() {
+        SubstanceSlices.HorizontalGravity titleTextGravity = SubstanceCortex.GlobalScope
+                .getTitleTextHorizontalGravity();
         switch (titleTextGravity) {
             case LEADING:
             case TRAILING:
             case CENTERED:
                 return titleTextGravity;
             case SWING_DEFAULT:
-                return SubstanceSlices.Gravity.LEADING;
+                return SubstanceSlices.HorizontalGravity.LEADING;
             case PLATFORM:
             default: {
                 SubstanceCoreUtilities.Platform platform = SubstanceCoreUtilities.getPlatform();
                 switch (platform) {
                     case WINDOWS:
-                        return SubstanceSlices.Gravity.LEADING;
+                        return SubstanceSlices.HorizontalGravity.LEADING;
                     default:
-                        return SubstanceSlices.Gravity.CENTERED;
+                        return SubstanceSlices.HorizontalGravity.CENTERED;
                 }
             }
         }
     }
 
-    public static SubstanceSlices.TitleIconGravity getTitlePaneIconGravity() {
-        SubstanceSlices.TitleIconGravity iconGravity = SubstanceCortex.GlobalScope
-                .getTitleIconGravity();
+    public static SubstanceSlices.TitleIconHorizontalGravity getTitlePaneIconGravity() {
+        SubstanceSlices.TitleIconHorizontalGravity iconGravity = SubstanceCortex.GlobalScope
+                .getTitleIconHorizontalGravity();
         switch (iconGravity) {
             case NONE:
             case OPPOSITE_CONTROL_BUTTONS:
             case NEXT_TO_TITLE:
                 return iconGravity;
             case SWING_DEFAULT:
-                return SubstanceSlices.TitleIconGravity.OPPOSITE_CONTROL_BUTTONS;
+                return SubstanceSlices.TitleIconHorizontalGravity.OPPOSITE_CONTROL_BUTTONS;
             case PLATFORM:
             default: {
                 SubstanceCoreUtilities.Platform platform = SubstanceCoreUtilities.getPlatform();
                 switch (platform) {
                     case MACOS:
-                        return SubstanceSlices.TitleIconGravity.NEXT_TO_TITLE;
+                        return SubstanceSlices.TitleIconHorizontalGravity.NEXT_TO_TITLE;
                     case GNOME:
-                        return SubstanceSlices.TitleIconGravity.NONE;
+                        return SubstanceSlices.TitleIconHorizontalGravity.NONE;
                     default:
-                        return SubstanceSlices.TitleIconGravity.OPPOSITE_CONTROL_BUTTONS;
+                        return SubstanceSlices.TitleIconHorizontalGravity.OPPOSITE_CONTROL_BUTTONS;
                 }
             }
         }

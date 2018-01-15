@@ -323,7 +323,7 @@ public class SubstanceSliderUI extends BasicSliderUI implements TransitionAwareU
 		HashMapKey key = SubstanceCoreUtilities.getHashKey(width, height, radius, borderDelta,
 				borderThickness, fillColorScheme.getDisplayName(), borderScheme.getDisplayName());
 
-		int scaleFactor = UIUtil.getScaleFactor();
+		double scaleFactor = UIUtil.getScaleFactor();
 		BufferedImage trackImage = trackCache.get(key);
 		if (trackImage == null) {
 			trackImage = SubstanceCoreUtilities.getBlankImage(width + 1, height + 1);
@@ -344,8 +344,8 @@ public class SubstanceSliderUI extends BasicSliderUI implements TransitionAwareU
 			cacheGraphics.dispose();
 		}
 
-		g2d.drawImage(trackImage, 0, 0, trackImage.getWidth() / scaleFactor,
-				trackImage.getHeight() / scaleFactor, null);
+		g2d.drawImage(trackImage, 0, 0, (int) (trackImage.getWidth() / scaleFactor),
+		        (int) (trackImage.getHeight() / scaleFactor), null);
 
 		g2d.dispose();
 	}

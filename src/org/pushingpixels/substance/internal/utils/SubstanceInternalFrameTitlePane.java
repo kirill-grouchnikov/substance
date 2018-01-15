@@ -52,6 +52,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JInternalFrame.JDesktopIcon;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.MenuBarUI;
 import javax.swing.plaf.UIResource;
@@ -155,10 +156,10 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
         // support for RTL
         this.menuBar.applyComponentOrientation(this.getComponentOrientation());
 
-        SubstanceSlices.TitleIconGravity iconGravity = SubstanceTitlePaneUtilities
+        SubstanceSlices.TitleIconHorizontalGravity iconGravity = SubstanceTitlePaneUtilities
                 .getTitlePaneIconGravity();
         SubstanceTitlePaneUtilities.markTitlePaneExtraComponent(this.menuBar,
-                (iconGravity == SubstanceSlices.TitleIconGravity.NEXT_TO_TITLE)
+                (iconGravity == SubstanceSlices.TitleIconHorizontalGravity.NEXT_TO_TITLE)
                         ? SubstanceTitlePaneUtilities.ExtraComponentKind.WITH_TITLE
                         : SubstanceTitlePaneUtilities.ExtraComponentKind.LEADING);
         return this.menuBar;
@@ -285,7 +286,7 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
             }
 
             int xOffset = 0;
-            SubstanceSlices.Gravity titleTextGravity = SubstanceTitlePaneUtilities
+            SubstanceSlices.HorizontalGravity titleTextGravity = SubstanceTitlePaneUtilities
                     .getTitlePaneTextGravity();
             switch (titleTextGravity) {
                 case LEADING:
@@ -413,7 +414,7 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
         closeButton.addActionListener(closeAction);
 
         SubstanceTitlePaneUtilities.ExtraComponentKind buttonExtraComponentKind = SubstanceTitlePaneUtilities
-                .getTitlePaneControlButtonKind();
+                .getTitlePaneControlButtonKind(this.getRootPane());
         SubstanceTitlePaneUtilities.markTitlePaneExtraComponent(iconButton,
                 buttonExtraComponentKind);
         SubstanceTitlePaneUtilities.markTitlePaneExtraComponent(maxButton,
@@ -548,9 +549,10 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
 
         @Override
         public void layoutContainer(Container c) {
-            boolean leftToRight = frame.getComponentOrientation().isLeftToRight();
+            JRootPane rootPane = frame.getRootPane();
+            boolean leftToRight = rootPane.getComponentOrientation().isLeftToRight();
             boolean controlButtonsOnRight = SubstanceTitlePaneUtilities
-                    .areTitlePaneControlButtonsOnRight(frame);
+                    .areTitlePaneControlButtonsOnRight(rootPane);
 
             int w = getWidth();
             int x;
@@ -567,9 +569,9 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
 
             x = leftToRight ? w : 0;
 
-            SubstanceSlices.TitleIconGravity iconGravity = SubstanceTitlePaneUtilities
+            SubstanceSlices.TitleIconHorizontalGravity iconGravity = SubstanceTitlePaneUtilities
                     .getTitlePaneIconGravity();
-            SubstanceSlices.Gravity titleTextGravity = SubstanceTitlePaneUtilities
+            SubstanceSlices.HorizontalGravity titleTextGravity = SubstanceTitlePaneUtilities
                     .getTitlePaneTextGravity();
             if (SubstanceInternalFrameTitlePane.this.menuBar != null) {
                 spacing = 5;

@@ -117,7 +117,7 @@ public class NoiseFactory {
 		}
 		
 		// and now returning an image that is hi DPI aware if needed
-		if (UIUtil.isRetina()) {
+		if (UIUtil.getScaleFactor() > 1.0) {
 			BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
 			Graphics2D g2d = result.createGraphics();
 			g2d.drawImage(dst, 0, 0, null);

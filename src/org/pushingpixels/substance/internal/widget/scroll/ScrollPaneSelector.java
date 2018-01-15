@@ -221,9 +221,9 @@ public class ScrollPaneSelector extends JComponent {
         if (theImage == null || theRectangle == null)
             return new Dimension();
         Insets insets = getInsets();
-        int scaleFactor = UIUtil.getScaleFactor();
-        return new Dimension(theImage.getWidth() / scaleFactor + insets.left + insets.right,
-                theImage.getHeight() / scaleFactor + insets.top + insets.bottom);
+        double scaleFactor = UIUtil.getScaleFactor();
+        return new Dimension((int) (theImage.getWidth() / scaleFactor) + insets.left + insets.right,
+                (int) (theImage.getHeight() / scaleFactor) + insets.top + insets.bottom);
     }
 
     @Override
@@ -237,9 +237,9 @@ public class ScrollPaneSelector extends JComponent {
         int yOffset = insets.top;
         int availableWidth = getWidth() - insets.left - insets.right;
         int availableHeight = getHeight() - insets.top - insets.bottom;
-        int scaleFactor = UIUtil.getScaleFactor();
-        g2d.drawImage(theImage, xOffset, yOffset, theImage.getWidth() / scaleFactor,
-                theImage.getHeight() / scaleFactor, null);
+        double scaleFactor = UIUtil.getScaleFactor();
+        g2d.drawImage(theImage, xOffset, yOffset, (int) (theImage.getWidth() / scaleFactor),
+                (int) (theImage.getHeight() / scaleFactor), null);
 
         Color tmpColor = g2d.getColor();
         Area area = new Area(new Rectangle(xOffset, yOffset, availableWidth, availableHeight));

@@ -615,7 +615,7 @@ public class SubstanceCoreUtilities {
             }
         }
 
-        if (UIUtil.isRetina()) {
+        if (UIUtil.getScaleFactor() > 1.0) {
             return new JBHiDPIScaledImage(width, height, BufferedImage.TYPE_INT_ARGB);
         } else {
             GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -907,7 +907,7 @@ public class SubstanceCoreUtilities {
 
         BufferedImage result = getBlankImage(width, height);
         Graphics2D graphics = (Graphics2D) result.createGraphics();
-        int scaleFactor = UIUtil.getScaleFactor();
+        double scaleFactor = UIUtil.getScaleFactor();
         graphics.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
 
         int startY = (int) (start * height);
@@ -967,7 +967,7 @@ public class SubstanceCoreUtilities {
 
         BufferedImage result = getBlankImage(width, height);
         Graphics2D graphics = (Graphics2D) result.getGraphics().create();
-        int scaleFactor = UIUtil.getScaleFactor();
+        double scaleFactor = UIUtil.getScaleFactor();
         graphics.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
 
         int startX = (int) (start * width);
@@ -1965,7 +1965,7 @@ public class SubstanceCoreUtilities {
 
     public static int getButtonBarGravity(Container c) {
         boolean isLeftToRight = c.getComponentOrientation().isLeftToRight();
-        SubstanceSlices.Gravity buttonBarGravity = SubstanceCortex.GlobalScope
+        SubstanceSlices.HorizontalGravity buttonBarGravity = SubstanceCortex.GlobalScope
                 .getButtonBarGravity();
         switch (buttonBarGravity) {
             case PLATFORM:

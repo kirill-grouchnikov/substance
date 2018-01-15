@@ -317,9 +317,9 @@ public class SeparatorPainterUtils {
 		}
 
 		Graphics2D g2d = (Graphics2D) g.create();
-		int scaleFactor = UIUtil.getScaleFactor();
-		g2d.drawImage(singleLine, 0, 0, singleLine.getWidth() / scaleFactor,
-				singleLine.getHeight() / scaleFactor, null);
+		double scaleFactor = UIUtil.getScaleFactor();
+		g2d.drawImage(singleLine, 0, 0, (int) (singleLine.getWidth() / scaleFactor),
+		        (int) (singleLine.getHeight() / scaleFactor), null);
 		g2d.dispose();
 	}
 
@@ -406,10 +406,10 @@ public class SeparatorPainterUtils {
 		}
 
 		Graphics2D g2d = (Graphics2D) g.create();
-		int scaleFactor = UIUtil.getScaleFactor();
+		double scaleFactor = UIUtil.getScaleFactor();
 		for (int lineX : x) {
-			g2d.drawImage(singleLine, lineX, y, singleLine.getWidth() / scaleFactor,
-					singleLine.getHeight() / scaleFactor, null);
+			g2d.drawImage(singleLine, lineX, y, (int) (singleLine.getWidth() / scaleFactor),
+			        (int) (singleLine.getHeight() / scaleFactor), null);
 		}
 		g2d.dispose();
 	}
@@ -484,10 +484,10 @@ public class SeparatorPainterUtils {
 		}
 
 		Graphics2D g2d = (Graphics2D) g.create();
-		int scaleFactor = UIUtil.getScaleFactor();
+		double scaleFactor = UIUtil.getScaleFactor();
 		for (int lineY : y) {
-			g2d.drawImage(singleLine, x, lineY, singleLine.getWidth() / scaleFactor,
-					singleLine.getHeight() / scaleFactor, null);
+			g2d.drawImage(singleLine, x, lineY, (int) (singleLine.getWidth() / scaleFactor),
+			        (int) (singleLine.getHeight() / scaleFactor), null);
 		}
 		g2d.dispose();
 	}

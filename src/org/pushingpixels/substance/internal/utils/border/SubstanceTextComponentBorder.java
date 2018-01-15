@@ -118,7 +118,7 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
         Graphics2D graphics = (Graphics2D) g.create();
         JTextComponent componentForTransitions = SubstanceCoreUtilities
                 .getTextComponentForTransitions(c);
-        int scaleFactor = UIUtil.getScaleFactor();
+        double scaleFactor = UIUtil.getScaleFactor();
         boolean useCache = (width * height < 100000);
         SubstanceBorderPainter borderPainter = SubstanceCoreUtilities.getBorderPainter(c);
         if (componentForTransitions != null) {
@@ -155,8 +155,8 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
                         g2base.dispose();
                         smallImageCache.put(baseHashKey, baseLayer);
                     }
-                    graphics.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor,
-                            baseLayer.getHeight() / scaleFactor, null);
+                    graphics.drawImage(baseLayer, 0, 0, (int) (baseLayer.getWidth() / scaleFactor),
+                            (int) (baseLayer.getHeight() / scaleFactor), null);
                 } else {
                     SubstanceImageCreator.paintSimpleBorder(c, graphics, width, height,
                             baseBorderScheme);
@@ -200,8 +200,8 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
                             }
 
                             graphics.drawImage(extraLayer, 0, 0,
-                                    extraLayer.getWidth() / scaleFactor,
-                                    extraLayer.getHeight() / scaleFactor, null);
+                                    (int) (extraLayer.getWidth() / scaleFactor),
+                                    (int) (extraLayer.getHeight() / scaleFactor), null);
                         } else {
                             SubstanceImageCreator.paintSimpleBorder(c, graphics, width, height,
                                     borderScheme);
@@ -211,7 +211,7 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
                 return;
             }
         }
-        
+
         ComponentState currState = isEnabled ? ComponentState.ENABLED
                 : ComponentState.DISABLED_UNSELECTED;
         SubstanceColorScheme borderColorScheme = SubstanceColorSchemeUtilities.getColorScheme(c,
@@ -232,8 +232,8 @@ public class SubstanceTextComponentBorder implements Border, UIResource {
                 smallImageCache.put(baseHashKey, baseLayer);
             }
 
-            graphics.drawImage(baseLayer, 0, 0, baseLayer.getWidth() / scaleFactor,
-                    baseLayer.getHeight() / scaleFactor, null);
+            graphics.drawImage(baseLayer, 0, 0, (int) (baseLayer.getWidth() / scaleFactor),
+                    (int) (baseLayer.getHeight() / scaleFactor), null);
         } else {
             SubstanceImageCreator.paintSimpleBorder(c, graphics, width, height, borderColorScheme);
         }

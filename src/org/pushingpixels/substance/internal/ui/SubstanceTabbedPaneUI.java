@@ -907,35 +907,36 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
             BufferedImage backgroundImage = null;
 
             switch (tabPlacement) {
-            case BOTTOM:
-                BufferedImage unrotated = getFinalTabBackgroundImage(tabPane, tabIndex, x, y, width,
-                        height, SwingConstants.TOP, side, colorScheme, borderScheme);
-                BufferedImage rotated = SubstanceImageCreator.getRotated(unrotated, 2, true);
-                return rotated;
-            case TOP:
-            case LEFT:
-            case RIGHT:
-                backgroundImage = SubstanceTabbedPaneUI.getTabBackground(tabPane, width, height,
-                        SwingConstants.TOP, colorScheme, borderScheme, false);
-                int fw = backgroundImage.getWidth();
-                int fh = backgroundImage.getHeight();
-                int factor = UIUtil.getScaleFactor();
-                BufferedImage fade = SubstanceCoreUtilities.getBlankImage(fw / factor, fh / factor);
-                Graphics2D fadeGraphics = fade.createGraphics();
-                fadeGraphics.setColor(tabColor);
-                fadeGraphics.fillRect(0, 0, fw, fh);
-                if (skin.getWatermark() != null) {
-                    fadeGraphics.translate(-x, -y);
-                    skin.getWatermark().drawWatermarkImage(fadeGraphics, tabPane, x, y, fw, fh);
-                    fadeGraphics.translate(x, y);
-                }
-                BufferedImage background = SubstanceTabbedPaneUI.getTabBackground(tabPane, width,
-                        height, tabPlacement, colorScheme, borderScheme, true);
-                fadeGraphics.drawImage(background, 0, 0, background.getWidth() / factor,
-                        background.getHeight() / factor, null);
+                case BOTTOM:
+                    BufferedImage unrotated = getFinalTabBackgroundImage(tabPane, tabIndex, x, y,
+                            width, height, SwingConstants.TOP, side, colorScheme, borderScheme);
+                    BufferedImage rotated = SubstanceImageCreator.getRotated(unrotated, 2, true);
+                    return rotated;
+                case TOP:
+                case LEFT:
+                case RIGHT:
+                    backgroundImage = SubstanceTabbedPaneUI.getTabBackground(tabPane, width, height,
+                            SwingConstants.TOP, colorScheme, borderScheme, false);
+                    int fw = backgroundImage.getWidth();
+                    int fh = backgroundImage.getHeight();
+                    double factor = UIUtil.getScaleFactor();
+                    BufferedImage fade = SubstanceCoreUtilities.getBlankImage((int) (fw / factor),
+                            (int) (fh / factor));
+                    Graphics2D fadeGraphics = fade.createGraphics();
+                    fadeGraphics.setColor(tabColor);
+                    fadeGraphics.fillRect(0, 0, fw, fh);
+                    if (skin.getWatermark() != null) {
+                        fadeGraphics.translate(-x, -y);
+                        skin.getWatermark().drawWatermarkImage(fadeGraphics, tabPane, x, y, fw, fh);
+                        fadeGraphics.translate(x, y);
+                    }
+                    BufferedImage background = SubstanceTabbedPaneUI.getTabBackground(tabPane,
+                            width, height, tabPlacement, colorScheme, borderScheme, true);
+                    fadeGraphics.drawImage(background, 0, 0, (int) (background.getWidth() / factor),
+                            (int) (background.getHeight() / factor), null);
 
-                backgroundImage = SubstanceCoreUtilities.blendImagesVertical(backgroundImage, fade,
-                        skin.getTabFadeStart(), skin.getTabFadeEnd());
+                    backgroundImage = SubstanceCoreUtilities.blendImagesVertical(backgroundImage,
+                            fade, skin.getTabFadeStart(), skin.getTabFadeEnd());
             }
             SubstanceTabbedPaneUI.backgroundMap.put(key, backgroundImage);
         }
@@ -1038,7 +1039,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
         SubstanceColorScheme baseColorScheme = SubstanceColorSchemeUtilities
                 .getColorScheme(this.tabPane, tabIndex, ColorSchemeAssociationKind.TAB, currState);
         BufferedImage fullOpacity = null;
-        int scaleFactor = UIUtil.getScaleFactor();
+        double scaleFactor = UIUtil.getScaleFactor();
         // Slightly reduce the tab width to create "gaps" between tab visuals
         w -= 1;
 
@@ -1063,12 +1064,12 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
             fullOpacity = SubstanceCoreUtilities.getBlankImage(w, h);
             Graphics2D g2d = fullOpacity.createGraphics();
             if (cyclePos < 1.0f)
-                g2d.drawImage(layer1, 0, 0, layer1.getWidth() / scaleFactor,
-                        layer1.getHeight() / scaleFactor, null);
+                g2d.drawImage(layer1, 0, 0, (int) (layer1.getWidth() / scaleFactor),
+                        (int) (layer1.getHeight() / scaleFactor), null);
             if (cyclePos > 0.0f) {
                 g2d.setComposite(AlphaComposite.SrcOver.derive(cyclePos));
-                g2d.drawImage(layer2, 0, 0, layer2.getWidth() / scaleFactor,
-                        layer2.getHeight() / scaleFactor, null);
+                g2d.drawImage(layer2, 0, 0, (int) (layer2.getWidth() / scaleFactor),
+                        (int) (layer2.getHeight() / scaleFactor), null);
             }
             g2d.dispose();
         } else {
@@ -1083,8 +1084,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
                 fullOpacity = SubstanceCoreUtilities.getBlankImage(w, h);
                 Graphics2D g2d = fullOpacity.createGraphics();
                 // draw the base layer
-                g2d.drawImage(layerBase, 0, 0, layerBase.getWidth() / scaleFactor,
-                        layerBase.getHeight() / scaleFactor, null);
+                g2d.drawImage(layerBase, 0, 0, (int) (layerBase.getWidth() / scaleFactor),
+                        (int) (layerBase.getHeight() / scaleFactor), null);
 
                 // draw the other active layers
                 for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : modelStateInfo
@@ -1105,8 +1106,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
                         BufferedImage layer = SubstanceTabbedPaneUI.getFinalTabBackgroundImage(
                                 this.tabPane, tabIndex, x, y, w, h, tabPlacement,
                                 SubstanceSlices.Side.BOTTOM, fillScheme, borderScheme);
-                        g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor,
-                                layer.getHeight() / scaleFactor, null);
+                        g2d.drawImage(layer, 0, 0, (int) (layer.getWidth() / scaleFactor),
+                                (int) (layer.getHeight() / scaleFactor), null);
                     }
                 }
             }
@@ -1149,8 +1150,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
                 currState);
 
         graphics.setComposite(WidgetUtilities.getAlphaComposite(this.tabPane, finalAlpha, g));
-        graphics.drawImage(fullOpacity, x, y, fullOpacity.getWidth() / scaleFactor,
-                fullOpacity.getHeight() / scaleFactor, null);
+        graphics.drawImage(fullOpacity, x, y, (int) (fullOpacity.getWidth() / scaleFactor),
+                (int) (fullOpacity.getHeight() / scaleFactor), null);
 
         // Check if requested to paint close buttons.
         if (SubstanceCoreUtilities.hasCloseButton(this.tabPane, tabIndex) && isEnabled) {
@@ -1201,13 +1202,15 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
                             baseMarkScheme);
 
                     if (cyclePos < 1.0f) {
-                        graphics.drawImage(layer1, orig.x, orig.y, layer1.getWidth() / scaleFactor,
-                                layer1.getHeight() / scaleFactor, null);
+                        graphics.drawImage(layer1, orig.x, orig.y,
+                                (int) (layer1.getWidth() / scaleFactor),
+                                (int) (layer1.getHeight() / scaleFactor), null);
                     }
                     if (cyclePos > 0.0f) {
                         graphics.setComposite(AlphaComposite.SrcOver.derive(cyclePos));
-                        graphics.drawImage(layer2, orig.x, orig.y, layer1.getWidth() / scaleFactor,
-                                layer1.getHeight() / scaleFactor, null);
+                        graphics.drawImage(layer2, orig.x, orig.y,
+                                (int) (layer1.getWidth() / scaleFactor),
+                                (int) (layer1.getHeight() / scaleFactor), null);
                     }
                 } else {
                     BufferedImage layerBase = SubstanceTabbedPaneUI.getCloseButtonImage(
@@ -1217,15 +1220,15 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
                     if ((modelStateInfo == null) || currState.isDisabled()
                             || (modelStateInfo.getStateContributionMap().size() == 1)) {
                         graphics.drawImage(layerBase, orig.x, orig.y,
-                                layerBase.getWidth() / scaleFactor,
-                                layerBase.getHeight() / scaleFactor, null);
+                                (int) (layerBase.getWidth() / scaleFactor),
+                                (int) (layerBase.getHeight() / scaleFactor), null);
                     } else {
                         BufferedImage complete = SubstanceCoreUtilities.getBlankImage(orig.width,
                                 orig.height);
                         Graphics2D g2d = complete.createGraphics();
                         // draw the base layer
-                        g2d.drawImage(layerBase, 0, 0, layerBase.getWidth() / scaleFactor,
-                                layerBase.getHeight() / scaleFactor, null);
+                        g2d.drawImage(layerBase, 0, 0, (int) (layerBase.getWidth() / scaleFactor),
+                                (int) (layerBase.getHeight() / scaleFactor), null);
 
                         // draw the other active layers
                         Map<ComponentState, StateContributionInfo> contributionInfoMap = isCloseMarkOnParentBackground
@@ -1252,14 +1255,14 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
                                 BufferedImage layer = SubstanceTabbedPaneUI.getCloseButtonImage(
                                         this.tabPane, orig.width, orig.height, toPaintCloseBorder,
                                         fillScheme, markScheme);
-                                g2d.drawImage(layer, 0, 0, layer.getWidth() / scaleFactor,
-                                        layer.getHeight() / scaleFactor, null);
+                                g2d.drawImage(layer, 0, 0, (int) (layer.getWidth() / scaleFactor),
+                                        (int) (layer.getHeight() / scaleFactor), null);
                             }
                         }
                         g2d.dispose();
                         graphics.drawImage(complete, orig.x, orig.y,
-                                complete.getWidth() / scaleFactor,
-                                complete.getHeight() / scaleFactor, null);
+                                (int) (complete.getWidth() / scaleFactor),
+                                (int) (complete.getHeight() / scaleFactor), null);
                     }
                 }
             }
@@ -1392,20 +1395,20 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
         int h = height - insets.top - insets.bottom;
 
         switch (tabPlacement) {
-        case LEFT:
-            x += calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth);
-            w -= (x - insets.left);
-            break;
-        case RIGHT:
-            w -= calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth);
-            break;
-        case BOTTOM:
-            h -= calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight);
-            break;
-        case TOP:
-        default:
-            y += calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight);
-            h -= (y - insets.top);
+            case LEFT:
+                x += calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth);
+                w -= (x - insets.left);
+                break;
+            case RIGHT:
+                w -= calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth);
+                break;
+            case BOTTOM:
+                h -= calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight);
+                break;
+            case TOP:
+            default:
+                y += calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight);
+                h -= (y - insets.top);
         }
 
         Graphics2D g2d = (Graphics2D) g.create(x, y, w, h);
@@ -1987,25 +1990,25 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 
         if (isPlacement) {
             switch (tabPlacement) {
-            case TOP:
-                return new Insets(insets.top + delta, 0, 0, 0);
-            case LEFT:
-                return new Insets(0, insets.left + delta, 0, 0);
-            case RIGHT:
-                return new Insets(0, 0, 0, insets.right + delta);
-            case BOTTOM:
-                return new Insets(0, 0, insets.bottom + delta, 0);
+                case TOP:
+                    return new Insets(insets.top + delta, 0, 0, 0);
+                case LEFT:
+                    return new Insets(0, insets.left + delta, 0, 0);
+                case RIGHT:
+                    return new Insets(0, 0, 0, insets.right + delta);
+                case BOTTOM:
+                    return new Insets(0, 0, insets.bottom + delta, 0);
             }
         } else {
             switch (tabPlacement) {
-            case TOP:
-                return new Insets(insets.top + delta, insets.left, insets.bottom, insets.right);
-            case LEFT:
-                return new Insets(insets.top, insets.left + delta, insets.bottom, insets.right);
-            case RIGHT:
-                return new Insets(insets.top, insets.left, insets.bottom, insets.right + delta);
-            case BOTTOM:
-                return new Insets(insets.top, insets.left, insets.bottom + delta, insets.right);
+                case TOP:
+                    return new Insets(insets.top + delta, insets.left, insets.bottom, insets.right);
+                case LEFT:
+                    return new Insets(insets.top, insets.left + delta, insets.bottom, insets.right);
+                case RIGHT:
+                    return new Insets(insets.top, insets.left, insets.bottom, insets.right + delta);
+                case BOTTOM:
+                    return new Insets(insets.top, insets.left, insets.bottom + delta, insets.right);
             }
         }
         return insets;

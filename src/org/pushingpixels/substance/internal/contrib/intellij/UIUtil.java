@@ -19,7 +19,6 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.lang.reflect.Method;
 import java.util.WeakHashMap;
@@ -35,145 +34,258 @@ public class UIUtil {
      */
     private final static class DetectRetinaKit {
 
-        private final static WeakHashMap<GraphicsDevice, Boolean> devicesToRetinaSupportCacheMap = new WeakHashMap<GraphicsDevice, Boolean>();
+        //private final static WeakHashMap<GraphicsDevice, Boolean> devicesToRetinaSupportCacheMap = new WeakHashMap<GraphicsDevice, Boolean>();
+        private final static WeakHashMap<GraphicsDevice, Double> devicesScaleFactorCacheMap = new WeakHashMap<GraphicsDevice, Double>();
 
         /**
-         * This uses {@link GraphicsConfiguration}'s default transform as
-         * detailed at https://bugs.openjdk.java.net/browse/JDK-8172962 (starting in
-         * Java 9).
+         * This uses {@link GraphicsConfiguration}'s default transform as detailed at
+         * https://bugs.openjdk.java.net/browse/JDK-8172962 (starting in Java 9).
          */
-        private static boolean isOracleMacRetinaDeviceModern(GraphicsDevice device) {
+//        private static boolean isOracleMacRetinaDeviceModern(GraphicsDevice device) {
+//            GraphicsConfiguration graphicsConfig = device.getDefaultConfiguration();
+//
+//            AffineTransform tx = graphicsConfig.getDefaultTransform();
+//            double scaleX = tx.getScaleX();
+//            double scaleY = tx.getScaleY();
+//            return (scaleX > 1.0f && scaleY > 1.0f);
+//        }
+
+        /**
+         * This uses {@link GraphicsConfiguration}'s default transform as detailed at
+         * https://bugs.openjdk.java.net/browse/JDK-8172962 (starting in Java 9).
+         */
+        private static double getScaleFactorModern(GraphicsDevice device) {
             GraphicsConfiguration graphicsConfig = device.getDefaultConfiguration();
 
             AffineTransform tx = graphicsConfig.getDefaultTransform();
             double scaleX = tx.getScaleX();
             double scaleY = tx.getScaleY();
-            return (scaleX > 1.0f && scaleY > 1.0f);
+            return Math.max(scaleX, scaleY);
         }
 
         /**
-         * The best way to understand whether we are on a retina device is
-         * [NSScreen backingScaleFactor] But we should not invoke it from any
-         * thread. We do not have access to the AppKit thread on the other hand.
-         * So let's use a dedicated method. It is rather safe because it caches
-         * a value that has been got on AppKit previously.
+         * The best way to understand whether we are on a retina device is [NSScreen
+         * backingScaleFactor] But we should not invoke it from any thread. We do not have access to
+         * the AppKit thread on the other hand. So let's use a dedicated method. It is rather safe
+         * because it caches a value that has been got on AppKit previously.
          */
-        private static boolean isOracleMacRetinaDeviceLegacy(GraphicsDevice device) {
+//        private static boolean isOracleMacRetinaDeviceLegacy(GraphicsDevice device) {
+//            try {
+//                Method getScaleFactorMethod = Class.forName("sun.awt.CGraphicsDevice")
+//                        .getMethod("getScaleFactor");
+//                return getScaleFactorMethod == null
+//                        || (Integer) getScaleFactorMethod.invoke(device) != 1;
+//            } catch (Throwable t) {
+//                return false;
+//            }
+//        }
+
+        /**
+         * The best way to understand whether we are on a retina device is [NSScreen
+         * backingScaleFactor] But we should not invoke it from any thread. We do not have access to
+         * the AppKit thread on the other hand. So let's use a dedicated method. It is rather safe
+         * because it caches a value that has been got on AppKit previously.
+         */
+        private static double getScaleFactorLegacy(GraphicsDevice device) {
             try {
                 Method getScaleFactorMethod = Class.forName("sun.awt.CGraphicsDevice")
                         .getMethod("getScaleFactor");
-                return getScaleFactorMethod == null
-                        || (Integer) getScaleFactorMethod.invoke(device) != 1;
+                if (getScaleFactorMethod == null) {
+                    return 1.0;
+                }
+                int result = (Integer) getScaleFactorMethod.invoke(device);
+                if (result <= 0) {
+                    return 1.0;
+                }
+                return result;
             } catch (Throwable t) {
-                return false;
+                return 1.0;
             }
         }
 
-        private static boolean isOracleMacRetinaDevice(GraphicsDevice device) {
+//        private static boolean isOracleMacRetinaDevice(GraphicsDevice device) {
+//            if (LookUtils.IS_VENDOR_APPLE)
+//                return false;
+//
+//            Boolean isRetina = devicesToRetinaSupportCacheMap.get(device);
+//
+//            if (isRetina != null) {
+//                return isRetina;
+//            }
+//
+//            isRetina = LookUtils.IS_JAVA_9 ? isOracleMacRetinaDeviceModern(device)
+//                    : isOracleMacRetinaDeviceLegacy(device);
+//
+//            devicesToRetinaSupportCacheMap.put(device, isRetina);
+//
+//            return isRetina;
+//        }
 
-            if (LookUtils.IS_VENDOR_APPLE)
-                return false;
-
-            Boolean isRetina = devicesToRetinaSupportCacheMap.get(device);
-
-            if (isRetina != null) {
-                return isRetina;
+        private static double getScaleFactor(GraphicsDevice device) {
+            if (LookUtils.IS_VENDOR_APPLE) {
+                return 1.0;
             }
-            
-            isRetina = LookUtils.IS_JAVA_9 ? isOracleMacRetinaDeviceModern(device) :
-                isOracleMacRetinaDeviceLegacy(device);
 
-            devicesToRetinaSupportCacheMap.put(device, isRetina);
+            if (devicesScaleFactorCacheMap.containsKey(device)) {
+                return devicesScaleFactorCacheMap.get(device);
+            }
 
-            return isRetina;
+            double result = LookUtils.IS_JAVA_9 ? getScaleFactorModern(device)
+                    : getScaleFactorLegacy(device);
+
+            devicesScaleFactorCacheMap.put(device, result);
+
+            return result;
+
         }
 
-        /**
-         * For JDK6 we have a dedicated property which does not allow to
-         * understand anything per device but could be useful for image
-         * creation. We will get true in case if at least one retina device is
-         * present.
-         */
-        private static boolean hasAppleRetinaDevice() {
-            return (Float) Toolkit.getDefaultToolkit()
-                    .getDesktopProperty("apple.awt.contentScaleFactor") != 1.0f;
-        }
+//        /**
+//         * For JDK6 we have a dedicated property which does not allow to understand anything per
+//         * device but could be useful for image creation. We will get true in case if at least one
+//         * retina device is present.
+//         */
+//        private static boolean hasAppleRetinaDevice() {
+//            return (Float) Toolkit.getDefaultToolkit()
+//                    .getDesktopProperty("apple.awt.contentScaleFactor") != 1.0f;
+//        }
+//
+//        /**
+//         * This method perfectly detects retina Graphics2D for jdk7+ For Apple JDK6 it returns
+//         * false.
+//         * 
+//         * @param g
+//         *            graphics to be tested
+//         * @return false if the device of the Graphics2D is not a retina device, jdk is an Apple JDK
+//         *         or Oracle API has been changed.
+//         */
+//        private static boolean isMacRetina(Graphics2D g) {
+//            GraphicsDevice device = g.getDeviceConfiguration().getDevice();
+//            return isOracleMacRetinaDevice(device);
+//        }
 
         /**
-         * This method perfectly detects retina Graphics2D for jdk7+ For Apple
-         * JDK6 it returns false.
+         * This method perfectly detects retina Graphics2D for jdk7+ For Apple JDK6 it returns
+         * false.
          * 
          * @param g
          *            graphics to be tested
-         * @return false if the device of the Graphics2D is not a retina device,
-         *         jdk is an Apple JDK or Oracle API has been changed.
+         * @return false if the device of the Graphics2D is not a retina device, jdk is an Apple JDK
+         *         or Oracle API has been changed.
          */
-        private static boolean isMacRetina(Graphics2D g) {
+        private static double getScaleFactor(Graphics2D g) {
             GraphicsDevice device = g.getDeviceConfiguration().getDevice();
-            return isOracleMacRetinaDevice(device);
+            return getScaleFactor(device);
         }
 
         /**
-         * Checks that at least one retina device is present. Do not use this
-         * method if your are going to make decision for a particular screen.
-         * isRetina(Graphics2D) is more preferable
+         * Checks that at least one retina device is present. Do not use this method if your are
+         * going to make decision for a particular screen. isRetina(Graphics2D) is more preferable
          *
          * @return true if at least one device is a retina device
          */
-        private static boolean isRetina() {
-            // if (true) return false;
+//        private static boolean isRetina() {
+//            // if (true) return false;
+//            if (LookUtils.IS_VENDOR_APPLE) {
+//                return hasAppleRetinaDevice();
+//            }
+//
+//            // Oracle JDK
+//
+//            if (LookUtils.IS_OS_MAC) {
+//                GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//
+//                GraphicsDevice[] devices = e.getScreenDevices();
+//
+//                // now get the configurations for each device
+//                for (GraphicsDevice device : devices) {
+//                    if (isOracleMacRetinaDevice(device)) {
+//                        return true;
+//                    }
+//                }
+//            }
+//
+//            return false;
+//        }
+//
+        /**
+         * Checks that at least one retina device is present. Do not use this method if your are
+         * going to make decision for a particular screen. isRetina(Graphics2D) is more preferable
+         *
+         * @return true if at least one device is a retina device
+         */
+        private static double getScaleFactor() {
             if (LookUtils.IS_VENDOR_APPLE) {
-                return hasAppleRetinaDevice();
+                return 1.0f;
             }
 
             // Oracle JDK
 
-            if (LookUtils.IS_OS_MAC) {
-                GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            double result = 1.0;
+            GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
-                GraphicsDevice[] devices = e.getScreenDevices();
+            GraphicsDevice[] devices = e.getScreenDevices();
 
-                // now get the configurations for each device
-                for (GraphicsDevice device : devices) {
-                    if (isOracleMacRetinaDevice(device)) {
-                        return true;
-                    }
-                }
+            // now get the configurations for each device
+            for (GraphicsDevice device : devices) {
+                result = Math.max(result, getScaleFactor(device));
             }
 
-            return false;
+            return result;
         }
+
     }
 
-    public static boolean isRetina(Graphics2D graphics) {
-        if (LookUtils.IS_OS_MAC) {
-            return DetectRetinaKit.isMacRetina(graphics);
-        } else {
-            return isRetina();
-        }
+//    public static boolean isRetina(Graphics2D graphics) {
+//        if (LookUtils.IS_OS_MAC) {
+//            return DetectRetinaKit.isMacRetina(graphics);
+//        } else {
+//            return isRetina();
+//        }
+//    }
+
+    public static double getScaleFactor(Graphics2D graphics) {
+        return DetectRetinaKit.getScaleFactor(graphics);
+//        if (LookUtils.IS_OS_MAC) {
+//            return DetectRetinaKit.isMacRetina(graphics);
+//        } else {
+//            return isRetina();
+//        }
     }
 
-    private static Boolean cachedRetinaReply = null;
+    //private static Boolean cachedRetinaReply = null;
+    private static Double cachedScaleFactorReply = null;
 
-    public static boolean isRetina() {
-        if (cachedRetinaReply != null) {
-            return cachedRetinaReply;
+//    public static boolean isRetina() {
+//        if (cachedRetinaReply != null) {
+//            return cachedRetinaReply;
+//        }
+//
+//        boolean result = false;
+//        if (GraphicsEnvironment.isHeadless()) {
+//            result = false;
+//        } else if ("true".equalsIgnoreCase(System.getProperty("is.hidpi"))) {
+//            // Temporary workaround for HiDPI on Windows/Linux
+//            result = true;
+//        } else {
+//            result = DetectRetinaKit.isRetina();
+//        }
+//        cachedRetinaReply = Boolean.valueOf(result);
+//        return cachedRetinaReply;
+//    }
+
+    public static double getScaleFactor() {
+        if (cachedScaleFactorReply != null) {
+            return cachedScaleFactorReply;
         }
 
-        boolean result = false;
+        double result = 1.0;
         if (GraphicsEnvironment.isHeadless()) {
-            result = false;
-        } else if ("true".equalsIgnoreCase(System.getProperty("is.hidpi"))) {
-            // Temporary workaround for HiDPI on Windows/Linux
-            result = true;
+            result = 1.0;
         } else {
-            result = DetectRetinaKit.isRetina();
+            result = DetectRetinaKit.getScaleFactor();
         }
-        cachedRetinaReply = Boolean.valueOf(result);
-        return cachedRetinaReply;
-    }
-
-    public static int getScaleFactor() {
-        return isRetina() ? 2 : 1;
+        cachedScaleFactorReply = Double.valueOf(result);
+        return cachedScaleFactorReply;
+//        return isRetina() ? 2 : 1;
     }
 }

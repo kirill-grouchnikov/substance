@@ -119,9 +119,9 @@ public class HighlightPainterUtils {
                         borderScheme, highlightPainter, highlightBorderPainter);
                 smallCache.put(key, result);
             }
-            int scaleFactor = UIUtil.getScaleFactor();
-            g2d.drawImage(result, 0, 0, result.getWidth() / scaleFactor,
-                    result.getHeight() / scaleFactor, null);
+            double scaleFactor = UIUtil.getScaleFactor();
+            g2d.drawImage(result, 0, 0, (int) (result.getWidth() / scaleFactor),
+                    (int) (result.getHeight() / scaleFactor), null);
         }
     }
 

@@ -68,19 +68,19 @@ public class DefaultPreviewPainter extends PreviewPainter {
             Graphics tempCanvasGraphics = tempCanvas.getGraphics();
             component.paint(tempCanvasGraphics);
 
-            int scaleFactor = UIUtil.getScaleFactor();
+            double scaleFactor = UIUtil.getScaleFactor();
             // check if need to scale down
             double coef = Math.min((double) w / (double) compWidth,
                     (double) h / (double) compHeight) / scaleFactor;
             if (coef < 1.0) {
                 int sdWidth = (int) (coef * compWidth);
                 int sdHeight = (int) (coef * compHeight);
-                int dx = x + (w / scaleFactor - sdWidth) / 2;
-                int dy = y + (h / scaleFactor - sdHeight) / 2;
+                int dx = x + ((int) (w / scaleFactor) - sdWidth) / 2;
+                int dy = y + ((int) (h / scaleFactor) - sdHeight) / 2;
 
                 BufferedImage thumbnail = WidgetUtilities.createThumbnail(tempCanvas, sdWidth);
-                g.drawImage(thumbnail, dx, dy, thumbnail.getWidth() / scaleFactor,
-                        thumbnail.getHeight() / scaleFactor, null);
+                g.drawImage(thumbnail, dx, dy, (int) (thumbnail.getWidth() / scaleFactor),
+                        (int) (thumbnail.getHeight() / scaleFactor), null);
             } else {
                 g.drawImage(tempCanvas, x, y, null);
             }

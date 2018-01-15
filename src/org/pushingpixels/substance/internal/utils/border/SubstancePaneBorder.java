@@ -48,107 +48,104 @@ import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
- * Root pane and internal frame border in <b>Substance</b> look and feel. This
- * class is <b>for internal use only</b>.
+ * Root pane and internal frame border in <b>Substance</b> look and feel. This class is <b>for
+ * internal use only</b>.
  * 
  * @author Kirill Grouchnikov
  */
 public class SubstancePaneBorder extends AbstractBorder implements UIResource {
-	/**
-	 * Default border thickness.
-	 */
-	private static final int BORDER_THICKNESS = 4;
+    /**
+     * Default border thickness.
+     */
+    private static final int BORDER_THICKNESS = 4;
 
-	/**
-	 * Default insets.
-	 */
-	private static final Insets INSETS = new Insets(
-			SubstancePaneBorder.BORDER_THICKNESS,
-			SubstancePaneBorder.BORDER_THICKNESS,
-			SubstancePaneBorder.BORDER_THICKNESS,
-			SubstancePaneBorder.BORDER_THICKNESS);
+    /**
+     * Default insets.
+     */
+    private static final Insets INSETS = new Insets(SubstancePaneBorder.BORDER_THICKNESS,
+            SubstancePaneBorder.BORDER_THICKNESS, SubstancePaneBorder.BORDER_THICKNESS,
+            SubstancePaneBorder.BORDER_THICKNESS);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.border.Border#paintBorder(java.awt.Component,
-	 * java.awt.Graphics, int, int, int, int)
-	 */
-	@Override
-	public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-		SubstanceSkin skin = SubstanceCoreUtilities.getSkin(c);
-		if (skin == null)
-			return;
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.border.Border#paintBorder(java.awt.Component, java.awt.Graphics, int, int,
+     * int, int)
+     */
+    @Override
+    public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
+        SubstanceSkin skin = SubstanceCoreUtilities.getSkin(c);
+        if (skin == null)
+            return;
 
-		SubstanceColorScheme scheme = skin
-				.getBackgroundColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE);
-		Component titlePaneComp = SubstanceCoreUtilities
-				.getTitlePaneComponent(SwingUtilities.windowForComponent(c));
-		SubstanceColorScheme borderScheme = skin.getColorScheme(titlePaneComp,
-				ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED);
+        SubstanceColorScheme scheme = skin
+                .getBackgroundColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE);
+        Component titlePaneComp = SubstanceCoreUtilities
+                .getTitlePaneComponent(SwingUtilities.windowForComponent(c));
+        SubstanceColorScheme borderScheme = skin.getColorScheme(titlePaneComp,
+                ColorSchemeAssociationKind.BORDER, ComponentState.ENABLED);
 
-		Graphics2D graphics = (Graphics2D) g.create();
+        Graphics2D graphics = (Graphics2D) g.create();
 
-		graphics.setStroke(new BasicStroke(UIUtil.isRetina() ? 1.5f : 1.0f, 
-		        BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
-		
-		// bottom and right in ultra dark
-		graphics.setColor(borderScheme.getUltraDarkColor());
-		graphics.drawLine(x, y + h - 1, x + w - 1, y + h - 1);
-		graphics.drawLine(x + w - 1, y, x + w - 1, y + h - 1);
-		// top and left
-		graphics.setColor(borderScheme.getDarkColor());
-		graphics.drawLine(x, y, x + w - 2, y);
-		graphics.drawLine(x, y, x, y + h - 2);
-		// inner bottom and right
-		graphics.setColor(scheme.getMidColor());
-		graphics.drawLine(x + 1, y + h - 2, x + w - 2, y + h - 2);
-		graphics.drawLine(x + w - 2, y + 1, x + w - 2, y + h - 2);
-		// inner top and left
-		graphics.setColor(scheme.getMidColor());
-		graphics.drawLine(x + 1, y + 1, x + w - 3, y + 1);
-		graphics.drawLine(x + 1, y + 1, x + 1, y + h - 3);
-		// inner 2 and 3
-		graphics.setColor(scheme.getLightColor());
-		graphics.drawRect(x + 2, y + 2, w - 5, h - 5);
-		graphics.drawRect(x + 3, y + 3, w - 7, h - 7);
-		
-		graphics.dispose();
-	}
+        float strokeWidth = 0.5f + (float) UIUtil.getScaleFactor() / 2.0f;
+        graphics.setStroke(
+                new BasicStroke(strokeWidth, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.border.Border#getBorderInsets(java.awt.Component)
-	 */
-	@Override
-	public Insets getBorderInsets(Component c) {
-		return SubstancePaneBorder.INSETS;
-	}
+        // bottom and right in ultra dark
+        graphics.setColor(borderScheme.getUltraDarkColor());
+        graphics.drawLine(x, y + h - 1, x + w - 1, y + h - 1);
+        graphics.drawLine(x + w - 1, y, x + w - 1, y + h - 1);
+        // top and left
+        graphics.setColor(borderScheme.getDarkColor());
+        graphics.drawLine(x, y, x + w - 2, y);
+        graphics.drawLine(x, y, x, y + h - 2);
+        // inner bottom and right
+        graphics.setColor(scheme.getMidColor());
+        graphics.drawLine(x + 1, y + h - 2, x + w - 2, y + h - 2);
+        graphics.drawLine(x + w - 2, y + 1, x + w - 2, y + h - 2);
+        // inner top and left
+        graphics.setColor(scheme.getMidColor());
+        graphics.drawLine(x + 1, y + 1, x + w - 3, y + 1);
+        graphics.drawLine(x + 1, y + 1, x + 1, y + h - 3);
+        // inner 2 and 3
+        graphics.setColor(scheme.getLightColor());
+        graphics.drawRect(x + 2, y + 2, w - 5, h - 5);
+        graphics.drawRect(x + 3, y + 3, w - 7, h - 7);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.border.AbstractBorder#getBorderInsets(java.awt.Component,
-	 * java.awt.Insets)
-	 */
-	@Override
-	public Insets getBorderInsets(Component c, Insets newInsets) {
-		newInsets.top = SubstancePaneBorder.INSETS.top;
-		newInsets.left = SubstancePaneBorder.INSETS.left;
-		newInsets.bottom = SubstancePaneBorder.INSETS.bottom;
-		newInsets.right = SubstancePaneBorder.INSETS.right;
-		return newInsets;
-	}
+        graphics.dispose();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.border.Border#isBorderOpaque()
-	 */
-	@Override
-	public boolean isBorderOpaque() {
-		return false;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.border.Border#getBorderInsets(java.awt.Component)
+     */
+    @Override
+    public Insets getBorderInsets(Component c) {
+        return SubstancePaneBorder.INSETS;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.border.AbstractBorder#getBorderInsets(java.awt.Component, java.awt.Insets)
+     */
+    @Override
+    public Insets getBorderInsets(Component c, Insets newInsets) {
+        newInsets.top = SubstancePaneBorder.INSETS.top;
+        newInsets.left = SubstancePaneBorder.INSETS.left;
+        newInsets.bottom = SubstancePaneBorder.INSETS.bottom;
+        newInsets.right = SubstancePaneBorder.INSETS.right;
+        return newInsets;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.swing.border.Border#isBorderOpaque()
+     */
+    @Override
+    public boolean isBorderOpaque() {
+        return false;
+    }
 }

@@ -733,10 +733,10 @@ public class SubstanceTitlePane extends JComponent {
         // support for RTL
         this.menuBar.applyComponentOrientation(this.rootPane.getComponentOrientation());
 
-        SubstanceSlices.TitleIconGravity iconGravity = SubstanceTitlePaneUtilities
+        SubstanceSlices.TitleIconHorizontalGravity iconGravity = SubstanceTitlePaneUtilities
                 .getTitlePaneIconGravity();
         SubstanceTitlePaneUtilities.markTitlePaneExtraComponent(this.menuBar,
-                (iconGravity == SubstanceSlices.TitleIconGravity.NEXT_TO_TITLE)
+                (iconGravity == SubstanceSlices.TitleIconHorizontalGravity.NEXT_TO_TITLE)
                         ? SubstanceTitlePaneUtilities.ExtraComponentKind.WITH_TITLE
                         : SubstanceTitlePaneUtilities.ExtraComponentKind.LEADING);
 
@@ -820,7 +820,7 @@ public class SubstanceTitlePane extends JComponent {
         button.setOpaque(true);
 
         SubstanceTitlePaneUtilities.markTitlePaneExtraComponent(button,
-                SubstanceTitlePaneUtilities.getTitlePaneControlButtonKind());
+                SubstanceTitlePaneUtilities.getTitlePaneControlButtonKind(this.rootPane));
 
         return button;
     }
@@ -1074,16 +1074,17 @@ public class SubstanceTitlePane extends JComponent {
 
     @Override
     public void paintComponent(Graphics g) {
-        if (this.isControlOnlyMode) {
-            return;
-        }
-
         // long start = System.nanoTime();
         // As state isn't bound, we need a convenience place to check
         // if it has changed. Changing the state typically changes the
         if (this.getFrame() != null) {
             this.setState(this.getFrame().getExtendedState());
         }
+
+        if (this.isControlOnlyMode) {
+            return;
+        }
+
         final JRootPane rootPane = this.getRootPane();
         boolean leftToRight = (this.window == null)
                 ? rootPane.getComponentOrientation().isLeftToRight()
@@ -1123,7 +1124,7 @@ public class SubstanceTitlePane extends JComponent {
             }
 
             int xOffset = 0;
-            SubstanceSlices.Gravity titleTextGravity = SubstanceTitlePaneUtilities
+            SubstanceSlices.HorizontalGravity titleTextGravity = SubstanceTitlePaneUtilities
                     .getTitlePaneTextGravity();
             switch (titleTextGravity) {
                 case LEADING:
@@ -1330,28 +1331,8 @@ public class SubstanceTitlePane extends JComponent {
          * @see java.awt.LayoutManager#preferredLayoutSize(java.awt.Container)
          */
         public Dimension preferredLayoutSize(Container c) {
-            int height = this.computeHeight();
+            int height = getPaneHeight();
             return new Dimension(height, height);
-        }
-
-        /**
-         * Computes title pane height.
-         * 
-         * @return Title pane height.
-         */
-        private int computeHeight() {
-            FontMetrics fm = SubstanceTitlePane.this.rootPane
-                    .getFontMetrics(SubstanceTitlePane.this.getFont());
-            int fontHeight = fm.getHeight();
-            fontHeight += 7;
-            int iconHeight = 0;
-            if (SubstanceTitlePane.this.getWindowDecorationStyle() == JRootPane.FRAME) {
-                iconHeight = SubstanceSizeUtils.getTitlePaneIconSize();
-            }
-
-            int finalHeight = Math.max(fontHeight, iconHeight);
-            finalHeight = Math.max(finalHeight, SubstanceTitlePane.this.preferredHeight);
-            return finalHeight;
         }
 
         /*
@@ -1369,10 +1350,10 @@ public class SubstanceTitlePane extends JComponent {
          * @see java.awt.LayoutManager#layoutContainer(java.awt.Container)
          */
         public void layoutContainer(Container c) {
-            Component compToQuery = (window != null) ? window : getRootPane();
-            boolean leftToRight = compToQuery.getComponentOrientation().isLeftToRight();
+            JRootPane rootPane = getRootPane();
+            boolean leftToRight = rootPane.getComponentOrientation().isLeftToRight();
             boolean controlButtonsOnRight = SubstanceTitlePaneUtilities
-                    .areTitlePaneControlButtonsOnRight(compToQuery);
+                    .areTitlePaneControlButtonsOnRight(rootPane);
 
             int w = SubstanceTitlePane.this.getWidth();
             int x;
@@ -1382,19 +1363,32 @@ public class SubstanceTitlePane extends JComponent {
             // these dimensions include the borders
             int buttonSize = getControlButtonSize();
 
-            final int y = (getHeight() - buttonSize) / 2;
+            SubstanceSlices.VerticalGravity buttonGroupVerticalGravity = SubstanceTitlePaneUtilities
+                    .getTitleControlButtonGroupVerticalGravity(rootPane);
+            final int height = getHeight();
+            final int y;
+            switch (buttonGroupVerticalGravity) {
+                case TOP:
+                    y = 0;
+                    break;
+                case BOTTOM:
+                    y = height - buttonSize;
+                    break;
+                default:
+                    y = (height - buttonSize) / 2;
+            }
 
             x = leftToRight ? w : 0;
 
-            SubstanceSlices.TitleIconGravity iconGravity = isControlOnlyMode
-                    ? SubstanceSlices.TitleIconGravity.NONE
+            SubstanceSlices.TitleIconHorizontalGravity iconHorizontalGravity = isControlOnlyMode
+                    ? SubstanceSlices.TitleIconHorizontalGravity.NONE
                     : SubstanceTitlePaneUtilities.getTitlePaneIconGravity();
-            SubstanceSlices.Gravity titleTextGravity = SubstanceTitlePaneUtilities
+            SubstanceSlices.HorizontalGravity titleTextHorizontalGravity = SubstanceTitlePaneUtilities
                     .getTitlePaneTextGravity();
             if (SubstanceTitlePane.this.menuBar != null) {
                 spacing = 5;
                 int menuBarLeft;
-                switch (iconGravity) {
+                switch (iconHorizontalGravity) {
                     case OPPOSITE_CONTROL_BUTTONS:
                         menuBarLeft = controlButtonsOnRight ? spacing : w - buttonSize - spacing;
                         break;
@@ -1407,7 +1401,7 @@ public class SubstanceTitlePane extends JComponent {
                                 .getFontSet("Substance", null).getWindowTitleFont();
                         int displayTitleWidth = rootPane.getFontMetrics(font)
                                 .stringWidth(displayTitle);
-                        switch (titleTextGravity) {
+                        switch (titleTextHorizontalGravity) {
                             case LEADING:
                                 menuBarLeft = leftToRight ? titleRect.x - buttonSize - spacing
                                         : titleRect.x + titleRect.width + spacing;
@@ -1626,10 +1620,23 @@ public class SubstanceTitlePane extends JComponent {
         return result;
     }
 
+    private int getPaneHeight() {
+        FontMetrics fm = this.rootPane.getFontMetrics(this.getFont());
+        int fontHeight = fm.getHeight();
+        fontHeight += 7;
+        int iconHeight = 0;
+        if (SubstanceTitlePane.this.getWindowDecorationStyle() == JRootPane.FRAME) {
+            iconHeight = SubstanceSizeUtils.getTitlePaneIconSize();
+        }
+
+        int finalHeight = Math.max(fontHeight, iconHeight);
+        finalHeight = Math.max(finalHeight, SubstanceTitlePane.this.preferredHeight);
+        return finalHeight;
+    }
+
     public Insets getControlInsets() {
-        Component compToQuery = (window != null) ? window : getRootPane();
         boolean controlButtonsOnRight = SubstanceTitlePaneUtilities
-                .areTitlePaneControlButtonsOnRight(compToQuery);
+                .areTitlePaneControlButtonsOnRight(getRootPane());
 
         int buttonSize = getControlButtonSize();
 
@@ -1659,7 +1666,26 @@ public class SubstanceTitlePane extends JComponent {
             }
         }
 
-        return controlButtonsOnRight ? new Insets(0, 0, 0, controlInsets)
-                : new Insets(0, controlInsets, 0, 0);
+        int height = getPaneHeight();
+
+        SubstanceSlices.VerticalGravity buttonGroupVerticalGravity = SubstanceTitlePaneUtilities
+                .getTitleControlButtonGroupVerticalGravity(rootPane);
+        final int y;
+        switch (buttonGroupVerticalGravity) {
+            case TOP:
+                y = 0;
+                break;
+            case BOTTOM:
+                y = height - buttonSize;
+                break;
+            default:
+                y = (height - buttonSize) / 2;
+        }
+
+        int leftInset = controlButtonsOnRight ? 0 : controlInsets;
+        int rightInset = controlButtonsOnRight ? controlInsets : 0;
+        int topInset = y;
+        int bottomInset = height - y - buttonSize;
+        return new Insets(topInset, leftInset, bottomInset, rightInset);
     }
 }

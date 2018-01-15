@@ -146,7 +146,7 @@ public class SubstanceOptionPaneUI extends BasicOptionPaneUI {
     @Override
     protected Icon getIconForType(int messageType) {
         SubstanceIconPack iconPack = SubstanceCortex.GlobalScope.getIconPack();
-        int size = ICON_SIZE * UIUtil.getScaleFactor();
+        int size = (int) (ICON_SIZE * UIUtil.getScaleFactor());
         switch (messageType) {
         case JOptionPane.ERROR_MESSAGE:
             return iconPack.getOptionPaneErrorIcon(size, new SunsetColorScheme());

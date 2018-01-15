@@ -59,7 +59,7 @@ import org.pushingpixels.substance.internal.utils.filters.ColorFilter;
  * @see {@link SubstanceCortex.GlobalScope#setIconPack(SubstanceIconUIResourcePack)}
  */
 public class SubstanceIconUIResource implements Icon, IsResizable, IsHiDpiAware, UIResource {
-    private final int factor;
+    private final double factor;
     private final boolean isHiDpiAwareSource;
 
     private BufferedImage imageSource;
@@ -107,8 +107,8 @@ public class SubstanceIconUIResource implements Icon, IsResizable, IsHiDpiAware,
         int dy = (this.height - this.getInternalHeight()) / 2;
         g2d.translate(x + dx, y + dy);
         if (this.imageSource != null) {
-            g2d.drawImage(this.imageSource, 0, 0, this.imageSource.getWidth() / this.factor,
-                    this.imageSource.getHeight() / this.factor, null);
+            g2d.drawImage(this.imageSource, 0, 0, (int) (this.imageSource.getWidth() / this.factor),
+                    (int) (this.imageSource.getHeight() / this.factor), null);
         } else if (this.iconSource != null) {
             this.iconSource.paintIcon(c, g2d, 0, 0);
         }
@@ -117,10 +117,11 @@ public class SubstanceIconUIResource implements Icon, IsResizable, IsHiDpiAware,
 
     private int getInternalWidth() {
         if (this.imageSource != null) {
-            return this.imageSource.getWidth() / this.factor;
+            return (int) (this.imageSource.getWidth() / this.factor);
         }
         if (this.iconSource != null) {
-            return this.iconSource.getIconWidth() / (this.isHiDpiAwareSource ? 1 : this.factor);
+            return (int) (this.iconSource.getIconWidth()
+                    / (this.isHiDpiAwareSource ? 1 : this.factor));
         }
         return 0;
     }
@@ -132,10 +133,11 @@ public class SubstanceIconUIResource implements Icon, IsResizable, IsHiDpiAware,
 
     private int getInternalHeight() {
         if (this.imageSource != null) {
-            return this.imageSource.getHeight() / this.factor;
+            return (int) (this.imageSource.getHeight() / this.factor);
         }
         if (this.iconSource != null) {
-            return this.iconSource.getIconHeight() / (this.isHiDpiAwareSource ? 1 : this.factor);
+            return (int) (this.iconSource.getIconHeight()
+                    / (this.isHiDpiAwareSource ? 1 : this.factor));
         }
         return 0;
     }
