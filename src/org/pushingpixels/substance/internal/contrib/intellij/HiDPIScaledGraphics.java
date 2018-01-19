@@ -48,7 +48,8 @@ class HiDPIScaledGraphics extends Graphics2D {
 
   public HiDPIScaledGraphics(Graphics g) {
     myPeer = (Graphics2D)g;
-    scale(2, 2);
+    double scaleFactor = UIUtil.getScaleFactor();
+    scale(scaleFactor, scaleFactor);
     GraphicsUtil.setupAAPainting(myPeer);
   }
 

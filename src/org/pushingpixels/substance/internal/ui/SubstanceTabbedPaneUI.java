@@ -920,8 +920,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
                     int fw = backgroundImage.getWidth();
                     int fh = backgroundImage.getHeight();
                     double factor = UIUtil.getScaleFactor();
-                    BufferedImage fade = SubstanceCoreUtilities.getBlankImage((int) (fw / factor),
-                            (int) (fh / factor));
+                    BufferedImage fade = SubstanceCoreUtilities.getBlankImage(backgroundImage);
                     Graphics2D fadeGraphics = fade.createGraphics();
                     fadeGraphics.setColor(tabColor);
                     fadeGraphics.fillRect(0, 0, fw, fh);

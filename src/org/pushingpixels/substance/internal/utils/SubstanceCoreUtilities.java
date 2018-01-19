@@ -625,6 +625,46 @@ public class SubstanceCoreUtilities {
         }
     }
 
+    /**
+     * Retrieves transparent image of specified dimension.
+     * 
+     * @param width
+     *            Image width.
+     * @param height
+     *            Image height.
+     * @return Transparent image of specified dimension.
+     */
+    public static BufferedImage getBlankImage(BufferedImage image) {
+    	int imageWidth = image.getWidth();
+    	int imageHeight = image.getHeight();
+        if (MemoryAnalyzer.isRunning()) {
+            // see if the request is unusual
+            if ((imageWidth >= 100) || (imageHeight >= 100)) {
+                StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+                StringBuffer sb = new StringBuffer();
+                int count = 0;
+                for (StackTraceElement stackEntry : stack) {
+                    if (count++ > 8)
+                        break;
+                    sb.append(stackEntry.getClassName() + ".");
+                    sb.append(stackEntry.getMethodName() + " [");
+                    sb.append(stackEntry.getLineNumber() + "]");
+                    sb.append("\n");
+                }
+                MemoryAnalyzer.enqueueUsage("Blank " + imageWidth + "*" + imageHeight + "\n" + sb.toString());
+            }
+        }
+
+        if (UIUtil.getScaleFactor() > 1.0) {
+            return new JBHiDPIScaledImage(null, imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+        } else {
+            GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsDevice d = e.getDefaultScreenDevice();
+            GraphicsConfiguration c = d.getDefaultConfiguration();
+            return c.createCompatibleImage(imageWidth, imageHeight, Transparency.TRANSLUCENT);
+        }
+    }
+
     public static boolean isHiDpiAwareImage(Image image) {
         return image instanceof IsHiDpiAware;
     }
