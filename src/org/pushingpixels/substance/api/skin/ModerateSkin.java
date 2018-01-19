@@ -51,61 +51,59 @@ import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
  * @since version 3.1
  */
 public class ModerateSkin extends SubstanceSkin {
-	/**
-	 * Display name for <code>this</code> skin.
-	 */
-	public static final String NAME = "Moderate";
+    /**
+     * Display name for <code>this</code> skin.
+     */
+    public static final String NAME = "Moderate";
 
-	/**
-	 * Creates a new <code>Moderate</code> skin.
-	 */
-	public ModerateSkin() {
-		SubstanceColorScheme activeScheme = new SteelBlueColorScheme();
-		SubstanceColorScheme enabledScheme = new MetallicColorScheme();
+    /**
+     * Creates a new <code>Moderate</code> skin.
+     */
+    public ModerateSkin() {
+        SubstanceColorScheme activeScheme = new SteelBlueColorScheme();
+        SubstanceColorScheme enabledScheme = new MetallicColorScheme();
 
-		SubstanceSkin.ColorSchemes kitchenSinkSchemes = SubstanceSkin
-				.getColorSchemes("org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes");
-		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
-				activeScheme, enabledScheme, kitchenSinkSchemes.get("Gray Disabled"));
-		SubstanceColorScheme highlightColorScheme = kitchenSinkSchemes
-				.get("Moderate Highlight");
-		defaultSchemeBundle.registerHighlightColorScheme(highlightColorScheme);
+        SubstanceSkin.ColorSchemes kitchenSinkSchemes = SubstanceSkin
+                .getColorSchemes("org/pushingpixels/substance/api/skin/kitchen-sink.colorschemes");
+        SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(
+                activeScheme, enabledScheme, kitchenSinkSchemes.get("Gray Disabled"));
+        SubstanceColorScheme highlightColorScheme = kitchenSinkSchemes.get("Moderate Highlight");
+        defaultSchemeBundle.registerHighlightColorScheme(highlightColorScheme);
 
-		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle,
-				DecorationAreaType.NONE);
+        this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, DecorationAreaType.NONE);
 
-		this.registerAsDecorationArea(activeScheme,
-				DecorationAreaType.PRIMARY_TITLE_PANE,
-				DecorationAreaType.SECONDARY_TITLE_PANE,
-				DecorationAreaType.HEADER);
+        SubstanceColorSchemeBundle headerSchemeBundle = new SubstanceColorSchemeBundle(
+                activeScheme.saturate(0.2), activeScheme, kitchenSinkSchemes.get("Gray Disabled"));
+        this.registerDecorationAreaSchemeBundle(headerSchemeBundle,
+                DecorationAreaType.PRIMARY_TITLE_PANE, DecorationAreaType.SECONDARY_TITLE_PANE,
+                DecorationAreaType.HEADER);
 
-		this.registerAsDecorationArea(kitchenSinkSchemes.get("LightGray General Watermark"),
-				DecorationAreaType.GENERAL);
+        this.registerAsDecorationArea(kitchenSinkSchemes.get("LightGray General Watermark"),
+                DecorationAreaType.GENERAL);
 
-		// add an overlay painter to paint a drop shadow along the top
-		// edge of toolbars
-		this.addOverlayPainter(TopShadowOverlayPainter.getInstance(),
-				DecorationAreaType.TOOLBAR);
+        // add an overlay painter to paint a drop shadow along the top
+        // edge of toolbars
+        this.addOverlayPainter(TopShadowOverlayPainter.getInstance(), DecorationAreaType.TOOLBAR);
 
-		// add an overlay painter to paint separator lines along the bottom
-		// edges of title panes and menu bars
-		BottomLineOverlayPainter bottomLineOverlayPainter = new BottomLineOverlayPainter(
-				ColorSchemeSingleColorQuery.MID);
-		this.addOverlayPainter(bottomLineOverlayPainter, DecorationAreaType.HEADER);
+        // add an overlay painter to paint separator lines along the bottom
+        // edges of title panes and menu bars
+        BottomLineOverlayPainter bottomLineOverlayPainter = new BottomLineOverlayPainter(
+                ColorSchemeSingleColorQuery.MID);
+        this.addOverlayPainter(bottomLineOverlayPainter, DecorationAreaType.HEADER);
 
-		this.buttonShaper = new ClassicButtonShaper();
-		this.fillPainter = new GlassFillPainter();
-		this.decorationPainter = new MatteDecorationPainter();
-		this.borderPainter = new ClassicBorderPainter();
-		this.highlightPainter = new ClassicHighlightPainter();
-	}
+        this.buttonShaper = new ClassicButtonShaper();
+        this.fillPainter = new GlassFillPainter();
+        this.decorationPainter = new MatteDecorationPainter();
+        this.borderPainter = new ClassicBorderPainter();
+        this.highlightPainter = new ClassicHighlightPainter();
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.skin.SubstanceSkin#getDisplayName()
-	 */
-	public String getDisplayName() {
-		return NAME;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.pushingpixels.substance.skin.SubstanceSkin#getDisplayName()
+     */
+    public String getDisplayName() {
+        return NAME;
+    }
 }

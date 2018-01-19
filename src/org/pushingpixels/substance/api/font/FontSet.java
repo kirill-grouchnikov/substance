@@ -65,9 +65,9 @@ public interface FontSet {
 	FontUIResource getTitleFont();
 
 	/**
-	 * Returns the font used for internal frame titles.
+	 * Returns the font used for frame titles.
 	 * 
-	 * @return the font used for internal frame titles.
+	 * @return the font used for frame titles.
 	 */
 	FontUIResource getWindowTitleFont();
 

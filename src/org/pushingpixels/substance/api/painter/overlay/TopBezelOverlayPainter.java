@@ -100,12 +100,12 @@ public final class TopBezelOverlayPainter implements SubstanceOverlayPainter {
 		SubstanceColorScheme colorScheme = skin
 				.getBackgroundColorScheme(decorationAreaType);
 		graphics.setColor(this.colorSchemeQueryTop.query(colorScheme));
-		float topY = borderStrokeWidth - dy;
+		float topY = - dy;
 		Line2D.Float topLine = new Line2D.Float(0, topY, width, topY);
 		graphics.draw(topLine);
 
 		graphics.setColor(this.colorSchemeQueryBottom.query(colorScheme));
-		float bezelY = 2 * borderStrokeWidth - dy;
+		float bezelY = borderStrokeWidth - dy;
 		Line2D.Float bezelLine = new Line2D.Float(0, bezelY, width, bezelY);
 		graphics.draw(bezelLine);
 	}
