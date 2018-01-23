@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2018 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -443,8 +443,13 @@ public class SubstanceTableHeaderUI extends BasicTableHeaderUI {
             g.fillRect(draggedCellRect.x, draggedCellRect.y, draggedCellRect.width,
                     draggedCellRect.height);
 
-            this.paintCell(g, draggedCellRect, draggedColumnIndex,
-                    selected.contains(draggedColumnIndex));
+            // Fix for https://github.com/kirill-grouchnikov/substance/issues/70 -
+            // don't paint the dragged cell if dragged column index is negative (otherwise
+            // it will crash in ColumnModel.getColumn)
+            if (draggedColumnIndex >= 0) {
+                this.paintCell(g, draggedCellRect, draggedColumnIndex,
+                        selected.contains(draggedColumnIndex));
+            }
         }
 
         // Remove all components in the rendererPane.

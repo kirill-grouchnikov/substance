@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2018 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -1073,15 +1073,9 @@ public class SubstanceTreeUI extends BasicTreeUI {
 						g2d.setColor(background);
 						g2d.fillRect(paintBounds.x, bounds.y, paintBounds.width, bounds.height);
 					} else {
-						if (this.tree.getComponentOrientation().isLeftToRight()) {
-							BackgroundPaintingUtils.fillAndWatermark(g2d, this.tree, background,
-									new Rectangle(paintBounds.x, bounds.y, paintBounds.width,
-											bounds.height));
-						} else {
-							BackgroundPaintingUtils.fillAndWatermark(g2d, this.tree, background,
-									new Rectangle(paintBounds.x, bounds.y, paintBounds.width,
-											bounds.height));
-						}
+						BackgroundPaintingUtils.fillAndWatermark(g2d, this.tree, background,
+								new Rectangle(paintBounds.x, bounds.y, paintBounds.width,
+										bounds.height));
 					}
 					if ((bounds.y + bounds.height) >= endY)
 						done = true;

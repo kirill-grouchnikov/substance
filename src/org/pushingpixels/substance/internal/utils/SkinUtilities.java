@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2018 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -1239,6 +1239,8 @@ public class SkinUtilities {
 				"Tree.textBackground", backgroundDefaultColor,
 
 				"Tree.textForeground", foregroundColor,
+				
+				"Tree.rendererFillBackground", false,
 
 				"Viewport.background", backgroundDefaultColor,
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005-2016 Substance Kirill Grouchnikov. All Rights Reserved.
+ * Copyright (c) 2005-2018 Substance Kirill Grouchnikov. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -957,22 +957,27 @@ public class SubstanceTableUI extends BasicTableUI implements UpdateOptimization
             g.drawLine(x2, y1, x2, y2);
         }
 
-        for (int row = rMin; row <= rMax; row++) {
-            // Render the cell value
-            Rectangle r = this.table.getCellRect(row, draggedColumnIndex, false);
-            r.x += distance;
-            this.paintCell(g, r, r, row, draggedColumnIndex);
+        // Fix for https://github.com/kirill-grouchnikov/substance/issues/70 -
+        // don't paint the dragged cell if dragged column index is negative (otherwise
+        // it will crash in ColumnModel.getColumn)
+        if (draggedColumnIndex >= 0) {
+            for (int row = rMin; row <= rMax; row++) {
+                // Render the cell value
+                Rectangle r = this.table.getCellRect(row, draggedColumnIndex, false);
+                r.x += distance;
+                this.paintCell(g, r, r, row, draggedColumnIndex);
 
-            // Paint the (lower) horizontal grid line if necessary.
-            if (this.table.getShowHorizontalLines()) {
-                g.setColor(this.table.getGridColor());
-                Rectangle rcr = this.table.getCellRect(row, draggedColumnIndex, true);
-                rcr.x += distance;
-                int x1 = rcr.x;
-                int y1 = rcr.y;
-                int x2 = x1 + rcr.width - 1;
-                int y2 = y1 + rcr.height - 1;
-                g.drawLine(x1, y2, x2, y2);
+                // Paint the (lower) horizontal grid line if necessary.
+                if (this.table.getShowHorizontalLines()) {
+                    g.setColor(this.table.getGridColor());
+                    Rectangle rcr = this.table.getCellRect(row, draggedColumnIndex, true);
+                    rcr.x += distance;
+                    int x1 = rcr.x;
+                    int y1 = rcr.y;
+                    int x2 = x1 + rcr.width - 1;
+                    int y2 = y1 + rcr.height - 1;
+                    g.drawLine(x1, y2, x2, y2);
+                }
             }
         }
     }
