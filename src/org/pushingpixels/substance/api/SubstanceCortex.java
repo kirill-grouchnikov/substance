@@ -258,9 +258,7 @@ public class SubstanceCortex {
                 currentSkin = newSkin;
 
                 if (toUpdateWindows) {
-                    for (Window window : Window.getWindows()) {
-                        SwingUtilities.updateComponentTreeUI(window);
-                    }
+                    SubstanceCoreUtilities.updateActiveUi();
                 }
 
                 for (SkinChangeListener skinChangeListener : skinChangeListeners)
@@ -852,11 +850,7 @@ public class SubstanceCortex {
                 Boolean useConstantThemesOnOptionPanes) {
             UIManager.put(SubstanceSynapse.USE_THEMED_ICONS_ON_OPTION_PANES,
                     useConstantThemesOnOptionPanes);
-            SwingUtilities.invokeLater(() -> {
-                for (Window window : Window.getWindows()) {
-                    SwingUtilities.updateComponentTreeUI(window);
-                }
-            });
+            SwingUtilities.invokeLater(SubstanceCoreUtilities::updateActiveUi);
         }
 
         /**
@@ -901,11 +895,7 @@ public class SubstanceCortex {
                         "Cannot pass null. Did you mean PLATFORM or SWING_DEFAULT?");
             }
             GlobalScope.buttonBarButtonOrder = buttonBarButtonOrder;
-            SwingUtilities.invokeLater(() -> {
-                for (Window window : Window.getWindows()) {
-                    SwingUtilities.updateComponentTreeUI(window);
-                }
-            });
+            SwingUtilities.invokeLater(SubstanceCoreUtilities::updateActiveUi);
         }
 
         /**
@@ -936,11 +926,7 @@ public class SubstanceCortex {
                         "Cannot pass null. Did you mean PLATFORM or SWING_DEFAULT?");
             }
             GlobalScope.buttonBarGravity = buttonBarGravity;
-            SwingUtilities.invokeLater(() -> {
-                for (Window window : Window.getWindows()) {
-                    SwingUtilities.updateComponentTreeUI(window);
-                }
-            });
+            SwingUtilities.invokeLater(SubstanceCoreUtilities::updateActiveUi);
         }
 
         /**
@@ -998,11 +984,7 @@ public class SubstanceCortex {
                     titleControlButtonGroupHorizontalGravity);
             UIManager.put(SubstanceSynapse.TITLE_ICON_HORIZONTAL_GRAVITY,
                     titleIconHorizontalGravity);
-            SwingUtilities.invokeLater(() -> {
-                for (Window window : Window.getWindows()) {
-                    SwingUtilities.updateComponentTreeUI(window);
-                }
-            });
+            SwingUtilities.invokeLater(SubstanceCoreUtilities::updateActiveUi);
         }
 
         /**

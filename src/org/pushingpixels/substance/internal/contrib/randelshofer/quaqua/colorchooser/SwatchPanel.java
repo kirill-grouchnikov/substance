@@ -64,8 +64,8 @@ public class SwatchPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
     
     
-    
-    public boolean isFocusTraversable() {
+    @Override
+    public boolean isFocusable() {
         return false;
     }
     

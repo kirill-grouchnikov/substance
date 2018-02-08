@@ -69,13 +69,13 @@ public class SubstanceTitleButton extends JButton {
 	}
 
 	@Override
-	public boolean isFocusTraversable() {
+	public boolean isFocusable() {
 		return false;
 	}
 
 	@Override
 	public void requestFocus() {
-	};
+	}
 
 	@Override
 	public AccessibleContext getAccessibleContext() {

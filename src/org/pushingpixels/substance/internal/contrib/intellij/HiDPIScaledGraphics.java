@@ -470,6 +470,7 @@ class HiDPIScaledGraphics extends Graphics2D {
   }
 
   @Override
+  @SuppressWarnings("deprecation")
   @Deprecated
   public Rectangle getClipRect() {
     return myPeer.getClipRect();

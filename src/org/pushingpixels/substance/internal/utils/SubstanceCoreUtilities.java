@@ -83,6 +83,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
+import javax.swing.MenuElement;
+import javax.swing.MenuSelectionManager;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -2074,5 +2076,17 @@ public class SubstanceCoreUtilities {
             return ui.getTitlePane();
         }
         return null;
+    }
+    
+    public static void updateActiveUi() {
+        for (Window window : Window.getWindows()) {
+            SwingUtilities.updateComponentTreeUI(window);
+        }
+        
+        for (MenuElement menuElement : MenuSelectionManager.defaultManager().getSelectedPath()) {
+            if (menuElement instanceof JPopupMenu) {
+                SwingUtilities.updateComponentTreeUI((JPopupMenu) menuElement);
+            }
+        }
     }
 }
