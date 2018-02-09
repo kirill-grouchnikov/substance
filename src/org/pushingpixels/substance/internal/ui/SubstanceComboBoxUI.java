@@ -38,6 +38,7 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -523,6 +524,8 @@ public class SubstanceComboBoxUI extends BasicComboBoxUI implements TransitionAw
             int ih = icon.getIconHeight();
             int origButtonWidth = SubstanceSizeUtils.getScrollBarWidth(componentFontSize);
             Graphics2D forIcon = (Graphics2D) graphics.create();
+            forIcon.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_BICUBIC);
             int iconY = 1 + insets.top + (height - insets.top - insets.bottom - ih) / 2;
             if (this.comboBox.getComponentOrientation().isLeftToRight()) {
                 int iconX = width - origButtonWidth - insets.right / 2 + (origButtonWidth - iw) / 2;

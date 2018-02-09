@@ -636,9 +636,50 @@ public class SubstanceCoreUtilities {
      *            Image height.
      * @return Transparent image of specified dimension.
      */
-    public static BufferedImage getBlankImage(BufferedImage image) {
-    	int imageWidth = image.getWidth();
-    	int imageHeight = image.getHeight();
+    public static BufferedImage getBlankUnscaledImage(int width, int height) {
+        if (MemoryAnalyzer.isRunning()) {
+            // see if the request is unusual
+            if ((width >= 100) || (height >= 100)) {
+                StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+                StringBuffer sb = new StringBuffer();
+                int count = 0;
+                for (StackTraceElement stackEntry : stack) {
+                    if (count++ > 8)
+                        break;
+                    sb.append(stackEntry.getClassName() + ".");
+                    sb.append(stackEntry.getMethodName() + " [");
+                    sb.append(stackEntry.getLineNumber() + "]");
+                    sb.append("\n");
+                }
+                MemoryAnalyzer.enqueueUsage("Blank " + width + "*" + height + "\n" + sb.toString());
+            }
+        }
+
+        if (UIUtil.getScaleFactor() > 1.0) {
+            JBHiDPIScaledImage result = new JBHiDPIScaledImage(null, width, height,
+                    BufferedImage.TYPE_INT_ARGB);
+            result.setIgnoreScaling();
+            return result;
+        } else {
+            GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsDevice d = e.getDefaultScreenDevice();
+            GraphicsConfiguration c = d.getDefaultConfiguration();
+            return c.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
+        }
+    }
+
+    /**
+     * Retrieves transparent image of specified dimension.
+     * 
+     * @param width
+     *            Image width.
+     * @param height
+     *            Image height.
+     * @return Transparent image of specified dimension.
+     */
+    public static BufferedImage getBlankUnscaledImage(BufferedImage image) {
+        int imageWidth = image.getWidth();
+        int imageHeight = image.getHeight();
         if (MemoryAnalyzer.isRunning()) {
             // see if the request is unusual
             if ((imageWidth >= 100) || (imageHeight >= 100)) {
@@ -653,12 +694,16 @@ public class SubstanceCoreUtilities {
                     sb.append(stackEntry.getLineNumber() + "]");
                     sb.append("\n");
                 }
-                MemoryAnalyzer.enqueueUsage("Blank " + imageWidth + "*" + imageHeight + "\n" + sb.toString());
+                MemoryAnalyzer.enqueueUsage(
+                        "Blank " + imageWidth + "*" + imageHeight + "\n" + sb.toString());
             }
         }
 
         if (UIUtil.getScaleFactor() > 1.0) {
-            return new JBHiDPIScaledImage(null, imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+            JBHiDPIScaledImage result = new JBHiDPIScaledImage(null, imageWidth, imageHeight,
+                    BufferedImage.TYPE_INT_ARGB);
+            result.setIgnoreScaling();
+            return result;
         } else {
             GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
             GraphicsDevice d = e.getDefaultScreenDevice();
@@ -947,10 +992,8 @@ public class SubstanceCoreUtilities {
             throw new IllegalArgumentException("Heights are not the same: " + imageTop.getHeight()
                     + " and " + imageBottom.getHeight());
 
-        BufferedImage result = getBlankImage(width, height);
+        BufferedImage result = getBlankUnscaledImage(imageTop);
         Graphics2D graphics = (Graphics2D) result.createGraphics();
-        double scaleFactor = UIUtil.getScaleFactor();
-        graphics.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
 
         int startY = (int) (start * height);
         int endY = (int) (end * height);
@@ -961,15 +1004,14 @@ public class SubstanceCoreUtilities {
             graphics.drawImage(imageBottom, 0, startY, width, height, 0, startY, width, height,
                     null);
         } else {
-            BufferedImage rampBottom = getBlankImage(width, rampHeight);
+            BufferedImage rampBottom = getBlankUnscaledImage(width, rampHeight);
             Graphics2D rampBottomG = (Graphics2D) rampBottom.getGraphics();
             rampBottomG.setPaint(new GradientPaint(new Point(0, 0), new Color(0, 0, 0, 255),
                     new Point(0, rampHeight), new Color(0, 0, 0, 0)));
             rampBottomG.fillRect(0, 0, width, rampHeight);
 
-            BufferedImage tempBottom = getBlankImage(width, height - startY);
+            BufferedImage tempBottom = getBlankUnscaledImage(width, height - startY);
             Graphics2D tempBottomG = (Graphics2D) tempBottom.getGraphics();
-            tempBottomG.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
             tempBottomG.drawImage(imageBottom, 0, 0, width, height - startY, 0, startY, width,
                     height, null);
             tempBottomG.setComposite(AlphaComposite.DstOut);
@@ -1007,10 +1049,8 @@ public class SubstanceCoreUtilities {
             throw new IllegalArgumentException("Heights are not the same: " + imageLeft.getHeight()
                     + " and " + imageRight.getHeight());
 
-        BufferedImage result = getBlankImage(width, height);
-        Graphics2D graphics = (Graphics2D) result.getGraphics().create();
-        double scaleFactor = UIUtil.getScaleFactor();
-        graphics.scale(1.0f / scaleFactor, 1.0f / scaleFactor);
+        BufferedImage result = getBlankUnscaledImage(imageLeft);
+        Graphics2D graphics = (Graphics2D) result.createGraphics();
 
         int startX = (int) (start * width);
         int endX = (int) (end * width);
@@ -1021,13 +1061,13 @@ public class SubstanceCoreUtilities {
             graphics.drawImage(imageRight, startX, 0, width, height, startX, 0, width, height,
                     null);
         } else {
-            BufferedImage rampRight = getBlankImage(rampWidth, height);
+            BufferedImage rampRight = getBlankUnscaledImage(rampWidth, height);
             Graphics2D rampRightG = (Graphics2D) rampRight.getGraphics();
             rampRightG.setPaint(new GradientPaint(new Point(0, 0), new Color(0, 0, 0, 255),
                     new Point(rampWidth, 0), new Color(0, 0, 0, 0)));
             rampRightG.fillRect(0, 0, rampWidth, height);
 
-            BufferedImage tempRight = getBlankImage(width - startX, height);
+            BufferedImage tempRight = getBlankUnscaledImage(width - startX, height);
             Graphics2D tempRightG = (Graphics2D) tempRight.getGraphics();
             tempRightG.drawImage(imageRight, 0, 0, width - startX, height, startX, 0, width, height,
                     null);
@@ -2077,12 +2117,12 @@ public class SubstanceCoreUtilities {
         }
         return null;
     }
-    
+
     public static void updateActiveUi() {
         for (Window window : Window.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
-        
+
         for (MenuElement menuElement : MenuSelectionManager.defaultManager().getSelectedPath()) {
             if (menuElement instanceof JPopupMenu) {
                 SwingUtilities.updateComponentTreeUI((JPopupMenu) menuElement);

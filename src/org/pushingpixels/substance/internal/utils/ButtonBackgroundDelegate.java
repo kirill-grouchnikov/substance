@@ -146,7 +146,6 @@ public class ButtonBackgroundDelegate {
         // }
         boolean isContentAreaFilled = button.isContentAreaFilled();
         boolean isBorderPainted = button.isBorderPainted();
-        double factor = UIUtil.getScaleFactor();
 
         // compute color scheme
         SubstanceColorScheme baseBorderScheme = SubstanceColorSchemeUtilities.getColorScheme(button,
@@ -193,15 +192,13 @@ public class ButtonBackgroundDelegate {
                         regularBackgrounds.put(key2, layer2);
                     }
 
-                    BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
+                    BufferedImage result = SubstanceCoreUtilities.getBlankUnscaledImage(layer1);
                     Graphics2D g2d = result.createGraphics();
                     if (cyclePos < 1.0f)
-                        g2d.drawImage(layer1, 0, 0, (int) (layer1.getWidth() / factor),
-                                (int) (layer1.getHeight() / factor), null);
+                        g2d.drawImage(layer1, 0, 0, layer1.getWidth(), layer1.getHeight(), null);
                     if (cyclePos > 0.0f) {
                         g2d.setComposite(AlphaComposite.SrcOver.derive(cyclePos));
-                        g2d.drawImage(layer2, 0, 0, (int) (layer2.getWidth() / factor),
-                                (int) (layer2.getHeight() / factor), null);
+                        g2d.drawImage(layer2, 0, 0, layer2.getWidth(), layer2.getHeight(), null);
                     }
                     g2d.dispose();
                     return result;
@@ -236,11 +233,10 @@ public class ButtonBackgroundDelegate {
             return layerBase;
         }
 
-        BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
+        BufferedImage result = SubstanceCoreUtilities.getBlankUnscaledImage(layerBase);
         Graphics2D g2d = result.createGraphics();
         // draw the base layer
-        g2d.drawImage(layerBase, 0, 0, (int) (layerBase.getWidth() / factor),
-                (int) (layerBase.getHeight() / factor), null);
+        g2d.drawImage(layerBase, 0, 0, layerBase.getWidth(), layerBase.getHeight(), null);
         // System.out.println("\nPainting base state " + currState);
 
         // draw the other active layers
@@ -274,8 +270,7 @@ public class ButtonBackgroundDelegate {
                             isBorderPainted);
                     regularBackgrounds.put(key, layer);
                 }
-                g2d.drawImage(layer, 0, 0, (int) (layer.getWidth() / factor),
-                        (int) (layer.getHeight() / factor), null);
+                g2d.drawImage(layer, 0, 0, layer.getWidth(), layer.getHeight(), null);
             }
         }
         g2d.dispose();

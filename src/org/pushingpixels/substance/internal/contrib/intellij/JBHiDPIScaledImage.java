@@ -32,6 +32,7 @@ public class JBHiDPIScaledImage extends BufferedImage implements IsHiDpiAware {
     private final Image myImage;
     private int myWidth; // == myImage.width / scale
     private int myHeight; // == myImage.height / scale
+    private boolean ignoreScaling;
 
     public JBHiDPIScaledImage(int width, int height, int type) {
         this(null, (int) (UIUtil.getScaleFactor() * width),
@@ -53,6 +54,10 @@ public class JBHiDPIScaledImage extends BufferedImage implements IsHiDpiAware {
         myImage = null;
         myWidth = width;
         myHeight = height;
+    }
+
+    public void setIgnoreScaling() {
+        this.ignoreScaling = true;
     }
 
     @Override
@@ -88,6 +93,10 @@ public class JBHiDPIScaledImage extends BufferedImage implements IsHiDpiAware {
     public Graphics2D createGraphics() {
         Graphics2D g = super.createGraphics();
         if (myImage == null) {
+            if (!this.ignoreScaling) {
+                double scaleFactor = UIUtil.getScaleFactor();
+                g.scale(scaleFactor, scaleFactor);
+            }
             return new HiDPIScaledGraphics(g);
         }
         return g;

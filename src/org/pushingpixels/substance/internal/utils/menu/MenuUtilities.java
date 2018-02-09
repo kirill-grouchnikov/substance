@@ -36,6 +36,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Area;
 import java.beans.PropertyChangeEvent;
@@ -669,6 +670,8 @@ public class MenuUtilities {
         // draw the check icon
         if (checkIcon != null) {
             if (useCheckAndArrow(menuItem)) {
+                graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                        RenderingHints.VALUE_INTERPOLATION_BICUBIC);
                 graphics.translate(mli.checkIconRect.x, mli.checkIconRect.y);
                 checkIcon.paintIcon(menuItem, graphics, 0, 0);
                 graphics.translate(-mli.checkIconRect.x, -mli.checkIconRect.y);
@@ -726,6 +729,8 @@ public class MenuUtilities {
         // draw the arrow
         if ((arrowIcon != null) && useCheckAndArrow(menuItem)) {
             graphics.translate(mli.arrowIconRect.x, mli.arrowIconRect.y);
+            graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_BICUBIC);
             arrowIcon.paintIcon(menuItem, graphics, 0, 0);
         }
         graphics.dispose();

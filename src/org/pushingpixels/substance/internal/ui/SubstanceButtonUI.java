@@ -37,6 +37,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -499,6 +500,8 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 					? SubstanceCoreUtilities.getThemedIcon(b, originalIcon) : originalIcon;
 
 		graphics.setComposite(WidgetUtilities.getAlphaComposite(b, g));
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		float activeAmount = this.substanceVisualStateTracker
 				.getStateTransitionTracker().getActiveStrength();
 		graphics.translate(iconRect.x, iconRect.y);

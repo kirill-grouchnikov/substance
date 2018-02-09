@@ -919,8 +919,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
                             SwingConstants.TOP, colorScheme, borderScheme, false);
                     int fw = backgroundImage.getWidth();
                     int fh = backgroundImage.getHeight();
-                    double factor = UIUtil.getScaleFactor();
-                    BufferedImage fade = SubstanceCoreUtilities.getBlankImage(backgroundImage);
+                    BufferedImage fade = SubstanceCoreUtilities
+                            .getBlankUnscaledImage(backgroundImage);
                     Graphics2D fadeGraphics = fade.createGraphics();
                     fadeGraphics.setColor(tabColor);
                     fadeGraphics.fillRect(0, 0, fw, fh);
@@ -931,8 +931,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
                     }
                     BufferedImage background = SubstanceTabbedPaneUI.getTabBackground(tabPane,
                             width, height, tabPlacement, colorScheme, borderScheme, true);
-                    fadeGraphics.drawImage(background, 0, 0, (int) (background.getWidth() / factor),
-                            (int) (background.getHeight() / factor), null);
+                    fadeGraphics.drawImage(background, 0, 0, background.getWidth(),
+                            background.getHeight(), null);
 
                     backgroundImage = SubstanceCoreUtilities.blendImagesVertical(backgroundImage,
                             fade, skin.getTabFadeStart(), skin.getTabFadeEnd());
@@ -1038,7 +1038,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
         SubstanceColorScheme baseColorScheme = SubstanceColorSchemeUtilities
                 .getColorScheme(this.tabPane, tabIndex, ColorSchemeAssociationKind.TAB, currState);
         BufferedImage fullOpacity = null;
-        double scaleFactor = UIUtil.getScaleFactor();
+        // double scaleFactor = UIUtil.getScaleFactor();
         // Slightly reduce the tab width to create "gaps" between tab visuals
         w -= 1;
 
@@ -1060,15 +1060,13 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
                     tabIndex, x, y, w, h, tabPlacement, SubstanceSlices.Side.BOTTOM, colorScheme2,
                     baseBorderScheme);
 
-            fullOpacity = SubstanceCoreUtilities.getBlankImage(w, h);
+            fullOpacity = SubstanceCoreUtilities.getBlankUnscaledImage(layer1);
             Graphics2D g2d = fullOpacity.createGraphics();
             if (cyclePos < 1.0f)
-                g2d.drawImage(layer1, 0, 0, (int) (layer1.getWidth() / scaleFactor),
-                        (int) (layer1.getHeight() / scaleFactor), null);
+                g2d.drawImage(layer1, 0, 0, layer1.getWidth(), layer1.getHeight(), null);
             if (cyclePos > 0.0f) {
                 g2d.setComposite(AlphaComposite.SrcOver.derive(cyclePos));
-                g2d.drawImage(layer2, 0, 0, (int) (layer2.getWidth() / scaleFactor),
-                        (int) (layer2.getHeight() / scaleFactor), null);
+                g2d.drawImage(layer2, 0, 0, layer2.getWidth(), layer2.getHeight(), null);
             }
             g2d.dispose();
         } else {
@@ -1080,11 +1078,10 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
                     || (modelStateInfo.getStateContributionMap().size() == 1)) {
                 fullOpacity = layerBase;
             } else {
-                fullOpacity = SubstanceCoreUtilities.getBlankImage(w, h);
+                fullOpacity = SubstanceCoreUtilities.getBlankUnscaledImage(layerBase);
                 Graphics2D g2d = fullOpacity.createGraphics();
                 // draw the base layer
-                g2d.drawImage(layerBase, 0, 0, (int) (layerBase.getWidth() / scaleFactor),
-                        (int) (layerBase.getHeight() / scaleFactor), null);
+                g2d.drawImage(layerBase, 0, 0, layerBase.getWidth(), layerBase.getHeight(), null);
 
                 // draw the other active layers
                 for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : modelStateInfo
@@ -1105,8 +1102,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
                         BufferedImage layer = SubstanceTabbedPaneUI.getFinalTabBackgroundImage(
                                 this.tabPane, tabIndex, x, y, w, h, tabPlacement,
                                 SubstanceSlices.Side.BOTTOM, fillScheme, borderScheme);
-                        g2d.drawImage(layer, 0, 0, (int) (layer.getWidth() / scaleFactor),
-                                (int) (layer.getHeight() / scaleFactor), null);
+                        g2d.drawImage(layer, 0, 0, layer.getWidth(), layer.getHeight(), null);
                     }
                 }
             }
@@ -1147,6 +1143,7 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 
         finalAlpha *= SubstanceColorSchemeUtilities.getAlpha(this.tabPane.getComponentAt(tabIndex),
                 currState);
+        double scaleFactor = UIUtil.getScaleFactor();
 
         graphics.setComposite(WidgetUtilities.getAlphaComposite(this.tabPane, finalAlpha, g));
         graphics.drawImage(fullOpacity, x, y, (int) (fullOpacity.getWidth() / scaleFactor),
@@ -1164,6 +1161,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
             if (alpha > 0.0) {
                 graphics.setComposite(
                         WidgetUtilities.getAlphaComposite(this.tabPane, finalAlpha * alpha, g));
+                graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                        RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
                 // paint close button
                 Rectangle orig = this.getCloseButtonRectangleForDraw(tabIndex, x, y, w, h);

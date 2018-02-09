@@ -295,6 +295,8 @@ public final class SubstanceImageCreator {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
                 RenderingHints.VALUE_STROKE_PURE);
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         // graphics.setColor(Color.green);
         // graphics.drawRect(0, 0, (int) width -1 , (int) height - 1);
 
@@ -918,6 +920,8 @@ public final class SubstanceImageCreator {
         Graphics2D graphics = (Graphics2D) image.createGraphics();
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         int start = iSize / 4;
         int end = iSize - start;
 

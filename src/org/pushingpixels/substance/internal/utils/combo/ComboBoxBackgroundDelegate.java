@@ -127,12 +127,10 @@ public class ComboBoxBackgroundDelegate {
             return layerBase;
         }
 
-        BufferedImage result = SubstanceCoreUtilities.getBlankImage(width, height);
+        BufferedImage result = SubstanceCoreUtilities.getBlankUnscaledImage(layerBase);
         Graphics2D g2d = result.createGraphics();
-        double factor = UIUtil.getScaleFactor();
         // draw the base layer
-        g2d.drawImage(layerBase, 0, 0, (int) (layerBase.getWidth() / factor),
-                (int) (layerBase.getHeight() / factor), null);
+        g2d.drawImage(layerBase, 0, 0, layerBase.getWidth(), layerBase.getHeight(), null);
         // System.out.println("\nPainting base state " + currState);
 
         // draw the other active layers
@@ -162,8 +160,7 @@ public class ComboBoxBackgroundDelegate {
                             height, fillScheme, borderScheme, radius);
                     regularBackgrounds.put(key, layer);
                 }
-                g2d.drawImage(layer, 0, 0, (int) (layer.getWidth() / factor),
-                        (int) (layer.getHeight() / factor), null);
+                g2d.drawImage(layer, 0, 0, layer.getWidth(), layer.getHeight(), null);
             }
         }
         g2d.dispose();

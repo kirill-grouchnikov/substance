@@ -239,13 +239,9 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements Transition
             return baseLayer;
         }
 
-        double scaleFactor = UIUtil.getScaleFactor();
-        BufferedImage result = SubstanceCoreUtilities.getBlankImage(
-                (int) (baseLayer.getWidth() / scaleFactor),
-                (int) (baseLayer.getHeight() / scaleFactor));
+        BufferedImage result = SubstanceCoreUtilities.getBlankUnscaledImage(baseLayer);
         Graphics2D g2d = result.createGraphics();
-        g2d.drawImage(baseLayer, 0, 0, (int) (baseLayer.getWidth() / scaleFactor),
-                (int) (baseLayer.getHeight() / scaleFactor), null);
+        g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth(), baseLayer.getHeight(), null);
 
         for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
                 .entrySet()) {
@@ -267,8 +263,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements Transition
                     .getColorScheme(this.scrollbar, ColorSchemeAssociationKind.BORDER, activeState);
             BufferedImage layer = getThumbVertical(this.scrollbar, width, height, fillScheme,
                     borderScheme);
-            g2d.drawImage(layer, 0, 0, (int) (layer.getWidth() / scaleFactor),
-                    (int) (layer.getHeight() / scaleFactor), null);
+            g2d.drawImage(layer, 0, 0, layer.getWidth(), layer.getHeight(), null);
         }
 
         g2d.dispose();
@@ -364,13 +359,9 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements Transition
             return baseLayer;
         }
 
-        double scaleFactor = UIUtil.getScaleFactor();
-        BufferedImage result = SubstanceCoreUtilities.getBlankImage(
-                (int) (baseLayer.getWidth() / scaleFactor),
-                (int) (baseLayer.getHeight() / scaleFactor));
+        BufferedImage result = SubstanceCoreUtilities.getBlankUnscaledImage(baseLayer);
         Graphics2D g2d = result.createGraphics();
-        g2d.drawImage(baseLayer, 0, 0, (int) (baseLayer.getWidth() / scaleFactor),
-                (int) (baseLayer.getHeight() / scaleFactor), null);
+        g2d.drawImage(baseLayer, 0, 0, baseLayer.getWidth(), baseLayer.getHeight(), null);
 
         for (Map.Entry<ComponentState, StateTransitionTracker.StateContributionInfo> activeEntry : activeStates
                 .entrySet()) {
@@ -394,8 +385,7 @@ public class SubstanceScrollBarUI extends BasicScrollBarUI implements Transition
                     .getColorScheme(this.scrollbar, ColorSchemeAssociationKind.BORDER, activeState);
             BufferedImage layer = getThumbHorizontal(this.scrollbar, width, height, fillScheme,
                     borderScheme);
-            g2d.drawImage(layer, 0, 0, (int) (layer.getWidth() / scaleFactor),
-                    (int) (layer.getHeight() / scaleFactor), null);
+            g2d.drawImage(layer, 0, 0, layer.getWidth(), layer.getHeight(), null);
         }
 
         g2d.dispose();

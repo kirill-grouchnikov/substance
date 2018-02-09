@@ -36,6 +36,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
@@ -363,6 +364,8 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements Transi
 
         // Paint the Icon
         if (icon != null) {
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_BICUBIC);
             icon.paintIcon(c, g2d, iconRect.x, iconRect.y);
         }
 
