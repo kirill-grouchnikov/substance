@@ -98,6 +98,7 @@ import org.pushingpixels.substance.api.SubstanceSlices.SubstanceWidgetType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.skin.SkinInfo;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
@@ -1278,9 +1279,11 @@ public class SubstanceTitlePane extends JComponent {
             // g.setColor(Color.yellow);
             // g.fillRect(0, 0, getWidth(), getHeight());
             if (appIcon != null) {
-                int scaleFactor = SubstanceCoreUtilities.isHiDpiAwareImage(appIcon) ? 2 : 1;
-                g.drawImage(appIcon, 0, 0, appIcon.getWidth(null) / scaleFactor,
-                        appIcon.getHeight(null) / scaleFactor, null);
+                float scaleFactor = SubstanceCoreUtilities.isHiDpiAwareImage(appIcon)
+                        ? (float) UIUtil.getScaleFactor()
+                        : 1;
+                g.drawImage(appIcon, 0, 0, (int) (appIcon.getWidth(null) / scaleFactor),
+                        (int) (appIcon.getHeight(null) / scaleFactor), null);
             } else {
                 Icon icon = UIManager.getIcon("InternalFrame.icon");
                 if (icon != null) {

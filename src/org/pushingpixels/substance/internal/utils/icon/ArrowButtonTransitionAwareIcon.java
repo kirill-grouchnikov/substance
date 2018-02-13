@@ -33,6 +33,7 @@ import java.awt.AlphaComposite;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 
@@ -193,6 +194,9 @@ public class ArrowButtonTransitionAwareIcon implements Icon {
 		BufferedImage result = SubstanceCoreUtilities.getBlankImage(layerBase
 				.getIconWidth(), layerBase.getIconHeight());
 		Graphics2D g2d = result.createGraphics();
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+
 		// draw the base layer
 		// System.out.println("Painting currState " + currState + ":" +
 		// baseAlpha);

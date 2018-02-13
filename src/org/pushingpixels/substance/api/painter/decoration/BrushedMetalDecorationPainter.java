@@ -65,7 +65,7 @@ public class BrushedMetalDecorationPainter extends
 			// some frameworks.
 			ClassLoader cl = SubstanceCoreUtilities
 					.getClassLoaderForResources();
-			URL metalUrl = cl.getResource("resource/brushed.gif");
+			URL metalUrl = cl.getResource("org/pushingpixels/substance/internal/image/brushed.gif");
 			this.originalTile = ImageIO.read(metalUrl);
 		} catch (Exception exc) {
 			// ignore - probably specified incorrect file

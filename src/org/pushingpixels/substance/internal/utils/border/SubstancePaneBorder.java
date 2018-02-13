@@ -87,9 +87,11 @@ public class SubstancePaneBorder extends AbstractBorder implements UIResource {
 
         Graphics2D graphics = (Graphics2D) g.create();
 
-        float strokeWidth = 0.5f + (float) UIUtil.getScaleFactor() / 2.0f;
-        graphics.setStroke(
-                new BasicStroke(strokeWidth, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+        double scaleFactor = UIUtil.getScaleFactor();
+        float strokeWidth = (scaleFactor <= 2.0f) ? 0.5f + (float) scaleFactor / 2.0f
+                : (float) scaleFactor;
+        graphics.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_SQUARE,
+                BasicStroke.JOIN_MITER));
 
         // bottom and right in ultra dark
         graphics.setColor(borderScheme.getUltraDarkColor());

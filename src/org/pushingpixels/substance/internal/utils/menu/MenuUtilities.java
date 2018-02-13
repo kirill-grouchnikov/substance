@@ -696,6 +696,8 @@ public class MenuUtilities {
                 boolean useThemed = SubstanceCoreUtilities.useThemedDefaultIcon(menuItem);
 
                 graphics.translate(mli.iconRect.x, mli.iconRect.y);
+                graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                        RenderingHints.VALUE_INTERPOLATION_BICUBIC);
                 if (!useThemed) {
                     icon.paintIcon(menuItem, graphics, 0, 0);
                 } else {

@@ -1151,6 +1151,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
 
         // Check if requested to paint close buttons.
         if (SubstanceCoreUtilities.hasCloseButton(this.tabPane, tabIndex) && isEnabled) {
+            graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
             float alpha = (isSelected || isRollover) ? 1.0f : 0.0f;
             if (!isSelected) {
@@ -1161,8 +1163,6 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
             if (alpha > 0.0) {
                 graphics.setComposite(
                         WidgetUtilities.getAlphaComposite(this.tabPane, finalAlpha * alpha, g));
-                graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                        RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
                 // paint close button
                 Rectangle orig = this.getCloseButtonRectangleForDraw(tabIndex, x, y, w, h);
@@ -1221,12 +1221,11 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
                                 (int) (layerBase.getWidth() / scaleFactor),
                                 (int) (layerBase.getHeight() / scaleFactor), null);
                     } else {
-                        BufferedImage complete = SubstanceCoreUtilities.getBlankImage(orig.width,
-                                orig.height);
+                        BufferedImage complete = SubstanceCoreUtilities.getBlankUnscaledImage(layerBase);
                         Graphics2D g2d = complete.createGraphics();
                         // draw the base layer
-                        g2d.drawImage(layerBase, 0, 0, (int) (layerBase.getWidth() / scaleFactor),
-                                (int) (layerBase.getHeight() / scaleFactor), null);
+                        g2d.drawImage(layerBase, 0, 0, layerBase.getWidth(),
+                                layerBase.getHeight(), null);
 
                         // draw the other active layers
                         Map<ComponentState, StateContributionInfo> contributionInfoMap = isCloseMarkOnParentBackground
@@ -1253,8 +1252,8 @@ public class SubstanceTabbedPaneUI extends BasicTabbedPaneUI {
                                 BufferedImage layer = SubstanceTabbedPaneUI.getCloseButtonImage(
                                         this.tabPane, orig.width, orig.height, toPaintCloseBorder,
                                         fillScheme, markScheme);
-                                g2d.drawImage(layer, 0, 0, (int) (layer.getWidth() / scaleFactor),
-                                        (int) (layer.getHeight() / scaleFactor), null);
+                                g2d.drawImage(layer, 0, 0, layer.getWidth(),
+                                        layer.getHeight(), null);
                             }
                         }
                         g2d.dispose();

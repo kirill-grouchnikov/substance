@@ -420,11 +420,12 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 		}
 
 		if (b.isFocusPainted()) {
-			SubstanceCoreUtilities.paintFocus(g, b, b, this, null, textRect,
+			SubstanceCoreUtilities.paintFocus(g2d, b, b, this, null, textRect,
 					1.0f, SubstanceSizeUtils
 							.getFocusRingPadding(SubstanceSizeUtils
 									.getComponentFontSize(b)));
 		}
+		g2d.dispose();
 
 		// g2d.setColor(Color.red);
 		// g2d.draw(iconRect);
@@ -569,6 +570,8 @@ public class SubstanceButtonUI extends BasicButtonUI implements
 		Graphics2D g2d = (Graphics2D) g.create();
 		RenderingUtils.installDesktopHints(g2d, c);
 		this.paint(g2d, c);
+//		g2d.setColor(new Color(255, 0, 0, 96));
+//		g2d.fillRect(0, 0, c.getWidth(), c.getHeight());
 		g2d.dispose();
 	}
 

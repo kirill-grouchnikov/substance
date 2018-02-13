@@ -371,7 +371,7 @@ public class SubstanceRadioButtonUI extends BasicRadioButtonUI implements Transi
 
         if (b.isFocusPainted()) {
             // make sure that the focus ring is not clipped
-            int focusRingPadding = SubstanceSizeUtils
+            float focusRingPadding = SubstanceSizeUtils
                     .getFocusRingPadding(SubstanceSizeUtils.getComponentFontSize(button)) / 2;
             SubstanceCoreUtilities.paintFocus(g2d, button, button, this, null, textRect, 1.0f,
                     focusRingPadding);

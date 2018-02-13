@@ -102,23 +102,21 @@ public class StandardButtonShaper implements SubstanceButtonShaper, RectangularB
             public Insets getBorderInsets(Component c) {
                 int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
                 Insets buttonInsets = SubstanceSizeUtils.getButtonInsets(fontSize);
-                int focusPadding = SubstanceSizeUtils.getFocusRingPadding(fontSize);
+                float focusPadding = SubstanceSizeUtils.getFocusRingPadding(fontSize);
                 int lrPadding = SubstanceCoreUtilities.hasText(button)
                         ? SubstanceSizeUtils.getTextButtonLRPadding(fontSize)
                         : 0;
                 Set<SubstanceSlices.Side> openSides = SubstanceCoreUtilities.getSides(button,
                         SubstanceSynapse.BUTTON_OPEN_SIDE);
-                int left = lrPadding + buttonInsets.left + focusPadding
-                        + ((openSides != null) && openSides.contains(SubstanceSlices.Side.LEFT)
-                                ? -1
+                int left = lrPadding + buttonInsets.left + (int) focusPadding
+                        + ((openSides != null) && openSides.contains(SubstanceSlices.Side.LEFT) ? -1
                                 : 0);
-                int right = lrPadding + buttonInsets.right + focusPadding
+                int right = lrPadding + buttonInsets.right + (int) focusPadding
                         + ((openSides != null) && openSides.contains(SubstanceSlices.Side.RIGHT)
                                 ? -1
                                 : 0);
                 int top = buttonInsets.top
-                        + ((openSides != null) && openSides.contains(SubstanceSlices.Side.TOP)
-                                ? -1
+                        + ((openSides != null) && openSides.contains(SubstanceSlices.Side.TOP) ? -1
                                 : 0);
                 int bottom = buttonInsets.bottom
                         + ((openSides != null) && openSides.contains(SubstanceSlices.Side.BOTTOM)

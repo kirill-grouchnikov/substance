@@ -191,14 +191,16 @@ public final class SubstanceSlices {
                             BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 0.0f,
                             new float[] { dashLength, dashGap }, dashPhase));
 
-                    Shape contour = shaper.getButtonOutline((AbstractButton) mainComp, 0.0f,
-                            mainComp.getWidth(), mainComp.getHeight(), false);
+                    Shape contour = shaper.getButtonOutline((AbstractButton) mainComp,
+                            2 * SubstanceSizeUtils.getBorderStrokeWidth(), mainComp.getWidth(),
+                            mainComp.getHeight(), false);
                     graphics.draw(contour);
                 } else {
-                    graphics.translate(1, 1);
+                    float delta = SubstanceSizeUtils.getBorderStrokeWidth();
                     Shape contour = (focusShape != null) ? focusShape
-                            : SubstanceOutlineUtilities.getBaseOutline(mainComp.getWidth() - 2,
-                                    mainComp.getHeight() - 2,
+                            : SubstanceOutlineUtilities.getBaseOutline(
+                                    mainComp.getWidth() - 2 * delta,
+                                    mainComp.getHeight() - 2 * delta,
                                     SubstanceSizeUtils.getClassicButtonCornerRadius(
                                             SubstanceSizeUtils.getComponentFontSize(mainComp)),
                                     null);

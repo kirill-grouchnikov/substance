@@ -41,6 +41,7 @@ import org.pushingpixels.substance.api.SubstanceCortex.ComponentScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceImageCreator;
 import org.pushingpixels.substance.internal.utils.WidgetUtilities;
@@ -199,9 +200,11 @@ public abstract class ImageWrapperDecorationPainter implements SubstanceDecorati
         graphics.setComposite(WidgetUtilities.getAlphaComposite(comp, this.textureAlpha, g));
 
         Image colorizedTile = this.getColorizedTile(tileScheme);
-        int scaleFactor = SubstanceCoreUtilities.isHiDpiAwareImage(this.originalTile) ? 2 : 1;
-        int tileWidth = colorizedTile.getWidth(null) / scaleFactor;
-        int tileHeight = colorizedTile.getHeight(null) / scaleFactor;
+        float scaleFactor = SubstanceCoreUtilities.isHiDpiAwareImage(this.originalTile)
+                ? (float) UIUtil.getScaleFactor()
+                : 1;
+        int tileWidth = (int) (colorizedTile.getWidth(null) / scaleFactor);
+        int tileHeight = (int) (colorizedTile.getHeight(null) / scaleFactor);
 
         offsetTextureX = offsetTextureX % tileWidth;
         offsetTextureY = offsetTextureY % tileHeight;
@@ -249,14 +252,16 @@ public abstract class ImageWrapperDecorationPainter implements SubstanceDecorati
     protected BufferedImage getColorizedTile(SubstanceColorScheme scheme) {
         BufferedImage result = this.colorizedTileMap.get(scheme.getDisplayName());
         if (result == null) {
-            int scaleFactor = SubstanceCoreUtilities.isHiDpiAwareImage(this.originalTile) ? 2 : 1;
+            float scaleFactor = SubstanceCoreUtilities.isHiDpiAwareImage(this.originalTile)
+                    ? (float) UIUtil.getScaleFactor()
+                    : 1;
             int tileWidth = this.originalTile.getWidth(null);
             int tileHeight = this.originalTile.getHeight(null);
-            BufferedImage tileBi = SubstanceCoreUtilities.getBlankImage(tileWidth / scaleFactor,
-                    tileHeight / scaleFactor);
+            BufferedImage tileBi = SubstanceCoreUtilities.getBlankImage((int) (tileWidth / scaleFactor),
+                    (int) (tileHeight / scaleFactor));
             Graphics2D tile2D = tileBi.createGraphics();
-            tile2D.drawImage(this.originalTile, 0, 0, tileWidth / scaleFactor,
-                    tileHeight / scaleFactor, null);
+            tile2D.drawImage(this.originalTile, 0, 0, (int) (tileWidth / scaleFactor),
+                    (int) ( tileHeight / scaleFactor), null);
             tile2D.dispose();
             result = SubstanceImageCreator.getColorSchemeImage(tileBi, scheme, 0.0f);
             this.colorizedTileMap.put(scheme.getDisplayName(), result);

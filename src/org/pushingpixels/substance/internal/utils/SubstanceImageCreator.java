@@ -41,6 +41,7 @@ import java.awt.Image;
 import java.awt.LinearGradientPaint;
 import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.Polygon;
+import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -406,6 +407,8 @@ public final class SubstanceImageCreator {
         Graphics2D graphics = (Graphics2D) downArrowImage.getGraphics();
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         // graphics.setColor(new Color(255, 0, 0, 128));
         // graphics.fillRect(0, 0, downArrowImage.getWidth(), downArrowImage.getHeight());
 
@@ -1483,12 +1486,11 @@ public final class SubstanceImageCreator {
 
         graphics.setClip(capPath);
 
-        graphics.setPaint(new GradientPaint(0, baseTop / 2, lightColor, (int) (0.6 * width),
-                baseTop, mainColor));
-        graphics.fillRect(0, 0, width / 2, baseTop);
-        graphics.setPaint(new GradientPaint(width, baseTop / 2, lightColor, (int) (0.4 * width),
-                baseTop, mainColor));
-        graphics.fillRect(width / 2, 0, width / 2, baseTop);
+        RadialGradientPaint capPaint = new RadialGradientPaint(width / 2, baseTop, baseTop,
+                width / 2, 4 * baseTop / 3, new float[] { 0.0f, 0.1f, 1.0f },
+                new Color[] { mainColor, mainColor, lightColor }, CycleMethod.NO_CYCLE);
+        graphics.setPaint(capPaint);
+        graphics.fillRect(0, 0, width, baseTop);
 
         graphics.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
@@ -1594,6 +1596,8 @@ public final class SubstanceImageCreator {
         Graphics2D graphics = (Graphics2D) image.getGraphics().create();
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
         graphics.setColor(new Color(240, 240, 240));
         graphics.fillRect(0, 0, iw, ih);

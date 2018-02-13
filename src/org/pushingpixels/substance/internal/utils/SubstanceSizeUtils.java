@@ -439,11 +439,15 @@ public class SubstanceSizeUtils {
 	 *            Font size.
 	 * @return Focus ring padding amount under the specified font size.
 	 */
-	public static int getFocusRingPadding(int fontSize) {
-		if (fontSize < 14)
-			return 2;
-		return 3 + (int) SubstanceSizeUtils.getAdjustedSize(fontSize, 0, 3,
-				0.8f);
+	public static float getFocusRingPadding(int fontSize) {
+	    // Should always account for the border stroke width so that the focus ring
+	    // doesn't end too close to the outer border of the control
+	    float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
+		if (fontSize < 14) {
+			return 2 + borderStrokeWidth;
+		}
+		return 3 + SubstanceSizeUtils.getAdjustedSize(fontSize, 0, 3,
+				0.8f) + borderStrokeWidth;
 	}
 
 	/**

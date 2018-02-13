@@ -95,8 +95,15 @@ public class ClassicButtonShaper implements SubstanceButtonShaper, RectangularBu
             return result;
         }
 
+//        System.out.println("Getting button outline for " + width + "x" + height + " and " + extraInsets);
         result = SubstanceOutlineUtilities.getBaseOutline(width, height, radius, straightSides,
                 extraInsets);
+//        System.out.println("\t-->" + result.getBounds2D());
+//        try {
+//            throw new Exception();
+//        } catch (Throwable t) {
+//            t.printStackTrace(System.out);
+//        }
         contours.put(key, result);
         return result;
     }
@@ -107,17 +114,17 @@ public class ClassicButtonShaper implements SubstanceButtonShaper, RectangularBu
             public Insets getBorderInsets(Component c) {
                 int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
                 Insets buttonInsets = SubstanceSizeUtils.getButtonInsets(fontSize);
-                int focusPadding = SubstanceSizeUtils.getFocusRingPadding(fontSize);
+                float focusPadding = SubstanceSizeUtils.getFocusRingPadding(fontSize);
                 int lrPadding = SubstanceCoreUtilities.hasText(button)
                         ? SubstanceSizeUtils.getTextButtonLRPadding(fontSize)
                         : 0;
                 Set<SubstanceSlices.Side> openSides = SubstanceCoreUtilities.getSides(button,
                         SubstanceSynapse.BUTTON_OPEN_SIDE);
-                int left = lrPadding + buttonInsets.left + focusPadding
+                int left = lrPadding + buttonInsets.left + (int) focusPadding
                         + ((openSides != null) && openSides.contains(SubstanceSlices.Side.LEFT)
                                 ? -1
                                 : 0);
-                int right = lrPadding + buttonInsets.right + focusPadding
+                int right = lrPadding + buttonInsets.right + (int) focusPadding
                         + ((openSides != null) && openSides.contains(SubstanceSlices.Side.RIGHT)
                                 ? -1
                                 : 0);
@@ -166,8 +173,8 @@ public class ClassicButtonShaper implements SubstanceButtonShaper, RectangularBu
 
         int fontSize = SubstanceSizeUtils.getComponentFontSize(button);
         int extraPadding = SubstanceSizeUtils.getExtraPadding(fontSize);
-        int focusPadding = SubstanceSizeUtils.getFocusRingPadding(fontSize);
-        int iconPaddingWidth = 6 + 2 * extraPadding + 2 * focusPadding;
+        float focusPadding = SubstanceSizeUtils.getFocusRingPadding(fontSize);
+        int iconPaddingWidth = 6 + 2 * extraPadding + (int) (2 * focusPadding);
         int iconPaddingHeight = 6 + 2 * extraPadding;
         if (margin != null) {
             iconPaddingWidth = Math.max(iconPaddingWidth, margin.left + margin.right);

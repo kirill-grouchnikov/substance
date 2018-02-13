@@ -519,7 +519,12 @@ public class SubstanceTextUtilities {
             watermark.drawWatermarkImage(g2d, comp, 0, 0, comp.getWidth(), comp.getHeight());
         }
         g2d.setColor(backgr);
-        g2d.fillRect(0, 0, comp.getWidth(), comp.getHeight());
+
+        // Match the logic / shape in SubstanceImageCreator.paintSimpleBorder that draws the
+        // border
+        float borderStrokeWidth = SubstanceSizeUtils.getBorderStrokeWidth();
+        g2d.fill(new Rectangle2D.Float(borderStrokeWidth / 2.0f, borderStrokeWidth / 2.0f,
+                comp.getWidth() - borderStrokeWidth, comp.getHeight() - borderStrokeWidth));
 
         if (toOverlayWatermark) {
             if (watermark != null) {
@@ -594,7 +599,8 @@ public class SubstanceTextUtilities {
                     SubstanceColorUtilities.getAlphaColor(borderColor, 48), 0, shadowHeight,
                     SubstanceColorUtilities.getAlphaColor(borderColor, 0)));
             float yTop = SubstanceSizeUtils.getBorderStrokeWidth();
-            g2d.fill(new Rectangle2D.Float(0, yTop, comp.getWidth(), shadowHeight));
+            g2d.fill(new Rectangle2D.Float(borderStrokeWidth, yTop,
+                    comp.getWidth() - 2 * borderStrokeWidth, shadowHeight));
         }
         g2d.dispose();
     }

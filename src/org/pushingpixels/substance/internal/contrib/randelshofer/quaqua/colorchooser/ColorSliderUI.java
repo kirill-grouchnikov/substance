@@ -130,7 +130,7 @@ public class ColorSliderUI extends SubstanceSliderUI implements TransitionAwareU
 				thumbModel.setEnabled(slider.isEnabled());
 			}
 			if ("font".equals(evt.getPropertyName())) {
-				SwingUtilities.invokeLater(() -> slider.updateUI());
+				SwingUtilities.invokeLater(slider::updateUI);
 			}
 		};
 		this.slider.addPropertyChangeListener(this.substancePropertyChangeListener);

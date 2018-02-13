@@ -1114,7 +1114,7 @@ public class ColorWheelPanel extends SubstanceColorChooserPanel implements
 				gp = new GeneralPath();
 				if ((width > 200) && (i % 2 == 0)) {
 					AttributedString as = new AttributedString(""
-							+ (((i * 15) + 90) % 360) + "°");
+							+ (((i * 15) + 90) % 360) + "\u0112");
 					as.addAttribute(TextAttribute.FAMILY, fontFamily);
 					as.addAttribute(TextAttribute.SIZE, (float) (fontHeight));
 					as.addAttribute(TextAttribute.FOREGROUND, Color.black);
