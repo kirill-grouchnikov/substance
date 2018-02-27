@@ -33,6 +33,7 @@ import java.awt.AlphaComposite;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.KeyboardFocusManager;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -61,15 +62,17 @@ import org.pushingpixels.substance.internal.utils.SubstanceTitlePane;
 
 /**
  * <p>
- * Main class for <b>Substance </b> look and feel. There are three options to use Substance in your
+ * base class for <b>Substance </b> look and feel. There are three options to use Substance in your
  * application:
  * </p>
  * 
  * <ul>
- * <li>Use one of the core skin-based look-and-feels in the
+ * <li>Use {@link UIManager#setLookAndFeel(javax.swing.LookAndFeel)} or
+ * {@link UIManager#setLookAndFeel(String)} passing one of the core skin-based look-and-feels in the
  * <code>org.pushingpixels.substance.api.skin</code> package.</li>
- * <li>Extend this class and pass a skin instance to the
- * {@link SubstanceLookAndFeel#SubstanceLookAndFeel(SubstanceSkin)} constructor.</li>
+ * <li>Extend this class, pass a skin instance to the
+ * {@link #SubstanceLookAndFeel(SubstanceSkin)} constructor, and then use
+ * {@link UIManager#setLookAndFeel(javax.swing.LookAndFeel)}.</li>
  * <li>Call {@link SubstanceCortex.GlobalScope#setSkin(String)} or
  * {@link SubstanceCortex.GlobalScope#setSkin(SubstanceSkin)} static methods. These methods do not
  * require Substance to be the current look-and-feel.</li>
@@ -298,7 +301,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
         ShadowPopupFactory.install();
 
         SubstanceCortex.GlobalScope.setSkin(this.skin, false);
-        // setSkin(this.skin, false);
 
         // tracer for memory analysis
         String traceFilename = (String) UIManager.get(SubstanceSynapse.TRACE_FILE);
@@ -404,13 +406,14 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
         float alpha = SubstanceColorSchemeUtilities.getAlpha(component,
                 ComponentState.DISABLED_UNSELECTED);
         if (alpha < 1.0f) {
-            BufferedImage intermediate = SubstanceCoreUtilities.getBlankImage(icon.getIconWidth(),
+            BufferedImage intermediate = SubstanceCoreUtilities.getBlankUnscaledImage(icon.getIconWidth(),
                     icon.getIconHeight());
             Graphics2D g2d = intermediate.createGraphics();
             g2d.setComposite(AlphaComposite.SrcOver.derive(alpha));
-            double scaleFactor = UIUtil.getScaleFactor();
-            g2d.drawImage(result, 0, 0, (int) (result.getWidth() / scaleFactor),
-                    (int) (result.getHeight() / scaleFactor), null);
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            g2d.drawImage(result, 0, 0, result.getWidth(),
+                    result.getHeight(), null);
             g2d.dispose();
             result = intermediate;
         }

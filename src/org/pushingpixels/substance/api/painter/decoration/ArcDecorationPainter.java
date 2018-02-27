@@ -50,7 +50,6 @@ import org.pushingpixels.substance.api.SubstanceCortex.ComponentScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
-import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
@@ -147,9 +146,7 @@ public class ArcDecorationPainter implements SubstanceDecorationPainter {
         rgraphics.setClip(new Rectangle(0, 0, width, height));
         rgraphics.draw(mid);
 
-        double scaleFactor = UIUtil.getScaleFactor();
-        graphics.drawImage(rectangular, 0, 0, (int) (rectangular.getWidth() / scaleFactor),
-                (int) (rectangular.getHeight() / scaleFactor), null);
+        graphics.drawImage(rectangular, 0, 0, width, height, null);
     }
 
     /**

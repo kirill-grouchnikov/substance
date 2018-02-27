@@ -1723,6 +1723,8 @@ public final class SubstanceImageCreator {
         }
         BufferedImage origImage = SubstanceCoreUtilities.getBlankImage(w, h);
         Graphics2D g2d = (Graphics2D) origImage.getGraphics().create();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         original.paintIcon(comp, origImage.getGraphics(), 0, 0);
         g2d.dispose();
 

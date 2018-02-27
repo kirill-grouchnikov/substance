@@ -81,7 +81,7 @@ public class UIUtil {
                 return devicesScaleFactorCacheMap.get(device);
             }
 
-            double result = LookUtils.IS_JAVA_9 ? getScaleFactorModern(device)
+            double result = LookUtils.IS_JAVA_9 || LookUtils.IS_JAVA_10 ? getScaleFactorModern(device)
                     : getScaleFactorLegacy(device);
 
             devicesScaleFactorCacheMap.put(device, result);

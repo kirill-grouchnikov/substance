@@ -104,8 +104,6 @@ public class SubstanceFontUtilities {
             return new FontUIResource(
                     systemFont.deriveFont((float) (systemFont.getSize() + extraFontSize))
                             .deriveFont(newStyle));
-            // return new FontUIResource(systemFont.getFontName(), newStyle,
-            // systemFont.getSize() + extraFontSize);
         }
 
         public FontUIResource getControlFont() {

@@ -34,6 +34,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import javax.swing.Icon;
@@ -102,6 +103,8 @@ public class SubstanceIcon implements Icon, IsResizable, IsHiDpiAware {
         int dx = (this.width - this.getInternalWidth()) / 2;
         int dy = (this.height - this.getInternalHeight()) / 2;
         g2d.translate(x + dx, y + dy);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         if (this.imageSource != null) {
             g2d.drawImage(this.imageSource, 0, 0, (int) (this.imageSource.getWidth() / this.factor),
                     (int) (this.imageSource.getHeight() / this.factor), null);
