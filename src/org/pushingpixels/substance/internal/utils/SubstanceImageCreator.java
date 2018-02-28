@@ -48,6 +48,7 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
@@ -1382,9 +1383,9 @@ public final class SubstanceImageCreator {
 
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_OFF);
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
-        Graphics2D g2 = (Graphics2D) graphics.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         SubstanceFillPainter fillPainter = SimplisticSoftBorderReverseFillPainter.INSTANCE;
         SubstanceBorderPainter fbp = new FlatBorderPainter();
 
@@ -1392,18 +1393,21 @@ public final class SubstanceImageCreator {
         Shape contour = SubstanceOutlineUtilities.getBaseOutline(dim, dim,
                 SubstanceSizeUtils.getClassicButtonCornerRadius(dim) / 1.5f, null, borderDelta);
 
-        fillPainter.paintContourBackground(g2, tree, dim, dim, contour, false, fillScheme, false);
-        fbp.paintBorder(g2, tree, dim, dim, contour, null, borderScheme);
+        fillPainter.paintContourBackground(graphics, tree, dim, dim, contour, false, fillScheme,
+                false);
+        fbp.paintBorder(graphics, tree, dim, dim, contour, null, borderScheme);
 
         Color signColor = markScheme.getForegroundColor();
-        g2.setColor(signColor);
-        int mid = dim / 2;
-        int length = 7 * dim / 12;
-        g2.drawLine(mid - length / 2, dim / 2, mid + length / 2, dim / 2);
+        graphics.setColor(signColor);
+        float mid = dim / 2;
+        float length = 7 * dim / 12;
+        // Horizontal stroke
+        graphics.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
+        graphics.draw(new Line2D.Float(mid - length / 2, mid, mid + length / 2, mid));
         if (isCollapsed) {
-            g2.drawLine(dim / 2, mid - length / 2, dim / 2, mid + length / 2);
+            // Vertical stroke
+            graphics.draw(new Line2D.Float(mid, mid - length / 2, mid, mid + length / 2));
         }
-        g2.dispose();
 
         return result;
     }

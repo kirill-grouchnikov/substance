@@ -1,8 +1,8 @@
 export JAVA_HOME=`/usr/libexec/java_home -v 9`
 alias JAVA="java"
 
-SUBSTANCE_VERSION=8.0.00-dev
-TRIDENT_VERSION=1.5.00-dev
+SUBSTANCE_VERSION=8.0.00-rc
+TRIDENT_VERSION=1.5.00-rc
 CLASSPATH=../substance-tools/drop/$SUBSTANCE_VERSION/substance-tools-$SUBSTANCE_VERSION.jar:../substance-demo/drop/$SUBSTANCE_VERSION/substance-demo-$SUBSTANCE_VERSION.jar:./drop/$SUBSTANCE_VERSION/substance-$SUBSTANCE_VERSION.jar:../substance-extras/drop/$SUBSTANCE_VERSION/substance-extras-$SUBSTANCE_VERSION.jar:./lib/trident-$TRIDENT_VERSION.jar:../substance-demo/lib/build/*:../substance-demo/lib/test/*:../substance-swingx/lib/swingx-all-1.6.4.jar
 
 JAVA -cp $CLASSPATH org.pushingpixels.tools.substance.main.docrobot.RobotMain org.pushingpixels.tools.substance.main.docrobot.schemes.AquaScheme

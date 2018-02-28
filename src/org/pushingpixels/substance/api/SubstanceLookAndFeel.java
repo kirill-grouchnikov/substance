@@ -51,7 +51,6 @@ import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.icon.SubstanceIconUIResource;
 import org.pushingpixels.substance.internal.SubstancePluginRepository;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
-import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.contrib.jgoodies.looks.common.ShadowPopupFactory;
 import org.pushingpixels.substance.internal.utils.LazyResettableHashMap;
 import org.pushingpixels.substance.internal.utils.MemoryAnalyzer;
@@ -70,9 +69,8 @@ import org.pushingpixels.substance.internal.utils.SubstanceTitlePane;
  * <li>Use {@link UIManager#setLookAndFeel(javax.swing.LookAndFeel)} or
  * {@link UIManager#setLookAndFeel(String)} passing one of the core skin-based look-and-feels in the
  * <code>org.pushingpixels.substance.api.skin</code> package.</li>
- * <li>Extend this class, pass a skin instance to the
- * {@link #SubstanceLookAndFeel(SubstanceSkin)} constructor, and then use
- * {@link UIManager#setLookAndFeel(javax.swing.LookAndFeel)}.</li>
+ * <li>Extend this class, pass a skin instance to the {@link #SubstanceLookAndFeel(SubstanceSkin)}
+ * constructor, and then use {@link UIManager#setLookAndFeel(javax.swing.LookAndFeel)}.</li>
  * <li>Call {@link SubstanceCortex.GlobalScope#setSkin(String)} or
  * {@link SubstanceCortex.GlobalScope#setSkin(SubstanceSkin)} static methods. These methods do not
  * require Substance to be the current look-and-feel.</li>
@@ -113,61 +111,31 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
         this.name = "Substance " + skin.getDisplayName();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.LookAndFeel#getDescription()
-     */
     @Override
     public String getDescription() {
         return "Substance Look and Feel by Kirill Grouchnikov";
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.LookAndFeel#getID()
-     */
     @Override
     public String getID() {
         return this.name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.LookAndFeel#getName()
-     */
     @Override
     public String getName() {
         return this.name;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.LookAndFeel#isNativeLookAndFeel()
-     */
     @Override
     public boolean isNativeLookAndFeel() {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.LookAndFeel#isSupportedLookAndFeel()
-     */
     @Override
     public boolean isSupportedLookAndFeel() {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.plaf.basic.BasicLookAndFeel#initClassDefaults(javax.swing .UIDefaults)
-     */
     @Override
     protected void initClassDefaults(UIDefaults table) {
         super.initClassDefaults(table);
@@ -263,11 +231,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
         table.putDefaults(uiDefaults);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.plaf.basic.BasicLookAndFeel#initComponentDefaults(javax.swing .UIDefaults)
-     */
     @Override
     protected void initComponentDefaults(UIDefaults table) {
         super.initComponentDefaults(table);
@@ -276,11 +239,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
         this.skin.addCustomEntriesToTable(table);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.plaf.basic.BasicLookAndFeel#getDefaults()
-     */
     @Override
     public UIDefaults getDefaults() {
         UIDefaults table = super.getDefaults();
@@ -290,11 +248,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
         return table;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.plaf.basic.BasicLookAndFeel#initialize()
-     */
     @Override
     public void initialize() {
         super.initialize();
@@ -349,11 +302,6 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
         this.currentKeyboardFocusManager.addPropertyChangeListener(this.focusOwnerChangeListener);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.plaf.basic.BasicLookAndFeel#uninitialize()
-     */
     @Override
     public void uninitialize() {
         super.uninitialize();
@@ -380,21 +328,11 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
         this.currentKeyboardFocusManager = null;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.LookAndFeel#getSupportsWindowDecorations()
-     */
     @Override
     public boolean getSupportsWindowDecorations() {
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.swing.LookAndFeel#getDisabledIcon(javax.swing.JComponent, javax.swing.Icon)
-     */
     @Override
     public Icon getDisabledIcon(JComponent component, Icon icon) {
         if (icon == null)
@@ -406,14 +344,13 @@ public abstract class SubstanceLookAndFeel extends BasicLookAndFeel {
         float alpha = SubstanceColorSchemeUtilities.getAlpha(component,
                 ComponentState.DISABLED_UNSELECTED);
         if (alpha < 1.0f) {
-            BufferedImage intermediate = SubstanceCoreUtilities.getBlankUnscaledImage(icon.getIconWidth(),
-                    icon.getIconHeight());
+            BufferedImage intermediate = SubstanceCoreUtilities
+                    .getBlankUnscaledImage(icon.getIconWidth(), icon.getIconHeight());
             Graphics2D g2d = intermediate.createGraphics();
             g2d.setComposite(AlphaComposite.SrcOver.derive(alpha));
             g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                     RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-            g2d.drawImage(result, 0, 0, result.getWidth(),
-                    result.getHeight(), null);
+            g2d.drawImage(result, 0, 0, result.getWidth(), result.getHeight(), null);
             g2d.dispose();
             result = intermediate;
         }

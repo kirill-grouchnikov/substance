@@ -1,7 +1,5 @@
 ## Substance 8.0 Wyoming release notes
 
-<span style="background-color: #fffacd; border: 1px solid #E0DCBF">Note that this is a preliminary draft that will be revisited as the development of version 8.0 continues. The final release is planned for February / March 2018.</span>
-
 ### Unified API surface (Project Cerebrum)
 
 The API surface for controlling the visual appearance and behavior of various parts of Substance has grown organically over the years. Part of this growth process has been experimenting with various ways to express this control, from client properties to VM flags to APIs on a number of classes.
@@ -70,3 +68,7 @@ Starting with version 8.0, your application will have to make explicit calls to 
 Starting with version 8.0, Substance has switched to [Material Design icon pack](https://material.io/icons/) for icons used on Swing components such as `JOptionPane`, `JFileChooser`, `JColorChooser`, and a few other places like text component edit context menus. The original icon content is in SVG format, and [project Ibis](https://github.com/kirill-grouchnikov/ibis) is used offline to create transcoded Java2D-powered classes that encapsulate the content as resizable icons that are automatically scaled on high-DPI screens.
 
 In addition, the newly added `api.icon.SubstanceIconPack` interface and `SubstanceCortex.GlobalScope.setIconPack` API can be used to configure your application to use a consistent set of icons - such as the previously used [Project Tango](https://commons.wikimedia.org/wiki/Tango_icons).
+
+### Better support for fractional scaling factors
+
+Hi-DPI support introduced in 7.0 and refined in 7.1 has received an overhaul for better visuals under fractional desktop scaling factors.
