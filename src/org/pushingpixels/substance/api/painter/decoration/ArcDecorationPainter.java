@@ -46,7 +46,6 @@ import javax.swing.JLayeredPane;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 
-import org.pushingpixels.substance.api.SubstanceCortex.ComponentScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
@@ -167,7 +166,7 @@ public class ArcDecorationPainter implements SubstanceDecorationPainter {
      */
     private void paintExtraBackground(Graphics2D graphics, Container parent, Component comp,
             int width, int height, SubstanceColorScheme scheme) {
-        Point offset = ComponentScope.getOffsetInRootPaneCoords(comp);
+        Point offset = SubstanceCoreUtilities.getOffsetInRootPaneCoords(comp);
         JRootPane rootPane = SwingUtilities.getRootPane(parent);
         // fix for bug 234 - Window doesn't have a root pane.
         JLayeredPane layeredPane = rootPane.getLayeredPane();

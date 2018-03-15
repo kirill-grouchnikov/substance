@@ -37,10 +37,10 @@ import java.awt.Point;
 
 import javax.swing.SwingUtilities;
 
-import org.pushingpixels.substance.api.SubstanceCortex.ComponentScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
  * Overlay painter that paints a few pixel-high drop shadow at the top edge of
@@ -81,7 +81,7 @@ public final class TopShadowOverlayPainter implements SubstanceOverlayPainter {
 				.getBackgroundFillColor(comp).darker();
 
 		// need to handle components "embedded" in other components
-		Component topMostWithSameDecorationAreaType = ComponentScope
+		Component topMostWithSameDecorationAreaType = SubstanceCoreUtilities
 				.getTopMostParentWithDecorationAreaType(comp,
 						decorationAreaType);
 		Point inTopMost = SwingUtilities.convertPoint(comp, new Point(0, 0),

@@ -32,7 +32,6 @@ package org.pushingpixels.substance.api;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
@@ -51,7 +50,6 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.JLayeredPane;
 import javax.swing.JPasswordField;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
@@ -1599,52 +1597,16 @@ public class SubstanceCortex {
         }
 
         /**
-         * Sets the decoration type of the specified component and all its children.
-         * 
-         * @param comp
-         *            Component.
-         * @param type
-         *            Decoration type of the component and all its children.
-         */
-        public static void setDecorationType(JComponent comp, DecorationAreaType type) {
-            if (comp == null) {
-                throw new IllegalArgumentException(
-                        "Component scope APIs do not accept null components");
-            }
-            DecorationPainterUtils.setDecorationType(comp, type);
-        }
-
-        /**
-         * Returns the decoration area type of the specified component. The component and its
-         * ancestor hierarchy are scanned for the registered decoration area type. If
-         * {@link #setDecorationType(JComponent, DecorationAreaType)} has been called on the
-         * specified component, the matching decoration type is returned. Otherwise, the component
-         * hierarchy is scanned to find the closest ancestor that was passed to
-         * {@link #setDecorationType(JComponent, DecorationAreaType)} - and its decoration type is
-         * returned. If neither the component, nor any one of its parent components has been passed
-         * to the setter method, {@link DecorationAreaType#NONE} is returned.
-         * 
-         * @param comp
-         *            Component.
-         * @return Decoration area type of the component.
-         */
-        public static DecorationAreaType getDecorationType(Component comp) {
-            if (comp == null) {
-                throw new IllegalArgumentException(
-                        "Component scope APIs do not accept null components");
-            }
-            return DecorationPainterUtils.getDecorationType(comp);
-        }
-
-        /**
          * Returns the immediate decoration area type of the specified component. The component is
          * checked for the registered decoration area type. If
-         * {@link #setDecorationType(JComponent, DecorationAreaType, boolean)} was not called on
-         * this component, this method returns <code>null</code>.
+         * {@link ComponentOrParentChainScope#setDecorationType(JComponent, DecorationAreaType, boolean)}
+         * was not called on this component, this method returns <code>null</code>.
          * 
          * @param comp
          *            Component.
          * @return Immediate decoration area type of the component.
+         * @see ComponentOrParentChainScope#setDecorationType(JComponent, DecorationAreaType)
+         * @see ComponentOrParentChainScope#getDecorationType(Component)
          */
         public static DecorationAreaType getImmediateDecorationType(Component comp) {
             if (comp == null) {
@@ -1849,7 +1811,7 @@ public class SubstanceCortex {
 
         /**
          * <p>
-         * Specifying that contents of a tab component in {@link JTabbedPane} have been modified and
+         * Specifies that contents of a tab component in {@link JTabbedPane} have been modified and
          * not saved. {@link #setRunModifiedAnimationOnTabCloseButton(JComponent, Boolean)},
          * {@link #setRunModifiedAnimationOnTabCloseButton(JTabbedPane, Boolean)} and
          * {@link GlobalScope#setRunModifiedAnimationOnTabCloseButton(Boolean)} APIs control whether
@@ -2119,69 +2081,6 @@ public class SubstanceCortex {
             comboBox.putClientProperty(SubstanceSynapse.COMBO_BOX_POPUP_FLYOUT_ORIENTATION,
                     comboPopupFlyoutOrientation);
         }
-
-        public static Component getTopMostParentWithDecorationAreaType(Component comp,
-                DecorationAreaType type) {
-            if (comp == null) {
-                throw new IllegalArgumentException(
-                        "Component scope APIs do not accept null components");
-            }
-            Component c = comp;
-            Component topMostWithSameDecorationAreaType = c;
-            while (c != null) {
-                if (DecorationPainterUtils.getImmediateDecorationType(c) == type) {
-                    topMostWithSameDecorationAreaType = c;
-                }
-                c = c.getParent();
-            }
-            return topMostWithSameDecorationAreaType;
-        }
-
-        public static Point getOffsetInRootPaneCoords(Component comp) {
-            if (comp == null) {
-                throw new IllegalArgumentException(
-                        "Component scope APIs do not accept null components");
-            }
-            JRootPane rootPane = SwingUtilities.getRootPane(comp);
-            int dx = 0;
-            int dy = 0;
-
-            if (rootPane != null) {
-                JLayeredPane layeredPane = rootPane.getLayeredPane();
-
-                if (layeredPane != null) {
-                    Insets layeredPaneInsets = layeredPane.getInsets();
-                    if (comp.isShowing() && layeredPane.isShowing()) {
-                        dx += (comp.getLocationOnScreen().x - layeredPane.getLocationOnScreen().x
-                                + layeredPaneInsets.left);
-                        dy += (comp.getLocationOnScreen().y - layeredPane.getLocationOnScreen().y
-                                + layeredPaneInsets.top);
-                    } else {
-                        // have to traverse the hierarchy
-                        Component c = comp;
-                        dx = 0;
-                        dy = 0;
-                        while (c != rootPane) {
-                            dx += c.getX();
-                            dy += c.getY();
-                            c = c.getParent();
-                        }
-                        c = layeredPane;
-                        if ((c != null) && (c.getParent() != null)) {
-                            while (c != rootPane) {
-                                dx -= c.getX();
-                                dy -= c.getY();
-                                c = c.getParent();
-                            }
-                        }
-                        dx += layeredPaneInsets.left;
-                        dy += layeredPaneInsets.right;
-                    }
-                }
-            }
-
-            return new Point(dx, dy);
-        }
     }
 
     /**
@@ -2396,6 +2295,48 @@ public class SubstanceCortex {
          */
         public static void setFocusKind(JComponent comp, FocusKind focusKind) {
             comp.putClientProperty(SubstanceSynapse.FOCUS_KIND, focusKind);
+        }
+
+        /**
+         * Sets the decoration type of the specified component and all its children.
+         * 
+         * @param comp
+         *            Component.
+         * @param type
+         *            Decoration type of the component and all its children.
+         * @see #getDecorationType(Component)
+         * @see ComponentScope#getImmediateDecorationType(Component)
+         */
+        public static void setDecorationType(JComponent comp, DecorationAreaType type) {
+            if (comp == null) {
+                throw new IllegalArgumentException(
+                        "Component scope APIs do not accept null components");
+            }
+            DecorationPainterUtils.setDecorationType(comp, type);
+        }
+
+        /**
+         * Returns the decoration area type of the specified component. The component and its
+         * ancestor hierarchy are scanned for the registered decoration area type. If
+         * {@link #setDecorationType(JComponent, DecorationAreaType)} has been called on the
+         * specified component, the matching decoration type is returned. Otherwise, the component
+         * hierarchy is scanned to find the closest ancestor that was passed to
+         * {@link #setDecorationType(JComponent, DecorationAreaType)} - and its decoration type is
+         * returned. If neither the component, nor any one of its parent components has been passed
+         * to the setter method, {@link DecorationAreaType#NONE} is returned.
+         * 
+         * @param comp
+         *            Component.
+         * @return Decoration area type of the component.
+         * @see #setDecorationType(JComponent, DecorationAreaType)
+         * @see ComponentScope#getImmediateDecorationType(Component)
+         */
+        public static DecorationAreaType getDecorationType(Component comp) {
+            if (comp == null) {
+                throw new IllegalArgumentException(
+                        "Component scope APIs do not accept null components");
+            }
+            return DecorationPainterUtils.getDecorationType(comp);
         }
     }
 

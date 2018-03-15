@@ -51,6 +51,7 @@ import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.plaf.basic.BasicFormattedTextFieldUI;
 
 import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -230,7 +231,7 @@ public class SubstanceFormattedTextFieldUI extends BasicFormattedTextFieldUI
             if ((foregr == null) || (foregr instanceof UIResource)) {
                 textField.setForeground(SubstanceColorUtilities
                         .getForegroundColor(SubstanceCortex.ComponentScope.getCurrentSkin(textField)
-                                .getEnabledColorScheme(SubstanceCortex.ComponentScope
+                                .getEnabledColorScheme(ComponentOrParentChainScope
                                         .getDecorationType(textField))));
             }
         });

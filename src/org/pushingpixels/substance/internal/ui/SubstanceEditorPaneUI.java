@@ -48,6 +48,7 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicEditorPaneUI;
 
 import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -220,7 +221,7 @@ public class SubstanceEditorPaneUI extends BasicEditorPaneUI implements Transiti
             if ((foregr == null) || (foregr instanceof UIResource)) {
                 editorPane.setForeground(SubstanceColorUtilities.getForegroundColor(
                         SubstanceCortex.ComponentScope.getCurrentSkin(editorPane)
-                                .getEnabledColorScheme(SubstanceCortex.ComponentScope
+                                .getEnabledColorScheme(ComponentOrParentChainScope
                                         .getDecorationType(editorPane))));
             }
         });

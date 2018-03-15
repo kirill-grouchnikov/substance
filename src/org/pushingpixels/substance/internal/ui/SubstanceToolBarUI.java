@@ -36,7 +36,7 @@ import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
-import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.internal.painter.BackgroundPaintingUtils;
 import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
@@ -67,7 +67,7 @@ public class SubstanceToolBarUI extends BasicToolBarUI {
     @Override
     protected void installDefaults() {
         super.installDefaults();
-        SubstanceCortex.ComponentScope.setDecorationType(this.toolBar, DecorationAreaType.TOOLBAR);
+        ComponentOrParentChainScope.setDecorationType(this.toolBar, DecorationAreaType.TOOLBAR);
     }
 
     /*

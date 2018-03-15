@@ -43,6 +43,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -98,6 +99,7 @@ import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
+import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceSlices.FocusKind;
 import org.pushingpixels.substance.api.SubstanceSlices.MenuGutterFillKind;
 import org.pushingpixels.substance.api.SubstanceSlices.Side;
@@ -122,6 +124,7 @@ import org.pushingpixels.substance.internal.contrib.intellij.JBHiDPIScaledImage;
 import org.pushingpixels.substance.internal.contrib.intellij.UIUtil;
 import org.pushingpixels.substance.internal.contrib.jgoodies.looks.LookUtils;
 import org.pushingpixels.substance.internal.fonts.DefaultKDEFontPolicy;
+import org.pushingpixels.substance.internal.painter.DecorationPainterUtils;
 import org.pushingpixels.substance.internal.ui.SubstanceButtonUI;
 import org.pushingpixels.substance.internal.ui.SubstanceRootPaneUI;
 import org.pushingpixels.substance.internal.utils.combo.SubstanceComboPopup;
@@ -2128,5 +2131,67 @@ public class SubstanceCoreUtilities {
                 SwingUtilities.updateComponentTreeUI((JPopupMenu) menuElement);
             }
         }
+    }
+
+    public static Point getOffsetInRootPaneCoords(Component comp) {
+        if (comp == null) {
+            throw new IllegalArgumentException("Cannot pass null component");
+        }
+        JRootPane rootPane = SwingUtilities.getRootPane(comp);
+        int dx = 0;
+        int dy = 0;
+    
+        if (rootPane != null) {
+            JLayeredPane layeredPane = rootPane.getLayeredPane();
+    
+            if (layeredPane != null) {
+                Insets layeredPaneInsets = layeredPane.getInsets();
+                if (comp.isShowing() && layeredPane.isShowing()) {
+                    dx += (comp.getLocationOnScreen().x - layeredPane.getLocationOnScreen().x
+                            + layeredPaneInsets.left);
+                    dy += (comp.getLocationOnScreen().y - layeredPane.getLocationOnScreen().y
+                            + layeredPaneInsets.top);
+                } else {
+                    // have to traverse the hierarchy
+                    Component c = comp;
+                    dx = 0;
+                    dy = 0;
+                    while (c != rootPane) {
+                        dx += c.getX();
+                        dy += c.getY();
+                        c = c.getParent();
+                    }
+                    c = layeredPane;
+                    if ((c != null) && (c.getParent() != null)) {
+                        while (c != rootPane) {
+                            dx -= c.getX();
+                            dy -= c.getY();
+                            c = c.getParent();
+                        }
+                    }
+                    dx += layeredPaneInsets.left;
+                    dy += layeredPaneInsets.right;
+                }
+            }
+        }
+    
+        return new Point(dx, dy);
+    }
+
+    public static Component getTopMostParentWithDecorationAreaType(Component comp,
+            DecorationAreaType type) {
+        if (comp == null) {
+            throw new IllegalArgumentException(
+                    "Component scope APIs do not accept null components");
+        }
+        Component c = comp;
+        Component topMostWithSameDecorationAreaType = c;
+        while (c != null) {
+            if (DecorationPainterUtils.getImmediateDecorationType(c) == type) {
+                topMostWithSameDecorationAreaType = c;
+            }
+            c = c.getParent();
+        }
+        return topMostWithSameDecorationAreaType;
     }
 }

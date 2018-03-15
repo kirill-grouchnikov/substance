@@ -60,6 +60,7 @@ import javax.swing.text.View;
 
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
@@ -480,7 +481,7 @@ public class SubstancePasswordFieldUI extends BasicPasswordFieldUI implements Tr
             if ((foregr == null) || (foregr instanceof UIResource)) {
                 passwordField.setForeground(SubstanceColorUtilities.getForegroundColor(
                         SubstanceCortex.ComponentScope.getCurrentSkin(passwordField)
-                                .getEnabledColorScheme(SubstanceCortex.ComponentScope
+                                .getEnabledColorScheme(ComponentOrParentChainScope
                                         .getDecorationType(passwordField))));
             }
         });

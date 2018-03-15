@@ -46,7 +46,7 @@ Calling `JFrame.setDefaultLookAndFeelDecorated(true)` on the specific window is 
 These two projects were envisioned when the landscape of third party look-and-feels in particular, and Swing in general, was more vibrant. The goal was:
 
 * For `laf-plugin` to provide a common mechanism for specifying look-and-feel plugins for components libraries
-* For `laf-widget` to provide a collection of widgets that enhance the visual appearance and behavior of specific Swing ComponentScope
+* For `laf-widget` to provide a collection of widgets that enhance the visual appearance and behavior of specific Swing components
 
 The functionality of these two projects has now been folded into the main Substance codebase. The APIs for configuring animations and widgets are now part of the `SubstanceCortex` class.
 

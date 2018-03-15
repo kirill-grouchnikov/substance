@@ -39,6 +39,7 @@ import javax.swing.Icon;
 import javax.swing.border.Border;
 
 import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.colorscheme.SunsetColorScheme;
 import org.pushingpixels.substance.api.icon.SubstanceIconPack;
@@ -71,7 +72,7 @@ class DnDBorderFactory {
             int yh = y + height - 1;
             SubstanceIconPack iconPack = SubstanceCortex.GlobalScope.getIconPack();
             SubstanceColorScheme colorScheme = SubstanceCoreUtilities.getSkin(c)
-                    .getEnabledColorScheme(SubstanceCortex.ComponentScope.getDecorationType(c));
+                    .getEnabledColorScheme(ComponentOrParentChainScope.getDecorationType(c));
             SubstanceIconUIResource icon = iconPack.getAllowedIcon(12, colorScheme);
 
             Graphics2D g2d = (Graphics2D) g.create();

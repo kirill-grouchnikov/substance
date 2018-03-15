@@ -48,6 +48,7 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicTextAreaUI;
 
 import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -222,7 +223,7 @@ public class SubstanceTextAreaUI extends BasicTextAreaUI implements TransitionAw
             if ((foregr == null) || (foregr instanceof UIResource)) {
                 textArea.setForeground(SubstanceColorUtilities
                         .getForegroundColor(SubstanceCortex.ComponentScope.getCurrentSkin(textArea)
-                                .getEnabledColorScheme(SubstanceCortex.ComponentScope
+                                .getEnabledColorScheme(ComponentOrParentChainScope
                                         .getDecorationType(textArea))));
             }
         });

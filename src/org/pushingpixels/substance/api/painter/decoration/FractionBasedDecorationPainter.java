@@ -41,12 +41,12 @@ import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
-import org.pushingpixels.substance.api.SubstanceCortex.ComponentScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.ColorSchemeSingleColorQuery;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.api.painter.FractionBasedPainter;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
  * Decoration painter with fraction-based stops and a color query associated
@@ -132,7 +132,7 @@ public class FractionBasedDecorationPainter extends FractionBasedPainter
 			fillColors[i] = colorQuery.query(scheme);
 		}
 
-		Component topMostWithSameDecorationAreaType = ComponentScope
+		Component topMostWithSameDecorationAreaType = SubstanceCoreUtilities
 				.getTopMostParentWithDecorationAreaType(comp,
 						decorationAreaType);
 		Point inTopMost = SwingUtilities.convertPoint(comp, new Point(0, 0),

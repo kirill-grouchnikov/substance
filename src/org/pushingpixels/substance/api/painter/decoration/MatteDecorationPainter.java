@@ -35,11 +35,11 @@ import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import org.pushingpixels.substance.api.SubstanceCortex.ComponentScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 import org.pushingpixels.substance.internal.utils.SubstanceColorUtilities;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
  * Implementation of {@link SubstanceDecorationPainter} that uses matte painting
@@ -112,7 +112,7 @@ public class MatteDecorationPainter implements SubstanceDecorationPainter {
 	 */
 	private void paintExtraBackground(Graphics2D graphics, Component comp, int width, int height,
 			SubstanceColorScheme scheme) {
-		Point offset = ComponentScope.getOffsetInRootPaneCoords(comp);
+		Point offset = SubstanceCoreUtilities.getOffsetInRootPaneCoords(comp);
 		Graphics2D g2d = (Graphics2D) graphics.create();
 		this.fill(g2d, comp, scheme, offset.y, 0, 0, width, height);
 		g2d.dispose();

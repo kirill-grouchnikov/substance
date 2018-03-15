@@ -37,7 +37,6 @@ import java.awt.image.BufferedImage;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
-import org.pushingpixels.substance.api.SubstanceCortex.ComponentScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
@@ -155,7 +154,7 @@ public abstract class ImageWrapperDecorationPainter implements SubstanceDecorati
     private void paintExtraBackground(Graphics2D graphics, Component comp,
             DecorationAreaType decorationAreaType, int width, int height, SubstanceSkin skin) {
 
-        Point offset = ComponentScope.getOffsetInRootPaneCoords(comp);
+        Point offset = SubstanceCoreUtilities.getOffsetInRootPaneCoords(comp);
 
         SubstanceColorScheme tileScheme = skin.getBackgroundColorScheme(decorationAreaType);
         if (this.baseDecorationPainter != null) {

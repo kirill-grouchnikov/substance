@@ -46,7 +46,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
@@ -166,7 +166,7 @@ public class SeparatorPainterUtils {
 				// decoration type
 				// of that separator
 				compScheme = SubstanceCoreUtilities.getSkin(c)
-						.getBackgroundColorScheme(SubstanceCortex.ComponentScope.getDecorationType(c));
+						.getBackgroundColorScheme(ComponentOrParentChainScope.getDecorationType(c));
 			}
 		}
 		if (compScheme == null) {
@@ -216,7 +216,7 @@ public class SeparatorPainterUtils {
 			int width, int height, int orientation, boolean hasShadow, int maxGradLengthStart,
 			int maxGradLengthEnd, boolean toEnforceAlphaColors) {
 
-		DecorationAreaType decorationAreaType = SubstanceCortex.ComponentScope.getDecorationType(c);
+		DecorationAreaType decorationAreaType = ComponentOrParentChainScope.getDecorationType(c);
 		SubstanceSkin skin = SubstanceCoreUtilities.getSkin(c);
 		// use alpha colors when the control is in a painted decoration area
 		// (where skin can use different background colors) or in a decoration

@@ -59,6 +59,7 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
 import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSlices;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
@@ -108,7 +109,7 @@ public class SubstanceInternalFrameTitlePane extends BasicInternalFrameTitlePane
     public SubstanceInternalFrameTitlePane(JInternalFrame f) {
         super(f);
         this.setToolTipText(f.getTitle());
-        SubstanceCortex.ComponentScope.setDecorationType(this,
+        ComponentOrParentChainScope.setDecorationType(this,
                 DecorationAreaType.SECONDARY_TITLE_PANE);
     }
 

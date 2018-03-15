@@ -43,6 +43,7 @@ import java.util.Set;
 import javax.swing.JTabbedPane;
 import javax.swing.UIDefaults;
 
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.ComponentStateFacet;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
@@ -297,7 +298,7 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 		// are decoration-specific scheme bundles.
 		if (this.colorSchemeBundleMap.size() > 1) {
             DecorationAreaType decorationAreaType = (comp == null) ? DecorationAreaType.NONE
-                    : SubstanceCortex.ComponentScope.getDecorationType(comp);
+                    : ComponentOrParentChainScope.getDecorationType(comp);
 			if (this.colorSchemeBundleMap.containsKey(decorationAreaType)) {
 				SubstanceColorScheme registered = this.colorSchemeBundleMap
 						.get(decorationAreaType).getColorScheme(componentState);
@@ -334,7 +335,7 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 		// small optimization - lookup the decoration area only if there
 		// are decoration-specific scheme bundles.
 		if (this.colorSchemeBundleMap.size() > 1) {
-			DecorationAreaType decorationAreaType = SubstanceCortex.ComponentScope.getDecorationType(comp);
+			DecorationAreaType decorationAreaType = ComponentOrParentChainScope.getDecorationType(comp);
 			if (this.colorSchemeBundleMap.containsKey(decorationAreaType)) {
 				Float registered = this.colorSchemeBundleMap.get(decorationAreaType)
 						.getHighlightAlpha(comp, componentState);
@@ -393,7 +394,7 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 		// are decoration-specific scheme bundles.
 		if (this.colorSchemeBundleMap.size() > 1) {
 			DecorationAreaType decorationAreaType = (comp == null) ? DecorationAreaType.NONE : 
-			        SubstanceCortex.ComponentScope.getDecorationType(comp);
+			        ComponentOrParentChainScope.getDecorationType(comp);
 			if (this.colorSchemeBundleMap.containsKey(decorationAreaType)) {
 				Float registered = this.colorSchemeBundleMap.get(
 						decorationAreaType).getAlpha(comp, componentState);
@@ -759,7 +760,7 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 		// are decoration-specific scheme bundles.
 		if (this.colorSchemeBundleMap.size() > 1) {
             DecorationAreaType decorationAreaType = (comp == null) ? DecorationAreaType.NONE
-                    : SubstanceCortex.ComponentScope.getDecorationType(comp);
+                    : ComponentOrParentChainScope.getDecorationType(comp);
 			if (this.colorSchemeBundleMap.containsKey(decorationAreaType)) {
 				return this.colorSchemeBundleMap.get(decorationAreaType)
 						.getColorScheme(associationKind, componentState, true);
@@ -789,7 +790,7 @@ public abstract class SubstanceSkin implements SubstanceTrait {
 		// small optimization - lookup the decoration area only if there
 		// are decoration-specific scheme bundles.
 		if (this.colorSchemeBundleMap.size() > 1) {
-			DecorationAreaType decorationAreaType = SubstanceCortex.ComponentScope
+			DecorationAreaType decorationAreaType = ComponentOrParentChainScope
 					.getDecorationType(comp);
 			if (this.colorSchemeBundleMap.containsKey(decorationAreaType)) {
 				return this.colorSchemeBundleMap.get(decorationAreaType)

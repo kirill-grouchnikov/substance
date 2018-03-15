@@ -90,6 +90,7 @@ import javax.swing.UIManager;
 import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices;
@@ -513,7 +514,7 @@ public class SubstanceTitlePane extends JComponent {
 
         this.setToolTipText(this.getTitle());
 
-        SubstanceCortex.ComponentScope.setDecorationType(this,
+        ComponentOrParentChainScope.setDecorationType(this,
                 DecorationAreaType.PRIMARY_TITLE_PANE);
         this.setForeground(SubstanceColorUtilities.getForegroundColor(SubstanceCoreUtilities
                 .getSkin(this).getBackgroundColorScheme(DecorationAreaType.PRIMARY_TITLE_PANE)));
@@ -1618,7 +1619,7 @@ public class SubstanceTitlePane extends JComponent {
         int prefSize = getControlButtonSize();
         result.setPreferredSize(new Dimension(prefSize, prefSize));
         SubstanceCortex.ComponentOrParentScope.setFlatBackground(result, true);
-        SubstanceCortex.ComponentScope.setDecorationType(result,
+        ComponentOrParentChainScope.setDecorationType(result,
                 DecorationAreaType.PRIMARY_TITLE_PANE);
         return result;
     }

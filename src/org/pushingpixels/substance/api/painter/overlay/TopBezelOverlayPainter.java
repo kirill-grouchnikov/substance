@@ -37,11 +37,11 @@ import java.awt.geom.Line2D;
 
 import javax.swing.SwingUtilities;
 
-import org.pushingpixels.substance.api.SubstanceCortex.ComponentScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.colorscheme.ColorSchemeSingleColorQuery;
 import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
+import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 import org.pushingpixels.substance.internal.utils.SubstanceSizeUtils;
 
 /**
@@ -86,7 +86,7 @@ public final class TopBezelOverlayPainter implements SubstanceOverlayPainter {
 	public void paintOverlay(Graphics2D graphics, Component comp,
 			DecorationAreaType decorationAreaType, int width, int height,
 			SubstanceSkin skin) {
-		Component topMostWithSameDecorationAreaType = ComponentScope
+		Component topMostWithSameDecorationAreaType = SubstanceCoreUtilities
 				.getTopMostParentWithDecorationAreaType(comp,
 						decorationAreaType);
 

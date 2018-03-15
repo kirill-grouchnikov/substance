@@ -45,7 +45,7 @@ import javax.swing.JSpinner;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
-import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.watermark.SubstanceWatermark;
@@ -110,7 +110,7 @@ public class BackgroundPaintingUtils {
 				RenderingHints.VALUE_ANTIALIAS_OFF);
 		graphics.setComposite(WidgetUtilities.getAlphaComposite(c, g));
 
-		DecorationAreaType decorationType = SubstanceCortex.ComponentScope.getDecorationType(c);
+		DecorationAreaType decorationType = ComponentOrParentChainScope.getDecorationType(c);
 		SubstanceSkin skin = SubstanceCoreUtilities.getSkin(c);
 		boolean isShowing = c.isShowing();
 		if (isShowing && (decorationType != DecorationAreaType.NONE)

@@ -48,6 +48,7 @@ import javax.swing.text.JTextComponent;
 
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
@@ -819,7 +820,7 @@ public class SubstanceColorUtilities {
 		}
 		return new ColorUIResource(SubstanceCortex.ComponentScope.getCurrentSkin(comp)
 				.getBackgroundColorScheme(
-				        SubstanceCortex.ComponentScope.getDecorationType(comp))
+				        ComponentOrParentChainScope.getDecorationType(comp))
 				.getBackgroundFillColor());
 	}
 

@@ -48,6 +48,7 @@ import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicTextPaneUI;
 
 import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceWidget;
 import org.pushingpixels.substance.internal.SubstanceWidgetRepository;
 import org.pushingpixels.substance.internal.animation.StateTransitionTracker;
@@ -211,7 +212,7 @@ public class SubstanceTextPaneUI extends BasicTextPaneUI implements TransitionAw
             if ((foregr == null) || (foregr instanceof UIResource)) {
                 textPane.setForeground(SubstanceColorUtilities
                         .getForegroundColor(SubstanceCortex.ComponentScope.getCurrentSkin(textPane)
-                                .getEnabledColorScheme(SubstanceCortex.ComponentScope
+                                .getEnabledColorScheme(ComponentOrParentChainScope
                                         .getDecorationType(textPane))));
             }
         });

@@ -46,7 +46,7 @@ import javax.swing.plaf.UIResource;
 
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
-import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.ColorSchemeAssociationKind;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
@@ -309,7 +309,7 @@ public class SubstanceColorSchemeUtilities {
         }
 
         SubstanceColorScheme nonColorized = SubstanceCoreUtilities.getSkin(component)
-                .getActiveColorScheme(SubstanceCortex.ComponentScope.getDecorationType(component));
+                .getActiveColorScheme(ComponentOrParentChainScope.getDecorationType(component));
         return getColorizedScheme(component, nonColorized, !componentState.isDisabled());
     }
 

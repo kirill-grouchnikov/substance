@@ -38,7 +38,7 @@ import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
-import org.pushingpixels.substance.api.SubstanceCortex;
+import org.pushingpixels.substance.api.SubstanceCortex.ComponentOrParentChainScope;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.SubstanceSlices.DecorationAreaType;
 import org.pushingpixels.substance.api.painter.decoration.SubstanceDecorationPainter;
@@ -173,7 +173,7 @@ public class DecorationPainterUtils {
      *            If <code>true</code>, the painting of decoration background is enforced.
      */
     public static void paintDecorationBackground(Graphics g, Component c, boolean force) {
-        DecorationAreaType decorationType = SubstanceCortex.ComponentScope.getDecorationType(c);
+        DecorationAreaType decorationType = ComponentOrParentChainScope.getDecorationType(c);
         paintDecorationBackground(g, c, decorationType, force);
     }
 
