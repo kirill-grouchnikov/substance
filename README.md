@@ -30,9 +30,9 @@ If you've skipped [getting started](www/docs/getting-started.md) page, to add Su
 ### Configure and customize
 
 <img src="https://raw.githubusercontent.com/kirill-grouchnikov/substance/master/www/images/screenshots/skins/nebulabrickwall1.png" width="340" height="254" border=0 align="left">
-Substance comes with an extensive set of [APIs](www/docs/api.md) to add custom functionality to your components.
+It is easy to customize and extend Substance to fit your visual needs.
 
-In addition, it is easy to customize and extend Substance to fit your visual needs. The overall visuals are controlled by [skins](www/docs/skins/overview.md), with each skin defined by [color scheme bundles](www/docs/skins/colorschemebundles.md) and [painters](www/docs/painters/overview.md). The [skinning primer](www/docs/painters/custom-skinning.md) has a few tips on how to use the different Substance painters in applications that wish to paint custom components in a way that is consistent with other Substance visuals. The [substance-samples](https://github.com/kirill-grouchnikov/substance-samples) project provides additional self-contained mini-applications that show more advanced usage of Substance APIs for pixel-perfect skinning.
+Substance comes with an extensive set of [APIs](www/docs/api.md) to add custom functionality to your components. The overall visuals are controlled by [skins](www/docs/skins/overview.md), with each skin defined by [color scheme bundles](www/docs/skins/colorschemebundles.md) and [painters](www/docs/painters/overview.md). The [skinning primer](www/docs/painters/custom-skinning.md) has a few tips on how to use the different Substance painters in applications that wish to paint custom components in a way that is consistent with other Substance visuals. The [substance-samples](https://github.com/kirill-grouchnikov/substance-samples) project provides additional self-contained mini-applications that show more advanced usage of Substance APIs for pixel-perfect skinning.
 
 ### Plugins
 
