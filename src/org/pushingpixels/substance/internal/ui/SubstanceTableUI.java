@@ -38,6 +38,7 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.MouseInfo;
 import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Window;
@@ -1817,18 +1818,21 @@ public class SubstanceTableUI extends BasicTableUI implements UpdateOptimization
             // or hidden, we will get a mouseExited() event, but shouldn't
             // be changing the rollover indication if the mouse is still
             // over the table
-            Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
+            PointerInfo pi = MouseInfo.getPointerInfo();
+            Point mouseLoc = pi != null ? pi.getLocation() : null;
             Window windowAncestor = SwingUtilities.getWindowAncestor(table);
-            SwingUtilities.convertPointFromScreen(mouseLoc, windowAncestor);
-            Component deepest = SwingUtilities.getDeepestComponentAt(windowAncestor, mouseLoc.x,
-                    mouseLoc.y);
+            if ((mouseLoc != null) && (windowAncestor != null)) {
+	            SwingUtilities.convertPointFromScreen(mouseLoc, windowAncestor);
+	            Component deepest = SwingUtilities.getDeepestComponentAt(windowAncestor, mouseLoc.x,
+	                    mouseLoc.y);
 
-            while (deepest != null) {
-                if (deepest == table) {
-                    // still in table
-                    return;
-                }
-                deepest = deepest.getParent();
+	            while (deepest != null) {
+	                if (deepest == table) {
+	                    // still in table
+	                    return;
+	                }
+	                deepest = deepest.getParent();
+	            }
             }
 
             fadeOutAllRollovers();
