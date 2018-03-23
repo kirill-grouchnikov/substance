@@ -1821,18 +1821,18 @@ public class SubstanceTableUI extends BasicTableUI implements UpdateOptimization
             PointerInfo pi = MouseInfo.getPointerInfo();
             Point mouseLoc = pi != null ? pi.getLocation() : null;
             Window windowAncestor = SwingUtilities.getWindowAncestor(table);
-            if ((mouseLoc != null) && (windowAncestor != null)) {
-	            SwingUtilities.convertPointFromScreen(mouseLoc, windowAncestor);
-	            Component deepest = SwingUtilities.getDeepestComponentAt(windowAncestor, mouseLoc.x,
-	                    mouseLoc.y);
-
-	            while (deepest != null) {
-	                if (deepest == table) {
-	                    // still in table
-	                    return;
-	                }
-	                deepest = deepest.getParent();
-	            }
+            if ((mouseLoc != null) && (windowAncestor != null)) { 
+                SwingUtilities.convertPointFromScreen(mouseLoc, windowAncestor);
+                Component deepest = SwingUtilities.getDeepestComponentAt(windowAncestor, mouseLoc.x,
+                        mouseLoc.y);
+    
+                while (deepest != null) {
+                    if (deepest == table) {
+                        // still in table
+                        return;
+                    }
+                    deepest = deepest.getParent();
+                }
             }
 
             fadeOutAllRollovers();
