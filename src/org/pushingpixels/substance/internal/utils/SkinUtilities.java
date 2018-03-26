@@ -1240,8 +1240,6 @@ public class SkinUtilities {
 
 				"Tree.textForeground", foregroundColor,
 				
-				"Tree.rendererFillBackground", false,
-
 				"Viewport.background", backgroundDefaultColor,
 
 				"Viewport.foreground", foregroundColor,
