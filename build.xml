@@ -52,7 +52,6 @@
     <property name="substance.version" value="8.1.00-dev" />
     <property name="substance.versionKey" value="8.1.00dev Xanadu" />
 
-    <property name="trident.basedir" value="${module.substance.basedir}/../trident" />
     <property name="trident.version" value="1.5.00" />
 
 	<path id="substance.module.bootclasspath">
@@ -64,7 +63,7 @@
 
 	<path id="substance.module.classpath">
 		<path refid="${module.jdk.classpath.substance}" />
-        <pathelement location="${trident.basedir}/drop/${trident.version}/trident-${trident.version}.jar" />
+        <pathelement location="${substance.lib.dir}/trident-${trident.version}.jar" />
 	</path>
 
 	<patternset id="excluded.from.module.substance" />
@@ -76,8 +75,7 @@
 
 	<path id="substance.module.sourcepath">
 		<dirset dir="${substance.src.dir}">
-			<include name="org/pushingpixels/" />
-			<include name="resource" />
+			<include name="org/pushingpixels/substance" />
 		</dirset>
 	</path>
 
