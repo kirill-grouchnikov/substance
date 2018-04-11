@@ -49,8 +49,8 @@
 	<property name="substance.drop.dir" value="${module.substance.basedir}/drop" />
 	<property name="substance.lib.dir" value="${module.substance.basedir}/lib" />
 	<property name="substance.src.dir" value="${module.substance.basedir}/src/" />
-    <property name="substance.version" value="8.0.02" />
-    <property name="substance.versionKey" value="8.0.02 Wyoming" />
+    <property name="substance.version" value="8.1.00-dev" />
+    <property name="substance.versionKey" value="8.1.00dev Xanadu" />
 
     <property name="trident.basedir" value="${module.substance.basedir}/../trident" />
     <property name="trident.version" value="1.5.00" />
