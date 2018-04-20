@@ -78,4 +78,6 @@ public interface SubstanceMenu {
 	 * @return The associated menu item.
 	 */
 	public JMenuItem getAssociatedMenuItem();
+	
+	public void updateCheckIconIfNeeded();
 }

@@ -93,11 +93,6 @@ public class SubstanceMenuItemUI extends BasicMenuItemUI implements
 				menuItem.getModel());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicMenuItemUI#installListeners()
-	 */
 	@Override
 	protected void installListeners() {
 		super.installListeners();
@@ -131,11 +126,6 @@ public class SubstanceMenuItemUI extends BasicMenuItemUI implements
 		this.menuItem.addPropertyChangeListener(this.substancePropertyListener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicMenuItemUI#installDefaults()
-	 */
 	@Override
 	protected void installDefaults() {
 		super.installDefaults();
@@ -144,12 +134,11 @@ public class SubstanceMenuItemUI extends BasicMenuItemUI implements
 				.getTextIconGap(SubstanceSizeUtils
 						.getComponentFontSize(this.menuItem));
 	}
+	
+	@Override
+	public void updateCheckIconIfNeeded() {
+	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicMenuItemUI#uninstallListeners()
-	 */
 	@Override
 	protected void uninstallListeners() {
 		// Improving performance on big menus.
@@ -169,58 +158,31 @@ public class SubstanceMenuItemUI extends BasicMenuItemUI implements
 		super.uninstallListeners();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.SubstanceMenu#getAssociatedMenuItem()
-	 */
+    @Override
 	public JMenuItem getAssociatedMenuItem() {
 		return this.menuItem;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.SubstanceMenu#getAcceleratorFont()
-	 */
+    @Override
 	public Font getAcceleratorFont() {
 		return this.acceleratorFont;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.SubstanceMenu#getArrowIcon()
-	 */
+    @Override
 	public Icon getArrowIcon() {
 		return this.arrowIcon;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.SubstanceMenu#getCheckIcon()
-	 */
+    @Override
 	public Icon getCheckIcon() {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.SubstanceMenu#getDefaultTextIconGap()
-	 */
+    @Override
 	public int getDefaultTextIconGap() {
 		return this.defaultTextIconGap;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicMenuItemUI#getPreferredMenuItemSize(javax
-	 * .swing.JComponent, javax.swing.Icon, javax.swing.Icon, int)
-	 */
 	@Override
 	protected Dimension getPreferredMenuItemSize(JComponent c, Icon checkIcon,
 			Icon arrowIcon, int defaultTextIconGap) {
@@ -230,14 +192,6 @@ public class SubstanceMenuItemUI extends BasicMenuItemUI implements
 				superDim.height);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicMenuItemUI#paintMenuItem(java.awt.Graphics,
-	 * javax.swing.JComponent, javax.swing.Icon, javax.swing.Icon,
-	 * java.awt.Color, java.awt.Color, int)
-	 */
 	@Override
 	protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon,
 			Icon arrowIcon, Color background, Color foreground,
@@ -256,12 +210,6 @@ public class SubstanceMenuItemUI extends BasicMenuItemUI implements
 		return this.menuItem.getBounds().contains(me.getX(), me.getY());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
-	 * javax.swing.JComponent)
-	 */
 	@Override
 	public void update(Graphics g, JComponent c) {
 		Graphics2D g2d = (Graphics2D) g.create();

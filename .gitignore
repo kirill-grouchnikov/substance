@@ -1,4 +1,3 @@
 classes/*
 .*
 !.gitignore
-/classes/

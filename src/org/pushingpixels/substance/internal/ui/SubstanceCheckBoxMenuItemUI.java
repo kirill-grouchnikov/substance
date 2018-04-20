@@ -99,11 +99,6 @@ public class SubstanceCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI
 				menuItem.getModel());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicMenuItemUI#installListeners()
-	 */
 	@Override
 	protected void installListeners() {
 		super.installListeners();
@@ -136,11 +131,6 @@ public class SubstanceCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI
 		this.menuItem.addPropertyChangeListener(this.substancePropertyListener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicMenuItemUI#uninstallListeners()
-	 */
 	@Override
 	protected void uninstallListeners() {
 		super.uninstallListeners();
@@ -160,77 +150,50 @@ public class SubstanceCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI
 		this.stateTransitionTracker.unregisterModelListeners();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.basic.BasicMenuItemUI#installDefaults()
-	 */
 	@Override
 	protected void installDefaults() {
 		super.installDefaults();
-		if (this.checkIcon == null || this.checkIcon instanceof UIResource) {
-			this.checkIcon = new CheckBoxMenuItemIcon(this.menuItem,
-					1 + SubstanceSizeUtils
-							.getMenuCheckMarkSize(SubstanceSizeUtils
-									.getComponentFontSize(this.menuItem)));
-		}
+		this.updateCheckIconIfNeeded();
 		this.defaultTextIconGap = SubstanceSizeUtils
 				.getTextIconGap(SubstanceSizeUtils
 						.getComponentFontSize(this.menuItem));
 	}
+	
+	@Override
+	public void updateCheckIconIfNeeded() {
+        if (this.checkIcon == null || this.checkIcon instanceof UIResource) {
+            this.checkIcon = new CheckBoxMenuItemIcon(this.menuItem,
+                    1 + SubstanceSizeUtils
+                            .getMenuCheckMarkSize(SubstanceSizeUtils
+                                    .getComponentFontSize(this.menuItem)));
+        }
+	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.SubstanceMenu#getAssociatedMenuItem()
-	 */
+	@Override
 	public JMenuItem getAssociatedMenuItem() {
 		return this.menuItem;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.SubstanceMenu#getAcceleratorFont()
-	 */
+    @Override
 	public Font getAcceleratorFont() {
 		return this.acceleratorFont;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.SubstanceMenu#getArrowIcon()
-	 */
+    @Override
 	public Icon getArrowIcon() {
 		return this.arrowIcon;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.SubstanceMenu#getCheckIcon()
-	 */
+    @Override
 	public Icon getCheckIcon() {
 		return this.checkIcon;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.pushingpixels.substance.SubstanceMenu#getDefaultTextIconGap()
-	 */
+    @Override
 	public int getDefaultTextIconGap() {
 		return this.defaultTextIconGap;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicMenuItemUI#getPreferredMenuItemSize(javax
-	 * .swing.JComponent, javax.swing.Icon, javax.swing.Icon, int)
-	 */
 	@Override
 	protected Dimension getPreferredMenuItemSize(JComponent c, Icon checkIcon,
 			Icon arrowIcon, int defaultTextIconGap) {
@@ -240,14 +203,6 @@ public class SubstanceCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI
 				superDim.height);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.plaf.basic.BasicMenuItemUI#paintMenuItem(java.awt.Graphics,
-	 * javax.swing.JComponent, javax.swing.Icon, javax.swing.Icon,
-	 * java.awt.Color, java.awt.Color, int)
-	 */
 	@Override
 	protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon,
 			Icon arrowIcon, Color background, Color foreground,
@@ -266,12 +221,6 @@ public class SubstanceCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI
 		return this.menuItem.getBounds().contains(me.getX(), me.getY());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.plaf.ComponentUI#update(java.awt.Graphics,
-	 * javax.swing.JComponent)
-	 */
 	@Override
 	public void update(Graphics g, JComponent c) {
 		Graphics2D g2d = (Graphics2D) g.create();

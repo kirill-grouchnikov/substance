@@ -85,8 +85,6 @@ public class MenuUtilities {
      */
     private static final String GUTTER_X = "substancelaf.internal.menus.gutterX";
 
-    public static final String LAYOUT_INFO = "substancelaf.internal.menus.layoutInfo";
-
     /**
      * Listener to track changes in the menu items. Once any property has been changed, the popup
      * layout metrics on the menu item and its parent popup menu are cleared.
@@ -103,7 +101,7 @@ public class MenuUtilities {
          * Runnable instance to clean the layout metrics.
          */
         private Runnable cleanLayoutMetricsRunnable;
-
+        
         /**
          * Creates a new listener.
          * 
@@ -129,14 +127,17 @@ public class MenuUtilities {
             this.menuItem.removePropertyChangeListener(this);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @seejava.beans.PropertyChangeListener#propertyChange(java.beans. PropertyChangeEvent)
-         */
+        @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if (!evt.getPropertyName().equals(MenuUtilities.LAYOUT_METRICS)) {
                 SwingUtilities.invokeLater(cleanLayoutMetricsRunnable);
+                
+                // Workaround for https://github.com/kirill-grouchnikov/substance/issues/86
+                // introduced in http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/rev/908d5fa49906
+                // where the basic UI delegate overrides the check icon after the custom UI
+                // delegate has already installed its check icon.
+                SubstanceMenu ui = (SubstanceMenu) this.menuItem.getUI();
+                ui.updateCheckIconIfNeeded();
             }
         }
     }
@@ -503,8 +504,7 @@ public class MenuUtilities {
         if (popupMetrics != null) {
             boolean hasGutterContent = (popupMetrics.maxCheckIconWidth > 0)
                     || (popupMetrics.maxIconWidth > 0);
-            MenuGutterFillKind gutterFillKind = SubstanceCoreUtilities
-                    .getMenuGutterFillKind();
+            MenuGutterFillKind gutterFillKind = SubstanceCoreUtilities.getMenuGutterFillKind();
             boolean needExtraIconTextGap = hasGutterContent && (gutterFillKind != null)
                     && (gutterFillKind != MenuGutterFillKind.NONE);
             int gap = popupMetrics.maxIconTextGap;
@@ -633,7 +633,7 @@ public class MenuUtilities {
                 }
             }
         }
-        menuItem.putClientProperty(LAYOUT_INFO, mli);
+        //menuItem.putClientProperty(LAYOUT_INFO, mli);
         Component parent = menuItem.getParent();
         if (parent instanceof JPopupMenu) {
             ((JPopupMenu) parent).putClientProperty(GUTTER_X, menuItem.getClientProperty(GUTTER_X));
@@ -920,8 +920,7 @@ public class MenuUtilities {
 
         boolean hasGutterContent = (popupMetrics.maxCheckIconWidth > 0)
                 || (popupMetrics.maxIconWidth > 0);
-        MenuGutterFillKind gutterFillKind = SubstanceCoreUtilities
-                .getMenuGutterFillKind();
+        MenuGutterFillKind gutterFillKind = SubstanceCoreUtilities.getMenuGutterFillKind();
         boolean needExtraIconTextGap = hasGutterContent && (gutterFillKind != null)
                 && (gutterFillKind != MenuGutterFillKind.NONE);
         if (needExtraIconTextGap)

@@ -209,12 +209,12 @@ public class RadioButtonMenuItemIcon implements Icon, UIResource {
 	@Override
 	public int getIconWidth() {
 		Icon iconToDraw = this.getIconToPaint();
-		return iconToDraw.getIconWidth();
+        return (iconToDraw == null) ? 0 : iconToDraw.getIconWidth();
 	}
 
 	@Override
 	public int getIconHeight() {
 		Icon iconToDraw = this.getIconToPaint();
-		return iconToDraw.getIconHeight();
+        return (iconToDraw == null) ? 0 : iconToDraw.getIconHeight();
 	}
 }
