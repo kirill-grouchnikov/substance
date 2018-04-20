@@ -1988,7 +1988,7 @@ public class SubstanceCortex {
          * @since version 8.0
          */
         public static void setButtonShaper(JComponent comp, SubstanceButtonShaper buttonShaper) {
-            comp.putClientProperty(SubstanceSynapse.TABBED_PANE_CONTENT_BORDER_KIND, buttonShaper);
+            comp.putClientProperty(SubstanceSynapse.BUTTON_SHAPER, buttonShaper);
         }
 
         /**
