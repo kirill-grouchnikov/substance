@@ -76,7 +76,7 @@ The bigger the pull request is, the less likely the chances are it will be handl
 
 **Are there any known issues in Substance?**
 
-See the [known issues](docs/known_issues.md) documentation. If you find an issue not mentioned in the above document, [file a bug](https://github.com/kirill-grouchnikov/substance/issues) or [get in touch](http://www.pushing-pixels.org/about-me).
+See the [known issues](docs/known-issues.md) documentation. If you find an issue not mentioned in the above document, [file a bug](https://github.com/kirill-grouchnikov/substance/issues) or [get in touch](http://www.pushing-pixels.org/about-kirill).
 
 **How can i use Substance on Mac and still have the standard Mac application menu bar?**
 
