@@ -16,7 +16,7 @@ In any case, add the latest `substance-X.Y.ZZ.jar` and the matching `trident-L.M
 
 The main demo application is in the [substance-demo](https://github.com/kirill-grouchnikov/substance-demo) uses the [FormLayout](http://www.jgoodies.com/freeware/libraries/forms/) and components from SwingLabs. In addition, [substance-samples](https://github.com/kirill-grouchnikov/substance-samples) has a collection of self-contained samples that show more advanced usage of Substance APIs for custom application skinning.
 
-Have a question? See the [FAQ](www/docs/faq.md) and the list of [known issues](www/docs/known_issues.md), and if you don't see an answer there, [file a bug](https://github.com/kirill-grouchnikov/substance/issues) or [get in touch](http://www.pushing-pixels.org/about-me).
+Have a question? See the [FAQ](www/docs/faq.md) and the list of [known issues](www/docs/known-issues.md), and if you don't see an answer there, [file a bug](https://github.com/kirill-grouchnikov/substance/issues) or [get in touch](http://www.pushing-pixels.org/about-kirill).
 
 ### Adding Substance to your application
 
